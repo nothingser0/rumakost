@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Pengaturan Properti & Hak Akses</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+
+
+
+
+    /* SETTINGS SHELL GRID */
+    .settings-shell {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 28px;
+    }
+
+    /* LEFT SIDEBAR NAV */
+    .settings-nav-card {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      height: fit-content;
+    }
+
+    .settings-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6B7280;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .settings-nav-item:hover { background: #F7F8FA; color: #111111; }
+    .settings-nav-item.active {
+      background: #111111;
+      color: #FFFFFF;
+    }
+
+    /* RIGHT CONTENT CARDS */
+    .settings-main {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .card-settings {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card-settings-header {
+      border-bottom: 1px solid #ECEEF2;
+      padding-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-settings-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #111111;
+    }
+
+    .card-settings-sub {
+      font-size: 12px;
+      color: #6B7280;
+      margin-top: 2px;
+    }
+
+    /* FORM CONTROLS */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 11px 16px;
+      background: #F7F8FA;
+      border: 1px solid #ECEEF2;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 13px;
+      color: #111111;
+      outline: none;
+      transition: all 150ms ease;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      background: #FFFFFF;
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+    }
+
+    /* STAF RBAC TABLE */
+    .staff-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .staff-table th {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6B7280;
+      text-transform: uppercase;
+      padding: 12px 14px;
+      border-bottom: 1px solid #ECEEF2;
+    }
+
+    .staff-table td {
+      padding: 14px;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .role-owner { background: #111111; color: #FFFFFF; }
+    .role-staff { background: #FFF7ED; color: #FF7A00; border: 1px solid #FDBA74; }
+
+    /* SWITCH TOGGLE */
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .toggle-row:last-child { border-bottom: none; }
+
+    .toggle-label-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111111;
+    }
+
+    .toggle-label-desc {
+      font-size: 11px;
+      color: #6B7280;
+    }
+
+    .switch-box {
+      width: 44px;
+      height: 24px;
+      background: #FF7A00;
+      border-radius: 9999px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .switch-box.off {
+      background: #D1D5DB;
+    }
+
+    .switch-handle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      transition: all 150ms ease;
+    }
+
+    .switch-box.off .switch-handle {
+      right: auto;
+      left: 3px;
+    }
+
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 150ms ease;
+    }
+
+    .btn-orange-primary {
+      background: #FF7A00;
+      color: #FFFFFF;
+      border: none;
+      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.25);
+    }
+
+    .btn-orange-primary:hover { background: #E66E00; transform: translateY(-1px); }
+
+    .btn-white-secondary {
+      background: #FFFFFF;
+      color: #4B5563;
+      border: 1px solid #ECEEF2;
+    }
+
+    .btn-white-secondary:hover { background: #F9FAFB; color: #111111; border-color: #D1D5DB; }
+
+    .wf-badge {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: #6B7280;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wf-badge">SCR-16 & SCR-17 · Profil Properti & Hak Akses Staf (RBAC)</div>
+
+  <!-- TOPBAR -->
+  <header class="topbar" id="mainTopbar">
+    <!-- Rendered dynamically by components.js -->
+  </header>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page-layout">
+
+    <div class="page-header">
+      <div class="page-title-group">
+        <h1>Pengaturan Sistem & Properti</h1>
+        <p>Kelola identitas properti Kost Budi Makmur, nomor rekening, dan hak akses pengguna staf.</p>
+      </div>
+
+      <button class="btn-pill btn-orange-primary" onclick="RumaUI.showToast('Semua perubahan pengaturan berhasil disimpan')">
+        <i data-lucide="save" style="width: 15px; height: 15px;"></i>
+        Simpan Perubahan
+      </button>
+    </div>
+
+    <div class="settings-shell">
+      
+      <!-- LEFT SETTINGS NAV -->
+      <nav class="settings-nav-card">
+        <a class="settings-nav-item active" onclick="activateSection('property', this)">
+          <i data-lucide="home" style="width: 16px; height: 16px;"></i>
+          Profil Properti (SCR-17)
+        </a>
+        <a class="settings-nav-item" onclick="activateSection('rbac', this)">
+          <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i>
+          Staf & RBAC (SCR-16)
+        </a>
+        <a class="settings-nav-item" onclick="activateSection('billing', this)">
+          <i data-lucide="credit-card" style="width: 16px; height: 16px;"></i>
+          Rekening & Notifikasi
+        </a>
+      </nav>
+
+      <!-- RIGHT SETTINGS CONTENT -->
+      <div class="settings-main">
+        
+        <!-- SECTION 1: PROFIL PROPERTI (SCR-17) -->
+        <section id="section-property" class="card-settings">
+          <div class="card-settings-header">
+            <div>
+              <h2 class="card-settings-title">Identitas Properti Kost</h2>
+              <p class="card-settings-sub">Informasi fisik kosan yang tercetak pada kuitansi dan lembar tagihan.</p>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Nama Properti Kost</label>
+              <input type="text" class="form-input" value="Kost Budi Makmur">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nama Pemilik / Superadmin</label>
+              <input type="text" class="form-input" value="Budi Santoso">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Total Unit Kamar</label>
+              <input type="number" class="form-input" value="15" readonly style="background: #F3F4F6;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Jumlah Lantai</label>
+              <input type="number" class="form-input" value="3" readonly style="background: #F3F4F6;">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Alamat Lengkap Properti</label>
+            <textarea class="form-textarea">Jl. Kemanggisan Raya No. 42, RT 04 / RW 08, Kel. Palmerah, Kec. Palmerah, Kota Jakarta Barat, DKI Jakarta 11480</textarea>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Nomor WhatsApp Pengelola</label>
+              <input type="text" class="form-input" value="0812-3456-7890">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Operasional</label>
+              <input type="email" class="form-input" value="pengelola@kostbudimakmur.id">
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: STAF & RBAC (SCR-16) -->
+        <section id="section-rbac" class="card-settings">
+          <div class="card-settings-header">
+            <div>
+              <h2 class="card-settings-title">Akses Staf & Peran (Role-Based Access Control)</h2>
+              <p class="card-settings-sub">Daftar akun pengelola yang berwenang mengakses modul sistem.</p>
+            </div>
+            <button class="btn-pill btn-white-secondary" style="padding: 6px 14px; font-size: 12px;" onclick="RumaUI.showToast('Dialog undang staf baru dibuka')">
+              <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i>
+              Tambah Akun Staf
+            </button>
+          </div>
+
+          <table class="staff-table">
+            <thead>
+              <tr>
+                <th>Nama Pengguna</th>
+                <th>Email Login</th>
+                <th>Peran Sistem</th>
+                <th>Hak Akses Modul</th>
+                <th>Status</th>
+                <th style="text-align: right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div style="font-weight: 700; color: #111111;">Budi Santoso</div>
+                  <div style="font-size: 11px; color: #6B7280;">Pemilik Properti</div>
+                </td>
+                <td style="font-size: 12px; color: #4B5563;">budi.santoso@kostbudimakmur.id</td>
+                <td><span class="role-badge role-owner"><i data-lucide="crown" style="width: 12px; height: 12px;"></i> Pemilik (Superadmin)</span></td>
+                <td style="font-size: 12px; color: #16A34A; font-weight: 600;">Semua Modul (Full Access)</td>
+                <td><span style="font-size: 11px; font-weight: 600; color: #16A34A; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="check-circle-2" style="width: 12px; height: 12px;"></i> Aktif</span></td>
+                <td style="text-align: right; color: #9CA3AF; font-size: 11px;">Utama</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div style="font-weight: 700; color: #111111;">Rini Setiawati</div>
+                  <div style="font-size: 11px; color: #6B7280;">Pengelola Lapangan</div>
+                </td>
+                <td style="font-size: 12px; color: #4B5563;">rini.staf@kostbudimakmur.id</td>
+                <td><span class="role-badge role-staff"><i data-lucide="shield" style="width: 12px; height: 12px;"></i> Staf Operasional</span></td>
+                <td style="font-size: 12px; color: #4B5563;">Kamar, Penghuni, Tiket, Catat Bayar (Tanpa Hapus Kas)</td>
+                <td><span style="font-size: 11px; font-weight: 600; color: #16A34A; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="check-circle-2" style="width: 12px; height: 12px;"></i> Aktif</span></td>
+                <td style="text-align: right;">
+                  <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Dialog kelola izin staf dibuka')">
+                    <i data-lucide="edit-2" style="width: 12px; height: 12px;"></i> Edit Izin
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SECTION 3: REKENING & NOTIFIKASI -->
+        <section id="section-billing" class="card-settings">
+          <div class="card-settings-header">
+            <div>
+              <h2 class="card-settings-title">Rekening Pembayaran & Otomasi Notifikasi</h2>
+              <p class="card-settings-sub">Rekening tujuan transfer penyewa dan pengingat jatuh tempo sewa otomatis.</p>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Nama Bank Rekening Utama</label>
+              <input type="text" class="form-input" value="BCA (Bank Central Asia)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nomor Rekening</label>
+              <input type="text" class="form-input" value="8830-1928-11">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Atas Nama Rekening</label>
+            <input type="text" class="form-input" value="BUDI SANTOSO">
+          </div>
+
+          <div style="margin-top: 10px;">
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label-title">Kirim Pengingat Tagihan Otomatis (H-3)</div>
+                <div class="toggle-label-desc">Kirim pesan notifikasi pengingat sebelum tanggal jatuh tempo sewa bulanan.</div>
+              </div>
+              <div class="switch-box" onclick="this.classList.toggle('off')">
+                <div class="switch-handle"></div>
+              </div>
+            </div>
+
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label-title">Pemberitahuan Instan Saat Bukti Transfer Diunggah</div>
+                <div class="toggle-label-desc">Notifikasi langsung ke aplikasi ketika penyewa mengirim konfirmasi pembayaran.</div>
+              </div>
+              <div class="switch-box" onclick="this.classList.toggle('off')">
+                <div class="switch-handle"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('pengaturan');
+
+    function activateSection(secId, navElem) {
+      document.querySelectorAll('.settings-nav-item').forEach(item => item.classList.remove('active'));
+      navElem.classList.add('active');
+
+      const el = document.getElementById('section-' + secId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  </script>
+</body>
+</html>

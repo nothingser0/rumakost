@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Buat Laporan Kerusakan Baru (Wajib Foto/Video)</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    .form-ticket-card {
+      max-width: 760px;
+      margin: 24px auto;
+      background: var(--bg-card);
+      border-radius: var(--radius-2xl);
+      border: 1px solid var(--border-subtle);
+      padding: 36px;
+      box-shadow: var(--shadow-card);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Identity Badge -->
+  <div class="wf-badge">
+    <i data-lucide="wrench" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+    SCR-P04 · Form Tiket Kerusakan Baru (F-07 Foto/Video Wajib)
+  </div>
+
+  <div class="app-container">
+    <!-- Topbar (Role: Tenant) -->
+    <header class="topbar" id="mainTopbar"></header>
+
+    <div class="form-ticket-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+        <div>
+          <a href="WF-10-portal-penghuni.html" style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); text-decoration: none; margin-bottom: 8px;">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            Kembali ke Beranda Kamar
+          </a>
+          <h1 style="font-size: 22px; font-weight: 700; color: var(--text-main);">Lapor Kerusakan Fasilitas</h1>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+            Sampaikan kendala fasilitas kamar Anda. Pengelola kost akan menugaskan teknisi secepatnya.
+          </p>
+        </div>
+        <span class="badge-status badge-brand" style="font-size: 11px;">
+          <i data-lucide="door-closed" style="width: 12px; height: 12px;"></i>
+          Unit: Kamar A-04
+        </span>
+      </div>
+
+      <form onsubmit="handleSubmitTicket(event)">
+        <!-- KATEGORI & JUDUL -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px;">
+          <div class="form-group">
+            <label class="form-label">Kategori Kerusakan</label>
+            <div style="position: relative;">
+              <select class="form-input" id="ticketCategory" required style="padding-right: 32px; appearance: none; background: #FFFFFF;">
+                <option value="plumbing">Sanitasi & Pipa Air (Kran, Wastafel, WC)</option>
+                <option value="electrical">Kelistrikan (Lampu, Stopkontak)</option>
+                <option value="cooling">Pendingin Ruangan (AC Bocor/Tidak Dingin)</option>
+                <option value="door">Pintu, Kunci & Jendela</option>
+                <option value="furniture">Furnitur & Kasur</option>
+                <option value="general">Fasilitas Bersama (Dapur, Parkir)</option>
+              </select>
+              <i data-lucide="chevron-down" style="position: absolute; right: 12px; top: 14px; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none;"></i>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tingkat Urgensi</label>
+            <div style="position: relative;">
+              <select class="form-input" id="ticketPriority" required style="padding-right: 32px; appearance: none; background: #FFFFFF;">
+                <option value="normal">Normal (Bisa ditangani dalam 24 jam)</option>
+                <option value="urgent">Mendesak (Air meluap, korsleting listrik)</option>
+                <option value="low">Rendah (Pengecekan berkala / minor)</option>
+              </select>
+              <i data-lucide="chevron-down" style="position: absolute; right: 12px; top: 14px; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none;"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label class="form-label">Judul Masalah / Kerusakan</label>
+          <input type="text" class="form-input" placeholder="Contoh: Kran wastafel kamar mandi patah dan air merembes" required value="Kran wastafel bocor menetes">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 22px;">
+          <label class="form-label">Deskripsi Kronologi & Lokasi Spesifik</label>
+          <textarea class="form-input" rows="4" style="height: auto; padding: 12px;" placeholder="Jelaskan sejak kapan kendala muncul dan posisi persis kerusakan..." required>Sejak kemarin malam sekitar jam 21.00 kran bawah wastafel mulai menetes dan air mulai menggenang di lantai kamar mandi. Mohon dibantu perbaikan kran/pipanya.</textarea>
+        </div>
+
+        <!-- F-07 MANDATORY PHOTO / VIDEO UPLOAD -->
+        <div class="form-group" style="margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label class="form-label" style="margin-bottom: 0;">
+              Bukti Foto / Video Kerusakan <span style="color: #EF4444; font-weight: 700;">* (Wajib Minimal 1 Berkas)</span>
+            </label>
+            <span style="font-size: 11px; color: var(--text-muted);">Sesuai Ketentuan Scope F-07</span>
+          </div>
+
+          <div class="upload-dropzone" id="uploadZone" onclick="simulateMediaUpload()">
+            <div class="upload-icon-circle">
+              <i data-lucide="video" style="width: 22px; height: 22px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 13px; font-weight: 600; color: var(--text-main);">
+                Tarik Foto / Video ke sini atau <span style="color: var(--brand-primary); text-decoration: underline;">Klik untuk Memilih</span>
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+                Mendukung file PNG, JPG, MP4 atau MOV (Maksimal 25MB per file)
+              </div>
+            </div>
+          </div>
+
+          <!-- Uploaded Media Preview Grid -->
+          <div class="upload-preview-grid" id="previewGrid">
+            <div class="upload-preview-card">
+              <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=300&q=80" alt="Bukti 1">
+              <button type="button" class="upload-remove-btn" onclick="removeMedia(this)" title="Hapus">&times;</button>
+            </div>
+            <div class="upload-preview-card" style="display: flex; align-items: center; justify-content: center; background: #111111; color: #FFFFFF;">
+              <div style="text-align: center;">
+                <i data-lucide="play-circle" style="width: 26px; height: 26px; color: #FF7A00;"></i>
+                <div style="font-size: 9px; margin-top: 2px;">video_bocor.mp4</div>
+              </div>
+              <button type="button" class="upload-remove-btn" onclick="removeMedia(this)" title="Hapus">&times;</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid var(--border-subtle);">
+          <a href="WF-10-portal-penghuni.html" class="btn-pill btn-white-outline" style="text-decoration: none;">
+            Batal
+          </a>
+          <button type="submit" class="btn-pill btn-primary" style="background: var(--brand-primary); color: #FFFFFF; padding: 12px 24px;">
+            <i data-lucide="send" style="width: 15px; height: 15px;"></i>
+            Kirim Laporan Kerusakan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('lapor-kerusakan', 'tenant');
+
+    let uploadedCount = 2;
+
+    function simulateMediaUpload() {
+      uploadedCount++;
+      const grid = document.getElementById('previewGrid');
+      const card = document.createElement('div');
+      card.className = 'upload-preview-card';
+      card.innerHTML = `
+        <img src="https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=300&q=80" alt="Bukti Tambahan">
+        <button type="button" class="upload-remove-btn" onclick="removeMedia(this)">&times;</button>
+      `;
+      grid.appendChild(card);
+      RumaUI.showToast('Lampiran foto baru berhasil diunggah');
+    }
+
+    function removeMedia(button) {
+      button.closest('.upload-preview-card').remove();
+      uploadedCount--;
+      RumaUI.showToast('Berkas lampiran dihapus');
+    }
+
+    function handleSubmitTicket(e) {
+      e.preventDefault();
+      if (uploadedCount <= 0) {
+        RumaUI.showToast('Wajib melampirkan minimal satu foto atau video kerusakan!', 'error');
+        return;
+      }
+      RumaUI.showToast('Laporan kerusakan berhasil dikirim! Menugaskan staf & teknisi...', 'success');
+      setTimeout(() => {
+        window.location.href = 'WF-12-portal-tiket-detail.html';
+      }, 700);
+    }
+  </script>
+</body>
+</html>

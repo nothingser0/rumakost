@@ -1,0 +1,2317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Dasbor Utama Pemilik</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* ==========================================================================
+       ESTIFY 2-COLUMN MASTER DASHBOARD GRID (01-dashboard-flat.png DNA)
+       ========================================================================== */
+    .dashboard-wrapper {
+      max-width: 1440px;
+      width: calc(100% - 48px);
+      margin: 0 auto;
+      padding: 18px 0 32px;
+      box-sizing: border-box;
+    }
+
+    .dashboard-2col-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 20px;
+      align-items: stretch;
+      width: 100%;
+      max-width: 1440px;
+    }
+
+    .col-main-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .col-sidebar-flow {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 20px;
+      min-width: 0;
+      width: 360px;
+      max-width: 360px;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    /* ═══════════════════════════════════════
+       1. TOP ROW: 3 GAUGE METRIC CARDS
+    ═══════════════════════════════════════ */
+    .metrics-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .metric-card-estify {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 22px 24px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all var(--transition-fast);
+      min-height: 138px;
+      box-sizing: border-box;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .metric-card-estify:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+    }
+
+    /* TOP ROW: ICON + TITLE (LEFT) & STATUS BADGE (RIGHT) */
+    .metric-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .metric-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .metric-icon-sq {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+
+    /* Design Token --brand-light (#FFF7ED) untuk kontainer ikon */
+    .metric-icon-sq.is-brand {
+      background: #FFF7ED;
+      color: #FF7A00;
+      border: 1px solid #FFEDD5;
+    }
+
+    /* Design Token --dark-pill (#111111) soft variant */
+    .metric-icon-sq.is-dark {
+      background: #F1F5F9;
+      color: #111111;
+      border: 1px solid #E2E8F0;
+    }
+
+    /* Design Token Red/Danger variant untuk pengeluaran operasional */
+    .metric-icon-sq.is-danger,
+    .metric-icon-sq.is-peach,
+    .metric-icon-sq.is-slate {
+      background: #FFE4E6;
+      color: #E11D48;
+      border: 1px solid #FECDD3;
+    }
+
+    .pill-red-soft {
+      background: #FFE4E6;
+      color: #E11D48;
+      border: 1px solid #FECDD3;
+    }
+
+    .metric-card-estify:hover .metric-icon-sq {
+      transform: scale(1.05);
+    }
+
+    .metric-lbl-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+    }
+
+    .metric-badge-pill {
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      line-height: 1.2;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pill-orange-soft {
+      background: #FFF7ED;
+      color: #FF7A00;
+      border: 1px solid #FFEDD5;
+    }
+
+    .pill-green-soft {
+      background: #DCFCE7;
+      color: #16A34A;
+      border: 1px solid #BBF7D0;
+    }
+
+    .pill-dark-soft {
+      background: #F1F5F9;
+      color: #111111;
+      border: 1px solid #E2E8F0;
+    }
+
+    /* BOTTOM ROW: VALUE + SUBTEXT (LEFT) & ESTIFY RADIAL GAUGE (RIGHT) */
+    .metric-card-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .metric-val-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .metric-lbl-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .metric-value-huge {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+    }
+
+    .metric-sub-val {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .metric-sub-info {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 5px;
+      white-space: nowrap;
+    }
+
+    /* ESTIFY RADIAL SPEEDOMETER GAUGE (CMP-06) */
+    .gauge-meter-wrap {
+      width: 104px;
+      height: 58px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      overflow: visible;
+    }
+
+    .gauge-meter-svg {
+      width: 104px;
+      height: 58px;
+      overflow: visible;
+    }
+
+    /* ═══════════════════════════════════════
+       2. MIDDLE ROW: DOUBLE BAR CHART + HIGHLIGHT CARD (SIDE-BY-SIDE!)
+    ═══════════════════════════════════════ */
+    .chart-highlight-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .chart-card-box {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-title-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .header-ctrl-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: #F7F8FA;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .pill-dropdown-trigger:hover {
+      background: #FFFFFF;
+      border-color: #D1D5DB;
+    }
+
+    .pill-arrow-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #F7F8FA;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .pill-arrow-btn:hover {
+      background: var(--dark-pill);
+      color: #FFFFFF;
+      border-color: var(--dark-pill);
+    }
+
+    /* DOUBLE BAR CHART CANVAS (Estify Property Type Pattern) */
+    .bar-chart-viewport {
+      position: relative;
+      height: 204px;
+      padding-top: 10px;
+      padding-bottom: 28px;
+    }
+
+    .chart-y-numbers {
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 32px;
+      height: 160px;
+      pointer-events: none;
+    }
+
+    .chart-y-val {
+      position: absolute;
+      right: 0;
+      transform: translateY(-50%);
+      font-size: 10.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-align: right;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .chart-bars-track {
+      margin-left: 42px;
+      height: 160px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    /* Estify Horizontal Dashed Gridlines at Y: 20 Jt, 16 Jt, 12 Jt, 8 Jt, 4 Jt, 0 */
+    .chart-grid-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-top: 1px dashed #ECEEF2;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .chart-grid-line.line-50 { top: 0px; }
+    .chart-grid-line.line-40 { top: 32px; }
+    .chart-grid-line.line-30 { top: 64px; }
+    .chart-grid-line.line-20 { top: 96px; }
+    .chart-grid-line.line-10 { top: 128px; }
+    .chart-grid-line.line-0  {
+      top: 160px;
+      border-top: 1.5px solid #E5E7EB;
+    }
+
+    .bars-pair-column {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 100%;
+      position: relative;
+      z-index: 3;
+      cursor: pointer;
+    }
+
+    .bars-pair-column:hover .bar-x-txt {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .bars-duo {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    /* Clean Solid Capsule Bar (100% Sesuai Skala Nominal) */
+    .estify-bar-capsule {
+      width: 20px;
+      border-radius: var(--radius-full);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      transition: all var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .estify-bar-capsule:hover {
+      transform: scaleY(1.05);
+      transform-origin: bottom;
+    }
+
+    .bar-fill-solid {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--radius-full);
+      transition: all var(--transition-fast);
+    }
+
+    /* INACTIVE BARS: Soft Muted Pale Tone (Estify DNA) */
+    .bar-fill-solid.is-pengeluaran {
+      background: #E2E8F0;
+    }
+
+    .bar-fill-solid.is-pemasukan {
+      background: #FED7AA;
+    }
+
+    /* ACTIVE MONTH (OKT - BULAN BERJALAN): VIBRANT BRAND ORANGE & DARK */
+    .bar-fill-solid.is-orange-active {
+      background: var(--brand-primary) !important;
+      box-shadow: 0 2px 10px rgba(255, 122, 0, 0.4);
+    }
+
+    .bar-fill-solid.is-dark-active,
+    .bar-fill-solid.is-peach-active {
+      background: #111111 !important;
+      box-shadow: 0 2px 10px rgba(17, 17, 17, 0.4);
+    }
+
+    /* HOVER ACTIVATION: When hovering ANY date column, BOTH bars light up active! */
+    .bars-pair-column:hover .bar-fill-solid.is-pemasukan,
+    .bars-pair-column:hover .bar-fill-solid.is-orange-active {
+      background: var(--brand-primary) !important;
+      box-shadow: 0 3px 10px rgba(255, 122, 0, 0.45) !important;
+    }
+
+    .bars-pair-column:hover .bar-fill-solid.is-pengeluaran,
+    .bars-pair-column:hover .bar-fill-solid.is-peach-active,
+    .bars-pair-column:hover .bar-fill-solid.is-dark-active {
+      background: #111111 !important;
+      box-shadow: 0 3px 10px rgba(17, 17, 17, 0.35) !important;
+    }
+
+    .bars-pair-column:hover .estify-bar-capsule {
+      transform: scaleY(1.04);
+      transform-origin: bottom;
+    }
+
+    .bar-x-txt {
+      position: absolute;
+      bottom: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+      transition: color var(--transition-fast);
+    }
+
+    .bar-x-txt.is-active {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Estify Floating Tooltip (Hidden by default · Pops up on hover only!) */
+    .bar-hover-tooltip {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: #FFFFFF;
+      padding: 7px 11px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border-subtle);
+      font-size: 10.5px;
+      white-space: nowrap;
+      z-index: 25;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1), transform 160ms cubic-bezier(0.16, 1, 0.3, 1), visibility 160ms;
+    }
+
+    .bars-pair-column:hover .bar-hover-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .tooltip-dot-orange { width: 6px; height: 6px; border-radius: 50%; background: #FF7A00; display: inline-block; }
+    .tooltip-dot-dark,
+    .tooltip-dot-peach  { width: 6px; height: 6px; border-radius: 50%; background: #111111; display: inline-block; }
+
+    /* VIBRANT ORANGE HIGHLIGHT CARD (Clean Estify Pattern · No Neon, No Leak) */
+    .orange-highlight-card {
+      background: var(--brand-primary);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      color: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+      min-height: 295px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border: none;
+    }
+
+    /* Geometric Dot Grid Motif (0.4 Opacity) */
+    .orange-highlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1.2px, transparent 1.2px);
+      background-size: 15px 15px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+    }
+
+    /* Architectural Wave Lines Motif (0.4 Opacity) */
+    .highlight-pattern-svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.4;
+      z-index: 1;
+    }
+
+    .highlight-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    .highlight-tag-pill {
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(8px);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .highlight-arrow-round {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .highlight-arrow-round:hover {
+      background: #FFFFFF;
+      color: var(--brand-primary);
+    }
+
+    .highlight-main-body {
+      z-index: 2;
+      position: relative;
+      max-width: 64%;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin: 0;
+    }
+
+    .highlight-header-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .highlight-sub-meta {
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.82);
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      line-height: 1.2;
+    }
+
+    .highlight-main-title {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.4px;
+      margin: 0;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Murni Emphasis Pemasukan Bersih (Bold, Bersih, Tanpa Redundansi) */
+    .highlight-emphasis-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .emphasis-lbl {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    .emphasis-val-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .emphasis-val-huge {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.6px;
+      white-space: nowrap;
+    }
+
+    .emphasis-pill-trend {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(4px);
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      line-height: 1;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .emphasis-sub-txt {
+      font-size: 11.5px;
+      color: rgba(255, 255, 255, 0.78);
+      font-weight: 500;
+    }
+
+    .highlight-building-img {
+      position: absolute;
+      right: 0px;
+      top: 74px;
+      bottom: 0px;
+      height: calc(100% - 74px);
+      width: clamp(135px, 35%, 170px);
+      border-radius: 20px 0 0 0;
+      object-fit: cover;
+      object-position: center bottom;
+      box-shadow: none;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════
+       3. BOTTOM ROW: MY PROPERTIES (Katalog Kamar Kost Terkini - Estify Compact)
+    ═══════════════════════════════════════ */
+    .properties-section-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 20px 24px 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      border: 1px solid var(--border-subtle);
+      min-height: 242px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .properties-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .properties-title-main {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+      margin: 0;
+    }
+
+    .properties-controls-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Estify Seamless Capsule Search Box */
+    .capsule-search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #F4F5F7;
+      border: 1px solid transparent;
+      border-radius: var(--radius-full);
+      padding: 0 12px;
+      height: 34px;
+      width: 210px;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .capsule-search-box:focus-within {
+      background: #FFFFFF;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .capsule-search-box input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-main);
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .capsule-search-box input::placeholder {
+      color: #94A3B8;
+      font-weight: 400;
+    }
+
+    /* Estify Round Circle Filter Button */
+    .btn-circle-filter {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #F4F5F7;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111111;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+      padding: 0;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .btn-circle-filter:hover {
+      background: #E5E7EB;
+      color: var(--brand-primary);
+      transform: scale(1.04);
+    }
+
+    .btn-circle-filter:focus,
+    .btn-circle-filter:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+      border-color: var(--border-subtle);
+    }
+
+    .btn-circle-filter:active {
+      transform: scale(0.95);
+      background: #E2E8F0;
+    }
+
+    /* Estify Horizontal Room Carousel (15 Unit · Tampil Awal 3 · Infinite Looping · Hidden Scrollbar) */
+    .room-cards-3col {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 2px 8px;
+      min-height: 168px;
+      align-items: stretch;
+      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
+      /* Sembunyikan scrollbar sepenuhnya di Firefox, Edge, IE */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    /* Sembunyikan scrollbar sepenuhnya di WebKit (Chrome, Safari, Opera) */
+    .room-cards-3col::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    /* Tampil awal tepat 3 card di desktop (100% minus 2 gap 14px dibagi 3) */
+    .room-cards-3col .room-unit-item {
+      flex: 0 0 calc((100% - 28px) / 3);
+      min-width: calc((100% - 28px) / 3);
+      max-width: calc((100% - 28px) / 3);
+      scroll-snap-align: start;
+    }
+
+    .room-empty-search {
+      width: 100%;
+      min-height: 168px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 16px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .room-empty-search p {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .room-empty-search span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Estify Card with elegant padded frame surrounding thumbnail */
+    .room-unit-item {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1.5px solid #ECEEF2;
+      padding: 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      transition: all var(--transition-fast);
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .room-unit-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+      border-color: #FF7A00;
+    }
+
+    .room-unit-item.active-room {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18);
+    }
+
+    .room-unit-item.status-vacant-card {
+      border-style: dashed;
+      background: #FAFAFB;
+    }
+
+    /* Image Thumbnail Container (Smooth 12px Rounded Corners on All Sides) */
+    .room-thumb-area {
+      height: 114px;
+      width: 100%;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #F1F5F9;
+    }
+
+    .room-thumb-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .room-unit-item:hover .room-thumb-area img {
+      transform: scale(1.05);
+    }
+
+    /* Estify Translucent Ice-Blue Floating Top-Right Circle Arrow */
+    .room-float-arrow {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(224, 237, 252, 0.88);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0F172A;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: all var(--transition-fast);
+      z-index: 2;
+    }
+
+    .room-unit-item:hover .room-float-arrow {
+      background: #111111 !important;
+      color: #FFFFFF !important;
+      transform: scale(1.06);
+    }
+
+    /* Card Details below image */
+    .room-unit-body {
+      padding: 1px 3px 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .room-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .room-name-text {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.2px;
+    }
+
+    .room-sub-specs {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.25;
+    }
+
+    .room-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+      margin-top: 1px;
+    }
+
+    .room-price-val {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand-primary);
+    }
+
+    .room-price-unit {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    /* ═══════════════════════════════════════
+       4. RIGHT COLUMN (SIDEBAR): BUILDING CONDITION & MESSAGES
+    ═══════════════════════════════════════ */
+    .sidebar-card-box {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      border: 1px solid var(--border-subtle);
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .card-condition {
+      flex-shrink: 0;
+    }
+
+    .card-activity {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Building Condition Progress Bars */
+    .condition-progress-group {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-bottom: 26px;
+    }
+
+    .condition-progress-item {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .condition-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .condition-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-main);
+      letter-spacing: -0.1px;
+    }
+
+    .condition-count {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-thick {
+      height: 7px;
+      background: #ECEEF2;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-fill-orange {
+      height: 100%;
+      background: var(--brand-primary);
+      border-radius: var(--radius-full);
+    }
+
+    .btn-maintenance-full {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: var(--radius-full);
+      background: var(--dark-pill);
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-maintenance-full:hover {
+      background: var(--dark-pill-hover);
+    }
+
+    /* TENANT MESSAGES LIST */
+    .tenant-message-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: auto;
+    }
+
+    .tenant-message-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast);
+      cursor: pointer;
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .tenant-message-row:hover {
+      background: #F7F8FA;
+    }
+
+    .tenant-avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #E5E7EB;
+    }
+
+    .tenant-avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tenant-msg-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .tenant-msg-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tenant-msg-snippet {
+      font-size: 11px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tenant-msg-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .msg-timestamp {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .msg-unread-dot {
+      width: 6.5px;
+      height: 6.5px;
+      border-radius: 50%;
+      background: #EF4444;
+      flex-shrink: 0;
+    }
+
+    .activity-view-all-link {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .activity-view-all-link:hover {
+      color: var(--brand-primary);
+    }
+
+    /* MICRO-FOOTER MINIMALIS */
+    .dashboard-footer-micro {
+      margin-top: 24px;
+      padding: 16px 4px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-micro-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-micro-links a {
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: color var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .footer-micro-links a:hover {
+      color: var(--brand-primary);
+    }
+
+    .wf-badge {
+      opacity: 0.35;
+      transition: opacity var(--transition-fast);
+    }
+
+    .wf-badge:hover {
+      opacity: 1;
+    }
+
+    /* Desktop Full Viewport: Zero Scrollbar */
+    @media (min-width: 1201px) {
+      html, body {
+        overflow-y: hidden;
+      }
+    }
+
+    /* ==========================================================================
+       RESPONSIVE ADAPTATIONS (Desktop, Laptop, Tablet, Mobile)
+       ========================================================================== */
+    @media (max-width: 1200px) {
+      .dashboard-wrapper {
+        width: calc(100% - 32px);
+        padding: 20px 0 28px;
+      }
+
+      /* Stack master columns cleanly on laptops & medium screens (e.g. 1110px / 1024px) */
+      .dashboard-2col-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      /* Sidebar cards sit side-by-side in a 2-column grid below */
+      .col-sidebar-flow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        height: auto;
+      }
+
+      .card-activity {
+        flex: initial;
+      }
+
+      .chart-highlight-row {
+        grid-template-columns: 1.25fr 1fr;
+      }
+
+      .room-cards-3col .room-unit-item {
+        flex: 0 0 calc((100% - 28px) / 3);
+        min-width: calc((100% - 28px) / 3);
+        max-width: calc((100% - 28px) / 3);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .dashboard-wrapper {
+        width: calc(100% - 20px);
+        padding: 14px 0 20px;
+      }
+
+      .metrics-row-3 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .chart-highlight-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .room-cards-3col .room-unit-item {
+        flex: 0 0 calc((100% - 14px) / 2);
+        min-width: calc((100% - 14px) / 2);
+        max-width: calc((100% - 14px) / 2);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .room-cards-3col .room-unit-item {
+        flex: 0 0 88%;
+        min-width: 88%;
+        max-width: 88%;
+      }
+
+      .col-sidebar-flow {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .properties-top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .properties-controls-right {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .capsule-search-box {
+        flex: 1;
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR NAVIGATION (Estify Horizontal Pill Navbar) -->
+  <header class="topbar" id="mainTopbar"></header>
+
+  <!-- ESTIFY 2-COLUMN MASTER DASHBOARD CONTAINER -->
+  <div class="dashboard-wrapper">
+
+    <!-- ESTIFY 2-COLUMN MASTER DASHBOARD GRID -->
+    <main class="dashboard-2col-layout">
+      
+      <!-- LEFT MAIN COLUMN (~68%) -->
+      <div class="col-main-flow">
+        
+        <!-- 1. TOP ROW: 3 ESTIFY RADIAL GAUGE METRIC CARDS (CMP-06 · AUTHENTIC BEHANCE SPEC) -->
+        <div class="metrics-row-3">
+          
+          <!-- Card 1: Okupansi Kamar (Estify Active Properties Pattern) -->
+          <div class="metric-card-estify">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-brand">
+                  <i data-lucide="building-2" style="width: 18px; height: 18px;"></i>
+                </div>
+                <span class="metric-lbl-title">Okupansi Kamar</span>
+              </div>
+              <span class="metric-badge-pill pill-orange-soft">+1 Unit &uarr;</span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Bulan ini</span>
+                <div class="metric-value-huge">11 <span class="metric-sub-val">/ 15 Kamar</span></div>
+              </div>
+
+              <!-- Estify Smooth Semi-Circle Radial Progress Gauge -->
+              <div class="gauge-meter-wrap" title="Tingkat Okupansi 73% (11 dari 15 kamar)">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#FF7A00" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="29"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">73%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Tagihan Lunas (Estify New Leads Pattern) -->
+          <div class="metric-card-estify">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-dark">
+                  <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
+                </div>
+                <span class="metric-lbl-title">Tagihan Lunas</span>
+              </div>
+              <span class="metric-badge-pill pill-dark-soft">+8% &uarr;</span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Bulan ini</span>
+                <div class="metric-value-huge">Rp 16,5 Jt</div>
+              </div>
+
+              <!-- Estify Smooth Semi-Circle Radial Progress Gauge -->
+              <div class="gauge-meter-wrap" title="Kolektibilitas Tagihan 82% (Rp 16,5 Jt dari Rp 20,1 Jt)">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="19"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">82%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Pengeluaran Operasional (Estify Total Sales Pattern) -->
+          <div class="metric-card-estify">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-danger">
+                  <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
+                </div>
+                <span class="metric-lbl-title">Pengeluaran</span>
+              </div>
+              <span class="metric-badge-pill pill-red-soft">-4% &darr;</span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Bulan ini</span>
+                <div class="metric-value-huge">Rp 4,2 Jt</div>
+              </div>
+
+              <!-- Estify Smooth Semi-Circle Radial Progress Gauge -->
+              <div class="gauge-meter-wrap" title="Pengeluaran Rp 4,2 Jt (Sisa Budget Rp 800rb dari Rp 5 Jt)">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#E11D48" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="17"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">84%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2. MIDDLE ROW: DOUBLE BAR CHART + ORANGE HIGHLIGHT CARD (SIDE-BY-SIDE!) -->
+        <div class="chart-highlight-row">
+          
+          <!-- LEFT: DOUBLE BAR CHART -->
+          <div class="chart-card-box">
+            <div class="card-top-header">
+              <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <h2 class="card-title-text" style="margin: 0;">Arus Kas & Operasional</h2>
+                <div style="display: flex; align-items: center; gap: 12px; font-size: 11px;">
+                  <span style="display: inline-flex; align-items: center; gap: 5px; color: var(--text-secondary); font-weight: 500;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #FF7A00; display: inline-block;"></span> Pemasukan
+                  </span>
+                  <span style="display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); font-weight: 500;">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #111111; display: inline-block;"></span> Pengeluaran
+                  </span>
+                </div>
+              </div>
+              <div class="header-ctrl-group">
+                <div class="pill-dropdown-trigger" onclick="RumaUI.showToast('Memilih arsip data tahun 2026')">
+                  <span>Tahun 2026</span>
+                  <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+                </div>
+                <a href="WF-07-laporan.html" class="pill-arrow-btn" title="Lihat Laporan Lengkap">
+                  <i data-lucide="arrow-up-right" style="width: 15px; height: 15px;"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Double Bar Canvas -->
+            <div class="bar-chart-viewport">
+              <div class="chart-y-numbers">
+                <span class="chart-y-val" style="top: 0px;">20 Jt</span>
+                <span class="chart-y-val" style="top: 32px;">16 Jt</span>
+                <span class="chart-y-val" style="top: 64px;">12 Jt</span>
+                <span class="chart-y-val" style="top: 96px;">8 Jt</span>
+                <span class="chart-y-val" style="top: 128px;">4 Jt</span>
+                <span class="chart-y-val" style="top: 160px;">0</span>
+              </div>
+
+              <div class="chart-bars-track">
+                <!-- Estify Horizontal Dashed Gridlines at Y: 20 Jt, 16 Jt, 12 Jt, 8 Jt, 4 Jt, 0 -->
+                <div class="chart-grid-line line-50"></div>
+                <div class="chart-grid-line line-40"></div>
+                <div class="chart-grid-line line-30"></div>
+                <div class="chart-grid-line line-20"></div>
+                <div class="chart-grid-line line-10"></div>
+                <div class="chart-grid-line line-0"></div>
+
+                <!-- Mei: Pemasukan 13,5 Jt (108px) · Pengeluaran 2,8 Jt (22px) — Periode Hemat -->
+                <div class="bars-pair-column">
+                  <div class="bar-hover-tooltip" style="bottom: 118px;">
+                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Mei 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 13,5 Jt</strong>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 2,8 Jt</strong>
+                    </div>
+                  </div>
+                  <div class="bars-duo">
+                    <div class="estify-bar-capsule" style="height: 108px;" title="Pemasukan: Rp 13,5 Jt">
+                      <div class="bar-fill-solid is-pemasukan"></div>
+                    </div>
+                    <div class="estify-bar-capsule" style="height: 22px;" title="Pengeluaran: Rp 2,8 Jt">
+                      <div class="bar-fill-solid is-pengeluaran"></div>
+                    </div>
+                  </div>
+                  <span class="bar-x-txt">Mei</span>
+                </div>
+
+                <!-- Jun: Pemasukan 15,8 Jt (126px) · Pengeluaran 6,8 Jt (54px) — Perawatan & Servis AC -->
+                <div class="bars-pair-column">
+                  <div class="bar-hover-tooltip" style="bottom: 136px;">
+                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Jun 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 15,8 Jt</strong>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 6,8 Jt</strong>
+                    </div>
+                  </div>
+                  <div class="bars-duo">
+                    <div class="estify-bar-capsule" style="height: 126px;" title="Pemasukan: Rp 15,8 Jt">
+                      <div class="bar-fill-solid is-pemasukan"></div>
+                    </div>
+                    <div class="estify-bar-capsule" style="height: 54px;" title="Pengeluaran: Rp 6,8 Jt">
+                      <div class="bar-fill-solid is-pengeluaran"></div>
+                    </div>
+                  </div>
+                  <span class="bar-x-txt">Jun</span>
+                </div>
+
+                <!-- Jul: Pemasukan 18,4 Jt (147px) · Pengeluaran 3,2 Jt (26px) — Peak Sewa Ajaran Baru -->
+                <div class="bars-pair-column">
+                  <div class="bar-hover-tooltip" style="bottom: 157px;">
+                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Jul 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 18,4 Jt</strong>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 3,2 Jt</strong>
+                    </div>
+                  </div>
+                  <div class="bars-duo">
+                    <div class="estify-bar-capsule" style="height: 147px;" title="Pemasukan: Rp 18,4 Jt">
+                      <div class="bar-fill-solid is-pemasukan"></div>
+                    </div>
+                    <div class="estify-bar-capsule" style="height: 26px;" title="Pengeluaran: Rp 3,2 Jt">
+                      <div class="bar-fill-solid is-pengeluaran"></div>
+                    </div>
+                  </div>
+                  <span class="bar-x-txt">Jul</span>
+                </div>
+
+                <!-- Agu: Pemasukan 17,2 Jt (138px) · Pengeluaran 5,4 Jt (43px) — Pajak & Utilitas -->
+                <div class="bars-pair-column">
+                  <div class="bar-hover-tooltip" style="bottom: 148px;">
+                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Agu 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 17,2 Jt</strong>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 5,4 Jt</strong>
+                    </div>
+                  </div>
+                  <div class="bars-duo">
+                    <div class="estify-bar-capsule" style="height: 138px;" title="Pemasukan: Rp 17,2 Jt">
+                      <div class="bar-fill-solid is-pemasukan"></div>
+                    </div>
+                    <div class="estify-bar-capsule" style="height: 43px;" title="Pengeluaran: Rp 5,4 Jt">
+                      <div class="bar-fill-solid is-pengeluaran"></div>
+                    </div>
+                  </div>
+                  <span class="bar-x-txt">Agu</span>
+                </div>
+
+                <!-- Sep: Pemasukan 14,2 Jt (114px) · Pengeluaran 3,6 Jt (29px) — Checkout Akhir Kontrak -->
+                <div class="bars-pair-column">
+                  <div class="bar-hover-tooltip" style="bottom: 124px;">
+                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Sep 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 14,2 Jt</strong>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 3,6 Jt</strong>
+                    </div>
+                  </div>
+                  <div class="bars-duo">
+                    <div class="estify-bar-capsule" style="height: 114px;" title="Pemasukan: Rp 14,2 Jt">
+                      <div class="bar-fill-solid is-pemasukan"></div>
+                    </div>
+                    <div class="estify-bar-capsule" style="height: 29px;" title="Pengeluaran: Rp 3,6 Jt">
+                      <div class="bar-fill-solid is-pengeluaran"></div>
+                    </div>
+                  </div>
+                  <span class="bar-x-txt">Sep</span>
+                </div>
+
+                <!-- Okt: Pemasukan 16,5 Jt (132px) · Pengeluaran 4,2 Jt (34px) — HIGHLIGHT BULAN INI -->
+                <div class="bars-pair-column is-selected-day">
+                  <!-- Floating Tooltip -->
+                  <div class="bar-hover-tooltip" style="bottom: 142px;">
+                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Okt 2026 (Bulan Ini)</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 16,5 Jt</strong>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 4,2 Jt</strong>
+                    </div>
+                  </div>
+
+                  <div class="bars-duo">
+                    <div class="estify-bar-capsule" style="height: 132px;" title="Pemasukan: Rp 16,5 Jt (Bulan Berjalan)">
+                      <div class="bar-fill-solid is-pemasukan is-orange-active"></div>
+                    </div>
+                    <div class="estify-bar-capsule" style="height: 34px;" title="Pengeluaran: Rp 4,2 Jt">
+                      <div class="bar-fill-solid is-pengeluaran is-peach-active"></div>
+                    </div>
+                  </div>
+                  <span class="bar-x-txt is-active">Okt</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: ORANGE HIGHLIGHT CARD -->
+          <div class="orange-highlight-card">
+            <!-- Architectural Contour Wave Pattern Motif (Subtle Luxury) -->
+            <svg class="highlight-pattern-svg" viewBox="0 0 400 300" fill="none" preserveAspectRatio="none">
+              <path d="M-40 220 C 60 140, 160 280, 280 180 C 340 130, 420 200, 480 160" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M-20 260 C 80 180, 180 320, 300 220 C 360 170, 440 240, 500 200" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/>
+              <path d="M0 300 C 100 220, 200 360, 320 260 C 380 210, 460 280, 520 240" stroke="#FFFFFF" stroke-width="1" stroke-linecap="round"/>
+              <circle cx="45" cy="55" r="110" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="3 5"/>
+              <circle cx="45" cy="55" r="150" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="3 5"/>
+            </svg>
+
+            <div class="highlight-top-row">
+              <span class="highlight-tag-pill">Properti Utama</span>
+              <a href="WF-03-kamar.html" class="highlight-arrow-round" title="Lihat Kamar">
+                <i data-lucide="arrow-up-right" style="width: 15px; height: 15px;"></i>
+              </a>
+            </div>
+
+            <div class="highlight-main-body">
+              <div class="highlight-header-group">
+                <span class="highlight-sub-meta">Jl. Flamboyan No. 12 · 15 Unit</span>
+                <h2 class="highlight-main-title">Kost Budi<br>Makmur</h2>
+              </div>
+
+              <!-- MURNI EMPHASIS: PEMASUKAN BERSIH (Bold, Bersih, Zero Redundansi) -->
+              <div class="highlight-emphasis-block">
+                <span class="emphasis-lbl">Pemasukan Bersih Bulan Ini</span>
+                <div class="emphasis-val-wrap">
+                  <span class="emphasis-val-huge">Rp 12,3 Jt</span>
+                  <span class="emphasis-pill-trend">
+                    +15% <i data-lucide="arrow-up" style="width: 10px; height: 10px;"></i>
+                  </span>
+                </div>
+                <span class="emphasis-sub-txt">Akumulasi laba bersih berjalan</span>
+              </div>
+            </div>
+
+            <!-- Perspective Building Photo Cutout in Corner -->
+            <img 
+              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80" 
+              alt="Gedung Kost Budi Makmur" 
+              class="highlight-building-img"
+            >
+          </div>
+
+        </div>
+
+        <!-- 3. BOTTOM ROW: MY PROPERTIES (Carousel 15 Kamar Kost · Tampil Awal 3 · Geser Shift + Scroll) -->
+        <div class="properties-section-card">
+          <div class="properties-top-bar">
+            <div class="properties-title-group" style="display: flex; align-items: center; gap: 10px;">
+              <h2 class="properties-title-main">Kamar Kost Terkini</h2>
+              <span class="status-badge badge-dark" style="font-size: 11px; padding: 2px 9px;">15 Unit</span>
+            </div>
+            
+            <div class="properties-controls-right">
+              <div class="capsule-search-box">
+                <i data-lucide="search" style="width: 16px; height: 16px; color: #111111;"></i>
+                <input type="text" placeholder="Cari kamar (A-01, B-03, dll)..." oninput="filterQuickRooms(this.value)">
+              </div>
+              <button type="button" class="btn-circle-filter" onclick="RumaUI.showToast('Filter status unit kamar')" title="Filter Unit">
+                <i data-lucide="sliders-horizontal" style="width: 16px; height: 16px;"></i>
+              </button>
+              <!-- Carousel Navigation Buttons -->
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <button type="button" class="btn-circle-filter" onclick="scrollRoomCarousel(-1); this.blur();" title="Geser Kiri (Shift + Scroll)">
+                  <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+                </button>
+                <button type="button" class="btn-circle-filter" onclick="scrollRoomCarousel(1); this.blur();" title="Geser Kanan (Shift + Scroll)">
+                  <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Carousel of All 15 Rooms (Tampil Awal 3 · Geser Horizontal Shift + Scroll) -->
+          <div class="room-cards-3col" id="quickRoomList">
+            
+            <!-- Unit 1: Kamar A-01 (Terisi - Lunas) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-01">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-01">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar A-01</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                </div>
+                <div class="room-sub-specs">Lantai 1 · Siti Aminah · Sewa s.d 28 Feb</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.200.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 2: Kamar A-02 (Jatuh Tempo H-3) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-02">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar A-02">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar A-02</span>
+                  <span class="status-badge badge-warning">Jatuh Tempo H-3</span>
+                </div>
+                <div class="room-sub-specs">Lantai 1 · Dimas Prasetyo · Sewa s.d 25 Okt</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.200.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 3: Kamar A-03 (Kosong · Siap Huni) -->
+            <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-03">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar A-03">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar A-03</span>
+                  <span class="status-badge badge-brand">Kosong · Siap Huni</span>
+                </div>
+                <div class="room-sub-specs">Lantai 1 · Standar (3×4m) · Ready</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.100.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 4: Kamar A-04 (Jatuh Tempo H-3) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-04">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-04">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar A-04</span>
+                  <span class="status-badge badge-warning">Jatuh Tempo H-3</span>
+                </div>
+                <div class="room-sub-specs">Lantai 1 · Budi Santoso · Sewa s.d 25 Okt</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.500.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 5: Kamar A-05 (Terisi - Lunas) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-05">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar A-05">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar A-05</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                </div>
+                <div class="room-sub-specs">Lantai 1 · Sri Wahyuni · Sewa s.d 30 Nov</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.100.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 6: Kamar B-01 (Terisi - Lunas) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-01">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=700&q=80" alt="Kamar B-01">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar B-01</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                </div>
+                <div class="room-sub-specs">Lantai 2 · Rian Hidayat · Sewa s.d 15 Jan</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.600.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 7: Kamar B-02 (Terisi - Ada Tiket) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-02">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=700&q=80" alt="Kamar B-02">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar B-02</span>
+                  <span class="status-badge badge-dark">Terisi · Tiket</span>
+                </div>
+                <div class="room-sub-specs">Lantai 2 · Siti Aminah · Servis Wastafel</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.800.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 8: Kamar B-03 (Kosong · Siap Huni) -->
+            <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-03">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar B-03">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar B-03</span>
+                  <span class="status-badge badge-brand">Kosong · Siap Huni</span>
+                </div>
+                <div class="room-sub-specs">Lantai 2 · Deluxe (AC, WiFi, KM Dalam)</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.800.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 9: Kamar B-04 (Terisi - Lunas) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-04">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80" alt="Kamar B-04">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar B-04</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                </div>
+                <div class="room-sub-specs">Lantai 2 · Hendra Wijaya · Sewa s.d 10 Des</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.500.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 10: Kamar B-05 (Kosong · Siap Huni) -->
+            <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-05">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar B-05">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar B-05</span>
+                  <span class="status-badge badge-brand">Kosong · Siap Huni</span>
+                </div>
+                <div class="room-sub-specs">Lantai 2 · Standar (Kasur, Lemari, Meja)</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.500.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 11: Kamar C-01 (Terisi - Lunas) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-01">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar C-01">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar C-01</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                </div>
+                <div class="room-sub-specs">Lantai 3 · Farah Diba · Sewa s.d 20 Mar</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.700.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 12: Kamar C-02 (Kosong · Siap Huni) -->
+            <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-02">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar C-02">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar C-02</span>
+                  <span class="status-badge badge-brand">Kosong · Siap Huni</span>
+                </div>
+                <div class="room-sub-specs">Lantai 3 · Deluxe Corner (4.5×5m)</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.900.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 13: Kamar C-03 (Terisi - Lunas) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-03">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar C-03">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar C-03</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                </div>
+                <div class="room-sub-specs">Lantai 3 · Fajar Nugraha · Sewa s.d 12 Mei</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.400.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 14: Kamar C-04 (Terisi - Lunas) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-04">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=700&q=80" alt="Kamar C-04">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar C-04</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                </div>
+                <div class="room-sub-specs">Lantai 3 · Mega Lestari · Sewa s.d 5 Agu</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.350.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit 15: Kamar C-05 (Terisi - Lunas) -->
+            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-05">
+              <div class="room-thumb-area">
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar C-05">
+                <div class="room-float-arrow">
+                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                </div>
+              </div>
+              <div class="room-unit-body">
+                <div class="room-header-row">
+                  <span class="room-name-text">Kamar C-05</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                </div>
+                <div class="room-sub-specs">Lantai 3 · Aditya Pratama · Sewa s.d 31 Okt</div>
+                <div class="room-price-row">
+                  <span class="room-price-val">Rp 1.350.000</span>
+                  <span class="room-price-unit">/bln</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empty State when filter/search returns no matches (Keeps Card Height 100% Stable) -->
+            <div class="room-empty-search" id="roomEmptySearch">
+              <i data-lucide="search-x" style="width: 32px; height: 32px; color: #94A3B8; stroke-width: 1.5;"></i>
+              <p>Tidak ada unit kamar yang cocok</p>
+              <span>Coba nomor kamar lain (misal: A-01, B-03, C-05) atau nama penyewa</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDEBAR COLUMN (~32%) -->
+      <div class="col-sidebar-flow">
+        
+        <!-- CARD 1: BUILDING CONDITION (Estify Maintenance Pattern) -->
+        <div class="sidebar-card-box card-condition">
+          <div class="card-top-header" style="margin-bottom: 22px;">
+            <h2 class="card-title-text">Kondisi Properti</h2>
+            <button class="pill-arrow-btn" onclick="RumaUI.showToast('Menu opsi status perawatan')" title="Opsi">
+              <i data-lucide="more-vertical" style="width: 15px; height: 15px;"></i>
+            </button>
+          </div>
+
+          <div class="condition-progress-group">
+            
+            <!-- Item 1: Sedang Dikerjakan -->
+            <div class="condition-progress-item">
+              <div class="condition-meta-row">
+                <span class="condition-label">Dalam Pengerjaan</span>
+                <span class="condition-count">2</span>
+              </div>
+              <div class="progress-bar-thick">
+                <div class="progress-fill-orange" style="width: 68%;"></div>
+              </div>
+            </div>
+
+            <!-- Item 2: Menunggu Penugasan -->
+            <div class="condition-progress-item">
+              <div class="condition-meta-row">
+                <span class="condition-label">Menunggu Penugasan</span>
+                <span class="condition-count">1</span>
+              </div>
+              <div class="progress-bar-thick">
+                <div class="progress-fill-orange" style="width: 35%;"></div>
+              </div>
+            </div>
+
+            <!-- Item 3: Laporan Baru Masuk -->
+            <div class="condition-progress-item">
+              <div class="condition-meta-row">
+                <span class="condition-label">Laporan Baru Masuk</span>
+                <span class="condition-count">1</span>
+              </div>
+              <div class="progress-bar-thick">
+                <div class="progress-fill-orange" style="width: 25%;"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <a href="WF-08-tiket.html" class="btn-maintenance-full">
+            <span>Detail Tiket Kerusakan</span>
+            <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </a>
+        </div>
+
+        <!-- CARD 2: RECENT OPERATIONAL ACTIVITIES (Estify Activity Log Pattern · 100% In-Scope MVP) -->
+        <div class="sidebar-card-box card-activity">
+          <div class="card-top-header" style="margin-bottom: 14px;">
+            <h2 class="card-title-text">Aktivitas Terkini</h2>
+            <div class="pill-dropdown-trigger" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Filter periode aktivitas')">
+              <span>Hari ini</span>
+              <i data-lucide="chevron-down" style="width: 12px; height: 12px;"></i>
+            </div>
+          </div>
+
+          <div class="tenant-message-list">
+            
+            <!-- Activity 1: Pembayaran Masuk (Perlu Verifikasi) -->
+            <div class="tenant-message-row" onclick="window.location.href='WF-06-pembayaran.html'" title="Verifikasi Pembayaran">
+              <div class="tenant-avatar-circle">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Budi Santoso">
+              </div>
+              <div class="tenant-msg-content">
+                <div class="tenant-msg-name">Budi Santoso (A-04)</div>
+                <div class="tenant-msg-snippet">Transfer sewa Rp 1.500.000 · Perlu Verifikasi</div>
+              </div>
+              <div class="tenant-msg-meta">
+                <span class="msg-unread-dot" title="Perlu Tindakan"></span>
+                <span class="msg-timestamp">22 mnt</span>
+              </div>
+            </div>
+
+            <!-- Activity 2: Tiket Kerusakan Baru -->
+            <div class="tenant-message-row" onclick="window.location.href='WF-08-tiket.html'" title="Lihat Tiket">
+              <div class="tenant-avatar-circle">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Siti Aminah">
+              </div>
+              <div class="tenant-msg-content">
+                <div class="tenant-msg-name">Siti Aminah (B-02)</div>
+                <div class="tenant-msg-snippet">Tiket baru: Pipa wastafel kamar bocor</div>
+              </div>
+              <div class="tenant-msg-meta">
+                <span class="msg-timestamp">1 jam</span>
+              </div>
+            </div>
+
+            <!-- Activity 3: Catat Pengeluaran Operasional Staf -->
+            <div class="tenant-message-row" onclick="window.location.href='WF-06-pembayaran.html'" title="Lihat Pengeluaran">
+              <div class="tenant-avatar-circle">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="Rini Setiawati">
+              </div>
+              <div class="tenant-msg-content">
+                <div class="tenant-msg-name">Rini Setiawati (Staf)</div>
+                <div class="tenant-msg-snippet">Catat belanja token pompa air Rp 150.000</div>
+              </div>
+              <div class="tenant-msg-meta">
+                <span class="msg-timestamp">3 jam</span>
+              </div>
+            </div>
+
+            <!-- Activity 4: Jatuh Tempo Kontrak Sewa -->
+            <div class="tenant-message-row" onclick="window.location.href='WF-05-tagihan.html'" title="Lihat Tagihan">
+              <div class="tenant-avatar-circle">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Dimas Prasetyo">
+              </div>
+              <div class="tenant-msg-content">
+                <div class="tenant-msg-name">Dimas Prasetyo (A-02)</div>
+                <div class="tenant-msg-snippet">Tagihan sewa jatuh tempo dalam 3 hari</div>
+              </div>
+              <div class="tenant-msg-meta">
+                <span class="msg-timestamp">Kemarin</span>
+              </div>
+            </div>
+
+          </div>
+
+          <a href="WF-04-penghuni.html" class="activity-view-all-link">
+            <span>Lihat Semua Aktivitas</span>
+            <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </a>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('dashboard', 'owner');
+    lucide.createIcons();
+
+    // ══════════════════════════════════════════════════════════════
+    // INFINITE LOOPING ROOM CAROUSEL ENGINE (Estify Smooth Flow)
+    // ══════════════════════════════════════════════════════════════
+    const roomCarousel = document.getElementById('quickRoomList');
+    let singleSetWidth = 0;
+    let isLoopingReset = false;
+    let isCarouselCloned = false;
+
+    function initInfiniteCarousel() {
+      if (!roomCarousel || isCarouselCloned) return;
+      const originalCards = Array.from(roomCarousel.querySelectorAll('.room-unit-item'));
+      if (originalCards.length === 0) return;
+
+      originalCards.forEach(c => c.setAttribute('data-original', 'true'));
+      const emptyEl = document.getElementById('roomEmptySearch');
+
+      // Append 1 clone set at the end for smooth forward wrap
+      originalCards.forEach(card => {
+        const clone = card.cloneNode(true);
+        clone.classList.add('carousel-clone');
+        clone.removeAttribute('data-original');
+        if (emptyEl) {
+          roomCarousel.insertBefore(clone, emptyEl);
+        } else {
+          roomCarousel.appendChild(clone);
+        }
+      });
+
+      // Prepend 1 clone set at start for smooth backward wrap
+      originalCards.slice().reverse().forEach(card => {
+        const clone = card.cloneNode(true);
+        clone.classList.add('carousel-clone');
+        clone.removeAttribute('data-original');
+        roomCarousel.insertBefore(clone, roomCarousel.firstChild);
+      });
+
+      isCarouselCloned = true;
+
+      // Calculate set width and position at center set (Originals)
+      requestAnimationFrame(() => {
+        measureAndSetInitialScroll();
+        lucide.createIcons();
+      });
+    }
+
+    function measureAndSetInitialScroll() {
+      if (!roomCarousel) return;
+      const allCards = roomCarousel.querySelectorAll('.room-unit-item');
+      if (allCards.length < 45) return;
+      
+      const card0 = allCards[0];
+      const card15 = allCards[15];
+      singleSetWidth = card15.offsetLeft - card0.offsetLeft;
+
+      // Position quietly at the original set without scrolling animation
+      roomCarousel.style.scrollBehavior = 'auto';
+      roomCarousel.scrollLeft = singleSetWidth;
+      roomCarousel.style.scrollBehavior = 'smooth';
+    }
+
+    if (roomCarousel) {
+      // Seamless wrap-around listener
+      roomCarousel.addEventListener('scroll', () => {
+        if (isLoopingReset || singleSetWidth <= 0) return;
+        const currentScroll = roomCarousel.scrollLeft;
+
+        // When scrolling forward past the originals into the end clone set, jump back to originals
+        if (currentScroll >= singleSetWidth * 2) {
+          isLoopingReset = true;
+          roomCarousel.style.scrollBehavior = 'auto';
+          roomCarousel.style.scrollSnapType = 'none';
+          roomCarousel.scrollLeft = currentScroll - singleSetWidth;
+          requestAnimationFrame(() => {
+            roomCarousel.style.scrollBehavior = 'smooth';
+            roomCarousel.style.scrollSnapType = 'x mandatory';
+            isLoopingReset = false;
+          });
+        }
+        // When scrolling backward before the originals into the start clone set, jump forward to originals
+        else if (currentScroll <= singleSetWidth * 0.1) {
+          isLoopingReset = true;
+          roomCarousel.style.scrollBehavior = 'auto';
+          roomCarousel.style.scrollSnapType = 'none';
+          roomCarousel.scrollLeft = currentScroll + singleSetWidth;
+          requestAnimationFrame(() => {
+            roomCarousel.style.scrollBehavior = 'smooth';
+            roomCarousel.style.scrollSnapType = 'x mandatory';
+            isLoopingReset = false;
+          });
+        }
+      });
+
+      // Mouse wheel horizontal translation
+      roomCarousel.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0 && !e.shiftKey) {
+          e.preventDefault();
+          roomCarousel.scrollBy({ left: e.deltaY * 1.3, behavior: 'auto' });
+        }
+      }, { passive: false });
+    }
+
+    function scrollRoomCarousel(direction) {
+      if (!roomCarousel) return;
+      const card = roomCarousel.querySelector('.room-unit-item');
+      const scrollAmount = card ? (card.offsetWidth + 14) * 3 : 700;
+      roomCarousel.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+
+    function filterQuickRooms(query) {
+      const q = query.toLowerCase().trim();
+      const clones = roomCarousel ? roomCarousel.querySelectorAll('.carousel-clone') : [];
+      
+      if (q.length > 0) {
+        // Hide clones during active text filter so only unique 15 rooms are matched
+        clones.forEach(c => c.style.display = 'none');
+        let matchCount = 0;
+        document.querySelectorAll('#quickRoomList .room-unit-item[data-original="true"]').forEach(card => {
+          const text = card.textContent.toLowerCase();
+          const isMatch = text.includes(q);
+          card.style.display = isMatch ? 'flex' : 'none';
+          if (isMatch) matchCount++;
+        });
+
+        const emptyEl = document.getElementById('roomEmptySearch');
+        if (emptyEl) {
+          emptyEl.style.display = matchCount === 0 ? 'flex' : 'none';
+          if (matchCount === 0) lucide.createIcons();
+        }
+      } else {
+        // Restore infinite carousel view
+        clones.forEach(c => c.style.display = 'flex');
+        document.querySelectorAll('#quickRoomList .room-unit-item').forEach(card => {
+          card.style.display = 'flex';
+        });
+        const emptyEl = document.getElementById('roomEmptySearch');
+        if (emptyEl) emptyEl.style.display = 'none';
+        measureAndSetInitialScroll();
+      }
+    }
+
+    // Initialize infinite carousel on DOM ready
+    window.addEventListener('DOMContentLoaded', initInfiniteCarousel);
+    // Fallback if DOMContentLoaded has already fired
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(initInfiniteCarousel, 50);
+    }
+  </script>
+</body>
+</html>

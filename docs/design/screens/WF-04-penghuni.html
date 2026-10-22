@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Data Penghuni & Kontrak</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+
+
+
+
+    /* TABLE & DRAWER SPECIFIC */
+
+    /* TABLE */
+    .table-container {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead th {
+      background: #FAFAFA;
+      padding: 14px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #ECEEF2;
+    }
+
+    tbody td {
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #111111;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: middle;
+      transition: background 100ms;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #F9FAFB; cursor: pointer; }
+    tbody tr.selected td { background: #FFF7ED; }
+
+    .tenant-col-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tenant-avatar-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #FF7A00;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tenant-name-text {
+      font-weight: 600;
+      color: #111111;
+      line-height: 1.3;
+    }
+
+    .tenant-sub-text {
+      font-size: 11px;
+      color: #6B7280;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-success { background: #DCFCE7; color: #16A34A; }
+    .badge-warning { background: #FEF3C7; color: #D97706; }
+    .badge-danger { background: #FEE2E2; color: #EF4444; }
+
+    .action-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: #FF7A00;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .action-link:hover { color: #E66E00; }
+
+    /* RIGHT DRAWER: SCR-06 / SCR-08 */
+    .detail-drawer {
+      width: 360px;
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-self: flex-start;
+      position: sticky;
+      top: 96px;
+    }
+
+    .drawer-profile-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .drawer-avatar-lg {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #FF7A00;
+      color: #FFFFFF;
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.25);
+    }
+
+    .drawer-name-lg {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111111;
+    }
+
+    .drawer-room-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #FFF7ED;
+      color: #FF7A00;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-top: 6px;
+    }
+
+    .info-list-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .info-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .info-label { color: #6B7280; }
+    .info-val { font-weight: 600; color: #111111; }
+
+    .contract-highlight-box {
+      background: #F7F8FA;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contract-box-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-drawer-full {
+      width: 100%;
+      padding: 11px;
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 150ms ease;
+    }
+
+    .btn-black-solid { background: #111111; color: #FFFFFF; border: none; }
+    .btn-black-solid:hover { background: #222222; }
+    .btn-white-outline { background: #FFFFFF; border: 1.5px solid #ECEEF2; color: #4B5563; }
+    .btn-white-outline:hover { border-color: #111111; color: #111111; }
+
+    .wf-badge {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: #6B7280;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wf-badge">SCR-05 s.d. SCR-08 · Penghuni & Siklus Kontrak</div>
+
+  <!-- TOPBAR -->
+  <header class="topbar" id="mainTopbar">
+    <!-- Rendered dynamically by components.js -->
+  </header>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page-layout">
+    
+    <div class="content-area">
+
+      <!-- Summary chips -->
+      <div class="summary-chips-row">
+        <div class="chip-card">
+          <span class="chip-dot" style="background: #111111;"></span>
+          <span class="chip-label">Penghuni Aktif</span>
+          <span class="chip-count">11 Jiwa</span>
+        </div>
+        <div class="chip-card">
+          <span class="chip-dot" style="background: #D97706;"></span>
+          <span class="chip-label">Kontrak Habis Bln Ini</span>
+          <span class="chip-count" style="color: #D97706;">1 Orang</span>
+        </div>
+        <div class="chip-card">
+          <span class="chip-dot" style="background: #16A34A;"></span>
+          <span class="chip-label">Tagihan Lunas Okt</span>
+          <span class="chip-count" style="color: #16A34A;">7 / 11</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-card">
+        <div class="filter-group-left">
+          <div class="search-input-pill">
+            <i data-lucide="search" style="width: 14px; height: 14px; color: #9CA3AF;"></i>
+            <input type="text" placeholder="Cari nama penghuni atau nomor kamar...">
+          </div>
+
+          <div class="popover-filter-btn">
+            <span>Status Kontrak: Semua</span>
+            <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+          </div>
+        </div>
+
+        <button class="btn-add-primary" onclick="alert('Dialog tambah penghuni baru')">
+          <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
+          Tambah Penghuni
+        </button>
+      </div>
+
+      <!-- TENANT TABLE -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Penyewa</th>
+              <th>Kamar</th>
+              <th>Mulai Sewa</th>
+              <th>Selesai Kontrak</th>
+              <th>Status Tagihan</th>
+              <th>Status Sewa</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Row 1 (Selected) -->
+            <tr class="selected" onclick="selectTenant('Siti Aminah', 'siti.aminah@gmail.com', 'A-01', '0812-3456-7890', '1 Mar 2025', '28 Feb 2027', 'Rp 1.200.000', 'Lunas')">
+              <td>
+                <div class="tenant-col-user">
+                  <div class="tenant-avatar-circle">SA</div>
+                  <div>
+                    <div class="tenant-name-text">Siti Aminah</div>
+                    <div class="tenant-sub-text">siti.aminah@gmail.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><strong>Kamar A-01</strong></td>
+              <td>1 Mar 2025</td>
+              <td>28 Feb 2027</td>
+              <td><span class="status-badge badge-success"><i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas</span></td>
+              <td><span class="status-badge badge-success">Aktif</span></td>
+              <td><a href="WF-05-tagihan.html" class="action-link">Tagihan <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr onclick="selectTenant('Rina Marliana', 'rina.m@gmail.com', 'A-02', '0813-8877-6655', '5 Jan 2026', '31 Okt 2026', 'Rp 1.200.000', 'Jatuh Tempo')">
+              <td>
+                <div class="tenant-col-user">
+                  <div class="tenant-avatar-circle" style="background: #4B5563;">RM</div>
+                  <div>
+                    <div class="tenant-name-text">Rina Marliana</div>
+                    <div class="tenant-sub-text">rina.m@gmail.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><strong>Kamar A-02</strong></td>
+              <td>5 Jan 2026</td>
+              <td><span style="color: #D97706; font-weight: 600;">31 Okt 2026 (9 hari)</span></td>
+              <td><span class="status-badge badge-danger"><i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i> Terlambat</span></td>
+              <td><span class="status-badge badge-warning">Habis Bulan Ini</span></td>
+              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 3 -->
+            <tr onclick="selectTenant('Yuni Kartika', 'yuni.k@gmail.com', 'A-04', '0811-2244-6688', '10 Jun 2025', '10 Jun 2027', 'Rp 1.500.000', 'Lunas')">
+              <td>
+                <div class="tenant-col-user">
+                  <div class="tenant-avatar-circle" style="background: #16A34A;">YK</div>
+                  <div>
+                    <div class="tenant-name-text">Yuni Kartika</div>
+                    <div class="tenant-sub-text">yuni.k@gmail.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><strong>Kamar A-04</strong></td>
+              <td>10 Jun 2025</td>
+              <td>10 Jun 2027</td>
+              <td><span class="status-badge badge-success"><i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas</span></td>
+              <td><span class="status-badge badge-success">Aktif</span></td>
+              <td><a href="WF-05-tagihan.html" class="action-link">Tagihan <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 4 -->
+            <tr onclick="selectTenant('Sri Wahyuni', 'sri.w@gmail.com', 'A-05', '0857-1122-3344', '1 Feb 2026', '31 Jan 2027', 'Rp 1.100.000', 'Jatuh Tempo')">
+              <td>
+                <div class="tenant-col-user">
+                  <div class="tenant-avatar-circle" style="background: #7C3AED;">SW</div>
+                  <div>
+                    <div class="tenant-name-text">Sri Wahyuni</div>
+                    <div class="tenant-sub-text">sri.w@gmail.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><strong>Kamar A-05</strong></td>
+              <td>1 Feb 2026</td>
+              <td>31 Jan 2027</td>
+              <td><span class="status-badge badge-warning"><i data-lucide="clock" style="width: 11px; height: 11px;"></i> Jatuh Tempo</span></td>
+              <td><span class="status-badge badge-success">Aktif</span></td>
+              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 5 -->
+            <tr onclick="selectTenant('Dodi Firmansyah', 'dodi.f@gmail.com', 'B-01', '0812-9988-7766', '3 Okt 2026', '3 Okt 2027', 'Rp 950.000', 'Terlambat')">
+              <td>
+                <div class="tenant-col-user">
+                  <div class="tenant-avatar-circle" style="background: #0EA5E9;">DF</div>
+                  <div>
+                    <div class="tenant-name-text">Dodi Firmansyah</div>
+                    <div class="tenant-sub-text">dodi.f@gmail.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><strong>Kamar B-01</strong></td>
+              <td>3 Okt 2026</td>
+              <td>3 Okt 2027</td>
+              <td><span class="status-badge badge-danger"><i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i> Terlambat</span></td>
+              <td><span class="status-badge badge-success">Aktif</span></td>
+              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 6 -->
+            <tr onclick="selectTenant('Eko Prasetyo', 'eko.p@gmail.com', 'B-03', '0813-2211-4433', '20 Jul 2026', '20 Jul 2027', 'Rp 950.000', 'Lunas')">
+              <td>
+                <div class="tenant-col-user">
+                  <div class="tenant-avatar-circle" style="background: #059669;">EP</div>
+                  <div>
+                    <div class="tenant-name-text">Eko Prasetyo</div>
+                    <div class="tenant-sub-text">eko.p@gmail.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><strong>Kamar B-03</strong></td>
+              <td>20 Jul 2026</td>
+              <td>20 Jul 2027</td>
+              <td><span class="status-badge badge-success"><i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas</span></td>
+              <td><span class="status-badge badge-success">Aktif</span></td>
+              <td><a href="WF-08-tiket.html" class="action-link">1 Tiket <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- RIGHT DRAWER: SCR-06 / SCR-08 DETAIL PENGHUNI & KONTRAK -->
+    <aside class="detail-drawer" id="tenantDrawer">
+      <div class="drawer-profile-top">
+        <div class="drawer-avatar-lg" id="dAvatar">SA</div>
+        <h3 class="drawer-name-lg" id="dName">Siti Aminah</h3>
+        <span class="drawer-room-pill" id="dRoom">Kamar A-01 · Lantai 1</span>
+      </div>
+
+      <div class="info-list-group">
+        <div class="info-item-row">
+          <span class="info-label">Nomor WhatsApp</span>
+          <span class="info-val" id="dPhone">0812-3456-7890</span>
+        </div>
+        <div class="info-item-row">
+          <span class="info-label">Alamat Email</span>
+          <span class="info-val" id="dEmail">siti.aminah@gmail.com</span>
+        </div>
+        <div class="info-item-row">
+          <span class="info-label">Profesi</span>
+          <span class="info-val">Karyawan Swasta</span>
+        </div>
+        <div class="info-item-row">
+          <span class="info-label">Kontak Darurat</span>
+          <span class="info-val">Bpk. H. Rahmat (Ayah)</span>
+        </div>
+      </div>
+
+      <!-- Contract Info Box (SCR-08) -->
+      <div class="contract-highlight-box">
+        <span class="contract-box-title">Siklus Kontrak Sewa</span>
+        <div class="info-item-row">
+          <span class="info-label">Mulai Sewa:</span>
+          <strong id="dStart">1 Mar 2025</strong>
+        </div>
+        <div class="info-item-row">
+          <span class="info-label">Berakhir:</span>
+          <strong id="dEnd" style="color: #FF7A00;">28 Feb 2027</strong>
+        </div>
+        <div class="info-item-row">
+          <span class="info-label">Tarif Bulanan:</span>
+          <strong id="dPrice">Rp 1.200.000</strong>
+        </div>
+        <div class="info-item-row">
+          <span class="info-label">Perpanjangan:</span>
+          <span style="color: #16A34A; font-weight: 600;">Otomatis Tahunan</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <a href="WF-05-tagihan.html" class="btn-drawer-full btn-black-solid">
+          <i data-lucide="receipt" style="width: 14px; height: 14px;"></i>
+          Kelola Tagihan Penghuni
+        </a>
+        <a href="WF-06-pembayaran.html" class="btn-drawer-full btn-white-outline">
+          <i data-lucide="credit-card" style="width: 14px; height: 14px;"></i>
+          Catat Pembayaran Masuk
+        </a>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('penghuni');
+
+    function selectTenant(name, email, room, phone, start, end, price, status) {
+      document.querySelectorAll('tbody tr').forEach(r => r.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+
+      document.getElementById('dName').textContent = name;
+      document.getElementById('dEmail').textContent = email;
+      document.getElementById('dRoom').textContent = 'Kamar ' + room;
+      document.getElementById('dPhone').textContent = phone;
+      document.getElementById('dStart').textContent = start;
+      document.getElementById('dEnd').textContent = end;
+      document.getElementById('dPrice').textContent = price;
+
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2);
+      document.getElementById('dAvatar').textContent = initials;
+    }
+  </script>
+</body>
+</html>

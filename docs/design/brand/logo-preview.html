@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RumaKost — Logo Konsep: Kunci Rumah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #F1F5F9;
+      color: #1A1A1A;
+      padding: 48px 40px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .page-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: #94A3B8; margin-bottom: 8px;
+    }
+    .page-title {
+      font-size: 28px; font-weight: 700; color: #1A1A1A;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .page-title em { font-style: normal; color: #F97316; }
+    .page-sub {
+      font-size: 14px; color: #64748B; margin-bottom: 48px;
+    }
+
+    /* ── Philosophy card ── */
+    .philosophy {
+      background: white;
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.04);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .philosophy-text {}
+    .phil-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #FFF7ED; color: #EA580C;
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 12px; border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    .phil-quote {
+      font-size: 18px; font-weight: 600; color: #1A1A1A;
+      line-height: 1.5; margin-bottom: 16px;
+    }
+    .phil-quote em { font-style: normal; color: #F97316; }
+    .phil-body {
+      font-size: 13px; color: #64748B; line-height: 1.8;
+    }
+    .phil-body strong { color: #1A1A1A; font-weight: 600; }
+
+    .meaning-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .meaning-item {
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .meaning-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #F97316; flex-shrink: 0; margin-top: 5px;
+    }
+    .meaning-text { font-size: 13px; color: #475569; line-height: 1.6; }
+    .meaning-text strong { color: #1A1A1A; }
+
+    /* ── Logo display ── */
+    .logo-display { display: flex; flex-direction: column; gap: 16px; }
+    .preview-bg {
+      border-radius: 14px; padding: 28px 32px;
+      display: flex; align-items: center; gap: 0;
+    }
+    .bg-white  { background: #fff; border: 1px solid #E2E8F0; }
+    .bg-page   { background: #F8FAFC; border: 1px solid #E2E8F0; }
+    .bg-dark   { background: #111827; }
+    .bg-orange { background: #F97316; }
+    .bg-label {
+      font-size: 11px; color: #CBD5E1; margin-left: auto;
+      white-space: nowrap; padding-left: 16px;
+    }
+    .bg-label.dark { color: #4B5563; }
+
+    /* Inline HTML logo render */
+    .logo-wrap { display: inline-flex; align-items: center; gap: 12px; }
+    .icon-box {
+      width: 52px; height: 52px; border-radius: 13px;
+      background: #F97316; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .icon-box.on-dark { background: #F97316; } /* keep orange on dark */
+    .wordmark { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -.4px; line-height: 1; }
+    .w-dark  { color: #1A1A1A; }
+    .w-orange { color: #F97316; }
+    .w-white { color: #ffffff; }
+    .w-white-fade { color: rgba(255,255,255,.85); }
+
+    /* The key icon SVG snippet shared across sizes */
+    .key-icon { display: contents; }
+
+    /* ── Size showcase ── */
+    .sizes-section {
+      background: white; border-radius: 20px;
+      padding: 32px 36px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.04);
+      margin-bottom: 32px;
+    }
+    .section-label {
+      font-size: 11px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: #94A3B8; margin-bottom: 20px;
+    }
+    .size-row { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+    .size-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .size-item span { font-size: 11px; color: #CBD5E1; font-weight: 500; }
+    .size-bg { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px; }
+
+    /* ── Color + type ── */
+    .design-system {
+      background: white; border-radius: 20px;
+      padding: 32px 36px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.04);
+    }
+    .ds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 20px; }
+    .swatch-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .swatch {
+      width: 64px; height: 64px; border-radius: 12px;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 8px;
+    }
+    .swatch-hex { font-size: 9px; font-weight: 700; color: white; opacity: .85; }
+    .swatch-name { font-size: 9px; color: white; opacity: .6; margin-top: 1px; }
+    .swatch.s-light .swatch-hex,
+    .swatch.s-light .swatch-name { color: #94A3B8; opacity: 1; }
+    .swatch.s-light { border: 1px solid #E2E8F0; }
+
+    .type-samples { display: flex; flex-direction: column; gap: 4px; }
+    .type-row { display: flex; align-items: baseline; gap: 12px; }
+    .type-label { font-size: 11px; color: #94A3B8; width: 100px; flex-shrink: 0; }
+
+    @media (max-width: 680px) {
+      .philosophy { grid-template-columns: 1fr; }
+      .ds-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-label">RumaKost · Brand Identity · Logo Concept</div>
+  <h1 class="page-title">Konsep: <em>Kunci Rumah</em></h1>
+  <p class="page-sub">Satu ikon, dua makna — untuk aplikasi yang mengelola kepercayaan antara pemilik dan penghuni.</p>
+
+  <!-- PHILOSOPHY + LOGO SIDE BY SIDE -->
+  <div class="philosophy">
+
+    <div class="philosophy-text">
+      <div class="phil-tag">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Filosofi
+      </div>
+      <div class="phil-quote">
+        "Kepala kunci berbentuk rumah —<br>
+        karena yang kita kelola bukan<br>
+        sekadar properti, tapi tempat<br>
+        seseorang menyebut <em>pulang</em>."
+      </div>
+      <p class="phil-body">
+        Kunci bukan sekadar besi. Kunci adalah simbol <strong>kepercayaan</strong> —
+        pemilik mempercayakan propertinya, penghuni mempercayakan kenyamanannya.
+        RumaKost hadir untuk mengelola kepercayaan itu dengan tertib dan transparan.
+      </p>
+
+      <div class="meaning-list">
+        <div class="meaning-item">
+          <div class="meaning-dot"></div>
+          <div class="meaning-text">
+            <strong>Kepala kunci = rumah</strong> — dual reading yang cerdas:
+            baca sekilas sebagai kunci, perhatikan lebih dekat, temukan rumah di dalamnya.
+          </div>
+        </div>
+        <div class="meaning-item">
+          <div class="meaning-dot"></div>
+          <div class="meaning-text">
+            <strong>Lubang kunci bulat</strong> — transparansi dan keterbukaan
+            dalam pencatatan; tidak ada yang tersembunyi.
+          </div>
+        </div>
+        <div class="meaning-item">
+          <div class="meaning-dot"></div>
+          <div class="meaning-text">
+            <strong>Gigi kunci (teeth)</strong> — detail operasional yang presisi;
+            setiap tagihan, pembayaran, dan tiket dikelola dengan akurat.
+          </div>
+        </div>
+        <div class="meaning-item">
+          <div class="meaning-dot"></div>
+          <div class="meaning-text">
+            <strong>Warna orange</strong> — hangat seperti rumah, energi seperti tindakan.
+            Bukan properti dingin, tapi rumah yang hidup.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo previews -->
+    <div class="logo-display">
+
+      <!-- White -->
+      <div class="preview-bg bg-white">
+        <div class="logo-wrap">
+          <div class="icon-box">
+            <svg width="34" height="34" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+          <div class="wordmark"><span class="w-dark">Ruma</span><span class="w-orange">Kost</span></div>
+        </div>
+        <div class="bg-label dark">White card</div>
+      </div>
+
+      <!-- Page -->
+      <div class="preview-bg bg-page">
+        <div class="logo-wrap">
+          <div class="icon-box">
+            <svg width="34" height="34" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+          <div class="wordmark"><span class="w-dark">Ruma</span><span class="w-orange">Kost</span></div>
+        </div>
+        <div class="bg-label dark">App background</div>
+      </div>
+
+      <!-- Dark -->
+      <div class="preview-bg bg-dark">
+        <div class="logo-wrap">
+          <div class="icon-box on-dark">
+            <svg width="34" height="34" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+          <div class="wordmark"><span class="w-white">Ruma</span><span class="w-orange">Kost</span></div>
+        </div>
+        <div class="bg-label">Dark nav</div>
+      </div>
+
+      <!-- Icon only -->
+      <div class="preview-bg bg-page" style="gap:12px; justify-content:center;">
+        <div class="icon-box" style="width:52px;height:52px">
+          <svg width="34" height="34" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+            <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+            <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+            <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+            <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+          </svg>
+        </div>
+        <span style="font-size:13px;color:#94A3B8">Ikon saja (favicon, app icon)</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SIZE SHOWCASE -->
+  <div class="sizes-section">
+    <div class="section-label">Skalabilitas — semua ukuran</div>
+    <div class="size-row">
+
+      <div class="size-item">
+        <div class="size-bg">
+          <div style="width:80px;height:80px;border-radius:20px;background:#F97316;display:flex;align-items:center;justify-content:center">
+            <svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+        </div>
+        <span>80px</span>
+      </div>
+
+      <div class="size-item">
+        <div class="size-bg">
+          <div style="width:64px;height:64px;border-radius:16px;background:#F97316;display:flex;align-items:center;justify-content:center">
+            <svg width="42" height="42" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+        </div>
+        <span>64px</span>
+      </div>
+
+      <div class="size-item">
+        <div class="size-bg">
+          <div style="width:48px;height:48px;border-radius:12px;background:#F97316;display:flex;align-items:center;justify-content:center">
+            <svg width="32" height="32" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+        </div>
+        <span>48px</span>
+      </div>
+
+      <div class="size-item">
+        <div class="size-bg">
+          <div style="width:32px;height:32px;border-radius:8px;background:#F97316;display:flex;align-items:center;justify-content:center">
+            <svg width="20" height="20" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+        </div>
+        <span>32px</span>
+      </div>
+
+      <div class="size-item">
+        <div class="size-bg">
+          <div style="width:20px;height:20px;border-radius:5px;background:#F97316;display:flex;align-items:center;justify-content:center">
+            <svg width="13" height="13" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+        </div>
+        <span>20px</span>
+      </div>
+
+      <div class="size-item">
+        <div class="size-bg">
+          <div style="width:16px;height:16px;border-radius:4px;background:#F97316;display:flex;align-items:center;justify-content:center">
+            <svg width="10" height="10" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="14,32 14,16 20,10 26,5 32,10 38,16 38,32" fill="white"/>
+              <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+              <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+              <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+              <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+            </svg>
+          </div>
+        </div>
+        <span>16px</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DESIGN SYSTEM -->
+  <div class="design-system">
+    <div class="section-label">Design System — Warna &amp; Tipografi</div>
+    <div class="ds-grid">
+
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#64748B;margin-bottom:12px">Palet Warna</div>
+        <div class="swatch-row">
+          <div class="swatch" style="background:#F97316">
+            <div class="swatch-hex">#F97316</div>
+            <div class="swatch-name">Primary</div>
+          </div>
+          <div class="swatch" style="background:#EA580C">
+            <div class="swatch-hex">#EA580C</div>
+            <div class="swatch-name">Hover</div>
+          </div>
+          <div class="swatch" style="background:#1A1A1A">
+            <div class="swatch-hex">#1A1A1A</div>
+            <div class="swatch-name">Dark</div>
+          </div>
+          <div class="swatch s-light" style="background:#FFFFFF">
+            <div class="swatch-hex">#FFFFFF</div>
+            <div class="swatch-name">Surface</div>
+          </div>
+          <div class="swatch s-light" style="background:#F8FAFC">
+            <div class="swatch-hex">#F8FAFC</div>
+            <div class="swatch-name">BG</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#64748B;margin-bottom:12px">Tipografi — Poppins</div>
+        <div class="type-samples">
+          <div class="type-row">
+            <span class="type-label" style="font-size:10px">700 · 28px</span>
+            <span style="font-size:28px;font-weight:700;color:#1A1A1A;line-height:1">Ruma<span style="color:#F97316">Kost</span></span>
+          </div>
+          <div class="type-row">
+            <span class="type-label" style="font-size:10px">600 · 20px</span>
+            <span style="font-size:20px;font-weight:600;color:#1A1A1A">Dashboard Utama</span>
+          </div>
+          <div class="type-row">
+            <span class="type-label" style="font-size:10px">500 · 14px</span>
+            <span style="font-size:14px;font-weight:500;color:#334155">Status Tagihan &amp; Pembayaran</span>
+          </div>
+          <div class="type-row">
+            <span class="type-label" style="font-size:10px">400 · 13px</span>
+            <span style="font-size:13px;font-weight:400;color:#64748B">Keterangan dan metadata kamar</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

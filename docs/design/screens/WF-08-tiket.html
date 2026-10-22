@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Pemeliharaan & Tiket Kerusakan</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+
+
+    .nav-pill-container {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-pill {
+      font-size: 13px;
+      font-weight: 500;
+      color: #6B7280;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 150ms ease;
+    }
+
+    .nav-pill:hover { color: #111111; background: #F3F4F6; }
+    .nav-pill.active {
+      background: #111111;
+      color: #FFFFFF;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* TICKET CARDS LIST SPECIFIC */
+
+    /* TICKET CARDS LIST */
+    .tickets-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .ticket-card {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 20px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      cursor: pointer;
+      transition: all 150ms ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .ticket-card:hover {
+      border-color: #FF7A00;
+      box-shadow: 0 4px 16px rgba(255, 122, 0, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .ticket-card.selected {
+      border-color: #FF7A00;
+      background: #FFFDFB;
+      box-shadow: 0 4px 16px rgba(255, 122, 0, 0.12);
+    }
+
+    .ticket-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .ticket-photo-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #ECEEF2;
+      flex-shrink: 0;
+    }
+
+    .ticket-main-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .ticket-badges-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-urgency {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .urgency-high { background: #FEE2E2; color: #DC2626; }
+    .urgency-medium { background: #FEF3C7; color: #D97706; }
+    .urgency-low { background: #E0E7FF; color: #4338CA; }
+
+    .ticket-id {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6B7280;
+    }
+
+    .ticket-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111111;
+    }
+
+    .ticket-reporter {
+      font-size: 12px;
+      color: #6B7280;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ticket-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .ticket-progress-summary {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      min-width: 140px;
+    }
+
+    .progress-step-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: #FF7A00;
+    }
+
+    /* 5-SEGMENT MINI DASH INDICATOR (CMP-07) */
+    .mini-segment-bar {
+      display: flex;
+      gap: 4px;
+      width: 120px;
+    }
+
+    .mini-segment {
+      height: 4px;
+      flex: 1;
+      border-radius: 2px;
+      background: #E5E7EB;
+    }
+
+    .mini-segment.filled { background: #FF7A00; }
+
+    /* RIGHT DRAWER: SCR-15 DETAIL TIKET */
+    .detail-drawer {
+      width: 400px;
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-self: flex-start;
+      position: sticky;
+      top: 96px;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #F3F4F6;
+      padding-bottom: 16px;
+    }
+
+    /* ESTIFY 5-STEP DASH PROGRESS INDICATOR (CMP-07) */
+    .progress-timeline-box {
+      background: #F7F8FA;
+      border: 1px solid #ECEEF2;
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .segmented-bar-full {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .step-dash {
+      height: 6px;
+      flex: 1;
+      border-radius: 3px;
+      background: #E5E7EB;
+      transition: all 150ms ease;
+    }
+
+    .step-dash.active { background: #FF7A00; }
+
+    .step-labels-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #9CA3AF;
+      font-weight: 600;
+    }
+
+    .step-labels-row .active { color: #111111; font-weight: 700; }
+
+    /* DETAIL PHOTO */
+    .detail-photo-wrapper {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 160px;
+      background: #E5E7EB;
+    }
+
+    .detail-photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-photo-tag {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(17, 17, 17, 0.75);
+      color: #FFFFFF;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* TECHNICIAN CARD */
+    .tech-assignee-card {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tech-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tech-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #111111;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .btn-wa-direct {
+      background: #25D366;
+      color: #FFFFFF;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .drawer-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn-drawer-full {
+      width: 100%;
+      padding: 11px;
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 150ms ease;
+    }
+
+    .btn-black-solid { background: #111111; color: #FFFFFF; border: none; }
+    .btn-black-solid:hover { background: #222222; }
+    .btn-white-outline { background: #FFFFFF; border: 1.5px solid #ECEEF2; color: #4B5563; }
+    .btn-white-outline:hover { border-color: #111111; color: #111111; }
+
+    .wf-badge {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: #6B7280;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wf-badge">SCR-14 & SCR-15 · Tiket Kerusakan & Segmen Progres 5 Tahap</div>
+
+  <!-- TOPBAR -->
+  <header class="topbar" id="mainTopbar">
+    <!-- Rendered dynamically by components.js -->
+  </header>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page-layout">
+    
+    <!-- LEFT CONTENT: SCR-14 -->
+    <div class="content-area">
+
+      <!-- HEADER -->
+      <div class="page-header">
+        <div class="page-title-group">
+          <h1>Pusat Pemeliharaan & Tiket Kerusakan</h1>
+          <p>Pantau laporan komplain fasilitas kamar dan penugasan teknisi perbaikan.</p>
+        </div>
+        <button class="btn-pill btn-orange-primary" onclick="RumaUI.showToast('Dialog formulir laporan kerusakan dibuka')">
+          <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
+          Buat Tiket Baru
+        </button>
+      </div>
+
+      <!-- SUMMARY CHIPS -->
+      <div class="summary-chips-row">
+        <div class="chip-card">
+          <div class="chip-dot" style="background: #DC2626;"></div>
+          <div>
+            <div class="chip-label">Mendesak</div>
+            <div style="font-size: 11px; color: #9CA3AF;">Segera ditindak</div>
+          </div>
+          <div class="chip-count" style="color: #DC2626;">1</div>
+        </div>
+
+        <div class="chip-card">
+          <div class="chip-dot" style="background: #FF7A00;"></div>
+          <div>
+            <div class="chip-label">Sedang Dikerjakan</div>
+            <div style="font-size: 11px; color: #9CA3AF;">Teknisi di lokasi</div>
+          </div>
+          <div class="chip-count" style="color: #FF7A00;">2</div>
+        </div>
+
+        <div class="chip-card">
+          <div class="chip-dot" style="background: #F59E0B;"></div>
+          <div>
+            <div class="chip-label">Menunggu Teknisi</div>
+            <div style="font-size: 11px; color: #9CA3AF;">Belum ditugaskan</div>
+          </div>
+          <div class="chip-count">1</div>
+        </div>
+
+        <div class="chip-card">
+          <div class="chip-dot" style="background: #16A34A;"></div>
+          <div>
+            <div class="chip-label">Selesai Bulan Ini</div>
+            <div style="font-size: 11px; color: #9CA3AF;">Oktober 2026</div>
+          </div>
+          <div class="chip-count">8</div>
+        </div>
+      </div>
+
+      <!-- FILTER CONTROLS -->
+      <div class="controls-card">
+        <div class="filter-tabs">
+          <button class="filter-pill-btn active">Semua (4)</button>
+          <button class="filter-pill-btn">Mendesak (1)</button>
+          <button class="filter-pill-btn">Sedang Dikerjakan (2)</button>
+          <button class="filter-pill-btn">Menunggu (1)</button>
+          <button class="filter-pill-btn">Selesai (8)</button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button class="filter-pill-btn"><i data-lucide="filter" style="width: 13px; height: 13px; display: inline;"></i> Filter Kategori</button>
+        </div>
+      </div>
+
+      <!-- TICKET LIST -->
+      <div class="tickets-container">
+
+        <!-- Ticket 1 (Selected): AC Bocor Menetes -->
+        <div class="ticket-card selected" onclick="selectTicket(1)">
+          <div class="ticket-left">
+            <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=200&auto=format&fit=crop&q=80" alt="Kerusakan AC" class="ticket-photo-thumb">
+            <div class="ticket-main-info">
+              <div class="ticket-badges-row">
+                <span class="badge-urgency urgency-high"><i data-lucide="alert-triangle" style="width: 12px; height: 12px;"></i> Mendesak</span>
+                <span class="ticket-id">TKT-202610-04</span>
+                <span style="font-size: 11px; color: #9CA3AF;">· Dilaporkan 2 jam lalu</span>
+              </div>
+              <div class="ticket-title">AC Kamar Menetes Air Deras Membasahi Kasur</div>
+              <div class="ticket-reporter">
+                <i data-lucide="user" style="width: 13px; height: 13px;"></i>
+                Reza Pratama · <strong>Kamar B-03 (Lt. 2)</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-right">
+            <div class="ticket-progress-summary">
+              <div class="progress-step-text">Tahap 3: Dikerjakan</div>
+              <div class="mini-segment-bar">
+                <div class="mini-segment filled"></div>
+                <div class="mini-segment filled"></div>
+                <div class="mini-segment filled"></div>
+                <div class="mini-segment"></div>
+                <div class="mini-segment"></div>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" style="color: #9CA3AF; width: 18px; height: 18px;"></i>
+          </div>
+        </div>
+
+        <!-- Ticket 2: Keran Wastafel Patah -->
+        <div class="ticket-card" onclick="selectTicket(2)">
+          <div class="ticket-left">
+            <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=200&auto=format&fit=crop&q=80" alt="Keran Patah" class="ticket-photo-thumb">
+            <div class="ticket-main-info">
+              <div class="ticket-badges-row">
+                <span class="badge-urgency urgency-medium"><i data-lucide="wrench" style="width: 12px; height: 12px;"></i> Normal</span>
+                <span class="ticket-id">TKT-202610-03</span>
+                <span style="font-size: 11px; color: #9CA3AF;">· Dilaporkan kemarin</span>
+              </div>
+              <div class="ticket-title">Kran Wastafel Kamar Mandi Patah & Air Merembes</div>
+              <div class="ticket-reporter">
+                <i data-lucide="user" style="width: 13px; height: 13px;"></i>
+                Rina Marliana · <strong>Kamar A-01 (Lt. 1)</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-right">
+            <div class="ticket-progress-summary">
+              <div class="progress-step-text" style="color: #4B5563;">Tahap 2: Ditugaskan</div>
+              <div class="mini-segment-bar">
+                <div class="mini-segment filled"></div>
+                <div class="mini-segment filled"></div>
+                <div class="mini-segment"></div>
+                <div class="mini-segment"></div>
+                <div class="mini-segment"></div>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" style="color: #9CA3AF; width: 18px; height: 18px;"></i>
+          </div>
+        </div>
+
+        <!-- Ticket 3: Lampu Lorong Lt. 3 Mati -->
+        <div class="ticket-card" onclick="selectTicket(3)">
+          <div class="ticket-left">
+            <div class="ticket-photo-thumb" style="display: flex; align-items: center; justify-content: center; background: #F3F4F6; color: #9CA3AF;">
+              <i data-lucide="lightbulb" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="ticket-main-info">
+              <div class="ticket-badges-row">
+                <span class="badge-urgency urgency-low"><i data-lucide="info" style="width: 12px; height: 12px;"></i> Rendah</span>
+                <span class="ticket-id">TKT-202610-02</span>
+                <span style="font-size: 11px; color: #9CA3AF;">· Dilaporkan 2 hari lalu</span>
+              </div>
+              <div class="ticket-title">Lampu Neon Koridor Depan Kamar C-03 & C-04 Redup/Mati</div>
+              <div class="ticket-reporter">
+                <i data-lucide="home" style="width: 13px; height: 13px;"></i>
+                Fasilitas Bersama · <strong>Lantai 3</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-right">
+            <div class="ticket-progress-summary">
+              <div class="progress-step-text" style="color: #6B7280;">Tahap 1: Diterima</div>
+              <div class="mini-segment-bar">
+                <div class="mini-segment filled"></div>
+                <div class="mini-segment"></div>
+                <div class="mini-segment"></div>
+                <div class="mini-segment"></div>
+                <div class="mini-segment"></div>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" style="color: #9CA3AF; width: 18px; height: 18px;"></i>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT DRAWER: SCR-15 DETAIL TIKET -->
+    <aside class="detail-drawer" id="ticketDrawer">
+      
+      <div class="drawer-header">
+        <div>
+          <span class="badge-urgency urgency-high"><i data-lucide="alert-triangle" style="width: 12px; height: 12px;"></i> Mendesak</span>
+          <h2 style="font-size: 17px; font-weight: 700; margin-top: 6px;">TKT-202610-04</h2>
+          <div style="font-size: 11px; color: #6B7280;">Kamar B-03 · Reza Pratama (0812-9988-7711)</div>
+        </div>
+        <button class="icon-circle-btn" style="width: 32px; height: 32px;" onclick="RumaUI.showToast('Detail tiket ditutup')">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <!-- ESTIFY 5-STEP DASH PROGRESS INDICATOR -->
+      <div class="progress-timeline-box">
+        <div class="progress-header">
+          <span style="font-weight: 600; color: #111111;">Status Penanganan</span>
+          <span style="font-weight: 700; color: #FF7A00;">Langkah 3 dari 5</span>
+        </div>
+
+        <div class="segmented-bar-full">
+          <div class="step-dash active"></div>
+          <div class="step-dash active"></div>
+          <div class="step-dash active"></div>
+          <div class="step-dash"></div>
+          <div class="step-dash"></div>
+        </div>
+
+        <div class="step-labels-row">
+          <span class="active">Diterima</span>
+          <span class="active">Ditugaskan</span>
+          <span class="active" style="color: #FF7A00;">Dikerjakan</span>
+          <span>Diperiksa</span>
+          <span>Selesai</span>
+        </div>
+      </div>
+
+      <!-- DESKRIPSI & FOTO BUKTI -->
+      <div>
+        <div style="font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; margin-bottom: 6px;">Deskripsi Kerusakan</div>
+        <p style="font-size: 13px; color: #374151; line-height: 1.5; background: #F7F8FA; padding: 12px; border-radius: 12px; border: 1px solid #ECEEF2;">
+          "Pipa pembuangan AC outdoor tersumbat atau talang air dalam penuh, sejak tadi malam bocor menetes ke kasur. Mohon dibantu servis segera karena basah kuyup."
+        </p>
+      </div>
+
+      <div class="detail-photo-wrapper">
+        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80" alt="Foto Kerusakan AC">
+        <div class="detail-photo-tag"><i data-lucide="camera" style="width: 12px; height: 12px; display: inline;"></i> Foto Lampiran Penyewa</div>
+      </div>
+
+      <!-- TEKNISI YANG DITUGASKAN -->
+      <div>
+        <div style="font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; margin-bottom: 6px;">Teknisi Bertugas</div>
+        <div class="tech-assignee-card">
+          <div class="tech-info">
+            <div class="tech-avatar">PJ</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Pak Joko Santoso</div>
+              <div style="font-size: 11px; color: #6B7280;">Teknisi AC & Pendingin</div>
+            </div>
+          </div>
+          <a href="https://wa.me/628123456789" target="_blank" class="btn-wa-direct">
+            <i data-lucide="message-circle" style="width: 13px; height: 13px;"></i>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="drawer-actions">
+        <button class="btn-drawer-full btn-black-solid" onclick="RumaUI.showToast('Status tiket dimajukan ke: Tahap 4 - Diperiksa')">
+          <i data-lucide="arrow-right-circle" style="width: 15px; height: 15px;"></i>
+          Majukan ke: Diperiksa
+        </button>
+        <button class="btn-drawer-full btn-white-outline" onclick="RumaUI.showToast('Dialog penugasan teknisi baru dibuka')">
+          <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
+          Ganti Teknisi
+        </button>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('tiket');
+
+    function selectTicket(index) {
+      document.querySelectorAll('.ticket-card').forEach((c, idx) => {
+        if (idx + 1 === index) {
+          c.classList.add('selected');
+        } else {
+          c.classList.remove('selected');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

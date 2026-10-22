@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Detail Tiket Kerusakan TK-2026-004</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    .ticket-grid-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .stepper-container {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .stepper-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Identity Badge -->
+  <div class="wf-badge">
+    <i data-lucide="check-square" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+    SCR-P05 · Detail Tiket Penghuni & Thread Kolaborasi (F-07)
+  </div>
+
+  <div class="app-container">
+    <!-- Topbar (Role: Tenant) -->
+    <header class="topbar" id="mainTopbar"></header>
+
+    <!-- STEPPER 5-STEP ESTIFY PROGRESS HEADER -->
+    <div class="stepper-container" style="margin-top: 20px;">
+      <div class="stepper-header">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+            <a href="WF-10-portal-penghuni.html" style="font-size: 11px; color: var(--text-muted); text-decoration: none; display: inline-flex; align-items: center; gap: 3px;">
+              <i data-lucide="arrow-left" style="width: 12px; height: 12px;"></i>
+              Daftar Tiket
+            </a>
+            <span style="font-size: 11px; color: var(--border-card);">|</span>
+            <span style="font-size: 12px; font-weight: 700; color: var(--brand-primary);">Tiket #TK-2026-004</span>
+            <span class="badge-status badge-warning">Tahap 3: Sedang Dikerjakan</span>
+          </div>
+          <h1 style="font-size: 20px; font-weight: 700; color: var(--text-main);">Kran Wastafel Kamar Mandi Bocor</h1>
+        </div>
+
+        <div style="text-align: right;">
+          <div style="font-size: 11px; color: var(--text-muted);">Teknisi Ditugaskan</div>
+          <div style="font-size: 13px; font-weight: 700; color: var(--text-main);">Pak Joko (Plumbing)</div>
+        </div>
+      </div>
+
+      <!-- Segmented 5-Step Bar -->
+      <div style="margin-top: 14px;">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
+          <span style="color: var(--brand-primary); font-weight: 600;">1. Laporan Masuk</span>
+          <span style="color: var(--brand-primary); font-weight: 600;">2. Ditugaskan</span>
+          <span style="color: var(--brand-primary); font-weight: 700;">3. Pengerjaan (Aktif)</span>
+          <span>4. Pengecekan</span>
+          <span>5. Selesai</span>
+        </div>
+        <div class="dash-progress-track" style="height: 8px;">
+          <div class="dash-step active"></div>
+          <div class="dash-step active"></div>
+          <div class="dash-step active"></div>
+          <div class="dash-step"></div>
+          <div class="dash-step"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2-COLUMN LAYOUT -->
+    <div class="ticket-grid-layout">
+      
+      <!-- LEFT COLUMN: THREAD DISKUSI & LAMPIRAN F-07 -->
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- INITIAL ISSUE REPORT -->
+        <div class="card-box">
+          <h2 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">Rincian Masalah Awal</h2>
+          <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+            Sejak kemarin malam sekitar jam 21.00 kran bawah wastafel mulai menetes dan air mulai menggenang di lantai kamar mandi. Mohon dibantu perbaikan kran/pipanya.
+          </p>
+
+          <div style="margin-top: 16px;">
+            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
+              Lampiran Wajib Penghuni (2 Berkas):
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <div style="width: 110px; height: 80px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-subtle); position: relative;">
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=300&q=80" alt="Kran Bocor" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div style="width: 110px; height: 80px; border-radius: var(--radius-md); background: #111111; color: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" onclick="RumaUI.showToast('Memutar cuplikan video bukti kerusakan...')">
+                <i data-lucide="play-circle" style="width: 22px; height: 22px; color: #FF7A00;"></i>
+                <div style="font-size: 10px; margin-top: 4px;">video_bocor.mp4</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMMENT & COLLABORATION THREAD (Penghuni, Staf, Pemilik) -->
+        <div class="card-box">
+          <h2 style="font-size: 15px; font-weight: 700; margin-bottom: 14px;">Aktivitas & Diskusi Penanganan (F-07)</h2>
+
+          <div class="comment-thread" id="commentList">
+            
+            <!-- Message from Tenant -->
+            <div class="comment-bubble from-tenant">
+              <div class="comment-meta">
+                <div class="comment-author-group">
+                  <div class="user-avatar" style="width: 26px; height: 26px; font-size: 10px; background: #10B981; color: #FFFFFF;">BS</div>
+                  <strong style="color: var(--text-main);">Budi Santoso</strong>
+                  <span class="comment-author-badge" style="background: #D1FAE5; color: #065F46;">Penghuni</span>
+                </div>
+                <span style="color: var(--text-muted); font-size: 11px;">21 Okt 2026, 21:15</span>
+              </div>
+              <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                Laporan kerusakan dibuat disertai 1 foto dan 1 rekaman video air menetes.
+              </div>
+            </div>
+
+            <!-- Message from Staff -->
+            <div class="comment-bubble from-staff">
+              <div class="comment-meta">
+                <div class="comment-author-group">
+                  <div class="user-avatar" style="width: 26px; height: 26px; font-size: 10px; background: #3B82F6; color: #FFFFFF;">RS</div>
+                  <strong style="color: var(--text-main);">Rini Setiawati</strong>
+                  <span class="comment-author-badge" style="background: #DBEAFE; color: #1E40AF;">Staf Pengelola</span>
+                </div>
+                <span style="color: var(--text-muted); font-size: 11px;">22 Okt 2026, 08:30</span>
+              </div>
+              <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                Halo Mas Budi, laporan sudah kami terima. Pak Joko (teknisi ledeng) dijadwalkan merapat ke kamar A-04 pukul 14:00 siang ini untuk mengganti seal tape dan seal kran.
+              </div>
+            </div>
+
+            <!-- Message from Owner -->
+            <div class="comment-bubble from-owner">
+              <div class="comment-meta">
+                <div class="comment-author-group">
+                  <div class="user-avatar" style="width: 26px; height: 26px; font-size: 10px; background: #FF7A00; color: #FFFFFF;">BS</div>
+                  <strong style="color: var(--text-main);">Budi Santoso</strong>
+                  <span class="comment-author-badge" style="background: #FFEDD5; color: #9A3412;">Pemilik Kost</span>
+                </div>
+                <span style="color: var(--text-muted); font-size: 11px;">22 Okt 2026, 09:10</span>
+              </div>
+              <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                Disetujui. Penggantian kran ditanggung penuh oleh pengelola kost, penghuni tidak dikenakan biaya apapun.
+              </div>
+            </div>
+
+          </div>
+
+          <!-- INPUT KOMENTAR BARU -->
+          <form onsubmit="handleSendComment(event)" style="margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-subtle);">
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label class="form-label">Tulis Balasan / Catatan Tambahan</label>
+              <textarea class="form-input" id="replyText" rows="2" style="height: auto; padding: 10px;" placeholder="Tulis komentar untuk pengelola..." required></textarea>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <button type="button" class="btn-pill btn-white-outline" style="font-size: 11px; padding: 6px 12px;" onclick="RumaUI.showToast('Pilih dokumen / foto lampiran balasan...')">
+                <i data-lucide="paperclip" style="width: 13px; height: 13px;"></i>
+                Lampirkan Berkas
+              </button>
+              <button type="submit" class="btn-pill btn-primary" style="background: var(--dark-pill); color: #FFFFFF; font-size: 11px; padding: 8px 16px;">
+                <i data-lucide="send" style="width: 13px; height: 13px;"></i>
+                Kirim Komentar
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: TICKET META -->
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <div class="card-box">
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">Informasi Tiket</h3>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Nomor Tiket:</span>
+              <strong style="color: var(--text-main);">TK-2026-004</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Kamar Terkait:</span>
+              <strong>Kamar A-04</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Kategori:</span>
+              <span>Sanitasi & Pipa Air</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Urgensi:</span>
+              <span class="badge-status" style="background: #E0E7FF; color: #4338CA;">Normal</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Biaya Perbaikan:</span>
+              <strong style="color: #16A34A;">Rp 0 (Ditanggung Kost)</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-box">
+          <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Pemberitahuan Penghuni</h3>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+            Teknisi akan mengetuk kamar Anda dengan didampingi Staf Pengelola. Harap pastikan ada orang di kamar atau izinkan staf mendampingi teknisi saat jam pengerjaan.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('lapor-kerusakan', 'tenant');
+
+    function handleSendComment(e) {
+      e.preventDefault();
+      const text = document.getElementById('replyText').value;
+      const list = document.getElementById('commentList');
+      const bubble = document.createElement('div');
+      bubble.className = 'comment-bubble from-tenant';
+      bubble.innerHTML = `
+        <div class="comment-meta">
+          <div class="comment-author-group">
+            <div class="user-avatar" style="width: 26px; height: 26px; font-size: 10px; background: #10B981; color: #FFFFFF;">BS</div>
+            <strong style="color: var(--text-main);">Budi Santoso</strong>
+            <span class="comment-author-badge" style="background: #D1FAE5; color: #065F46;">Penghuni</span>
+          </div>
+          <span style="color: var(--text-muted); font-size: 11px;">Baru saja</span>
+        </div>
+        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">${text}</div>
+      `;
+      list.appendChild(bubble);
+      document.getElementById('replyText').value = '';
+      RumaUI.showToast('Komentar berhasil dikirimkan ke pengelola kost', 'success');
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

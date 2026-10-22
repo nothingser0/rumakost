@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Laporan Keuangan & Okupansi</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+
+
+
+
+    /* OPERATIONAL EXPENSE TAB CONTENT (SCR-12) */
+    .expense-view-section {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .expense-view-section.active {
+      display: flex;
+    }
+
+    .fin-view-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .fin-view-section.hidden {
+      display: none;
+    }
+
+    /* EXPENSE TABLE */
+    .expense-card {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+    }
+
+    .expense-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .category-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tag-utility { background: #E0E7FF; color: #4338CA; }
+    .tag-maintenance { background: #FEF3C7; color: #D97706; }
+    .tag-cleaning { background: #DCFCE7; color: #16A34A; }
+    .tag-internet { background: #FCE7F3; color: #DB2777; }
+
+  </style>
+</head>
+<body>
+
+  <div class="wf-badge">SCR-12 & SCR-13 · Laporan Keuangan, Arus Kas & Okupansi</div>
+
+  <!-- TOPBAR -->
+  <header class="topbar" id="mainTopbar">
+    <!-- Rendered dynamically by components.js -->
+  </header>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page-layout">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-title-group">
+        <h1>Laporan Keuangan & Okupansi</h1>
+        <p>Rekapitulasi pendapatan sewa, arus kas keluar operasional, dan tingkat hunian Kost Budi Makmur.</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-pill btn-white-secondary" onclick="RumaUI.showToast('Laporan keuangan Oktober 2026 berhasil diekspor ke CSV/PDF')">
+          <i data-lucide="download" style="width: 15px; height: 15px;"></i>
+          Ekspor CSV / PDF
+        </button>
+        <button class="btn-pill btn-orange-primary" onclick="openExpenseModal()">
+          <i data-lucide="plus-circle" style="width: 15px; height: 15px;"></i>
+          Catat Biaya Operasional
+        </button>
+      </div>
+    </div>
+
+    <!-- SUB TABS -->
+    <div class="tab-pills-bar">
+      <button class="tab-btn active" id="tabFinBtn" onclick="switchTab('fin')">
+        <i data-lucide="bar-chart-3" style="width: 15px; height: 15px;"></i>
+        Ringkasan & Arus Kas (SCR-13)
+      </button>
+      <button class="tab-btn" id="tabExpBtn" onclick="switchTab('exp')">
+        <i data-lucide="receipt" style="width: 15px; height: 15px;"></i>
+        Pengeluaran Operasional (SCR-12)
+      </button>
+    </div>
+
+    <!-- SECTION 1: FINANSIAL & ARUS KAS (SCR-13) -->
+    <div class="fin-view-section" id="finSection">
+      
+      <!-- 4 METRICS CARDS -->
+      <div class="metric-grid-4">
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Total Pemasukan</span>
+            <span class="metric-badge green">+12.5%</span>
+          </div>
+          <div class="metric-value">Rp 21.650.000</div>
+          <div class="metric-desc">Penerimaan sewa Oktober 2026</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Biaya Operasional</span>
+            <span class="metric-badge orange">5 pos pengeluaran</span>
+          </div>
+          <div class="metric-value">Rp 4.250.000</div>
+          <div class="metric-desc">Listrik, WiFi, air, kebersihan</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Laba Bersih (Net)</span>
+            <span class="metric-badge green">Margin 80.3%</span>
+          </div>
+          <div class="metric-value" style="color: #16A34A;">Rp 17.400.000</div>
+          <div class="metric-desc">Pendapatan bersih pemilik</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-top">
+            <span class="metric-label">Okupansi Kamar</span>
+            <span class="metric-badge green">Tinggi</span>
+          </div>
+          <div class="metric-value">86.7%</div>
+          <div class="metric-desc">13 dari 15 kamar terisi</div>
+        </div>
+      </div>
+
+      <!-- MAIN CHART & GAUGE ROW -->
+      <div class="report-main-grid">
+        
+        <!-- ESTIFY DOUBLE BAR CHART -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <h3 class="chart-title">Arus Kas 6 Bulan Terakhir</h3>
+              <p class="chart-sub">Perbandingan Pemasukan Sewa vs Pengeluaran Operasional (Mei - Okt 2026)</p>
+            </div>
+            <div class="chart-legend">
+              <div class="legend-item">
+                <div class="legend-dot-orange"></div>
+                <span>Pemasukan</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot-peach"></div>
+                <span>Pengeluaran</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- CHART BARS CONTAINER -->
+          <div class="chart-container">
+            <!-- Mei -->
+            <div class="bar-col-group">
+              <div class="bars-pair">
+                <div class="bar-solid-orange" style="height: 120px;" title="Pemasukan: Rp 18.2jt"></div>
+                <div class="bar-hatched-peach" style="height: 38px;" title="Pengeluaran: Rp 3.8jt"></div>
+              </div>
+              <span class="bar-label">Mei</span>
+            </div>
+
+            <!-- Jun -->
+            <div class="bar-col-group">
+              <div class="bars-pair">
+                <div class="bar-solid-orange" style="height: 135px;" title="Pemasukan: Rp 19.5jt"></div>
+                <div class="bar-hatched-peach" style="height: 42px;" title="Pengeluaran: Rp 4.1jt"></div>
+              </div>
+              <span class="bar-label">Jun</span>
+            </div>
+
+            <!-- Jul -->
+            <div class="bar-col-group">
+              <div class="bars-pair">
+                <div class="bar-solid-orange" style="height: 140px;" title="Pemasukan: Rp 20.0jt"></div>
+                <div class="bar-hatched-peach" style="height: 40px;" title="Pengeluaran: Rp 3.9jt"></div>
+              </div>
+              <span class="bar-label">Jul</span>
+            </div>
+
+            <!-- Agu -->
+            <div class="bar-col-group">
+              <div class="bars-pair">
+                <div class="bar-solid-orange" style="height: 145px;" title="Pemasukan: Rp 20.5jt"></div>
+                <div class="bar-hatched-peach" style="height: 50px;" title="Pengeluaran: Rp 4.9jt"></div>
+              </div>
+              <span class="bar-label">Agu</span>
+            </div>
+
+            <!-- Sep -->
+            <div class="bar-col-group">
+              <div class="bars-pair">
+                <div class="bar-solid-orange" style="height: 155px;" title="Pemasukan: Rp 21.0jt"></div>
+                <div class="bar-hatched-peach" style="height: 41px;" title="Pengeluaran: Rp 4.0jt"></div>
+              </div>
+              <span class="bar-label">Sep</span>
+            </div>
+
+            <!-- Okt (Current) -->
+            <div class="bar-col-group">
+              <div class="bars-pair">
+                <div class="bar-solid-orange" style="height: 165px;" title="Pemasukan: Rp 21.65jt"></div>
+                <div class="bar-hatched-peach" style="height: 44px;" title="Pengeluaran: Rp 4.25jt"></div>
+              </div>
+              <span class="bar-label" style="color: #FF7A00; font-weight: 700;">Okt</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPEEDOMETER RADIAL GAUGE FOR OCCUPANCY -->
+        <div class="gauge-card">
+          <div style="font-size: 15px; font-weight: 700; color: #111111; margin-bottom: 4px;">Tingkat Hunian</div>
+          <div style="font-size: 12px; color: #6B7280; margin-bottom: 12px;">Okupansi Properti Saat Ini</div>
+
+          <div class="gauge-wrapper">
+            <svg width="190" height="105" viewBox="0 0 190 105">
+              <!-- Background Arc -->
+              <path d="M 20 95 A 75 75 0 0 1 170 95" fill="none" stroke="#ECEEF2" stroke-width="18" stroke-linecap="round"/>
+              <!-- Active Arc (86.7%) -->
+              <path d="M 20 95 A 75 75 0 0 1 170 95" fill="none" stroke="#FF7A00" stroke-width="18" stroke-linecap="round" stroke-dasharray="235.6" stroke-dashoffset="31.3"/>
+            </svg>
+            <div class="gauge-val-overlay">
+              <span class="gauge-number">86.7%</span>
+              <span class="gauge-unit">Terisi</span>
+            </div>
+          </div>
+
+          <div class="occupancy-stats-list">
+            <div class="stat-row">
+              <span style="color: #6B7280;">Kamar Tersewa</span>
+              <span style="font-weight: 700; color: #111111;">13 Kamar</span>
+            </div>
+            <div class="stat-row">
+              <span style="color: #6B7280;">Kamar Kosong</span>
+              <span style="font-weight: 700; color: #FF7A00;">2 Kamar (A-02, C-04)</span>
+            </div>
+            <div class="stat-row">
+              <span style="color: #6B7280;">Total Kapasitas</span>
+              <span style="font-weight: 600; color: #4B5563;">15 Kamar (3 Lantai)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- SECTION 2: PENGELUARAN OPERASIONAL (SCR-12) -->
+    <div class="expense-view-section" id="expSection">
+      
+      <div class="expense-card">
+        <div class="expense-header-row">
+          <div>
+            <h2 style="font-size: 18px; font-weight: 700;">Daftar Biaya Operasional (Oktober 2026)</h2>
+            <p style="font-size: 12px; color: #6B7280; margin-top: 2px;">Seluruh pengeluaran utilitas, kebersihan, dan pemeliharaan kost yang dapat diperiksa bukti struknya.</p>
+          </div>
+          <button class="btn-pill btn-orange-primary" onclick="openExpenseModal()">
+            <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+            Tambah Pengeluaran
+          </button>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr style="border-bottom: 1px solid #ECEEF2;">
+              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">ID & Tanggal</th>
+              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">Kategori</th>
+              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">Deskripsi Pengeluaran</th>
+              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">Jumlah</th>
+              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">Dicatat Oleh</th>
+              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase; text-align: right;">Bukti Kuitansi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #F3F4F6;">
+              <td style="padding: 14px;">
+                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-01</div>
+                <div style="font-size: 11px; color: #9CA3AF;">03 Okt 2026</div>
+              </td>
+              <td style="padding: 14px;">
+                <span class="category-tag tag-utility"><i data-lucide="zap" style="width: 12px; height: 12px;"></i> Listrik PLN</span>
+              </td>
+              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
+                Token listrik penerangan lorong & fasilitas bersama (IDPEL: 531092831)
+              </td>
+              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 1.250.000</td>
+              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Rini (Staf)</td>
+              <td style="padding: 14px; text-align: right;">
+                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau kuitansi PLN token')">
+                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
+                </button>
+              </td>
+            </tr>
+
+            <tr style="border-bottom: 1px solid #F3F4F6;">
+              <td style="padding: 14px;">
+                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-02</div>
+                <div style="font-size: 11px; color: #9CA3AF;">05 Okt 2026</div>
+              </td>
+              <td style="padding: 14px;">
+                <span class="category-tag tag-internet"><i data-lucide="wifi" style="width: 12px; height: 12px;"></i> Internet</span>
+              </td>
+              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
+                Langganan Indihome Fiber 100Mbps bulan Oktober
+              </td>
+              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 650.000</td>
+              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Budi (Pemilik)</td>
+              <td style="padding: 14px; text-align: right;">
+                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau struk e-billing IndiHome')">
+                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
+                </button>
+              </td>
+            </tr>
+
+            <tr style="border-bottom: 1px solid #F3F4F6;">
+              <td style="padding: 14px;">
+                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-03</div>
+                <div style="font-size: 11px; color: #9CA3AF;">07 Okt 2026</div>
+              </td>
+              <td style="padding: 14px;">
+                <span class="category-tag tag-utility"><i data-lucide="droplet" style="width: 12px; height: 12px;"></i> Air PDAM</span>
+              </td>
+              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
+                Tagihan air bersih PDAM Tirta Moedal Kost
+              </td>
+              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 450.000</td>
+              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Rini (Staf)</td>
+              <td style="padding: 14px; text-align: right;">
+                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau struk PDAM')">
+                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
+                </button>
+              </td>
+            </tr>
+
+            <tr style="border-bottom: 1px solid #F3F4F6;">
+              <td style="padding: 14px;">
+                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-04</div>
+                <div style="font-size: 11px; color: #9CA3AF;">10 Okt 2026</div>
+              </td>
+              <td style="padding: 14px;">
+                <span class="category-tag tag-cleaning"><i data-lucide="sparkles" style="width: 12px; height: 12px;"></i> Kebersihan</span>
+              </td>
+              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
+                Retribusi sampah warga & sabun pembersih lorong lantai 1-3
+              </td>
+              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 400.000</td>
+              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Rini (Staf)</td>
+              <td style="padding: 14px; text-align: right;">
+                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau nota belanja kebersihan')">
+                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
+                </button>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 14px;">
+                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-05</div>
+                <div style="font-size: 11px; color: #9CA3AF;">15 Okt 2026</div>
+              </td>
+              <td style="padding: 14px;">
+                <span class="category-tag tag-maintenance"><i data-lucide="wrench" style="width: 12px; height: 12px;"></i> Servis AC</span>
+              </td>
+              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
+                Perawatan cuci AC 3 unit di Lantai 1 & isi freon kamar A-03
+              </td>
+              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 1.500.000</td>
+              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Budi (Pemilik)</td>
+              <td style="padding: 14px; text-align: right;">
+                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau kuitansi servis pendingin')">
+                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL CATAT PENGELUARAN (SCR-12) -->
+  <div class="modal-backdrop" id="expenseModal">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #ECEEF2; padding-bottom: 14px;">
+        <div>
+          <h2 style="font-size: 18px; font-weight: 700;">Catat Biaya Operasional</h2>
+          <p style="font-size: 12px; color: #6B7280; margin-top: 2px;">Input pos beban pengeluaran kost dan lampirkan kuitansi nota.</p>
+        </div>
+        <button onclick="closeExpenseModal()" style="background: none; border: none; cursor: pointer; color: #9CA3AF;">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">Kategori</label>
+          <select class="form-select">
+            <option>Listrik PLN</option>
+            <option>Air PDAM</option>
+            <option>Internet / WiFi</option>
+            <option>Kebersihan & Sampah</option>
+            <option>Pemeliharaan & Servis</option>
+            <option>Lain-lain</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tanggal Transaksi</label>
+          <input type="date" class="form-input" value="2026-10-22">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nominal Pengeluaran (Rp)</label>
+        <input type="number" class="form-input" placeholder="Contoh: 450000">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Deskripsi / Keperluan</label>
+        <input type="text" class="form-input" placeholder="Rincian pos pengeluaran kost...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Unggah Bukti Nota / Kuitansi</label>
+        <div class="upload-zone">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: #FFF7ED; color: #FF7A00; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 4px;">
+            <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div style="font-size: 12px; font-weight: 600;">Pilih file nota atau seret ke sini</div>
+          <div style="font-size: 11px; color: #9CA3AF;">JPG / PNG / PDF maks. 5MB</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid #ECEEF2; padding-top: 14px;">
+        <button class="btn-pill btn-white-secondary" onclick="closeExpenseModal()">Batal</button>
+        <button class="btn-pill btn-orange-primary" onclick="RumaUI.showToast('Biaya operasional berhasil dicatat'); closeExpenseModal();">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          Simpan Biaya
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('laporan');
+
+    function switchTab(tab) {
+      const finSec = document.getElementById('finSection');
+      const expSec = document.getElementById('expSection');
+      const finBtn = document.getElementById('tabFinBtn');
+      const expBtn = document.getElementById('tabExpBtn');
+
+      if (tab === 'fin') {
+        finSec.classList.remove('hidden');
+        expSec.classList.remove('active');
+        finBtn.classList.add('active');
+        expBtn.classList.remove('active');
+      } else {
+        finSec.classList.add('hidden');
+        expSec.classList.add('active');
+        finBtn.classList.remove('active');
+        expBtn.classList.add('active');
+      }
+    }
+
+    function openExpenseModal() {
+      document.getElementById('expenseModal').classList.add('open');
+    }
+
+    function closeExpenseModal() {
+      document.getElementById('expenseModal').classList.remove('open');
+    }
+  </script>
+</body>
+</html>

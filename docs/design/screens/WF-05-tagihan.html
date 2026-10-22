@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Tagihan Bulanan</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+
+
+    /* TABLE & INVOICE SPECIFIC */
+
+    /* TABLE */
+    .table-container {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead th {
+      background: #FAFAFA;
+      padding: 14px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #ECEEF2;
+    }
+
+    tbody td {
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #111111;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: middle;
+      transition: background 100ms;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #F9FAFB; cursor: pointer; }
+    tbody tr.selected td { background: #FFF7ED; }
+
+    .invoice-id-badge {
+      font-family: monospace;
+      font-weight: 700;
+      color: #111111;
+      font-size: 12px;
+      background: #F7F8FA;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid #ECEEF2;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-success { background: #DCFCE7; color: #16A34A; }
+    .badge-warning { background: #FEF3C7; color: #D97706; }
+    .badge-danger { background: #FEE2E2; color: #EF4444; }
+
+    .action-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: #FF7A00;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* RIGHT DRAWER: SCR-10 DETAIL INVOICE */
+    .detail-drawer {
+      width: 380px;
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-self: flex-start;
+      position: sticky;
+      top: 96px;
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid #F3F4F6;
+      padding-bottom: 16px;
+    }
+
+    .invoice-header-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111111;
+    }
+
+    .invoice-header-sub {
+      font-size: 11px;
+      color: #6B7280;
+    }
+
+    .invoice-breakdown-box {
+      background: #F7F8FA;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .breakdown-row.total-row {
+      margin-top: 8px;
+      padding-top: 10px;
+      border-top: 1px solid #ECEEF2;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .payment-status-box {
+      border: 1.5px dashed #16A34A;
+      background: #F0FDF4;
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .btn-drawer-full {
+      width: 100%;
+      padding: 11px;
+      border-radius: 9999px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 150ms ease;
+    }
+
+    .btn-black-solid { background: #111111; color: #FFFFFF; border: none; }
+    .btn-black-solid:hover { background: #222222; }
+    .btn-white-outline { background: #FFFFFF; border: 1.5px solid #ECEEF2; color: #4B5563; }
+    .btn-white-outline:hover { border-color: #111111; color: #111111; }
+
+    .wf-badge {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: #6B7280;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wf-badge">SCR-09 & SCR-10 · Tagihan & Rincian Invoice</div>
+
+  <!-- TOPBAR -->
+  <header class="topbar" id="mainTopbar">
+    <!-- Rendered dynamically by components.js -->
+  </header>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page-layout">
+    
+    <div class="content-area">
+
+      <!-- Summary chips -->
+      <div class="summary-chips-row">
+        <div class="chip-card">
+          <span class="chip-dot" style="background: #111111;"></span>
+          <span class="chip-label">Total Tagihan Okt</span>
+          <span class="chip-count">11 Unit</span>
+        </div>
+        <div class="chip-card">
+          <span class="chip-dot" style="background: #16A34A;"></span>
+          <span class="chip-label">Sudah Lunas</span>
+          <span class="chip-count" style="color: #16A34A;">7 Tagihan</span>
+        </div>
+        <div class="chip-card">
+          <span class="chip-dot" style="background: #EF4444;"></span>
+          <span class="chip-label">Belum Terbayar</span>
+          <span class="chip-count" style="color: #EF4444;">4 Tagihan</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-card">
+        <div class="filter-group-left">
+          <div class="search-input-pill">
+            <i data-lucide="search" style="width: 14px; height: 14px; color: #9CA3AF;"></i>
+            <input type="text" placeholder="Cari invoice atau penyewa...">
+          </div>
+
+          <div class="popover-filter-btn">
+            <i data-lucide="calendar" style="width: 13px; height: 13px;"></i>
+            <span>Periode: Oktober 2026</span>
+            <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+          </div>
+
+          <div class="popover-filter-btn">
+            <span>Status: Semua</span>
+            <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+          </div>
+        </div>
+
+        <button class="btn-add-primary" onclick="alert('Dialog generate tagihan baru')">
+          <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
+          Buat Tagihan
+        </button>
+      </div>
+
+      <!-- BILLING TABLE -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>No. Invoice</th>
+              <th>Penyewa</th>
+              <th>Kamar</th>
+              <th>Periode Sewa</th>
+              <th>Nominal</th>
+              <th>Jatuh Tempo</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Row 1 (Selected) -->
+            <tr class="selected" onclick="selectInvoice('TG-202610-001', 'Siti Aminah', 'Kamar A-01', 'Rp 1.200.000', '1 Okt 2026', 'Lunas', 'Transfer BCA', '22 Okt 2026')">
+              <td><span class="invoice-id-badge">TG-202610-001</span></td>
+              <td><strong>Siti Aminah</strong></td>
+              <td>A-01</td>
+              <td>1–31 Okt 2026</td>
+              <td><strong>Rp 1.200.000</strong></td>
+              <td>1 Okt 2026</td>
+              <td><span class="status-badge badge-success"><i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas</span></td>
+              <td><a href="WF-06-pembayaran.html" class="action-link">Detail <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr onclick="selectInvoice('TG-202610-002', 'Rina Marliana', 'Kamar A-02', 'Rp 1.200.000', '1 Okt 2026', 'Terlambat', '—', '—')">
+              <td><span class="invoice-id-badge">TG-202610-002</span></td>
+              <td><strong>Rina Marliana</strong></td>
+              <td>A-02</td>
+              <td>1–31 Okt 2026</td>
+              <td><strong>Rp 1.200.000</strong></td>
+              <td><span style="color: #EF4444; font-weight: 600;">1 Okt 2026 (Lewat)</span></td>
+              <td><span class="status-badge badge-danger"><i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i> Terlambat</span></td>
+              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 3 -->
+            <tr onclick="selectInvoice('TG-202610-003', 'Yuni Kartika', 'Kamar A-04', 'Rp 1.500.000', '1 Okt 2026', 'Lunas', 'Transfer Mandiri', '20 Okt 2026')">
+              <td><span class="invoice-id-badge">TG-202610-003</span></td>
+              <td><strong>Yuni Kartika</strong></td>
+              <td>A-04</td>
+              <td>1–31 Okt 2026</td>
+              <td><strong>Rp 1.500.000</strong></td>
+              <td>1 Okt 2026</td>
+              <td><span class="status-badge badge-success"><i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas</span></td>
+              <td><a href="WF-06-pembayaran.html" class="action-link">Detail <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 4 -->
+            <tr onclick="selectInvoice('TG-202610-004', 'Sri Wahyuni', 'Kamar A-05', 'Rp 1.100.000', '1 Okt 2026', 'Jatuh Tempo', '—', '—')">
+              <td><span class="invoice-id-badge">TG-202610-004</span></td>
+              <td><strong>Sri Wahyuni</strong></td>
+              <td>A-05</td>
+              <td>1–31 Okt 2026</td>
+              <td><strong>Rp 1.100.000</strong></td>
+              <td><span style="color: #D97706; font-weight: 600;">Hari Ini (22 Okt)</span></td>
+              <td><span class="status-badge badge-warning"><i data-lucide="clock" style="width: 11px; height: 11px;"></i> Jatuh Tempo</span></td>
+              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+
+            <!-- Row 5 -->
+            <tr onclick="selectInvoice('TG-202610-005', 'Dodi Firmansyah', 'Kamar B-01', 'Rp 950.000', '3 Okt 2026', 'Terlambat', '—', '—')">
+              <td><span class="invoice-id-badge">TG-202610-005</span></td>
+              <td><strong>Dodi Firmansyah</strong></td>
+              <td>B-01</td>
+              <td>3–31 Okt 2026</td>
+              <td><strong>Rp 950.000</strong></td>
+              <td><span style="color: #EF4444; font-weight: 600;">3 Okt 2026</span></td>
+              <td><span class="status-badge badge-danger"><i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i> Terlambat</span></td>
+              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- RIGHT DRAWER: SCR-10 DETAIL INVOICE -->
+    <aside class="detail-drawer" id="invoiceDrawer">
+      <div class="drawer-header">
+        <div>
+          <span class="invoice-header-sub">Lembar Rincian Tagihan</span>
+          <h3 class="invoice-header-title" id="dInvId">TG-202610-001</h3>
+        </div>
+        <span class="status-badge badge-success" id="dInvBadge">
+          <i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i>
+          Lunas
+        </span>
+      </div>
+
+      <div class="info-list-group" style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 13px; font-weight: 700; color: #111;" id="dInvTenant">Siti Aminah</div>
+        <div style="font-size: 11px; color: #6B7280;" id="dInvRoom">Kamar A-01 · Tipe Standar</div>
+      </div>
+
+      <!-- Breakdown Box -->
+      <div class="invoice-breakdown-box">
+        <div class="breakdown-row">
+          <span style="color: #6B7280;">Sewa Kamar Standar (Okt 2026):</span>
+          <span id="dInvPrice">Rp 1.200.000</span>
+        </div>
+        <div class="breakdown-row">
+          <span style="color: #6B7280;">Fasilitas WiFi & Air PDAM:</span>
+          <span style="color: #16A34A; font-weight: 600;">Gratis</span>
+        </div>
+        <div class="breakdown-row">
+          <span style="color: #6B7280;">Denda Keterlambatan:</span>
+          <span>Rp 0</span>
+        </div>
+        <div class="breakdown-row total-row">
+          <span>Total Tagihan:</span>
+          <span style="color: #FF7A00;" id="dInvTotal">Rp 1.200.000</span>
+        </div>
+      </div>
+
+      <!-- Payment info box -->
+      <div class="payment-status-box" id="dPayBox">
+        <div style="font-size: 11px; font-weight: 700; color: #16A34A;">TERBAYAR LUNAS PENUH</div>
+        <div style="font-size: 11px; color: #4B5563;">Metode: <strong id="dPayMethod">Transfer BCA</strong></div>
+        <div style="font-size: 11px; color: #4B5563;">Tanggal Masuk: <strong id="dPayDate">22 Okt 2026 08:12 WIB</strong></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="btn-drawer-full btn-black-solid" onclick="alert('Cetak kuitansi digital PDF')">
+          <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+          Cetak Kuitansi Digital
+        </button>
+        <a href="WF-06-pembayaran.html" class="btn-drawer-full btn-white-outline">
+          <i data-lucide="credit-card" style="width: 14px; height: 14px;"></i>
+          Buka Log Pembayaran
+        </a>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('tagihan');
+
+    function selectInvoice(id, tenant, room, total, due, status, method, date) {
+      document.querySelectorAll('tbody tr').forEach(r => r.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+
+      document.getElementById('dInvId').textContent = id;
+      document.getElementById('dInvTenant').textContent = tenant;
+      document.getElementById('dInvRoom').textContent = room;
+      document.getElementById('dInvPrice').textContent = total;
+      document.getElementById('dInvTotal').textContent = total;
+
+      const badge = document.getElementById('dInvBadge');
+      const payBox = document.getElementById('dPayBox');
+
+      if (status === 'Lunas') {
+        badge.className = 'status-badge badge-success';
+        badge.innerHTML = '<i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas';
+        payBox.style.display = 'flex';
+        payBox.innerHTML = `
+          <div style="font-size: 11px; font-weight: 700; color: #16A34A;">TERBAYAR LUNAS PENUH</div>
+          <div style="font-size: 11px; color: #4B5563;">Metode: <strong>${method}</strong></div>
+          <div style="font-size: 11px; color: #4B5563;">Tanggal: <strong>${date}</strong></div>
+        `;
+      } else {
+        badge.className = 'status-badge badge-danger';
+        badge.innerHTML = '<i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i> Belum Lunas';
+        payBox.style.display = 'flex';
+        payBox.style.borderColor = '#EF4444';
+        payBox.style.background = '#FEF2F2';
+        payBox.innerHTML = `
+          <div style="font-size: 11px; font-weight: 700; color: #EF4444;">MENUNGGU PEMBAYARAN</div>
+          <div style="font-size: 11px; color: #4B5563;">Sisa Terutang: <strong>${total}</strong></div>
+          <div style="font-size: 11px; color: #4B5563;">Jatuh Tempo: <strong>${due}</strong></div>
+        `;
+      }
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Pencatatan Pembayaran Masuk</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* METHOD SELECTOR PILLS */
+    .method-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .method-radio-box {
+      border: 1.5px solid #ECEEF2;
+      border-radius: 12px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4B5563;
+      transition: all 150ms ease;
+      background: #FFFFFF;
+    }
+
+    .method-radio-box:hover { border-color: #FF7A00; color: #FF7A00; }
+    .method-radio-box.active {
+      border-color: #FF7A00;
+      background: #FFF7ED;
+      color: #FF7A00;
+    }
+
+    /* CALCULATION CALLOUT BOX */
+    .calculation-callout {
+      background: #F7F8FA;
+      border: 1px solid #ECEEF2;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #6B7280;
+    }
+
+    .calc-row.highlight {
+      font-weight: 700;
+      color: #111111;
+      border-top: 1px solid #ECEEF2;
+      padding-top: 8px;
+      margin-top: 4px;
+    }
+
+    .calc-row.highlight .remaining-alert {
+      color: #D97706;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* UPLOAD DROPZONE */
+    .upload-zone {
+      border: 2px dashed #D1D5DB;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      background: #FAFAFA;
+      transition: all 150ms ease;
+    }
+
+    .upload-zone:hover {
+      border-color: #FF7A00;
+      background: #FFFBF8;
+    }
+
+    .upload-icon-wrapper {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #FFF7ED;
+      color: #FF7A00;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 8px;
+      border-top: 1px solid #ECEEF2;
+      padding-top: 16px;
+    }
+
+    .wf-badge {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      color: #6B7280;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wf-badge">SCR-11 · Log Pembayaran & Modal Catat Uang Masuk</div>
+
+  <!-- TOPBAR -->
+  <header class="topbar" id="mainTopbar">
+    <!-- Rendered dynamically by components.js -->
+  </header>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page-layout">
+    
+    <!-- HEADER -->
+    <div class="page-header">
+      <div class="page-title-group">
+        <h1>Pencatatan Pembayaran Masuk</h1>
+        <p>Log mutasi kas masuk, verifikasi bukti transfer penyewa, dan pelunasan parsial.</p>
+      </div>
+      <div class="header-actions">
+        <a href="WF-05-tagihan.html" class="btn-pill btn-white-secondary">
+          <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
+          Ke Daftar Tagihan
+        </a>
+        <button class="btn-pill btn-orange-primary" onclick="openPaymentModal()">
+          <i data-lucide="plus-circle" style="width: 15px; height: 15px;"></i>
+          Catat Pembayaran Masuk
+        </button>
+      </div>
+    </div>
+
+    <!-- METRIC CARDS -->
+    <div class="metric-row">
+      <div class="metric-card">
+        <div class="metric-info">
+          <span class="metric-label">Total Diterima (Bulan Ini)</span>
+          <span class="metric-value">Rp 21.650.000</span>
+          <span class="metric-sub">
+            <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+            +8.4% dari bulan lalu (11 transaksi)
+          </span>
+        </div>
+        <div class="metric-icon-circle icon-bg-green">
+          <i data-lucide="check-check" style="width: 24px; height: 24px;"></i>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-info">
+          <span class="metric-label">Menunggu Verifikasi</span>
+          <span class="metric-value">Rp 1.500.000</span>
+          <span class="metric-sub warning">
+            <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+            1 bukti transfer perlu dicek
+          </span>
+        </div>
+        <div class="metric-icon-circle icon-bg-yellow">
+          <i data-lucide="alert-circle" style="width: 24px; height: 24px;"></i>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-info">
+          <span class="metric-label">Sisa Saldo Terutang</span>
+          <span class="metric-value">Rp 750.000</span>
+          <span class="metric-sub neutral">
+            <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
+            1 kamar pembayaran bertahap (A-04)
+          </span>
+        </div>
+        <div class="metric-icon-circle icon-bg-orange">
+          <i data-lucide="wallet" style="width: 24px; height: 24px;"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS ROW -->
+    <div class="controls-card">
+      <div class="filter-pills-row">
+        <button class="filter-tab-pill active">Semua Transaksi (12)</button>
+        <button class="filter-tab-pill">Terverifikasi (10)</button>
+        <button class="filter-tab-pill">Menunggu Verifikasi (1)</button>
+        <button class="filter-tab-pill">Parsial (1)</button>
+      </div>
+
+      <div class="search-input-wrapper">
+        <i data-lucide="search" class="search-icon-inside" style="width: 15px; height: 15px;"></i>
+        <input type="text" placeholder="Cari penghuni, invoice, no ref...">
+      </div>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="table-card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID Transaksi</th>
+            <th>No. Invoice</th>
+            <th>Kamar & Penghuni</th>
+            <th>Tanggal Masuk</th>
+            <th>Metode</th>
+            <th>Nominal Bayar</th>
+            <th>Status</th>
+            <th>Bukti</th>
+            <th style="text-align: right;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Row 1: Terverifikasi -->
+          <tr>
+            <td class="tx-id">PAY-202610-01</td>
+            <td style="font-size: 12px; font-weight: 600; color: #4B5563;">INV-202610-001</td>
+            <td>
+              <div class="tenant-cell">
+                <div class="tenant-avatar-sm" style="background: #E0E7FF; color: #4338CA;">RM</div>
+                <div>
+                  <div style="font-weight: 600;">Rina Marliana</div>
+                  <div style="font-size: 11px; color: #6B7280;">Kamar A-01 · Lt. 1</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight: 500;">02 Okt 2026</div>
+              <div style="font-size: 11px; color: #9CA3AF;">09:14 WIB</div>
+            </td>
+            <td>
+              <span class="method-pill"><i data-lucide="credit-card" style="width: 12px; height: 12px;"></i> BCA TF</span>
+            </td>
+            <td style="font-weight: 700; color: #111111;">Rp 1.800.000</td>
+            <td><span class="status-badge badge-success"><i data-lucide="check" style="width: 12px; height: 12px;"></i> Terverifikasi</span></td>
+            <td>
+              <div class="receipt-thumbnail" title="Lihat Bukti Transfer">
+                <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-table-action"><i data-lucide="printer" style="width: 12px; height: 12px;"></i> Kuitansi</button>
+            </td>
+          </tr>
+
+          <!-- Row 2: Menunggu Verifikasi -->
+          <tr style="background: #FFFDF8;">
+            <td class="tx-id">PAY-202610-02</td>
+            <td style="font-size: 12px; font-weight: 600; color: #4B5563;">INV-202610-003</td>
+            <td>
+              <div class="tenant-cell">
+                <div class="tenant-avatar-sm" style="background: #FEF3C7; color: #D97706;">AH</div>
+                <div>
+                  <div style="font-weight: 600;">Ahmad Hidayat</div>
+                  <div style="font-size: 11px; color: #6B7280;">Kamar A-03 · Lt. 1</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight: 500;">04 Okt 2026</div>
+              <div style="font-size: 11px; color: #9CA3AF;">14:30 WIB</div>
+            </td>
+            <td>
+              <span class="method-pill"><i data-lucide="qr-code" style="width: 12px; height: 12px;"></i> QRIS</span>
+            </td>
+            <td style="font-weight: 700; color: #111111;">Rp 1.500.000</td>
+            <td><span class="status-badge badge-warning"><i data-lucide="clock" style="width: 12px; height: 12px;"></i> Menunggu Cek</span></td>
+            <td>
+              <div class="receipt-thumbnail" style="border-color: #D97706; color: #D97706;" title="Periksa Bukti Transfer">
+                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <div class="action-btn-group" style="justify-content: flex-end;">
+                <button class="btn-table-action" style="background: #111111; color: #FFFFFF; border-color: #111111;"><i data-lucide="check" style="width: 12px; height: 12px;"></i> Sahkan</button>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 3: Parsial / Cicilan -->
+          <tr>
+            <td class="tx-id">PAY-202610-03</td>
+            <td style="font-size: 12px; font-weight: 600; color: #4B5563;">INV-202610-004</td>
+            <td>
+              <div class="tenant-cell">
+                <div class="tenant-avatar-sm" style="background: #DBEAFE; color: #2563EB;">BP</div>
+                <div>
+                  <div style="font-weight: 600;">Budi Pratama</div>
+                  <div style="font-size: 11px; color: #6B7280;">Kamar A-04 · Lt. 1</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight: 500;">05 Okt 2026</div>
+              <div style="font-size: 11px; color: #9CA3AF;">11:05 WIB</div>
+            </td>
+            <td>
+              <span class="method-pill"><i data-lucide="banknote" style="width: 12px; height: 12px;"></i> Tunai</span>
+            </td>
+            <td>
+              <div style="font-weight: 700; color: #111111;">Rp 750.000</div>
+              <div style="font-size: 10px; color: #D97706; font-weight: 600;">Sisa: Rp 750.000</div>
+            </td>
+            <td><span class="status-badge badge-info"><i data-lucide="percent" style="width: 12px; height: 12px;"></i> Parsial (50%)</span></td>
+            <td>
+              <div class="receipt-thumbnail" title="Kuitansi Tanda Terima Tunai">
+                <i data-lucide="file-check" style="width: 16px; height: 16px;"></i>
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-table-action" onclick="openPaymentModal('INV-202610-004')"><i data-lucide="plus" style="width: 12px; height: 12px;"></i> Lunasi Sisa</button>
+            </td>
+          </tr>
+
+          <!-- Row 4: Terverifikasi -->
+          <tr>
+            <td class="tx-id">PAY-202610-04</td>
+            <td style="font-size: 12px; font-weight: 600; color: #4B5563;">INV-202610-005</td>
+            <td>
+              <div class="tenant-cell">
+                <div class="tenant-avatar-sm" style="background: #FCE7F3; color: #DB2777;">DA</div>
+                <div>
+                  <div style="font-weight: 600;">Dewi Anggraini</div>
+                  <div style="font-size: 11px; color: #6B7280;">Kamar B-01 · Lt. 2</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight: 500;">01 Okt 2026</div>
+              <div style="font-size: 11px; color: #9CA3AF;">18:22 WIB</div>
+            </td>
+            <td>
+              <span class="method-pill"><i data-lucide="credit-card" style="width: 12px; height: 12px;"></i> BCA TF</span>
+            </td>
+            <td style="font-weight: 700; color: #111111;">Rp 2.100.000</td>
+            <td><span class="status-badge badge-success"><i data-lucide="check" style="width: 12px; height: 12px;"></i> Terverifikasi</span></td>
+            <td>
+              <div class="receipt-thumbnail" title="Lihat Bukti Transfer">
+                <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+              </div>
+            </td>
+            <td style="text-align: right;">
+              <button class="btn-table-action"><i data-lucide="printer" style="width: 12px; height: 12px;"></i> Kuitansi</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- INTERACTIVE MODAL DIALOG: SCR-11 CATAT PEMBAYARAN MASUK -->
+  <div class="modal-backdrop" id="paymentModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">Catat Pembayaran Masuk</h2>
+          <p class="modal-subtitle">Rekam pelunasan atau cicilan sewa dari penyewa kost.</p>
+        </div>
+        <button class="modal-close-btn" onclick="closePaymentModal()">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Pilih Tagihan / Kamar</label>
+        <select class="form-select" id="invoiceSelect" onchange="updateRemainingCalculation()">
+          <option value="INV-202610-004">INV-202610-004 · Kamar A-04 (Budi Pratama) — Terutang: Rp 750.000</option>
+          <option value="INV-202610-006">INV-202610-006 · Kamar B-02 (Fajar Setiawan) — Terutang: Rp 1.500.000</option>
+          <option value="INV-202610-008">INV-202610-008 · Kamar B-04 (Hendra Wijaya) — Terutang: Rp 1.500.000</option>
+          <option value="INV-202610-011">INV-202610-011 · Kamar C-02 (Lestari Indah) — Terutang: Rp 1.500.000</option>
+        </select>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">Tanggal Diterima</label>
+          <input type="date" class="form-input" value="2026-10-22">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nominal Bayar (Rp)</label>
+          <input type="number" class="form-input" id="nominalInput" value="750000" oninput="updateRemainingCalculation()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Metode Pembayaran</label>
+        <div class="method-selector-grid">
+          <div class="method-radio-box active" onclick="selectMethod(this)">Transfer BCA</div>
+          <div class="method-radio-box" onclick="selectMethod(this)">Tunai</div>
+          <div class="method-radio-box" onclick="selectMethod(this)">QRIS</div>
+          <div class="method-radio-box" onclick="selectMethod(this)">Mandiri</div>
+        </div>
+      </div>
+
+      <!-- Realtime Calculation Callout -->
+      <div class="calculation-callout">
+        <div class="calc-row">
+          <span>Total Tagihan:</span>
+          <span style="font-weight: 600;">Rp 1.500.000</span>
+        </div>
+        <div class="calc-row">
+          <span>Telah Terbayar Sebelumnya:</span>
+          <span>Rp 750.000</span>
+        </div>
+        <div class="calc-row highlight">
+          <span>Sisa Saldo Setelah Input Ini:</span>
+          <span class="remaining-alert" id="calcRemaining">Rp 0 (LUNAS)</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nomor Referensi Transfer / Catatan</label>
+        <input type="text" class="form-input" placeholder="Contoh: TF BCA 883019 Budi P / Kuitansi manual #44">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Unggah Bukti Transaksi (Opsional)</label>
+        <div class="upload-zone">
+          <div class="upload-icon-wrapper">
+            <i data-lucide="upload-cloud" style="width: 20px; height: 20px;"></i>
+          </div>
+          <div style="font-size: 12px; font-weight: 600; color: #111111;">Klik atau seret struk transfer kemari</div>
+          <div style="font-size: 11px; color: #9CA3AF; margin-top: 2px;">Format JPG, PNG atau PDF maks. 5MB</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-pill btn-white-secondary" onclick="closePaymentModal()">Batal</button>
+        <button class="btn-pill btn-orange-primary" onclick="submitPayment()">
+          <i data-lucide="check" style="width: 15px; height: 15px;"></i>
+          Simpan Pembayaran
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/components.js"></script>
+  <script>
+    renderTopbar('pembayaran');
+
+    function openPaymentModal(invoiceId) {
+      if (invoiceId) {
+        document.getElementById('invoiceSelect').value = invoiceId;
+      }
+      document.getElementById('paymentModal').classList.add('open');
+    }
+
+    function closePaymentModal() {
+      document.getElementById('paymentModal').classList.remove('open');
+    }
+
+    function selectMethod(el) {
+      document.querySelectorAll('.method-radio-box').forEach(box => box.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function updateRemainingCalculation() {
+      const nominal = parseInt(document.getElementById('nominalInput').value || 0, 10);
+      const remainingElem = document.getElementById('calcRemaining');
+      const invoiceVal = document.getElementById('invoiceSelect').value;
+      
+      let baseTerutang = 750000;
+      if (invoiceVal !== 'INV-202610-004') {
+        baseTerutang = 1500000;
+      }
+
+      const diff = baseTerutang - nominal;
+      if (diff <= 0) {
+        remainingElem.textContent = 'Rp 0 (LUNAS)';
+        remainingElem.style.color = '#16A34A';
+      } else {
+        remainingElem.textContent = 'Rp ' + diff.toLocaleString('id-ID') + ' (PARSIAL)';
+        remainingElem.style.color = '#D97706';
+      }
+    }
+
+    function submitPayment() {
+      RumaUI.showToast('Pembayaran berhasil direkam dan diverifikasi ke dalam kas masuk kost!');
+      closePaymentModal();
+    }
+  </script>
+</body>
+</html>
