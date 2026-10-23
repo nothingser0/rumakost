@@ -120,3 +120,34 @@ Berdasarkan referensi visual modern 3D workspace yang ditetapkan:
 3. **Segmented Progress Indicator (CMP-07)**: Indikator 5 batang sekuensial pada pelacakan pemeliharaan fasilitas dan tiket penghuni.
 4. **Slide-over Drawer & Centered Modal (CMP-05)**: Wadah interaksi pencatatan cepat tanpa meninggalkan konteks halaman dasbor.
 5. **Toast Notification System (CMP-20)**: Sistem umpan balik interaktif dengan transisi halus menggantikan fungsi `alert()` bawaan peramban.
+
+---
+
+## 6. Alur Operasional Keuangan & Uang Jaminan (Escrow & Billing Lifecycle)
+
+Sesuai dengan **Scope Statement F-03, F-04, F-05**:
+1. **Invoice Tagihan Perdana (Check-in Baru)**:
+   - Penggabungan biaya awal: `Sewa Bulan ke-1 + Uang Jaminan Deposit (Escrow)`.
+   - Mendukung perhitungan **Prorata Hari Berjalan** jika masuk di pertengahan bulan (misal 15–31 Oktober) atau **Siklus Tanggal Masuk (Anniversary)**.
+2. **Matriks Penagihan Sewa Bulanan (WF-05)**:
+   - Tagihan sewa reguler dibuat **100% otomatis oleh sistem** setiap tanggal 1 bulan berjalan untuk seluruh kamar aktif.
+   - Penghuni yang telah membayar sewa 1 tahun penuh di muka berstatus otomatis **Lunas (Prabayar 1 Thn)** dengan sisa tagihan Rp 0.
+   - Tombol manual `+ Terbitkan Tagihan` berfungsi untuk tagihan *on-demand / insidental* (penghuni baru susulan, kelebihan listrik kWh, denda keterlambatan, atau kerusakan fasilitas) dengan data kontrak yang terisi otomatis begitu unit kamar dipilih.
+3. **Penyelesaian Potong Deposit (Escrow Settlement)**:
+   - Pada modal pencatatan pembayaran (WF-05 / WF-06), tersedia metode pembayaran **`Potong Deposit (Escrow Settlement)`**.
+   - Digunakan saat penghuni check-out di bulan terakhir atau kondisi darurat sewa, yang otomatis melunasi tagihan sewa dan mendebit saldo deposit kamar secara aman dan transparan.
+4. **Pengakhiran Sewa, Terminasi / Usir & Check-Out Penghuni (WF-04 · SCR-08)**:
+   - Tindakan pengakhiran sewa atau pengusiran penghuni bermasalah dapat dilakukan langsung melalui tombol aksi cepat **`Akhiri Sewa / Usir`** di bagian atas header profil penghuni (Dossier Header) tanpa perlu menggulir ke bawah dokumen SPK.
+   - Membuka modal **`Pengakhiran Sewa / Check-Out Penghuni`** dengan alur SOP terpadu:
+     a. Penentuan tanggal efektif check-out (menggunakan kalender datepicker arah ke bawah dengan trigger putih bersih senada field input).
+     b. Rekonsiliasi dana jaminan deposit (refund utuh atau potong tunggakan sewa/kerusakan).
+     c. Rekening tujuan pencairan refund penghuni.
+     d. Checklist digital serah terima kunci dan inspeksi fisik fasilitas kamar.
+   - Status unit kamar pasca check-out otomatis dialihkan menjadi **`Kosong / Siap Bersih`** pada sistem kamar (WF-03).
+5. **Integrasi Metrik & Distribusi Tagihan (Layout 1 : 1 : 1.9 & Eliminasi Redundansi)**:
+   - Header metrik atas pada halaman tagihan menggunakan proporsi asimetris yang efisien:
+     - **Card 1 (Kas Masuk Realisasi)**: `1fr` kompak dengan sparkline curve realisasi kas.
+     - **Card 2 (Sisa Piutang Berjalan)**: `1fr` kompak dengan rincian breakdown telat vs berjalan.
+     - **Card 3 (Efisiensi & Distribusi Tagihan - Hero Executive Card)**: `1.9fr` lebar berlatar *Obsidian Dark* (#111111), menggabungkan rasio penagihan, target nominal, multi-segmented distribution bar (Lunas, Cicilan, Jatuh Tempo, Terlambat), serta chip filter status interaktif dan tombol aksi siaran WA.
+   - **Eliminasi Kartu Terpisah**: Kartu Distribusi Tagihan terpisah dihapus total sehingga menghemat ~140px ruang vertikal, memungkinkan tabel Matriks Penagihan langsung terlihat jelas di layar tanpa perlu scroll ke bawah.
+   - **Tooltip Standar Browser**: Menggunakan tooltip bawaan browser (`title="..."`) yang ringan, instan, andal tanpa kedip/flicker.

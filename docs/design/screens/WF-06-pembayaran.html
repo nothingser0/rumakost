@@ -3,16 +3,1468 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RumaKost · Pencatatan Pembayaran Masuk</title>
+  <title>RumaKost · Multi-Wallet Financial Hub & Waterfall Payment Feed</title>
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-    /* METHOD SELECTOR PILLS */
+    /* ==========================================================================
+       ESTIFY MULTI-WALLET FINANCIAL HUB & DAILY WATERFALL PAYMENT FEED (WF-06)
+       Visual DNA: Estify Real Estate Dashboard (Modern Minimalist Real-Estate)
+       Layout: Multi-Wallet Channel Carousel + Daily Waterfall Timeline Feed
+       Strict Craftsmanship: Zero Native Select, Zero Alert, Zero Emoji, Pure Lucide SVG
+       Height Consistency: 3 Metric Hero Cards Computed 156px (Identik WF-02, 03, 05)
+       ========================================================================== */
+    body {
+      background: var(--bg-canvas);
+      color: var(--text-main);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top canopy overlay masks content scrolling into top 20px gap (Sinkron dengan WF-05 & WF-07) */
+    .top-canopy-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: var(--bg-canvas, #F7F8FA);
+      z-index: 95;
+      pointer-events: none;
+    }
+
+    /* Pinned corner masks on topbar to eliminate any scrolling content peek-through */
+    .topbar::before,
+    .topbar::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      width: 25px;
+      height: 25px;
+      pointer-events: none;
+      z-index: 101;
+    }
+
+    .topbar::before {
+      left: -1px;
+      background: radial-gradient(circle at 100% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+    }
+
+    .topbar::after {
+      right: -1px;
+      background: radial-gradient(circle at 0% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+    }
+
+    .dashboard-wrapper {
+      max-width: 1440px;
+      width: calc(100% - 40px);
+      margin: 0 auto;
+      padding: 20px 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       1. ESTIFY 2-COLUMN MASTER DASHBOARD GRID (SINKRON DENGAN WF-02 & WF-03)
+       ══════════════════════════════════════════════════════════════ */
+    .dashboard-2col-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 20px;
+      align-items: start;
+      width: 100%;
+      max-width: 1440px;
+    }
+
+    .col-main-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .col-sidebar-flow,
+    .card-detail-drawer {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: 18px 18px 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+      width: 360px;
+      max-width: 360px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 110px;
+      height: fit-content;
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .col-sidebar-flow::-webkit-scrollbar,
+    .card-detail-drawer::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       2. TOP ROW: 3 GAUGE METRIC CARDS (100% IDENTIK WF-02 DASHBOARD)
+       - Tinggi Computed: 156px (Padding 22px + Icon 38px + Gap 16px + Gauge 58px + Padding 20px)
+       - Lebar per Card: ~326px (1.020px / 3)
+       ══════════════════════════════════════════════════════════════ */
+    .metrics-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      align-items: stretch;
+    }
+
+    .metric-card-estify {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 22px 24px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all var(--transition-fast);
+      min-height: 156px;
+      box-sizing: border-box;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .metric-card-estify:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+      border-color: #CBD5E1;
+    }
+
+    .metric-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .metric-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .metric-icon-sq {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+
+    .metric-card-estify:hover .metric-icon-sq {
+      transform: scale(1.05);
+    }
+
+    .metric-icon-sq.is-brand {
+      background: #FFF7ED;
+      color: #FF7A00;
+      border: 1px solid #FFEDD5;
+    }
+
+    .metric-icon-sq.is-green {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+    }
+
+    .metric-icon-sq.is-dark {
+      background: #F1F5F9;
+      color: #111111;
+      border: 1px solid #E2E8F0;
+    }
+
+    .metric-lbl-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+    }
+
+    .metric-badge-pill {
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      line-height: 1.2;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pill-orange-soft {
+      background: #FFF7ED;
+      color: #FF7A00;
+      border: 1px solid #FFEDD5;
+    }
+
+    .pill-green-soft {
+      background: #DCFCE7;
+      color: #16A34A;
+      border: 1px solid #BBF7D0;
+    }
+
+    .pill-dark-soft {
+      background: #F1F5F9;
+      color: #111111;
+      border: 1px solid #E2E8F0;
+    }
+
+    .metric-card-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .metric-val-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .metric-lbl-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .metric-value-huge {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+      white-space: nowrap;
+    }
+
+    .metric-sub-val {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ESTIFY RADIAL SPEEDOMETER GAUGE (CMP-06) */
+    .gauge-meter-wrap {
+      width: 104px;
+      height: 58px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      overflow: visible;
+    }
+
+    .gauge-meter-svg {
+      width: 104px;
+      height: 58px;
+      overflow: visible;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       3. RIGHT SIDEBAR FLOW (360PX · ESTIFY DESIGN SYSTEM)
+       ══════════════════════════════════════════════════════════════ */
+    .sidebar-card-box {
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sidebar-section-divider {
+      height: 1px;
+      background: #ECEEF2;
+      width: 100%;
+      margin: 4px 0;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .sidebar-title-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-channel-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-channel-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      text-decoration: none;
+      outline: none;
+    }
+
+    .sidebar-channel-item:hover {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar-channel-item.active {
+      background: #FFFFFF;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 1.5px var(--brand-primary), 0 4px 16px rgba(255, 122, 0, 0.10);
+    }
+
+    .channel-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .channel-mini-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .channel-mini-icon.is-all {
+      background: #0F172A;
+      color: #FFFFFF;
+    }
+
+    .channel-mini-icon.is-bca {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+    }
+
+    .channel-mini-icon.is-qris {
+      background: #FFF7ED;
+      color: #EA580C;
+      border: 1px solid #FFEDD5;
+    }
+
+    .channel-mini-icon.is-cash {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+    }
+
+    .channel-meta-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .channel-meta-sub {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin: 2px 0 0;
+    }
+
+    .channel-item-right {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .channel-amount-txt {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .channel-share-pill {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      background: #F1F5F9;
+      color: #475569;
+    }
+
+    .sidebar-channel-item.active .channel-share-pill {
+      background: #FFF7ED;
+      color: var(--brand-primary);
+    }
+
+    /* Pending Verification in Sidebar */
+    .sidebar-pending-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar-pending-card {
+      padding: 14px;
+      border-radius: 14px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+      transition: all var(--transition-fast);
+    }
+
+    .sidebar-pending-card:hover {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .pending-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .pending-tenant-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .pending-room-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 2px 0 0;
+    }
+
+    .pending-amount-huge {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      text-align: right;
+    }
+
+    .pending-recorded-note {
+      font-size: 10.5px;
+      color: #64748B;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      padding: 6px 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pending-action-btn-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    .btn-quick-sah-pembayaran {
+      height: 32px;
+      background: #0F172A;
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-quick-sah-pembayaran:hover {
+      background: #1E293B;
+      transform: translateY(-1px);
+    }
+
+    .btn-quick-tolak-pembayaran {
+      height: 32px;
+      padding: 0 14px;
+      background: #FFFFFF;
+      color: #EF4444;
+      border: 1px solid #FECDD3;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-quick-tolak-pembayaran:hover {
+      background: #FEF2F2;
+      border-color: #EF4444;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       3. CONTROLS BAR: SEARCH & STATUS PILL SEGMENTS (SINGLE LINE TOOLBAR)
+       ══════════════════════════════════════════════════════════════ */
+    .controls-strip-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 10px 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.025);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: nowrap;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .search-capsule-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 34px;
+      padding: 0 12px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-full);
+      flex: 1 1 180px;
+      max-width: 240px;
+      min-width: 140px;
+      transition: all var(--transition-fast);
+    }
+
+    .search-capsule-box:focus-within {
+      background: #FFFFFF;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .search-capsule-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 11.5px;
+      color: var(--text-main);
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .search-capsule-box input::placeholder {
+      color: #94A3B8;
+    }
+
+    .btn-clear-search {
+      background: none;
+      border: none;
+      color: #94A3B8;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .filter-segment-tabs {
+      display: inline-flex;
+      align-items: center;
+      background: #F1F5F9;
+      padding: 2.5px;
+      border-radius: var(--radius-full);
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .segment-tab-btn {
+      height: 29px;
+      padding: 0 10px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748B;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .segment-tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .segment-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .controls-actions-cluster {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-export-action {
+      height: 34px;
+      padding: 0 13px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+      background: #FFFFFF;
+      color: var(--text-main);
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-export-action:hover {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      transform: translateY(-1px);
+    }
+
+    .btn-action-catat {
+      height: 34px;
+      padding: 0 16px;
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(255, 122, 0, 0.2);
+    }
+      border: none;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-action-catat:hover {
+      background: var(--brand-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       4. DAILY WATERFALL PAYMENT FEED (TIMELINE STREAMING)
+       ══════════════════════════════════════════════════════════════ */
+    .waterfall-feed-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .waterfall-day-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .day-header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      align-self: flex-start;
+      padding: 6px 14px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .day-header-icon {
+      color: var(--brand-primary);
+    }
+
+    .day-header-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .day-header-count {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .day-tx-stream {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Elegant Waterfall Card Item */
+    .feed-tx-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 20px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      transition: all var(--transition-fast);
+    }
+
+    .feed-tx-card:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .feed-tx-card.is-pending {
+      border-color: #FDE68A;
+      background: #FFFDF9;
+    }
+
+    .feed-tx-card.is-reversed {
+      border-color: #FECDD3;
+      background: #FFFBFB;
+      opacity: 0.90;
+    }
+
+    /* Main Row in Card */
+    .feed-tx-main-row {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+    }
+
+    .feed-left-cluster {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tenant-avatar-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--dark-pill);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tenant-avatar-circle.is-orange { background: #FF7A00; }
+    .tenant-avatar-circle.is-blue { background: #3B82F6; }
+    .tenant-avatar-circle.is-purple { background: #8B5CF6; }
+    .tenant-avatar-circle.is-pink { background: #EC4899; }
+    .tenant-avatar-circle.is-teal { background: #0D9488; }
+    .tenant-avatar-circle.is-gray { background: #64748B; }
+
+    .feed-identity-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 150px;
+    }
+
+    .feed-tenant-name {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .feed-room-badge {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .feed-channel-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .feed-channel-pill.is-bca { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+    .feed-channel-pill.is-qris { background: #FEF3C7; color: #B45309; border-color: #FDE68A; }
+    .feed-channel-pill.is-mandiri { background: #EFF6FF; color: #0369A1; border-color: #BAE6FD; }
+    .feed-channel-pill.is-cash { background: #F0FDF4; color: #15803D; border-color: #BBF7D0; }
+    .feed-channel-pill.is-deposit { background: #F5F3FF; color: #6D28D9; border-color: #DDD6FE; }
+    .feed-channel-pill.is-reversal { background: #FEE2E2; color: #DC2626; border-color: #FECDD3; }
+
+    .feed-timestamp-txt {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .feed-right-cluster {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .feed-amount-box {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .feed-amount-val {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .feed-amount-val.is-negative {
+      color: #DC2626;
+    }
+
+    .feed-due-sub {
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    .status-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-pill-badge.is-success {
+      background: #DCFCE7;
+      color: #16A34A;
+      border: 1px solid #BBF7D0;
+    }
+
+    .status-pill-badge.is-warning {
+      background: #FEF3C7;
+      color: #D97706;
+      border: 1px solid #FDE68A;
+    }
+
+    .status-pill-badge.is-partial {
+      background: #FFF7ED;
+      color: #EA580C;
+      border: 1px solid #FFEDD5;
+    }
+
+    .status-pill-badge.is-danger {
+      background: #FEE2E2;
+      color: #EF4444;
+      border: 1px solid #FECDD3;
+    }
+
+    .btn-expand-caret {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748B;
+      transition: transform var(--transition-fast);
+    }
+
+    .feed-tx-card.expanded .btn-expand-caret {
+      transform: rotate(180deg);
+      background: #111111;
+      color: #FFFFFF;
+      border-color: #111111;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       EXPANDABLE ACCORDION DOSSIER (TERBUKA DI BAWAH KARTU)
+       ══════════════════════════════════════════════════════════════ */
+    .feed-tx-details-accordion {
+      display: none;
+      padding: 0 20px 20px;
+      border-top: 1px dashed #E2E8F0;
+      background: #FAFAFC;
+      box-sizing: border-box;
+    }
+
+    .feed-tx-card.expanded .feed-tx-details-accordion {
+      display: block;
+    }
+
+    .details-grid-3col {
+      display: grid;
+      grid-template-columns: 280px 1fr 240px;
+      gap: 16px;
+      padding-top: 16px;
+      align-items: stretch;
+    }
+
+    /* Col 1: Slip Digital Proof Box */
+    .accordion-slip-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .accordion-slip-card:hover {
+      border-color: var(--brand-primary);
+      box-shadow: 0 4px 16px rgba(255, 122, 0, 0.08);
+    }
+
+    .slip-head-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #64748B;
+    }
+
+    .slip-center-nominal {
+      text-align: center;
+      padding: 6px 0;
+      border-top: 1px dashed #E2E8F0;
+      border-bottom: 1px dashed #E2E8F0;
+      margin: 2px 0;
+    }
+
+    .slip-nominal-txt {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .slip-ref-meta {
+      font-size: 10.5px;
+      color: #64748B;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Col 2: Reconciliation & Audit Timeline */
+    .accordion-reconcile-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .reconcile-metrics-inline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      border-bottom: 1px solid #F1F5F9;
+      padding-bottom: 10px;
+    }
+
+    .reconcile-item-box {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .reconcile-item-lbl {
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    .reconcile-item-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Timeline in Accordion */
+    .accordion-timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .accordion-timeline-list::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: #E2E8F0;
+    }
+
+    .timeline-node-row {
+      position: relative;
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -16px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94A3B8;
+      border: 1.5px solid #FFFFFF;
+    }
+
+    .timeline-dot.is-green { background: #16A34A; }
+    .timeline-dot.is-amber { background: #F59E0B; }
+    .timeline-dot.is-red { background: #EF4444; }
+
+    /* Col 3: Action Buttons */
+    .accordion-actions-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-exec-approve {
+      width: 100%;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: #111111;
+      color: #FFFFFF;
+      border: none;
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-exec-approve:hover {
+      background: #262626;
+      transform: translateY(-1px);
+    }
+
+    .btn-exec-reject {
+      width: 100%;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: #FEE2E2;
+      color: #EF4444;
+      border: 1px solid #FECDD3;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-exec-reject:hover {
+      background: #FCA5A5;
+      color: #B91C1C;
+    }
+
+    .btn-exec-receipt {
+      width: 100%;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: #F8FAFC;
+      color: var(--text-secondary);
+      border: 1px solid #CBD5E1;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-exec-receipt:hover {
+      background: #FFFFFF;
+      color: var(--text-main);
+      border-color: #94A3B8;
+    }
+
+    .btn-exec-reversal {
+      width: 100%;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: #FFFFFF;
+      color: #DC2626;
+      border: 1px dashed #FCA5A5;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-exec-reversal:hover {
+      background: #FEF2F2;
+      border-color: #DC2626;
+    }
+
+    .staff-badge-locked {
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 10.5px;
+      color: #C2410C;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       MODAL DIALOGS (RK-030 s.d. RK-033)
+       ══════════════════════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.96);
+      transition: transform var(--transition-normal);
+      max-height: 90vh;
+    }
+
+    .modal-overlay.open .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-card-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #F3F4F6;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-modal-close:hover {
+      background: #E5E7EB;
+      color: var(--text-main);
+    }
+
+    .modal-card-body {
+      padding: 20px 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-card-footer {
+      padding: 16px 24px 20px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #FAFAFA;
+    }
+
+    .form-group-custom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label-custom {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .form-input-custom {
+      height: 40px;
+      border: 1.5px solid var(--border-input);
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      font-family: inherit;
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .form-input-custom:focus {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .form-textarea-custom {
+      border: 1.5px solid var(--border-input);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--text-main);
+      font-family: inherit;
+      outline: none;
+      resize: vertical;
+      min-height: 70px;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .form-textarea-custom:focus {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    /* Popover Custom Dropdown untuk Pilih Tagihan & Kamar */
+    .method-popover-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .method-popover-panel {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 14px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+      z-index: 150;
+      padding: 6px;
+      max-height: 200px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .method-popover-panel.open {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      animation: popoverDropAnim 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popoverDropAnim {
+      from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .method-popover-opt {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .method-popover-opt:hover {
+      background: #F8FAFC;
+      border-color: #E2E8F0;
+    }
+
+    .method-popover-opt.active {
+      background: #FFF7ED;
+      border-color: #FFEDD5;
+      color: var(--brand-primary);
+      font-weight: 600;
+    }
+
+    .method-popover-opt strong {
+      font-size: 11.5px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
     .method-selector-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    @media (max-width: 480px) {
+      .method-selector-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     .method-radio-box {
@@ -21,26 +1473,60 @@
       padding: 10px 6px;
       text-align: center;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: #4B5563;
-      transition: all 150ms ease;
+      transition: all var(--transition-fast);
       background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
     }
 
-    .method-radio-box:hover { border-color: #FF7A00; color: #FF7A00; }
+    .method-radio-box:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+
     .method-radio-box.active {
-      border-color: #FF7A00;
-      background: #FFF7ED;
-      color: #FF7A00;
+      border-color: var(--brand-primary);
+      background: var(--brand-primary-light);
+      color: var(--brand-primary);
     }
 
-    /* CALCULATION CALLOUT BOX */
+    .upload-dropzone {
+      border: 2px dashed #CBD5E1;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      background: #F8FAFC;
+      transition: all var(--transition-fast);
+    }
+
+    .upload-dropzone:hover {
+      border-color: var(--brand-primary);
+      background: #FFFBF8;
+    }
+
+    .upload-icon-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--brand-primary-light);
+      color: var(--brand-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+
     .calculation-callout {
-      background: #F7F8FA;
+      background: #F8FAFC;
       border: 1px solid #ECEEF2;
       border-radius: 14px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
       gap: 6px;
@@ -49,455 +1535,1870 @@
     .calc-row {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
-      color: #6B7280;
+      font-size: 11.5px;
+      color: #64748B;
     }
 
     .calc-row.highlight {
       font-weight: 700;
-      color: #111111;
-      border-top: 1px solid #ECEEF2;
-      padding-top: 8px;
-      margin-top: 4px;
+      color: var(--text-main);
+      border-top: 1px solid #E2E8F0;
+      padding-top: 6px;
+      margin-top: 2px;
     }
 
-    .calc-row.highlight .remaining-alert {
-      color: #D97706;
+    /* Floating Role Simulator Badge */
+    .wf-badge-role-bar {
+      position: fixed;
+      bottom: 14px;
+      right: 14px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-full);
+      padding: 6px 12px;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      z-index: 999;
+      font-size: 11px;
     }
 
-    /* UPLOAD DROPZONE */
-    .upload-zone {
-      border: 2px dashed #D1D5DB;
-      border-radius: 14px;
-      padding: 18px;
-      text-align: center;
+    .btn-toggle-role-pill {
+      background: #111111;
+      color: #FFFFFF;
+      border: none;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 10.5px;
+      font-weight: 600;
       cursor: pointer;
-      background: #FAFAFA;
-      transition: all 150ms ease;
-    }
-
-    .upload-zone:hover {
-      border-color: #FF7A00;
-      background: #FFFBF8;
-    }
-
-    .upload-icon-wrapper {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #FFF7ED;
-      color: #FF7A00;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 6px;
+      gap: 4px;
+      transition: background var(--transition-fast);
     }
 
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 8px;
-      border-top: 1px solid #ECEEF2;
-      padding-top: 16px;
+    .btn-toggle-role-pill:hover {
+      background: #262626;
     }
 
-    .wf-badge {
-      position: fixed;
-      bottom: 12px;
-      right: 12px;
+    /* Digital Receipt Sheet */
+    .digital-receipt-sheet {
       background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 8px;
-      padding: 4px 10px;
-      font-size: 11px;
-      color: #6B7280;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      z-index: 999;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .receipt-watermark-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-25deg);
+      font-size: 56px;
+      font-weight: 900;
+      color: rgba(22, 163, 74, 0.07);
+      border: 6px solid rgba(22, 163, 74, 0.09);
+      padding: 8px 30px;
+      border-radius: 16px;
+      letter-spacing: 0.15em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .receipt-watermark-overlay.is-partial {
+      color: rgba(217, 119, 6, 0.07);
+      border-color: rgba(217, 119, 6, 0.09);
+    }
+
+    /* Responsive adaptations for 2-column layout */
+    @media (max-width: 1200px) {
+      .dashboard-2col-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .col-sidebar-flow {
+        width: 100%;
+        max-width: 100%;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .metrics-row-3 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .col-sidebar-flow {
+        width: 100%;
+        max-width: 100%;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="wf-badge">SCR-11 · Log Pembayaran & Modal Catat Uang Masuk</div>
-
-  <!-- TOPBAR -->
   <!-- TOP CANOPY OVERLAY (Masking celah atas navbar floating) -->
   <div class="top-canopy-overlay" aria-hidden="true"></div>
 
-  <header class="topbar" id="mainTopbar">
-    <!-- Rendered dynamically by components.js -->
-  </header>
+  <!-- FLOATING TOPBAR (RENDERED BY components.js) -->
+  <header class="topbar" id="mainTopbar"></header>
 
-  <!-- PAGE LAYOUT -->
-  <div class="page-layout">
-    
-    <!-- HEADER -->
-    <div class="page-header">
-      <div class="page-title-group">
-        <h1>Pencatatan Pembayaran Masuk</h1>
-        <p>Log mutasi kas masuk, verifikasi bukti transfer penyewa, dan pelunasan parsial.</p>
-      </div>
-      <div class="header-actions">
-        <a href="WF-05-tagihan.html" class="btn-pill btn-white-secondary">
-          <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
-          Ke Daftar Tagihan
-        </a>
-        <button class="btn-pill btn-orange-primary" onclick="openPaymentModal()">
-          <i data-lucide="plus-circle" style="width: 15px; height: 15px;"></i>
-          Catat Pembayaran Masuk
-        </button>
-      </div>
-    </div>
+  <!-- MAIN DASHBOARD CONTENT -->
+  <div class="dashboard-wrapper">
 
-    <!-- METRIC CARDS -->
-    <div class="metric-row">
-      <div class="metric-card">
-        <div class="metric-info">
-          <span class="metric-label">Total Diterima (Bulan Ini)</span>
-          <span class="metric-value">Rp 21.650.000</span>
-          <span class="metric-sub">
-            <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
-            +8.4% dari bulan lalu (11 transaksi)
-          </span>
-        </div>
-        <div class="metric-icon-circle icon-bg-green">
-          <i data-lucide="check-check" style="width: 24px; height: 24px;"></i>
-        </div>
-      </div>
+    <!-- ESTIFY 2-COLUMN MASTER DASHBOARD GRID (SINKRON DENGAN WF-02 & WF-03) -->
+    <main class="dashboard-2col-layout">
 
-      <div class="metric-card">
-        <div class="metric-info">
-          <span class="metric-label">Menunggu Verifikasi</span>
-          <span class="metric-value">Rp 1.500.000</span>
-          <span class="metric-sub warning">
-            <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
-            1 bukti transfer perlu dicek
-          </span>
-        </div>
-        <div class="metric-icon-circle icon-bg-yellow">
-          <i data-lucide="alert-circle" style="width: 24px; height: 24px;"></i>
-        </div>
-      </div>
+      <!-- LEFT / MAIN FLOW (CONTENT AREA · ~1.020PX) -->
+      <div class="col-main-flow">
 
-      <div class="metric-card">
-        <div class="metric-info">
-          <span class="metric-label">Sisa Saldo Terutang</span>
-          <span class="metric-value">Rp 750.000</span>
-          <span class="metric-sub neutral">
-            <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
-            1 kamar pembayaran bertahap (A-04)
-          </span>
-        </div>
-        <div class="metric-icon-circle icon-bg-orange">
-          <i data-lucide="wallet" style="width: 24px; height: 24px;"></i>
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTROLS ROW -->
-    <div class="controls-card">
-      <div class="filter-pills-row">
-        <button class="filter-tab-pill active">Semua Transaksi (12)</button>
-        <button class="filter-tab-pill">Terverifikasi (10)</button>
-        <button class="filter-tab-pill">Menunggu Verifikasi (1)</button>
-        <button class="filter-tab-pill">Parsial (1)</button>
-      </div>
-
-      <div class="search-input-wrapper">
-        <i data-lucide="search" class="search-icon-inside" style="width: 15px; height: 15px;"></i>
-        <input type="text" placeholder="Cari penghuni, invoice, no ref...">
-      </div>
-    </div>
-
-    <!-- TABLE CARD -->
-    <div class="table-card">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>ID Transaksi</th>
-            <th>No. Invoice</th>
-            <th>Kamar & Penghuni</th>
-            <th>Tanggal Masuk</th>
-            <th>Metode</th>
-            <th>Nominal Bayar</th>
-            <th>Status</th>
-            <th>Bukti</th>
-            <th style="text-align: right;">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Row 1: Terverifikasi -->
-          <tr>
-            <td class="tx-id">PAY-202610-01</td>
-            <td style="font-size: 12px; font-weight: 600; color: #4B5563;">INV-202610-001</td>
-            <td>
-              <div class="tenant-cell">
-                <div class="tenant-avatar-sm" style="background: #E0E7FF; color: #4338CA;">RM</div>
-                <div>
-                  <div style="font-weight: 600;">Rina Marliana</div>
-                  <div style="font-size: 11px; color: #6B7280;">Kamar A-01 · Lt. 1</div>
+        <!-- 1. TOP ROW: 3 GAUGE METRIC CARDS (100% IDENTIK WF-02 DASHBOARD · COMPUTED 156PX) -->
+        <div class="metrics-row-3">
+          
+          <!-- Card 1: Kas Masuk Realisasi -->
+          <div class="metric-card-estify">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-green">
+                  <i data-lucide="wallet" style="width: 18px; height: 18px;"></i>
                 </div>
+                <span class="metric-lbl-title">Kas Masuk Realisasi</span>
               </div>
-            </td>
-            <td>
-              <div style="font-weight: 500;">02 Okt 2026</div>
-              <div style="font-size: 11px; color: #9CA3AF;">09:14 WIB</div>
-            </td>
-            <td>
-              <span class="method-pill"><i data-lucide="credit-card" style="width: 12px; height: 12px;"></i> BCA TF</span>
-            </td>
-            <td style="font-weight: 700; color: #111111;">Rp 1.800.000</td>
-            <td><span class="status-badge badge-success"><i data-lucide="check" style="width: 12px; height: 12px;"></i> Terverifikasi</span></td>
-            <td>
-              <div class="receipt-thumbnail" title="Lihat Bukti Transfer">
-                <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+              <span class="metric-badge-pill pill-green-soft">+12.4% vs Sep &uarr;</span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Bulan ini (12 Mutasi)</span>
+                <div class="metric-value-huge">Rp 21,65 <span class="metric-sub-val">Jt</span></div>
               </div>
-            </td>
-            <td style="text-align: right;">
-              <button class="btn-table-action"><i data-lucide="printer" style="width: 12px; height: 12px;"></i> Kuitansi</button>
-            </td>
-          </tr>
 
-          <!-- Row 2: Menunggu Verifikasi -->
-          <tr style="background: #FFFDF8;">
-            <td class="tx-id">PAY-202610-02</td>
-            <td style="font-size: 12px; font-weight: 600; color: #4B5563;">INV-202610-003</td>
-            <td>
-              <div class="tenant-cell">
-                <div class="tenant-avatar-sm" style="background: #FEF3C7; color: #D97706;">AH</div>
-                <div>
-                  <div style="font-weight: 600;">Ahmad Hidayat</div>
-                  <div style="font-size: 11px; color: #6B7280;">Kamar A-03 · Lt. 1</div>
-                </div>
+              <!-- Estify Smooth Semi-Circle Radial Progress Gauge (Emerald Green) -->
+              <div class="gauge-meter-wrap" title="Realisasi Kas Masuk 86% dari Target Rp 25,05 Jt">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#10B981" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="15"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">86%</text>
+                </svg>
               </div>
-            </td>
-            <td>
-              <div style="font-weight: 500;">04 Okt 2026</div>
-              <div style="font-size: 11px; color: #9CA3AF;">14:30 WIB</div>
-            </td>
-            <td>
-              <span class="method-pill"><i data-lucide="qr-code" style="width: 12px; height: 12px;"></i> QRIS</span>
-            </td>
-            <td style="font-weight: 700; color: #111111;">Rp 1.500.000</td>
-            <td><span class="status-badge badge-warning"><i data-lucide="clock" style="width: 12px; height: 12px;"></i> Menunggu Cek</span></td>
-            <td>
-              <div class="receipt-thumbnail" style="border-color: #D97706; color: #D97706;" title="Periksa Bukti Transfer">
-                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
-              </div>
-            </td>
-            <td style="text-align: right;">
-              <div class="action-btn-group" style="justify-content: flex-end;">
-                <button class="btn-table-action" style="background: #111111; color: #FFFFFF; border-color: #111111;"><i data-lucide="check" style="width: 12px; height: 12px;"></i> Sahkan</button>
-              </div>
-            </td>
-          </tr>
-
-          <!-- Row 3: Parsial / Cicilan -->
-          <tr>
-            <td class="tx-id">PAY-202610-03</td>
-            <td style="font-size: 12px; font-weight: 600; color: #4B5563;">INV-202610-004</td>
-            <td>
-              <div class="tenant-cell">
-                <div class="tenant-avatar-sm" style="background: #DBEAFE; color: #2563EB;">BP</div>
-                <div>
-                  <div style="font-weight: 600;">Budi Pratama</div>
-                  <div style="font-size: 11px; color: #6B7280;">Kamar A-04 · Lt. 1</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div style="font-weight: 500;">05 Okt 2026</div>
-              <div style="font-size: 11px; color: #9CA3AF;">11:05 WIB</div>
-            </td>
-            <td>
-              <span class="method-pill"><i data-lucide="banknote" style="width: 12px; height: 12px;"></i> Tunai</span>
-            </td>
-            <td>
-              <div style="font-weight: 700; color: #111111;">Rp 750.000</div>
-              <div style="font-size: 10px; color: #D97706; font-weight: 600;">Sisa: Rp 750.000</div>
-            </td>
-            <td><span class="status-badge badge-info"><i data-lucide="percent" style="width: 12px; height: 12px;"></i> Parsial (50%)</span></td>
-            <td>
-              <div class="receipt-thumbnail" title="Kuitansi Tanda Terima Tunai">
-                <i data-lucide="file-check" style="width: 16px; height: 16px;"></i>
-              </div>
-            </td>
-            <td style="text-align: right;">
-              <button class="btn-table-action" onclick="openPaymentModal('INV-202610-004')"><i data-lucide="plus" style="width: 12px; height: 12px;"></i> Lunasi Sisa</button>
-            </td>
-          </tr>
-
-          <!-- Row 4: Terverifikasi -->
-          <tr>
-            <td class="tx-id">PAY-202610-04</td>
-            <td style="font-size: 12px; font-weight: 600; color: #4B5563;">INV-202610-005</td>
-            <td>
-              <div class="tenant-cell">
-                <div class="tenant-avatar-sm" style="background: #FCE7F3; color: #DB2777;">DA</div>
-                <div>
-                  <div style="font-weight: 600;">Dewi Anggraini</div>
-                  <div style="font-size: 11px; color: #6B7280;">Kamar B-01 · Lt. 2</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div style="font-weight: 500;">01 Okt 2026</div>
-              <div style="font-size: 11px; color: #9CA3AF;">18:22 WIB</div>
-            </td>
-            <td>
-              <span class="method-pill"><i data-lucide="credit-card" style="width: 12px; height: 12px;"></i> BCA TF</span>
-            </td>
-            <td style="font-weight: 700; color: #111111;">Rp 2.100.000</td>
-            <td><span class="status-badge badge-success"><i data-lucide="check" style="width: 12px; height: 12px;"></i> Terverifikasi</span></td>
-            <td>
-              <div class="receipt-thumbnail" title="Lihat Bukti Transfer">
-                <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
-              </div>
-            </td>
-            <td style="text-align: right;">
-              <button class="btn-table-action"><i data-lucide="printer" style="width: 12px; height: 12px;"></i> Kuitansi</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-  </div>
-
-  <!-- INTERACTIVE MODAL DIALOG: SCR-11 CATAT PEMBAYARAN MASUK -->
-  <div class="modal-backdrop" id="paymentModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div>
-          <h2 class="modal-title">Catat Pembayaran Masuk</h2>
-          <p class="modal-subtitle">Rekam pelunasan atau cicilan sewa dari penyewa kost.</p>
-        </div>
-        <button class="modal-close-btn" onclick="closePaymentModal()">
-          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
-        </button>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Pilih Tagihan / Kamar</label>
-        <select class="form-select" id="invoiceSelect" onchange="updateRemainingCalculation()">
-          <option value="INV-202610-004">INV-202610-004 · Kamar A-04 (Budi Pratama) — Terutang: Rp 750.000</option>
-          <option value="INV-202610-006">INV-202610-006 · Kamar B-02 (Fajar Setiawan) — Terutang: Rp 1.500.000</option>
-          <option value="INV-202610-008">INV-202610-008 · Kamar B-04 (Hendra Wijaya) — Terutang: Rp 1.500.000</option>
-          <option value="INV-202610-011">INV-202610-011 · Kamar C-02 (Lestari Indah) — Terutang: Rp 1.500.000</option>
-        </select>
-      </div>
-
-      <div class="form-row-2">
-        <div class="form-group">
-          <label class="form-label">Tanggal Diterima</label>
-          <input type="date" class="form-input" value="2026-10-22">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nominal Bayar (Rp)</label>
-          <input type="number" class="form-input" id="nominalInput" value="750000" oninput="updateRemainingCalculation()">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Metode Pembayaran</label>
-        <div class="method-selector-grid">
-          <div class="method-radio-box active" onclick="selectMethod(this)">Transfer BCA</div>
-          <div class="method-radio-box" onclick="selectMethod(this)">Tunai</div>
-          <div class="method-radio-box" onclick="selectMethod(this)">QRIS</div>
-          <div class="method-radio-box" onclick="selectMethod(this)">Mandiri</div>
-        </div>
-      </div>
-
-      <!-- Realtime Calculation Callout -->
-      <div class="calculation-callout">
-        <div class="calc-row">
-          <span>Total Tagihan:</span>
-          <span style="font-weight: 600;">Rp 1.500.000</span>
-        </div>
-        <div class="calc-row">
-          <span>Telah Terbayar Sebelumnya:</span>
-          <span>Rp 750.000</span>
-        </div>
-        <div class="calc-row highlight">
-          <span>Sisa Saldo Setelah Input Ini:</span>
-          <span class="remaining-alert" id="calcRemaining">Rp 0 (LUNAS)</span>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Nomor Referensi Transfer / Catatan</label>
-        <input type="text" class="form-input" placeholder="Contoh: TF BCA 883019 Budi P / Kuitansi manual #44">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Unggah Bukti Transaksi (Opsional)</label>
-        <div class="upload-zone">
-          <div class="upload-icon-wrapper">
-            <i data-lucide="upload-cloud" style="width: 20px; height: 20px;"></i>
+            </div>
           </div>
-          <div style="font-size: 12px; font-weight: 600; color: #111111;">Klik atau seret struk transfer kemari</div>
-          <div style="font-size: 11px; color: #9CA3AF; margin-top: 2px;">Format JPG, PNG atau PDF maks. 5MB</div>
+
+          <!-- Card 2: Menunggu Verifikasi Staf (Zero Self-Approval) -->
+          <div class="metric-card-estify">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-brand">
+                  <i data-lucide="clock-alert" style="width: 18px; height: 18px;"></i>
+                </div>
+                <span class="metric-lbl-title">Menunggu Verifikasi</span>
+              </div>
+              <span class="metric-badge-pill pill-orange-soft">2 Transaksi</span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Persetujuan Pemilik</span>
+                <div class="metric-value-huge">Rp 3,40 <span class="metric-sub-val">Jt</span></div>
+              </div>
+
+              <!-- Estify Smooth Semi-Circle Radial Progress Gauge (Signature Brand Orange) -->
+              <div class="gauge-meter-wrap" title="Antrean Verifikasi Staf 80%">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#FF7A00" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="21.4"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">80%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Sisa Piutang Berjalan (Outstanding Tenant Due) -->
+          <div class="metric-card-estify">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-dark">
+                  <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
+                </div>
+                <span class="metric-lbl-title">Sisa Piutang Berjalan</span>
+              </div>
+              <span class="metric-badge-pill pill-dark-soft">1 Cicilan</span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Sisa Target Rp 25,05 Jt</span>
+                <div class="metric-value-huge">Rp 3,40 <span class="metric-sub-val">Jt</span></div>
+              </div>
+
+              <!-- Estify Smooth Semi-Circle Radial Progress Gauge (Obsidian Dark) -->
+              <div class="gauge-meter-wrap" title="Sisa Piutang 14% dari Target">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="91.8"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">14%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
         </div>
+
+        <!-- 2. CONTROLS STRIP: SEARCH & STATUS PILL SEGMENTS (SINGLE LINE TOOLBAR) -->
+        <div class="controls-strip-card">
+          <div class="search-capsule-box">
+            <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8; flex-shrink: 0;"></i>
+            <input type="text" id="txSearchInput" placeholder="Cari transaksi, kamar, nama..." oninput="handleSearch(this.value)">
+            <button type="button" id="clearSearchBtn" class="btn-clear-search" onclick="clearSearch()" title="Hapus pencarian">
+              <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+            </button>
+          </div>
+
+          <div class="filter-segment-tabs">
+            <button type="button" class="segment-tab-btn active" onclick="switchFilterStatus('all', this)">Semua (12)</button>
+            <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('pending', this)">Menunggu Cek (2)</button>
+            <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('verified', this)">Lunas (9)</button>
+            <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('partial', this)">Cicilan (1)</button>
+            <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('reversed', this)">Reversal (1)</button>
+          </div>
+
+          <div class="controls-actions-cluster">
+            <button type="button" class="btn-export-action" onclick="RumaUI.showToast('Rekap transaksi Oktober 2026 berhasil diekspor (CSV)!', 'success')" title="Ekspor rekap mutasi kas ke CSV">
+              <i data-lucide="download" style="width: 13px; height: 13px;"></i>
+              <span>Ekspor</span>
+            </button>
+
+            <button type="button" class="btn-action-catat" onclick="openModalCatatBayar()" title="Catat penerimaan pembayaran manual baru">
+              <i data-lucide="plus" style="width: 13px; height: 13px;"></i>
+              <span>Catat Penerimaan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. DAILY WATERFALL PAYMENT FEED (TIMELINE STREAMING) -->
+        <section class="waterfall-feed-container" id="waterfallFeedContainer">
+          <!-- Injected Dynamically by JavaScript -->
+        </section>
+
       </div>
 
-      <div class="modal-actions">
-        <button class="btn-pill btn-white-secondary" onclick="closePaymentModal()">Batal</button>
-        <button class="btn-pill btn-orange-primary" onclick="submitPayment()">
-          <i data-lucide="check" style="width: 15px; height: 15px;"></i>
-          Simpan Pembayaran
+      <!-- RIGHT SIDEBAR FLOW (360PX · ESTIFY DESIGN SYSTEM · IDENTIK WF-03 DRAWER) -->
+      <aside class="col-sidebar-flow card-detail-drawer" id="paymentSidebarFlow">
+
+        <!-- SIDEBAR CARD 1: KANAL REKENING AKTIF (MULTI-WALLET HUB) -->
+        <div class="sidebar-card-box">
+          <div class="sidebar-header-row">
+            <h4 class="sidebar-title-text">
+              <i data-lucide="landmark" style="width: 16px; height: 16px; color: var(--brand-primary);"></i>
+              <span>Kanal Kasir Aktif</span>
+            </h4>
+            <span class="status-pill-badge is-success" style="font-size: 10px; padding: 2px 8px;">3 Kanal</span>
+          </div>
+
+          <div class="sidebar-channel-list">
+            <!-- Channel 1: Semua Kanal (Konsolidasi) -->
+            <div class="sidebar-channel-item active" id="walletCard-all" onclick="selectWalletFilter('all', this)" tabindex="0" role="button" aria-pressed="true" title="Tampilkan Semua Kanal">
+              <div class="channel-item-left">
+                <div class="channel-mini-icon is-all">
+                  <i data-lucide="layers" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div>
+                  <div class="channel-meta-name">Semua Kanal Kasir</div>
+                  <div class="channel-meta-sub">Konsolidasi Finansial</div>
+                </div>
+              </div>
+              <div class="channel-item-right">
+                <div class="channel-amount-txt">Rp 21,65 Jt</div>
+                <span class="channel-share-pill">100% Total</span>
+              </div>
+            </div>
+
+            <!-- Channel 2: Bank Central Asia (BCA) -->
+            <div class="sidebar-channel-item" id="walletCard-bca" onclick="selectWalletFilter('bca', this)" tabindex="0" role="button" aria-pressed="false" title="Filter Transaksi: Rekening BCA">
+              <div class="channel-item-left">
+                <div class="channel-mini-icon is-bca">
+                  <i data-lucide="credit-card" style="width: 15px; height: 15px;"></i>
+                </div>
+                <div>
+                  <div class="channel-meta-name">Bank Central Asia</div>
+                  <div class="channel-meta-sub">BCA &middot; 8820-1928-33</div>
+                </div>
+              </div>
+              <div class="channel-item-right">
+                <div class="channel-amount-txt">Rp 12,85 Jt</div>
+                <span class="channel-share-pill">59.3% Share</span>
+              </div>
+            </div>
+
+            <!-- Channel 3: QRIS Merchant Instant -->
+            <div class="sidebar-channel-item" id="walletCard-qris" onclick="selectWalletFilter('qris', this)" tabindex="0" role="button" aria-pressed="false" title="Filter Transaksi: QRIS Merchant">
+              <div class="channel-item-left">
+                <div class="channel-mini-icon is-qris">
+                  <i data-lucide="qr-code" style="width: 15px; height: 15px;"></i>
+                </div>
+                <div>
+                  <div class="channel-meta-name">QRIS Merchant</div>
+                  <div class="channel-meta-sub">MID: Q91823 &middot; Instant</div>
+                </div>
+              </div>
+              <div class="channel-item-right">
+                <div class="channel-amount-txt">Rp 4,80 Jt</div>
+                <span class="channel-share-pill">22.2% Share</span>
+              </div>
+            </div>
+
+            <!-- Channel 4: Kas Tunai & Brankas Mandiri -->
+            <div class="sidebar-channel-item" id="walletCard-cash" onclick="selectWalletFilter('cash', this)" tabindex="0" role="button" aria-pressed="false" title="Filter Transaksi: Kas Tunai & Mandiri">
+              <div class="channel-item-left">
+                <div class="channel-mini-icon is-cash">
+                  <i data-lucide="banknote" style="width: 15px; height: 15px;"></i>
+                </div>
+                <div>
+                  <div class="channel-meta-name">Kas Tunai &amp; Mandiri</div>
+                  <div class="channel-meta-sub">Brankas &amp; Fisik</div>
+                </div>
+              </div>
+              <div class="channel-item-right">
+                <div class="channel-amount-txt">Rp 4,00 Jt</div>
+                <span class="channel-share-pill">18.5% Share</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEPARATOR DIVIDER (UNIFIED DOSSIER WF-03 STYLE) -->
+        <div class="sidebar-section-divider"></div>
+
+        <!-- SIDEBAR CARD 2: ANTREAN VERIFIKASI STAF (ZERO SELF-APPROVAL · SCR-11 & RK-031) -->
+        <div class="sidebar-card-box">
+          <div class="sidebar-header-row">
+            <h4 class="sidebar-title-text">
+              <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #EA580C;"></i>
+              <span>Verifikasi Pencatatan Staf</span>
+            </h4>
+            <span class="status-pill-badge is-warning" style="font-size: 10px; padding: 2px 8px;">2 Pending</span>
+          </div>
+
+          <div class="sidebar-pending-list">
+            <!-- Pending Item 1 -->
+            <div class="sidebar-pending-card">
+              <div class="pending-header-row">
+                <div>
+                  <div class="pending-tenant-name">Larasati Dewi</div>
+                  <div class="pending-room-sub">Kamar A-02 (Lt. 1) &bull; BCA</div>
+                </div>
+                <div class="pending-amount-huge">Rp 1.900.000</div>
+              </div>
+              <div class="pending-recorded-note">
+                <i data-lucide="user-check" style="width: 12px; height: 12px; color: #64748B;"></i>
+                <span>Dicatat Staf Rini Setiawati &bull; 15:40 WIB</span>
+              </div>
+              <div class="pending-action-btn-row">
+                <button type="button" class="btn-quick-sah-pembayaran" onclick="approveDirectFromSidebar('PAY-202610-11', 'Larasati Dewi', 'Rp 1.900.000')">
+                  <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                  <span>Sahkan Pembayaran</span>
+                </button>
+                <button type="button" class="btn-quick-tolak-pembayaran" onclick="openModalReject('PAY-202610-11', 'Larasati Dewi', 'Rp 1.900.000')" title="Tolak &amp; Kembalikan ke Staf">
+                  <i data-lucide="x" style="width: 13px; height: 13px;"></i>
+                  <span>Tolak</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Pending Item 2 -->
+            <div class="sidebar-pending-card">
+              <div class="pending-header-row">
+                <div>
+                  <div class="pending-tenant-name">Ahmad Hidayat</div>
+                  <div class="pending-room-sub">Kamar A-03 (Lt. 1) &bull; QRIS</div>
+                </div>
+                <div class="pending-amount-huge">Rp 1.500.000</div>
+              </div>
+              <div class="pending-recorded-note">
+                <i data-lucide="user-check" style="width: 12px; height: 12px; color: #64748B;"></i>
+                <span>Dicatat Staf Rini Setiawati &bull; 14:30 WIB</span>
+              </div>
+              <div class="pending-action-btn-row">
+                <button type="button" class="btn-quick-sah-pembayaran" onclick="approveDirectFromSidebar('PAY-202610-02', 'Ahmad Hidayat', 'Rp 1.500.000')">
+                  <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                  <span>Sahkan Pembayaran</span>
+                </button>
+                <button type="button" class="btn-quick-tolak-pembayaran" onclick="openModalReject('PAY-202610-02', 'Ahmad Hidayat', 'Rp 1.500.000')" title="Tolak &amp; Kembalikan ke Staf">
+                  <i data-lucide="x" style="width: 13px; height: 13px;"></i>
+                  <span>Tolak</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 10.5px; color: #64748B; background: #FFFBEB; border: 1px solid #FEF3C7; padding: 8px 12px; border-radius: 10px; display: flex; align-items: flex-start; gap: 6px;">
+            <i data-lucide="info" style="width: 13px; height: 13px; color: #D97706; flex-shrink: 0; margin-top: 1px;"></i>
+            <span><strong>Zero Self-Approval:</strong> Staf operasional tidak dapat memvalidasi pembayarannya sendiri. Hanya Pemilik Kost yang berwenang mengesahkan mutasi bank.</span>
+          </div>
+        </div>
+
+      </aside>
+
+    </main>
+
+  </div>
+
+  <!-- ========================================================
+       MODAL 1: CATAT PEMBAYARAN MASUK (STORY RK-030)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalCatatBayar">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
+          <span>Catat Penerimaan Pembayaran</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalCatatBayar')">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body">
+        
+        <!-- Peringatan Staf jika dalam mode staf -->
+        <div id="modalStaffAlert" style="display: none; background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #C2410C;">
+          <i data-lucide="info" style="width: 13px; height: 13px; vertical-align: middle; margin-right: 4px;"></i>
+          <strong>Staf Operasional:</strong> Catatan ini akan berstatus <em>Menunggu Verifikasi</em> hingga divalidasi oleh Pemilik kost (Zero Self-Approval).
+        </div>
+
+        <!-- Pilih Tagihan / Kamar -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">Pilih Tagihan & Kamar Penghuni *</label>
+          <div class="method-popover-wrap">
+            <button type="button" class="form-input-custom" style="width: 100%; display: flex; align-items: center; justify-content: space-between; text-align: left; cursor: pointer; background: #FFFFFF;" onclick="toggleInvoiceSelectPopover(event)">
+              <span id="selectedInvoiceLabel" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 8px;">#INV-202610-004 · Kamar A-04 (Budi S. · Sisa Rp 750.000)</span>
+              <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8; flex-shrink: 0;"></i>
+            </button>
+            <div class="method-popover-panel" id="invoiceSelectPanel" style="width: 100%; max-height: 180px; overflow-y: auto;">
+              <button type="button" class="method-popover-opt active" onclick="selectInvoiceForPayment('INV-202610-004', 'Kamar A-04 · Budi S.', 750000)">
+                <span>#INV-202610-004 · Kamar A-04 (Budi S.)</span>
+                <strong style="color: #EA580C;">Sisa Rp 750 rb</strong>
+              </button>
+              <button type="button" class="method-popover-opt" onclick="selectInvoiceForPayment('INV-202610-005', 'Kamar B-01 · Citra D.', 1750000)">
+                <span>#INV-202610-005 · Kamar B-01 (Citra D.)</span>
+                <strong style="color: #EA580C;">Sisa Rp 1,75 Jt</strong>
+              </button>
+              <button type="button" class="method-popover-opt" onclick="selectInvoiceForPayment('INV-202610-007', 'Kamar B-03 · Eko P.', 1500000)">
+                <span>#INV-202610-007 · Kamar B-03 (Eko P.)</span>
+                <strong style="color: #EA580C;">Sisa Rp 1,50 Jt</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pilih Metode Pembayaran -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">Metode / Kanal Pembayaran *</label>
+          <div class="method-selector-grid">
+            <div class="method-radio-box active" onclick="selectPaymentMethod(this, 'BCA Transfer')">
+              <i data-lucide="credit-card" style="width: 14px; height: 14px;"></i>
+              <span>BCA</span>
+            </div>
+            <div class="method-radio-box" onclick="selectPaymentMethod(this, 'QRIS Instant')">
+              <i data-lucide="qr-code" style="width: 14px; height: 14px;"></i>
+              <span>QRIS</span>
+            </div>
+            <div class="method-radio-box" onclick="selectPaymentMethod(this, 'Bank Mandiri')">
+              <i data-lucide="landmark" style="width: 14px; height: 14px;"></i>
+              <span>Mandiri</span>
+            </div>
+            <div class="method-radio-box" onclick="selectPaymentMethod(this, 'Tunai / Cash')">
+              <i data-lucide="banknote" style="width: 14px; height: 14px;"></i>
+              <span>Tunai</span>
+            </div>
+            <div class="method-radio-box" onclick="selectPaymentMethod(this, 'Potong Deposit')">
+              <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+              <span>Deposit</span>
+            </div>
+          </div>
+
+          <!-- Callout Informasi Pemotongan Deposit (Escrow Deduction) -->
+          <div id="depositCalloutBox" style="display: none; background: #F5F3FF; border: 1px solid #DDD6FE; border-radius: 12px; padding: 10px 14px; font-size: 11.5px; color: #5B21B6; margin-top: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <span style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #7C3AED;"></i>
+                Klaim Saldo Uang Jaminan (Deposit)
+              </span>
+              <span style="font-weight: 700; color: #7C3AED; background: #EDE9FE; padding: 2px 8px; border-radius: 6px;" id="availDepositBadge">Tersedia: Rp 1.500.000</span>
+            </div>
+            <div style="color: #6D28D9; font-size: 11px; line-height: 1.4;">
+              Pembayaran akan memotong saldo uang jaminan penghuni. Tidak ada mutasi fisik uang masuk ke rekening bank.
+            </div>
+          </div>
+        </div>
+
+        <!-- Nominal Pembayaran & Tanggal -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group-custom">
+            <label class="form-label-custom">Nominal Diterima (Rp) *</label>
+            <input type="text" class="form-input-custom" id="inputPayAmount" value="750.000" oninput="formatNominalInput(this)" placeholder="Masukkan nominal (contoh: 500.000)">
+          </div>
+          <div class="form-group-custom">
+            <label class="form-label-custom">Tanggal Bayar *</label>
+            <input type="text" class="form-input-custom" id="inputPayDate" value="23 Okt 2026">
+          </div>
+        </div>
+
+        <!-- Nomor Referensi -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">
+            Nomor Referensi Transaksi / Struk
+            <span style="font-size: 10.5px; font-weight: 400; color: #64748B;">(Otomatis dibuat, atau isi nomor struk bank)</span>
+          </label>
+          <input type="text" class="form-input-custom" id="inputPayRef" value="TRF-BCA-992140" placeholder="Contoh: TRF-BCA-889102 (Dibuat otomatis jika kosong)">
+        </div>
+
+        <!-- Dropzone Unggah Bukti -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">Unggah Bukti Transfer / Nota (Opsional)</label>
+          <div class="upload-dropzone" onclick="simulateProofUpload()">
+            <div class="upload-icon-circle">
+              <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
+            </div>
+            <div style="font-size: 12px; font-weight: 600; color: var(--text-main);" id="uploadFileName">Klik untuk unggah slip transfer bank</div>
+            <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">Format JPG, PNG, atau PDF sintetis (Maks. 5 MB)</div>
+          </div>
+        </div>
+
+        <!-- Kalkulasi Sisa Tagihan Otomatis (Story RK-032) -->
+        <div class="calculation-callout">
+          <div class="calc-row">
+            <span>Sisa Tagihan Sebelumnya:</span>
+            <strong id="calcPrevDue">Rp 750.000</strong>
+          </div>
+          <div class="calc-row">
+            <span>Nominal yang Dibayarkan:</span>
+            <span id="calcPaidAmount" style="color: #16A34A; font-weight: 600;">- Rp 750.000</span>
+          </div>
+          <div class="calc-row highlight">
+            <span>Sisa Saldo Baru:</span>
+            <span id="calcNewDue" style="color: #16A34A;">Rp 0 (Lunas Sepenuhnya)</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalCatatBayar')">Batal</button>
+        <button type="button" class="btn-action-catat" style="height: 38px; padding: 0 20px; font-size: 12px;" onclick="submitPaymentRecord()">
+          <i data-lucide="save" style="width: 14px; height: 14px;"></i>
+          <span>Simpan Catatan Pembayaran</span>
         </button>
       </div>
     </div>
   </div>
 
+  <!-- ========================================================
+       MODAL 2: PRATINJAU BUKTI ZOOM-IN (STORY RK-031)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalProofZoom">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="file-text" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
+          <span>Inspeksi Bukti Transfer Asli</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalProofZoom')">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body" style="align-items: center; text-align: center; background: #F8FAFC;">
+        
+        <div class="digital-receipt-sheet" style="width: 100%; box-sizing: border-box; text-align: left;">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding-bottom: 12px;">
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #1D4ED8;" id="zoomSlipBank">MANDIRI ONLINE TRANSFER</div>
+              <div style="font-size: 10.5px; color: #64748B;">Resi Resmi Transaksi Finansial</div>
+            </div>
+            <span class="status-pill-badge is-success">VALID MUTASI</span>
+          </div>
+
+          <div style="text-align: center; padding: 10px 0;">
+            <div style="font-size: 11px; color: #64748B;">Nominal Ditransfer</div>
+            <div style="font-size: 24px; font-weight: 800; color: #111827; letter-spacing: -0.02em;" id="zoomSlipAmount">Rp 1.500.000</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 11.5px; border-top: 1px dashed #CBD5E1; padding-top: 10px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Rekening Tujuan:</span>
+              <strong>BCA - 8820 1928 33 (Budi Makmur)</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Nama Pengirim:</span>
+              <strong id="zoomSlipSender">Ahmad Hidayat</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Waktu Transaksi:</span>
+              <span id="zoomSlipTime">04 Okt 2026 · 14:30 WIB</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">No. Referensi:</span>
+              <span style="font-family: monospace;" id="zoomSlipRef">QRS-MDR-441029</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalProofZoom')">Tutup</button>
+        <button type="button" class="btn-exec-approve" style="width: auto; padding: 0 18px;" id="btnZoomApprove" onclick="approveSelectedFromModal();">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          <span>Sahkan Transaksi Ini</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 3: TOLAK PEMBAYARAN DENGAN ALASAN (STORY RK-031)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalReject">
+    <div class="modal-card" style="max-width: 460px;">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="alert-triangle" style="width: 18px; height: 18px; color: #EF4444;"></i>
+          <span>Tolak Verifikasi Pembayaran</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReject')">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body">
+        <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.4;">
+          Sesuai standar operasional, penolakan pembayaran wajib menyertakan alasan jelas agar dapat ditindaklanjuti oleh staf atau penghuni kost.
+        </p>
+
+        <div class="form-group-custom">
+          <label class="form-label-custom">Alasan Penolakan Bukti *</label>
+          <textarea class="form-textarea-custom" id="rejectReasonInput" placeholder="Contoh: Dana belum masuk ke mutasi rekening bank, atau nominal bukti transfer tidak cocok dengan invoice."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalReject')">Batal</button>
+        <button type="button" class="btn-exec-reject" style="width: auto; padding: 0 18px;" onclick="confirmRejectPayment()">
+          <i data-lucide="x-circle" style="width: 14px; height: 14px;"></i>
+          <span>Konfirmasi Tolak Bukti</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 4: JURNAL REVERSAL / KOREKSI SALDO (STORY RK-033)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalReversal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="rotate-ccw" style="width: 18px; height: 18px; color: #DC2626;"></i>
+          <span>Koreksi Pembayaran via Jurnal Reversal</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReversal')">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body">
+        <div style="background: #FEE2E2; border: 1px solid #FECDD3; border-radius: 12px; padding: 12px 14px; font-size: 11.5px; color: #991B1B; line-height: 1.4;">
+          <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
+          <strong>Prinsip Jejak Audit:</strong> Transaksi asli tidak akan dihapus fisik. Sistem akan membuat entri pembalik (reversal negatif) dan mengembalikan saldo tagihan kamar ke status belum terbayar.
+        </div>
+
+        <div class="calculation-callout" style="background: #F8FAFC; border-color: #E2E8F0;">
+          <div class="calc-row">
+            <span>Transaksi Asal:</span>
+            <strong id="reversalTxOrigin">#PAY-202610-01</strong>
+          </div>
+          <div class="calc-row">
+            <span>Nominal Koreksi:</span>
+            <strong style="color: #DC2626;" id="reversalAmountNeg">- Rp 1.800.000</strong>
+          </div>
+          <div class="calc-row highlight">
+            <span>Dampak ke Tagihan:</span>
+            <span style="color: #DC2626;">Kembali Belum Lunas (Sisa Rp 1,8 Jt)</span>
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <label class="form-label-custom">Alasan Reversal Koreksi *</label>
+          <textarea class="form-textarea-custom" id="reversalReasonInput" placeholder="Contoh: Salah alokasi pencatatan kamar oleh staf, uang seharusnya untuk Kamar B-02."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalReversal')">Batal</button>
+        <button type="button" class="btn-exec-reversal" style="width: auto; padding: 0 18px; border-style: solid;" onclick="confirmReversalExecution()">
+          <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
+          <span>Eksekusi Jurnal Reversal</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 5: KUITANSI DIGITAL RESMI RUMAKOST
+       ======================================================== -->
+  <div class="modal-overlay" id="modalReceipt">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="printer" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
+          <span>Kuitansi Digital Pembayaran</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReceipt')">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body" style="background: #F8FAFC;">
+        
+        <div class="digital-receipt-sheet" id="printableReceiptArea">
+          <!-- Watermark Lunas / Parsial -->
+          <div class="receipt-watermark-overlay" id="receiptWatermark">LUNAS</div>
+
+          <!-- Header Kuitansi -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111111; padding-bottom: 12px;">
+            <div>
+              <div style="font-size: 15px; font-weight: 800; color: #111111;">KOST BUDI MAKMUR</div>
+              <div style="font-size: 10px; color: #64748B;">Jl. Babakan Jeruk I No. 12, Bandung</div>
+              <div style="font-size: 10px; color: #64748B;">Telp / WA: 0812-3456-7890</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 10px; font-weight: 600; color: #64748B;">NO. KUITANSI</div>
+              <div style="font-size: 12px; font-weight: 700; font-family: monospace;" id="receiptSerialNo">KW-202610-001</div>
+            </div>
+          </div>
+
+          <!-- Rincian Kuitansi -->
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11.5px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Telah diterima dari:</span>
+              <strong id="receiptTenantName">Rina Marliana</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Untuk Pembayaran:</span>
+              <span>Sewa Kamar <strong id="receiptRoomNo">A-01</strong> (Okt 2026)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Metode Pembayaran:</span>
+              <span id="receiptMethodName">BCA Transfer Bank</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: #64748B;">Tanggal & Waktu:</span>
+              <span id="receiptDateDisplay">02 Okt 2026, 09:14 WIB</span>
+            </div>
+          </div>
+
+          <!-- Kotak Nominal Besar -->
+          <div style="background: #FAFAFA; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px; text-align: center;">
+            <span style="font-size: 10.5px; color: #64748B; text-transform: uppercase; font-weight: 600;">Jumlah yang Diterima</span>
+            <div style="font-size: 22px; font-weight: 800; color: #111111;" id="receiptTotalAmount">Rp 1.800.000</div>
+          </div>
+
+          <!-- Tanda Tangan Digital Pengelola -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 10px;">
+            <div style="font-size: 9.5px; color: #94A3B8;">
+              Dicetak resmi melalui sistem RumaKost.<br>Bukti transaksi sah tanpa tanda tangan basah.
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 10px; color: #64748B;">Penerima / Pengelola</div>
+              <div style="font-size: 11px; font-weight: 700; color: #111111; margin-top: 24px;">Budi Makmur (Pemilik)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalReceipt')">Tutup</button>
+        <button type="button" class="btn-action-catat" style="height: 38px; padding: 0 20px; font-size: 12px;" onclick="printReceiptDocument()">
+          <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+          <span>Cetak Dokumen</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING ROLE SIMULATOR PILL -->
+  <div class="wf-badge-role-bar">
+    <span style="font-weight: 600; color: var(--text-secondary);">Simulasi Peran:</span>
+    <button type="button" class="btn-toggle-role-pill" onclick="toggleRoleSimulation()">
+      <i data-lucide="user-check" style="width: 12px; height: 12px;"></i>
+      <span id="floatingRoleLabel">Pemilik (Superadmin)</span>
+    </button>
+  </div>
+
+  <!-- SHARED COMPONENTS SCRIPT -->
   <script src="assets/js/components.js"></script>
+
+  <!-- WORKBENCH BUSINESS LOGIC & INTERACTION ENGINE -->
   <script>
-    renderTopbar('pembayaran');
-
-    function openPaymentModal(invoiceId) {
-      if (invoiceId) {
-        document.getElementById('invoiceSelect').value = invoiceId;
+    // ══════════════════════════════════════════════════════════════
+    // DATA STORE: 12 REALISTIC SYNTHETIC TRANSACTIONS (OCTOBER 2026)
+    // ══════════════════════════════════════════════════════════════
+    const paymentsData = [
+      {
+        id: 'PAY-202610-11',
+        dayGroup: 'today',
+        dayLabel: 'Hari Ini (23 Oktober 2026)',
+        invoiceId: 'INV-202610-002',
+        tenant: 'Larasati Dewi',
+        room: 'A-02',
+        floor: 'Lt. 1',
+        amount: 1900000,
+        dueRemaining: 0,
+        totalInvoice: 1900000,
+        method: 'BCA Transfer',
+        channelType: 'bca',
+        refNo: 'TRF-BCA-993812',
+        dateTime: '23 Okt 2026, 15:40 WIB',
+        status: 'pending',
+        statusLabel: 'Menunggu Cek Owner',
+        sender: 'Larasati Dewi',
+        avatarColor: 'is-pink',
+        initials: 'LD',
+        expanded: true, // open by default to highlight action
+        auditLog: [
+          { time: '23 Okt 2026 · 15:40 WIB', text: 'Dicatat oleh Staf (Rini Setiawati)', dot: 'is-green' },
+          { time: '23 Okt 2026 · 15:41 WIB', text: 'Menunggu Verifikasi Mutasi Bank oleh Pemilik (Zero Self-Approval)', dot: 'is-amber' }
+        ]
+      },
+      {
+        id: 'PAY-202610-02',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-003',
+        tenant: 'Ahmad Hidayat',
+        room: 'A-03',
+        floor: 'Lt. 1',
+        amount: 1500000,
+        dueRemaining: 0,
+        totalInvoice: 1500000,
+        method: 'QRIS Instant',
+        channelType: 'qris',
+        refNo: 'QRS-MDR-441029',
+        dateTime: '04 Okt 2026, 14:30 WIB',
+        status: 'pending',
+        statusLabel: 'Menunggu Cek Owner',
+        sender: 'Ahmad Hidayat',
+        avatarColor: 'is-amber',
+        initials: 'AH',
+        expanded: false,
+        auditLog: [
+          { time: '04 Okt 2026 · 14:30 WIB', text: 'Dicatat oleh Staf (Rini Setiawati)', dot: 'is-green' },
+          { time: '04 Okt 2026 · 14:31 WIB', text: 'Menunggu Persetujuan Pemilik (Zero Self-Approval)', dot: 'is-amber' }
+        ]
+      },
+      {
+        id: 'PAY-202610-03',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-004',
+        tenant: 'Budi Santoso',
+        room: 'A-04',
+        floor: 'Lt. 1',
+        amount: 1250000,
+        dueRemaining: 750000,
+        totalInvoice: 2000000,
+        method: 'BCA Transfer',
+        channelType: 'bca',
+        refNo: 'TRF-BCA-319082',
+        dateTime: '05 Okt 2026, 10:15 WIB',
+        status: 'partial',
+        statusLabel: 'Cicilan Tahap 1',
+        sender: 'Budi Santoso',
+        avatarColor: 'is-orange',
+        initials: 'BS',
+        expanded: false,
+        auditLog: [
+          { time: '05 Okt 2026 · 10:15 WIB', text: 'Dicatat pembayaran tahap 1 (Rp 1.250.000)', dot: 'is-green' },
+          { time: '05 Okt 2026 · 10:45 WIB', text: 'Diverifikasi Pemilik · Sisa piutang sewa Rp 750.000', dot: 'is-amber' }
+        ]
+      },
+      {
+        id: 'REV-202610-01',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-007',
+        tenant: 'Eko Prasetyo',
+        room: 'B-03',
+        floor: 'Lt. 2',
+        amount: -1500000,
+        dueRemaining: 1500000,
+        totalInvoice: 1500000,
+        method: 'Jurnal Reversal',
+        channelType: 'cash',
+        refNo: 'REV-202610-01',
+        dateTime: '05 Okt 2026, 18:00 WIB',
+        status: 'reversed',
+        statusLabel: 'Dibatalkan',
+        sender: 'Koreksi Salah Kamar',
+        avatarColor: 'is-gray',
+        initials: 'EP',
+        expanded: false,
+        auditLog: [
+          { time: '05 Okt 2026 · 14:00 WIB', text: 'Pembayaran asal dicatat oleh Staf', dot: 'is-green' },
+          { time: '05 Okt 2026 · 18:00 WIB', text: 'Jurnal Reversal: Salah kamar (seharusnya Kamar B-02)', dot: 'is-red' },
+          { time: '05 Okt 2026 · 18:00 WIB', text: 'Saldo tagihan #INV-202610-007 dikembalikan ke Rp 1.500.000', dot: 'is-amber' }
+        ]
+      },
+      {
+        id: 'PAY-202610-04',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-006',
+        tenant: 'Dian Permata',
+        room: 'B-02',
+        floor: 'Lt. 2',
+        amount: 2000000,
+        dueRemaining: 0,
+        totalInvoice: 2000000,
+        method: 'Tunai / Cash',
+        channelType: 'cash',
+        refNo: 'CSH-KST-100204',
+        dateTime: '05 Okt 2026, 16:20 WIB',
+        status: 'verified',
+        statusLabel: 'Terverifikasi',
+        sender: 'Dian Permata (Kasir)',
+        avatarColor: 'is-teal',
+        initials: 'DP',
+        expanded: false,
+        auditLog: [
+          { time: '05 Okt 2026 · 16:20 WIB', text: 'Uang tunai diterima langsung oleh Pemilik', dot: 'is-green' },
+          { time: '05 Okt 2026 · 16:20 WIB', text: 'Kuitansi cetak diterbitkan otomatis', dot: 'is-green' }
+        ]
+      },
+      {
+        id: 'PAY-202610-05',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-008',
+        tenant: 'Fajar Nugraha',
+        room: 'B-04',
+        floor: 'Lt. 2',
+        amount: 1600000,
+        dueRemaining: 0,
+        totalInvoice: 1600000,
+        method: 'Bank Mandiri',
+        channelType: 'cash',
+        refNo: 'TRF-MDR-778103',
+        dateTime: '06 Okt 2026, 11:45 WIB',
+        status: 'verified',
+        statusLabel: 'Terverifikasi',
+        sender: 'Fajar Nugraha',
+        avatarColor: 'is-purple',
+        initials: 'FN',
+        expanded: false,
+        auditLog: [
+          { time: '06 Okt 2026 · 11:45 WIB', text: 'Dicatat via Transfer Mandiri', dot: 'is-green' },
+          { time: '06 Okt 2026 · 12:00 WIB', text: 'Diverifikasi Pemilik', dot: 'is-green' }
+        ]
+      },
+      {
+        id: 'PAY-202610-06',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-009',
+        tenant: 'Gilang Ramadhan',
+        room: 'B-05',
+        floor: 'Lt. 2',
+        amount: 1700000,
+        dueRemaining: 0,
+        totalInvoice: 1700000,
+        method: 'BCA Transfer',
+        channelType: 'bca',
+        refNo: 'TRF-BCA-552190',
+        dateTime: '07 Okt 2026, 08:30 WIB',
+        status: 'verified',
+        statusLabel: 'Terverifikasi',
+        sender: 'Gilang Ramadhan',
+        avatarColor: 'is-blue',
+        initials: 'GR',
+        expanded: false,
+        auditLog: [
+          { time: '07 Okt 2026 · 08:30 WIB', text: 'Dicatat oleh Staf', dot: 'is-green' },
+          { time: '07 Okt 2026 · 09:15 WIB', text: 'Disahkan oleh Pemilik', dot: 'is-green' }
+        ]
+      },
+      {
+        id: 'PAY-202610-07',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-010',
+        tenant: 'Hana Pertiwi',
+        room: 'C-01',
+        floor: 'Lt. 3',
+        amount: 1800000,
+        dueRemaining: 0,
+        totalInvoice: 1800000,
+        method: 'QRIS Instant',
+        channelType: 'qris',
+        refNo: 'QRS-BCA-661902',
+        dateTime: '08 Okt 2026, 13:10 WIB',
+        status: 'verified',
+        statusLabel: 'Terverifikasi',
+        sender: 'Hana Pertiwi',
+        avatarColor: 'is-pink',
+        initials: 'HP',
+        expanded: false,
+        auditLog: [
+          { time: '08 Okt 2026 · 13:10 WIB', text: 'Settlement QRIS terdeteksi otomatis', dot: 'is-green' },
+          { time: '08 Okt 2026 · 13:15 WIB', text: 'Diverifikasi Pemilik', dot: 'is-green' }
+        ]
+      },
+      {
+        id: 'PAY-202610-08',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-011',
+        tenant: 'Indra Kusuma',
+        room: 'C-02',
+        floor: 'Lt. 3',
+        amount: 1500000,
+        dueRemaining: 0,
+        totalInvoice: 1500000,
+        method: 'BCA Transfer',
+        channelType: 'bca',
+        refNo: 'TRF-BCA-901844',
+        dateTime: '09 Okt 2026, 19:20 WIB',
+        status: 'verified',
+        statusLabel: 'Terverifikasi',
+        sender: 'Indra Kusuma',
+        avatarColor: 'is-teal',
+        initials: 'IK',
+        expanded: false,
+        auditLog: [
+          { time: '09 Okt 2026 · 19:20 WIB', text: 'Dicatat via Transfer BCA', dot: 'is-green' },
+          { time: '09 Okt 2026 · 20:00 WIB', text: 'Diverifikasi oleh Pemilik', dot: 'is-green' }
+        ]
+      },
+      {
+        id: 'PAY-202610-09',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-012',
+        tenant: 'Joko Prasetyo',
+        room: 'C-03',
+        floor: 'Lt. 3',
+        amount: 1600000,
+        dueRemaining: 0,
+        totalInvoice: 1600000,
+        method: 'BCA Transfer',
+        channelType: 'bca',
+        refNo: 'TRF-BCA-102948',
+        dateTime: '10 Okt 2026, 17:05 WIB',
+        status: 'verified',
+        statusLabel: 'Terverifikasi',
+        sender: 'Joko Prasetyo',
+        avatarColor: 'is-purple',
+        initials: 'JP',
+        expanded: false,
+        auditLog: [
+          { time: '10 Okt 2026 · 17:05 WIB', text: 'Dicatat via Transfer BCA', dot: 'is-green' },
+          { time: '10 Okt 2026 · 17:30 WIB', text: 'Diverifikasi oleh Pemilik', dot: 'is-green' }
+        ]
+      },
+      {
+        id: 'PAY-202610-10',
+        dayGroup: 'mid',
+        dayLabel: 'Minggu Lalu (04 - 12 Oktober 2026)',
+        invoiceId: 'INV-202610-013',
+        tenant: 'Kevin Sanjaya',
+        room: 'C-04',
+        floor: 'Lt. 3',
+        amount: 1500000,
+        dueRemaining: 0,
+        totalInvoice: 1500000,
+        method: 'Tunai / Cash',
+        channelType: 'cash',
+        refNo: 'CSH-KST-100210',
+        dateTime: '12 Okt 2026, 09:00 WIB',
+        status: 'verified',
+        statusLabel: 'Terverifikasi',
+        sender: 'Kevin Sanjaya',
+        avatarColor: 'is-blue',
+        initials: 'KS',
+        expanded: false,
+        auditLog: [
+          { time: '12 Okt 2026 · 09:00 WIB', text: 'Diterima tunai oleh Staf (Rini S.)', dot: 'is-green' },
+          { time: '12 Okt 2026 · 10:00 WIB', text: 'Setoran disahkan Pemilik (Budi Makmur)', dot: 'is-green' }
+        ]
+      },
+      {
+        id: 'PAY-202610-01',
+        dayGroup: 'early',
+        dayLabel: 'Awal Bulan (01 - 03 Oktober 2026)',
+        invoiceId: 'INV-202610-001',
+        tenant: 'Rina Marliana',
+        room: 'A-01',
+        floor: 'Lt. 1',
+        amount: 1800000,
+        dueRemaining: 0,
+        totalInvoice: 1800000,
+        method: 'BCA Transfer',
+        channelType: 'bca',
+        refNo: 'TRF-BCA-889102',
+        dateTime: '02 Okt 2026, 09:14 WIB',
+        status: 'verified',
+        statusLabel: 'Terverifikasi',
+        sender: 'Rina Marliana',
+        avatarColor: 'is-blue',
+        initials: 'RM',
+        expanded: false,
+        auditLog: [
+          { time: '02 Okt 2026 · 09:14 WIB', text: 'Dicatat via Transfer Bank BCA', dot: 'is-green' },
+          { time: '02 Okt 2026 · 09:30 WIB', text: 'Disahkan & Diverifikasi oleh Pemilik (Budi Makmur)', dot: 'is-green' }
+        ]
       }
-      document.getElementById('paymentModal').classList.add('open');
+    ];
+
+    // State Variables
+    let currentWalletFilter = 'all';
+    let currentFilterStatus = 'all';
+    let currentSearchTerm = '';
+    let selectedPayMethod = 'BCA Transfer';
+    let activeActionTxId = 'PAY-202610-11';
+    let selectedInvoiceTarget = { id: 'INV-202610-004', room: 'A-04', tenant: 'Budi Santoso', due: 750000 };
+
+    // Format Rupiah Helper
+    function formatRupiah(number) {
+      if (number === undefined || number === null) return 'Rp 0';
+      const isNeg = number < 0;
+      const absVal = Math.abs(number);
+      const formatted = absVal.toLocaleString('id-ID');
+      return isNeg ? `-Rp ${formatted}` : `Rp ${formatted}`;
     }
 
-    function closePaymentModal() {
-      document.getElementById('paymentModal').classList.remove('open');
+    // Role Helper: Check if current role is staff
+    function isStaffRole() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('role') === 'staf' || urlParams.get('role') === 'staff';
     }
 
-    function selectMethod(el) {
-      document.querySelectorAll('.method-radio-box').forEach(box => box.classList.remove('active'));
-      el.classList.add('active');
-    }
-
-    function updateRemainingCalculation() {
-      const nominal = parseInt(document.getElementById('nominalInput').value || 0, 10);
-      const remainingElem = document.getElementById('calcRemaining');
-      const invoiceVal = document.getElementById('invoiceSelect').value;
-      
-      let baseTerutang = 750000;
-      if (invoiceVal !== 'INV-202610-004') {
-        baseTerutang = 1500000;
-      }
-
-      const diff = baseTerutang - nominal;
-      if (diff <= 0) {
-        remainingElem.textContent = 'Rp 0 (LUNAS)';
-        remainingElem.style.color = '#16A34A';
+    // Toggle Role Simulation between Owner and Staff
+    function toggleRoleSimulation() {
+      const currentUrl = new URL(window.location.href);
+      if (isStaffRole()) {
+        currentUrl.searchParams.delete('role');
       } else {
-        remainingElem.textContent = 'Rp ' + diff.toLocaleString('id-ID') + ' (PARSIAL)';
-        remainingElem.style.color = '#D97706';
+        currentUrl.searchParams.set('role', 'staf');
+      }
+      window.location.href = currentUrl.toString();
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // WATERFALL FEED RENDERING
+    // ══════════════════════════════════════════════════════════════
+    function renderWaterfallFeed() {
+      const container = document.getElementById('waterfallFeedContainer');
+      if (!container) return;
+
+      const isStaff = isStaffRole();
+
+      // Filter Data
+      const filtered = paymentsData.filter(item => {
+        // Wallet Filter
+        if (currentWalletFilter !== 'all') {
+          if (currentWalletFilter === 'bca' && item.channelType !== 'bca') return false;
+          if (currentWalletFilter === 'qris' && item.channelType !== 'qris') return false;
+          if (currentWalletFilter === 'cash' && item.channelType !== 'cash') return false;
+        }
+
+        // Status Filter
+        if (currentFilterStatus !== 'all' && item.status !== currentFilterStatus) return false;
+
+        // Search Term
+        if (currentSearchTerm) {
+          const s = currentSearchTerm.toLowerCase();
+          const matchId = item.id.toLowerCase().includes(s);
+          const matchInv = item.invoiceId.toLowerCase().includes(s);
+          const matchTenant = item.tenant.toLowerCase().includes(s);
+          const matchRoom = item.room.toLowerCase().includes(s);
+          const matchRef = item.refNo.toLowerCase().includes(s);
+          if (!matchId && !matchInv && !matchTenant && !matchRoom && !matchRef) return false;
+        }
+
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: 20px; padding: 60px 20px; text-align: center; color: var(--text-muted);">
+            <i data-lucide="search-x" style="width: 38px; height: 38px; margin-bottom: 10px; opacity: 0.5;"></i>
+            <h3 style="font-size: 15px; font-weight: 700; color: var(--text-main); margin: 0 0 4px;">Tidak Ada Aliran Pembayaran Ditemukan</h3>
+            <p style="font-size: 12px; margin: 0;">Coba ganti filter dompet rekening atau gunakan kata kunci pencarian lain.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      // Group by dayGroup
+      const groups = [
+        { id: 'today', title: 'Hari Ini (23 Oktober 2026)', icon: 'clock' },
+        { id: 'mid', title: 'Minggu Lalu (04 - 12 Oktober 2026)', icon: 'calendar' },
+        { id: 'early', title: 'Awal Bulan (01 - 03 Oktober 2026)', icon: 'calendar-check' }
+      ];
+
+      let html = '';
+
+      groups.forEach(grp => {
+        const itemsInGroup = filtered.filter(i => i.dayGroup === grp.id);
+        if (itemsInGroup.length === 0) return;
+
+        html += `
+          <div class="waterfall-day-group">
+            <div class="day-header-pill">
+              <i data-lucide="${grp.icon}" class="day-header-icon" style="width: 14px; height: 14px;"></i>
+              <span class="day-header-title">${grp.title}</span>
+              <span class="day-header-count">&middot; ${itemsInGroup.length} Transaksi</span>
+            </div>
+
+            <div class="day-tx-stream">
+              ${itemsInGroup.map(item => renderFeedCardHtml(item, isStaff)).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function renderFeedCardHtml(item, isStaff) {
+      // Status Badge
+      let statusBadgeHtml = '';
+      if (item.status === 'verified') {
+        statusBadgeHtml = `<span class="status-pill-badge is-success"><i data-lucide="check-circle-2" style="width: 12px; height: 12px;"></i> Terverifikasi</span>`;
+      } else if (item.status === 'pending') {
+        statusBadgeHtml = `<span class="status-pill-badge is-warning"><i data-lucide="clock" style="width: 12px; height: 12px;"></i> Menunggu Cek</span>`;
+      } else if (item.status === 'partial') {
+        statusBadgeHtml = `<span class="status-pill-badge is-partial"><i data-lucide="pie-chart" style="width: 12px; height: 12px;"></i> Cicilan Parsial</span>`;
+      } else if (item.status === 'reversed') {
+        statusBadgeHtml = `<span class="status-pill-badge is-danger"><i data-lucide="rotate-ccw" style="width: 12px; height: 12px;"></i> Dibatalkan</span>`;
+      }
+
+      // Channel Class
+      let channelClass = 'is-bca';
+      let channelIcon = 'credit-card';
+      if (item.channelType === 'qris') { channelClass = 'is-qris'; channelIcon = 'qr-code'; }
+      else if (item.channelType === 'cash') { channelClass = 'is-cash'; channelIcon = 'banknote'; }
+      else if (item.channelType === 'mandiri') { channelClass = 'is-mandiri'; channelIcon = 'landmark'; }
+      else if (item.channelType === 'deposit') { channelClass = 'is-deposit'; channelIcon = 'shield-check'; }
+      if (item.status === 'reversed') { channelClass = 'is-reversal'; channelIcon = 'rotate-ccw'; }
+
+      // Action Buttons inside Accordion
+      let actionsHtml = '';
+      if (isStaff) {
+        if (item.status === 'pending') {
+          actionsHtml = `
+            <div class="staff-badge-locked">
+              <i data-lucide="shield-alert" style="width: 13px; height: 13px; vertical-align: middle; margin-right: 3px;"></i>
+              <strong>Mode Staf Operasional:</strong> Transaksi menunggu pengesahan Pemilik (Zero Self-Approval).
+            </div>
+            <button type="button" class="btn-exec-receipt" onclick="quickViewReceipt(event, '${item.id}')">
+              <i data-lucide="printer" style="width: 12px; height: 12px;"></i>
+              <span>Cetak Tanda Terima Sementara</span>
+            </button>
+          `;
+        } else {
+          actionsHtml = `
+            <button type="button" class="btn-exec-receipt" onclick="quickViewReceipt(event, '${item.id}')">
+              <i data-lucide="printer" style="width: 12px; height: 12px;"></i>
+              <span>Cetak Kuitansi</span>
+            </button>
+          `;
+        }
+      } else {
+        // Owner Mode
+        if (item.status === 'pending') {
+          actionsHtml = `
+            <button type="button" class="btn-exec-approve" onclick="executeApproveFromCard('${item.id}')">
+              <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+              <span>Sahkan Pembayaran</span>
+            </button>
+            <button type="button" class="btn-exec-reject" onclick="openModalRejectCard('${item.id}')">
+              <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+              <span>Tolak Bukti Transfer</span>
+            </button>
+          `;
+        } else if (item.status === 'verified' || item.status === 'partial') {
+          actionsHtml = `
+            <button type="button" class="btn-exec-receipt" onclick="quickViewReceipt(event, '${item.id}')">
+              <i data-lucide="printer" style="width: 12px; height: 12px;"></i>
+              <span>Cetak Kuitansi Resmi</span>
+            </button>
+            <button type="button" class="btn-exec-reversal" onclick="openModalReversalCard('${item.id}')">
+              <i data-lucide="rotate-ccw" style="width: 12px; height: 12px;"></i>
+              <span>Jurnal Reversal</span>
+            </button>
+          `;
+        } else {
+          actionsHtml = `
+            <span style="font-size: 11px; color: #94A3B8; text-align: center;">Transaksi Telah Dikoreksi Reversal</span>
+          `;
+        }
+      }
+
+      return `
+        <div class="feed-tx-card ${item.expanded ? 'expanded' : ''} ${item.status === 'pending' ? 'is-pending' : ''} ${item.status === 'reversed' ? 'is-reversed' : ''}" id="feedCard-${item.id}">
+          
+          <!-- Main Collapsible Row -->
+          <div class="feed-tx-main-row" onclick="toggleCardAccordion('${item.id}')">
+            
+            <div class="feed-left-cluster">
+              <div class="tenant-avatar-circle ${item.avatarColor}">${item.initials}</div>
+              
+              <div class="feed-identity-meta">
+                <div class="feed-tenant-name">
+                  <span>${item.tenant}</span>
+                  <span style="font-size: 11px; font-weight: 500; color: #94A3B8;">(${item.id})</span>
+                </div>
+                <div class="feed-room-badge">
+                  <i data-lucide="door-closed" style="width: 12px; height: 12px;"></i>
+                  <span>Kamar ${item.room} (${item.floor}) &middot; #${item.invoiceId}</span>
+                </div>
+              </div>
+
+              <span class="feed-channel-pill ${channelClass}">
+                <i data-lucide="${channelIcon}" style="width: 12px; height: 12px;"></i>
+                <span>${item.method}</span>
+              </span>
+
+              <span class="feed-timestamp-txt">${item.dateTime}</span>
+            </div>
+
+            <div class="feed-right-cluster">
+              <div class="feed-amount-box">
+                <div class="feed-amount-val ${item.amount < 0 ? 'is-negative' : ''}">${formatRupiah(item.amount)}</div>
+                <div class="feed-due-sub">${item.dueRemaining === 0 ? 'Lunas Sepenuhnya' : 'Sisa Tagihan: ' + formatRupiah(item.dueRemaining)}</div>
+              </div>
+
+              ${statusBadgeHtml}
+
+              <button type="button" class="btn-expand-caret" title="Buka Detail & Bukti Transfer">
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Expandable Details Accordion -->
+          <div class="feed-tx-details-accordion">
+            <div class="details-grid-3col">
+              
+              <!-- Col 1: Slip Preview -->
+              <div class="accordion-slip-card" onclick="openProofZoomModal('${item.id}')" title="Klik untuk memperbesar bukti transfer">
+                <div class="slip-head-meta">
+                  <span style="font-weight: 700; color: #1D4ED8;">${item.method.toUpperCase()}</span>
+                  <span>Resi Finansial</span>
+                </div>
+                <div class="slip-center-nominal">
+                  <div style="font-size: 10px; color: #64748B;">Nominal Mutasi</div>
+                  <div class="slip-nominal-txt">${formatRupiah(item.amount)}</div>
+                </div>
+                <div class="slip-ref-meta">
+                  <span>Pengirim: <strong>${item.sender}</strong></span>
+                  <span style="font-family: monospace;">${item.refNo}</span>
+                </div>
+                <div style="text-align: center; font-size: 10.5px; color: var(--brand-primary); font-weight: 600; padding-top: 4px;">
+                  <i data-lucide="zoom-in" style="width: 11px; height: 11px; vertical-align: middle;"></i> Klik untuk Perbesar Slip
+                </div>
+              </div>
+
+              <!-- Col 2: Reconciliation & Audit Timeline -->
+              <div class="accordion-reconcile-card">
+                <div class="reconcile-metrics-inline">
+                  <div class="reconcile-item-box">
+                    <span class="reconcile-item-lbl">Total Nilai Tagihan:</span>
+                    <span class="reconcile-item-val">${formatRupiah(item.totalInvoice)}</span>
+                  </div>
+                  <div class="reconcile-item-box">
+                    <span class="reconcile-item-lbl">Pembayaran Ini:</span>
+                    <span class="reconcile-item-val" style="color: #16A34A;">${formatRupiah(item.amount)}</span>
+                  </div>
+                  <div class="reconcile-item-box">
+                    <span class="reconcile-item-lbl">Sisa Kewajiban:</span>
+                    <span class="reconcile-item-val" style="color: ${item.dueRemaining === 0 ? '#16A34A' : '#EA580C'};">
+                      ${formatRupiah(item.dueRemaining)}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="accordion-timeline-list">
+                  ${item.auditLog.map(step => `
+                    <div class="timeline-node-row">
+                      <span class="timeline-dot ${step.dot}"></span>
+                      <div><strong>${step.text}</strong> &middot; <span style="color: #94A3B8;">${step.time}</span></div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Col 3: Action Buttons -->
+              <div class="accordion-actions-card">
+                ${actionsHtml}
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function toggleCardAccordion(id) {
+      const item = paymentsData.find(i => i.id === id);
+      if (item) {
+        item.expanded = !item.expanded;
+        renderWaterfallFeed();
       }
     }
 
-    function submitPayment() {
-      RumaUI.showToast('Pembayaran berhasil direkam dan diverifikasi ke dalam kas masuk kost!');
-      closePaymentModal();
+    function selectWalletFilter(walletKey, elem) {
+      currentWalletFilter = walletKey;
+      document.querySelectorAll('.sidebar-channel-item, .wallet-card-item').forEach(c => {
+        c.classList.remove('active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      elem.classList.add('active');
+      elem.setAttribute('aria-pressed', 'true');
+      renderWaterfallFeed();
+      const names = {
+        'all': 'Semua Kanal Kasir',
+        'bca': 'Bank Central Asia (BCA)',
+        'qris': 'QRIS Merchant Instant',
+        'cash': 'Kas Tunai & Lainnya'
+      };
+      RumaUI.showToast(`Menyaring aliran transaksi: ${names[walletKey] || walletKey}`, 'info');
     }
+
+    function approveDirectFromSidebar(txId, tenantName, amount) {
+      if (isStaffRole()) {
+        RumaUI.showToast('Akses Ditolak: Staf dilarang memverifikasi mutasi sendiri (Zero Self-Approval).', 'error');
+        return;
+      }
+      const item = paymentsData.find(d => d.id === txId);
+      if (item) {
+        item.status = 'verified';
+        item.statusLabel = 'Terverifikasi (Lunas)';
+        item.recordedNote = `Diverifikasi sah oleh Pemilik (${new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})} WIB)`;
+        renderWaterfallFeed();
+        RumaUI.showToast(`Mutasi #${txId} (${tenantName} - ${amount}) berhasil disahkan oleh Pemilik!`, 'success');
+      }
+    }
+
+    function switchFilterStatus(status, btn) {
+      currentFilterStatus = status;
+      document.querySelectorAll('.filter-segment-tabs .segment-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderWaterfallFeed();
+    }
+
+    function handleSearch(val) {
+      currentSearchTerm = val;
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (clearBtn) clearBtn.style.display = val ? 'inline-flex' : 'none';
+      renderWaterfallFeed();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('txSearchInput');
+      input.value = '';
+      currentSearchTerm = '';
+      document.getElementById('clearSearchBtn').style.display = 'none';
+      renderWaterfallFeed();
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // ACTION HANDLERS & MODALS (RK-030 s.d. RK-033)
+    // ══════════════════════════════════════════════════════════════
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.remove('open');
+    }
+
+    // Modal Catat Bayar
+    function openModalCatatBayar() {
+      const isStaff = isStaffRole();
+      const alertElem = document.getElementById('modalStaffAlert');
+      if (alertElem) alertElem.style.display = isStaff ? 'block' : 'none';
+      const panel = document.getElementById('invoiceSelectPanel');
+      if (panel) panel.classList.remove('open');
+      calculateBalancePreview();
+      openModal('modalCatatBayar');
+    }
+
+    function toggleInvoiceSelectPopover(event) {
+      event.stopPropagation();
+      const panel = document.getElementById('invoiceSelectPanel');
+      panel.classList.toggle('open');
+    }
+
+    // Auto-close popover when clicking outside
+    document.addEventListener('click', (e) => {
+      const panel = document.getElementById('invoiceSelectPanel');
+      if (panel && panel.classList.contains('open') && !e.target.closest('.method-popover-wrap')) {
+        panel.classList.remove('open');
+      }
+    });
+
+    function selectInvoiceForPayment(invId, label, due) {
+      selectedInvoiceTarget = { id: invId, label: label, due: due };
+      document.getElementById('selectedInvoiceLabel').textContent = `#${invId} · ${label} (Sisa ${formatRupiah(due)})`;
+      document.getElementById('inputPayAmount').value = due.toLocaleString('id-ID');
+      document.getElementById('invoiceSelectPanel').classList.remove('open');
+      calculateBalancePreview();
+    }
+
+    function formatNominalInput(input) {
+      const val = input.value.replace(/\D/g, '');
+      if (val) {
+        input.value = parseInt(val, 10).toLocaleString('id-ID');
+      } else {
+        input.value = '';
+      }
+      calculateBalancePreview();
+    }
+
+    function selectPaymentMethod(elem, method) {
+      document.querySelectorAll('.method-radio-box').forEach(el => el.classList.remove('active'));
+      elem.classList.add('active');
+      selectedPayMethod = method;
+
+      const depositBox = document.getElementById('depositCalloutBox');
+      const refInput = document.getElementById('inputPayRef');
+      const randNum = Math.floor(100000 + Math.random() * 900000);
+
+      if (method.includes('Deposit')) {
+        if (depositBox) depositBox.style.display = 'block';
+        if (refInput) refInput.value = `DEP-KLAIM-${selectedInvoiceTarget.id || 'INV202610-04'}`;
+      } else {
+        if (depositBox) depositBox.style.display = 'none';
+        if (refInput) {
+          if (method.includes('BCA')) {
+            refInput.value = `TRF-BCA-${randNum}`;
+          } else if (method.includes('QRIS')) {
+            refInput.value = `QRIS-OKT-${randNum}`;
+          } else if (method.includes('Mandiri')) {
+            refInput.value = `TRF-MDR-${randNum}`;
+          } else {
+            refInput.value = `KAS-TUNAI-${randNum}`;
+          }
+        }
+      }
+    }
+
+    function calculateBalancePreview() {
+      const enteredStr = document.getElementById('inputPayAmount').value || '0';
+      const entered = parseInt(enteredStr.replace(/\D/g, '')) || 0;
+      const prevDue = selectedInvoiceTarget.due;
+      const newDue = Math.max(0, prevDue - entered);
+
+      document.getElementById('calcPrevDue').textContent = formatRupiah(prevDue);
+      document.getElementById('calcPaidAmount').textContent = `- ${formatRupiah(entered)}`;
+      
+      const newDueElem = document.getElementById('calcNewDue');
+      if (newDue === 0) {
+        newDueElem.textContent = 'Rp 0 (Lunas Sepenuhnya)';
+        newDueElem.style.color = '#16A34A';
+      } else {
+        newDueElem.textContent = `${formatRupiah(newDue)} (Sisa Piutang Parsial)`;
+        newDueElem.style.color = '#EA580C';
+      }
+    }
+
+    function simulateProofUpload() {
+      const fileNameElem = document.getElementById('uploadFileName');
+      fileNameElem.textContent = 'slip_transfer_bca_23okt.jpg (1.2 MB) (Valid)';
+      fileNameElem.style.color = '#16A34A';
+      RumaUI.showToast('Bukti transfer berhasil dilampirkan!');
+    }
+
+    function submitPaymentRecord() {
+      const enteredStr = document.getElementById('inputPayAmount').value || '0';
+      const entered = parseInt(enteredStr.replace(/\./g, '')) || selectedInvoiceTarget.due;
+      const refNo = document.getElementById('inputPayRef').value || ('TRF-BCA-' + Math.floor(100000 + Math.random() * 900000));
+      const isStaff = isStaffRole();
+
+      const newTxId = 'PAY-202610-' + String(paymentsData.length + 1).padStart(2, '0');
+      const isFull = entered >= selectedInvoiceTarget.due;
+
+      const newTx = {
+        id: newTxId,
+        dayGroup: 'today',
+        dayLabel: 'Hari Ini (23 Oktober 2026)',
+        invoiceId: selectedInvoiceTarget.id,
+        tenant: selectedInvoiceTarget.label.split('·')[1]?.trim() || 'Penghuni Kost',
+        room: selectedInvoiceTarget.label.split('·')[0]?.replace('Kamar', '').trim() || 'A-01',
+        floor: 'Lt. 1',
+        amount: entered,
+        dueRemaining: Math.max(0, selectedInvoiceTarget.due - entered),
+        totalInvoice: selectedInvoiceTarget.due,
+        method: selectedPayMethod,
+        channelType: selectedPayMethod.toLowerCase().includes('deposit') ? 'deposit' : (selectedPayMethod.toLowerCase().includes('qris') ? 'qris' : (selectedPayMethod.toLowerCase().includes('mandiri') ? 'mandiri' : (selectedPayMethod.toLowerCase().includes('tunai') ? 'cash' : 'bca'))),
+        refNo: refNo,
+        dateTime: '23 Okt 2026, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
+        status: isStaff ? 'pending' : (isFull ? 'verified' : 'partial'),
+        statusLabel: isStaff ? 'Menunggu Cek' : (isFull ? 'Terverifikasi' : 'Cicilan Parsial'),
+        sender: selectedInvoiceTarget.label.split('·')[1]?.trim() || 'Penghuni',
+        avatarColor: selectedPayMethod.toLowerCase().includes('deposit') ? 'is-violet' : 'is-orange',
+        initials: 'PS',
+        expanded: true,
+        auditLog: [
+          { 
+            time: '23 Okt 2026 · Baru saja', 
+            text: selectedPayMethod.toLowerCase().includes('deposit')
+              ? (isStaff ? 'Dicatat Staf (Klaim Uang Jaminan / Deposit) · Menunggu Sah Owner' : 'Klaim Saldo Deposit Jaminan oleh Pemilik Kost (Non-Cash)')
+              : (isStaff ? 'Dicatat oleh Staf (Rini Setiawati) · Status Pending' : 'Dicatat langsung oleh Pemilik (Budi Makmur)'), 
+            dot: 'is-green' 
+          }
+        ]
+      };
+
+      paymentsData.unshift(newTx);
+      closeModal('modalCatatBayar');
+      renderWaterfallFeed();
+
+      if (selectedPayMethod.toLowerCase().includes('deposit')) {
+        RumaUI.showToast(`Pembayaran ${formatRupiah(entered)} berhasil dipotong dari saldo deposit jaminan!`, 'success');
+      } else if (isStaff) {
+        RumaUI.showToast(`Pembayaran ${formatRupiah(entered)} dicatat! Menunggu verifikasi Pemilik (Zero Self-Approval).`, 'warning');
+      } else {
+        RumaUI.showToast(`Pembayaran ${formatRupiah(entered)} untuk ${newTx.room} berhasil disahkan!`, 'success');
+      }
+    }
+
+    // Approve Execution
+    function executeApproveFromCard(id) {
+      const item = paymentsData.find(i => i.id === id);
+      if (!item) return;
+
+      item.status = item.dueRemaining === 0 ? 'verified' : 'partial';
+      item.statusLabel = item.dueRemaining === 0 ? 'Terverifikasi' : 'Cicilan Parsial';
+      item.auditLog.push({
+        time: '23 Okt 2026 · ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
+        text: 'Disahkan & Diverifikasi oleh Pemilik (Budi Makmur)',
+        dot: 'is-green'
+      });
+
+      renderWaterfallFeed();
+      RumaUI.showToast(`Pembayaran ${item.id} (${formatRupiah(item.amount)}) berhasil disahkan! Saldo tagihan terpotong.`, 'success');
+    }
+
+    // Zoom Proof Modal
+    function openProofZoomModal(id) {
+      activeActionTxId = id;
+      const item = paymentsData.find(i => i.id === id) || paymentsData[0];
+      if (!item) return;
+
+      document.getElementById('zoomSlipBank').textContent = item.method.toUpperCase();
+      document.getElementById('zoomSlipAmount').textContent = formatRupiah(item.amount);
+      document.getElementById('zoomSlipSender').textContent = item.sender;
+      document.getElementById('zoomSlipTime').textContent = item.dateTime;
+      document.getElementById('zoomSlipRef').textContent = item.refNo;
+
+      const btnZoomApprove = document.getElementById('btnZoomApprove');
+      if (isStaffRole() || item.status !== 'pending') {
+        btnZoomApprove.style.display = 'none';
+      } else {
+        btnZoomApprove.style.display = 'inline-flex';
+      }
+
+      openModal('modalProofZoom');
+    }
+
+    function approveSelectedFromModal() {
+      executeApproveFromCard(activeActionTxId);
+      closeModal('modalProofZoom');
+    }
+
+    // Reject Card Modal
+    function openModalRejectCard(id) {
+      activeActionTxId = id;
+      document.getElementById('rejectReasonInput').value = '';
+      openModal('modalReject');
+    }
+
+    function confirmRejectPayment() {
+      const reason = document.getElementById('rejectReasonInput').value.trim();
+      if (!reason) {
+        RumaUI.showToast('Mohon masukkan alasan penolakan bukti pembayaran.', 'error');
+        return;
+      }
+
+      const item = paymentsData.find(i => i.id === activeActionTxId);
+      if (!item) return;
+
+      item.status = 'reversed';
+      item.statusLabel = 'Ditolak';
+      item.auditLog.push({
+        time: '23 Okt 2026 · ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
+        text: `Ditolak oleh Pemilik: "${reason}"`,
+        dot: 'is-red'
+      });
+
+      closeModal('modalReject');
+      renderWaterfallFeed();
+      RumaUI.showToast(`Pembayaran ${item.id} ditolak dengan alasan: ${reason}`, 'warning');
+    }
+
+    // Reversal Card Modal
+    function openModalReversalCard(id) {
+      activeActionTxId = id;
+      const item = paymentsData.find(i => i.id === id);
+      if (!item) return;
+
+      document.getElementById('reversalTxOrigin').textContent = '#' + item.id;
+      document.getElementById('reversalAmountNeg').textContent = `- ${formatRupiah(item.amount)}`;
+      document.getElementById('reversalReasonInput').value = '';
+      openModal('modalReversal');
+    }
+
+    function confirmReversalExecution() {
+      const reason = document.getElementById('reversalReasonInput').value.trim();
+      if (!reason) {
+        RumaUI.showToast('Mohon tuliskan alasan pembatalan jurnal reversal.', 'error');
+        return;
+      }
+
+      const origin = paymentsData.find(i => i.id === activeActionTxId);
+      if (!origin) return;
+
+      const revTxId = 'REV-202610-' + String(paymentsData.length + 1).padStart(2, '0');
+      const revRecord = {
+        id: revTxId,
+        dayGroup: 'today',
+        dayLabel: 'Hari Ini (23 Oktober 2026)',
+        invoiceId: origin.invoiceId,
+        tenant: origin.tenant,
+        room: origin.room,
+        floor: origin.floor,
+        amount: -origin.amount,
+        dueRemaining: origin.totalInvoice,
+        totalInvoice: origin.totalInvoice,
+        method: 'Jurnal Reversal',
+        channelType: 'cash',
+        refNo: revTxId,
+        dateTime: '23 Okt 2026, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
+        status: 'reversed',
+        statusLabel: 'Dibatalkan',
+        sender: 'Koreksi: ' + reason,
+        avatarColor: 'is-gray',
+        initials: origin.initials,
+        expanded: true,
+        auditLog: [
+          {
+            time: '23 Okt 2026 · ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
+            text: `Jurnal Reversal dieksekusi oleh Pemilik: "${reason}"`,
+            dot: 'is-red'
+          },
+          {
+            time: '23 Okt 2026 · Otomatis',
+            text: `Saldo tagihan #${origin.invoiceId} dikembalikan penuh ke posisi belum bayar.`,
+            dot: 'is-amber'
+          }
+        ]
+      };
+
+      origin.auditLog.push({
+        time: '23 Okt 2026 · ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
+        text: `Dibatalkan via Reversal #${revTxId}: "${reason}"`,
+        dot: 'is-red'
+      });
+
+      paymentsData.unshift(revRecord);
+      closeModal('modalReversal');
+      renderWaterfallFeed();
+      RumaUI.showToast(`Jurnal Reversal ${revTxId} berhasil dibukukan! Saldo tagihan kembali normal.`, 'success');
+    }
+
+    // Receipt Modal
+    function quickViewReceipt(event, id) {
+      if (event) event.stopPropagation();
+      const item = paymentsData.find(i => i.id === id) || paymentsData[0];
+      if (!item) return;
+
+      document.getElementById('receiptSerialNo').textContent = 'KW-' + item.id.replace('PAY-', '');
+      document.getElementById('receiptTenantName').textContent = item.tenant;
+      document.getElementById('receiptRoomNo').textContent = item.room;
+      document.getElementById('receiptMethodName').textContent = item.method;
+      document.getElementById('receiptDateDisplay').textContent = item.dateTime;
+      document.getElementById('receiptTotalAmount').textContent = formatRupiah(Math.abs(item.amount));
+
+      const watermark = document.getElementById('receiptWatermark');
+      if (item.status === 'verified') {
+        watermark.textContent = 'LUNAS';
+        watermark.className = 'receipt-watermark-overlay';
+      } else if (item.status === 'partial') {
+        watermark.textContent = 'CICILAN';
+        watermark.className = 'receipt-watermark-overlay is-partial';
+      } else {
+        watermark.textContent = 'KOREKSI';
+        watermark.className = 'receipt-watermark-overlay is-partial';
+      }
+
+      openModal('modalReceipt');
+    }
+
+    function printReceiptDocument() {
+      closeModal('modalReceipt');
+      RumaUI.showToast('Perintah cetak kuitansi dikirim ke printer sistem!', 'info');
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    }
+
+    // Close invoice popover on click outside
+    document.addEventListener('click', () => {
+      const invPopover = document.getElementById('invoiceSelectPanel');
+      if (invPopover) invPopover.classList.remove('open');
+    });
+
+    // ══════════════════════════════════════════════════════════════
+    // INITIALIZATION & ROLE DETECTION
+    // ══════════════════════════════════════════════════════════════
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof window.renderTopbar === 'function') {
+        window.renderTopbar('pembayaran');
+      }
+
+      const isStaff = isStaffRole();
+      const roleLabel = document.getElementById('roleSwitcherLabel');
+      const floatingRoleLabel = document.getElementById('floatingRoleLabel');
+      
+      if (roleLabel) roleLabel.textContent = isStaff ? 'Mode Staf (Ganti)' : 'Mode Pemilik (Ganti)';
+      if (floatingRoleLabel) floatingRoleLabel.textContent = isStaff ? 'Staf Operasional' : 'Pemilik Kost';
+
+      renderWaterfallFeed();
+      lucide.createIcons();
+    });
   </script>
 </body>
 </html>

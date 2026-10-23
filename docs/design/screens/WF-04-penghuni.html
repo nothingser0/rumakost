@@ -30,6 +30,56 @@
       gap: 20px;
     }
 
+    .ruma-datepicker-trigger {
+      height: 42px !important;
+      padding: 0 12px !important;
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-subtle) !important;
+      border-radius: 12px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+    }
+
+    .ruma-datepicker-trigger-icon {
+      width: 14px !important;
+      height: 14px !important;
+      color: var(--brand-primary) !important;
+    }
+
+    .ruma-datepicker-val-txt {
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      color: var(--text-main) !important;
+    }
+
+    .ruma-datepicker-wrap.drop-up .ruma-datepicker-popover {
+      top: auto !important;
+      bottom: calc(100% + 8px) !important;
+      left: 0 !important;
+      right: auto !important;
+      width: 300px !important;
+      max-width: calc(100vw - 32px) !important;
+      box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.16) !important;
+      animation: rumaPopUp 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .ruma-datepicker-wrap.drop-up.align-right .ruma-datepicker-popover {
+      left: auto !important;
+      right: 0 !important;
+    }
+
+    @keyframes rumaPopUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+
     /* ══════════════════════════════════════════════════════════════
        1. WORKBENCH 2-COLUMN GRID (MASTER LIST & DETAIL DOSSIER)
        ══════════════════════════════════════════════════════════════ */
@@ -72,6 +122,8 @@
     }
 
     .master-header-title {
+      white-space: nowrap;
+      flex-shrink: 0;
       font-size: 13.5px;
       font-weight: 700;
       color: var(--text-main);
@@ -81,7 +133,8 @@
     }
 
     .master-badge-count {
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 700;
       padding: 1px 7px;
       border-radius: var(--radius-full);
@@ -90,6 +143,7 @@
     }
 
     .master-header-actions {
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -99,9 +153,11 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 5px 10px;
+      height: 30px;
+      padding: 0 10px;
       border-radius: var(--radius-full);
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 600;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -120,9 +176,11 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 5px 12px;
+      height: 30px;
+      padding: 0 10px;
       border-radius: var(--radius-full);
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 600;
       background: var(--brand-primary);
       color: #FFFFFF;
@@ -147,7 +205,7 @@
       background: #F4F5F7;
       border: 1px solid transparent;
       border-radius: var(--radius-full);
-      padding: 0 12px;
+      padding: 0 10px;
       height: 36px;
       width: 100%;
       transition: all var(--transition-fast);
@@ -206,7 +264,8 @@
     .segment-tab-btn {
       padding: 5px 4px;
       text-align: center;
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 600;
       border: none;
       border-radius: var(--radius-full);
@@ -242,7 +301,8 @@
       text-align: center;
       padding: 4px 6px;
       border-radius: var(--radius-full);
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 500;
       border: 1px solid var(--border-subtle);
       background: #F8FAFC;
@@ -380,7 +440,8 @@
     }
 
     .tile-role-txt {
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
@@ -395,7 +456,8 @@
       border-radius: var(--radius-full);
       background: #F1F5F9;
       color: #0F172A;
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 700;
       border: 1px solid #E2E8F0;
       white-space: nowrap;
@@ -416,7 +478,8 @@
       gap: 8px;
       padding-top: 4px;
       border-top: 1px dashed #EEF2F6;
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
     }
 
     .tile-rate-txt {
@@ -643,6 +706,29 @@
       transform: translateY(-1px);
     }
 
+    .btn-checkout-direct {
+      background: #FFF1F2;
+      color: #E11D48;
+      border: 1px solid #FECDD3;
+      border-radius: var(--radius-full);
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .btn-checkout-direct:hover {
+      background: #FFE4E6;
+      border-color: #FDA4AF;
+      color: #BE123C;
+      transform: translateY(-1px);
+    }
+
     /* Operational Status Banner Strip */
     .dossier-alert-strip {
       border-radius: 12px;
@@ -686,7 +772,6 @@
     }
 
     .quad-block {
-      background: #F8FAFC;
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
       padding: 16px 18px;
@@ -757,7 +842,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
     }
 
     .meter-track {
@@ -809,7 +895,8 @@
       border-radius: 6px;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       color: var(--text-secondary);
       font-weight: 500;
     }
@@ -1272,7 +1359,8 @@
     }
 
     .modal-section-title {
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 700;
       color: var(--text-main);
       text-transform: uppercase;
@@ -1339,11 +1427,13 @@
     }
 
     .btn-choose-file {
-      padding: 5px 12px;
+      height: 30px;
+      padding: 0 10px;
       border-radius: var(--radius-full);
       background: #FFFFFF;
       border: 1px solid #CBD5E1;
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 600;
       color: var(--text-secondary);
       flex-shrink: 0;
@@ -1424,9 +1514,11 @@
 
     .pill-target-btn,
     .pill-template-btn {
-      padding: 5px 12px;
+      height: 30px;
+      padding: 0 10px;
       border-radius: var(--radius-full);
-      font-size: 11px;
+      font-size: 11.5px;
+      box-sizing: border-box;
       font-weight: 500;
       border: 1px solid var(--border-subtle);
       background: #F8FAFC;
@@ -1590,6 +1682,10 @@
               <i data-lucide="message-circle" style="width: 14px; height: 14px;"></i>
               <span>Chat WhatsApp</span>
             </a>
+            <button type="button" class="btn-checkout-direct" onclick="openPerpanjangModal('checkout')" title="Akhiri Kontrak / Check-Out Penghuni (Usir / Terminasi Sewa)">
+              <i data-lucide="user-x" style="width: 13px; height: 13px;"></i>
+              <span>Akhiri Sewa / Usir</span>
+            </button>
             <a href="tel:081234567890" class="btn-call-direct" id="dBtnCall" title="Panggilan Suara">
               <i data-lucide="phone" style="width: 13px; height: 13px;"></i>
               <span>Telepon</span>
@@ -1824,11 +1920,15 @@
                   <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;" id="dContractMeta">No. SPK-2025/RUMA/A-01 &middot; Tanda Tangan Digital &middot; Legal Sah</div>
                 </div>
                 <div style="display: flex; gap: 8px;">
+                  <button type="button" class="btn-micro-outline" onclick="openPerpanjangModal('checkout')" style="color: #E11D48; border-color: #FECDD3; background: #FFF1F2;">
+                    <i data-lucide="log-out" style="width: 12px; height: 12px;"></i>
+                    <span>Selesai / Usir</span>
+                  </button>
                   <button type="button" class="btn-micro-outline" onclick="RumaUI.showToast('Mengunduh Salinan Dokumen SPK Kontrak PDF...', 'info')">
                     <i data-lucide="download" style="width: 12px; height: 12px;"></i>
                     <span>Unduh PDF</span>
                   </button>
-                  <button type="button" class="btn-micro-brand" onclick="openPerpanjangModal()">
+                  <button type="button" class="btn-micro-brand" onclick="openPerpanjangModal('renew')">
                     <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i>
                     <span>Perpanjang Kontrak</span>
                   </button>
@@ -2047,14 +2147,14 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
           <div class="form-group-item">
             <label class="form-label-txt">Mulai Menempati *</label>
-            <div class="ruma-datepicker-wrap" id="wrapRegStartDate">
+            <div class="ruma-datepicker-wrap drop-up" id="wrapRegStartDate">
               <input type="hidden" id="regStartDate" value="2026-11-01">
               <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapRegStartDate', 'regStartDate')">
                 <div class="ruma-datepicker-trigger-content">
                   <i data-lucide="calendar" class="ruma-datepicker-trigger-icon"></i>
                   <span class="ruma-datepicker-val-txt">1 November 2026</span>
                 </div>
-                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted);"></i>
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
               </div>
             </div>
           </div>
@@ -2106,12 +2206,12 @@
     <div class="modal-container-card modal-lg">
       <div class="modal-head-row">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; border: 1px solid #FED7AA; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <div id="modalPerpanjangIconBox" style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; border: 1px solid #FED7AA; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
             <i data-lucide="file-check-2" style="width: 18px; height: 18px;"></i>
           </div>
           <div>
-            <h3 style="font-size: 15.5px; margin: 0; font-weight: 700; color: #0F172A;">Kelola Siklus Kontrak Sewa</h3>
-            <span style="font-size: 11.5px; color: #64748B;">Perpanjangan masa sewa atau proses check-out resmi penghuni</span>
+            <h3 style="font-size: 15.5px; margin: 0; font-weight: 700; color: #0F172A;" id="modalPerpanjangHeaderTitle">Kelola Siklus Kontrak Sewa</h3>
+            <span style="font-size: 11.5px; color: #64748B;" id="modalPerpanjangSubtitle">Perpanjangan masa sewa atau proses check-out resmi penghuni</span>
           </div>
         </div>
         <button type="button" class="btn-modal-close" onclick="closePerpanjangModal()" title="Tutup Modal">
@@ -2236,7 +2336,7 @@
                     <i data-lucide="calendar" class="ruma-datepicker-trigger-icon"></i>
                     <span class="ruma-datepicker-val-txt">28 Februari 2027</span>
                   </div>
-                  <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted);"></i>
+                  <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
                 </div>
               </div>
             </div>
@@ -3132,7 +3232,7 @@
         const file = input.files[0];
         const fileNameEl = document.getElementById('uploadKtpFileName');
         if (fileNameEl) {
-          fileNameEl.textContent = `✓ Terpilih: ${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+          fileNameEl.textContent = `File: ${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
           fileNameEl.style.color = 'var(--brand-primary)';
           fileNameEl.style.fontWeight = '700';
         }
@@ -3163,8 +3263,9 @@
       RumaUI.showToast(`Penghuni ${nama} di Kamar ${selectedRegRoom} (${selectedRegDur} Bulan) berhasil didaftarkan! Kredensial portal & kuitansi deposit siap dikirimkan.`, 'success');
     }
 
-    function openPerpanjangModal() {
+    function openPerpanjangModal(initialMode = 'renew') {
       document.getElementById('modalPerpanjang').classList.add('active');
+      setPerpanjangMode(initialMode);
       if (window.RumaDatePicker) {
         RumaDatePicker.init('wrapCheckoutDate', 'checkoutDate', '2027-02-28');
       }
@@ -3235,6 +3336,17 @@
         secCheckout.style.display = 'none';
         btnSubmit.innerHTML = '<i data-lucide="check" style="width: 14px; height: 14px;"></i><span>Konfirmasi Perpanjangan Sewa</span>';
         btnSubmit.className = 'btn-modal-primary';
+        const titleEl = document.getElementById('modalPerpanjangHeaderTitle');
+        const subtitleEl = document.getElementById('modalPerpanjangSubtitle');
+        const iconBox = document.getElementById('modalPerpanjangIconBox');
+        if (titleEl) titleEl.textContent = 'Kelola Siklus Kontrak Sewa';
+        if (subtitleEl) subtitleEl.textContent = 'Perpanjangan masa sewa atau proses check-out resmi penghuni';
+        if (iconBox) {
+          iconBox.style.background = '#FFF7ED';
+          iconBox.style.borderColor = '#FED7AA';
+          iconBox.style.color = '#FF7A00';
+          iconBox.innerHTML = '<i data-lucide="file-check-2" style="width: 18px; height: 18px;"></i>';
+        }
       } else {
         btnRenew.classList.remove('active');
         btnCheckout.classList.add('active');
@@ -3242,6 +3354,17 @@
         secCheckout.style.display = 'flex';
         btnSubmit.innerHTML = '<i data-lucide="log-out" style="width: 14px; height: 14px;"></i><span>Konfirmasi Check-Out & Refund Deposit</span>';
         btnSubmit.className = 'btn-modal-danger';
+        const titleEl = document.getElementById('modalPerpanjangHeaderTitle');
+        const subtitleEl = document.getElementById('modalPerpanjangSubtitle');
+        const iconBox = document.getElementById('modalPerpanjangIconBox');
+        if (titleEl) titleEl.textContent = 'Pengakhiran Sewa / Check-Out Penghuni';
+        if (subtitleEl) subtitleEl.textContent = 'Prosedur checkout, inspeksi fisik kamar & pencairan refund deposit jaminan';
+        if (iconBox) {
+          iconBox.style.background = '#FEF2F2';
+          iconBox.style.borderColor = '#FECACA';
+          iconBox.style.color = '#DC2626';
+          iconBox.innerHTML = '<i data-lucide="user-x" style="width: 18px; height: 18px;"></i>';
+        }
       }
       lucide.createIcons();
     }
@@ -3339,7 +3462,11 @@
       }
 
       if (paramAction === 'renew') {
-        openPerpanjangModal();
+        openPerpanjangModal('renew');
+      } else if (paramAction === 'checkout' || paramAction === 'usir') {
+        openPerpanjangModal('checkout');
+
+
       } else if (paramAction === 'new') {
         openTambahPenghuniModal();
         if (paramRoom) {

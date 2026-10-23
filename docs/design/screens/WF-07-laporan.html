@@ -3,501 +3,2271 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RumaKost · Laporan Keuangan & Okupansi</title>
+  <title>RumaKost &middot; Laporan Finansial &amp; Okupansi (SCR-12 &amp; SCR-13)</title>
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
+    /* ══════════════════════════════════════════════════════════════
+       GLOBAL LAYOUT & CANOPY
+       ══════════════════════════════════════════════════════════════ */
+    body {
+      background-color: var(--bg-canvas, #F7F8FA);
+      color: var(--text-main);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
 
+    .top-canopy-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: var(--bg-canvas, #F7F8FA);
+      z-index: 95;
+      pointer-events: none;
+    }
 
+    .topbar::before,
+    .topbar::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      width: 25px;
+      height: 25px;
+      pointer-events: none;
+      z-index: 101;
+    }
 
+    .topbar::before {
+      left: -1px;
+      background: radial-gradient(circle at 100% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+    }
 
-    /* OPERATIONAL EXPENSE TAB CONTENT (SCR-12) */
-    .expense-view-section {
-      display: none;
+    .topbar::after {
+      right: -1px;
+      background: radial-gradient(circle at 0% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+    }
+
+    .dashboard-wrapper {
+      max-width: 1440px;
+      width: calc(100% - 40px);
+      margin: 0 auto;
+      padding: 20px 0 40px;
+      box-sizing: border-box;
+      display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    .expense-view-section.active {
-      display: flex;
+    /* ══════════════════════════════════════════════════════════════
+       1. CONTROLS & DROPDOWN POPOVERS
+       ══════════════════════════════════════════════════════════════ */
+    .period-dropdown-wrap {
+      position: relative;
     }
 
-    .fin-view-section {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .fin-view-section.hidden {
-      display: none;
-    }
-
-    /* EXPENSE TABLE */
-    .expense-card {
+    .btn-period-select {
+      height: 32px;
+      padding: 0 12px;
       background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
-    }
-
-    .expense-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .category-tag {
+      border: 1px solid #CBD5E1;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-main);
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 11px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      white-space: nowrap;
+    }
+
+    .btn-period-select:hover {
+      border-color: var(--brand-primary);
+      background: #F8FAFC;
+    }
+
+    .btn-report-export {
+      height: 32px;
+      padding: 0 12px;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      white-space: nowrap;
+    }
+
+    .btn-report-export:hover {
+      background: #F8FAFC;
+      color: var(--text-main);
+      border-color: #94A3B8;
+    }
+
+    .period-popover-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 6px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.10);
+      min-width: 210px;
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .period-popover-menu.open {
+      display: flex;
+    }
+
+    .period-menu-item {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .period-menu-item:hover {
+      background: #F1F5F9;
+      color: var(--brand-primary);
+    }
+
+    .period-menu-item.active {
+      background: #FFF7ED;
+      color: var(--brand-primary);
       font-weight: 600;
     }
 
-    .tag-utility { background: #E0E7FF; color: #4338CA; }
-    .tag-maintenance { background: #FEF3C7; color: #D97706; }
-    .tag-cleaning { background: #DCFCE7; color: #16A34A; }
-    .tag-internet { background: #FCE7F3; color: #DB2777; }
+    .btn-add-expense-hero {
+      height: 32px;
+      padding: 0 14px;
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: 0 2px 8px rgba(255, 122, 0, 0.25);
+      white-space: nowrap;
+    }
 
+    .btn-add-expense-hero:hover {
+      background: var(--brand-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       2. ROW 1: THE EXECUTIVE FINANCIAL ENGINE (ASYMMETRIC PAIR)
+       ══════════════════════════════════════════════════════════════ */
+    .executive-row-grid {
+      display: grid;
+      grid-template-columns: 1.65fr 1fr;
+      gap: 20px;
+      width: 100%;
+    }
+
+    /* LEFT: FULL-FIDELITY DOUBLE BAR CHART (CMP-11) */
+    .chart-card-box {
+      background: var(--bg-card, #FFFFFF);
+      border-radius: var(--radius-xl, 20px);
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      border: 1px solid var(--border-subtle, #E2E8F0);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 320px;
+      box-sizing: border-box;
+      transition: all var(--transition-fast);
+    }
+
+    .chart-card-box:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-title-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chart-legend-cluster {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .legend-pill-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    .legend-pill-dot.is-income { background: var(--brand-primary, #FF7A00); }
+    .legend-pill-dot.is-expense { background: #0F172A; }
+
+    /* Double Bar Canvas with Y-Axis and Horizontal Gridlines */
+    .bar-chart-viewport {
+      position: relative;
+      height: 200px;
+      padding-top: 8px;
+      padding-bottom: 26px;
+      box-sizing: border-box;
+    }
+
+    .chart-y-numbers {
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 34px;
+      height: 160px;
+      pointer-events: none;
+    }
+
+    .chart-y-val {
+      position: absolute;
+      right: 0;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 500;
+      color: #94A3B8;
+      text-align: right;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .chart-bars-track {
+      margin-left: 44px;
+      height: 160px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 16px;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    .chart-grid-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-top: 1px dashed #E2E8F0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .chart-grid-line.line-25 { top: 0px; }
+    .chart-grid-line.line-20 { top: 32px; }
+    .chart-grid-line.line-15 { top: 64px; }
+    .chart-grid-line.line-10 { top: 96px; }
+    .chart-grid-line.line-5  { top: 128px; }
+    .chart-grid-line.line-0  {
+      top: 160px;
+      border-top: 1.5px solid #CBD5E1;
+    }
+
+    .bars-pair-column {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 100%;
+      position: relative;
+      z-index: 3;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .bars-duo {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .estify-bar-capsule {
+      width: 18px;
+      border-radius: var(--radius-full);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      transition: all var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .estify-bar-capsule:hover {
+      transform: scaleY(1.04);
+      transform-origin: bottom;
+    }
+
+    .bar-fill-solid {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--radius-full);
+      transition: all var(--transition-fast);
+    }
+
+    .bar-fill-solid.is-pemasukan {
+      background: #FED7AA;
+    }
+
+    .bar-fill-solid.is-pengeluaran {
+      background: #E2E8F0;
+    }
+
+    /* Active Month Highlight */
+    .bar-fill-solid.is-orange-active {
+      background: var(--brand-primary) !important;
+      box-shadow: 0 2px 10px rgba(255, 122, 0, 0.4);
+    }
+
+    .bar-fill-solid.is-dark-active {
+      background: #0F172A !important;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.35);
+    }
+
+    /* Hover effect */
+    .bars-pair-column:hover .bar-fill-solid.is-pemasukan,
+    .bars-pair-column:hover .bar-fill-solid.is-orange-active {
+      background: var(--brand-primary) !important;
+      box-shadow: 0 3px 12px rgba(255, 122, 0, 0.45) !important;
+    }
+
+    .bars-pair-column:hover .bar-fill-solid.is-pengeluaran,
+    .bars-pair-column:hover .bar-fill-solid.is-dark-active {
+      background: #0F172A !important;
+      box-shadow: 0 3px 12px rgba(15, 23, 42, 0.4) !important;
+    }
+
+    .bar-x-txt {
+      position: absolute;
+      bottom: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748B;
+      white-space: nowrap;
+      transition: color var(--transition-fast);
+    }
+
+    .bars-pair-column:hover .bar-x-txt,
+    .bar-x-txt.is-active {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    .bar-hover-tooltip {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 8px 12px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      font-size: 11px;
+      white-space: nowrap;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1), transform 160ms cubic-bezier(0.16, 1, 0.3, 1), visibility 160ms;
+    }
+
+    .bars-pair-column:hover .bar-hover-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .tooltip-dot-orange { width: 6px; height: 6px; border-radius: 50%; background: #FF7A00; display: inline-block; }
+    .tooltip-dot-dark   { width: 6px; height: 6px; border-radius: 50%; background: #CBD5E1; display: inline-block; }
+
+    /* Chart Footnote */
+    .chart-footer-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid #F1F5F9;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+    }
+
+    /* RIGHT: SIGNATURE EXECUTIVE FINANCIAL SPOTLIGHT CARD (DARK LUXURY) */
+    .executive-spotlight-card {
+      background: linear-gradient(145deg, #0F172A 0%, #1E293B 100%);
+      border-radius: var(--radius-xl, 20px);
+      padding: 24px;
+      color: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-sizing: border-box;
+    }
+
+    /* Geometric Dot Pattern */
+    .executive-spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.25) 1.2px, transparent 1.2px);
+      background-size: 16px 16px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.3;
+    }
+
+    /* Architectural Wave Lines Motif */
+    .spotlight-pattern-svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.25;
+      z-index: 1;
+    }
+
+    .spotlight-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .spotlight-tag-pill {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      color: #F8FAFC;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .spotlight-body-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 12px 0;
+    }
+
+    .spotlight-sub-meta {
+      font-size: 11.5px;
+      color: #94A3B8;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .spotlight-main-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin: 2px 0 0;
+    }
+
+    .spotlight-emphasis-box {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 14px 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .emphasis-label {
+      font-size: 11px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+
+    .emphasis-val-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .emphasis-huge-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: #34D399;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+
+    .emphasis-trend-pill {
+      background: rgba(52, 211, 153, 0.2);
+      color: #34D399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* 3-Column Quick KPI Strip */
+    .spotlight-kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .kpi-mini-tile {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .kpi-mini-lbl {
+      font-size: 10px;
+      color: #94A3B8;
+    }
+
+    .kpi-mini-val {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       3. ROW 2: DUAL OPERATIONS & BLUEPRINT HUB (SPLIT 58% vs 42%)
+       ══════════════════════════════════════════════════════════════ */
+    .operations-row-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 20px;
+      width: 100%;
+    }
+
+    /* LEFT: FINTECH OPERATIONAL EXPENSE LEDGER (SCR-12 & F-11) */
+    .ledger-card-box {
+      background: var(--bg-card, #FFFFFF);
+      border-radius: var(--radius-xl, 20px);
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      border: 1px solid var(--border-subtle, #E2E8F0);
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      transition: all var(--transition-fast);
+    }
+
+    .ledger-card-box:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.04);
+    }
+
+    .ledger-filter-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .search-capsule-mini {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 34px;
+      padding: 0 12px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-full);
+      flex: 1;
+      min-width: 180px;
+      transition: all var(--transition-fast);
+    }
+
+    .search-capsule-mini:focus-within {
+      background: #FFFFFF;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .search-capsule-mini input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 11.5px;
+      color: var(--text-main);
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .cat-chips-mini-wrap {
+      display: inline-flex;
+      align-items: center;
+      background: #F1F5F9;
+      padding: 2px;
+      border-radius: var(--radius-full);
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+
+    .cat-chip-btn-mini {
+      height: 28px;
+      padding: 0 10px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748B;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .cat-chip-btn-mini.active {
+      background: #FFFFFF;
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .expense-stream-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    .expense-stream-table th {
+      padding: 11px 12px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      background: #F8FAFC;
+      border-bottom: 1.5px solid #E2E8F0;
+    }
+
+    .expense-stream-table td {
+      padding: 12px;
+      border-bottom: 1px solid #F1F5F9;
+      vertical-align: middle;
+    }
+
+    .expense-stream-table tr:hover td {
+      background: #FFFDFB;
+    }
+
+    .cat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      font-size: 10.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .cat-badge.is-utility { background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+    .cat-badge.is-internet { background: #FDF2F8; color: #DB2777; border: 1px solid #FBCFE8; }
+    .cat-badge.is-water { background: #ECFEFF; color: #0891B2; border: 1px solid #A5F3FC; }
+    .cat-badge.is-cleaning { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+    .cat-badge.is-maintenance { background: #FFF7ED; color: #EA580C; border: 1px solid #FFEDD5; }
+
+    .ticket-link-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      color: var(--brand-primary);
+      font-size: 10.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .ticket-link-badge:hover {
+      background: var(--brand-primary);
+      color: #FFFFFF;
+    }
+
+    .btn-table-receipt {
+      height: 28px;
+      padding: 0 10px;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-table-receipt:hover {
+      background: #F8FAFC;
+      color: var(--text-main);
+      border-color: #94A3B8;
+    }
+
+    /* RIGHT: ARCHITECTURAL 3-FLOOR ROOM BLUEPRINT & EXPENSE ALLOCATION */
+    .blueprint-card-box {
+      background: var(--bg-card, #FFFFFF);
+      border-radius: var(--radius-xl, 20px);
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      border: 1px solid var(--border-subtle, #E2E8F0);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-sizing: border-box;
+      transition: all var(--transition-fast);
+    }
+
+    .blueprint-card-box:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.04);
+    }
+
+    .blueprint-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    /* 3-Floor Blueprint Matrix */
+    .floor-blueprint-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .floor-tier-row {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .floor-name-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      width: 55px;
+      flex-shrink: 0;
+    }
+
+    .floor-rooms-cluster {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .unit-pill {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .unit-pill.is-occupied {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+    }
+
+    .unit-pill.is-vacant {
+      background: #FFF7ED;
+      color: #EA580C;
+      border: 1.5px dashed #FF7A00;
+    }
+
+    .unit-pill:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .floor-rate-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+
+    .rate-full { background: #ECFDF5; color: #059669; }
+    .rate-partial { background: #EFF6FF; color: #1D4ED8; }
+
+    /* Cost Allocation Multi-Segment Meter */
+    .allocation-meter-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid #F1F5F9;
+    }
+
+    .meter-header-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+    }
+
+    .meter-progress-track {
+      height: 12px;
+      border-radius: var(--radius-full);
+      background: #F1F5F9;
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .meter-segment {
+      height: 100%;
+      transition: width var(--transition-fast);
+    }
+
+    .seg-maint { background: #EA580C; width: 35.3%; }
+    .seg-pln   { background: #1D4ED8; width: 29.4%; }
+    .seg-wifi  { background: #DB2777; width: 15.3%; }
+    .seg-pdam  { background: #0891B2; width: 10.6%; }
+    .seg-clean { background: #059669; width: 9.4%; }
+
+    .meter-legend-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+      font-size: 11px;
+    }
+
+    .meter-legend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .legend-bullet-txt {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+    }
+
+    .bullet-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       4. MODALS & POPUPS
+       ══════════════════════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      animation: modalPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes modalPopIn {
+      from { transform: scale(0.95) translateY(8px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal-card-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .btn-modal-close {
+      background: none;
+      border: none;
+      color: #94A3B8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 6px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-modal-close:hover {
+      background: #F1F5F9;
+      color: var(--text-main);
+    }
+
+    .modal-card-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: calc(85vh - 130px);
+      overflow-y: auto;
+    }
+
+    .form-group-custom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label-custom {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .form-input-custom {
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      font-family: inherit;
+      outline: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .form-input-custom:focus {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .custom-select-trigger {
+      height: 40px;
+      padding: 0 14px;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      font-size: 12.5px;
+      color: var(--text-main);
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-sizing: border-box;
+      width: 100%;
+      user-select: none;
+    }
+
+    .custom-select-popover {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      z-index: 210;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .custom-select-popover.open {
+      display: flex;
+    }
+
+    .custom-select-item {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .custom-select-item:hover {
+      background: #FFF7ED;
+      color: var(--brand-primary);
+    }
+
+    .custom-select-item.selected {
+      background: #FFF7ED;
+      color: var(--brand-primary);
+      font-weight: 600;
+    }
+
+    .upload-drag-zone {
+      border: 1.5px dashed #CBD5E1;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      background: #F8FAFC;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .upload-drag-zone:hover {
+      border-color: var(--brand-primary);
+      background: #FFFBF7;
+    }
+
+    .modal-card-footer {
+      padding: 16px 22px;
+      border-top: 1px solid #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #F8FAFC;
+    }
+
+    /* Floating Role Simulator Bar */
+    .wf-badge-role-bar {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: var(--radius-full);
+      padding: 6px 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      z-index: 900;
+    }
+
+    .btn-toggle-role-pill {
+      background: #FFF7ED;
+      color: var(--brand-primary);
+      border: 1px solid #FFEDD5;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-toggle-role-pill:hover {
+      background: var(--brand-primary);
+      color: #FFFFFF;
+    }
+
+    /* Responsive */
+    @media (max-width: 1080px) {
+      .executive-row-grid,
+      .operations-row-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div class="wf-badge">SCR-12 & SCR-13 · Laporan Keuangan, Arus Kas & Okupansi</div>
-
-  <!-- TOPBAR -->
   <!-- TOP CANOPY OVERLAY (Masking celah atas navbar floating) -->
   <div class="top-canopy-overlay" aria-hidden="true"></div>
 
-  <header class="topbar" id="mainTopbar">
-    <!-- Rendered dynamically by components.js -->
-  </header>
+  <!-- FLOATING TOPBAR (RENDERED BY components.js) -->
+  <header class="topbar" id="mainTopbar"></header>
 
-  <!-- PAGE LAYOUT -->
-  <div class="page-layout">
+  <!-- MAIN DASHBOARD CONTENT (CARDS ALWAYS ON TOP · ZERO BANNER) -->
+  <div class="dashboard-wrapper">
 
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-      <div class="page-title-group">
-        <h1>Laporan Keuangan & Okupansi</h1>
-        <p>Rekapitulasi pendapatan sewa, arus kas keluar operasional, dan tingkat hunian Kost Budi Makmur.</p>
-      </div>
-
-      <div class="header-actions">
-        <button class="btn-pill btn-white-secondary" onclick="RumaUI.showToast('Laporan keuangan Oktober 2026 berhasil diekspor ke CSV/PDF')">
-          <i data-lucide="download" style="width: 15px; height: 15px;"></i>
-          Ekspor CSV / PDF
-        </button>
-        <button class="btn-pill btn-orange-primary" onclick="openExpenseModal()">
-          <i data-lucide="plus-circle" style="width: 15px; height: 15px;"></i>
-          Catat Biaya Operasional
-        </button>
-      </div>
-    </div>
-
-    <!-- SUB TABS -->
-    <div class="tab-pills-bar">
-      <button class="tab-btn active" id="tabFinBtn" onclick="switchTab('fin')">
-        <i data-lucide="bar-chart-3" style="width: 15px; height: 15px;"></i>
-        Ringkasan & Arus Kas (SCR-13)
-      </button>
-      <button class="tab-btn" id="tabExpBtn" onclick="switchTab('exp')">
-        <i data-lucide="receipt" style="width: 15px; height: 15px;"></i>
-        Pengeluaran Operasional (SCR-12)
-      </button>
-    </div>
-
-    <!-- SECTION 1: FINANSIAL & ARUS KAS (SCR-13) -->
-    <div class="fin-view-section" id="finSection">
+    <!-- ========================================================
+         1. ROW 1: THE EXECUTIVE FINANCIAL ENGINE (ASYMMETRIC PAIR)
+         ======================================================== -->
+    <div class="executive-row-grid">
       
-      <!-- 4 METRICS CARDS -->
-      <div class="metric-grid-4">
-        <div class="metric-card">
-          <div class="metric-top">
-            <span class="metric-label">Total Pemasukan</span>
-            <span class="metric-badge green">+12.5%</span>
-          </div>
-          <div class="metric-value">Rp 21.650.000</div>
-          <div class="metric-desc">Penerimaan sewa Oktober 2026</div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-top">
-            <span class="metric-label">Biaya Operasional</span>
-            <span class="metric-badge orange">5 pos pengeluaran</span>
-          </div>
-          <div class="metric-value">Rp 4.250.000</div>
-          <div class="metric-desc">Listrik, WiFi, air, kebersihan</div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-top">
-            <span class="metric-label">Laba Bersih (Net)</span>
-            <span class="metric-badge green">Margin 80.3%</span>
-          </div>
-          <div class="metric-value" style="color: #16A34A;">Rp 17.400.000</div>
-          <div class="metric-desc">Pendapatan bersih pemilik</div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-top">
-            <span class="metric-label">Okupansi Kamar</span>
-            <span class="metric-badge green">Tinggi</span>
-          </div>
-          <div class="metric-value">86.7%</div>
-          <div class="metric-desc">13 dari 15 kamar terisi</div>
-        </div>
-      </div>
-
-      <!-- MAIN CHART & GAUGE ROW -->
-      <div class="report-main-grid">
-        
-        <!-- ESTIFY DOUBLE BAR CHART -->
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <h3 class="chart-title">Arus Kas 6 Bulan Terakhir</h3>
-              <p class="chart-sub">Perbandingan Pemasukan Sewa vs Pengeluaran Operasional (Mei - Okt 2026)</p>
-            </div>
-            <div class="chart-legend">
-              <div class="legend-item">
-                <div class="legend-dot-orange"></div>
+      <!-- LEFT: FULL-FIDELITY DOUBLE BAR CHART (CMP-11) -->
+      <div class="chart-card-box">
+        <div class="card-top-header">
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <h3 class="card-title-text">
+              <i data-lucide="bar-chart-2" style="width: 16px; height: 16px; color: var(--brand-primary);"></i>
+              <span>Arus Kas &amp; Operasional 6 Bulan Terakhir</span>
+            </h3>
+            <div class="chart-legend-cluster">
+              <div class="legend-chip">
+                <span class="legend-pill-dot is-income"></span>
                 <span>Pemasukan</span>
               </div>
-              <div class="legend-item">
-                <div class="legend-dot-peach"></div>
+              <div class="legend-chip">
+                <span class="legend-pill-dot is-expense"></span>
                 <span>Pengeluaran</span>
               </div>
             </div>
           </div>
 
-          <!-- CHART BARS CONTAINER -->
-          <div class="chart-container">
-            <!-- Mei -->
-            <div class="bar-col-group">
-              <div class="bars-pair">
-                <div class="bar-solid-orange" style="height: 120px;" title="Pemasukan: Rp 18.2jt"></div>
-                <div class="bar-hatched-peach" style="height: 38px;" title="Pengeluaran: Rp 3.8jt"></div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <!-- Period Dropdown Popover (0 Native Select) -->
+            <div class="period-dropdown-wrap">
+              <button type="button" class="btn-period-select" onclick="togglePeriodDropdown(event)" title="Pilih periode pembukuan">
+                <i data-lucide="calendar" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+                <span id="currentPeriodLabel">Oktober 2026</span>
+                <i data-lucide="chevron-down" style="width: 12px; height: 12px; color: #94A3B8;"></i>
+              </button>
+              <div class="period-popover-menu" id="periodPopoverMenu">
+                <button type="button" class="period-menu-item active" onclick="selectPeriod('Oktober 2026', this)">
+                  <span>Oktober 2026 (Bulan Ini)</span>
+                  <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                </button>
+                <button type="button" class="period-menu-item" onclick="selectPeriod('September 2026', this)">
+                  <span>September 2026</span>
+                </button>
+                <button type="button" class="period-menu-item" onclick="selectPeriod('Kuartal 3 (Q3) 2026', this)">
+                  <span>Kuartal 3 (Q3) 2026</span>
+                </button>
+                <button type="button" class="period-menu-item" onclick="selectPeriod('Tahun Berjalan 2026', this)">
+                  <span>Tahun Berjalan (YTD 2026)</span>
+                </button>
               </div>
-              <span class="bar-label">Mei</span>
             </div>
 
-            <!-- Jun -->
-            <div class="bar-col-group">
-              <div class="bars-pair">
-                <div class="bar-solid-orange" style="height: 135px;" title="Pemasukan: Rp 19.5jt"></div>
-                <div class="bar-hatched-peach" style="height: 42px;" title="Pengeluaran: Rp 4.1jt"></div>
-              </div>
-              <span class="bar-label">Jun</span>
-            </div>
-
-            <!-- Jul -->
-            <div class="bar-col-group">
-              <div class="bars-pair">
-                <div class="bar-solid-orange" style="height: 140px;" title="Pemasukan: Rp 20.0jt"></div>
-                <div class="bar-hatched-peach" style="height: 40px;" title="Pengeluaran: Rp 3.9jt"></div>
-              </div>
-              <span class="bar-label">Jul</span>
-            </div>
-
-            <!-- Agu -->
-            <div class="bar-col-group">
-              <div class="bars-pair">
-                <div class="bar-solid-orange" style="height: 145px;" title="Pemasukan: Rp 20.5jt"></div>
-                <div class="bar-hatched-peach" style="height: 50px;" title="Pengeluaran: Rp 4.9jt"></div>
-              </div>
-              <span class="bar-label">Agu</span>
-            </div>
-
-            <!-- Sep -->
-            <div class="bar-col-group">
-              <div class="bars-pair">
-                <div class="bar-solid-orange" style="height: 155px;" title="Pemasukan: Rp 21.0jt"></div>
-                <div class="bar-hatched-peach" style="height: 41px;" title="Pengeluaran: Rp 4.0jt"></div>
-              </div>
-              <span class="bar-label">Sep</span>
-            </div>
-
-            <!-- Okt (Current) -->
-            <div class="bar-col-group">
-              <div class="bars-pair">
-                <div class="bar-solid-orange" style="height: 165px;" title="Pemasukan: Rp 21.65jt"></div>
-                <div class="bar-hatched-peach" style="height: 44px;" title="Pengeluaran: Rp 4.25jt"></div>
-              </div>
-              <span class="bar-label" style="color: #FF7A00; font-weight: 700;">Okt</span>
-            </div>
+            <!-- Export CSV / PDF Modal Trigger -->
+            <button type="button" class="btn-report-export" onclick="openExportModal()" title="Ekspor data finansial &amp; rekap biaya">
+              <i data-lucide="download" style="width: 13px; height: 13px;"></i>
+              <span>Ekspor</span>
+            </button>
           </div>
         </div>
 
-        <!-- SPEEDOMETER RADIAL GAUGE FOR OCCUPANCY -->
-        <div class="gauge-card">
-          <div style="font-size: 15px; font-weight: 700; color: #111111; margin-bottom: 4px;">Tingkat Hunian</div>
-          <div style="font-size: 12px; color: #6B7280; margin-bottom: 12px;">Okupansi Properti Saat Ini</div>
-
-          <div class="gauge-wrapper">
-            <svg width="190" height="105" viewBox="0 0 190 105">
-              <!-- Background Arc -->
-              <path d="M 20 95 A 75 75 0 0 1 170 95" fill="none" stroke="#ECEEF2" stroke-width="18" stroke-linecap="round"/>
-              <!-- Active Arc (86.7%) -->
-              <path d="M 20 95 A 75 75 0 0 1 170 95" fill="none" stroke="#FF7A00" stroke-width="18" stroke-linecap="round" stroke-dasharray="235.6" stroke-dashoffset="31.3"/>
-            </svg>
-            <div class="gauge-val-overlay">
-              <span class="gauge-number">86.7%</span>
-              <span class="gauge-unit">Terisi</span>
-            </div>
+        <!-- Double Bar Chart Canvas with Y-Axis & Dashed Gridlines -->
+        <div class="bar-chart-viewport">
+          <div class="chart-y-numbers">
+            <span class="chart-y-val" style="top: 0px;">25 Jt</span>
+            <span class="chart-y-val" style="top: 32px;">20 Jt</span>
+            <span class="chart-y-val" style="top: 64px;">15 Jt</span>
+            <span class="chart-y-val" style="top: 96px;">10 Jt</span>
+            <span class="chart-y-val" style="top: 128px;">5 Jt</span>
+            <span class="chart-y-val" style="top: 160px;">0</span>
           </div>
 
-          <div class="occupancy-stats-list">
-            <div class="stat-row">
-              <span style="color: #6B7280;">Kamar Tersewa</span>
-              <span style="font-weight: 700; color: #111111;">13 Kamar</span>
+          <div class="chart-bars-track">
+            <!-- Dashed Gridlines -->
+            <div class="chart-grid-line line-25"></div>
+            <div class="chart-grid-line line-20"></div>
+            <div class="chart-grid-line line-15"></div>
+            <div class="chart-grid-line line-10"></div>
+            <div class="chart-grid-line line-5"></div>
+            <div class="chart-grid-line line-0"></div>
+
+            <!-- Mei: 18.2 Jt (116px) & 3.8 Jt (24px) -->
+            <div class="bars-pair-column">
+              <div class="bar-hover-tooltip" style="bottom: 126px;">
+                <div style="font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">Mei 2026</div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-orange"></span> Pemasukan: <strong>Rp 18,20 Jt</strong>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-dark"></span> Pengeluaran: <strong>Rp 3,80 Jt</strong>
+                </div>
+                <div style="color: #34D399; font-weight: 600; margin-top: 2px;">Surplus: +Rp 14,40 Jt</div>
+              </div>
+              <div class="bars-duo">
+                <div class="estify-bar-capsule" style="height: 116px;" title="Pemasukan: Rp 18,2 Jt">
+                  <div class="bar-fill-solid is-pemasukan"></div>
+                </div>
+                <div class="estify-bar-capsule" style="height: 24px;" title="Pengeluaran: Rp 3,8 Jt">
+                  <div class="bar-fill-solid is-pengeluaran"></div>
+                </div>
+              </div>
+              <span class="bar-x-txt">Mei</span>
             </div>
-            <div class="stat-row">
-              <span style="color: #6B7280;">Kamar Kosong</span>
-              <span style="font-weight: 700; color: #FF7A00;">2 Kamar (A-02, C-04)</span>
+
+            <!-- Jun: 19.5 Jt (125px) & 4.1 Jt (26px) -->
+            <div class="bars-pair-column">
+              <div class="bar-hover-tooltip" style="bottom: 135px;">
+                <div style="font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">Jun 2026</div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-orange"></span> Pemasukan: <strong>Rp 19,50 Jt</strong>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-dark"></span> Pengeluaran: <strong>Rp 4,10 Jt</strong>
+                </div>
+                <div style="color: #34D399; font-weight: 600; margin-top: 2px;">Surplus: +Rp 15,40 Jt</div>
+              </div>
+              <div class="bars-duo">
+                <div class="estify-bar-capsule" style="height: 125px;" title="Pemasukan: Rp 19,5 Jt">
+                  <div class="bar-fill-solid is-pemasukan"></div>
+                </div>
+                <div class="estify-bar-capsule" style="height: 26px;" title="Pengeluaran: Rp 4,1 Jt">
+                  <div class="bar-fill-solid is-pengeluaran"></div>
+                </div>
+              </div>
+              <span class="bar-x-txt">Jun</span>
             </div>
-            <div class="stat-row">
-              <span style="color: #6B7280;">Total Kapasitas</span>
-              <span style="font-weight: 600; color: #4B5563;">15 Kamar (3 Lantai)</span>
+
+            <!-- Jul: 20.0 Jt (128px) & 3.9 Jt (25px) -->
+            <div class="bars-pair-column">
+              <div class="bar-hover-tooltip" style="bottom: 138px;">
+                <div style="font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">Jul 2026</div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-orange"></span> Pemasukan: <strong>Rp 20,00 Jt</strong>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-dark"></span> Pengeluaran: <strong>Rp 3,90 Jt</strong>
+                </div>
+                <div style="color: #34D399; font-weight: 600; margin-top: 2px;">Surplus: +Rp 16,10 Jt</div>
+              </div>
+              <div class="bars-duo">
+                <div class="estify-bar-capsule" style="height: 128px;" title="Pemasukan: Rp 20,0 Jt">
+                  <div class="bar-fill-solid is-pemasukan"></div>
+                </div>
+                <div class="estify-bar-capsule" style="height: 25px;" title="Pengeluaran: Rp 3,9 Jt">
+                  <div class="bar-fill-solid is-pengeluaran"></div>
+                </div>
+              </div>
+              <span class="bar-x-txt">Jul</span>
             </div>
+
+            <!-- Agu: 20.5 Jt (131px) & 4.9 Jt (31px) -->
+            <div class="bars-pair-column">
+              <div class="bar-hover-tooltip" style="bottom: 141px;">
+                <div style="font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">Agu 2026</div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-orange"></span> Pemasukan: <strong>Rp 20,50 Jt</strong>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-dark"></span> Pengeluaran: <strong>Rp 4,90 Jt</strong>
+                </div>
+                <div style="color: #34D399; font-weight: 600; margin-top: 2px;">Surplus: +Rp 15,60 Jt</div>
+              </div>
+              <div class="bars-duo">
+                <div class="estify-bar-capsule" style="height: 131px;" title="Pemasukan: Rp 20,5 Jt">
+                  <div class="bar-fill-solid is-pemasukan"></div>
+                </div>
+                <div class="estify-bar-capsule" style="height: 31px;" title="Pengeluaran: Rp 4,9 Jt">
+                  <div class="bar-fill-solid is-pengeluaran"></div>
+                </div>
+              </div>
+              <span class="bar-x-txt">Agu</span>
+            </div>
+
+            <!-- Sep: 21.0 Jt (134px) & 4.0 Jt (26px) -->
+            <div class="bars-pair-column">
+              <div class="bar-hover-tooltip" style="bottom: 144px;">
+                <div style="font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">Sep 2026</div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-orange"></span> Pemasukan: <strong>Rp 21,00 Jt</strong>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-dark"></span> Pengeluaran: <strong>Rp 4,00 Jt</strong>
+                </div>
+                <div style="color: #34D399; font-weight: 600; margin-top: 2px;">Surplus: +Rp 17,00 Jt</div>
+              </div>
+              <div class="bars-duo">
+                <div class="estify-bar-capsule" style="height: 134px;" title="Pemasukan: Rp 21,0 Jt">
+                  <div class="bar-fill-solid is-pemasukan"></div>
+                </div>
+                <div class="estify-bar-capsule" style="height: 26px;" title="Pengeluaran: Rp 4,0 Jt">
+                  <div class="bar-fill-solid is-pengeluaran"></div>
+                </div>
+              </div>
+              <span class="bar-x-txt">Sep</span>
+            </div>
+
+            <!-- Okt (Active Current): 21.65 Jt (138px) & 4.25 Jt (27px) -->
+            <div class="bars-pair-column is-active">
+              <div class="bar-hover-tooltip" style="bottom: 148px;">
+                <div style="font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">Oktober 2026 (Bulan Ini)</div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-orange"></span> Pemasukan: <strong>Rp 21,65 Jt</strong>
+                </div>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="tooltip-dot-dark"></span> Pengeluaran: <strong>Rp 4,25 Jt</strong>
+                </div>
+                <div style="color: #34D399; font-weight: 600; margin-top: 2px;">Surplus Bersih: +Rp 17,40 Jt</div>
+              </div>
+              <div class="bars-duo">
+                <div class="estify-bar-capsule" style="height: 138px;" title="Pemasukan: Rp 21,65 Jt">
+                  <div class="bar-fill-solid is-orange-active"></div>
+                </div>
+                <div class="estify-bar-capsule" style="height: 27px;" title="Pengeluaran: Rp 4,25 Jt">
+                  <div class="bar-fill-solid is-dark-active"></div>
+                </div>
+              </div>
+              <span class="bar-x-txt is-active" style="color: var(--brand-primary);">Okt</span>
+            </div>
+
           </div>
         </div>
 
+        <div class="chart-footer-strip">
+          <div>Surplus Arus Kas Berjalan: <strong style="color: #059669;">Rp 17.400.000</strong> (Margin 80.4%)</div>
+          <div>Total Realisasi 6 Bulan: <strong style="color: var(--text-main);">Rp 94.500.000</strong></div>
+        </div>
       </div>
 
-    </div>
+      <!-- RIGHT: SIGNATURE EXECUTIVE FINANCIAL SPOTLIGHT CARD -->
+      <div class="executive-spotlight-card">
+        <!-- Architectural Wave Lines Motif (Subtle Luxury) -->
+        <svg class="spotlight-pattern-svg" viewBox="0 0 400 300" fill="none" preserveAspectRatio="none">
+          <path d="M-40 220 C 60 140, 160 280, 280 180 C 340 130, 420 200, 480 160" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M-20 260 C 80 180, 180 320, 300 220 C 360 170, 440 240, 500 200" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="45" cy="55" r="110" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="3 5"/>
+        </svg>
 
-    <!-- SECTION 2: PENGELUARAN OPERASIONAL (SCR-12) -->
-    <div class="expense-view-section" id="expSection">
-      
-      <div class="expense-card">
-        <div class="expense-header-row">
-          <div>
-            <h2 style="font-size: 18px; font-weight: 700;">Daftar Biaya Operasional (Oktober 2026)</h2>
-            <p style="font-size: 12px; color: #6B7280; margin-top: 2px;">Seluruh pengeluaran utilitas, kebersihan, dan pemeliharaan kost yang dapat diperiksa bukti struknya.</p>
-          </div>
-          <button class="btn-pill btn-orange-primary" onclick="openExpenseModal()">
-            <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
-            Tambah Pengeluaran
+        <div class="spotlight-top-row">
+          <span class="spotlight-tag-pill">
+            <i data-lucide="shield" style="width: 12px; height: 12px; color: #34D399;"></i>
+            <span>Executive Net Profit</span>
+          </span>
+          <button type="button" class="btn-table-receipt" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; border-color: rgba(255, 255, 255, 0.2);" onclick="openExportModal()" title="Unduh Rekap Laporan">
+            <i data-lucide="download" style="width: 13px; height: 13px;"></i>
           </button>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; text-align: left;">
-          <thead>
-            <tr style="border-bottom: 1px solid #ECEEF2;">
-              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">ID & Tanggal</th>
-              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">Kategori</th>
-              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">Deskripsi Pengeluaran</th>
-              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">Jumlah</th>
-              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase;">Dicatat Oleh</th>
-              <th style="padding: 12px 14px; font-size: 11px; color: #6B7280; text-transform: uppercase; text-align: right;">Bukti Kuitansi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom: 1px solid #F3F4F6;">
-              <td style="padding: 14px;">
-                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-01</div>
-                <div style="font-size: 11px; color: #9CA3AF;">03 Okt 2026</div>
-              </td>
-              <td style="padding: 14px;">
-                <span class="category-tag tag-utility"><i data-lucide="zap" style="width: 12px; height: 12px;"></i> Listrik PLN</span>
-              </td>
-              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
-                Token listrik penerangan lorong & fasilitas bersama (IDPEL: 531092831)
-              </td>
-              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 1.250.000</td>
-              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Rini (Staf)</td>
-              <td style="padding: 14px; text-align: right;">
-                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau kuitansi PLN token')">
-                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
-                </button>
-              </td>
-            </tr>
-
-            <tr style="border-bottom: 1px solid #F3F4F6;">
-              <td style="padding: 14px;">
-                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-02</div>
-                <div style="font-size: 11px; color: #9CA3AF;">05 Okt 2026</div>
-              </td>
-              <td style="padding: 14px;">
-                <span class="category-tag tag-internet"><i data-lucide="wifi" style="width: 12px; height: 12px;"></i> Internet</span>
-              </td>
-              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
-                Langganan Indihome Fiber 100Mbps bulan Oktober
-              </td>
-              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 650.000</td>
-              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Budi (Pemilik)</td>
-              <td style="padding: 14px; text-align: right;">
-                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau struk e-billing IndiHome')">
-                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
-                </button>
-              </td>
-            </tr>
-
-            <tr style="border-bottom: 1px solid #F3F4F6;">
-              <td style="padding: 14px;">
-                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-03</div>
-                <div style="font-size: 11px; color: #9CA3AF;">07 Okt 2026</div>
-              </td>
-              <td style="padding: 14px;">
-                <span class="category-tag tag-utility"><i data-lucide="droplet" style="width: 12px; height: 12px;"></i> Air PDAM</span>
-              </td>
-              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
-                Tagihan air bersih PDAM Tirta Moedal Kost
-              </td>
-              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 450.000</td>
-              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Rini (Staf)</td>
-              <td style="padding: 14px; text-align: right;">
-                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau struk PDAM')">
-                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
-                </button>
-              </td>
-            </tr>
-
-            <tr style="border-bottom: 1px solid #F3F4F6;">
-              <td style="padding: 14px;">
-                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-04</div>
-                <div style="font-size: 11px; color: #9CA3AF;">10 Okt 2026</div>
-              </td>
-              <td style="padding: 14px;">
-                <span class="category-tag tag-cleaning"><i data-lucide="sparkles" style="width: 12px; height: 12px;"></i> Kebersihan</span>
-              </td>
-              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
-                Retribusi sampah warga & sabun pembersih lorong lantai 1-3
-              </td>
-              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 400.000</td>
-              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Rini (Staf)</td>
-              <td style="padding: 14px; text-align: right;">
-                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau nota belanja kebersihan')">
-                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td style="padding: 14px;">
-                <div style="font-family: monospace; font-size: 12px; font-weight: 600; color: #FF7A00;">EXP-202610-05</div>
-                <div style="font-size: 11px; color: #9CA3AF;">15 Okt 2026</div>
-              </td>
-              <td style="padding: 14px;">
-                <span class="category-tag tag-maintenance"><i data-lucide="wrench" style="width: 12px; height: 12px;"></i> Servis AC</span>
-              </td>
-              <td style="padding: 14px; font-size: 13px; font-weight: 500;">
-                Perawatan cuci AC 3 unit di Lantai 1 & isi freon kamar A-03
-              </td>
-              <td style="padding: 14px; font-size: 14px; font-weight: 700; color: #111111;">Rp 1.500.000</td>
-              <td style="padding: 14px; font-size: 12px; color: #4B5563;">Budi (Pemilik)</td>
-              <td style="padding: 14px; text-align: right;">
-                <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Pratinjau kuitansi servis pendingin')">
-                  <i data-lucide="eye" style="width: 12px; height: 12px;"></i> Lihat Bukti
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- MODAL CATAT PENGELUARAN (SCR-12) -->
-  <div class="modal-backdrop" id="expenseModal">
-    <div class="modal-card">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #ECEEF2; padding-bottom: 14px;">
-        <div>
-          <h2 style="font-size: 18px; font-weight: 700;">Catat Biaya Operasional</h2>
-          <p style="font-size: 12px; color: #6B7280; margin-top: 2px;">Input pos beban pengeluaran kost dan lampirkan kuitansi nota.</p>
-        </div>
-        <button onclick="closeExpenseModal()" style="background: none; border: none; cursor: pointer; color: #9CA3AF;">
-          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
-        </button>
-      </div>
-
-      <div class="form-row-2">
-        <div class="form-group">
-          <label class="form-label">Kategori</label>
-          <select class="form-select">
-            <option>Listrik PLN</option>
-            <option>Air PDAM</option>
-            <option>Internet / WiFi</option>
-            <option>Kebersihan & Sampah</option>
-            <option>Pemeliharaan & Servis</option>
-            <option>Lain-lain</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tanggal Transaksi</label>
-          <input type="date" class="form-input" value="2026-10-22">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Nominal Pengeluaran (Rp)</label>
-        <input type="number" class="form-input" placeholder="Contoh: 450000">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Deskripsi / Keperluan</label>
-        <input type="text" class="form-input" placeholder="Rincian pos pengeluaran kost...">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Unggah Bukti Nota / Kuitansi</label>
-        <div class="upload-zone">
-          <div style="width: 32px; height: 32px; border-radius: 50%; background: #FFF7ED; color: #FF7A00; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 4px;">
-            <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
+        <div class="spotlight-body-content">
+          <div>
+            <p class="spotlight-sub-meta">Kost Budi Makmur &middot; 15 Kamar</p>
+            <h3 class="spotlight-main-title">Laba Kas Bersih &amp; Dividen</h3>
           </div>
-          <div style="font-size: 12px; font-weight: 600;">Pilih file nota atau seret ke sini</div>
-          <div style="font-size: 11px; color: #9CA3AF;">JPG / PNG / PDF maks. 5MB</div>
+
+          <div class="spotlight-emphasis-box">
+            <span class="emphasis-label">Surplus Kas Bersih Bulan Ini</span>
+            <div class="emphasis-val-row">
+              <span class="emphasis-huge-val" id="spotlightNetVal">Rp 17,40 Jt</span>
+              <span class="emphasis-trend-pill">
+                +16% <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="spotlight-kpi-strip">
+          <div class="kpi-mini-tile">
+            <span class="kpi-mini-lbl">Pemasukan</span>
+            <span class="kpi-mini-val">Rp 21,65 Jt</span>
+          </div>
+          <div class="kpi-mini-tile">
+            <span class="kpi-mini-lbl">Beban Kost</span>
+            <span class="kpi-mini-val">Rp 4,25 Jt</span>
+          </div>
+          <div class="kpi-mini-tile">
+            <span class="kpi-mini-lbl">Margin Kas</span>
+            <span class="kpi-mini-val" style="color: #34D399;">80.4%</span>
+          </div>
         </div>
       </div>
 
-      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid #ECEEF2; padding-top: 14px;">
-        <button class="btn-pill btn-white-secondary" onclick="closeExpenseModal()">Batal</button>
-        <button class="btn-pill btn-orange-primary" onclick="RumaUI.showToast('Biaya operasional berhasil dicatat'); closeExpenseModal();">
+    </div>
+
+    <!-- ========================================================
+         3. ROW 2: DUAL OPERATIONS & BLUEPRINT HUB (SPLIT 58% vs 42%)
+         ======================================================== -->
+    <div class="operations-row-grid">
+      
+      <!-- LEFT: FINTECH OPERATIONAL EXPENSE LEDGER (SCR-12 & F-11) -->
+      <div class="ledger-card-box">
+        <div class="card-top-header">
+          <div>
+            <h3 class="card-title-text">
+              <i data-lucide="receipt" style="width: 16px; height: 16px; color: var(--brand-primary);"></i>
+              <span>Aliran Beban Pengeluaran Operasional (SCR-12)</span>
+            </h3>
+            <p style="font-size: 11.5px; color: #64748B; margin: 2px 0 0;">5 pos biaya tercatat &bull; Realisasi belanja kost Oktober 2026</p>
+          </div>
+          <button type="button" class="btn-add-expense-hero" onclick="openExpenseModal()" title="Catat pos beban pengeluaran baru">
+            <i data-lucide="plus" style="width: 13px; height: 13px;"></i>
+            <span>Catat Biaya</span>
+          </button>
+        </div>
+
+        <div class="ledger-filter-strip">
+          <div class="search-capsule-mini">
+            <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8;"></i>
+            <input type="text" id="expenseSearchInput" placeholder="Cari pos pengeluaran, vendor, no struk..." oninput="handleExpenseSearch(this.value)">
+          </div>
+
+          <div class="cat-chips-mini-wrap">
+            <button type="button" class="cat-chip-btn-mini active" onclick="filterExpenseCategory('all', this)">Semua (5)</button>
+            <button type="button" class="cat-chip-btn-mini" onclick="filterExpenseCategory('listrik', this)">Listrik</button>
+            <button type="button" class="cat-chip-btn-mini" onclick="filterExpenseCategory('air', this)">Air</button>
+            <button type="button" class="cat-chip-btn-mini" onclick="filterExpenseCategory('wifi', this)">WiFi</button>
+            <button type="button" class="cat-chip-btn-mini" onclick="filterExpenseCategory('maintenance', this)">Servis AC</button>
+          </div>
+        </div>
+
+        <div style="overflow-x: auto; width: 100%;">
+          <table class="expense-stream-table">
+            <thead>
+              <tr>
+                <th>ID &amp; Tgl</th>
+                <th>Kategori</th>
+                <th>Uraian Pengeluaran</th>
+                <th>Biaya</th>
+                <th>Tautan Tiket</th>
+                <th style="text-align: right;">Struk</th>
+              </tr>
+            </thead>
+            <tbody id="expenseTableBody">
+              <!-- Dynamically populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT: ARCHITECTURAL 3-FLOOR ROOM BLUEPRINT & EXPENSE ALLOCATION -->
+      <div class="blueprint-card-box">
+        
+        <!-- Floor Matrix Section -->
+        <div>
+          <div class="blueprint-header-row">
+            <div>
+              <h3 class="card-title-text" style="font-size: 14px;">
+                <i data-lucide="building" style="width: 15px; height: 15px; color: #1D4ED8;"></i>
+                <span>Matriks Hunian 3 Lantai (15 Unit)</span>
+              </h3>
+              <p style="font-size: 11px; color: #64748B; margin: 2px 0 0;">86.7% Okupansi &bull; 13 Terisi / 2 Kosong</p>
+            </div>
+            <span class="floor-rate-pill rate-partial">13 / 15 Kamar</span>
+          </div>
+
+          <div class="floor-blueprint-stack" style="margin-top: 12px;">
+            <!-- Lantai 3 -->
+            <div class="floor-tier-row">
+              <span class="floor-name-badge">Lantai 3</span>
+              <div class="floor-rooms-cluster">
+                <span class="unit-pill is-occupied" title="C-01: Rizky Pratama (Rp 1.500.000)">C-01</span>
+                <span class="unit-pill is-occupied" title="C-02: Fajar Nugraha (Rp 1.500.000)">C-02</span>
+                <span class="unit-pill is-occupied" title="C-03: Hendrik Santoso (Rp 1.500.000)">C-03</span>
+                <span class="unit-pill is-vacant" title="C-04: Kosong Siap Huni" onclick="RumaUI.showToast('Kamar C-04 kosong siap huni (Rp 1.500.000/bln)', 'info')">C-04 (Kosong)</span>
+                <span class="unit-pill is-occupied" title="C-05: Bambang Soediro (Rp 1.500.000)">C-05</span>
+              </div>
+              <span class="floor-rate-pill rate-partial">80%</span>
+            </div>
+
+            <!-- Lantai 2 -->
+            <div class="floor-tier-row">
+              <span class="floor-name-badge">Lantai 2</span>
+              <div class="floor-rooms-cluster">
+                <span class="unit-pill is-occupied" title="B-01: Dewi Anggraini (Rp 1.650.000)">B-01</span>
+                <span class="unit-pill is-occupied" title="B-02: Siti Aminah (Rp 1.650.000)">B-02</span>
+                <span class="unit-pill is-occupied" title="B-03: Ahmad Fauzi (Rp 1.650.000)">B-03</span>
+                <span class="unit-pill is-occupied" title="B-04: Eko Wahyudi (Rp 1.650.000)">B-04</span>
+                <span class="unit-pill is-occupied" title="B-05: Nurul Indah (Rp 1.650.000)">B-05</span>
+              </div>
+              <span class="floor-rate-pill rate-full">100% Penuh</span>
+            </div>
+
+            <!-- Lantai 1 -->
+            <div class="floor-tier-row">
+              <span class="floor-name-badge">Lantai 1</span>
+              <div class="floor-rooms-cluster">
+                <span class="unit-pill is-occupied" title="A-01: Lina Marlina (Rp 1.750.000)">A-01</span>
+                <span class="unit-pill is-vacant" title="A-02: Kosong Siap Huni" onclick="RumaUI.showToast('Kamar A-02 kosong siap huni (Rp 1.750.000/bln)', 'info')">A-02 (Kosong)</span>
+                <span class="unit-pill is-occupied" title="A-03: Dimas Prasetyo (Rp 1.750.000)">A-03</span>
+                <span class="unit-pill is-occupied" title="A-04: Budi Santoso (Rp 1.750.000)">A-04</span>
+                <span class="unit-pill is-occupied" title="A-05: Rahmat Hidayat (Rp 1.750.000)">A-05</span>
+              </div>
+              <span class="floor-rate-pill rate-partial">80%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cost Allocation Multi-Segment Meter Section -->
+        <div class="allocation-meter-wrapper">
+          <div class="meter-header-meta">
+            <span style="font-weight: 700; color: var(--text-main);">Alokasi Beban Operasional</span>
+            <span style="font-weight: 700; color: #EA580C;">Total Rp 4,25 Jt</span>
+          </div>
+
+          <div class="meter-progress-track" title="Alokasi Biaya: Servis AC (35%), Listrik PLN (29%), WiFi (15%), PDAM (11%), Sampah (10%)">
+            <div class="meter-segment seg-maint" title="Servis AC & Pompa: 35.3%"></div>
+            <div class="meter-segment seg-pln" title="Listrik PLN: 29.4%"></div>
+            <div class="meter-segment seg-wifi" title="WiFi IndiHome: 15.3%"></div>
+            <div class="meter-segment seg-pdam" title="Air Bersih PDAM: 10.6%"></div>
+            <div class="meter-segment seg-clean" title="Kebersihan: 9.4%"></div>
+          </div>
+
+          <div class="meter-legend-grid">
+            <div class="meter-legend-item">
+              <span class="legend-bullet-txt"><span class="bullet-dot" style="background: #EA580C;"></span> Servis AC / Pompa</span>
+              <strong>Rp 1,50 Jt</strong>
+            </div>
+            <div class="meter-legend-item">
+              <span class="legend-bullet-txt"><span class="bullet-dot" style="background: #1D4ED8;"></span> Listrik PLN</span>
+              <strong>Rp 1,25 Jt</strong>
+            </div>
+            <div class="meter-legend-item">
+              <span class="legend-bullet-txt"><span class="bullet-dot" style="background: #DB2777;"></span> Internet WiFi</span>
+              <strong>Rp 650 Rb</strong>
+            </div>
+            <div class="meter-legend-item">
+              <span class="legend-bullet-txt"><span class="bullet-dot" style="background: #0891B2;"></span> Air PDAM</span>
+              <strong>Rp 450 Rb</strong>
+            </div>
+            <div class="meter-legend-item" style="grid-column: span 2;">
+              <span class="legend-bullet-txt"><span class="bullet-dot" style="background: #059669;"></span> Retribusi Kebersihan &amp; Sampah</span>
+              <strong>Rp 400 Rb</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================================================
+       MODAL 1: CATAT PENGELUARAN OPERASIONAL BARU (SCR-12)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalExpense">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="receipt" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
+          <span>Catat Biaya Operasional Baru</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalExpense')">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body">
+        
+        <!-- Category Selector (Custom Popover - 0 Native Select) -->
+        <div class="form-group-custom" style="position: relative;">
+          <label class="form-label-custom">Kategori Pengeluaran <span style="color: #EF4444;">*</span></label>
+          <div class="custom-select-trigger" id="expenseCatTrigger" onclick="toggleCatDropdown(event)">
+            <span id="selectedCatText">Listrik PLN (Token)</span>
+            <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+          </div>
+          <div class="custom-select-popover" id="expenseCatPopover">
+            <div class="custom-select-item selected" onclick="selectExpenseCat('Listrik PLN (Token)', 'utility', this)">
+              <i data-lucide="zap" style="width: 14px; height: 14px; color: #1D4ED8;"></i>
+              <span>Listrik PLN (Token Fasum)</span>
+            </div>
+            <div class="custom-select-item" onclick="selectExpenseCat('Air PDAM', 'water', this)">
+              <i data-lucide="droplet" style="width: 14px; height: 14px; color: #0891B2;"></i>
+              <span>Air Bersih PDAM</span>
+            </div>
+            <div class="custom-select-item" onclick="selectExpenseCat('Internet & WiFi', 'wifi', this)">
+              <i data-lucide="wifi" style="width: 14px; height: 14px; color: #DB2777;"></i>
+              <span>Langganan Internet / WiFi</span>
+            </div>
+            <div class="custom-select-item" onclick="selectExpenseCat('Kebersihan & Sampah', 'cleaning', this)">
+              <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #059669;"></i>
+              <span>Kebersihan &amp; Retribusi Sampah</span>
+            </div>
+            <div class="custom-select-item" onclick="selectExpenseCat('Pemeliharaan & Servis', 'maintenance', this)">
+              <i data-lucide="wrench" style="width: 14px; height: 14px; color: #EA580C;"></i>
+              <span>Pemeliharaan &amp; Servis AC/Pompa</span>
+            </div>
+            <div class="custom-select-item" onclick="selectExpenseCat('Gaji Staf & Operasional Lain', 'salary', this)">
+              <i data-lucide="user-check" style="width: 14px; height: 14px; color: #7C3AED;"></i>
+              <span>Gaji Staf &amp; Beban Operasional Lain</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 Columns: Tanggal & Nominal -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group-custom">
+            <label class="form-label-custom">Tanggal Transaksi <span style="color: #EF4444;">*</span></label>
+            <input type="date" class="form-input-custom" id="inputExpenseDate" value="2026-10-23">
+          </div>
+          <div class="form-group-custom">
+            <label class="form-label-custom">Nominal Biaya (Rp) <span style="color: #EF4444;">*</span></label>
+            <input type="number" class="form-input-custom" id="inputExpenseAmount" placeholder="Contoh: 750000">
+          </div>
+        </div>
+
+        <!-- Deskripsi Pengeluaran -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">Uraian / Keterangan Biaya <span style="color: #EF4444;">*</span></label>
+          <input type="text" class="form-input-custom" id="inputExpenseDesc" placeholder="Contoh: Pembelian token listrik lorong lantai 2">
+        </div>
+
+        <!-- Tautan Tiket Kerusakan (Opsional - Story F-11) -->
+        <div class="form-group-custom" style="position: relative;">
+          <label class="form-label-custom">Tautkan ke Tiket Kerusakan (Opsional &middot; F-11)</label>
+          <div class="custom-select-trigger" id="expenseTicketTrigger" onclick="toggleTicketDropdown(event)">
+            <span id="selectedTicketText">-- Tidak Tertaut ke Tiket --</span>
+            <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+          </div>
+          <div class="custom-select-popover" id="expenseTicketPopover">
+            <div class="custom-select-item selected" onclick="selectTicketLink('-- Tidak Tertaut ke Tiket --', '', this)">
+              <span>-- Tidak Tertaut ke Tiket --</span>
+            </div>
+            <div class="custom-select-item" onclick="selectTicketLink('#TKT-003: Servis AC Kamar A-03 (Dimas)', 'TKT-003', this)">
+              <i data-lucide="wrench" style="width: 14px; height: 14px; color: #EA580C;"></i>
+              <span>#TKT-003: Servis AC Kamar A-03 (Dimas)</span>
+            </div>
+            <div class="custom-select-item" onclick="selectTicketLink('#TKT-002: Wastafel Bocor B-02 (Siti)', 'TKT-002', this)">
+              <i data-lucide="droplet" style="width: 14px; height: 14px; color: #0891B2;"></i>
+              <span>#TKT-002: Wastafel Bocor B-02 (Siti)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unggah Bukti Nota / Kuitansi -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">Lampiran Bukti Nota / Kuitansi <span style="color: #64748B; font-weight: 400;">(Disarankan)</span></label>
+          <div class="upload-drag-zone" onclick="simulateProofUpload()">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: #FFF7ED; color: var(--brand-primary); display: flex; align-items: center; justify-content: center;">
+              <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
+            </div>
+            <span style="font-size: 12px; font-weight: 600; color: var(--text-main);" id="uploadNoticeText">Pilih foto nota atau seret ke sini</span>
+            <span style="font-size: 11px; color: #94A3B8;">Format JPG, PNG, atau PDF (Maks. 5MB)</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-report-export" onclick="closeModal('modalExpense')">Batal</button>
+        <button type="button" class="btn-add-expense-hero" onclick="submitNewExpense()">
           <i data-lucide="check" style="width: 14px; height: 14px;"></i>
-          Simpan Biaya
+          <span>Simpan Pengeluaran</span>
         </button>
       </div>
     </div>
   </div>
 
+  <!-- ========================================================
+       MODAL 2: PRATINJAU BUKTI STRUK / NOTA (SCR-12 & F-11)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalProofView">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="receipt" style="width: 18px; height: 18px; color: #1D4ED8;"></i>
+          <span>Bukti Pembayaran Operasional</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalProofView')">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body" style="align-items: center; text-align: center;">
+        <div style="width: 100%; background: #F8FAFC; border: 1.5px dashed #CBD5E1; border-radius: 14px; padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; text-align: left; position: relative;">
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; padding-bottom: 10px;">
+            <div>
+              <div style="font-size: 11px; color: #64748B;">No. Referensi Kuitansi</div>
+              <div style="font-family: monospace; font-size: 13px; font-weight: 700; color: #0F172A;" id="proofRefNo">EXP-202610-01</div>
+            </div>
+            <span class="cat-badge is-utility" id="proofCatBadge">Listrik PLN</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 4px; padding: 6px 0;">
+            <span style="font-size: 11px; color: #64748B;">Uraian Transaksi</span>
+            <span style="font-size: 13px; font-weight: 600; color: #0F172A;" id="proofDescTxt">Token listrik penerangan lorong & fasilitas bersama</span>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 12px; font-weight: 600; color: #64748B;">Total Terbayar</span>
+            <span style="font-size: 17px; font-weight: 800; color: #0F172A;" id="proofAmountTxt">Rp 1.250.000</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 11px; color: #64748B; padding-top: 4px;">
+            <div>Tanggal: <strong id="proofDateTxt" style="color: #0F172A;">03 Okt 2026</strong></div>
+            <div>Pencatat: <strong id="proofAuthorTxt" style="color: #0F172A;">Rini Setiawati (Staf)</strong></div>
+          </div>
+
+          <!-- Watermark Verifikasi -->
+          <div style="position: absolute; right: 18px; bottom: 18px; opacity: 0.15; pointer-events: none; transform: rotate(-15deg); border: 3px solid #059669; color: #059669; font-size: 24px; font-weight: 900; padding: 4px 10px; border-radius: 8px;">
+            TERVERIFIKASI
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-report-export" onclick="closeModal('modalProofView')">Tutup</button>
+        <button type="button" class="btn-add-expense-hero" onclick="printReceiptProof()">
+          <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+          <span>Cetak Bukti</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 3: EKSPOR LAPORAN CSV / PDF (STORY F-10)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalExport">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="download" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
+          <span>Ekspor Laporan Finansial (F-10)</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalExport')">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body">
+        <div class="form-group-custom">
+          <label class="form-label-custom">Pilih Cakupan Laporan</label>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; cursor: pointer; padding: 10px 12px; border: 1px solid #E2E8F0; border-radius: 10px;">
+              <input type="radio" name="exportScope" value="all" checked style="accent-color: var(--brand-primary);">
+              <div>
+                <strong>Laporan Arus Kas &amp; Finansial Lengkap</strong>
+                <div style="font-size: 11px; color: #64748B;">Pemasukan sewa, rincian biaya operasional, dan sisa laba bersih.</div>
+              </div>
+            </label>
+            <label style="display: flex; align-items: center; gap: 10px; font-size: 12px; cursor: pointer; padding: 10px 12px; border: 1px solid #E2E8F0; border-radius: 10px;">
+              <input type="radio" name="exportScope" value="expenses" style="accent-color: var(--brand-primary);">
+              <div>
+                <strong>Rekapitulasi Khusus Pengeluaran Operasional</strong>
+                <div style="font-size: 11px; color: #64748B;">Rincian pos utilitas, tagihan perbaikan, dan nomor tiket komplain.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group-custom">
+          <label class="form-label-custom">Format Berkas</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; padding: 10px; border: 1.5px solid var(--brand-primary); background: #FFF7ED; border-radius: 10px;">
+              <input type="radio" name="exportFormat" value="csv" checked style="accent-color: var(--brand-primary);">
+              <span>Spreadsheet (.CSV)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; padding: 10px; border: 1px solid #CBD5E1; border-radius: 10px;">
+              <input type="radio" name="exportFormat" value="pdf" style="accent-color: var(--brand-primary);">
+              <span>Dokumen Cetak (.PDF)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-report-export" onclick="closeModal('modalExport')">Batal</button>
+        <button type="button" class="btn-add-expense-hero" onclick="executeExportDownload()">
+          <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+          <span>Unduh Berkas Sekarang</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       FLOATING ROLE SIMULATOR BAR (OWNER VS STAFF)
+       ======================================================== -->
+  <div class="wf-badge-role-bar">
+    <span style="font-weight: 600; color: #64748B;">Simulasi Peran:</span>
+    <button type="button" class="btn-toggle-role-pill" onclick="toggleRoleSimulation()">
+      <i data-lucide="shield-check" style="width: 12px; height: 12px;"></i>
+      <span id="roleSimulatorLabel">Mode Pemilik (Superadmin)</span>
+    </button>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC & INTERACTIONS -->
   <script src="assets/js/components.js"></script>
   <script>
-    renderTopbar('laporan');
-
-    function switchTab(tab) {
-      const finSec = document.getElementById('finSection');
-      const expSec = document.getElementById('expSection');
-      const finBtn = document.getElementById('tabFinBtn');
-      const expBtn = document.getElementById('tabExpBtn');
-
-      if (tab === 'fin') {
-        finSec.classList.remove('hidden');
-        expSec.classList.remove('active');
-        finBtn.classList.add('active');
-        expBtn.classList.remove('active');
-      } else {
-        finSec.classList.add('hidden');
-        expSec.classList.add('active');
-        finBtn.classList.remove('active');
-        expBtn.classList.add('active');
+    // ══════════════════════════════════════════════════════════════
+    // MOCK DATA: OPERATIONAL EXPENSES
+    // ══════════════════════════════════════════════════════════════
+    let expensesData = [
+      {
+        id: 'EXP-202610-01',
+        date: '03 Okt',
+        category: 'Listrik PLN',
+        categoryKey: 'listrik',
+        badgeClass: 'is-utility',
+        icon: 'zap',
+        desc: 'Token listrik penerangan lorong & fasum (531092831)',
+        amount: 1250000,
+        author: 'Rini (Staf)',
+        ticketNo: '',
+        ticketDesc: ''
+      },
+      {
+        id: 'EXP-202610-02',
+        date: '05 Okt',
+        category: 'Internet',
+        categoryKey: 'wifi',
+        badgeClass: 'is-internet',
+        icon: 'wifi',
+        desc: 'Langganan IndiHome Fiber 100Mbps Oktober',
+        amount: 650000,
+        author: 'Budi (Pemilik)',
+        ticketNo: '',
+        ticketDesc: ''
+      },
+      {
+        id: 'EXP-202610-03',
+        date: '07 Okt',
+        category: 'Air PDAM',
+        categoryKey: 'air',
+        badgeClass: 'is-water',
+        icon: 'droplet',
+        desc: 'Tagihan air PDAM Tirta Moedal Kost',
+        amount: 450000,
+        author: 'Rini (Staf)',
+        ticketNo: '',
+        ticketDesc: ''
+      },
+      {
+        id: 'EXP-202610-04',
+        date: '10 Okt',
+        category: 'Kebersihan',
+        categoryKey: 'kebersihan',
+        badgeClass: 'is-cleaning',
+        icon: 'sparkles',
+        desc: 'Retribusi sampah warga & sabun pembersih lorong',
+        amount: 400000,
+        author: 'Rini (Staf)',
+        ticketNo: '',
+        ticketDesc: ''
+      },
+      {
+        id: 'EXP-202610-05',
+        date: '15 Okt',
+        category: 'Maintenance',
+        categoryKey: 'maintenance',
+        badgeClass: 'is-maintenance',
+        icon: 'wrench',
+        desc: 'Cuci AC 3 unit & isi freon Kamar A-03 (#TKT-003)',
+        amount: 1500000,
+        author: 'Budi (Pemilik)',
+        ticketNo: 'TKT-003',
+        ticketDesc: 'Servis AC Kamar A-03'
       }
+    ];
+
+    let currentExpenseFilter = 'all';
+    let currentExpenseSearch = '';
+    let selectedCatValue = { name: 'Listrik PLN (Token)', key: 'utility' };
+    let selectedTicketValue = { text: '-- Tidak Tertaut ke Tiket --', code: '' };
+
+    function formatRupiah(num) {
+      if (num === undefined || num === null) return 'Rp 0';
+      return 'Rp ' + Number(num).toLocaleString('id-ID');
+    }
+
+    function isStaffRole() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('role') === 'staf' || urlParams.get('role') === 'staff';
+    }
+
+    function toggleRoleSimulation() {
+      const url = new URL(window.location.href);
+      if (isStaffRole()) {
+        url.searchParams.delete('role');
+      } else {
+        url.searchParams.set('role', 'staf');
+      }
+      window.location.href = url.toString();
+    }
+
+    // Render Expense Table Stream
+    function renderExpenseTable() {
+      const tbody = document.getElementById('expenseTableBody');
+      if (!tbody) return;
+
+      const filtered = expensesData.filter(item => {
+        if (currentExpenseFilter !== 'all' && item.categoryKey !== currentExpenseFilter) return false;
+        if (currentExpenseSearch) {
+          const q = currentExpenseSearch.toLowerCase();
+          const matchId = item.id.toLowerCase().includes(q);
+          const matchDesc = item.desc.toLowerCase().includes(q);
+          const matchCat = item.category.toLowerCase().includes(q);
+          if (!matchId && !matchDesc && !matchCat) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 24px; color: #94A3B8;">
+              <i data-lucide="receipt-text" style="width: 28px; height: 28px; margin-bottom: 4px; opacity: 0.5;"></i>
+              <div style="font-size: 11.5px; font-weight: 600; color: #64748B;">Tidak ada biaya yang cocok</div>
+            </td>
+          </tr>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr>
+          <td>
+            <div style="font-family: monospace; font-size: 11px; font-weight: 700; color: var(--brand-primary);">${item.id}</div>
+            <div style="font-size: 10px; color: #94A3B8;">${item.date} 2026</div>
+          </td>
+          <td>
+            <span class="cat-badge ${item.badgeClass}">
+              <i data-lucide="${item.icon}" style="width: 11px; height: 11px;"></i>
+              <span>${item.category}</span>
+            </span>
+          </td>
+          <td style="max-width: 240px;">
+            <div style="font-weight: 500; color: var(--text-main); line-height: 1.3;">${item.desc}</div>
+          </td>
+          <td>
+            <div style="font-weight: 800; font-size: 12.5px; color: #0F172A;">${formatRupiah(item.amount)}</div>
+          </td>
+          <td>
+            ${item.ticketNo ? `
+              <span class="ticket-link-badge" onclick="viewLinkedTicket('${item.ticketNo}')" title="Buka detail tiket ${item.ticketNo}">
+                <i data-lucide="wrench" style="width: 10px; height: 10px;"></i>
+                <span>#${item.ticketNo}</span>
+              </span>
+            ` : `<span style="color: #CBD5E1; font-size: 11px;">&mdash;</span>`}
+          </td>
+          <td style="text-align: right;">
+            <button type="button" class="btn-table-receipt" onclick="viewExpenseReceipt('${item.id}')" title="Lihat bukti struk kuitansi">
+              <i data-lucide="eye" style="width: 11px; height: 11px;"></i>
+              <span>Bukti</span>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function filterExpenseCategory(catKey, btn) {
+      currentExpenseFilter = catKey;
+      document.querySelectorAll('.cat-chip-btn-mini').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderExpenseTable();
+    }
+
+    function handleExpenseSearch(val) {
+      currentExpenseSearch = val.trim();
+      renderExpenseTable();
+    }
+
+    // Modal Helpers
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('open');
     }
 
     function openExpenseModal() {
-      document.getElementById('expenseModal').classList.add('open');
+      openModal('modalExpense');
     }
 
-    function closeExpenseModal() {
-      document.getElementById('expenseModal').classList.remove('open');
+    function openExportModal() {
+      openModal('modalExport');
     }
+
+    function toggleCatDropdown(e) {
+      e.stopPropagation();
+      const popover = document.getElementById('expenseCatPopover');
+      popover.classList.toggle('open');
+      const ticketPopover = document.getElementById('expenseTicketPopover');
+      if (ticketPopover) ticketPopover.classList.remove('open');
+    }
+
+    function selectExpenseCat(catName, catKey, elem) {
+      selectedCatValue = { name: catName, key: catKey };
+      document.getElementById('selectedCatText').textContent = catName;
+      document.querySelectorAll('#expenseCatPopover .custom-select-item').forEach(i => i.classList.remove('selected'));
+      elem.classList.add('selected');
+      document.getElementById('expenseCatPopover').classList.remove('open');
+    }
+
+    function toggleTicketDropdown(e) {
+      e.stopPropagation();
+      const popover = document.getElementById('expenseTicketPopover');
+      popover.classList.toggle('open');
+      const catPopover = document.getElementById('expenseCatPopover');
+      if (catPopover) catPopover.classList.remove('open');
+    }
+
+    function selectTicketLink(text, code, elem) {
+      selectedTicketValue = { text: text, code: code };
+      document.getElementById('selectedTicketText').textContent = text;
+      document.querySelectorAll('#expenseTicketPopover .custom-select-item').forEach(i => i.classList.remove('selected'));
+      elem.classList.add('selected');
+      document.getElementById('expenseTicketPopover').classList.remove('open');
+    }
+
+    function simulateProofUpload() {
+      const notice = document.getElementById('uploadNoticeText');
+      notice.innerHTML = '<span style="color: #059669;">&#10003; nota-pembayaran-okt26.jpg (245 KB)</span>';
+      RumaUI.showToast('Lampiran nota berhasil dipilih!', 'success');
+    }
+
+    function submitNewExpense() {
+      const amountInput = document.getElementById('inputExpenseAmount');
+      const descInput = document.getElementById('inputExpenseDesc');
+
+      const amountVal = Number(amountInput.value);
+      if (!amountVal || amountVal <= 0) {
+        RumaUI.showToast('Harap masukkan nominal biaya yang valid!', 'error');
+        return;
+      }
+
+      if (!descInput.value.trim()) {
+        RumaUI.showToast('Harap lengkapi uraian pengeluaran operasional!', 'error');
+        return;
+      }
+
+      const isStaff = isStaffRole();
+      const newId = 'EXP-202610-0' + (expensesData.length + 1);
+
+      const catBadges = {
+        'utility': { class: 'is-utility', icon: 'zap', label: 'Listrik PLN' },
+        'water': { class: 'is-water', icon: 'droplet', label: 'Air PDAM' },
+        'wifi': { class: 'is-internet', icon: 'wifi', label: 'Internet' },
+        'cleaning': { class: 'is-cleaning', icon: 'sparkles', label: 'Kebersihan' },
+        'maintenance': { class: 'is-maintenance', icon: 'wrench', label: 'Maintenance' },
+        'salary': { class: 'is-utility', icon: 'user-check', label: 'Operasional' }
+      };
+
+      const meta = catBadges[selectedCatValue.key] || catBadges['utility'];
+
+      const newExpense = {
+        id: newId,
+        date: '23 Okt',
+        category: meta.label,
+        categoryKey: selectedCatValue.key,
+        badgeClass: meta.class,
+        icon: meta.icon,
+        desc: descInput.value.trim(),
+        amount: amountVal,
+        author: isStaff ? 'Rini (Staf)' : 'Budi (Pemilik)',
+        ticketNo: selectedTicketValue.code,
+        ticketDesc: selectedTicketValue.code ? 'Tiket #' + selectedTicketValue.code : ''
+      };
+
+      expensesData.unshift(newExpense);
+      closeModal('modalExpense');
+      renderExpenseTable();
+      RumaUI.showToast(`Biaya operasional ${formatRupiah(amountVal)} berhasil dicatat!`, 'success');
+    }
+
+    function viewExpenseReceipt(id) {
+      const item = expensesData.find(e => e.id === id);
+      if (!item) return;
+
+      document.getElementById('proofRefNo').textContent = item.id;
+      document.getElementById('proofCatBadge').textContent = item.category;
+      document.getElementById('proofCatBadge').className = 'cat-badge ' + item.badgeClass;
+      document.getElementById('proofDescTxt').textContent = item.desc;
+      document.getElementById('proofAmountTxt').textContent = formatRupiah(item.amount);
+      document.getElementById('proofDateTxt').textContent = item.date + ' 2026';
+      document.getElementById('proofAuthorTxt').textContent = item.author;
+
+      openModal('modalProofView');
+    }
+
+    function printReceiptProof() {
+      closeModal('modalProofView');
+      RumaUI.showToast('Mencetak kuitansi pengeluaran...', 'info');
+      setTimeout(() => { window.print(); }, 300);
+    }
+
+    function viewLinkedTicket(ticketId) {
+      RumaUI.showToast(`Membuka tiket perbaikan #${ticketId} di modul Tiket (WF-08)...`, 'info');
+      setTimeout(() => {
+        window.location.href = `WF-08-tiket.html?highlight=${ticketId}`;
+      }, 500);
+    }
+
+    function togglePeriodDropdown(e) {
+      e.stopPropagation();
+      const menu = document.getElementById('periodPopoverMenu');
+      menu.classList.toggle('open');
+    }
+
+    function selectPeriod(periodLabel, elem) {
+      document.getElementById('currentPeriodLabel').textContent = periodLabel;
+      document.querySelectorAll('.period-menu-item').forEach(i => i.classList.remove('active'));
+      elem.classList.add('active');
+      document.getElementById('periodPopoverMenu').classList.remove('open');
+      RumaUI.showToast(`Memuat data laporan untuk: ${periodLabel}`, 'info');
+    }
+
+    function executeExportDownload() {
+      closeModal('modalExport');
+      RumaUI.showToast('Laporan Finansial & Operasional berhasil diekspor (CSV/PDF)!', 'success');
+    }
+
+    // Close popovers on click outside
+    document.addEventListener('click', () => {
+      const periodMenu = document.getElementById('periodPopoverMenu');
+      if (periodMenu) periodMenu.classList.remove('open');
+      const catPopover = document.getElementById('expenseCatPopover');
+      if (catPopover) catPopover.classList.remove('open');
+      const ticketPopover = document.getElementById('expenseTicketPopover');
+      if (ticketPopover) ticketPopover.classList.remove('open');
+    });
+
+    // ══════════════════════════════════════════════════════════════
+    // INITIALIZATION & RBAC APPLIED
+    // ══════════════════════════════════════════════════════════════
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof window.renderTopbar === 'function') {
+        window.renderTopbar('laporan');
+      }
+
+      const isStaff = isStaffRole();
+      const roleLabel = document.getElementById('roleSimulatorLabel');
+      if (roleLabel) {
+        roleLabel.textContent = isStaff ? 'Mode Staf Operasional' : 'Mode Pemilik (Superadmin)';
+      }
+
+      // If staff role, gracefully mask sensitive owner net profit spotlight
+      if (isStaff) {
+        const spotlightVal = document.getElementById('spotlightNetVal');
+        if (spotlightVal) {
+          spotlightVal.innerHTML = '<span style="font-size: 16px; color: #94A3B8; font-weight: 600;"><i data-lucide="lock" style="width: 15px; height: 15px; vertical-align: middle;"></i> Proteksi Pemilik</span>';
+        }
+      }
+
+      renderExpenseTable();
+      lucide.createIcons();
+    });
   </script>
 </body>
 </html>

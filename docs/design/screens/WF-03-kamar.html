@@ -44,7 +44,34 @@
       width: 100%;
     }
 
-    .col-sidebar-flow {
+    .col-sidebar-flow,
+    .card-detail-drawer {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 110px;
+      width: 360px;
+      min-width: 360px;
+      max-width: 360px;
+      height: fit-content;
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .card-detail-drawer::-webkit-scrollbar {
+      display: none;
+    }
+    /* DEPRECATED_SIDEBAR_FLOW_START */
+      .col-sidebar-flow, .card-detail-drawer {
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -262,7 +289,9 @@
       background: #F4F5F7;
       border: 1px solid #ECEEF2;
       border-radius: 9999px;
-      padding: 9px 18px;
+      height: 36px;
+      padding: 0 16px;
+      box-sizing: border-box;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -302,7 +331,9 @@
       background: #F4F5F7;
       border: 1px solid #ECEEF2;
       border-radius: 9999px;
-      padding: 9px 15px;
+      height: 36px;
+      padding: 0 14px;
+      box-sizing: border-box;
       font-size: 12px;
       font-weight: 600;
       color: #374151;
@@ -384,8 +415,10 @@
       color: #FFFFFF !important;
       border: none;
       border-radius: 9999px;
-      padding: 10px 20px;
-      font-size: 13px;
+      height: 36px;
+      padding: 0 18px;
+      box-sizing: border-box;
+      font-size: 12.5px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
@@ -569,7 +602,7 @@
     }
 
     .room-name-text {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       color: #111111;
       letter-spacing: -0.2px;
@@ -610,7 +643,7 @@
     }
 
     .room-price-val {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       color: #FF7A00;
     }
@@ -686,15 +719,20 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 7px 12px;
+      padding: 12px 14px;
       background: #F8FAFC;
       border: 1px solid #ECEEF2;
       border-radius: 10px;
       margin-top: 0;
       box-sizing: border-box;
-      height: 48px;
-      min-height: 48px;
-      max-height: 48px;
+      padding: 6px 12px !important;
+      height: 38px;
+      padding: 4px 10px !important;
+      height: 34px !important;
+      min-height: 34px !important;
+      max-height: 34px !important;
+
+
     }
 
     .drawer-note-lbl {
@@ -934,7 +972,8 @@
       margin-top: 2px;
     }
 
-    /* CARD 1: DETAIL KAMAR (SCR-04) — PROPOSIONAL, ELEGAN & HERARKI TIPOGRAFI JELAS */
+    /* CARD 1: DETAIL KAMAR (SCR-04) — DOSSIER ESTIFY IDENTIK TAGIHAN WF-05 */
+    /* DEPRECATED_OLD_DRAWER
     .card-detail-drawer {
       padding: 14px 16px;
       display: flex;
@@ -947,11 +986,12 @@
       position: relative;
     }
 
+    */
+
     .drawer-header-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 10px;
       border-bottom: 1px solid #ECEEF2;
       flex-shrink: 0;
     }
@@ -998,9 +1038,9 @@
     }
 
     .drawer-photo-box {
-      height: 120px;
+      height: 90px;
       width: 100%;
-      min-height: 120px;
+      min-height: 90px;
       border-radius: 12px;
       overflow: hidden;
       position: relative;
@@ -1020,9 +1060,63 @@
     .spec-grid-cards {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 5px 12px;
+      column-gap: 12px;
+      row-gap: 2px;
+      padding: 6px 10px !important;
       background: #F8FAFC;
-      padding: 7px 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #E2E8F0;
+    }
+
+    .spec-unit-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      gap: 1px;
+      padding: 2px 0;
+    }
+
+    .spec-unit-item:nth-child(1),
+    .spec-unit-item:nth-child(2) {
+      padding-top: 0;
+    }
+
+    .spec-unit-item:nth-child(3),
+    .spec-unit-item:nth-child(4),
+    .spec-unit-item:nth-child(5),
+    .spec-unit-item:nth-child(6) {
+      border-top: 1px solid #EDF2F7;
+      padding-top: 4px;
+    }
+
+    .spec-unit-item:nth-child(5),
+    .spec-unit-item:nth-child(6) {
+      padding-bottom: 0;
+    }
+
+    .spec-unit-label {
+      font-size: 10px;
+      color: #64748B;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.35px;
+      line-height: 1.25;
+    }
+
+    .spec-unit-val {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #0F172A;
+      line-height: 1.35;
+    }
+
+    /* DEPRECATED_SPECS_REMOVED
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px 16px;
+      background: #F8FAFC;
+      padding: 12px 14px;
       border-radius: 10px;
       border: 1px solid #ECEEF2;
     }
@@ -1049,11 +1143,16 @@
       line-height: 1.3;
     }
 
+    */
+
     .tenant-info-pod {
       border-radius: 12px;
       padding: 8px 12px;
       border: 1px solid #FED7AA;
-      background: #FFFDF9;
+      background: #F8FAFC;
+      border: 1px solid #ECEEF2 !important;
+      padding: 6px 10px !important;
+      gap: 2px !important;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -1065,7 +1164,7 @@
       align-items: center;
       gap: 10px;
       padding-bottom: 4px;
-      border-bottom: 1px dashed #FED7AA;
+      border-bottom: 1px dashed #E2E8F0;
     }
 
     .tenant-pod-avatar {
@@ -1101,6 +1200,9 @@
     }
 
     .tenant-meta-line {
+      font-size: 10.5px;
+      padding-top: 3px !important;
+      line-height: 1.25 !important;
       font-size: 11px;
       color: #64748B;
       display: flex;
@@ -1122,6 +1224,14 @@
       font-size: 11.5px;
       color: #0F172A;
       letter-spacing: -0.1px;
+    }
+
+    .dossier-actions-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+      flex-shrink: 0;
     }
 
     .btn-drawer-primary {
@@ -1277,7 +1387,7 @@
       border-radius: var(--radius-full);
       background: var(--dark-pill);
       color: #FFFFFF;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       border: none;
       cursor: pointer;
@@ -1387,7 +1497,7 @@
       border: 1.5px solid var(--border-input);
       border-radius: 12px;
       font-family: inherit;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 500;
       color: var(--text-main);
       display: flex;
@@ -1444,7 +1554,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       font-weight: 500;
-      font-size: 13px;
+      font-size: 12.5px;
       color: #111111;
     }
 
@@ -1748,20 +1858,50 @@
         padding: 20px 0 28px;
       }
 
+      .workbench-layout-grid,
       .dashboard-2col-layout {
         grid-template-columns: 1fr;
         gap: 20px;
       }
 
-      .col-sidebar-flow {
+      .col-sidebar-flow,
+    .card-detail-drawer {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 110px;
+      width: 360px;
+      min-width: 360px;
+      max-width: 360px;
+      height: fit-content;
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .card-detail-drawer::-webkit-scrollbar {
+      display: none;
+    }
+    /* DEPRECATED_SIDEBAR_FLOW_START */
+      .col-sidebar-flow, .card-detail-drawer {
         width: 100%;
         max-width: 100%;
         position: static;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: column;
+        min-height: auto;
+
         gap: 20px;
         max-height: none;
-        overflow-y: visible;
+        overflow: visible;
       }
     }
 
@@ -1802,7 +1942,34 @@
         grid-template-columns: 1fr;
       }
 
-      .col-sidebar-flow {
+      .col-sidebar-flow,
+    .card-detail-drawer {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 110px;
+      width: 360px;
+      min-width: 360px;
+      max-width: 360px;
+      height: fit-content;
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .card-detail-drawer::-webkit-scrollbar {
+      display: none;
+    }
+    /* DEPRECATED_SIDEBAR_FLOW_START */
+      .col-sidebar-flow, .card-detail-drawer {
         grid-template-columns: 1fr;
       }
 
@@ -2368,11 +2535,11 @@
 
       </div>
 
-      <!-- RIGHT SIDEBAR FLOW (PROPORTIONAL 1-PAGE HEIGHT · ESTIFY DESIGN SYSTEM) -->
-      <div class="col-sidebar-flow">
+
+      <!-- RIGHT SIDEBAR: DOSSIER DETAIL KAMAR (SCR-04 · IDENTIK WF-05 TAGIHAN) -->
         
         <!-- CARD 1: DETAIL KAMAR TERPILIH (SCR-04) -->
-        <aside class="sidebar-card-box card-detail-drawer" id="roomDetailDrawer">
+      <aside class="col-sidebar-flow card-detail-drawer" id="roomDetailDrawer">
           <!-- Top Bar -->
           <div class="drawer-header-row">
             <div style="flex: 1; min-width: 0;">
@@ -2574,7 +2741,7 @@
           </div>
 
           <!-- Action Buttons -->
-          <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="dossier-actions-col">
             <a href="WF-04-penghuni.html" class="btn-drawer-primary" id="btnPrimaryAction">
               <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
               <span id="btnPrimaryText">Lihat Profil Penghuni</span>
@@ -2584,12 +2751,14 @@
               <span>Iklankan / Siar WA Unit</span>
             </button>
           </div>
-        </aside>
+      </aside>
+      <!-- REDUNDANT_WRAPPER_CLOSED
 
 
 
       </div>
 
+      -->
     </main>
 
   </div>

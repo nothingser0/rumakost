@@ -17,7 +17,7 @@ Scope Medium MVP disetujui melalui arahan pemilik pada 2026-10-22 dan menggantik
 - Status dokumen: FROZEN — MEDIUM MVP DISETUJUI PEMILIK 2026-10-22; menggantikan baseline Large
 - Skala: Medium (7 kelompok P0; satu properti)
 - Tanggal elicitation: 14–22 Oktober 2026; INT-10 bertanggal rentang 20–21 Oktober, hari tunggal belum diketahui
-- Tanggal pembaruan: 22 Oktober 2026
+- Tanggal pembaruan: 23 Oktober 2026 (Penegasan aturan deposit escrow, first invoice sewa+deposit, dan escrow settlement)
 - Delivery: Portfolio; bukan layanan komersial
 
 ### Confidence
@@ -105,10 +105,13 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 #### F-03 Penghuni dan kontrak
 - Sebagai Owner, saya ingin mencatat penghuni dan periode kontrak agar tagihan terhubung dengan masa sewa.
 - Given kontrak aktif pada kamar, when kontrak kedua dibuat dengan periode tumpang tindih, then sistem menolak penyimpanan.
+- Given pendaftaran penghuni baru, when kontrak dibuat, then sistem mencatat nominal Uang Jaminan Deposit (Escrow) yang terpisah dari pendapatan sewa murni.
 - Given kontrak berakhir, when riwayat penghuni dibuka, then kontrak lama dan catatan terkait tetap tersedia.
 
-#### F-04 Tagihan berulang
+#### F-04 Tagihan berulang dan tagihan perdana
 - Sebagai Owner/Staff berizin, saya ingin membuat tagihan bulanan dari kontrak aktif agar tagihan yang terlewat atau ganda dapat diketahui.
+- Given pendaftaran penghuni baru (check-in), when tagihan pertama diterbitkan, then sistem menggabungkan sewa bulan ke-1 dan uang jaminan deposit dalam satu invoice perdana.
+- Given penghuni masuk di tengah bulan, when tagihan perdana dihitung, then sistem mendukung opsi perhitungan Prorata Hari Berjalan atau Siklus Tanggal Masuk (Anniversary).
 - Given kontrak aktif pada periode tagihan, when tagihan periode dibuat dua kali, then hanya satu tagihan per kontrak-periode tersimpan.
 - Given tagihan dibuat, when status penyampaian ditandai, then status diperbarui manual tanpa mengirim pesan otomatis.
 
@@ -116,6 +119,7 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 - Sebagai pengelola, saya ingin mencatat pembayaran terhadap tagihan dan melihat sisa kewajiban.
 - Given tagihan Rp1.500.000 dan pembayaran terverifikasi Rp1.000.000, when saldo dihitung, then sisa Rp500.000.
 - Given pembayaran masih pending, when saldo dihitung, then saldo terutang belum berkurang.
+- Given penghuni ingin melunasi tagihan sewa menggunakan deposit (misal bulan terakhir check-out atau darurat), when metode pembayaran 'Potong Deposit (Escrow Settlement)' dipilih, then invoice sewa ditandai Lunas dan saldo deposit berkurang secara otomatis.
 - Given transaksi terverifikasi perlu dikoreksi, when Owner membuat reversal dengan alasan, then nilai asal tetap di histori dan saldo dihitung ulang tepat satu kali.
 
 #### F-06 Pengeluaran dan laporan pemasukan/okupansi

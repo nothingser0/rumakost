@@ -18,7 +18,8 @@
     }
 
     /* Fillet rounded corner kiri (Inverted Radius) tepat di sudut kartu */
-    .top-canopy-overlay::before {
+    /* Top canopy fillet deprecated */
+    .top-canopy-overlay-deprecated::before {
       content: '';
       position: absolute;
       top: 104px;
@@ -30,7 +31,7 @@
     }
 
     /* Fillet rounded corner kanan (Inverted Radius) tepat di sudut kartu */
-    .top-canopy-overlay::after {
+    .top-canopy-overlay-deprecated::after {
       content: '';
       position: absolute;
       top: 104px;
@@ -746,7 +747,7 @@
     .properties-section-card {
       background: var(--bg-card);
       border-radius: var(--radius-xl);
-      padding: 20px 24px 18px;
+      padding: 15px 24px 13px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
       border: 1px solid var(--border-subtle);
       min-height: 242px;
