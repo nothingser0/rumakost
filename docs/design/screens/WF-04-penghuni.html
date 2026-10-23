@@ -8,504 +8,3352 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-
-
-
-
-    /* TABLE & DRAWER SPECIFIC */
-
-    /* TABLE */
-    .table-container {
-      background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+    /* ==========================================================================
+       ESTIFY MASTER-DETAIL WORKBENCH — DATA PENGHUNI & KONTRAK (WF-04)
+       100% PATUH DESIGN.MD: CLEAN, MINIMALIST, ZERO REDUNDANCY, ZERO SLOP
+       ========================================================================== */
+    body {
+      background: var(--bg-canvas);
+      color: var(--text-main);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-
-    thead th {
-      background: #FAFAFA;
-      padding: 14px 20px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #9CA3AF;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid #ECEEF2;
-    }
-
-    tbody td {
-      padding: 16px 20px;
-      font-size: 13px;
-      color: #111111;
-      border-bottom: 1px solid #F3F4F6;
-      vertical-align: middle;
-      transition: background 100ms;
-    }
-
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: #F9FAFB; cursor: pointer; }
-    tbody tr.selected td { background: #FFF7ED; }
-
-    .tenant-col-user {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .tenant-avatar-circle {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #FF7A00;
-      color: #FFFFFF;
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .tenant-name-text {
-      font-weight: 600;
-      color: #111111;
-      line-height: 1.3;
-    }
-
-    .tenant-sub-text {
-      font-size: 11px;
-      color: #6B7280;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .badge-success { background: #DCFCE7; color: #16A34A; }
-    .badge-warning { background: #FEF3C7; color: #D97706; }
-    .badge-danger { background: #FEE2E2; color: #EF4444; }
-
-    .action-link {
-      font-size: 12px;
-      font-weight: 600;
-      color: #FF7A00;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .action-link:hover { color: #E66E00; }
-
-    /* RIGHT DRAWER: SCR-06 / SCR-08 */
-    .detail-drawer {
-      width: 360px;
-      background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    .dashboard-wrapper {
+      max-width: 1440px;
+      width: calc(100% - 40px);
+      margin: 0 auto;
+      padding: 20px 0;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       gap: 20px;
-      align-self: flex-start;
-      position: sticky;
-      top: 96px;
     }
 
-    .drawer-profile-top {
+    /* ══════════════════════════════════════════════════════════════
+       1. WORKBENCH 2-COLUMN GRID (MASTER LIST & DETAIL DOSSIER)
+       ══════════════════════════════════════════════════════════════ */
+    .workbench-layout-grid {
+      display: grid;
+      grid-template-columns: 410px minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* --------------------------------------------------------------
+       LEFT COLUMN: MASTER TENANT DIRECTORY CARD
+       -------------------------------------------------------------- */
+    .master-list-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 18px 18px 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #F3F4F6;
+      gap: 12px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 110px;
+      height: calc(100vh - 130px);
+      max-height: calc(100vh - 130px);
+      overflow: hidden;
     }
 
-    .drawer-avatar-lg {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: #FF7A00;
-      color: #FFFFFF;
-      font-size: 22px;
-      font-weight: 700;
+    .master-header-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.25);
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
     }
 
-    .drawer-name-lg {
-      font-size: 16px;
+    .master-header-title {
+      font-size: 13.5px;
       font-weight: 700;
-      color: #111111;
-    }
-
-    .drawer-room-pill {
-      display: inline-flex;
+      color: var(--text-main);
+      display: flex;
       align-items: center;
       gap: 6px;
-      background: #FFF7ED;
-      color: #FF7A00;
+    }
+
+    .master-badge-count {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: var(--radius-full);
+      background: #F1F5F9;
+      color: var(--text-secondary);
+    }
+
+    .master-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-micro-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: var(--radius-full);
       font-size: 11px;
       font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      margin-top: 6px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
     }
 
-    .info-list-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .btn-micro-outline:hover {
+      border-color: #94A3B8;
+      background: #F8FAFC;
     }
 
-    .info-item-row {
-      display: flex;
-      justify-content: space-between;
+    .btn-micro-brand {
+      display: inline-flex;
       align-items: center;
-      font-size: 12px;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(255, 122, 0, 0.25);
+      transition: all var(--transition-fast);
+      white-space: nowrap;
     }
 
-    .info-label { color: #6B7280; }
-    .info-val { font-weight: 600; color: #111111; }
+    .btn-micro-brand:hover {
+      background: var(--brand-primary-hover);
+      transform: translateY(-1px);
+    }
 
-    .contract-highlight-box {
-      background: #F7F8FA;
-      border-radius: 16px;
-      padding: 16px;
+    /* Search Input Capsule */
+    .search-capsule-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #F4F5F7;
+      border: 1px solid transparent;
+      border-radius: var(--radius-full);
+      padding: 0 12px;
+      height: 36px;
+      width: 100%;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .search-capsule-box:focus-within {
+      background: #FFFFFF;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .search-capsule-box input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-main);
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .search-capsule-box input::placeholder {
+      color: #94A3B8;
+      font-weight: 400;
+    }
+
+    .btn-clear-search {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: #64748B;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    /* Segmented Status Tabs */
+    .filter-segment-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      background: #F1F5F9;
+      border-radius: var(--radius-full);
+      padding: 3px;
+      gap: 2px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .segment-tab-btn {
+      padding: 5px 4px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-full);
+      background: transparent;
+      color: #64748B;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .segment-tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .segment-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--dark-pill);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      font-weight: 700;
+    }
+
+    /* Floor Filter Pills */
+    .floor-filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .floor-pill-btn {
+      flex: 1;
+      text-align: center;
+      padding: 4px 6px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid var(--border-subtle);
+      background: #F8FAFC;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .floor-pill-btn:hover {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      color: var(--text-main);
+    }
+
+    .floor-pill-btn.active {
+      background: var(--dark-pill);
+      border-color: var(--dark-pill);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .master-items-scroll {
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      padding-right: 2px;
+      padding-bottom: 12px;
+      flex: 1;
+      min-height: 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
 
-    .contract-box-title {
+    .master-items-scroll::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+
+    /* Master Tenant Card Tile */
+    .master-tenant-tile {
+      background: #FFFFFF;
+      border: 1.5px solid #F1F5F9;
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 140ms ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      user-select: none;
+      position: relative;
+    }
+
+    .master-tenant-tile:hover {
+      border-color: #CBD5E1;
+      background: #FAFAFC;
+    }
+
+    .master-tenant-tile.active {
+      border-color: var(--brand-primary);
+      background: #FFF7ED;
+      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.08);
+    }
+
+    .master-tenant-tile.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      bottom: 10px;
+      width: 3.5px;
+      background: var(--brand-primary);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .tile-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .tile-avatar-cluster {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .tile-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .tile-avatar-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+    }
+
+    .tile-status-dot {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid #FFFFFF;
+    }
+    .tile-status-dot.dot-lunas { background: #16A34A; }
+    .tile-status-dot.dot-tempo { background: #D97706; }
+    .tile-status-dot.dot-telat { background: #DC2626; }
+
+    .tile-name-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .tile-name-txt {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tile-role-txt {
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .room-badge-micro {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: #F1F5F9;
+      color: #0F172A;
       font-size: 11px;
       font-weight: 700;
-      color: #9CA3AF;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      border: 1px solid #E2E8F0;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .btn-drawer-full {
-      width: 100%;
-      padding: 11px;
-      border-radius: 9999px;
-      font-family: inherit;
+    .room-thumb-micro {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .tile-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 4px;
+      border-top: 1px dashed #EEF2F6;
+      font-size: 11px;
+    }
+
+    .tile-rate-txt {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .tile-badges-stack {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .contract-tag-pill {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+    .contract-tag-pill.tag-safe {
+      background: var(--status-success-bg);
+      color: var(--status-success-text);
+      border: 1px solid #BBF7D0;
+    }
+    .contract-tag-pill.tag-warning {
+      background: var(--status-warning-bg);
+      color: var(--status-warning-text);
+      border: 1px solid #FDE68A;
+    }
+    .contract-tag-pill.tag-new {
+      background: #E0F2FE;
+      color: #0284C7;
+      border: 1px solid #BAE6FD;
+    }
+
+    .master-empty-search {
+      display: none;
+      padding: 36px 16px;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #94A3B8;
+    }
+
+    /* --------------------------------------------------------------
+       RIGHT COLUMN: DETAIL DOSSIER CARD (CLEAN & CRAFTED ESTIFY)
+       -------------------------------------------------------------- */
+    .detail-dossier-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    /* Profile Header Section */
+    .dossier-profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+    }
+
+    .profile-left-cluster {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .dossier-avatar-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+      flex-shrink: 0;
+    }
+
+    .profile-text-cluster {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .profile-name-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .profile-name-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .badge-verified-ktp {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 10.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .profile-role-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .profile-room-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .room-pill-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      background: #F1F5F9;
+      color: #0F172A;
+      font-size: 11.5px;
+      font-weight: 700;
+      border: 1px solid #E2E8F0;
+    }
+
+    .room-desc-muted {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .profile-action-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-wa-direct {
+      background: #25D366;
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
       font-size: 12px;
       font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      box-shadow: 0 3px 10px rgba(37, 211, 102, 0.25);
+      transition: all var(--transition-fast);
+    }
+
+    .btn-wa-direct:hover {
+      background: #1EBE5D;
+      transform: translateY(-1px);
+    }
+
+    .btn-call-direct {
+      background: #F1F5F9;
+      color: var(--text-main);
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-full);
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-call-direct:hover {
+      background: #E2E8F0;
+    }
+
+    .btn-renew-direct {
+      background: var(--dark-pill);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-renew-direct:hover {
+      background: var(--dark-pill-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Operational Status Banner Strip */
+    .dossier-alert-strip {
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .dossier-alert-strip.is-safe {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      color: #166534;
+    }
+
+    .dossier-alert-strip.is-warning {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+    }
+
+    .dossier-alert-strip.is-danger {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #991B1B;
+    }
+
+    .strip-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 4-Quadrant Information Grid */
+    .dossier-quad-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .quad-block {
+      background: #F8FAFC;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+    }
+
+    .quad-head-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .quad-title-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .quad-icon {
+      color: var(--brand-primary);
+    }
+
+    .quad-kv-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .quad-kv-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      gap: 8px;
+    }
+
+    .quad-kv-lbl {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .quad-kv-val {
+      font-weight: 700;
+      color: var(--text-main);
+      text-align: right;
+    }
+
+    /* Contract Meter inside Quad 1 */
+    .contract-meter-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .meter-txt-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+    }
+
+    .meter-track {
+      width: 100%;
+      height: 6px;
+      background: #E2E8F0;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      height: 100%;
+      background: var(--brand-primary);
+      border-radius: var(--radius-full);
+      transition: width var(--transition-normal);
+    }
+
+    /* Deposit Highlight inside Quad 2 */
+    .deposit-box-highlight {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .deposit-val-large {
+      font-size: 17px;
+      font-weight: 800;
+      color: #059669;
+      line-height: 1.1;
+    }
+
+    /* Amenities Pills inside Quad 4 */
+    .amenities-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .amenity-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Dossier Bottom Multi-Tab Navigation (SCR-05, 06, 07, 08 Complete) */
+    .dossier-tab-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1.5px solid var(--border-subtle);
+      padding-bottom: 2px;
+      margin-bottom: 14px;
+    }
+
+    .dossier-tab-btn {
+      padding: 8px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      border-bottom: 2.5px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 150ms ease;
+      margin-bottom: -2px;
+    }
+
+    .dossier-tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .dossier-tab-btn.active {
+      color: var(--brand-primary);
+      border-bottom-color: var(--brand-primary);
+      font-weight: 700;
+    }
+
+    .dossier-tab-pane {
+      display: none;
+      animation: rumaFade 180ms ease;
+    }
+
+    .dossier-tab-pane.active {
+      display: block;
+    }
+
+    /* Standardized Dossier Subcard Box (100% Identical Height across Tagihan & Tiket) */
+    .dossier-subcard-box {
+      background: #FAFAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      height: 184px;
+      min-height: 184px;
+      max-height: 184px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    /* Ticket Mini Card (SCR-06) */
+    .ticket-list-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: 100%;
+    }
+
+    .ticket-mini-card {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 10px;
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      height: 48px;
+      min-height: 48px;
+      max-height: 48px;
+      box-sizing: border-box;
+      transition: all 150ms ease;
+    }
+
+    .ticket-mini-card:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+
+    .ticket-empty-box {
+      background: #FFFFFF;
+      border: 1px dashed #CBD5E1;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 160px;
+      box-sizing: border-box;
+    }
+
+    /* Contract Legal Clause Sheet (SCR-07, SCR-08) */
+    .contract-sheet-wrap {
+      background: #FAFAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .contract-sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #E2E8F0;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+
+    .clause-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+
+    .clause-card-item {
+      background: #FFFFFF;
+      border: 1px solid #ECEEF2;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .clause-title-txt {
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    /* Perpanjang Modal Enhancements */
+    .perpanjang-mode-switch {
+      display: flex;
+      background: #F1F5F9;
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      margin: 0;
+    }
+
+    .perpanjang-mode-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border: none;
+      background: transparent;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      text-decoration: none;
       transition: all 150ms ease;
     }
 
-    .btn-black-solid { background: #111111; color: #FFFFFF; border: none; }
-    .btn-black-solid:hover { background: #222222; }
-    .btn-white-outline { background: #FFFFFF; border: 1.5px solid #ECEEF2; color: #4B5563; }
-    .btn-white-outline:hover { border-color: #111111; color: #111111; }
-
-    .wf-badge {
-      position: fixed;
-      bottom: 12px;
-      right: 12px;
+    .perpanjang-mode-btn.active {
       background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 8px;
-      padding: 4px 10px;
+      color: var(--text-main);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      font-weight: 700;
+    }
+
+    .calc-summary-strip {
+      background: #FFF7ED;
+      border: 1px solid #FED7AA;
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+
+    /* Recent Payment History Ledger */
+    .dossier-ledger-box {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ledger-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .ledger-title-txt {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ledger-link-full {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--brand-primary);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ledger-link-full:hover {
+      text-decoration: underline;
+    }
+
+    .ledger-table-grid {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .ledger-table-grid th {
+      text-align: left;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #E2E8F0;
+      height: 24px;
+    }
+
+    .ledger-table-grid td {
+      padding: 9px 0;
+      border-bottom: 1px solid #EDF2F7;
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    .ledger-table-grid tr:last-child td {
+      border-bottom: none;
+    }
+
+    .btn-download-receipt {
+      color: var(--brand-primary);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11.5px;
+    }
+
+    .btn-download-receipt:hover {
+      text-decoration: underline;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       3. MODAL POPUPS (ZERO-NATIVE SELECT/ALERT PER DESIGN.MD)
+       ══════════════════════════════════════════════════════════════ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(17, 24, 39, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-container-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-container-card.modal-lg {
+      max-width: 660px;
+    }
+
+    .modal-head-row {
+      padding: 18px 24px;
+      border-bottom: 1px solid #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-head-row h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .btn-modal-close {
+      background: #F1F5F9;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #64748B;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-modal-close:hover {
+      background: #E2E8F0;
+      color: #0F172A;
+    }
+
+    .modal-body-scroll {
+      padding: 20px 24px;
+      overflow-y: auto;
+      max-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label-txt {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .form-input-field {
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-main);
+      outline: none;
+      transition: all var(--transition-fast);
+    }
+
+    .form-input-field:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .modal-footer-row {
+      padding: 16px 24px;
+      border-top: 1px solid #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-modal-cancel {
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      background: #F1F5F9;
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-modal-cancel:hover {
+      background: #E2E8F0;
+      color: var(--text-main);
+    }
+
+    .btn-modal-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 9px 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-modal-primary:hover {
+      background: var(--brand-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-modal-primary.is-whatsapp {
+      background: #25D366;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+    }
+
+    .btn-modal-primary.is-whatsapp:hover {
+      background: #1EBE5D;
+    }
+
+    /* Modal Form Sub-Sections & Upload Dropzone */
+    .modal-section-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 6px;
+      margin-top: 4px;
+      border-top: 1px dashed #E2E8F0;
+    }
+
+    .modal-section-title {
       font-size: 11px;
-      color: #6B7280;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      z-index: 999;
+      font-weight: 700;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .file-upload-dropzone {
+      border: 1.5px dashed #CBD5E1;
+      border-radius: 12px;
+      background: #F8FAFC;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .file-upload-dropzone:hover {
+      border-color: var(--brand-primary);
+      background: #FFF7ED;
+    }
+
+    .file-dropzone-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .file-dropzone-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-primary);
+      flex-shrink: 0;
+    }
+
+    .file-dropzone-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .file-dropzone-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .file-dropzone-sub {
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    .btn-choose-file {
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .custom-select-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .custom-select-tile {
+      padding: 9px 12px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-subtle);
+      background: #FFFFFF;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: all var(--transition-fast);
+    }
+
+    .custom-select-tile:hover {
+      border-color: #D1D5DB;
+      background: #FAFAFB;
+    }
+
+    .custom-select-tile.active {
+      border-color: var(--brand-primary);
+      background: var(--brand-primary-light);
+    }
+
+    .tile-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .custom-select-tile.active .tile-title {
+      color: var(--brand-primary);
+    }
+
+    .tile-sub {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .duration-pills-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .duration-pill-opt {
+      flex: 1;
+      padding: 8px;
+      text-align: center;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      border: 1px solid var(--border-subtle);
+      background: #F8FAFC;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .duration-pill-opt:hover {
+      border-color: #D1D5DB;
+      color: var(--text-main);
+    }
+
+    .duration-pill-opt.active {
+      background: var(--dark-pill);
+      border-color: var(--dark-pill);
+      color: #FFFFFF;
+    }
+
+    .pill-target-btn,
+    .pill-template-btn {
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid var(--border-subtle);
+      background: #F8FAFC;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      user-select: none;
+    }
+    .pill-target-btn:hover,
+    .pill-template-btn:hover {
+      background: #FFFFFF;
+      border-color: #D1D5DB;
+      color: var(--text-main);
+    }
+    .pill-target-btn.active {
+      background: var(--dark-pill);
+      border-color: var(--dark-pill);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       4. RESPONSIVE MEDIA QUERIES
+       ══════════════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .dashboard-wrapper {
+        width: calc(100% - 32px);
+      }
+      .workbench-layout-grid {
+        grid-template-columns: 1fr;
+      }
+      .master-list-card {
+        position: static;
+        height: auto;
+        max-height: none;
+      }
+      .master-items-scroll {
+        max-height: 380px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dossier-quad-grid {
+        grid-template-columns: 1fr;
+      }
+      .dossier-profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .profile-action-btns {
+        width: 100%;
+      }
+      .btn-wa-direct, .btn-call-direct, .btn-renew-direct {
+        flex: 1;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="wf-badge">SCR-05 s.d. SCR-08 · Penghuni & Siklus Kontrak</div>
+  <!-- TOPBAR MASTER (SINKRON 100% DENGAN WF-02 & WF-03 VIA COMPONENTS.JS) -->
+  <!-- TOP CANOPY OVERLAY (Masking celah atas navbar floating) -->
+  <div class="top-canopy-overlay" aria-hidden="true"></div>
 
-  <!-- TOPBAR -->
   <header class="topbar" id="mainTopbar">
     <!-- Rendered dynamically by components.js -->
   </header>
 
-  <!-- PAGE LAYOUT -->
-  <div class="page-layout">
-    
-    <div class="content-area">
+  <!-- DASHBOARD MASTER WRAPPER -->
+  <div class="dashboard-wrapper">
 
-      <!-- Summary chips -->
-      <div class="summary-chips-row">
-        <div class="chip-card">
-          <span class="chip-dot" style="background: #111111;"></span>
-          <span class="chip-label">Penghuni Aktif</span>
-          <span class="chip-count">11 Jiwa</span>
-        </div>
-        <div class="chip-card">
-          <span class="chip-dot" style="background: #D97706;"></span>
-          <span class="chip-label">Kontrak Habis Bln Ini</span>
-          <span class="chip-count" style="color: #D97706;">1 Orang</span>
-        </div>
-        <div class="chip-card">
-          <span class="chip-dot" style="background: #16A34A;"></span>
-          <span class="chip-label">Tagihan Lunas Okt</span>
-          <span class="chip-count" style="color: #16A34A;">7 / 11</span>
-        </div>
-      </div>
+    <!-- WORKBENCH 2-COLUMN GRID (MASTER LIST & DETAIL DOSSIER) -->
+    <main class="workbench-layout-grid">
 
-      <!-- Controls -->
-      <div class="controls-card">
-        <div class="filter-group-left">
-          <div class="search-input-pill">
-            <i data-lucide="search" style="width: 14px; height: 14px; color: #9CA3AF;"></i>
-            <input type="text" placeholder="Cari nama penghuni atau nomor kamar...">
+      <!-- LEFT COLUMN: MASTER TENANT DIRECTORY (410px STICKY) -->
+      <aside class="master-list-card">
+        <!-- Master Header Row with Title & Integrated Quick Actions -->
+        <div class="master-header-row">
+          <div class="master-header-title">
+            <i data-lucide="users" style="width: 15px; height: 15px; color: var(--brand-primary);"></i>
+            <span>Daftar Penyewa</span>
+            <span class="master-badge-count" id="masterCountDisplay">11</span>
           </div>
-
-          <div class="popover-filter-btn">
-            <span>Status Kontrak: Semua</span>
-            <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+          <div class="master-header-actions">
+            <button type="button" class="btn-micro-outline" onclick="openBroadcastModal()" title="Siaran WA ke Penyewa">
+              <i data-lucide="megaphone" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
+              <span>Siaran WA</span>
+            </button>
+            <button type="button" class="btn-micro-brand" onclick="openTambahPenghuniModal()" title="Tambah Penghuni Baru">
+              <i data-lucide="plus" style="width: 13px; height: 13px;"></i>
+              <span>Tambah</span>
+            </button>
           </div>
         </div>
 
-        <button class="btn-add-primary" onclick="alert('Dialog tambah penghuni baru')">
-          <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
-          Tambah Penghuni
+        <!-- Integrated Search Capsule -->
+        <div class="search-capsule-box">
+          <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8; flex-shrink: 0;"></i>
+          <input type="text" id="tenantSearchInput" placeholder="Cari nama, kamar, atau telp..." oninput="handleSearch(this.value)">
+          <button type="button" id="clearSearchBtn" class="btn-clear-search" onclick="clearSearch()" title="Hapus pencarian">
+            <i data-lucide="x" style="width: 11px; height: 11px;"></i>
+          </button>
+        </div>
+
+        <!-- Segmented Status Tabs -->
+        <div class="filter-segment-tabs">
+          <button type="button" class="segment-tab-btn active" id="tabAll" onclick="switchTab('all')">Semua (11)</button>
+          <button type="button" class="segment-tab-btn" id="tabAttention" onclick="switchTab('attention')">Perlu Aksi (3)</button>
+          <button type="button" class="segment-tab-btn" id="tabLunas" onclick="switchTab('lunas')">Lunas (8)</button>
+        </div>
+
+        <!-- Floor Filter Pills -->
+        <div class="floor-filter-pills">
+          <button type="button" class="floor-pill-btn active" onclick="switchFloor('all', this)">Semua</button>
+          <button type="button" class="floor-pill-btn" onclick="switchFloor('1', this)">Lt 1</button>
+          <button type="button" class="floor-pill-btn" onclick="switchFloor('2', this)">Lt 2</button>
+          <button type="button" class="floor-pill-btn" onclick="switchFloor('3', this)">Lt 3</button>
+        </div>
+
+        <div class="master-items-scroll" id="masterTenantList">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+
+        <div class="master-empty-search" id="masterEmptySearch">
+          <i data-lucide="search-x" style="width: 32px; height: 32px;"></i>
+          <div style="font-size: 13px; font-weight: 600; color: var(--text-main);">Tidak ada penghuni</div>
+          <span style="font-size: 11px;">Coba ubah kata kunci atau ganti filter</span>
+        </div>
+      </aside>
+
+      <!-- RIGHT COLUMN: DETAIL DOSSIER CONSOLE -->
+      <section class="detail-dossier-card" id="detailDossierCard">
+
+        <!-- A. PROFILE HEADER & QUICK ACTIONS -->
+        <div class="dossier-profile-header">
+          <div class="profile-left-cluster">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" alt="Avatar" class="dossier-avatar-img" id="dAvatarImg">
+            <div class="profile-text-cluster">
+              <div class="profile-name-line">
+                <h2 class="profile-name-title" id="dNameTitle">Siti Aminah</h2>
+                <span class="badge-verified-ktp">
+                  <i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i>
+                  <span>Terverifikasi</span>
+                </span>
+              </div>
+              <div class="profile-role-sub" id="dRoleSub">Karyawan Swasta &middot; PT Telkom Indonesia</div>
+              <div class="profile-room-meta">
+                <span class="room-pill-main" id="dRoomBadge">
+                  <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=150&q=80" class="room-thumb-micro" id="dRoomThumb" alt="Kamar">
+                  <span id="dRoomName">Kamar A-01</span>
+                </span>
+                <span class="room-desc-muted" id="dRoomDesc">Lantai 1 &middot; Tipe Standar (3&times;4m)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons (Kontak Langsung Penghuni) -->
+          <div class="profile-action-btns">
+            <a href="https://wa.me/6281234567890" target="_blank" class="btn-wa-direct" id="dBtnWa" title="Kirim Pesan WhatsApp">
+              <i data-lucide="message-circle" style="width: 14px; height: 14px;"></i>
+              <span>Chat WhatsApp</span>
+            </a>
+            <a href="tel:081234567890" class="btn-call-direct" id="dBtnCall" title="Panggilan Suara">
+              <i data-lucide="phone" style="width: 13px; height: 13px;"></i>
+              <span>Telepon</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- B. OPERATIONAL STATUS ALERT STRIP -->
+        <div class="dossier-alert-strip is-safe" id="dAlertStrip">
+          <div class="strip-left">
+            <i data-lucide="check-circle" style="width: 15px; height: 15px; flex-shrink: 0;" id="dAlertIcon"></i>
+            <span id="dAlertMsg">Status Sewa Normal &middot; Pembayaran bulan Okt telah lunas via BCA Transfer.</span>
+          </div>
+          <span class="status-badge badge-success" id="dAlertBadge">Lunas Okt</span>
+        </div>
+
+        <!-- C. 4-QUADRANT INFORMATION METRICS -->
+        <div class="dossier-quad-grid">
+
+          <!-- QUADRANT 1: SIKLUS KONTRAK SEWA -->
+          <div class="quad-block">
+            <div class="quad-head-row">
+              <div class="quad-title-label">
+                <i data-lucide="calendar" style="width: 14px; height: 14px;" class="quad-icon"></i>
+                <span>Siklus Kontrak Sewa</span>
+              </div>
+              <span class="status-badge badge-dark" id="dContractBadge" style="font-size: 10px;">Aktif Aman</span>
+            </div>
+
+            <div class="quad-kv-list">
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Mulai Menempati:</span>
+                <span class="quad-kv-val" id="dStartDate">1 Mar 2025</span>
+              </div>
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Selesai Kontrak:</span>
+                <span class="quad-kv-val" id="dEndDate" style="color: #EA580C;">28 Feb 2027</span>
+              </div>
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Tarif Bulanan:</span>
+                <span class="quad-kv-val" id="dMonthlyRent">Rp 1.200.000 / bln</span>
+              </div>
+            </div>
+
+            <div class="contract-meter-box">
+              <div class="meter-txt-row">
+                <span style="color: var(--text-muted);" id="dMeterDurationTxt">8 dari 24 Bulan Berjalan</span>
+                <span style="font-weight: 700; color: var(--brand-primary);" id="dCountdownTxt">16 Bln Lagi</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-fill" id="dMeterFill" style="width: 33%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUADRANT 2: UANG JAMINAN DEPOSIT (SECURITY ESCROW) -->
+          <div class="quad-block">
+            <div class="quad-head-row">
+              <div class="quad-title-label">
+                <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #059669;"></i>
+                <span>Deposit Jaminan (Escrow)</span>
+              </div>
+              <span class="status-badge badge-success" style="font-size: 10px;">Tersimpan 100%</span>
+            </div>
+
+            <div class="deposit-box-highlight">
+              <div>
+                <div class="deposit-val-large" id="dDepositAmount">Rp 1.000.000</div>
+                <span style="font-size: 11px; color: #047857; font-weight: 500;">Saldo Terkunci di Rekening Kost</span>
+              </div>
+              <i data-lucide="lock" style="width: 18px; height: 18px; color: #059669;"></i>
+            </div>
+
+            <div class="quad-kv-list">
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Status Deposit:</span>
+                <span class="quad-kv-val" style="color: #16A34A;">Aman &middot; Belum Pernah Dipotong</span>
+              </div>
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Ketentuan Refund:</span>
+                <span class="quad-kv-val" style="font-size: 11.5px; font-weight: 500; color: var(--text-secondary);">Saat check-out pasca inspeksi kamar</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUADRANT 3: IDENTITAS & KONTAK DARURAT -->
+          <div class="quad-block">
+            <div class="quad-head-row">
+              <div class="quad-title-label">
+                <i data-lucide="contact" style="width: 14px; height: 14px;" class="quad-icon"></i>
+                <span>Identitas & Kontak Darurat</span>
+              </div>
+            </div>
+
+            <div class="quad-kv-list">
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">No. WhatsApp / HP:</span>
+                <span class="quad-kv-val" id="dPhoneTxt">0812-3456-7890</span>
+              </div>
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">NIK KTP:</span>
+                <span class="quad-kv-val" id="dNikTxt" style="font-family: monospace;">3201************</span>
+              </div>
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Dokumen KTP:</span>
+                <span class="quad-kv-val" style="color: #16A34A; display: inline-flex; align-items: center; gap: 4px;">
+                  <i data-lucide="check" style="width: 11px; height: 11px;"></i> Terverifikasi Dukcapil
+                </span>
+              </div>
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Email Akun Portal:</span>
+                <span class="quad-kv-val" id="dEmailTxt" style="color: var(--brand-primary); font-family: monospace; font-size: 11.5px;">siti.aminah@gmail.com</span>
+              </div>
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Kota Domisili Asal:</span>
+                <span class="quad-kv-val" id="dCityTxt">Bandung, Jawa Barat</span>
+              </div>
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">Kontak Darurat:</span>
+                <span class="quad-kv-val" id="dEmergencyTxt" style="color: #0F172A;">Bpk. H. Rahmat (Ayah) &middot; 0811-2233-4455</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUADRANT 4: FASILITAS & INVENTARIS KAMAR -->
+          <div class="quad-block">
+            <div class="quad-head-row">
+              <div class="quad-title-label">
+                <i data-lucide="bed-double" style="width: 14px; height: 14px;" class="quad-icon"></i>
+                <span>Fasilitas & Inventaris Kamar</span>
+              </div>
+              <span class="room-badge-micro">
+                <i data-lucide="door-open" style="width: 11px; height: 11px;"></i>
+                <span id="dInventoryRoom">Kamar A-01</span>
+              </span>
+            </div>
+
+            <div class="amenities-tag-row">
+              <span class="amenity-pill"><i data-lucide="wind" style="width: 11px; height: 11px;"></i> AC 1/2 PK</span>
+              <span class="amenity-pill"><i data-lucide="bath" style="width: 11px; height: 11px;"></i> KM Dalam</span>
+              <span class="amenity-pill"><i data-lucide="bed" style="width: 11px; height: 11px;"></i> Springbed 120&times;200</span>
+              <span class="amenity-pill"><i data-lucide="wifi" style="width: 11px; height: 11px;"></i> Wi-Fi 100 Mbps</span>
+              <span class="amenity-pill"><i data-lucide="zap" style="width: 11px; height: 11px;"></i> Token Mandiri</span>
+            </div>
+
+            <div class="quad-kv-list" style="margin-top: 2px;">
+              <div class="quad-kv-item">
+                <span class="quad-kv-lbl">No. Meteran Listrik:</span>
+                <span class="quad-kv-val" id="dMeterTokenVal" style="font-family: monospace;">3210-9876-5432</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- D. MULTI-TAB DOSSIER EXTENSION: SCR-05, SCR-06, SCR-07, SCR-08 -->
+        <div class="dossier-ledger-box">
+          <!-- Tab Navigation Headers -->
+          <div class="dossier-tab-row">
+            <button type="button" class="dossier-tab-btn active" id="btnTabLedger" onclick="switchDossierTab('ledger')">
+              <i data-lucide="receipt" style="width: 14px; height: 14px;"></i>
+              <span>Tagihan & Pembayaran (SCR-06)</span>
+            </button>
+            <button type="button" class="dossier-tab-btn" id="btnTabTickets" onclick="switchDossierTab('tickets')">
+              <i data-lucide="wrench" style="width: 14px; height: 14px;"></i>
+              <span>Riwayat Komplain & Servis (SCR-06)</span>
+            </button>
+            <button type="button" class="dossier-tab-btn" id="btnTabContract" onclick="switchDossierTab('contract')">
+              <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
+              <span>Dokumen Kontrak & Klausul SPK (SCR-07/08)</span>
+            </button>
+          </div>
+
+          <!-- TAB PANE 1: LEDGER PEMBAYARAN -->
+          <div class="dossier-tab-pane active" id="paneTabLedger">
+            <div class="ledger-top-row" style="margin-bottom: 12px;">
+              <div class="ledger-title-txt">
+                <i data-lucide="receipt" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
+                <span>Riwayat 3 Pembayaran Sewa Terakhir</span>
+              </div>
+              <a href="WF-05-tagihan.html" class="btn-micro-outline" title="Buka buku tagihan lengkap di WF-05">
+                <span>Buku Tagihan (WF-05)</span>
+                <i data-lucide="arrow-right" style="width: 12px; height: 12px;"></i>
+              </a>
+            </div>
+
+            <div class="dossier-subcard-box">
+              <table class="ledger-table-grid">
+                <thead>
+                  <tr>
+                    <th>Periode Tagihan</th>
+                    <th>Nominal</th>
+                    <th>Tanggal Bayar</th>
+                    <th>Metode</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Kuitansi</th>
+                  </tr>
+                </thead>
+                <tbody id="dLedgerTbody">
+                  <!-- Rendered dynamically by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB PANE 2: RIWAYAT KOMPLAIN & TIKET (SCR-06) -->
+          <div class="dossier-tab-pane" id="paneTabTickets">
+            <div class="ledger-top-row" style="margin-bottom: 12px;">
+              <div class="ledger-title-txt">
+                <i data-lucide="wrench" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
+                <span>Riwayat 3 Komplain & Servis Terakhir</span>
+              </div>
+              <a href="WF-08-tiket.html" class="btn-micro-outline" id="btnHeaderTickets" title="Buka pusat tiket di WF-08">
+                <span>Tiket Operasional (WF-08)</span>
+                <i data-lucide="arrow-right" style="width: 12px; height: 12px;"></i>
+              </a>
+            </div>
+
+            <div class="dossier-subcard-box">
+              <div class="ticket-list-grid" id="dTicketList">
+                <!-- Rendered dynamically by JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB PANE 3: DOKUMEN & KLAUSUL PERJANJIAN SEWA SPK (SCR-07 & SCR-08) -->
+          <div class="dossier-tab-pane" id="paneTabContract">
+            <div class="contract-sheet-wrap">
+              <div class="contract-sheet-header">
+                <div>
+                  <div style="font-size: 13.5px; font-weight: 700; color: var(--text-main);" id="dContractTitle">Surat Perjanjian Sewa Kamar Kost (SPK-Kost)</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;" id="dContractMeta">No. SPK-2025/RUMA/A-01 &middot; Tanda Tangan Digital &middot; Legal Sah</div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button type="button" class="btn-micro-outline" onclick="RumaUI.showToast('Mengunduh Salinan Dokumen SPK Kontrak PDF...', 'info')">
+                    <i data-lucide="download" style="width: 12px; height: 12px;"></i>
+                    <span>Unduh PDF</span>
+                  </button>
+                  <button type="button" class="btn-micro-brand" onclick="openPerpanjangModal()">
+                    <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i>
+                    <span>Perpanjang Kontrak</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 8 Poin Klausul Tata Tertib & Hukum Sewa Kost -->
+              <div class="clause-grid-2col">
+                <div class="clause-card-item">
+                  <div class="clause-title-txt">
+                    <span style="color: var(--brand-primary);">1.</span>
+                    <span>Kewajiban Pembayaran Sewa</span>
+                  </div>
+                  <div>Sewa dibayarkan rutin paling lambat tanggal 10 setiap bulan kalender. Keterlambatan dikenakan denda administratif Rp 20.000/hari.</div>
+                </div>
+
+                <div class="clause-card-item">
+                  <div class="clause-title-txt">
+                    <span style="color: var(--brand-primary);">2.</span>
+                    <span>Uang Jaminan Deposit</span>
+                  </div>
+                  <div>Deposit jaminan disimpan selama masa sewa aktif dan dikembalikan utuh (tanpa bunga) maksimal H+2 pasca serah terima kunci dan inspeksi kamar.</div>
+                </div>
+
+                <div class="clause-card-item">
+                  <div class="clause-title-txt">
+                    <span style="color: var(--brand-primary);">3.</span>
+                    <span>Jam Tenang & Keamanan</span>
+                  </div>
+                  <div>Jam tenang berlaku pukul 22.00–06.00 WIB. Pintu gerbang utama tertutup otomatis pada pukul 23.00 WIB (akses kunci elektronik mandiri).</div>
+                </div>
+
+                <div class="clause-card-item">
+                  <div class="clause-title-txt">
+                    <span style="color: var(--brand-primary);">4.</span>
+                    <span>Kebijakan Tamu & Menginap</span>
+                  </div>
+                  <div>Tamu lawan jenis dilarang memasuki area kamar tidur. Tamu menginap wajib lapor izin pengelola kost maksimal 1×24 jam sebelumnya.</div>
+                </div>
+
+                <div class="clause-card-item">
+                  <div class="clause-title-txt">
+                    <span style="color: var(--brand-primary);">5.</span>
+                    <span>Larangan Merokok & Zat Terlarang</span>
+                  </div>
+                  <div>Dilarang merokok/vape di dalam unit kamar ber-AC. Pelanggaran dikenakan biaya sterilisasi dan pengecatan ulang sebesar Rp 500.000.</div>
+                </div>
+
+                <div class="clause-card-item">
+                  <div class="clause-title-txt">
+                    <span style="color: var(--brand-primary);">6.</span>
+                    <span>Perawatan Fasilitas & Token Listrik</span>
+                  </div>
+                  <div>Fasilitas bawaan unit (AC, springbed, lemari) dirawat bersama. Pengisian token listrik mandiri menjadi tanggung jawab penghuni kamar.</div>
+                </div>
+
+                <div class="clause-card-item">
+                  <div class="clause-title-txt">
+                    <span style="color: var(--brand-primary);">7.</span>
+                    <span>Pemberitahuan Berhenti / Selesai</span>
+                  </div>
+                  <div>Penyewa wajib mengabarkan perpanjangan atau check-out minimal H-30 sebelum masa kontrak berakhir guna penjadwalan inspeksi unit.</div>
+                </div>
+
+                <div class="clause-card-item">
+                  <div class="clause-title-txt">
+                    <span style="color: var(--brand-primary);">8.</span>
+                    <span>Larangan Pemindahtanganan (Sublet)</span>
+                  </div>
+                  <div>Penyewa dilarang mengalihkan, menyewakan ulang (sublet), atau meminjamkan unit kamar kepada pihak ketiga tanpa persetujuan tertulis Pemilik.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL 1: REGISTRASI PENGHUNI BARU (SCR-07 · Estify Pure Custom Form) -->
+  <div class="modal-overlay" id="modalTambahPenghuni">
+    <div class="modal-container-card modal-lg">
+      <div class="modal-head-row">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--brand-primary-light); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 15px; margin: 0; font-weight: 700; color: var(--text-main);">Registrasi Penghuni Baru</h3>
+            <span style="font-size: 11.5px; color: var(--text-muted);">Lengkapi data diri penyewa, akses portal, dan kontrak kamar</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeTambahPenghuniModal()">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
 
-      <!-- TENANT TABLE -->
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Penyewa</th>
-              <th>Kamar</th>
-              <th>Mulai Sewa</th>
-              <th>Selesai Kontrak</th>
-              <th>Status Tagihan</th>
-              <th>Status Sewa</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Row 1 (Selected) -->
-            <tr class="selected" onclick="selectTenant('Siti Aminah', 'siti.aminah@gmail.com', 'A-01', '0812-3456-7890', '1 Mar 2025', '28 Feb 2027', 'Rp 1.200.000', 'Lunas')">
-              <td>
-                <div class="tenant-col-user">
-                  <div class="tenant-avatar-circle">SA</div>
-                  <div>
-                    <div class="tenant-name-text">Siti Aminah</div>
-                    <div class="tenant-sub-text">siti.aminah@gmail.com</div>
-                  </div>
-                </div>
-              </td>
-              <td><strong>Kamar A-01</strong></td>
-              <td>1 Mar 2025</td>
-              <td>28 Feb 2027</td>
-              <td><span class="status-badge badge-success"><i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas</span></td>
-              <td><span class="status-badge badge-success">Aktif</span></td>
-              <td><a href="WF-05-tagihan.html" class="action-link">Tagihan <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
-            </tr>
+      <div class="modal-body-scroll">
+        
+        <!-- BAGIAN 1: DATA IDENTITAS & PRIBADI PENYEWA -->
+        <div class="modal-section-title">
+          <i data-lucide="user" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+          <span>1. Data Identitas & Pribadi Penyewa</span>
+        </div>
 
-            <!-- Row 2 -->
-            <tr onclick="selectTenant('Rina Marliana', 'rina.m@gmail.com', 'A-02', '0813-8877-6655', '5 Jan 2026', '31 Okt 2026', 'Rp 1.200.000', 'Jatuh Tempo')">
-              <td>
-                <div class="tenant-col-user">
-                  <div class="tenant-avatar-circle" style="background: #4B5563;">RM</div>
-                  <div>
-                    <div class="tenant-name-text">Rina Marliana</div>
-                    <div class="tenant-sub-text">rina.m@gmail.com</div>
-                  </div>
-                </div>
-              </td>
-              <td><strong>Kamar A-02</strong></td>
-              <td>5 Jan 2026</td>
-              <td><span style="color: #D97706; font-weight: 600;">31 Okt 2026 (9 hari)</span></td>
-              <td><span class="status-badge badge-danger"><i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i> Terlambat</span></td>
-              <td><span class="status-badge badge-warning">Habis Bulan Ini</span></td>
-              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
-            </tr>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Nama Lengkap Penyewa *</label>
+            <input type="text" id="regNama" class="form-input-field" placeholder="Contoh: Rian Anggara">
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt">No. WhatsApp / HP Aktif *</label>
+            <input type="tel" id="regPhone" class="form-input-field" placeholder="Contoh: 0812-3456-7890">
+          </div>
+        </div>
 
-            <!-- Row 3 -->
-            <tr onclick="selectTenant('Yuni Kartika', 'yuni.k@gmail.com', 'A-04', '0811-2244-6688', '10 Jun 2025', '10 Jun 2027', 'Rp 1.500.000', 'Lunas')">
-              <td>
-                <div class="tenant-col-user">
-                  <div class="tenant-avatar-circle" style="background: #16A34A;">YK</div>
-                  <div>
-                    <div class="tenant-name-text">Yuni Kartika</div>
-                    <div class="tenant-sub-text">yuni.k@gmail.com</div>
-                  </div>
-                </div>
-              </td>
-              <td><strong>Kamar A-04</strong></td>
-              <td>10 Jun 2025</td>
-              <td>10 Jun 2027</td>
-              <td><span class="status-badge badge-success"><i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas</span></td>
-              <td><span class="status-badge badge-success">Aktif</span></td>
-              <td><a href="WF-05-tagihan.html" class="action-link">Tagihan <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
-            </tr>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">No. KTP / NIK (16 Digit) *</label>
+            <input type="text" id="regNik" class="form-input-field" placeholder="16 Digit NIK KTP" maxlength="16">
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt">Kota Domisili Asal *</label>
+            <input type="text" id="regCity" class="form-input-field" placeholder="Contoh: Bandung, Jawa Barat">
+          </div>
+        </div>
 
-            <!-- Row 4 -->
-            <tr onclick="selectTenant('Sri Wahyuni', 'sri.w@gmail.com', 'A-05', '0857-1122-3344', '1 Feb 2026', '31 Jan 2027', 'Rp 1.100.000', 'Jatuh Tempo')">
-              <td>
-                <div class="tenant-col-user">
-                  <div class="tenant-avatar-circle" style="background: #7C3AED;">SW</div>
-                  <div>
-                    <div class="tenant-name-text">Sri Wahyuni</div>
-                    <div class="tenant-sub-text">sri.w@gmail.com</div>
-                  </div>
-                </div>
-              </td>
-              <td><strong>Kamar A-05</strong></td>
-              <td>1 Feb 2026</td>
-              <td>31 Jan 2027</td>
-              <td><span class="status-badge badge-warning"><i data-lucide="clock" style="width: 11px; height: 11px;"></i> Jatuh Tempo</span></td>
-              <td><span class="status-badge badge-success">Aktif</span></td>
-              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
-            </tr>
+        <div class="form-group-item">
+          <label class="form-label-txt">Pekerjaan & Instansi / Kampus *</label>
+          <input type="text" id="regRole" class="form-input-field" placeholder="Contoh: Karyawan Swasta &middot; PT Astra International">
+        </div>
 
-            <!-- Row 5 -->
-            <tr onclick="selectTenant('Dodi Firmansyah', 'dodi.f@gmail.com', 'B-01', '0812-9988-7766', '3 Okt 2026', '3 Okt 2027', 'Rp 950.000', 'Terlambat')">
-              <td>
-                <div class="tenant-col-user">
-                  <div class="tenant-avatar-circle" style="background: #0EA5E9;">DF</div>
-                  <div>
-                    <div class="tenant-name-text">Dodi Firmansyah</div>
-                    <div class="tenant-sub-text">dodi.f@gmail.com</div>
-                  </div>
-                </div>
-              </td>
-              <td><strong>Kamar B-01</strong></td>
-              <td>3 Okt 2026</td>
-              <td>3 Okt 2027</td>
-              <td><span class="status-badge badge-danger"><i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i> Terlambat</span></td>
-              <td><span class="status-badge badge-success">Aktif</span></td>
-              <td><a href="WF-06-pembayaran.html" class="action-link">Catat Bayar <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
-            </tr>
+        <!-- Unggah Dokumen KTP -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Dokumen / Foto KTP Penyewa *</label>
+          <div class="file-upload-dropzone" onclick="document.getElementById('uploadKtpInput').click()">
+            <div class="file-dropzone-left">
+              <div class="file-dropzone-icon">
+                <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+              </div>
+              <div class="file-dropzone-text">
+                <span class="file-dropzone-title" id="uploadKtpFileName">Unggah Foto KTP / Identitas</span>
+                <span class="file-dropzone-sub">Format JPG, PNG, atau PDF (Maksimal 5MB)</span>
+              </div>
+            </div>
+            <input type="file" id="uploadKtpInput" style="display: none;" accept="image/*,.pdf" onchange="handleKtpUpload(this)">
+            <button type="button" class="btn-choose-file">Pilih Berkas</button>
+          </div>
+        </div>
 
-            <!-- Row 6 -->
-            <tr onclick="selectTenant('Eko Prasetyo', 'eko.p@gmail.com', 'B-03', '0813-2211-4433', '20 Jul 2026', '20 Jul 2027', 'Rp 950.000', 'Lunas')">
-              <td>
-                <div class="tenant-col-user">
-                  <div class="tenant-avatar-circle" style="background: #059669;">EP</div>
-                  <div>
-                    <div class="tenant-name-text">Eko Prasetyo</div>
-                    <div class="tenant-sub-text">eko.p@gmail.com</div>
-                  </div>
+        <!-- BAGIAN 2: AKSES AKUN PORTAL PENGHUNI (UNTUK LOGIN WF-10) -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="key-round" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>2. Akses Akun Portal Penghuni (Login WF-10)</span>
+          </div>
+        </div>
+
+        <div style="font-size: 11px; color: #0284C7; background: #F0F9FF; border: 1px solid #BAE6FD; padding: 8px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="info" style="width: 14px; height: 14px; flex-shrink: 0;"></i>
+          <span>Kredensial ini digunakan penghuni untuk login mandiri di <strong>Portal Penghuni (WF-10)</strong> guna mengecek tagihan dan lapor komplain.</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Email Akun Login *</label>
+            <input type="email" id="regEmail" class="form-input-field" placeholder="Contoh: rian.anggara@email.com">
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt">Password / PIN Akses Awal *</label>
+            <input type="text" id="regPassword" class="form-input-field" value="Kost2026!" placeholder="Password awal">
+          </div>
+        </div>
+
+        <!-- BAGIAN 3: UNIT KAMAR & DETAIL KONTRAK -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="bed-double" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>3. Unit Kamar & Detail Kontrak Sewa</span>
+          </div>
+        </div>
+
+        <!-- Custom Kamar Selector (Zero Native Select) -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Pilih Unit Kamar Kosong *</label>
+          <div class="custom-select-grid" id="gridKamarTersedia">
+            <div class="custom-select-tile active" onclick="selectModalRoom(this, 'A-03', 'Rp 1.100.000', '500.000')">
+              <span class="tile-title">Kamar A-03</span>
+              <span class="tile-sub">Lt 1 &middot; Deposit Rp 500rb</span>
+            </div>
+            <div class="custom-select-tile" onclick="selectModalRoom(this, 'B-03', 'Rp 1.800.000', '500.000')">
+              <span class="tile-title">Kamar B-03</span>
+              <span class="tile-sub">Lt 2 &middot; Deposit Rp 500rb</span>
+            </div>
+            <div class="custom-select-tile" onclick="selectModalRoom(this, 'C-02', 'Rp 1.900.000', '1.000.000')">
+              <span class="tile-title">Kamar C-02</span>
+              <span class="tile-sub">Lt 3 &middot; Deposit Rp 1 Jt</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Durasi Kontrak Pills -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Durasi Kontrak Sewa *</label>
+          <div class="duration-pills-row">
+            <button type="button" class="duration-pill-opt active" onclick="selectModalDuration(this, '12')">1 Tahun</button>
+            <button type="button" class="duration-pill-opt" onclick="selectModalDuration(this, '6')">6 Bulan</button>
+            <button type="button" class="duration-pill-opt" onclick="selectModalDuration(this, '3')">3 Bulan</button>
+            <button type="button" class="duration-pill-opt" onclick="selectModalDuration(this, '1')">1 Bulan</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Mulai Menempati *</label>
+            <div class="ruma-datepicker-wrap" id="wrapRegStartDate">
+              <input type="hidden" id="regStartDate" value="2026-11-01">
+              <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapRegStartDate', 'regStartDate')">
+                <div class="ruma-datepicker-trigger-content">
+                  <i data-lucide="calendar" class="ruma-datepicker-trigger-icon"></i>
+                  <span class="ruma-datepicker-val-txt">1 November 2026</span>
                 </div>
-              </td>
-              <td><strong>Kamar B-03</strong></td>
-              <td>20 Jul 2026</td>
-              <td>20 Jul 2027</td>
-              <td><span class="status-badge badge-success"><i data-lucide="check-circle-2" style="width: 11px; height: 11px;"></i> Lunas</span></td>
-              <td><span class="status-badge badge-success">Aktif</span></td>
-              <td><a href="WF-08-tiket.html" class="action-link">1 Tiket <i data-lucide="arrow-up-right" style="width: 12px; height: 12px;"></i></a></td>
-            </tr>
-          </tbody>
-        </table>
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted);"></i>
+              </div>
+            </div>
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt">Uang Jaminan Deposit (Rp) *</label>
+            <input type="text" id="regDeposit" class="form-input-field" value="500.000" placeholder="Contoh: 500.000">
+          </div>
+        </div>
+
+        <!-- BAGIAN 4: KONTAK DARURAT KELUARGA -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="phone-call" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>4. Kontak Darurat (Keluarga / Wali)</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Nama & Hubungan Kontak Darurat *</label>
+            <input type="text" id="regEmergencyName" class="form-input-field" placeholder="Contoh: Bpk. Bambang (Ayah Kandung)">
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt">No. HP Darurat *</label>
+            <input type="tel" id="regEmergencyPhone" class="form-input-field" placeholder="Contoh: 0812-3344-5566">
+          </div>
+        </div>
+
       </div>
 
+      <div class="modal-footer-row" style="justify-content: space-between;">
+        <label style="display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; color: var(--text-secondary); cursor: pointer; user-select: none;">
+          <input type="checkbox" id="sendCredentialsViaWa" checked style="accent-color: var(--brand-primary); width: 14px; height: 14px;">
+          <span>Kirim info login akun & bukti via WhatsApp</span>
+        </label>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="btn-modal-cancel" onclick="closeTambahPenghuniModal()">Batal</button>
+          <button type="button" class="btn-modal-primary" onclick="saveTambahPenghuni()">
+            <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
+            <span>Simpan & Daftarkan Penghuni</span>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- RIGHT DRAWER: SCR-06 / SCR-08 DETAIL PENGHUNI & KONTRAK -->
-    <aside class="detail-drawer" id="tenantDrawer">
-      <div class="drawer-profile-top">
-        <div class="drawer-avatar-lg" id="dAvatar">SA</div>
-        <h3 class="drawer-name-lg" id="dName">Siti Aminah</h3>
-        <span class="drawer-room-pill" id="dRoom">Kamar A-01 · Lantai 1</span>
+  <!-- MODAL 2: PERPANJANGAN & PENYELESAIAN KONTRAK SEWA (SCR-08 · Full Lifecycle Management) -->
+  <div class="modal-overlay" id="modalPerpanjang">
+    <div class="modal-container-card modal-lg">
+      <div class="modal-head-row">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; border: 1px solid #FED7AA; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="file-check-2" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 15.5px; margin: 0; font-weight: 700; color: #0F172A;">Kelola Siklus Kontrak Sewa</h3>
+            <span style="font-size: 11.5px; color: #64748B;">Perpanjangan masa sewa atau proses check-out resmi penghuni</span>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closePerpanjangModal()" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
       </div>
 
-      <div class="info-list-group">
-        <div class="info-item-row">
-          <span class="info-label">Nomor WhatsApp</span>
-          <span class="info-val" id="dPhone">0812-3456-7890</span>
+      <div class="modal-body-scroll">
+        <!-- Ringkasan Profil & Kontrak Berjalan -->
+        <div style="background: #F8FAFC; border: 1px solid #ECEEF2; border-radius: 14px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700; color: #0F172A;" id="modalPerpanjangName">Siti Aminah</div>
+            <div style="font-size: 11.5px; color: #64748B; margin-top: 2px;" id="modalPerpanjangRoom">Unit Kamar A-01 &middot; Masa Kontrak Berjalan s.d. 28 Feb 2027</div>
+          </div>
+          <span class="status-badge badge-brand" id="modalPerpanjangCurrentTarif" style="font-size: 11.5px; padding: 3px 10px;">Rp 1.200.000 / bln</span>
         </div>
-        <div class="info-item-row">
-          <span class="info-label">Alamat Email</span>
-          <span class="info-val" id="dEmail">siti.aminah@gmail.com</span>
+
+        <!-- Mode Switch: Perpanjang vs Check-Out -->
+        <div class="perpanjang-mode-switch">
+          <button type="button" class="perpanjang-mode-btn active" id="btnModeRenew" onclick="setPerpanjangMode('renew')">
+            <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
+            <span>Perpanjang Masa Sewa</span>
+          </button>
+          <button type="button" class="perpanjang-mode-btn" id="btnModeCheckout" onclick="setPerpanjangMode('checkout')">
+            <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
+            <span>Selesai Sewa (Check-Out)</span>
+          </button>
         </div>
-        <div class="info-item-row">
-          <span class="info-label">Profesi</span>
-          <span class="info-val">Karyawan Swasta</span>
+
+        <!-- FORM A: MODE PERPANJANG SEWA -->
+        <div id="sectionModeRenew" style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- BAGIAN 1: DURASI & PERIODE KONTRAK BARU -->
+          <div class="modal-section-title">
+            <i data-lucide="calendar" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+            <span>1. Durasi & Periode Kontrak Baru</span>
+          </div>
+
+          <!-- Pilihan Durasi Siklus Baru -->
+          <div class="form-group-item">
+            <label class="form-label-txt">Pilihan Siklus Perpanjangan *</label>
+            <div class="duration-pills-row">
+              <button type="button" class="duration-pill-opt active" onclick="selectRenewDuration(this, '12')">1 Tahun (12 Bln)</button>
+              <button type="button" class="duration-pill-opt" onclick="selectRenewDuration(this, '6')">6 Bulan</button>
+              <button type="button" class="duration-pill-opt" onclick="selectRenewDuration(this, '3')">3 Bulan</button>
+              <button type="button" class="duration-pill-opt" onclick="selectRenewDuration(this, '1')">1 Bulan</button>
+            </div>
+          </div>
+
+          <!-- Periode Baru & Tarif Sewa -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group-item">
+              <label class="form-label-txt">Tanggal Mulai Periode Baru *</label>
+              <input type="text" id="renewStartDate" class="form-input-field" value="01/03/2027" readonly style="background: #F8FAFC; cursor: not-allowed; color: #64748B;">
+            </div>
+            <div class="form-group-item">
+              <label class="form-label-txt">Tanggal Berakhir Baru (Auto) *</label>
+              <input type="text" id="renewEndDate" class="form-input-field" value="28/02/2028" readonly style="background: #FFF7ED; border-color: #FED7AA; cursor: not-allowed; font-weight: 700; color: #FF7A00;">
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: TARIF SEWA & DEPOSIT JAMINAN -->
+          <div class="modal-section-title" style="padding-top: 8px; border-top: 1px dashed #E2E8F0; margin-top: 2px;">
+            <i data-lucide="wallet" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+            <span>2. Penyesuaian Tarif Sewa & Deposit Jaminan</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group-item">
+              <label class="form-label-txt">Tarif Sewa Baru per Bulan (Rp) *</label>
+              <input type="text" id="renewPriceInput" class="form-input-field" value="1.200.000" oninput="calculateRenewTotal()">
+            </div>
+            <div class="form-group-item">
+              <label class="form-label-txt">Penanganan Uang Deposit</label>
+              <div style="height: 42px; display: flex; align-items: center; padding: 0 12px; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 12px; font-size: 11.5px; font-weight: 600; color: #047857; gap: 6px; box-sizing: border-box;">
+                <i data-lucide="shield-check" style="width: 15px; height: 15px; flex-shrink: 0;"></i>
+                <span>Rollover Deposit Aktif (Rp 1.000.000)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ringkasan Kalkulasi Kontrak Baru -->
+          <div class="calc-summary-strip">
+            <div>
+              <div style="font-size: 10.5px; color: #EA580C; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;">Total Nilai Komitmen Kontrak Baru:</div>
+              <div style="font-size: 16px; font-weight: 700; color: #C2410C; margin-top: 2px;" id="renewTotalValueTxt">Rp 14.400.000 (12 Bulan)</div>
+            </div>
+            <span class="status-badge badge-brand" style="font-size: 11px;">Proteksi Tarif Tetap</span>
+          </div>
+
+          <!-- Catatan Siklus Penagihan Otomatis -->
+          <div style="background: #F8FAFC; border: 1px solid #ECEEF2; border-radius: 12px; padding: 11px 14px; display: flex; align-items: center; gap: 9px; font-size: 11.5px; color: #475569; margin-top: 2px;">
+            <i data-lucide="info" style="width: 15px; height: 15px; color: #FF7A00; flex-shrink: 0;"></i>
+            <span>Kontrak baru otomatis tersambung ke jadwal penagihan rutin bulanan di modul Tagihan (WF-05).</span>
+          </div>
         </div>
-        <div class="info-item-row">
-          <span class="info-label">Kontak Darurat</span>
-          <span class="info-val">Bpk. H. Rahmat (Ayah)</span>
+
+        <!-- FORM B: MODE CHECK-OUT (SELESAI SEWA) -->
+        <div id="sectionModeCheckout" style="display: none; flex-direction: column; gap: 14px;">
+          <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 12px; padding: 12px 14px;">
+            <div style="font-size: 12px; font-weight: 700; color: #DC2626; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="alert-triangle" style="width: 14px; height: 14px;"></i>
+              <span>Prosedur Pengakhiran Sewa & Pengembalian Kamar</span>
+            </div>
+            <div style="font-size: 11.5px; color: #7F1D1D; margin-top: 4px; line-height: 1.5;">
+              Setelah konfirmasi check-out, unit kamar akan dialihkan statusnya menjadi <strong>Kosong / Siap Bersih</strong>, dan uang jaminan deposit akan diproses refund ke rekening penghuni.
+            </div>
+          </div>
+
+          <!-- BAGIAN 1: JADWAL & NOMINAL REFUND -->
+          <div class="modal-section-title">
+            <i data-lucide="calendar-x" style="width: 13px; height: 13px; color: #DC2626;"></i>
+            <span>1. Jadwal Pengakhiran & Dana Jaminan</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group-item">
+              <label class="form-label-txt">Tanggal Efektif Check-Out *</label>
+              <div class="ruma-datepicker-wrap" id="wrapCheckoutDate">
+                <input type="hidden" id="checkoutDate" value="2027-02-28">
+                <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapCheckoutDate', 'checkoutDate')">
+                  <div class="ruma-datepicker-trigger-content">
+                    <i data-lucide="calendar" class="ruma-datepicker-trigger-icon"></i>
+                    <span class="ruma-datepicker-val-txt">28 Februari 2027</span>
+                  </div>
+                  <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted);"></i>
+                </div>
+              </div>
+            </div>
+            <div class="form-group-item">
+              <label class="form-label-txt">Uang Jaminan Dikembalikan (Rp) *</label>
+              <div style="height: 44px; display: flex; align-items: center; padding: 0 14px; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 12px; font-size: 12px; font-weight: 600; color: #047857; gap: 6px; box-sizing: border-box;">
+                <i data-lucide="check-circle-2" style="width: 15px; height: 15px; flex-shrink: 0; color: #10B981;"></i>
+                <span>Rp 1.000.000 (Penuh)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: REKENING PENCAIRAN DEPOSIT -->
+          <div class="modal-section-title" style="padding-top: 8px; border-top: 1px dashed #E2E8F0; margin-top: 2px;">
+            <i data-lucide="credit-card" style="width: 13px; height: 13px; color: #DC2626;"></i>
+            <span>2. Rekening Tujuan Pencairan Refund Deposit</span>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label-txt">Nama Bank, Nomor Rekening & Atas Nama *</label>
+            <input type="text" class="form-input-field" placeholder="Contoh: BCA 1234567890 a.n. Siti Aminah" value="BCA 0129384756 a.n. Siti Aminah">
+          </div>
+
+          <!-- BAGIAN 3: CHECKLIST SERAH TERIMA -->
+          <div class="modal-section-title" style="padding-top: 8px; border-top: 1px dashed #E2E8F0; margin-top: 2px;">
+            <i data-lucide="clipboard-check" style="width: 13px; height: 13px; color: #DC2626;"></i>
+            <span>3. Checklist Serah Terima & Inspeksi Fisik Kamar</span>
+          </div>
+
+          <div class="form-group-item">
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: #334155; background: #F8FAFC; border: 1px solid #ECEEF2; border-radius: 12px; padding: 12px 14px;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+                <input type="checkbox" checked style="accent-color: #FF7A00; width: 14px; height: 14px;">
+                <span>AC, lampu, dan perabot elektronik dalam kondisi berfungsi baik</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+                <input type="checkbox" checked style="accent-color: #FF7A00; width: 14px; height: 14px;">
+                <span>Kunci fisik, kartu akses, dan meteran token diserahkan kembali</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+                <input type="checkbox" checked style="accent-color: #FF7A00; width: 14px; height: 14px;">
+                <span>Dinding & sanitair bersih tanpa kerusakan struktural</span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Contract Info Box (SCR-08) -->
-      <div class="contract-highlight-box">
-        <span class="contract-box-title">Siklus Kontrak Sewa</span>
-        <div class="info-item-row">
-          <span class="info-label">Mulai Sewa:</span>
-          <strong id="dStart">1 Mar 2025</strong>
+      <div class="modal-footer-row">
+        <button type="button" class="btn-modal-cancel" onclick="closePerpanjangModal()">Batal</button>
+        <button type="button" class="btn-modal-primary" id="btnSubmitPerpanjang" onclick="savePerpanjang()">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          <span>Konfirmasi Perpanjangan Sewa</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: BROADCAST PENGUMUMAN KOS (CMP-05 · 100% Anti-Slop Zero Prompt) -->
+  <div class="modal-overlay" id="modalBroadcast">
+    <div class="modal-container-card" style="max-width: 540px;">
+      <div class="modal-head-row">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--brand-primary-light); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="megaphone" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 15px; margin: 0; font-weight: 700; color: var(--text-main);">Broadcast Pengumuman Kos</h3>
+            <span style="font-size: 11.5px; color: var(--text-muted);">Kirim pesan massal terpadu via WhatsApp ke seluruh penyewa</span>
+          </div>
         </div>
-        <div class="info-item-row">
-          <span class="info-label">Berakhir:</span>
-          <strong id="dEnd" style="color: #FF7A00;">28 Feb 2027</strong>
+        <button type="button" class="btn-modal-close" onclick="closeBroadcastModal()">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body-scroll">
+        <!-- Target Penerima -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Target Penerima Pesan</label>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <button type="button" class="pill-target-btn active" onclick="selectBroadcastTarget(this, 'all')">Semua Penyewa (11)</button>
+            <button type="button" class="pill-target-btn" onclick="selectBroadcastTarget(this, 'lt1')">Lantai 1 (4)</button>
+            <button type="button" class="pill-target-btn" onclick="selectBroadcastTarget(this, 'lt2')">Lantai 2 (3)</button>
+            <button type="button" class="pill-target-btn" onclick="selectBroadcastTarget(this, 'lt3')">Lantai 3 (4)</button>
+            <button type="button" class="pill-target-btn" onclick="selectBroadcastTarget(this, 'tempo')">Jatuh Tempo (3)</button>
+          </div>
         </div>
-        <div class="info-item-row">
-          <span class="info-label">Tarif Bulanan:</span>
-          <strong id="dPrice">Rp 1.200.000</strong>
+
+        <!-- Template Cepat -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Gunakan Draf Template Cepat</label>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <button type="button" class="pill-template-btn" onclick="applyBroadcastTemplate('tandon')">Pembersihan Tandon Air</button>
+            <button type="button" class="pill-template-btn" onclick="applyBroadcastTemplate('kerja_bakti')">Kerja Bakti Bersama</button>
+            <button type="button" class="pill-template-btn" onclick="applyBroadcastTemplate('tagihan')">Pengingat Tagihan Bulanan</button>
+          </div>
         </div>
-        <div class="info-item-row">
-          <span class="info-label">Perpanjangan:</span>
-          <span style="color: #16A34A; font-weight: 600;">Otomatis Tahunan</span>
+
+        <!-- Isi Pesan -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Isi Pesan Siaran WhatsApp *</label>
+          <textarea id="broadcastMsgInput" class="form-input-field" rows="4" style="resize: vertical; font-size: 12px; line-height: 1.5;" placeholder="Ketik pengumuman di sini..." oninput="updateBroadcastPreview(this.value)">Yth. Seluruh Penghuni Kost Budi Makmur, diinfokan bahwa besok Sabtu pukul 09.00 - 11.00 WIB akan dilakukan pembersihan berkala tandon air utama. Mohon menampung air bersih secukupnya. Terima kasih atas kerja samanya.</textarea>
+        </div>
+
+        <!-- Live WhatsApp Preview Bubble -->
+        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 12px 14px;">
+          <div style="font-size: 11px; font-weight: 700; color: #16A34A; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+            <i data-lucide="message-circle" style="width: 13px; height: 13px;"></i>
+            <span>Preview Pesan WhatsApp ke Penghuni</span>
+          </div>
+          <div style="background: #FFFFFF; border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-left: 3px solid #22C55E;" id="broadcastPreviewTxt">
+            Yth. Seluruh Penghuni Kost Budi Makmur, diinfokan bahwa besok Sabtu pukul 09.00 - 11.00 WIB akan dilakukan pembersihan berkala tandon air utama. Mohon menampung air bersih secukupnya. Terima kasih atas kerja samanya.
+          </div>
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <a href="WF-05-tagihan.html" class="btn-drawer-full btn-black-solid">
-          <i data-lucide="receipt" style="width: 14px; height: 14px;"></i>
-          Kelola Tagihan Penghuni
-        </a>
-        <a href="WF-06-pembayaran.html" class="btn-drawer-full btn-white-outline">
-          <i data-lucide="credit-card" style="width: 14px; height: 14px;"></i>
-          Catat Pembayaran Masuk
-        </a>
+      <div class="modal-footer-row">
+        <button type="button" class="btn-modal-cancel" onclick="closeBroadcastModal()">Batal</button>
+        <button type="button" class="btn-modal-primary is-whatsapp" onclick="sendBroadcastPengumuman()">
+          <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+          <span>Kirim Siaran via WA</span>
+        </button>
       </div>
-    </aside>
-
+    </div>
   </div>
 
   <script src="assets/js/components.js"></script>
   <script>
-    renderTopbar('penghuni');
+    renderTopbar('penghuni', 'owner');
+    lucide.createIcons();
 
-    function selectTenant(name, email, room, phone, start, end, price, status) {
-      document.querySelectorAll('tbody tr').forEach(r => r.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
+    // ══════════════════════════════════════════════════════════════
+    // DATA MODEL: 11 PENGHUNI AKTIF (100% SINKRON DENGAN WF-02 & WF-03)
+    // ══════════════════════════════════════════════════════════════
+    const tenantsData = [
+      {
+        id: 'A-01',
+        name: 'Siti Aminah',
+        room: 'A-01',
+        floor: '1',
+        roomType: 'Tipe Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400&q=80',
+        role: 'Karyawan Swasta',
+        company: 'PT Telkom Indonesia',
+        phone: '0812-3456-7890',
+        since: '1 Mar 2025',
+        end: '28 Feb 2027',
+        price: 'Rp 1.200.000',
+        billStatus: 'lunas',
+        billLabel: 'Lunas (Okt)',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '16 Bln Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80',
+        city: 'Bandung, Jawa Barat',
+        nik: '3201024501980002',
+        email: 'siti.aminah@gmail.com',
+        contractNo: 'SPK-2025/RUMA/A-01',
+        tickets: [
+          {"id":"TK-029","title":"Pembersihan Filter AC Berkala","date":"12 Sep 2026","status":"Selesai","technician":"Pak Joko (Teknisi AC)","priority":"Normal"},
+          {"id":"TK-014","title":"Penggantian Bohlam Balkon Luar","date":"10 Mei 2026","status":"Selesai","technician":"Staf Kebersihan","priority":"Rendah"},
+          {"id":"TK-005","title":"Pengecekan Tekanan Air Shower Kamar Mandi","date":"14 Feb 2026","status":"Selesai","technician":"Pak Joko","priority":"Rendah"}
+        ],
+        emergency: 'Bpk. H. Rahmat (Ayah) · 0811-2233-4455',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5432',
+        durationTxt: '8 dari 24 Bulan Berjalan',
+        progressPct: 33,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.200.000', date: '01 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'September 2026', amount: 'Rp 1.200.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.200.000', date: '02 Agu 2026', method: 'BCA Transfer', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'A-02',
+        name: 'Dimas Prasetyo',
+        room: 'A-02',
+        floor: '1',
+        roomType: 'Tipe Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80',
+        role: 'Karyawan Swasta',
+        company: 'Bank Mandiri',
+        phone: '0813-8877-6655',
+        since: '15 Des 2025',
+        end: '15 Nov 2026',
+        price: 'Rp 1.200.000',
+        billStatus: 'tempo',
+        billLabel: 'Jatuh Tempo H-3',
+        contractCategory: 'expiring',
+        contractBadge: 'Segera Berakhir',
+        countdown: 'Sisa 23 Hari',
+        tagClass: 'tag-warning',
+        photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+        city: 'Semarang, Jawa Tengah',
+        nik: '3374011505990001',
+        email: 'dimas.prasetyo@gmail.com',
+        contractNo: 'SPK-2025/RUMA/A-02',
+        tickets: [{"id":"TK-038","title":"Gagang Pintu Kamar Mandi Goyang","date":"04 Okt 2026","status":"Dikerjakan","technician":"Pak Joko","priority":"Normal"}],
+        emergency: 'Ibu Hendrawan (Ibu) · 0812-4455-6677',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5433',
+        durationTxt: '11 dari 12 Bulan Berjalan',
+        progressPct: 92,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.200.000', date: 'Belum Bayar', method: 'Virtual Account', status: 'Jatuh Tempo H-3' },
+          { period: 'September 2026', amount: 'Rp 1.200.000', date: '03 Sep 2026', method: 'Mandiri Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.200.000', date: '04 Agu 2026', method: 'Mandiri Transfer', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'A-04',
+        name: 'Budi Santoso',
+        room: 'A-04',
+        floor: '1',
+        roomType: 'Standar AC (3.5×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400&q=80',
+        role: 'Karyawan Swasta',
+        company: 'PT Astra International',
+        phone: '0811-2233-4455',
+        since: '1 Jan 2026',
+        end: '31 Des 2026',
+        price: 'Rp 1.500.000',
+        billStatus: 'tempo',
+        billLabel: 'Jatuh Tempo H-3',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '68 Hari Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+        city: 'Surabaya, Jawa Timur',
+        nik: '3578011203970003',
+        email: 'budi.santoso@gmail.com',
+        contractNo: 'SPK-2025/RUMA/A-04',
+        tickets: [{"id":"TK-041","title":"Kran Air Wastafel Sedikit Menetes","date":"18 Okt 2026","status":"Menunggu Servis","technician":"Staf Pengelola","priority":"Normal"}],
+        emergency: 'Bpk. Santoso (Ayah) · 0813-9988-7711',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5435',
+        durationTxt: '10 dari 12 Bulan Berjalan',
+        progressPct: 83,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.500.000', date: 'Belum Bayar', method: 'BCA Transfer', status: 'Jatuh Tempo H-3' },
+          { period: 'September 2026', amount: 'Rp 1.500.000', date: '02 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.500.000', date: '01 Agu 2026', method: 'BCA Transfer', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'A-05',
+        name: 'Sri Wahyuni',
+        room: 'A-05',
+        floor: '1',
+        roomType: 'Tipe Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80',
+        role: 'Mahasiswi',
+        company: 'Universitas Indonesia',
+        phone: '0857-1122-3344',
+        since: '1 Sep 2025',
+        end: '31 Agu 2027',
+        price: 'Rp 1.100.000',
+        billStatus: 'lunas',
+        billLabel: 'Lunas (Okt)',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '10 Bln Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80',
+        city: 'Yogyakarta',
+        nik: '3471016809030004',
+        email: 'sri.wahyuni@ui.ac.id',
+        contractNo: 'SPK-2025/RUMA/A-05',
+        tickets: [],
+        emergency: 'Ibu Ratna (Wali) · 0857-8899-0011',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5436',
+        durationTxt: '14 dari 24 Bulan Berjalan',
+        progressPct: 58,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.100.000', date: '01 Okt 2026', method: 'QRIS', status: 'Lunas' },
+          { period: 'September 2026', amount: 'Rp 1.100.000', date: '01 Sep 2026', method: 'QRIS', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.100.000', date: '01 Agu 2026', method: 'QRIS', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'B-01',
+        name: 'Dodi Firmansyah',
+        room: 'B-01',
+        floor: '2',
+        roomType: 'Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=400&q=80',
+        role: 'Wiraswasta',
+        company: 'Owner Kedai Kopi',
+        phone: '0821-9988-7766',
+        since: '15 Jul 2025',
+        end: '14 Jul 2027',
+        price: 'Rp 1.300.000',
+        billStatus: 'telat',
+        billLabel: 'Terlambat 3 Hari',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '9 Bln Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=300&q=80',
+        city: 'Malang, Jawa Timur',
+        nik: '3573012207960002',
+        email: 'dodi.firmansyah@gmail.com',
+        contractNo: 'SPK-2025/RUMA/B-01',
+        tickets: [{"id":"TK-031","title":"Pengecekan Jalur Stop Kontak Meja","date":"20 Agu 2026","status":"Selesai","technician":"Pak Joko","priority":"Normal"}],
+        emergency: 'Bpk. Firmansyah (Ayah) · 0821-3322-1100',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5437',
+        durationTxt: '15 dari 24 Bulan Berjalan',
+        progressPct: 62,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.300.000', date: 'Telat 3 Hari', method: 'Tunai', status: 'Menunggu Bayar' },
+          { period: 'September 2026', amount: 'Rp 1.300.000', date: '05 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.300.000', date: '04 Agu 2026', method: 'BCA Transfer', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'B-02',
+        name: 'Rini Marlina',
+        room: 'B-02',
+        floor: '2',
+        roomType: 'Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80',
+        role: 'Karyawan Swasta',
+        company: 'Shopee Indonesia',
+        phone: '0819-0011-2233',
+        since: '1 Feb 2025',
+        end: '31 Jan 2027',
+        price: 'Rp 1.300.000',
+        billStatus: 'lunas',
+        billLabel: 'Lunas (Okt)',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '3 Bln Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+        city: 'Medan, Sumatera Utara',
+        nik: '1271015408980005',
+        email: 'rini.marlina@gmail.com',
+        contractNo: 'SPK-2025/RUMA/B-02',
+        tickets: [],
+        emergency: 'Ibu Marlina (Ibu) · 0819-8877-6655',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5438',
+        durationTxt: '21 dari 24 Bulan Berjalan',
+        progressPct: 87,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.300.000', date: '02 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'September 2026', amount: 'Rp 1.300.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.300.000', date: '01 Agu 2026', method: 'BCA Transfer', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'B-04',
+        name: 'Eko Prasetyo',
+        room: 'B-04',
+        floor: '2',
+        roomType: 'Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=400&q=80',
+        role: 'Karyawan Swasta',
+        company: 'Unilever Indonesia',
+        phone: '0878-1122-9900',
+        since: '15 Okt 2025',
+        end: '14 Okt 2027',
+        price: 'Rp 1.300.000',
+        billStatus: 'lunas',
+        billLabel: 'Lunas (Okt)',
+        contractCategory: 'new',
+        contractBadge: 'Baru Perpanjang',
+        countdown: '24 Bln Lagi',
+        tagClass: 'tag-new',
+        photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80',
+        city: 'Solo, Jawa Tengah',
+        nik: '3372011910970001',
+        email: 'eko.prasetyo@unilever.com',
+        contractNo: 'SPK-2025/RUMA/B-04',
+        tickets: [{"id":"TK-045","title":"Permintaan Semprot Hama Berkala","date":"01 Okt 2026","status":"Selesai","technician":"Jasa Pest Control","priority":"Rendah"}],
+        emergency: 'Bpk. Joko Prasetyo (Ayah) · 0878-5544-3322',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5440',
+        durationTxt: '1 dari 24 Bulan Berjalan',
+        progressPct: 4,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.300.000', date: '01 Okt 2026', method: 'Mandiri Transfer', status: 'Lunas' },
+          { period: 'September 2026', amount: 'Rp 1.300.000', date: '01 Sep 2026', method: 'Mandiri Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.300.000', date: '01 Agu 2026', method: 'Mandiri Transfer', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'C-01',
+        name: 'Hendra Wijaya',
+        room: 'C-01',
+        floor: '3',
+        roomType: 'Standar AC (3.5×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400&q=80',
+        role: 'Freelancer',
+        company: 'UI/UX Consultant',
+        phone: '0812-4455-6677',
+        since: '1 Jan 2025',
+        end: '31 Des 2026',
+        price: 'Rp 1.400.000',
+        billStatus: 'lunas',
+        billLabel: 'Lunas (Okt)',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '68 Hari Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=300&q=80',
+        city: 'Denpasar, Bali',
+        nik: '5171011004950002',
+        email: 'hendra.ux@gmail.com',
+        contractNo: 'SPK-2025/RUMA/C-01',
+        tickets: [{"id":"TK-020","title":"Perbaikan Engsel Jendela Belakang","date":"15 Jul 2026","status":"Selesai","technician":"Pak Joko","priority":"Normal"}],
+        emergency: 'Ibu Wijaya (Ibu) · 0812-3344-5566',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5441',
+        durationTxt: '22 dari 24 Bulan Berjalan',
+        progressPct: 91,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.400.000', date: '01 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'September 2026', amount: 'Rp 1.400.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.400.000', date: '01 Agu 2026', method: 'BCA Transfer', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'C-03',
+        name: 'Rian Hidayat',
+        room: 'C-03',
+        floor: '3',
+        roomType: 'Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80',
+        role: 'Karyawan Swasta',
+        company: 'Gojek Tech',
+        phone: '0856-7788-9900',
+        since: '1 Mei 2025',
+        end: '30 Apr 2027',
+        price: 'Rp 1.350.000',
+        billStatus: 'lunas',
+        billLabel: 'Lunas (Okt)',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '6 Bln Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80',
+        city: 'Jakarta Selatan',
+        nik: '3174011406980006',
+        email: 'rian.hidayat@gojek.com',
+        contractNo: 'SPK-2025/RUMA/C-03',
+        tickets: [],
+        emergency: 'Bpk. Hidayat (Ayah) · 0856-2233-4455',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5443',
+        durationTxt: '18 dari 24 Bulan Berjalan',
+        progressPct: 75,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.350.000', date: '02 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'September 2026', amount: 'Rp 1.350.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.350.000', date: '01 Agu 2026', method: 'BCA Transfer', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'C-04',
+        name: 'Mega Lestari',
+        room: 'C-04',
+        floor: '3',
+        roomType: 'Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=400&q=80',
+        role: 'Mahasiswi',
+        company: 'Institut Teknologi Bandung',
+        phone: '0822-3344-5566',
+        since: '1 Ags 2025',
+        end: '31 Jul 2027',
+        price: 'Rp 1.350.000',
+        billStatus: 'lunas',
+        billLabel: 'Lunas (Okt)',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '9 Bln Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80',
+        city: 'Palembang, Sumatera Selatan',
+        nik: '1671014208030003',
+        email: 'mega.lestari@itb.ac.id',
+        contractNo: 'SPK-2025/RUMA/C-04',
+        tickets: [],
+        emergency: 'Ibu Lestari (Ibu) · 0822-7788-9900',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5444',
+        durationTxt: '15 dari 24 Bulan Berjalan',
+        progressPct: 62,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.350.000', date: '01 Okt 2026', method: 'QRIS', status: 'Lunas' },
+          { period: 'September 2026', amount: 'Rp 1.350.000', date: '01 Sep 2026', method: 'QRIS', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.350.000', date: '01 Agu 2026', method: 'QRIS', status: 'Lunas' }
+        ]
+      },
+      {
+        id: 'C-05',
+        name: 'Aditya Pratama',
+        room: 'C-05',
+        floor: '3',
+        roomType: 'Standar (3×4m)',
+        roomPhoto: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80',
+        role: 'Karyawan Swasta',
+        company: 'Tokopedia',
+        phone: '0818-4455-6677',
+        since: '1 Nov 2025',
+        end: '31 Okt 2027',
+        price: 'Rp 1.350.000',
+        billStatus: 'lunas',
+        billLabel: 'Lunas (Okt)',
+        contractCategory: 'aman',
+        contractBadge: 'Aktif Aman',
+        countdown: '12 Bln Lagi',
+        tagClass: 'tag-safe',
+        photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=300&q=80',
+        city: 'Surabaya, Jawa Timur',
+        nik: '3578012511970004',
+        email: 'aditya.pratama@tokopedia.com',
+        contractNo: 'SPK-2025/RUMA/C-05',
+        tickets: [{"id":"TK-011","title":"Remot AC Baterai Habis","date":"12 Jan 2026","status":"Selesai","technician":"Staf Pengelola","priority":"Rendah"}],
+        emergency: 'Bpk. Pratama (Ayah) · 0818-3322-1144',
+        deposit: 'Rp 1.000.000',
+        meterToken: '3210-9876-5445',
+        durationTxt: '12 dari 24 Bulan Berjalan',
+        progressPct: 50,
+        payHistory: [
+          { period: 'Oktober 2026', amount: 'Rp 1.350.000', date: '01 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'September 2026', amount: 'Rp 1.350.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
+          { period: 'Agustus 2026', amount: 'Rp 1.350.000', date: '01 Agu 2026', method: 'BCA Transfer', status: 'Lunas' }
+        ]
+      }
+    ];
 
-      document.getElementById('dName').textContent = name;
-      document.getElementById('dEmail').textContent = email;
-      document.getElementById('dRoom').textContent = 'Kamar ' + room;
-      document.getElementById('dPhone').textContent = phone;
-      document.getElementById('dStart').textContent = start;
-      document.getElementById('dEnd').textContent = end;
-      document.getElementById('dPrice').textContent = price;
+    let activeTenantId = 'A-01';
+    let currentSegmentTab = 'all'; // 'all', 'attention', 'lunas'
+    let currentFloorFilter = 'all'; // 'all', '1', '2', '3'
+    let currentSearch = '';
 
-      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2);
-      document.getElementById('dAvatar').textContent = initials;
+    // RENDER MASTER LIST
+    function renderMasterList() {
+      const container = document.getElementById('masterTenantList');
+      const emptyEl = document.getElementById('masterEmptySearch');
+      const countEl = document.getElementById('masterCountDisplay');
+      container.innerHTML = '';
+
+      const filtered = tenantsData.filter(t => {
+        // Tab Segment
+        if (currentSegmentTab === 'attention') {
+          if (t.billStatus === 'lunas' && t.contractCategory === 'aman') return false;
+        } else if (currentSegmentTab === 'lunas') {
+          if (t.billStatus !== 'lunas') return false;
+        }
+
+        // Floor Filter
+        if (currentFloorFilter !== 'all' && t.floor !== currentFloorFilter) return false;
+
+        // Search Query
+        if (currentSearch.length > 0) {
+          const matchName = t.name.toLowerCase().includes(currentSearch);
+          const matchRoom = t.room.toLowerCase().includes(currentSearch);
+          const matchPhone = t.phone.toLowerCase().includes(currentSearch);
+          if (!matchName && !matchRoom && !matchPhone) return false;
+        }
+
+        return true;
+      });
+
+      countEl.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        emptyEl.style.display = 'flex';
+      } else {
+        emptyEl.style.display = 'none';
+      }
+
+      filtered.forEach(t => {
+        let billBadgeHtml = '<span class="status-badge badge-dark" style="font-size: 10px; padding: 2px 6px;">' + t.billLabel + '</span>';
+        if (t.billStatus === 'lunas') {
+          billBadgeHtml = '<span class="status-badge badge-success" style="font-size: 10px; padding: 2px 6px;"><i data-lucide="check" style="width: 9px; height: 9px;"></i> ' + t.billLabel + '</span>';
+        } else if (t.billStatus === 'tempo') {
+          billBadgeHtml = '<span class="status-badge badge-warning" style="font-size: 10px; padding: 2px 6px;"><i data-lucide="clock" style="width: 9px; height: 9px;"></i> ' + t.billLabel + '</span>';
+        } else if (t.billStatus === 'telat') {
+          billBadgeHtml = '<span class="status-badge badge-danger" style="font-size: 10px; padding: 2px 6px;"><i data-lucide="alert-circle" style="width: 9px; height: 9px;"></i> ' + t.billLabel + '</span>';
+        }
+
+        const tile = document.createElement('div');
+        tile.className = 'master-tenant-tile' + (t.id === activeTenantId ? ' active' : '');
+        tile.onclick = () => selectTenant(t.id);
+        tile.innerHTML = `
+          <div class="tile-top-row">
+            <div class="tile-avatar-cluster">
+              <div class="tile-avatar-wrap">
+                <img src="${t.photo}" alt="${t.name}" class="tile-avatar-img">
+                <span class="tile-status-dot dot-${t.billStatus}"></span>
+              </div>
+              <div class="tile-name-meta">
+                <div class="tile-name-txt">${t.name}</div>
+                <div class="tile-role-txt">${t.role} &middot; ${t.company}</div>
+              </div>
+            </div>
+            <span class="room-badge-micro" title="Kamar ${t.room} (Lantai ${t.floor})">
+              <img src="${t.roomPhoto}" class="room-thumb-micro" alt="Kamar ${t.room}">
+              <span>Kamar ${t.room}</span>
+            </span>
+          </div>
+
+          <div class="tile-bottom-row">
+            <span class="tile-rate-txt">${t.price}<span style="font-weight: 400; color: var(--text-muted); font-size: 10px;">/bln</span></span>
+            <div class="tile-badges-stack">
+              <span class="contract-tag-pill ${t.tagClass}">${t.countdown}</span>
+              ${billBadgeHtml}
+            </div>
+          </div>
+        `;
+        container.appendChild(tile);
+      });
+
+      lucide.createIcons();
     }
+
+    // SELECT TENANT & UPDATE RIGHT DETAIL PANE
+    function selectTenant(id) {
+      activeTenantId = id;
+      const t = tenantsData.find(item => item.id === id);
+      if (!t) return;
+
+      // Update Active class in Master List
+      document.querySelectorAll('.master-tenant-tile').forEach(c => c.classList.remove('active'));
+      const activeEl = document.querySelector(`.master-tenant-tile[onclick="selectTenant('${id}')"]`);
+      if (activeEl) activeEl.classList.add('active');
+
+      // Reset scroll position on right dossier card so new tenant opens from top
+      const detailCard = document.getElementById('detailDossierCard');
+      if (detailCard) detailCard.scrollTop = 0;
+
+      // 1. Update Profile Header
+      document.getElementById('dAvatarImg').src = t.photo;
+      document.getElementById('dAvatarImg').alt = t.name;
+      document.getElementById('dNameTitle').textContent = t.name;
+      document.getElementById('dRoleSub').textContent = `${t.role} · ${t.company}`;
+      document.getElementById('dRoomName').textContent = 'Kamar ' + t.room;
+      document.getElementById('dRoomThumb').src = t.roomPhoto;
+      document.getElementById('dRoomDesc').textContent = `Lantai ${t.floor} · ${t.roomType}`;
+
+      // WhatsApp & Call links
+      const cleanPhone = t.phone.replace(/[^0-9]/g, '').substring(1);
+      document.getElementById('dBtnWa').href = `https://wa.me/62${cleanPhone}`;
+      document.getElementById('dBtnCall').href = `tel:${t.phone}`;
+
+      // 2. Update Alert Banner Strip
+      const alertStrip = document.getElementById('dAlertStrip');
+      const alertIcon = document.getElementById('dAlertIcon');
+      const alertMsg = document.getElementById('dAlertMsg');
+      const alertBadge = document.getElementById('dAlertBadge');
+
+      if (t.billStatus === 'telat') {
+        alertStrip.className = 'dossier-alert-strip is-danger';
+        alertIcon.setAttribute('data-lucide', 'alert-circle');
+        alertMsg.innerHTML = `<strong>Tunggakan Sewa:</strong> Pembayaran sewa terlambat 3 hari (Jatuh tempo 10 Okt). Segera kirimkan pengingat WhatsApp.`;
+        alertBadge.className = 'status-badge badge-danger';
+        alertBadge.textContent = 'Terlambat Bayar';
+      } else if (t.billStatus === 'tempo') {
+        alertStrip.className = 'dossier-alert-strip is-warning';
+        alertIcon.setAttribute('data-lucide', 'clock');
+        alertMsg.innerHTML = `<strong>Perhatian Operasional:</strong> Tagihan sewa bulan berjalan jatuh tempo H-3. Mohon pastikan konfirmasi transfer.`;
+        alertBadge.className = 'status-badge badge-warning';
+        alertBadge.textContent = 'Jatuh Tempo H-3';
+      } else if (t.contractCategory === 'expiring') {
+        alertStrip.className = 'dossier-alert-strip is-warning';
+        alertIcon.setAttribute('data-lucide', 'alert-triangle');
+        alertMsg.innerHTML = `<strong>Kontrak Segera Berakhir:</strong> Masa sewa berakhir pada ${t.end} (${t.countdown}). Konfirmasi apakah penghuni akan memperpanjang sewa.`;
+        alertBadge.className = 'status-badge badge-warning';
+        alertBadge.textContent = 'Habis < 30 Hari';
+      } else {
+        alertStrip.className = 'dossier-alert-strip is-safe';
+        alertIcon.setAttribute('data-lucide', 'check-circle');
+        alertMsg.innerHTML = `Status Sewa Normal &middot; Pembayaran sewa lunas dan masa kontrak masih berjalan aman.`;
+        alertBadge.className = 'status-badge badge-success';
+        alertBadge.textContent = 'Lunas & Aman';
+      }
+
+      // 3. Update Quad 1: Siklus Kontrak
+      document.getElementById('dStartDate').textContent = t.since;
+      document.getElementById('dEndDate').textContent = t.end;
+      document.getElementById('dMonthlyRent').textContent = `${t.price} / bln`;
+      document.getElementById('dContractBadge').textContent = t.contractBadge;
+      document.getElementById('dContractBadge').className = 'status-badge ' + (t.contractCategory === 'aman' ? 'badge-dark' : (t.contractCategory === 'expiring' ? 'badge-warning' : 'badge-brand'));
+      document.getElementById('dMeterDurationTxt').textContent = t.durationTxt;
+      document.getElementById('dCountdownTxt').textContent = t.countdown;
+      document.getElementById('dMeterFill').style.width = t.progressPct + '%';
+
+      // 4. Update Quad 2: Deposit Jaminan
+      document.getElementById('dDepositAmount').textContent = t.deposit;
+
+      // 5. Update Quad 3: Identitas & Kontak Darurat
+      document.getElementById('dPhoneTxt').textContent = t.phone;
+      document.getElementById('dCityTxt').textContent = t.city;
+      document.getElementById('dEmergencyTxt').textContent = t.emergency;
+      if (document.getElementById('dNikTxt')) {
+        document.getElementById('dNikTxt').textContent = t.nik ? t.nik.substring(0, 4) + '************' : '3201************';
+      }
+      if (document.getElementById('dEmailTxt')) {
+        document.getElementById('dEmailTxt').textContent = t.email || (t.name.toLowerCase().replace(/\s+/g, '.') + '@gmail.com');
+      }
+
+      // 6. Update Quad 4: Fasilitas & Unit
+      document.getElementById('dInventoryRoom').textContent = 'Kamar ' + t.room;
+      document.getElementById('dMeterTokenVal').textContent = t.meterToken;
+
+      // 7. Update Payment History Ledger Table (SCR-06: Tampilkan Maksimal 3 Transaksi Terakhir)
+      const ledgerTbody = document.getElementById('dLedgerTbody');
+      ledgerTbody.innerHTML = '';
+      const recentPayments = (t.payHistory || []).slice(0, 3);
+      recentPayments.forEach(h => {
+        let statusBadge = '<span class="status-badge badge-success" style="font-size: 10.5px;">Lunas</span>';
+        if (h.status.includes('Tempo')) {
+          statusBadge = '<span class="status-badge badge-warning" style="font-size: 10.5px;">Jatuh Tempo</span>';
+        } else if (h.status.includes('Menunggu')) {
+          statusBadge = '<span class="status-badge badge-danger" style="font-size: 10.5px;">Belum Bayar</span>';
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${h.period}</strong></td>
+          <td><strong>${h.amount}</strong></td>
+          <td>${h.date}</td>
+          <td>${h.method}</td>
+          <td>${statusBadge}</td>
+          <td style="text-align: right;">
+            <button type="button" class="btn-micro-outline" style="padding: 3px 9px; font-size: 11px;" onclick="RumaUI.showToast('Mengunduh Kuitansi PDF ${t.room} (${h.period})...', 'info')">
+              <i data-lucide="download" style="width: 11px; height: 11px;"></i>
+              <span>Kuitansi</span>
+            </button>
+          </td>
+        `;
+        ledgerTbody.appendChild(tr);
+      });
+
+      // 8. Update Ticket Complaint List (SCR-06: Tampilkan Maksimal 3 Tiket Terakhir)
+      const ticketListContainer = document.getElementById('dTicketList');
+      if (ticketListContainer) {
+        ticketListContainer.innerHTML = '';
+        const allTickets = t.tickets || [];
+        const recentTickets = allTickets.slice(0, 3);
+        if (recentTickets.length === 0) {
+          ticketListContainer.innerHTML = `
+            <div class="ticket-empty-box">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #DCFCE7; color: #16A34A; display: flex; align-items: center; justify-content: center; margin-bottom: 6px;">
+                <i data-lucide="check-circle-2" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div style="font-weight: 700; color: var(--text-main); font-size: 12px; margin-bottom: 2px;">Kamar Dalam Kondisi Prima</div>
+              <div style="color: var(--text-muted); font-size: 11px;">Tidak ada catatan tiket komplain aktif dari penghuni kamar ini.</div>
+            </div>
+          `;
+        } else {
+          recentTickets.forEach(tk => {
+            const isDone = tk.status === 'Selesai';
+            const badgeClass = isDone ? 'badge-success' : 'badge-warning';
+            const card = document.createElement('div');
+            card.className = 'ticket-mini-card';
+            card.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 30px; height: 30px; border-radius: 8px; background: ${isDone ? '#DCFCE7' : '#FEF3C7'}; color: ${isDone ? '#16A34A' : '#D97706'}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <i data-lucide="${isDone ? 'check-check' : 'wrench'}" style="width: 15px; height: 15px;"></i>
+                </div>
+                <div>
+                  <div style="font-size: 12px; font-weight: 700; color: var(--text-main); line-height: 1.3;">${tk.title}</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+                    <span>Tiket #${tk.id}</span> &middot; 
+                    <span>Diajukan ${tk.date}</span> &middot; 
+                    <span style="color: var(--brand-primary); font-weight: 500;">${tk.technician}</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="status-badge ${badgeClass}" style="font-size: 10.5px;">${tk.status}</span>
+                <a href="WF-08-tiket.html" class="btn-micro-outline" style="padding: 3px 9px; font-size: 11px;" title="Lihat detail tiket di WF-08">
+                  <span>Detail</span>
+                  <i data-lucide="arrow-right" style="width: 11px; height: 11px;"></i>
+                </a>
+              </div>
+            `;
+            ticketListContainer.appendChild(card);
+          });
+        }
+
+        const btnHeaderTickets = document.getElementById('btnHeaderTickets');
+        if (btnHeaderTickets) {
+          if (allTickets.length > 3) {
+            btnHeaderTickets.innerHTML = `<span>Semua Tiket (${allTickets.length})</span><i data-lucide="arrow-right" style="width: 12px; height: 12px;"></i>`;
+          } else {
+            btnHeaderTickets.innerHTML = `<span>Tiket Operasional (WF-08)</span><i data-lucide="arrow-right" style="width: 12px; height: 12px;"></i>`;
+          }
+        }
+      }
+
+      // 9. Update Contract Legal Sheet (SCR-07 & SCR-08)
+      if (document.getElementById('dContractTitle')) {
+        document.getElementById('dContractTitle').textContent = `Surat Perjanjian Sewa Kamar Kost — Unit ${t.room}`;
+      }
+      if (document.getElementById('dContractMeta')) {
+        document.getElementById('dContractMeta').textContent = `No. ${t.contractNo || 'SPK-2025/RUMA/' + t.room} · Periode ${t.since} s.d. ${t.end} · Tanda Tangan Digital Sah`;
+      }
+
+      // 10. Update Modal Perpanjang Names & Defaults
+      document.getElementById('modalPerpanjangName').textContent = t.name;
+      document.getElementById('modalPerpanjangRoom').textContent = `Unit Kamar ${t.room} · Masa Kontrak Berjalan s.d. ${t.end}`;
+      if (document.getElementById('modalPerpanjangCurrentTarif')) {
+        document.getElementById('modalPerpanjangCurrentTarif').textContent = `Tarif Aktif: ${t.price}/bln`;
+      }
+      if (document.getElementById('renewPriceInput')) {
+        document.getElementById('renewPriceInput').value = t.price.replace(/[^0-9]/g, '');
+      }
+      calculateRenewTotal();
+
+      lucide.createIcons();
+    }
+
+    // SEARCH & FILTER HANDLING
+    function handleSearch(val) {
+      currentSearch = val.toLowerCase().trim();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (clearBtn) clearBtn.style.display = currentSearch.length > 0 ? 'inline-flex' : 'none';
+      renderMasterList();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('tenantSearchInput');
+      input.value = '';
+      handleSearch('');
+      input.focus();
+    }
+
+    function switchTab(tab) {
+      currentSegmentTab = tab;
+      document.querySelectorAll('.segment-tab-btn').forEach(btn => btn.classList.remove('active'));
+      if (tab === 'all') document.getElementById('tabAll').classList.add('active');
+      if (tab === 'attention') document.getElementById('tabAttention').classList.add('active');
+      if (tab === 'lunas') document.getElementById('tabLunas').classList.add('active');
+      renderMasterList();
+    }
+
+    function switchFloor(floor, el) {
+      currentFloorFilter = floor;
+      document.querySelectorAll('.floor-pill-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      renderMasterList();
+    }
+
+    // MODAL HANDLERS (Zero Native Alert/Prompt/Select per DESIGN.md)
+    let selectedRegRoom = 'A-03';
+    let selectedRegDur = '12';
+    let selectedPerpanjangOptVal = '12';
+    let selectedBroadcastTargetVal = 'all';
+
+    const roomDepositMap = {
+      'A-03': '500.000',
+      'B-03': '500.000',
+      'C-02': '1.000.000'
+    };
+
+    function selectModalRoom(el, room, price, deposit) {
+      selectedRegRoom = room;
+      document.querySelectorAll('#gridKamarTersedia .custom-select-tile').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+
+      const depositVal = deposit || roomDepositMap[room] || '500.000';
+      const depositInput = document.getElementById('regDeposit');
+      if (depositInput) {
+        depositInput.value = depositVal;
+      }
+    }
+
+    function selectModalDuration(el, dur) {
+      selectedRegDur = dur;
+      document.querySelectorAll('.duration-pills-row .duration-pill-opt').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function selectPerpanjangOpt(el, val) {
+      selectedPerpanjangOptVal = val;
+      el.parentElement.querySelectorAll('.custom-select-tile').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function handleKtpUpload(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const fileNameEl = document.getElementById('uploadKtpFileName');
+        if (fileNameEl) {
+          fileNameEl.textContent = `✓ Terpilih: ${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+          fileNameEl.style.color = 'var(--brand-primary)';
+          fileNameEl.style.fontWeight = '700';
+        }
+        RumaUI.showToast(`Dokumen KTP "${file.name}" siap diunggah`, 'info');
+      }
+    }
+
+    function openTambahPenghuniModal() {
+      document.getElementById('modalTambahPenghuni').classList.add('active');
+      if (window.RumaDatePicker) {
+        RumaDatePicker.init('wrapRegStartDate', 'regStartDate', '2026-11-01');
+      }
+      lucide.createIcons();
+    }
+    function closeTambahPenghuniModal() {
+      document.getElementById('modalTambahPenghuni').classList.remove('active');
+    }
+    function saveTambahPenghuni() {
+      const nama = document.getElementById('regNama') ? document.getElementById('regNama').value.trim() : '';
+      const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value.trim() : '';
+      
+      if (!nama) {
+        RumaUI.showToast('Silakan isi Nama Lengkap Penghuni sesuai KTP', 'warning');
+        return;
+      }
+      
+      closeTambahPenghuniModal();
+      RumaUI.showToast(`Penghuni ${nama} di Kamar ${selectedRegRoom} (${selectedRegDur} Bulan) berhasil didaftarkan! Kredensial portal & kuitansi deposit siap dikirimkan.`, 'success');
+    }
+
+    function openPerpanjangModal() {
+      document.getElementById('modalPerpanjang').classList.add('active');
+      if (window.RumaDatePicker) {
+        RumaDatePicker.init('wrapCheckoutDate', 'checkoutDate', '2027-02-28');
+      }
+      lucide.createIcons();
+    }
+    function closePerpanjangModal() {
+      document.getElementById('modalPerpanjang').classList.remove('active');
+    }
+    function savePerpanjang() {
+      closePerpanjangModal();
+      const t = tenantsData.find(item => item.id === activeTenantId);
+      const name = t ? t.name : 'Penyewa';
+      const room = t ? t.room : 'Unit';
+
+      if (currentPerpanjangMode === 'checkout') {
+        RumaUI.showToast(`Check-out unit Kamar ${room} (${name}) berhasil diproses. Refund deposit Rp 1.000.000 dialihkan ke bagian keuangan.`, 'success');
+      } else {
+        RumaUI.showToast(`Kontrak Kamar ${room} (${name}) berhasil diperpanjang ${currentRenewDuration} Bulan! Tagihan periode baru dijadwalkan otomatis.`, 'success');
+      }
+    }
+
+    // DOSSIER BOTTOM TABS HANDLER (SCR-05, SCR-06, SCR-07, SCR-08)
+    function switchDossierTab(tabKey, shouldScroll = true) {
+      document.querySelectorAll('.dossier-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.dossier-tab-pane').forEach(pane => pane.classList.remove('active'));
+
+      if (tabKey === 'ledger') {
+        document.getElementById('btnTabLedger').classList.add('active');
+        document.getElementById('paneTabLedger').classList.add('active');
+      } else if (tabKey === 'tickets') {
+        document.getElementById('btnTabTickets').classList.add('active');
+        document.getElementById('paneTabTickets').classList.add('active');
+      } else if (tabKey === 'contract') {
+        document.getElementById('btnTabContract').classList.add('active');
+        document.getElementById('paneTabContract').classList.add('active');
+      }
+      lucide.createIcons();
+
+      // Smooth scroll agar tabs dan kontennya (Tagihan, Komplain, Kontrak) langsung terlihat penuh (align di bawah topbar)
+      if (shouldScroll) {
+        setTimeout(() => {
+          const tabRow = document.querySelector('.dossier-tab-row');
+          if (tabRow) {
+            const yOffset = -76; // Offset navbar topbar
+            const y = tabRow.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }, 50);
+      }
+    }
+
+    // EXTENDED PERPANJANG / CHECKOUT LOGIC (SCR-08)
+    let currentPerpanjangMode = 'renew'; // 'renew' | 'checkout'
+    let currentRenewDuration = 12; // 12, 6, 3, 1
+
+    function setPerpanjangMode(mode) {
+      currentPerpanjangMode = mode;
+      const btnRenew = document.getElementById('btnModeRenew');
+      const btnCheckout = document.getElementById('btnModeCheckout');
+      const secRenew = document.getElementById('sectionModeRenew');
+      const secCheckout = document.getElementById('sectionModeCheckout');
+      const btnSubmit = document.getElementById('btnSubmitPerpanjang');
+
+      if (mode === 'renew') {
+        btnRenew.classList.add('active');
+        btnCheckout.classList.remove('active');
+        secRenew.style.display = 'flex';
+        secCheckout.style.display = 'none';
+        btnSubmit.innerHTML = '<i data-lucide="check" style="width: 14px; height: 14px;"></i><span>Konfirmasi Perpanjangan Sewa</span>';
+        btnSubmit.className = 'btn-modal-primary';
+      } else {
+        btnRenew.classList.remove('active');
+        btnCheckout.classList.add('active');
+        secRenew.style.display = 'none';
+        secCheckout.style.display = 'flex';
+        btnSubmit.innerHTML = '<i data-lucide="log-out" style="width: 14px; height: 14px;"></i><span>Konfirmasi Check-Out & Refund Deposit</span>';
+        btnSubmit.className = 'btn-modal-danger';
+      }
+      lucide.createIcons();
+    }
+
+    function selectRenewDuration(el, months) {
+      currentRenewDuration = parseInt(months, 10);
+      document.querySelectorAll('#sectionModeRenew .duration-pill-opt').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+
+      const endDates = {
+        12: '28/02/2028',
+        6: '31/08/2027',
+        3: '31/05/2027',
+        1: '31/03/2027'
+      };
+      const endDateEl = document.getElementById('renewEndDate');
+      if (endDateEl) endDateEl.value = endDates[currentRenewDuration] || '28/02/2028';
+
+      calculateRenewTotal();
+    }
+
+    function calculateRenewTotal() {
+      const priceInput = document.getElementById('renewPriceInput');
+      const totalTxt = document.getElementById('renewTotalValueTxt');
+      if (!priceInput || !totalTxt) return;
+
+      const raw = priceInput.value.replace(/[^0-9]/g, '');
+      const num = parseInt(raw, 10) || 1200000;
+      const total = num * currentRenewDuration;
+      const formatted = new Intl.NumberFormat('id-ID').format(total);
+      totalTxt.textContent = `Rp ${formatted} (${currentRenewDuration} Bulan)`;
+    }
+
+    // BROADCAST MODAL HANDLERS
+    function openBroadcastModal() {
+      document.getElementById('modalBroadcast').classList.add('active');
+      lucide.createIcons();
+    }
+    function closeBroadcastModal() {
+      document.getElementById('modalBroadcast').classList.remove('active');
+    }
+
+    function selectBroadcastTarget(el, target) {
+      selectedBroadcastTargetVal = target;
+      el.parentElement.querySelectorAll('.pill-target-btn').forEach(btn => btn.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    const broadcastTemplates = {
+      tandon: 'Yth. Seluruh Penghuni Kost Budi Makmur, diinfokan bahwa besok Sabtu pukul 09.00 - 11.00 WIB akan dilakukan pembersihan berkala tandon air utama. Mohon menampung air bersih secukupnya. Terima kasih atas kerja samanya.',
+      kerja_bakti: 'Halo rekan-rekan penghuni Kost Budi Makmur, mari bersama menjaga kenyamanan hunian kita dalam agenda Kerja Bakti & Pemilahan Sampah bersama pada hari Minggu pagi pukul 08.00 WIB. Disediakan konsumsi & snack.',
+      tagihan: 'Mengingatkan rekan-rekan penghuni Kost Budi Makmur bahwa periode pembayaran sewa kos bulan berjalan jatuh tempo pada tanggal 10. Bagi yang belum melakukan pembayaran, mohon segera konfirmasi via portal atau WA admin. Terima kasih.'
+    };
+
+    function applyBroadcastTemplate(type) {
+      const template = broadcastTemplates[type];
+      if (template) {
+        document.getElementById('broadcastMsgInput').value = template;
+        updateBroadcastPreview(template);
+      }
+    }
+
+    function updateBroadcastPreview(val) {
+      document.getElementById('broadcastPreviewTxt').textContent = val || '(Pesan pengumuman kosong)';
+    }
+
+    function sendBroadcastPengumuman() {
+      const msg = document.getElementById('broadcastMsgInput').value.trim();
+      if (!msg) {
+        RumaUI.showToast('Silakan isi pesan siaran pengumuman terlebih dahulu', 'warning');
+        return;
+      }
+      closeBroadcastModal();
+      RumaUI.showToast('Pengumuman kos berhasil dibroadcast via WhatsApp ke seluruh penghuni!', 'success');
+    }
+
+    // Initial render & Deep Linking (SCR-05, SCR-06, SCR-07, SCR-08 URL Support)
+    window.addEventListener('DOMContentLoaded', () => {
+      renderMasterList();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const paramId = urlParams.get('id') || 'A-01';
+      const paramTab = urlParams.get('tab'); // 'ledger' | 'tickets' | 'contract'
+      const paramAction = urlParams.get('action'); // 'renew' | 'new'
+      const paramRoom = urlParams.get('room'); // e.g. 'B-03'
+
+      selectTenant(paramId);
+
+      if (paramTab === 'contract' || paramTab === 'kontrak') {
+        switchDossierTab('contract', true);
+      } else if (paramTab === 'tickets' || paramTab === 'tiket') {
+        switchDossierTab('tickets', true);
+      } else if (paramTab === 'ledger' || paramTab === 'tagihan') {
+        switchDossierTab('ledger', true);
+      }
+
+      if (paramAction === 'renew') {
+        openPerpanjangModal();
+      } else if (paramAction === 'new') {
+        openTambahPenghuniModal();
+        if (paramRoom) {
+          const targetTile = Array.from(document.querySelectorAll('#gridKamarTersedia .custom-select-tile')).find(tile => tile.textContent.includes(paramRoom));
+          if (targetTile) {
+            targetTile.click();
+          }
+        }
+      }
+
+      if (window.RumaDatePicker) {
+        RumaDatePicker.init('wrapRegStartDate', 'regStartDate', '2026-11-01');
+      }
+    });
   </script>
 </body>
 </html>

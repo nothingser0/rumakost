@@ -1,3 +1,31 @@
+/* ==========================================================================
+   GLOBAL SCROLLBAR HIDING (Native smooth scrolling without scrollbars)
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+*::-webkit-scrollbar,
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* TOP CANOPY OVERLAY (Masks content scrolling above floating navbar) */
+.top-canopy-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: var(--bg-canvas, #F7F8FA);
+  z-index: 90;
+  pointer-events: none;
+}
+
 /**
  * RumaKost Reusable Component Library (CMP-01 to CMP-15)
  * Visual DNA: Estify (Behance)
@@ -6,22 +34,23 @@
 /* ==========================================================================
    CMP-01: TOPBAR NAVIGATION (Estify Floating Rounded Bar)
    ========================================================================== */
+
 .topbar,
 .topbar-shell {
   max-width: 1440px;
-  width: calc(100% - 48px);
-  margin: 16px auto 0;
+  width: calc(100% - 40px);
+  margin: 20px auto 0;
   height: 70px;
   background: #FFFFFF;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-2xl);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
   position: sticky;
-  top: 16px;
+  top: 20px;
   z-index: 100;
   box-sizing: border-box;
   flex-wrap: nowrap;
@@ -689,6 +718,8 @@
   font-size: 11px;
   font-weight: 600;
   line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .badge-success { background: var(--status-success-bg); color: var(--status-success-text); border: 1px solid #BBF7D0; }
@@ -1769,3 +1800,527 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
+
+
+/* ==========================================================================
+   CMP-01 STANDARDIZED BUTTON SYSTEM & TACTILE MICRO-INTERACTIONS
+   Synchronizes all button hover and active states across WF-01 to WF-04.
+   ========================================================================== */
+
+/* Universal Button Reset & Tactile Press */
+button, .btn, [class*="btn-"], .floor-pill-btn, .segment-tab-btn, .duration-pill-opt, .pill-target-btn, .pill-template-btn {
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active, .btn:active, [class*="btn-"]:active, .pill-arrow-btn:active, .role-pill-btn:active, .floor-pill-btn:active, .segment-tab-btn:active, .duration-pill-opt:active {
+  transform: scale(0.97) !important;
+}
+
+/* Primary Brand (Orange) Buttons */
+.btn-primary,
+.btn-brand-primary,
+.btn-modal-primary,
+.btn-modal-submit,
+.btn-brand-add,
+.btn-drawer-primary,
+.btn-micro-brand {
+  background: var(--brand-primary);
+  color: #FFFFFF !important;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 4px 14px rgba(255, 122, 0, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--radius-full);
+}
+
+.btn-modal-primary,
+.btn-modal-submit {
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 22px !important;
+  border-radius: 9999px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+}
+
+.btn-modal-cancel {
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 20px !important;
+  border-radius: 9999px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+}
+
+.btn-modal-danger {
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 18px !important;
+  border-radius: 9999px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+}
+
+.btn-primary:hover,
+.btn-brand-primary:hover,
+.btn-modal-primary:hover,
+.btn-modal-submit:hover,
+.btn-brand-add:hover,
+.btn-drawer-primary:hover,
+.btn-micro-brand:hover {
+  background: var(--brand-primary-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.38) !important;
+  color: #FFFFFF !important;
+}
+
+/* Primary Dark (Black Pill) Buttons */
+.btn-dark,
+.btn-black-solid,
+.btn-submit-main,
+.btn-renew-direct,
+.btn-maintenance-full {
+  background: var(--dark-pill);
+  color: #FFFFFF !important;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 4px 14px rgba(17, 17, 17, 0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-dark:hover,
+.btn-black-solid:hover,
+.btn-submit-main:hover,
+.btn-renew-direct:hover,
+.btn-maintenance-full:hover {
+  background: #262626 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(17, 17, 17, 0.32) !important;
+  color: #FFFFFF !important;
+}
+
+/* Secondary / Ghost / Outline Buttons */
+.btn-secondary,
+.btn-white-outline,
+.btn-modal-cancel,
+.btn-drawer-secondary,
+.btn-drawer-edit,
+.btn-micro-outline {
+  background: #FFFFFF;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border-subtle);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-secondary:hover,
+.btn-white-outline:hover,
+.btn-modal-cancel:hover,
+.btn-drawer-secondary:hover,
+.btn-drawer-edit:hover,
+.btn-micro-outline:hover {
+  background: #F8FAFC !important;
+  border-color: #CBD5E1 !important;
+  color: var(--text-main) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* WhatsApp Green Buttons */
+.btn-modal-primary.is-whatsapp,
+.btn-wa-direct,
+.btn-whatsapp {
+  background: #16A34A !important;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.25) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-modal-primary.is-whatsapp:hover,
+.btn-wa-direct:hover,
+.btn-whatsapp:hover {
+  background: #15803D !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.38) !important;
+  color: #FFFFFF !important;
+}
+
+/* Subtle Danger / Red Buttons */
+.btn-danger,
+.btn-modal-danger,
+.btn-subtle-danger {
+  background: #FEE2E2 !important;
+  color: #EF4444 !important;
+  border: 1.5px solid #FECACA !important;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-danger:hover,
+.btn-modal-danger:hover,
+.btn-subtle-danger:hover {
+  background: #FCA5A5 !important;
+  color: #DC2626 !important;
+  border-color: #F87171 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Icon Circle & Action Buttons */
+.icon-circle-btn,
+.modal-close-btn,
+.btn-modal-close,
+.btn-circle-filter,
+.btn-call-direct,
+.btn-clear-search {
+  background: #F8FAFC;
+  border: 1px solid #ECEEF2;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.icon-circle-btn:hover,
+.modal-close-btn:hover,
+.btn-modal-close:hover,
+.btn-circle-filter:hover,
+.btn-call-direct:hover,
+.btn-clear-search:hover {
+  background: #E2E8F0 !important;
+  color: var(--text-main) !important;
+  border-color: #CBD5E1 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Pill Arrow Buttons (Synchronized WF-02 & WF-03) */
+.pill-arrow-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  border: 1.5px solid #ECEEF2;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pill-arrow-btn:hover {
+  background: var(--dark-pill) !important;
+  border-color: var(--dark-pill) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px) scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(17, 17, 17, 0.25) !important;
+}
+
+/* Interactive Pills / Tabs */
+.floor-pill-btn:hover,
+.duration-pill-opt:hover,
+.pill-target-btn:hover,
+.pill-template-btn:hover {
+  border-color: #94A3B8 !important;
+  color: var(--text-main) !important;
+  background: #F8FAFC !important;
+  transform: translateY(-1px) !important;
+}
+
+
+/* ==========================================================================
+   CMP-20: RUMAKOST ESTIFY CUSTOM DATE PICKER & CALENDAR (Zero-Native Popover)
+   ========================================================================== */
+
+/* HTML5 Date Input Fallback & Enhancement */
+input[type="date"] {
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-main);
+  background-color: #FAFAFA;
+  border: 1.5px solid #ECEEF2;
+  border-radius: 12px;
+  padding: 10px 14px;
+  outline: none;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  color-scheme: light;
+}
+
+input[type="date"]:hover {
+  background-color: #FFFFFF;
+  border-color: #CBD5E1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+input[type="date"]:focus {
+  background-color: #FFFFFF;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 4px;
+  filter: invert(47%) sepia(87%) saturate(2359%) hue-rotate(360deg) brightness(102%) contrast(106%);
+  opacity: 0.85;
+  transition: all 150ms ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  transform: scale(1.15);
+  background-color: #FFF7ED;
+}
+
+/* Custom Estify Datepicker Wrapper */
+.ruma-datepicker-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.ruma-datepicker-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  background: #FAFAFA;
+  border: 1.5px solid #ECEEF2;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.ruma-datepicker-trigger:hover {
+  background: #FFFFFF;
+  border-color: #CBD5E1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.ruma-datepicker-trigger.is-active,
+.ruma-datepicker-wrap.open .ruma-datepicker-trigger {
+  background: #FFFFFF;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+}
+
+.ruma-datepicker-trigger-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ruma-datepicker-trigger-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--brand-primary);
+  flex-shrink: 0;
+}
+
+.ruma-datepicker-val-txt {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.ruma-datepicker-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 320px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid #ECEEF2;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.14);
+  padding: 16px 18px;
+  z-index: 1200;
+  display: none;
+  animation: rumaPopIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ruma-datepicker-wrap.open .ruma-datepicker-popover {
+  display: block;
+}
+
+@keyframes rumaPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.rdp-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.rdp-nav-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #E2E8F0;
+  background: #F8FAFC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 150ms ease;
+}
+
+.rdp-nav-btn:hover {
+  background: #E2E8F0;
+  color: var(--text-main);
+  transform: scale(1.06);
+}
+
+.rdp-title-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rdp-month-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Weekday Labels */
+.rdp-weekdays-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+/* Days Grid */
+.rdp-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.rdp-day-btn {
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 120ms ease;
+  padding: 0;
+}
+
+.rdp-day-btn:hover:not(.other-month):not(.disabled) {
+  background: #FFF7ED;
+  color: var(--brand-primary);
+  font-weight: 700;
+  transform: scale(1.08);
+}
+
+.rdp-day-btn.is-today {
+  border: 1.5px solid var(--brand-primary);
+  color: var(--brand-primary);
+  font-weight: 700;
+}
+
+.rdp-day-btn.is-selected {
+  background: var(--brand-primary) !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.4);
+  transform: scale(1.05);
+}
+
+.rdp-day-btn.other-month {
+  color: #D1D5DB;
+  cursor: default;
+}
+
+/* Presets & Shortcuts */
+.rdp-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #F3F4F6;
+  padding-top: 10px;
+  margin-top: 12px;
+}
+
+.rdp-preset-btn {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-primary);
+  background: #FFF7ED;
+  border: 1px solid #FFEDD5;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.rdp-preset-btn:hover {
+  background: var(--brand-primary);
+  color: #FFFFFF;
+  border-color: var(--brand-primary);
+  transform: translateY(-1px);
+}
+
+.rdp-note-txt {
+  font-size: 11px;
+  color: var(--text-muted);
+}

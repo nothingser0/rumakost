@@ -76,8 +76,8 @@
 }
 
 html {
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 html, body {
@@ -109,18 +109,16 @@ button:focus:not(:focus-visible) {
   outline: none;
 }
 
-/* Custom Scrollbar */
+/* Globally Hide All Scrollbars While Preserving Full Native Scroll Functionality */
+*,
+*::before,
+*::after {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+*::-webkit-scrollbar,
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #E5E7EB;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #D1D5DB;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }

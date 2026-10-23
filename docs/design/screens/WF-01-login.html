@@ -161,40 +161,21 @@
       display: block;
     }
 
-    .role-pill-group-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: #F3F4F6;
-      padding: 4px;
+        .nav-pill-container.role-selector-bar {
+      display: flex;
+      width: 100%;
+      background: #F4F5F7;
+      padding: 5px;
       border-radius: var(--radius-full);
+      border: 1px solid #ECEEF2;
       gap: 4px;
     }
 
-    .role-pill-btn {
-      padding: 9px 10px;
-      border-radius: var(--radius-full);
-      border: none;
-      background: transparent;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
+    .nav-pill-container.role-selector-bar .nav-pill {
+      flex: 1;
       justify-content: center;
-      gap: 6px;
-      transition: all var(--transition-fast);
-      white-space: nowrap;
-    }
-
-    .role-pill-btn:hover {
-      color: var(--text-main);
-    }
-
-    .role-pill-btn.active {
-      background: var(--dark-pill);
-      color: #FFFFFF;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      text-align: center;
+      padding: 8px 12px;
     }
 
     /* FORM CONTROLS & LABELS */
@@ -368,19 +349,10 @@
         <!-- 2. ROLE SEGMENTED CONTROL -->
         <div class="role-section">
           <label class="role-section-label">Pilih Peran</label>
-          <div class="role-pill-group-3">
-            <button type="button" class="role-pill-btn active" id="btnRoleOwner" onclick="selectRole('owner')">
-              <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
-              Pemilik
-            </button>
-            <button type="button" class="role-pill-btn" id="btnRoleStaff" onclick="selectRole('staff')">
-              <i data-lucide="user" style="width: 14px; height: 14px;"></i>
-              Staf Pengelola
-            </button>
-            <button type="button" class="role-pill-btn" id="btnRoleTenant" onclick="selectRole('tenant')">
-              <i data-lucide="home" style="width: 14px; height: 14px;"></i>
-              Penghuni
-            </button>
+          <div class="nav-pill-container role-selector-bar">
+            <button type="button" class="nav-pill active" id="btnRoleOwner" onclick="selectRole('owner')">Pemilik</button>
+            <button type="button" class="nav-pill" id="btnRoleStaff" onclick="selectRole('staff')">Staf Pengelola</button>
+            <button type="button" class="nav-pill" id="btnRoleTenant" onclick="selectRole('tenant')">Penghuni</button>
           </div>
         </div>
 
@@ -425,6 +397,7 @@
           </button>
         </form>
 
+
       </div>
 
     </div>
@@ -457,7 +430,7 @@
 
     function selectRole(role) {
       activeRole = role;
-      document.querySelectorAll('.role-pill-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.nav-pill-container.role-selector-bar .nav-pill').forEach(btn => btn.classList.remove('active'));
       if (role === 'owner') document.getElementById('btnRoleOwner').classList.add('active');
       if (role === 'staff') document.getElementById('btnRoleStaff').classList.add('active');
       if (role === 'tenant') document.getElementById('btnRoleTenant').classList.add('active');

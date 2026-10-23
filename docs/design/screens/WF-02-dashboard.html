@@ -8,15 +8,68 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
+    /* Sembunyikan scrollbar bawaan browser tapi scroll tetap aktif */
+    html, body {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    html::-webkit-scrollbar, body::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Fillet rounded corner kiri (Inverted Radius) tepat di sudut kartu */
+    .top-canopy-overlay::before {
+      content: '';
+      position: absolute;
+      top: 104px;
+      left: max(20px, calc((100% - 1440px) / 2));
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 100% 100%, transparent 23.5px, var(--bg-canvas) 24px);
+      pointer-events: none;
+    }
+
+    /* Fillet rounded corner kanan (Inverted Radius) tepat di sudut kartu */
+    .top-canopy-overlay::after {
+      content: '';
+      position: absolute;
+      top: 104px;
+      right: max(20px, calc((100% - 1440px) / 2));
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 0% 100%, transparent 23.5px, var(--bg-canvas) 24px);
+      pointer-events: none;
+    }
+
     /* ==========================================================================
        ESTIFY 2-COLUMN MASTER DASHBOARD GRID (01-dashboard-flat.png DNA)
        ========================================================================== */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-canvas);
+      color: var(--text-main);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
     .dashboard-wrapper {
       max-width: 1440px;
-      width: calc(100% - 48px);
+      width: calc(100% - 40px);
       margin: 0 auto;
-      padding: 18px 0 32px;
+      padding: 20px 0;
       box-sizing: border-box;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .dashboard-2col-layout {
@@ -37,8 +90,8 @@
     }
 
     .col-sidebar-flow {
-      display: grid;
-      grid-template-rows: auto 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 20px;
       min-width: 0;
       width: 360px;
@@ -887,6 +940,32 @@
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18);
     }
 
+    .room-unit-item.status-repair-card {
+      border-color: #FCD34D;
+      background: #FFFBEB;
+    }
+
+    .btn-clear-search {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: #64748B;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: all var(--transition-fast);
+      margin-left: 4px;
+      flex-shrink: 0;
+    }
+    .btn-clear-search:hover {
+      background: #CBD5E1;
+      color: #0F172A;
+    }
+
     .room-unit-item.status-vacant-card {
       border-style: dashed;
       background: #FAFAFB;
@@ -994,7 +1073,7 @@
     .sidebar-card-box {
       background: var(--bg-card);
       border-radius: var(--radius-xl);
-      padding: 24px;
+      padding: 22px 24px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
       border: 1px solid var(--border-subtle);
       min-width: 0;
@@ -1010,7 +1089,9 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      flex: 1;
       height: 100%;
+      min-height: 0;
       box-sizing: border-box;
     }
 
@@ -1018,14 +1099,14 @@
     .condition-progress-group {
       display: flex;
       flex-direction: column;
-      gap: 22px;
-      margin-bottom: 26px;
+      gap: 16px;
+      margin-bottom: 22px;
     }
 
     .condition-progress-item {
       display: flex;
       flex-direction: column;
-      gap: 9px;
+      gap: 8px;
     }
 
     .condition-meta-row {
@@ -1063,7 +1144,7 @@
 
     .btn-maintenance-full {
       width: 100%;
-      padding: 13px 16px;
+      padding: 12px 16px;
       border-radius: var(--radius-full);
       background: var(--dark-pill);
       color: #FFFFFF;
@@ -1087,7 +1168,7 @@
     .tenant-message-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: auto;
     }
 
@@ -1226,12 +1307,6 @@
       opacity: 1;
     }
 
-    /* Desktop Full Viewport: Zero Scrollbar */
-    @media (min-width: 1201px) {
-      html, body {
-        overflow-y: hidden;
-      }
-    }
 
     /* ==========================================================================
        RESPONSIVE ADAPTATIONS (Desktop, Laptop, Tablet, Mobile)
@@ -1330,6 +1405,9 @@
 <body>
 
   <!-- TOPBAR NAVIGATION (Estify Horizontal Pill Navbar) -->
+  <!-- TOP CANOPY OVERLAY (Masking batas scroll atas ber-rounded) -->
+  <div class="top-canopy-overlay" aria-hidden="true"></div>
+
   <header class="topbar" id="mainTopbar"></header>
 
   <!-- ESTIFY 2-COLUMN MASTER DASHBOARD CONTAINER -->
@@ -1676,7 +1754,10 @@
             <div class="properties-controls-right">
               <div class="capsule-search-box">
                 <i data-lucide="search" style="width: 16px; height: 16px; color: #111111;"></i>
-                <input type="text" placeholder="Cari kamar (A-01, B-03, dll)..." oninput="filterQuickRooms(this.value)">
+                <input type="text" id="quickRoomSearchInput" placeholder="Cari kamar (A-01, B-03, dll)..." oninput="filterQuickRooms(this.value)">
+                <button type="button" id="clearQuickRoomSearch" class="btn-clear-search" onclick="clearQuickSearch()" title="Hapus pencarian">
+                  <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+                </button>
               </div>
               <button type="button" class="btn-circle-filter" onclick="RumaUI.showToast('Filter status unit kamar')" title="Filter Unit">
                 <i data-lucide="sliders-horizontal" style="width: 16px; height: 16px;"></i>
@@ -1700,9 +1781,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-01">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-01">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1721,9 +1800,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-02">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar A-02">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1742,9 +1819,7 @@
             <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-03">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar A-03">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1763,9 +1838,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-04">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-04">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1784,9 +1857,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-05">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar A-05">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1805,9 +1876,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-01">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=700&q=80" alt="Kamar B-01">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1826,9 +1895,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-02">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=700&q=80" alt="Kamar B-02">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1847,9 +1914,7 @@
             <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-03">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar B-03">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1868,9 +1933,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-04">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80" alt="Kamar B-04">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1885,23 +1948,21 @@
               </div>
             </div>
 
-            <!-- Unit 10: Kamar B-05 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-05">
+            <!-- Unit 10: Kamar B-05 (Dalam Perbaikan) -->
+            <div class="room-unit-item status-repair-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-05 (Dalam Perbaikan)">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar B-05">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-05</span>
-                  <span class="status-badge badge-brand">Kosong · Siap Huni</span>
+                  <span class="status-badge badge-warning" style="background:#FEF3C7; color:#D97706; border:1px solid #FDE68A;">Dalam Perbaikan</span>
                 </div>
-                <div class="room-sub-specs">Lantai 2 · Standar (Kasur, Lemari, Meja)</div>
+                <div class="room-sub-specs">Lantai 2 · Servis AC & Teknisi</div>
                 <div class="room-price-row">
-                  <span class="room-price-val">Rp 1.500.000</span>
-                  <span class="room-price-unit">/bln</span>
+                  <span class="room-price-val" style="color: #D97706;">Tiket #T-04</span>
+                  <span class="room-price-unit" style="color: var(--text-muted);">Pengerjaan</span>
                 </div>
               </div>
             </div>
@@ -1910,9 +1971,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-01">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar C-01">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1931,9 +1990,7 @@
             <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-02">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar C-02">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1952,9 +2009,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-03">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar C-03">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1973,9 +2028,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-04">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=700&q=80" alt="Kamar C-04">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1994,9 +2047,7 @@
             <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-05">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar C-05">
-                <div class="room-float-arrow">
-                  <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
-                </div>
+                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -2028,7 +2079,7 @@
         
         <!-- CARD 1: BUILDING CONDITION (Estify Maintenance Pattern) -->
         <div class="sidebar-card-box card-condition">
-          <div class="card-top-header" style="margin-bottom: 22px;">
+          <div class="card-top-header" style="margin-bottom: 18px;">
             <h2 class="card-title-text">Kondisi Properti</h2>
             <button class="pill-arrow-btn" onclick="RumaUI.showToast('Menu opsi status perawatan')" title="Opsi">
               <i data-lucide="more-vertical" style="width: 15px; height: 15px;"></i>
@@ -2044,7 +2095,7 @@
                 <span class="condition-count">2</span>
               </div>
               <div class="progress-bar-thick">
-                <div class="progress-fill-orange" style="width: 68%;"></div>
+                <div class="progress-fill-orange" style="width: 50%;"></div>
               </div>
             </div>
 
@@ -2055,7 +2106,7 @@
                 <span class="condition-count">1</span>
               </div>
               <div class="progress-bar-thick">
-                <div class="progress-fill-orange" style="width: 35%;"></div>
+                <div class="progress-fill-orange" style="width: 25%;"></div>
               </div>
             </div>
 
@@ -2108,10 +2159,10 @@
             <!-- Activity 2: Tiket Kerusakan Baru -->
             <div class="tenant-message-row" onclick="window.location.href='WF-08-tiket.html'" title="Lihat Tiket">
               <div class="tenant-avatar-circle">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Siti Aminah">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Rini Marlina">
               </div>
               <div class="tenant-msg-content">
-                <div class="tenant-msg-name">Siti Aminah (B-02)</div>
+                <div class="tenant-msg-name">Rini Marlina (B-02)</div>
                 <div class="tenant-msg-snippet">Tiket baru: Pipa wastafel kamar bocor</div>
               </div>
               <div class="tenant-msg-meta">
@@ -2133,7 +2184,21 @@
               </div>
             </div>
 
-            <!-- Activity 4: Jatuh Tempo Kontrak Sewa -->
+                        <!-- Activity 4: Perpanjangan Kontrak Sewa Disetujui -->
+            <div class="tenant-message-row" onclick="window.location.href='WF-04-penghuni.html?id=A-01&tab=contract'" title="Lihat Lembar Kontrak">
+              <div class="tenant-avatar-circle">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80" alt="Siti Aminah">
+              </div>
+              <div class="tenant-msg-content">
+                <div class="tenant-msg-name">Siti Aminah (A-01)</div>
+                <div class="tenant-msg-snippet">Kontrak diperpanjang 12 Bulan · SPK Aktif</div>
+              </div>
+              <div class="tenant-msg-meta">
+                <span class="msg-timestamp">5 jam</span>
+              </div>
+            </div>
+
+            <!-- Activity 5: Jatuh Tempo Tagihan Sewa -->
             <div class="tenant-message-row" onclick="window.location.href='WF-05-tagihan.html'" title="Lihat Tagihan">
               <div class="tenant-avatar-circle">
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Dimas Prasetyo">
@@ -2146,7 +2211,6 @@
                 <span class="msg-timestamp">Kemarin</span>
               </div>
             </div>
-
           </div>
 
           <a href="WF-04-penghuni.html" class="activity-view-all-link">
@@ -2258,11 +2322,11 @@
         }
       });
 
-      // Mouse wheel horizontal translation
+      // Wheel scroll horizontally on carousel
       roomCarousel.addEventListener('wheel', (e) => {
-        if (e.deltaY !== 0 && !e.shiftKey) {
+        if (e.deltaY !== 0) {
           e.preventDefault();
-          roomCarousel.scrollBy({ left: e.deltaY * 1.3, behavior: 'auto' });
+          roomCarousel.scrollBy({ left: e.deltaY * 1.2, behavior: 'auto' });
         }
       }, { passive: false });
     }
@@ -2274,7 +2338,21 @@
       roomCarousel.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
     }
 
+    function clearQuickSearch() {
+      const input = document.getElementById('quickRoomSearchInput');
+      if (input) {
+        input.value = '';
+        filterQuickRooms('');
+        input.focus();
+      }
+    }
+
     function filterQuickRooms(query) {
+      const clearBtn = document.getElementById('clearQuickRoomSearch');
+      if (clearBtn) {
+        clearBtn.style.display = query.trim().length > 0 ? 'inline-flex' : 'none';
+        lucide.createIcons();
+      }
       const q = query.toLowerCase().trim();
       const clones = roomCarousel ? roomCarousel.querySelectorAll('.carousel-clone') : [];
       

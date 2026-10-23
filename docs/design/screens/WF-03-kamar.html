@@ -11,11 +11,18 @@
     /* ==========================================================================
        ESTIFY MASTER 2-COLUMN GRID (100% SINKRON DENGAN WF-02 DASHBOARD)
        ========================================================================== */
+    body {
+      background: var(--bg-canvas);
+      color: var(--text-main);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
     .dashboard-wrapper {
       max-width: 1440px;
-      width: calc(100% - 48px);
+      width: calc(100% - 40px);
       margin: 0 auto;
-      padding: 18px 0 32px;
+      padding: 20px 0;
       box-sizing: border-box;
     }
 
@@ -40,13 +47,14 @@
     .col-sidebar-flow {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
       min-width: 0;
       width: 360px;
       max-width: 360px;
       box-sizing: border-box;
       position: sticky;
-      top: 104px;
+      top: 110px;
+      max-height: calc(100vh - 130px);
     }
 
     /* ═══════════════════════════════════════
@@ -487,6 +495,11 @@
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18);
     }
 
+    .room-unit-item.status-repair-card {
+      border-color: #FCD34D;
+      background: #FFFBEB;
+    }
+
     .room-unit-item.status-vacant-card {
       border-style: dashed;
       background: #FAFAFB;
@@ -615,12 +628,323 @@
       box-sizing: border-box;
     }
 
-    /* CARD 1: DETAIL KAMAR (SCR-04) — PROPOSIONAL, ELEGAN & HERARKI TIPOGRAFI JELAS */
-    .card-detail-drawer {
-      padding: 16px 18px;
+    
+    /* ENRICHED ROOM DETAIL DRAWER (Estify Visual DNA) */
+    .drawer-section-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+
+    .drawer-amenity-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .amenity-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3.5px;
+      padding: 2px 7.5px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 9999px;
+      font-size: 9.5px;
+      font-weight: 500;
+      color: #475569;
+      line-height: 1.2;
+      letter-spacing: -0.1px;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+    .amenity-chip:hover {
+      background: #FFF7ED;
+      border-color: #FED7AA;
+      color: #EA580C;
+    }
+
+    .amenity-chip svg,
+    .amenity-chip i {
+      width: 10px !important;
+      height: 10px !important;
+      max-width: 10px !important;
+      max-height: 10px !important;
+      stroke-width: 2 !important;
+      color: #FF7A00 !important;
+      flex-shrink: 0 !important;
+      display: inline-block !important;
+    }
+
+    .drawer-room-note-pod {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      background: #F8FAFC;
+      border: 1px solid #ECEEF2;
+      border-radius: 10px;
+      margin-top: 0;
+      box-sizing: border-box;
+      height: 48px;
+      min-height: 48px;
+      max-height: 48px;
+    }
+
+    .drawer-note-lbl {
+      display: block;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #475569;
+      line-height: 1.2;
+      margin-bottom: 2px;
+    }
+
+    .drawer-note-txt {
+      font-size: 11px;
+      font-weight: 400;
+      color: #334155;
+      line-height: 1.25;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tenant-quick-wa-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+      margin-left: 6px;
+    }
+
+    .tenant-quick-wa-btn:hover {
+      background: #D1FAE5;
+      color: #047857;
+    }
+
+
+
+
+    /* VACANT READINESS POD (Kondisi Kamar Kosong Siap Huni) */
+    .vacant-readiness-pod {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 14px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 11px;
+      gap: 10px;
+      box-sizing: border-box;
+    }
+
+    .vacant-readiness-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #A7F3D0;
+    }
+
+    .vacant-readiness-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .vacant-readiness-icon-bubble {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #DCFCE7;
+      border: 1px solid #86EFAC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .vacant-readiness-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #14532D;
+      line-height: 1.25;
+      display: block;
+    }
+
+    .vacant-readiness-sub {
+      font-size: 11px;
+      color: #16A34A;
+      margin: 2px 0 0 0;
+      line-height: 1.25;
+      font-weight: 500;
+    }
+
+    .vacant-checklist-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .vacant-check-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      padding-top: 5px;
+      border-top: 1px solid #DCFCE7;
+      line-height: 1.35;
+    }
+
+    .vacant-check-row:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .v-check-lbl {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #166534;
+      font-weight: 500;
+    }
+
+    .v-check-val {
+      font-weight: 600;
+      color: #14532D;
+      font-size: 11.5px;
+      text-align: right;
+    }
+
+    /* MAINTENANCE INFO POD (Kondisi Kamar Dalam Perbaikan) */
+    .maintenance-info-pod {
+      background: #FFFBEB;
+      border: 1px solid #FCD34D;
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+    }
+
+    .maintenance-pod-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #FDE68A;
+    }
+
+    .maintenance-pod-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .maintenance-icon-bubble {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .maintenance-pod-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #92400E;
+      line-height: 1.25;
+      display: block;
+    }
+
+    .maintenance-pod-sub {
+      font-size: 11px;
+      color: #B45309;
+      margin: 2px 0 0 0;
+      line-height: 1.25;
+      font-weight: 500;
+    }
+
+    .maintenance-work-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .maintenance-work-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      padding-top: 5px;
+      border-top: 1px solid #FEF3C7;
+      line-height: 1.35;
+    }
+
+    .maintenance-work-row:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .m-work-lbl {
+      color: #78350F;
+      font-weight: 500;
+    }
+
+    .m-work-val {
+      font-weight: 600;
+      color: #92400E;
+      font-size: 11.5px;
+      text-align: right;
+    }
+
+    .maintenance-note-bubble {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      background: rgba(254, 243, 199, 0.7);
+      border: 1px solid #FDE68A;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 10.5px;
+      color: #78350F;
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+
+    /* CARD 1: DETAIL KAMAR (SCR-04) — PROPOSIONAL, ELEGAN & HERARKI TIPOGRAFI JELAS */
+    .card-detail-drawer {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+      border-radius: 20px;
+      box-sizing: border-box;
+      position: relative;
     }
 
     .drawer-header-row {
@@ -629,6 +953,7 @@
       align-items: center;
       padding-bottom: 10px;
       border-bottom: 1px solid #ECEEF2;
+      flex-shrink: 0;
     }
 
     .drawer-title-stack h3 {
@@ -662,6 +987,7 @@
       cursor: pointer;
       transition: all var(--transition-fast);
       outline: none;
+      flex-shrink: 0;
     }
 
     .btn-drawer-edit:hover {
@@ -672,28 +998,32 @@
     }
 
     .drawer-photo-box {
-      height: 110px;
+      height: 120px;
+      width: 100%;
+      min-height: 120px;
       border-radius: 12px;
       overflow: hidden;
       position: relative;
       background: #F1F5F9;
       border: 1px solid rgba(0, 0, 0, 0.05);
+      flex-shrink: 0 !important;
+      display: block !important;
     }
 
     .drawer-photo-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      display: block !important;
     }
 
     .spec-grid-cards {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 9px 14px;
+      gap: 5px 12px;
       background: #F8FAFC;
-      padding: 10px 14px;
-      border-radius: 12px;
+      padding: 7px 12px;
+      border-radius: 10px;
       border: 1px solid #ECEEF2;
     }
 
@@ -721,35 +1051,31 @@
 
     .tenant-info-pod {
       border-radius: 12px;
-      padding: 11px 14px;
+      padding: 8px 12px;
       border: 1px solid #FED7AA;
       background: #FFFDF9;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-    }
-
-    .tenant-info-pod.is-vacant {
-      background: #F8FAFC;
-      border-color: #CBD5E1;
-      border-style: dashed;
+      gap: 4px;
+      box-sizing: border-box;
     }
 
     .tenant-pod-header {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding-bottom: 2px;
+      padding-bottom: 4px;
+      border-bottom: 1px dashed #FED7AA;
     }
 
     .tenant-pod-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
       background: #FF7A00;
       color: #FFFFFF;
       font-weight: 700;
-      font-size: 11.5px;
+      font-size: 11px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -757,13 +1083,8 @@
       letter-spacing: -0.2px;
     }
 
-    .tenant-pod-avatar.is-vacant {
-      background: #E2E8F0;
-      color: #64748B;
-    }
-
     .tenant-pod-titles h4 {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       color: #0F172A;
       margin: 0;
@@ -775,11 +1096,12 @@
       font-size: 11px;
       color: #64748B;
       margin: 2px 0 0 0;
-      line-height: 1.2;
+      line-height: 1.25;
+      font-weight: 500;
     }
 
     .tenant-meta-line {
-      font-size: 11.5px;
+      font-size: 11px;
       color: #64748B;
       display: flex;
       justify-content: space-between;
@@ -787,12 +1109,18 @@
       padding-top: 5px;
       border-top: 1px solid #F1F3F5;
       line-height: 1.35;
+      font-weight: 500;
+    }
+
+    .tenant-meta-line:first-child {
+      border-top: none;
+      padding-top: 0;
     }
 
     .tenant-meta-line strong {
       font-weight: 600;
-      font-size: 12px;
-      color: #1E293B;
+      font-size: 11.5px;
+      color: #0F172A;
       letter-spacing: -0.1px;
     }
 
@@ -826,7 +1154,7 @@
 
     .btn-drawer-secondary {
       width: 100%;
-      height: 36px;
+      height: 38px;
       border-radius: 9999px;
       background: #FFFFFF;
       color: #1E293B;
@@ -890,10 +1218,11 @@
     }
 
     .pill-arrow-btn:hover {
-      background: #FFFFFF;
-      color: #111111;
-      border-color: #CBD5E1;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      background: var(--dark-pill);
+      color: #FFFFFF;
+      border-color: var(--dark-pill);
+      transform: translateY(-1px) scale(1.05);
+      box-shadow: 0 4px 12px rgba(17, 17, 17, 0.25);
     }
 
     .condition-progress-group {
@@ -1000,13 +1329,13 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 11px;
-      border-radius: var(--radius-full);
-      background: #F4F5F7;
+      padding: 4px 11px;
+      background: #F8FAFC;
       border: 1px solid #E2E8F0;
+      border-radius: 9999px;
       font-size: 11px;
       font-weight: 500;
-      color: #374151;
+      color: var(--text-main);
       cursor: pointer;
       user-select: none;
       transition: all var(--transition-fast);
@@ -1119,7 +1448,26 @@
       color: #111111;
     }
 
+    /* Floor Color Coding (Lantai 1 = Blue, Lantai 2 = Purple, Lantai 3 = Orange) */
     .floor-icon-mini {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      background: #EFF6FF;
+      color: #2563EB;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #BFDBFE;
+      transition: all var(--transition-fast);
+    }
+    .floor-icon-mini.is-lt1 { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+    .floor-icon-mini.is-lt2 { background: #F5F3FF; color: #7C3AED; border: 1px solid #DDD6FE; }
+    .floor-icon-mini.is-lt3 { background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; }
+
+    /* Type Icon Mini (Consistent Brand Orange) */
+    .type-icon-mini {
       width: 24px;
       height: 24px;
       border-radius: 7px;
@@ -1253,6 +1601,7 @@
       color: #111111;
     }
 
+    .btn-modal-primary,
     .btn-modal-submit {
       height: 40px;
       padding: 0 22px;
@@ -1274,6 +1623,7 @@
       line-height: 1;
     }
 
+    .btn-modal-primary:hover,
     .btn-modal-submit:hover {
       background: #E66E00;
       border-color: #E66E00;
@@ -1306,12 +1656,56 @@
       border-color: #F87171;
     }
 
-    /* Modal card overflow adjustment so popovers render smoothly */
-    @media (min-height: 650px) {
-      #modalTambahKamar .modal-card,
-      #modalEditKamar .modal-card {
-        overflow: visible;
-      }
+    /* Bulletproof Modal Architecture (Header, Body Scroll, Pinned Footer) */
+    #modalTambahKamar .modal-card,
+    #modalEditKamar .modal-card,
+    #modalIklanKamar .modal-card {
+      width: 580px !important;
+      max-width: 95vw !important;
+      max-height: 85vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      gap: 0 !important;
+      border-radius: 24px !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+      background: #FFFFFF !important;
+      box-sizing: border-box !important;
+    }
+
+    .modal-header-pinned {
+      padding: 18px 24px !important;
+      border-bottom: 1px solid var(--border-subtle) !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      flex-shrink: 0 !important;
+      background: #FFFFFF !important;
+    }
+
+    .modal-body-scrollable {
+      padding: 20px 24px !important;
+      overflow-y: auto !important;
+      flex: 1 !important;
+      min-height: 0 !important;
+      max-height: calc(85vh - 132px) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      box-sizing: border-box !important;
+    }
+
+    .modal-footer-pinned {
+      padding: 14px 24px 18px !important;
+      border-top: 1px solid var(--border-subtle) !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      background: #FFFFFF !important;
+      flex-shrink: 0 !important;
+      box-sizing: border-box !important;
+      border-radius: 0 0 24px 24px !important;
     }
 
     /* EMPTY FILTER STATE */
@@ -1344,11 +1738,87 @@
       align-items: center;
       gap: 6px;
     }
+
+    /* ==========================================================================
+       RESPONSIVE ADAPTATIONS (Desktop, Laptop, Tablet, Mobile)
+       ========================================================================== */
+    @media (max-width: 1200px) {
+      .dashboard-wrapper {
+        width: calc(100% - 32px);
+        padding: 20px 0 28px;
+      }
+
+      .dashboard-2col-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .col-sidebar-flow {
+        width: 100%;
+        max-width: 100%;
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        max-height: none;
+        overflow-y: visible;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .dashboard-wrapper {
+        width: calc(100% - 20px);
+        padding: 14px 0 20px;
+      }
+
+      .metrics-row-3 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .rooms-grid-flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .controls-panel-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .controls-filter-left {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .search-capsule-wide {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .rooms-grid-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .col-sidebar-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-brand-add {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- TOPBAR MASTER (SINKRON DENGAN WF-02) -->
+  <!-- TOP CANOPY OVERLAY (Masking celah atas navbar floating) -->
+  <div class="top-canopy-overlay" aria-hidden="true"></div>
+
   <header class="topbar" id="mainTopbar">
     <!-- Rendered dynamically by components.js -->
   </header>
@@ -1486,7 +1956,8 @@
               <div class="popover-dropdown-menu" id="menuFilterStatus">
                 <div class="popover-item selected" onclick="applyFilterSelect('status', 'all', 'Semua Status', event)">Semua Status (15)</div>
                 <div class="popover-item" onclick="applyFilterSelect('status', 'terisi', 'Hanya Terisi (11)', event)">Hanya Terisi (11)</div>
-                <div class="popover-item" onclick="applyFilterSelect('status', 'kosong', 'Hanya Kosong (4)', event)">Hanya Kosong (4)</div>
+                <div class="popover-item" onclick="applyFilterSelect('status', 'kosong', 'Hanya Kosong (3)', event)">Hanya Kosong (3)</div>
+                <div class="popover-item" onclick="applyFilterSelect('status', 'perbaikan', 'Dalam Perbaikan (1)', event)">Dalam Perbaikan (1)</div>
               </div>
             </div>
           </div>
@@ -1522,7 +1993,7 @@
             <div class="room-unit-item active-room" data-no="A-01" data-floor="1" data-status="terisi" onclick="selectRoomCard(this, {no:'A-01', type:'Standar', floor:'Lantai 1', size:'3 × 4 Meter', price:'Rp 1.200.000', tenant:'Siti Aminah', role:'Karyawan Swasta', phone:'0812-3456-7890', since:'1 Mar 2025', contract:'28 Feb 2027', bill:'Lunas (Okt 2026)', billBadgeClass:'badge-dark', status:'terisi', img:'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400&q=80" alt="Kamar A-01">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1545,7 +2016,7 @@
             <div class="room-unit-item" data-no="A-02" data-floor="1" data-status="terisi" onclick="selectRoomCard(this, {no:'A-02', type:'Standar', floor:'Lantai 1', size:'3 × 4 Meter', price:'Rp 1.200.000', tenant:'Dimas Prasetyo', role:'Karyawan Swasta', phone:'0813-8877-6655', since:'15 Des 2025', contract:'14 Des 2026', bill:'Jatuh Tempo H-3', billBadgeClass:'badge-warning', status:'terisi', img:'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80" alt="Kamar A-02">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1568,12 +2039,12 @@
             <div class="room-unit-item status-vacant-card" data-no="A-03" data-floor="1" data-status="kosong" onclick="selectRoomCard(this, {no:'A-03', type:'Standar', floor:'Lantai 1', size:'3 × 4 Meter', price:'Rp 1.100.000', tenant:'—', role:'—', phone:'—', since:'—', contract:'—', bill:'—', billBadgeClass:'', status:'kosong', img:'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80" alt="Kamar A-03">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-03</span>
-                  <span class="status-badge badge-brand">Kosong &middot; Siap Huni</span>
+                  <span class="status-badge badge-brand">Kosong</span>
                 </div>
                 <div class="room-sub-specs">Lantai 1 &middot; Standar (3&times;4m)</div>
                 <div class="room-tenant-name-row vacant-text">
@@ -1591,7 +2062,7 @@
             <div class="room-unit-item" data-no="A-04" data-floor="1" data-status="terisi" onclick="selectRoomCard(this, {no:'A-04', type:'Standar AC', floor:'Lantai 1', size:'3.5 × 4 Meter', price:'Rp 1.500.000', tenant:'Budi Santoso', role:'Karyawan Swasta', phone:'0811-2233-4455', since:'1 Jan 2026', contract:'31 Des 2026', bill:'Jatuh Tempo H-3', billBadgeClass:'badge-warning', status:'terisi', img:'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400&q=80" alt="Kamar A-04">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1614,7 +2085,7 @@
             <div class="room-unit-item" data-no="A-05" data-floor="1" data-status="terisi" onclick="selectRoomCard(this, {no:'A-05', type:'Standar', floor:'Lantai 1', size:'3 × 4 Meter', price:'Rp 1.100.000', tenant:'Sri Wahyuni', role:'Mahasiswi', phone:'0857-1122-3344', since:'1 Sep 2025', contract:'31 Agu 2027', bill:'Lunas (Okt 2026)', billBadgeClass:'badge-dark', status:'terisi', img:'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80" alt="Kamar A-05">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1644,7 +2115,7 @@
               </div>
               <h3>Lantai 2 — Blok B</h3>
             </div>
-            <span class="floor-meta-chip">5 Unit &middot; 3 Terisi &middot; 2 Kosong</span>
+            <span class="floor-meta-chip">5 Unit &middot; 3 Terisi &middot; 1 Kosong &middot; 1 Perbaikan</span>
           </div>
 
           <div class="rooms-grid-flow">
@@ -1652,7 +2123,7 @@
             <div class="room-unit-item" data-no="B-01" data-floor="2" data-status="terisi" onclick="selectRoomCard(this, {no:'B-01', type:'Standar', floor:'Lantai 2', size:'3 × 4 Meter', price:'Rp 1.300.000', tenant:'Dodi Firmansyah', role:'Wiraswasta', phone:'0821-9988-7766', since:'15 Jul 2025', contract:'14 Jul 2027', bill:'Terlambat 3 Hari', billBadgeClass:'badge-danger', status:'terisi', img:'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=400&q=80" alt="Kamar B-01">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1675,7 +2146,7 @@
             <div class="room-unit-item" data-no="B-02" data-floor="2" data-status="terisi" onclick="selectRoomCard(this, {no:'B-02', type:'Standar', floor:'Lantai 2', size:'3 × 4 Meter', price:'Rp 1.300.000', tenant:'Rini Marlina', role:'Karyawan Swasta', phone:'0819-0011-2233', since:'1 Feb 2025', contract:'31 Jan 2027', bill:'Lunas (Okt 2026)', billBadgeClass:'badge-dark', status:'terisi', img:'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80" alt="Kamar B-02">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1695,10 +2166,10 @@
             </div>
 
             <!-- Room B-03 (Kosong Deluxe - Sinkron Dasbor) -->
-            <div class="room-unit-item status-vacant-card" data-no="B-03" data-floor="2" data-status="kosong" onclick="selectRoomCard(this, {no:'B-03', type:'Deluxe (AC, WiFi, KM Dalam)', floor:'Lantai 2', size:'4 × 5 Meter', price:'Rp 1.800.000', tenant:'—', role:'—', phone:'—', since:'—', contract:'—', bill:'—', billBadgeClass:'', status:'kosong', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80'})">
+            <div class="room-unit-item status-vacant-card" data-no="B-03" data-floor="2" data-status="kosong" onclick="selectRoomCard(this, {no:'B-03', type:'Deluxe', floor:'Lantai 2', size:'4 × 5 Meter', price:'Rp 1.800.000', tenant:'—', role:'—', phone:'—', since:'—', contract:'—', bill:'—', billBadgeClass:'', status:'kosong', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=80" alt="Kamar B-03">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1721,7 +2192,7 @@
             <div class="room-unit-item" data-no="B-04" data-floor="2" data-status="terisi" onclick="selectRoomCard(this, {no:'B-04', type:'Standar', floor:'Lantai 2', size:'3 × 4 Meter', price:'Rp 1.300.000', tenant:'Eko Prasetyo', role:'Karyawan Swasta', phone:'0878-1122-9900', since:'15 Okt 2025', contract:'14 Okt 2027', bill:'Lunas (Okt 2026)', billBadgeClass:'badge-dark', status:'terisi', img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=400&q=80" alt="Kamar B-04">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1740,25 +2211,25 @@
               </div>
             </div>
 
-            <!-- Room B-05 (Kosong - Sinkron Dasbor) -->
-            <div class="room-unit-item status-vacant-card" data-no="B-05" data-floor="2" data-status="kosong" onclick="selectRoomCard(this, {no:'B-05', type:'Standar (Kasur, Lemari, Meja)', floor:'Lantai 2', size:'3.5 × 4 Meter', price:'Rp 1.500.000', tenant:'—', role:'—', phone:'—', since:'—', contract:'—', bill:'—', billBadgeClass:'', status:'kosong', img:'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80'})">
+            <!-- Room B-05 (Dalam Perbaikan - Sinkron Dasbor & Tiket #T-04) -->
+            <div class="room-unit-item status-repair-card" data-no="B-05" data-floor="2" data-status="perbaikan" onclick="selectRoomCard(this, {no:'B-05', type:'Standar AC', floor:'Lantai 2', size:'3.5 × 4 Meter', price:'Rp 1.500.000', tenant:'—', role:'—', phone:'—', since:'—', contract:'—', bill:'Servis AC & Perbaikan Teknisi', billBadgeClass:'badge-warning', status:'perbaikan', repairTicket:'T-04', repairWork:'Servis AC & Ganti Pipa Freon', repairVendor:'Pak Joko (Teknisi Pendingin)', repairTarget:'24 Okt 2026 (Estimasi 1 Hari)', repairNote:'Pipa freon rembes telah diganti, menunggu uji coba pendinginan 24 jam sebelum kamar siap dipasarkan.', img:'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80" alt="Kamar B-05">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-05</span>
-                  <span class="status-badge badge-brand">Kosong &middot; Siap Huni</span>
+                  <span class="status-badge badge-warning" style="background:#FEF3C7; color:#D97706; border:1px solid #FDE68A;">Dalam Perbaikan</span>
                 </div>
                 <div class="room-sub-specs">Lantai 2 &middot; Standar AC (3.5&times;4m)</div>
-                <div class="room-tenant-name-row vacant-text">
-                  <i data-lucide="minus-circle" style="width: 12px; height: 12px; color: var(--text-muted); flex-shrink: 0;"></i>
-                  <span>Siap Dipasarkan</span>
+                <div class="room-tenant-name-row" style="color: #D97706;">
+                  <i data-lucide="wrench" style="width: 12px; height: 12px; color: #D97706; flex-shrink: 0;"></i>
+                  <span>Servis AC & Perawatan</span>
                 </div>
                 <div class="room-price-row">
-                  <span class="room-price-val">Rp 1.500.000 <span style="font-size: 10px; font-weight: normal; color: var(--text-muted);">/bln</span></span>
-                  <span class="status-badge badge-brand" style="font-size: 10px; padding: 2px 6px;">Tersedia</span>
+                  <span class="room-price-val" style="color: #D97706;">Tiket #T-04</span>
+                  <span class="status-badge badge-warning" style="font-size: 10px; padding: 2px 6px; background:#FEF3C7; color:#D97706; border:1px solid #FDE68A;">Pengerjaan</span>
                 </div>
               </div>
             </div>
@@ -1782,7 +2253,7 @@
             <div class="room-unit-item" data-no="C-01" data-floor="3" data-status="terisi" onclick="selectRoomCard(this, {no:'C-01', type:'Standar AC', floor:'Lantai 3', size:'3.5 × 4 Meter', price:'Rp 1.400.000', tenant:'Hendra Wijaya', role:'Freelancer', phone:'0812-4455-6677', since:'1 Jan 2025', contract:'31 Des 2026', bill:'Lunas (Okt 2026)', billBadgeClass:'badge-dark', status:'terisi', img:'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80" alt="Kamar C-01">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1805,7 +2276,7 @@
             <div class="room-unit-item status-vacant-card" data-no="C-02" data-floor="3" data-status="kosong" onclick="selectRoomCard(this, {no:'C-02', type:'Deluxe Corner View', floor:'Lantai 3', size:'4.5 × 5 Meter', price:'Rp 1.900.000', tenant:'—', role:'—', phone:'—', since:'—', contract:'—', bill:'—', billBadgeClass:'', status:'kosong', img:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=80" alt="Kamar C-02">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1828,7 +2299,7 @@
             <div class="room-unit-item" data-no="C-03" data-floor="3" data-status="terisi" onclick="selectRoomCard(this, {no:'C-03', type:'Standar', floor:'Lantai 3', size:'3 × 4 Meter', price:'Rp 1.350.000', tenant:'Rian Hidayat', role:'Karyawan Swasta', phone:'0856-7788-9900', since:'1 Mei 2025', contract:'30 Apr 2027', bill:'Lunas (Okt 2026)', billBadgeClass:'badge-dark', status:'terisi', img:'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=400&q=80" alt="Kamar C-03">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1851,7 +2322,7 @@
             <div class="room-unit-item" data-no="C-04" data-floor="3" data-status="terisi" onclick="selectRoomCard(this, {no:'C-04', type:'Standar', floor:'Lantai 3', size:'3 × 4 Meter', price:'Rp 1.350.000', tenant:'Mega Lestari', role:'Mahasiswi', phone:'0822-3344-5566', since:'1 Ags 2025', contract:'31 Jul 2027', bill:'Lunas (Okt 2026)', billBadgeClass:'badge-dark', status:'terisi', img:'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=400&q=80" alt="Kamar C-04">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1874,7 +2345,7 @@
             <div class="room-unit-item" data-no="C-05" data-floor="3" data-status="terisi" onclick="selectRoomCard(this, {no:'C-05', type:'Standar', floor:'Lantai 3', size:'3 × 4 Meter', price:'Rp 1.350.000', tenant:'Aditya Pratama', role:'Karyawan Swasta', phone:'0818-4455-6677', since:'1 Nov 2025', contract:'31 Okt 2027', bill:'Lunas (Okt 2026)', billBadgeClass:'badge-dark', status:'terisi', img:'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80'})">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80" alt="Kamar C-05">
-                <span class="room-float-arrow"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+                <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1904,17 +2375,17 @@
         <aside class="sidebar-card-box card-detail-drawer" id="roomDetailDrawer">
           <!-- Top Bar -->
           <div class="drawer-header-row">
-            <div class="drawer-title-stack">
-              <h3 id="drawerRoomNum">Kamar A-01</h3>
-              <p id="drawerRoomType">Tipe Standar &middot; Lantai 1</p>
+            <div style="flex: 1; min-width: 0;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                <h3 id="drawerRoomNum" style="font-size: 16px; font-weight: 700; color: #0F172A; margin: 0; letter-spacing: -0.3px;">Kamar A-01</h3>
+                <span class="status-badge badge-dark" id="drawerStatusBadge">Terisi</span>
+              </div>
+              <p id="drawerRoomType" style="font-size: 11.5px; font-weight: 500; color: #64748B; margin: 0; line-height: 1.3;">Tipe Standar &middot; Lantai 1</p>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="status-badge badge-dark" id="drawerStatusBadge">Terisi</span>
-              <button class="btn-drawer-edit" onclick="openEditCurrentRoomModal()" title="Edit data & spesifikasi kamar ini">
-                <i data-lucide="edit-3" style="width: 12px; height: 12px;"></i>
-                <span>Edit</span>
-              </button>
-            </div>
+            <button class="btn-drawer-edit" onclick="openEditCurrentRoomModal()" title="Edit data & spesifikasi kamar ini" style="flex-shrink: 0; margin-left: 8px;">
+              <i data-lucide="edit-3" style="width: 12px; height: 12px;"></i>
+              <span>Edit</span>
+            </button>
           </div>
 
           <!-- Photo Preview (Proportional 135px) -->
@@ -1922,7 +2393,7 @@
             <img id="drawerPhoto" src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80" alt="Detail Kamar">
           </div>
 
-          <!-- Specifications Grid -->
+          <!-- Specifications Grid (6 Proportional Specs) -->
           <div class="spec-grid-cards">
             <div class="spec-unit-item">
               <span class="spec-unit-label">Ukuran Kamar</span>
@@ -1933,98 +2404,189 @@
               <span class="spec-unit-val" id="drawerRoomPrice" style="color: #FF7A00;">Rp 1.200.000</span>
             </div>
             <div class="spec-unit-item">
-              <span class="spec-unit-label">Listrik</span>
-              <span class="spec-unit-val">Token Mandiri</span>
+              <span class="spec-unit-label">Listrik & Token</span>
+              <span class="spec-unit-val" id="drawerMeteran">PLN 1423-8899</span>
             </div>
             <div class="spec-unit-item">
               <span class="spec-unit-label">Kamar Mandi</span>
               <span class="spec-unit-val">Dalam (Shower)</span>
             </div>
+            <div class="spec-unit-item">
+              <span class="spec-unit-label">Kapasitas</span>
+              <span class="spec-unit-val" id="drawerKapasitas">1 Org · Campur</span>
+            </div>
+            <div class="spec-unit-item">
+              <span class="spec-unit-label">Deposit Default</span>
+              <span class="spec-unit-val" id="drawerDepositDefault">Rp 500.000</span>
+            </div>
           </div>
 
-          <!-- Tenant Profile Card Section -->
+          <!-- Catatan / Posisi Kamar -->
+          <div class="drawer-room-note-pod" id="drawerCatatanPod">
+            <i data-lucide="info" style="width: 13px; height: 13px; color: #FF7A00; flex-shrink: 0; margin-top: 2px;"></i>
+            <div style="flex: 1; min-width: 0;">
+              <span class="drawer-note-lbl">CATATAN POSISI & ARAH KAMAR</span>
+              <p id="drawerCatatanTxt" class="drawer-note-txt">Sirkulasi sejuk, posisi tenang, hadap taman</p>
+            </div>
+          </div>
+
+          <!-- Fasilitas Kamar Terpasang (Micro Pill Badges) -->
+          <div>
+            <div class="drawer-section-title">
+              <i data-lucide="sparkles" style="width: 11px; height: 11px; color: #FF7A00;"></i>
+              <span>Fasilitas Kamar Termasuk</span>
+            </div>
+            <div class="drawer-amenity-grid" id="drawerAmenityGrid">
+              <span class="amenity-chip"><i data-lucide="wind" style="width: 10px; height: 10px;"></i> AC Dingin</span>
+              <span class="amenity-chip"><i data-lucide="bed" style="width: 10px; height: 10px;"></i> Springbed</span>
+              <span class="amenity-chip"><i data-lucide="briefcase" style="width: 10px; height: 10px;"></i> Meja & Lemari</span>
+              <span class="amenity-chip"><i data-lucide="wifi" style="width: 10px; height: 10px;"></i> WiFi 100M</span>
+              <span class="amenity-chip"><i data-lucide="shower-head" style="width: 10px; height: 10px;"></i> KM Dalam</span>
+              <span class="amenity-chip"><i data-lucide="zap" style="width: 10px; height: 10px;"></i> Token PLN</span>
+              <span class="amenity-chip"><i data-lucide="sun" style="width: 10px; height: 10px;"></i> Jendela Luar</span>
+            </div>
+          </div>
+
+          <!-- Tenant Profile Card Section (Expanded with Full Living Dossier) -->
           <div class="tenant-info-pod" id="drawerTenantCard">
             <div class="tenant-pod-header">
               <div class="tenant-pod-avatar" id="drawerTenantAvatar">SA</div>
-              <div class="tenant-pod-titles">
+              <div class="tenant-pod-titles" style="flex: 1;">
                 <h4 id="drawerTenantName">Siti Aminah</h4>
                 <p id="drawerTenantRole">Penyewa Aktif &middot; Karyawan Swasta</p>
               </div>
             </div>
+            
             <div class="tenant-meta-line" id="rowKontak">
               <span>No. WhatsApp:</span>
-              <strong id="drawerTenantPhone">0812-3456-7890</strong>
+              <div style="display: flex; align-items: center;">
+                <strong id="drawerTenantPhone">0812-3456-7890</strong>
+                <a href="https://wa.me/6281234567890" target="_blank" class="tenant-quick-wa-btn" id="linkDirectWa" title="Kirim WhatsApp ke penghuni">
+                  <i data-lucide="message-circle" style="width: 11px; height: 11px;"></i>
+                  <span>Chat WA</span>
+                </a>
+              </div>
             </div>
+
             <div class="tenant-meta-line" id="rowMasaKontrak">
               <span>Masa Kontrak:</span>
               <strong id="drawerContractDate">28 Feb 2027</strong>
             </div>
+
+            <div class="tenant-meta-line" id="rowCheckinDate">
+              <span>Mulai Masuk:</span>
+              <strong id="drawerCheckinDate">1 Mar 2026 (Sisa 4 Bln)</strong>
+            </div>
+
+
+            <div class="tenant-meta-line" id="rowAsal">
+              <span>Kota Asal:</span>
+              <strong id="drawerAsal">Bandung, Jawa Barat</strong>
+            </div>
+
             <div class="tenant-meta-line" id="rowStatusTagihan">
               <span>Status Tagihan:</span>
               <strong id="drawerBillStatus" style="color: #059669;">Lunas (Okt 2026)</strong>
             </div>
           </div>
 
-          <!-- Action Button: Single Full-Width Primary Button -->
-          <a href="WF-04-penghuni.html" class="btn-drawer-primary" id="btnPrimaryAction">
-            <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
-            <span id="btnPrimaryText">Lihat Profil Penghuni</span>
-          </a>
-          <button type="button" class="btn-drawer-secondary" id="btnSharePromoAction" onclick="shareRoomPromo()" style="display: none; margin-top: 6px;">
-            <i data-lucide="share-2" style="width: 14px; height: 14px;"></i>
-            <span>Iklankan / Bagikan Unit</span>
-          </button>
-        </aside>
+          <!-- Vacant Readiness Pod (Khusus Kamar Kosong Siap Huni) -->
+          <div class="vacant-readiness-pod" id="drawerVacantPod" style="display: none;">
+            <div class="vacant-readiness-header">
+              <div class="vacant-readiness-title-wrap">
+                <div class="vacant-readiness-icon-bubble">
+                  <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #16A34A;"></i>
+                </div>
+                <div>
+                  <span class="vacant-readiness-title">Kesiapan Unit Siap Huni</span>
+                  <p class="vacant-readiness-sub">Unit Kosong &middot; Siap Ditempati Segera</p>
+                </div>
+              </div>
+              <span class="status-badge" style="font-size: 10px; padding: 2px 7px; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">Siap Huni</span>
+            </div>
 
-        <!-- CARD 2: KEPADATAN PROPERTI (PERSIS COMPONENT KONDISI PROPERTI DI DASHBOARD WF-02) -->
-        <div class="sidebar-card-box card-condition">
-          <div class="card-top-header">
-            <h2 class="card-title-text">Kepadatan Properti</h2>
-            <button class="pill-arrow-btn" onclick="RumaUI.showToast('Filter & Opsi Okupansi')" title="Opsi">
-              <i data-lucide="more-vertical" style="width: 14px; height: 14px;"></i>
+            <div class="vacant-checklist-grid">
+              <div class="vacant-check-row">
+                <span class="v-check-lbl">
+                  <i data-lucide="check-circle-2" style="width: 13px; height: 13px; color: #16A34A; flex-shrink: 0;"></i>
+                  Kebersihan Unit
+                </span>
+                <span class="v-check-val">Sudah Dibersihkan & Steril</span>
+              </div>
+              <div class="vacant-check-row">
+                <span class="v-check-lbl">
+                  <i data-lucide="check-circle-2" style="width: 13px; height: 13px; color: #16A34A; flex-shrink: 0;"></i>
+                  Kunci Kamar
+                </span>
+                <span class="v-check-val">2 Set Tersedia di Kantor</span>
+              </div>
+              <div class="vacant-check-row">
+                <span class="v-check-lbl">
+                  <i data-lucide="check-circle-2" style="width: 13px; height: 13px; color: #16A34A; flex-shrink: 0;"></i>
+                  KWH Listrik PLN
+                </span>
+                <span class="v-check-val">Token Awal 20 kWh Aktif</span>
+              </div>
+              <div class="vacant-check-row">
+                <span class="v-check-lbl">
+                  <i data-lucide="check-circle-2" style="width: 13px; height: 13px; color: #16A34A; flex-shrink: 0;"></i>
+                  Air & Sanitasi
+                </span>
+                <span class="v-check-val">Kran & Saluran Lancar</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Maintenance Pod (Khusus Kamar Dalam Perbaikan) -->
+          <div class="maintenance-info-pod" id="drawerMaintenancePod" style="display: none;">
+            <div class="maintenance-pod-header">
+              <div class="maintenance-pod-title-wrap">
+                <div class="maintenance-icon-bubble">
+                  <i data-lucide="wrench" style="width: 14px; height: 14px; color: #D97706;"></i>
+                </div>
+                <div>
+                  <span class="maintenance-pod-title">Unit Sedang Diperbaiki</span>
+                  <p class="maintenance-pod-sub">Unit Kosong &middot; Belum Siap Ditempati</p>
+                </div>
+              </div>
+              <span class="status-badge badge-warning" id="drawerRepairTicketBadge" style="font-size: 10px; padding: 2px 7px; background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A;">Tiket #T-04</span>
+            </div>
+
+            <div class="maintenance-work-list">
+              <div class="maintenance-work-row">
+                <span class="m-work-lbl">Item Pekerjaan:</span>
+                <span class="m-work-val" id="drawerRepairWork">Servis AC & Perbaikan Pipa Freon</span>
+              </div>
+              <div class="maintenance-work-row">
+                <span class="m-work-lbl">Teknisi / Vendor:</span>
+                <span class="m-work-val" id="drawerRepairVendor">Pak Joko (Teknisi Pendingin)</span>
+              </div>
+              <div class="maintenance-work-row">
+                <span class="m-work-lbl">Target Selesai:</span>
+                <span class="m-work-val" id="drawerRepairTarget" style="color: #D97706; font-weight: 600;">24 Okt 2026 (Estimasi 1 Hari)</span>
+              </div>
+            </div>
+
+            <div class="maintenance-note-bubble">
+              <i data-lucide="info" style="width: 12px; height: 12px; color: #D97706; flex-shrink: 0; margin-top: 1px;"></i>
+              <p id="drawerRepairNotes" style="margin: 0;">Pipa freon rembes diganti & cuci indoor AC. Menunggu tes dingin 24 jam sebelum kamar siap dipasarkan kembali.</p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="WF-04-penghuni.html" class="btn-drawer-primary" id="btnPrimaryAction">
+              <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
+              <span id="btnPrimaryText">Lihat Profil Penghuni</span>
+            </a>
+            <button type="button" class="btn-drawer-secondary" id="btnSharePromoAction" onclick="shareRoomPromo()" style="display: none;">
+              <i data-lucide="share-2" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+              <span>Iklankan / Siar WA Unit</span>
             </button>
           </div>
+        </aside>
 
-          <div class="condition-progress-group">
-            <!-- Item 1: Lantai 1 -->
-            <div class="condition-progress-item">
-              <div class="condition-meta-row">
-                <span class="condition-label">Lantai 1 (Blok A)</span>
-                <span class="condition-count">4 / 5 Terisi</span>
-              </div>
-              <div class="progress-bar-thick">
-                <div class="progress-fill-orange" style="width: 80%;"></div>
-              </div>
-            </div>
 
-            <!-- Item 2: Lantai 2 -->
-            <div class="condition-progress-item">
-              <div class="condition-meta-row">
-                <span class="condition-label">Lantai 2 (Blok B)</span>
-                <span class="condition-count">3 / 5 Terisi</span>
-              </div>
-              <div class="progress-bar-thick">
-                <div class="progress-fill-orange" style="width: 60%;"></div>
-              </div>
-            </div>
-
-            <!-- Item 3: Lantai 3 -->
-            <div class="condition-progress-item">
-              <div class="condition-meta-row">
-                <span class="condition-label">Lantai 3 (Blok C)</span>
-                <span class="condition-count">4 / 5 Terisi</span>
-              </div>
-              <div class="progress-bar-thick">
-                <div class="progress-fill-orange" style="width: 80%;"></div>
-              </div>
-            </div>
-          </div>
-
-          <a href="WF-09-pengaturan.html" class="btn-maintenance-full">
-            <span>Kelola Fasilitas & Tarif Properti</span>
-            <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-          </a>
-        </div>
 
       </div>
 
@@ -2035,13 +2597,13 @@
   <!-- MODAL 1: TAMBAH KAMAR BARU (SCR-03 ACTION) -->
   <div class="modal-backdrop" id="modalTambahKamar">
     <div class="modal-card" style="width: 580px; max-width: 95vw;">
-      <div class="modal-header">
+      <div class="modal-header-pinned">
         <div>
-          <h2 class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+          <h2 class="modal-title" style="display: flex; align-items: center; gap: 8px; margin: 0; font-size: 16px;">
             <i data-lucide="plus-circle" style="width: 20px; height: 20px; color: #FF7A00;"></i>
             Tambah Kamar Baru
           </h2>
-          <p class="modal-subtitle" style="margin: 2px 0 0 0; font-size: 11.5px; color: var(--text-muted);">
+          <p class="modal-subtitle" style="margin: 3px 0 0 0; font-size: 11.5px; color: var(--text-muted);">
             Daftarkan unit kamar baru ke properti RumaKost Anda.
           </p>
         </div>
@@ -2050,7 +2612,8 @@
         </button>
       </div>
 
-      <form id="formTambahKamar" onsubmit="handleTambahKamar(event)" style="display: flex; flex-direction: column; gap: 14px;">
+      <form id="formTambahKamar" onsubmit="handleTambahKamar(event)" style="display: flex; flex-direction: column; flex: 1; min-height: 0; margin: 0; overflow: hidden;">
+        <div class="modal-body-scrollable">
         <div class="form-row-2">
           <div class="form-group">
             <label class="form-label" for="addNoKamar">Nomor / Kode Kamar <span style="color:#EF4444;">*</span></label>
@@ -2070,21 +2633,21 @@
               <div class="form-select-menu" id="menuAddLantai">
                 <div class="form-select-item selected" data-value="1" onclick="selectFormOption('addLantaiKamar', '1', this, 'wrapAddLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
+                    <div class="floor-icon-mini is-lt1"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
                     <span>Lantai 1 — Blok A</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="2" onclick="selectFormOption('addLantaiKamar', '2', this, 'wrapAddLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
+                    <div class="floor-icon-mini is-lt2"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
                     <span>Lantai 2 — Blok B</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="3" onclick="selectFormOption('addLantaiKamar', '3', this, 'wrapAddLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
+                    <div class="floor-icon-mini is-lt3"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
                     <span>Lantai 3 — Blok C</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
@@ -2109,28 +2672,28 @@
               <div class="form-select-menu" id="menuAddTipe">
                 <div class="form-select-item selected" data-value="Standar" onclick="selectFormOption('addTipeKamar', 'Standar', this, 'wrapAddTipe', event)">
                   <div class="item-label-content">
-                    <i data-lucide="home" style="width: 14px; height: 14px; color: #6B7280;"></i>
+                    <div class="type-icon-mini"><i data-lucide="home" style="width: 13px; height: 13px;"></i></div>
                     <span>Standar</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="Standar AC" onclick="selectFormOption('addTipeKamar', 'Standar AC', this, 'wrapAddTipe', event)">
                   <div class="item-label-content">
-                    <i data-lucide="wind" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+                    <div class="type-icon-mini"><i data-lucide="wind" style="width: 13px; height: 13px;"></i></div>
                     <span>Standar AC</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="Deluxe Corner View" onclick="selectFormOption('addTipeKamar', 'Deluxe Corner View', this, 'wrapAddTipe', event)">
                   <div class="item-label-content">
-                    <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+                    <div class="type-icon-mini"><i data-lucide="sparkles" style="width: 13px; height: 13px;"></i></div>
                     <span>Deluxe Corner View</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="VIP Suite" onclick="selectFormOption('addTipeKamar', 'VIP Suite', this, 'wrapAddTipe', event)">
                   <div class="item-label-content">
-                    <i data-lucide="award" style="width: 14px; height: 14px; color: #111111;"></i>
+                    <div class="type-icon-mini"><i data-lucide="award" style="width: 13px; height: 13px;"></i></div>
                     <span>VIP Suite</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
@@ -2180,6 +2743,30 @@
           </div>
         </div>
 
+        <!-- Row 4: Deposit Default & Kapasitas / Gender -->
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="addDepositKamar">Nominal Deposit Default (Rp) <span style="color:#EF4444;">*</span></label>
+            <input type="text" class="form-input" id="addDepositKamar" placeholder="Contoh: 500.000" value="500.000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="addKapasitasGender">Kapasitas & Aturan Gender <span style="color:#EF4444;">*</span></label>
+            <input type="text" class="form-input" id="addKapasitasGender" placeholder="Contoh: 1 Orang (Campur/Bebas)" value="1 Orang (Campur / Bebas)">
+          </div>
+        </div>
+
+        <!-- Row 5: ID Meteran Listrik PLN -->
+        <div class="form-group">
+          <label class="form-label" for="addMeteranListrik">No. Meteran Listrik PLN (ID Token)</label>
+          <input type="text" class="form-input" id="addMeteranListrik" placeholder="Contoh: 1423-8899-0123" value="1423-8899-0123">
+        </div>
+
+        <!-- Row 6: Catatan / Posisi Kamar Textarea (Lega & Nyaman) -->
+        <div class="form-group">
+          <label class="form-label" for="addCatatanKamar">Catatan / Posisi Kamar (Opsional)</label>
+          <textarea class="form-input" id="addCatatanKamar" rows="2" placeholder="Contoh: Sirkulasi sejuk, hadap taman dalam, posisi pojok tenang..." style="height: auto; min-height: 56px; padding: 10px 14px; resize: vertical; line-height: 1.45; font-family: inherit;">Sirkulasi sejuk, posisi pojok tenang, hadap taman dalam</textarea>
+        </div>
+
         <div class="form-group">
           <label class="form-label">Fasilitas Kamar Termasuk</label>
           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px;">
@@ -2204,6 +2791,18 @@
             <label class="facility-chip-label">
               <input type="checkbox" value="Water Heater"> Water Heater
             </label>
+            <label class="facility-chip-label">
+              <input type="checkbox" checked value="Jendela Luar"> Jendela Luar
+            </label>
+            <label class="facility-chip-label">
+              <input type="checkbox" value="Kulkas Mini"> Kulkas Mini
+            </label>
+            <label class="facility-chip-label">
+              <input type="checkbox" value="Smart TV"> Smart TV
+            </label>
+            <label class="facility-chip-label">
+              <input type="checkbox" value="Wastafel"> Wastafel / Sink
+            </label>
           </div>
         </div>
 
@@ -2221,11 +2820,11 @@
           </div>
         </div>
 
-        <div class="modal-actions-bar">
-          <button type="button" class="btn-modal-cancel" onclick="closeTambahKamarModal()">
-            Batal
-          </button>
-          <button type="submit" class="btn-modal-submit">
+        </div>
+
+        <div class="modal-footer-pinned" style="justify-content: flex-end;">
+          <button type="button" class="btn-modal-cancel" onclick="closeTambahKamarModal()">Batal</button>
+          <button type="submit" class="btn-modal-primary">
             <i data-lucide="check" style="width: 15px; height: 15px;"></i>
             <span>Simpan Kamar Baru</span>
           </button>
@@ -2237,16 +2836,16 @@
   <!-- MODAL 2: EDIT DATA KAMAR (SCR-04 ACTION) -->
   <div class="modal-backdrop" id="modalEditKamar">
     <div class="modal-card" style="width: 580px; max-width: 95vw;">
-      <div class="modal-header">
+      <div class="modal-header-pinned">
         <div>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <h2 class="modal-title" style="display: flex; align-items: center; gap: 6px;">
+            <h2 class="modal-title" style="display: flex; align-items: center; gap: 6px; margin: 0; font-size: 16px;">
               <i data-lucide="sliders" style="width: 20px; height: 20px; color: #FF7A00;"></i>
               Edit Data Kamar
             </h2>
             <span class="status-badge badge-dark" id="editModalBadgeKamar">A-01</span>
           </div>
-          <p class="modal-subtitle" style="margin: 2px 0 0 0; font-size: 11.5px; color: var(--text-muted);">
+          <p class="modal-subtitle" style="margin: 3px 0 0 0; font-size: 11.5px; color: var(--text-muted);">
             Perbarui tarif sewa, tipe, spesifikasi atau status unit kamar.
           </p>
         </div>
@@ -2255,7 +2854,8 @@
         </button>
       </div>
 
-      <form id="formEditKamar" onsubmit="handleEditKamar(event)" style="display: flex; flex-direction: column; gap: 14px;">
+      <form id="formEditKamar" onsubmit="handleEditKamar(event)" style="display: flex; flex-direction: column; flex: 1; min-height: 0; margin: 0; overflow: hidden;">
+        <div class="modal-body-scrollable">
         <div class="form-row-2">
           <div class="form-group">
             <label class="form-label" for="editNoKamar">Nomor Kamar <span style="color:#EF4444;">*</span></label>
@@ -2275,21 +2875,21 @@
               <div class="form-select-menu" id="menuEditLantai">
                 <div class="form-select-item selected" data-value="1" onclick="selectFormOption('editLantaiKamar', '1', this, 'wrapEditLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
+                    <div class="floor-icon-mini is-lt1"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
                     <span>Lantai 1 — Blok A</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="2" onclick="selectFormOption('editLantaiKamar', '2', this, 'wrapEditLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
+                    <div class="floor-icon-mini is-lt2"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
                     <span>Lantai 2 — Blok B</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="3" onclick="selectFormOption('editLantaiKamar', '3', this, 'wrapEditLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
+                    <div class="floor-icon-mini is-lt3"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
                     <span>Lantai 3 — Blok C</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
@@ -2314,28 +2914,28 @@
               <div class="form-select-menu" id="menuEditTipe">
                 <div class="form-select-item selected" data-value="Standar" onclick="selectFormOption('editTipeKamar', 'Standar', this, 'wrapEditTipe', event)">
                   <div class="item-label-content">
-                    <i data-lucide="home" style="width: 14px; height: 14px; color: #6B7280;"></i>
+                    <div class="type-icon-mini"><i data-lucide="home" style="width: 13px; height: 13px;"></i></div>
                     <span>Standar</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="Standar AC" onclick="selectFormOption('editTipeKamar', 'Standar AC', this, 'wrapEditTipe', event)">
                   <div class="item-label-content">
-                    <i data-lucide="wind" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+                    <div class="type-icon-mini"><i data-lucide="wind" style="width: 13px; height: 13px;"></i></div>
                     <span>Standar AC</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="Deluxe Corner View" onclick="selectFormOption('editTipeKamar', 'Deluxe Corner View', this, 'wrapEditTipe', event)">
                   <div class="item-label-content">
-                    <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+                    <div class="type-icon-mini"><i data-lucide="sparkles" style="width: 13px; height: 13px;"></i></div>
                     <span>Deluxe Corner View</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="VIP Suite" onclick="selectFormOption('editTipeKamar', 'VIP Suite', this, 'wrapEditTipe', event)">
                   <div class="item-label-content">
-                    <i data-lucide="award" style="width: 14px; height: 14px; color: #111111;"></i>
+                    <div class="type-icon-mini"><i data-lucide="award" style="width: 13px; height: 13px;"></i></div>
                     <span>VIP Suite</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
@@ -2392,6 +2992,30 @@
           </div>
         </div>
 
+        <!-- Row 4: Deposit Default & Kapasitas / Gender -->
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="editDepositKamar">Nominal Deposit Default (Rp) <span style="color:#EF4444;">*</span></label>
+            <input type="text" class="form-input" id="editDepositKamar" value="500.000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editKapasitasGender">Kapasitas & Aturan Gender <span style="color:#EF4444;">*</span></label>
+            <input type="text" class="form-input" id="editKapasitasGender" value="1 Orang (Campur / Bebas)">
+          </div>
+        </div>
+
+        <!-- Row 5: ID Meteran Listrik PLN -->
+        <div class="form-group">
+          <label class="form-label" for="editMeteranListrik">No. Meteran Listrik PLN (ID Token)</label>
+          <input type="text" class="form-input" id="editMeteranListrik" value="1423-8899-0123">
+        </div>
+
+        <!-- Row 6: Catatan / Posisi Kamar Textarea (Lega & Nyaman) -->
+        <div class="form-group">
+          <label class="form-label" for="editCatatanKamar">Catatan / Posisi Kamar (Opsional)</label>
+          <textarea class="form-input" id="editCatatanKamar" rows="2" style="height: auto; min-height: 56px; padding: 10px 14px; resize: vertical; line-height: 1.45; font-family: inherit;">Sirkulasi sejuk, posisi pojok tenang, hadap taman dalam</textarea>
+        </div>
+
         <div class="form-group">
           <label class="form-label">Fasilitas Kamar Termasuk</label>
           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px;">
@@ -2416,6 +3040,18 @@
             <label class="facility-chip-label">
               <input type="checkbox" id="editFacWaterHeater" value="Water Heater"> Water Heater
             </label>
+            <label class="facility-chip-label">
+              <input type="checkbox" id="editFacJendela" checked value="Jendela Luar"> Jendela Luar
+            </label>
+            <label class="facility-chip-label">
+              <input type="checkbox" id="editFacKulkas" value="Kulkas Mini"> Kulkas Mini
+            </label>
+            <label class="facility-chip-label">
+              <input type="checkbox" id="editFacTV" value="Smart TV"> Smart TV
+            </label>
+            <label class="facility-chip-label">
+              <input type="checkbox" id="editFacSink" value="Wastafel"> Wastafel / Sink
+            </label>
           </div>
         </div>
 
@@ -2433,17 +3069,17 @@
           </div>
         </div>
 
-        <div class="modal-actions-bar has-danger">
+        </div>
+
+        <div class="modal-footer-pinned" style="justify-content: space-between;">
           <button type="button" class="btn-modal-danger" onclick="handleDeleteKamar()">
             <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-            <span>Hapus Unit</span>
+            <span>Hapus Unit Kamar</span>
           </button>
 
           <div style="display: flex; align-items: center; gap: 10px;">
-            <button type="button" class="btn-modal-cancel" onclick="closeEditKamarModal()">
-              Batal
-            </button>
-            <button type="submit" class="btn-modal-submit">
+            <button type="button" class="btn-modal-cancel" onclick="closeEditKamarModal()">Batal</button>
+            <button type="submit" class="btn-modal-primary">
               <i data-lucide="check" style="width: 15px; height: 15px;"></i>
               <span>Simpan Perubahan</span>
             </button>
@@ -2453,11 +3089,68 @@
     </div>
   </div>
 
+  
+  <!-- MODAL 3: IKLANKAN KAMAR KOSONG VIA WHATSAPP (MARKETING PROMO) -->
+  <div class="modal-backdrop" id="modalIklanKamar">
+    <div class="modal-card" style="width: 560px; max-width: 95vw;">
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #DCFCE7; color: #16A34A; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="share-2" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title" id="modalIklanTitle">Siarkan Promo Kamar A-03 via WhatsApp</h2>
+            <p class="modal-subtitle" style="margin: 2px 0 0 0; font-size: 11.5px; color: var(--text-muted);">
+              Bagikan draf promosi kamar kosong ke calon penyewa atau grup WhatsApp
+            </p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="RumaUI.closeModal('modalIklanKamar')" type="button" title="Tutup">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <div style="padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div class="form-group">
+          <label class="form-label">Draf Pesan Promosi WhatsApp *</label>
+          <textarea id="promoMsgInput" class="form-input" rows="6" style="resize: vertical; font-size: 12px; line-height: 1.5; font-family: inherit;" oninput="updatePromoPreview(this.value)"></textarea>
+        </div>
+
+        <!-- WhatsApp Preview Bubble -->
+        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 12px 14px;">
+          <div style="font-size: 11px; font-weight: 700; color: #16A34A; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+            <i data-lucide="message-circle" style="width: 13px; height: 13px;"></i>
+            <span>Preview Teks Iklan WhatsApp</span>
+          </div>
+          <div style="background: #FFFFFF; border-radius: 10px; padding: 10px 12px; font-size: 11.5px; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-left: 3px solid #22C55E; white-space: pre-wrap;" id="promoPreviewTxt"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer-row" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-top: 1px solid var(--border-subtle);">
+        <button type="button" class="btn-modal-cancel" onclick="copyPromoText()">
+          <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
+          <span>Salin Teks Iklan</span>
+        </button>
+        <button type="button" class="btn-modal-primary is-whatsapp" onclick="sendPromoWaDirect()">
+          <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+          <span>Kirim via WhatsApp Web</span>
+        </button>
+      </div>
+    </div>
+  </div>
   <script src="assets/js/components.js"></script>
   <script>
     // Inisialisasi Topbar dengan role owner dan activeNav 'kamar'
     renderTopbar('kamar', 'owner');
     lucide.createIcons();
+    const drawerCardInit = document.getElementById('roomDetailDrawer');
+    if (drawerCardInit) drawerCardInit.scrollTop = 0;
+    const initDrawerPhoto = document.getElementById('drawerPhoto');
+    if (initDrawerPhoto) {
+      initDrawerPhoto.addEventListener('error', function() {
+        this.src = 'assets/img/login-showcase.png';
+      });
+    }
 
     // State Filter Aktif
     let currentFilterLantai = 'all';
@@ -2541,46 +3234,141 @@
       // Simpan ref data & elemen yang sedang aktif
       window.currentActiveRoomData = data;
       window.currentActiveRoomElement = element;
+      const drawerCardEl = document.getElementById('roomDetailDrawer');
+      if (drawerCardEl) drawerCardEl.scrollTop = 0;
 
-      // Update Header & Specs
+      // Update Header & Specs (Bersihkan fasilitas dalam kurung dari header subtitle)
+      const cleanType = (data.type || 'Standar').replace(/\s*\([^)]*\)/g, '').trim();
       document.getElementById('drawerRoomNum').textContent = 'Kamar ' + data.no;
-      document.getElementById('drawerRoomType').textContent = 'Tipe ' + data.type + ' · ' + data.floor;
-      document.getElementById('drawerPhoto').src = data.img;
+      document.getElementById('drawerRoomType').textContent = 'Tipe ' + cleanType + ' · ' + data.floor;
+      const dPhoto = document.getElementById('drawerPhoto');
+      if (dPhoto) {
+        dPhoto.onerror = function() {
+          this.onerror = null;
+          this.src = 'assets/img/login-showcase.png';
+        };
+        dPhoto.src = data.img;
+      }
       document.getElementById('drawerRoomSize').textContent = data.size;
       document.getElementById('drawerRoomPrice').textContent = data.price;
+      
+      if (document.getElementById('drawerMeteran')) {
+        document.getElementById('drawerMeteran').textContent = data.pln || 'PLN 1423-8899';
+      }
+      if (document.getElementById('drawerKapasitas')) {
+        document.getElementById('drawerKapasitas').textContent = data.capacity || '1 Org · Campur';
+      }
+      if (document.getElementById('drawerCatatanTxt')) {
+        if (data.status === 'perbaikan') {
+          document.getElementById('drawerCatatanTxt').textContent = data.notes || 'Servis pendingin AC & perbaikan instalasi pipa';
+        } else if (data.status === 'kosong') {
+          document.getElementById('drawerCatatanTxt').textContent = data.notes || 'Siap huni, kunci tersedia, sirkulasi sejuk';
+        } else {
+          document.getElementById('drawerCatatanTxt').textContent = data.notes || 'Sirkulasi sejuk, posisi tenang, hadap taman';
+        }
+      }
 
       const badgeEl = document.getElementById('drawerStatusBadge');
       const tenantCard = document.getElementById('drawerTenantCard');
+      const maintenancePod = document.getElementById('drawerMaintenancePod');
+      const vacantPod = document.getElementById('drawerVacantPod');
       const primaryBtn = document.getElementById('btnPrimaryAction');
       const primaryText = document.getElementById('btnPrimaryText');
+      const shareBtn = document.getElementById('btnSharePromoAction');
 
-      if (data.status === 'kosong') {
+      if (data.status === 'perbaikan') {
+        // Status: Kamar Kosong Dalam Masa Perbaikan
+        badgeEl.className = 'status-badge badge-warning';
+        badgeEl.textContent = 'Dalam Perbaikan';
+        badgeEl.style.background = '#FEF3C7';
+        badgeEl.style.color = '#B45309';
+        badgeEl.style.border = '1px solid #FDE68A';
+
+        // Sembunyikan tenant card & vacant pod, tampilkan maintenance pod
+        tenantCard.style.display = 'none';
+        if (vacantPod) vacantPod.style.display = 'none';
+        maintenancePod.style.display = 'flex';
+
+        if (document.getElementById('drawerRepairTicketBadge')) {
+          document.getElementById('drawerRepairTicketBadge').textContent = 'Tiket #' + (data.repairTicket || 'T-04');
+        }
+        if (document.getElementById('drawerRepairWork')) {
+          document.getElementById('drawerRepairWork').textContent = data.repairWork || data.bill || 'Servis AC & Perbaikan Pipa Freon';
+        }
+        if (document.getElementById('drawerRepairVendor')) {
+          document.getElementById('drawerRepairVendor').textContent = data.repairVendor || 'Pak Joko (Teknisi Pendingin)';
+        }
+        if (document.getElementById('drawerRepairTarget')) {
+          document.getElementById('drawerRepairTarget').textContent = data.repairTarget || '24 Okt 2026 (Estimasi 1 Hari)';
+        }
+        if (document.getElementById('drawerRepairNotes')) {
+          document.getElementById('drawerRepairNotes').textContent = data.repairNote || 'Pipa freon rembes diganti. Menunggu uji tes dingin 24 jam sebelum unit siap dipasarkan.';
+        }
+
+        // Action buttons saat perbaikan
+        primaryBtn.href = 'WF-08-tiket.html?id=' + encodeURIComponent(data.repairTicket || 'T-04');
+        primaryText.textContent = 'Buka Tiket Perbaikan #' + (data.repairTicket || 'T-04');
+        primaryBtn.innerHTML = '<i data-lucide="wrench" style="width: 14px; height: 14px;"></i> <span id="btnPrimaryText">Buka Tiket Perbaikan #' + (data.repairTicket || 'T-04') + '</span>';
+        
+        shareBtn.style.display = 'flex';
+        shareBtn.innerHTML = '<i data-lucide="check-circle-2" style="width: 14px; height: 14px; color: #16A34A;"></i> <span>Tandai Selesai & Siap Huni</span>';
+        shareBtn.onclick = function() {
+          markMaintenanceDone(data.no);
+        };
+
+      } else if (data.status === 'kosong') {
+        // Status: Kamar Kosong Siap Huni
         badgeEl.className = 'status-badge badge-brand';
         badgeEl.textContent = 'Kosong';
+        badgeEl.style.background = '';
+        badgeEl.style.color = '';
+        badgeEl.style.border = '';
 
-        tenantCard.className = 'tenant-info-pod is-vacant';
-        document.getElementById('drawerTenantAvatar').className = 'tenant-pod-avatar is-vacant';
-        document.getElementById('drawerTenantAvatar').textContent = '—';
-        document.getElementById('drawerTenantName').textContent = 'Belum Ada Penghuni';
-        document.getElementById('drawerTenantRole').textContent = 'Kamar Kosong / Siap Huni Segera';
+        maintenancePod.style.display = 'none';
+        tenantCard.style.display = 'none';
+        if (vacantPod) vacantPod.style.display = 'flex';
 
-        document.getElementById('rowKontak').style.display = 'none';
-        document.getElementById('rowMasaKontrak').style.display = 'none';
-        document.getElementById('rowStatusTagihan').style.display = 'none';
+        primaryBtn.href = 'WF-04-penghuni.html?action=new&room=' + encodeURIComponent(data.no);
+        primaryBtn.innerHTML = '<i data-lucide="user-plus" style="width: 14px; height: 14px;"></i> <span id="btnPrimaryText">+ Daftarkan Penghuni Baru</span>';
+        
+        shareBtn.style.display = 'flex';
+        shareBtn.innerHTML = '<i data-lucide="share-2" style="width: 14px; height: 14px; color: #FF7A00;"></i> <span>Iklankan / Siar WA Unit</span>';
+        shareBtn.onclick = function() {
+          shareRoomPromo();
+        };
 
-        primaryBtn.href = 'WF-04-penghuni.html';
-        primaryText.textContent = '+ Daftarkan Penghuni';
-        document.getElementById('btnSharePromoAction').style.display = 'flex';
       } else {
+        // Status: Terisi Aktif
         badgeEl.className = 'status-badge badge-dark';
         badgeEl.textContent = 'Terisi';
+        badgeEl.style.background = '';
+        badgeEl.style.color = '';
+        badgeEl.style.border = '';
 
+        if (vacantPod) vacantPod.style.display = 'none';
+        maintenancePod.style.display = 'none';
+        tenantCard.style.display = 'block';
         tenantCard.className = 'tenant-info-pod';
         document.getElementById('drawerTenantAvatar').className = 'tenant-pod-avatar';
-        const initials = data.tenant.split(' ').map(n => n[0]).join('').substring(0, 2);
+        const initials = (data.tenant || 'PN').split(' ').map(n => n[0]).join('').substring(0, 2);
         document.getElementById('drawerTenantAvatar').textContent = initials;
         document.getElementById('drawerTenantName').textContent = data.tenant;
         document.getElementById('drawerTenantRole').textContent = 'Penyewa Aktif · ' + data.role;
+
+        document.getElementById('rowCheckinDate').style.display = 'flex';
+        document.getElementById('rowAsal').style.display = 'flex';
+
+        if (document.getElementById('drawerCheckinDate')) {
+          document.getElementById('drawerCheckinDate').textContent = (data.since || '1 Mar 2026') + ' (Aktif)';
+        }
+        if (document.getElementById('drawerAsal')) {
+          document.getElementById('drawerAsal').textContent = data.city || 'Bandung, Jawa Barat';
+        }
+        if (document.getElementById('linkDirectWa')) {
+          const cleanPhone = (data.phone || '081234567890').replace(/[^0-9]/g, '');
+          const waNum = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;
+          document.getElementById('linkDirectWa').href = 'https://wa.me/' + waNum;
+        }
 
         document.getElementById('rowKontak').style.display = 'flex';
         document.getElementById('drawerTenantPhone').textContent = data.phone || '0812-xxxx-xxxx';
@@ -2593,12 +3381,44 @@
         billEl.textContent = data.bill;
         billEl.style.color = data.billBadgeClass === 'badge-danger' ? '#EF4444' : (data.billBadgeClass === 'badge-warning' ? '#D97706' : '#059669');
 
-        primaryBtn.href = 'WF-04-penghuni.html';
-        primaryText.textContent = 'Lihat Profil Penghuni';
-        document.getElementById('btnSharePromoAction').style.display = 'none';
+        primaryBtn.href = 'WF-04-penghuni.html?id=' + encodeURIComponent(data.no);
+        primaryBtn.innerHTML = '<i data-lucide="user-check" style="width: 14px; height: 14px;"></i> <span id="btnPrimaryText">Lihat Profil Penghuni</span>';
+        shareBtn.style.display = 'none';
       }
 
       lucide.createIcons();
+    }
+
+
+    function markMaintenanceDone(roomNo) {
+      if (window.currentActiveRoomData && window.currentActiveRoomElement) {
+        window.currentActiveRoomData.status = 'kosong';
+        window.currentActiveRoomData.bill = 'Tersedia';
+        window.currentActiveRoomData.billBadgeClass = 'badge-brand';
+        window.currentActiveRoomData.notes = 'Perbaikan selesai. Unit bersih, AC prima & siap dihuni kembali.';
+        
+        // Update card visual di grid
+        const cardEl = window.currentActiveRoomElement;
+        cardEl.className = 'room-unit-item status-vacant-card active-room';
+        const headerRow = cardEl.querySelector('.room-header-row');
+        if (headerRow) {
+          headerRow.innerHTML = '<span class="room-name-text">Kamar ' + roomNo + '</span><span class="status-badge badge-brand">Kosong</span>';
+        }
+        const tenantRow = cardEl.querySelector('.room-tenant-name-row');
+        if (tenantRow) {
+          tenantRow.className = 'room-tenant-name-row vacant-text';
+          tenantRow.style.color = '';
+          tenantRow.innerHTML = '<i data-lucide="minus-circle" style="width: 12px; height: 12px; color: var(--text-muted); flex-shrink: 0;"></i><span>Siap Dipasarkan</span>';
+        }
+        const priceRow = cardEl.querySelector('.room-price-row');
+        if (priceRow) {
+          priceRow.innerHTML = '<span class="room-price-val">' + window.currentActiveRoomData.price + ' <span style="font-size: 10px; font-weight: normal; color: var(--text-muted);">/bln</span></span><span class="status-badge badge-brand" style="font-size: 10px; padding: 2px 6px;">Tersedia</span>';
+        }
+        
+        selectRoomCard(cardEl, window.currentActiveRoomData);
+        RumaUI.showToast('Perbaikan Kamar ' + roomNo + ' selesai! Status kamar kini Kosong & Siap Huni.', 'success');
+        lucide.createIcons();
+      }
     }
 
     function shareRoomPromo() {
@@ -2765,6 +3585,9 @@
       setFormSelectValue('editTipeKamar', matchedType, 'wrapEditTipe');
 
       document.getElementById('editUkuranKamar').value = data.size || '3 × 4 Meter';
+      if (document.getElementById('editCatatanKamar')) {
+        document.getElementById('editCatatanKamar').value = data.notes || (document.getElementById('drawerCatatanTxt') ? document.getElementById('drawerCatatanTxt').textContent : 'Sirkulasi sejuk, posisi tenang, hadap taman');
+      }
       
       // Bersihkan dan format harga
       const cleanPrice = (data.price || '').replace(/[^\d]/g, '');
@@ -2804,6 +3627,13 @@
         document.getElementById('drawerRoomType').textContent = 'Tipe ' + updatedType + ' · Lantai ' + floorNum;
         document.getElementById('drawerRoomSize').textContent = updatedSize;
         document.getElementById('drawerRoomPrice').textContent = 'Rp ' + rawPrice;
+        const updatedNotes = document.getElementById('editCatatanKamar') ? document.getElementById('editCatatanKamar').value.trim() : '';
+        if (updatedNotes) {
+          window.currentActiveRoomData.notes = updatedNotes;
+          if (document.getElementById('drawerCatatanTxt')) {
+            document.getElementById('drawerCatatanTxt').textContent = updatedNotes;
+          }
+        }
 
         // Perbarui Card di Grid jika ada
         if (window.currentActiveRoomElement) {

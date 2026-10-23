@@ -53,6 +53,14 @@
     const topbarElem = document.getElementById('mainTopbar');
     if (!topbarElem) return;
 
+    // Auto-inject top canopy overlay if not already present in DOM
+    if (!document.querySelector('.top-canopy-overlay')) {
+      const canopy = document.createElement('div');
+      canopy.className = 'top-canopy-overlay';
+      canopy.setAttribute('aria-hidden', 'true');
+      document.body.prepend(canopy);
+    }
+
     const role = explicitRole || getCurrentRole();
     const navItems = NAV_CONFIG[role] || NAV_CONFIG.owner;
 
@@ -486,6 +494,237 @@
   document.addEventListener('DOMContentLoaded', function () {
     if (window.lucide) {
       window.lucide.createIcons();
+    }
+  });
+
+
+  /**
+   * RumaDatePicker Component Engine (CMP-20 · Estify Zero-Native Custom Calendar)
+   * Provides floating interactive calendar popover for date inputs.
+   */
+  window.RumaDatePicker = {
+    instances: {},
+
+    MONTH_NAMES: [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ],
+
+    MONTH_SHORT: [
+      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+    ],
+
+    DAY_NAMES: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+
+    init: function (wrapId, inputId, initialDateStr) {
+      const wrap = document.getElementById(wrapId);
+      const input = document.getElementById(inputId);
+      if (!wrap || !input) return;
+
+      let date = initialDateStr ? new Date(initialDateStr) : new Date(input.value || Date.now());
+      if (isNaN(date.getTime())) date = new Date();
+
+      this.instances[wrapId] = {
+        wrapId: wrapId,
+        inputId: inputId,
+        selectedDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+        viewDate: new Date(date.getFullYear(), date.getMonth(), 1)
+      };
+
+      this.updateDisplay(wrapId);
+      this.renderPopover(wrapId);
+    },
+
+    toggle: function (wrapId, inputId) {
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+
+      if (!this.instances[wrapId]) {
+        this.init(wrapId, inputId);
+      }
+
+      const isOpen = wrap.classList.contains('open');
+      this.closeAll();
+
+      if (!isOpen) {
+        wrap.classList.add('open');
+        this.renderPopover(wrapId);
+      }
+    },
+
+    closeAll: function () {
+      document.querySelectorAll('.ruma-datepicker-wrap.open').forEach(w => {
+        w.classList.remove('open');
+      });
+    },
+
+    prevMonth: function (wrapId, e) {
+      if (e) e.stopPropagation();
+      const inst = this.instances[wrapId];
+      if (!inst) return;
+      inst.viewDate.setMonth(inst.viewDate.getMonth() - 1);
+      this.renderPopover(wrapId);
+    },
+
+    nextMonth: function (wrapId, e) {
+      if (e) e.stopPropagation();
+      const inst = this.instances[wrapId];
+      if (!inst) return;
+      inst.viewDate.setMonth(inst.viewDate.getMonth() + 1);
+      this.renderPopover(wrapId);
+    },
+
+    selectDate: function (wrapId, year, month, day, e) {
+      if (e) e.stopPropagation();
+      const inst = this.instances[wrapId];
+      if (!inst) return;
+
+      inst.selectedDate = new Date(year, month, day);
+      const input = document.getElementById(inst.inputId);
+      if (input) {
+        const yStr = year;
+        const mStr = String(month + 1).padStart(2, '0');
+        const dStr = String(day).padStart(2, '0');
+        input.value = `${yStr}-${mStr}-${dStr}`;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      this.updateDisplay(wrapId);
+      this.closeAll();
+      if (window.RumaUI) {
+        const dateFormatted = `${day} ${this.MONTH_NAMES[month]} ${year}`;
+        RumaUI.showToast(`Tanggal mulai sewa dipilih: ${dateFormatted}`, 'info');
+      }
+    },
+
+    selectPreset: function (wrapId, presetKey, e) {
+      if (e) e.stopPropagation();
+      const inst = this.instances[wrapId];
+      if (!inst) return;
+
+      const now = new Date();
+      let target;
+      if (presetKey === 'today') {
+        target = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      } else if (presetKey === 'next_month') {
+        target = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      } else if (presetKey === 'curr_month') {
+        target = new Date(now.getFullYear(), now.getMonth(), 1);
+      }
+
+      if (target) {
+        inst.viewDate = new Date(target.getFullYear(), target.getMonth(), 1);
+        this.selectDate(wrapId, target.getFullYear(), target.getMonth(), target.getDate(), e);
+      }
+    },
+
+    updateDisplay: function (wrapId) {
+      const inst = this.instances[wrapId];
+      if (!inst) return;
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+
+      const valTxt = wrap.querySelector('.ruma-datepicker-val-txt');
+      if (valTxt && inst.selectedDate) {
+        const d = inst.selectedDate.getDate();
+        const m = this.MONTH_NAMES[inst.selectedDate.getMonth()];
+        const y = inst.selectedDate.getFullYear();
+        valTxt.textContent = `${d} ${m} ${y}`;
+      }
+    },
+
+    renderPopover: function (wrapId) {
+      const inst = this.instances[wrapId];
+      if (!inst) return;
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+
+      let popover = wrap.querySelector('.ruma-datepicker-popover');
+      if (!popover) {
+        popover = document.createElement('div');
+        popover.className = 'ruma-datepicker-popover';
+        wrap.appendChild(popover);
+      }
+
+      const viewYear = inst.viewDate.getFullYear();
+      const viewMonth = inst.viewDate.getMonth();
+      const monthTitle = `${this.MONTH_NAMES[viewMonth]} ${viewYear}`;
+
+      const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+      const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay(); // 0 = Sunday
+      const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+
+      const today = new Date();
+      const isCurrentMonthView = today.getFullYear() === viewYear && today.getMonth() === viewMonth;
+      const todayDate = today.getDate();
+
+      const selYear = inst.selectedDate ? inst.selectedDate.getFullYear() : null;
+      const selMonth = inst.selectedDate ? inst.selectedDate.getMonth() : null;
+      const selDate = inst.selectedDate ? inst.selectedDate.getDate() : null;
+
+      let daysHtml = '';
+
+      // Prev month filler days
+      for (let i = firstDayIndex - 1; i >= 0; i--) {
+        const prevDay = daysInPrevMonth - i;
+        daysHtml += `<button type="button" class="rdp-day-btn other-month" tabindex="-1">${prevDay}</button>`;
+      }
+
+      // Current month days
+      for (let day = 1; day <= daysInMonth; day++) {
+        const isToday = isCurrentMonthView && day === todayDate ? 'is-today' : '';
+        const isSelected = selYear === viewYear && selMonth === viewMonth && selDate === day ? 'is-selected' : '';
+        daysHtml += `<button type="button" class="rdp-day-btn ${isToday} ${isSelected}" onclick="RumaDatePicker.selectDate('${wrapId}', ${viewYear}, ${viewMonth}, ${day}, event)">${day}</button>`;
+      }
+
+      // Next month filler days to complete grid
+      const totalRendered = firstDayIndex + daysInMonth;
+      const nextMonthCells = (totalRendered <= 35 ? 35 : 42) - totalRendered;
+      for (let day = 1; day <= nextMonthCells; day++) {
+        daysHtml += `<button type="button" class="rdp-day-btn other-month" tabindex="-1">${day}</button>`;
+      }
+
+      popover.innerHTML = `
+        <div class="rdp-head-row">
+          <button type="button" class="rdp-nav-btn" onclick="RumaDatePicker.prevMonth('${wrapId}', event)" title="Bulan Sebelumnya">
+            <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
+          </button>
+          <div class="rdp-title-cluster">
+            <span class="rdp-month-title">${monthTitle}</span>
+          </div>
+          <button type="button" class="rdp-nav-btn" onclick="RumaDatePicker.nextMonth('${wrapId}', event)" title="Bulan Berikutnya">
+            <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
+          </button>
+        </div>
+
+        <div class="rdp-weekdays-row">
+          ${this.DAY_NAMES.map(d => `<span>${d}</span>`).join('')}
+        </div>
+
+        <div class="rdp-days-grid">
+          ${daysHtml}
+        </div>
+
+        <div class="rdp-footer-row">
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="rdp-preset-btn" onclick="RumaDatePicker.selectPreset('${wrapId}', 'today', event)">Hari Ini</button>
+            <button type="button" class="rdp-preset-btn" onclick="RumaDatePicker.selectPreset('${wrapId}', 'next_month', event)">Awal Bln Depan</button>
+          </div>
+          <span class="rdp-note-txt">${selDate ? `${selDate} ${this.MONTH_SHORT[selMonth]} ${selYear}` : ''}</span>
+        </div>
+      `;
+
+      if (window.lucide) {
+        window.lucide.createIcons({ root: popover });
+      }
+    }
+  };
+
+  // Close DatePickers on click outside or Escape
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.ruma-datepicker-wrap')) {
+      if (window.RumaDatePicker) window.RumaDatePicker.closeAll();
     }
   });
 
