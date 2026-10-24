@@ -115,7 +115,8 @@ Seluruh 12 prototipe layar interaktif saling terhubung dan dapat diuji langsung:
 | `WF-05-tagihan.html` | SCR-09 / 10 | Matriks Penagihan Bulanan & Invoice Digital |
 | `WF-06-pembayaran.html` | SCR-11 | Verifikasi Pemilik & Pencatatan Pembayaran Parsial |
 | `WF-07-laporan.html` | SCR-12 / 13 | Laporan Finansial & Okupansi (Owner-only) |
-| `WF-08-tiket.html` | SCR-14 / 15 | Kanban Tiket Operasional & Progress 5 Tahap |
+| `WF-08-tiket.html` | SCR-14 | Antrean & Triase Tiket Pemeliharaan (F-07) |
+| `WF-08-tiket-detail.html` | SCR-15 | Detail Penanganan Tiket Kerusakan & Kolaborasi Multi-Role (F-07) |
 | `WF-09-pengaturan.html` | SCR-16 / 17 | Konfigurasi Properti, Rekening, & Akun Staf |
 | `WF-10-portal-penghuni.html`| SCR-P01 | Beranda Penghuni Mandiri (Kamar A-04) |
 | `WF-11-portal-tiket-baru.html`| SCR-P04 | Form Lapor Komplain (Wajib Upload Foto/Video) |

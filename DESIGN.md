@@ -174,3 +174,60 @@ Sesuai lembar spesifikasi Estify (`docs/design/inspiration/04-typography-sheet.p
 | Status Berhasil | `check-circle-2` |
 | Status Peringatan | `clock` / `alert-triangle` |
 | Status Bahaya | `alert-circle` |
+
+
+---
+
+## 7. Skala Baku Komponen UI & Token Ukuran (Design Component Scale)
+
+Untuk menjaga konsistensi visual 100% di seluruh layar dan mencegah divergensi ukuran antar halaman, seluruh elemen tombol, form, modal, dan badge dikunci ke dalam skala baku berikut:
+
+### 7.1 Skala Tombol (Button Sizing System)
+
+| Token / Class | Tinggi (Height) | Padding Horizontal | Font Size | Border Radius | Peruntukan & Contoh |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **`.btn-lg`** | **`48px`** | `24px` | `13px` SemiBold | `9999px` (Pill) / `14px` | CTA Login (WF-01), Submit Modal Penuh, Aksi Utama Drawer |
+| **`.btn-md`** *(Default)* | **`40px`** | `18px – 20px` | `12.5px – 13px` SemiBold | `9999px` (Pill) / `12px` | Tombol Header Halaman (`+ Tambah`, `+ Registrasi`), Filter Utama, Simpan Form |
+| **`.btn-sm`** | **`34px`** | `14px` | `12px` Medium/SemiBold | `9999px` (Pill) / `10px` | Tombol Sub-Header, Tab Pill, `Buka Layar Penuh`, `Perpanjang Kontrak` |
+| **`.btn-xs`** | **`28px`** | `10px` | `11px` SemiBold | `9999px` (Pill) / `8px` | Aksi Baris Tabel (`Lihat Solusi`, `Kuitansi`, `Unduh PDF`, `Terminasi`) |
+| **`.btn-circle`** | **`36px × 36px`** *(38px Topbar)* | Center / Square | Ikon 16px (18px Topbar) | `50%` (Circle) | Tombol Search, Notifikasi Bell, Close Modal (`X`), Aksi Cepat (`↗`) |
+
+#### Varian Warna Tombol Baku:
+- **Dark Pill (`.btn-dark` / `.btn-black-solid`)**: `background: #111111; color: #FFFFFF;` (Ciri khas Estify).
+- **Brand Primary (`.btn-primary` / `.btn-brand`)**: `background: #FF7A00; color: #FFFFFF; box-shadow: 0 4px 14px rgba(255,122,0,0.25);`.
+- **White Outline (`.btn-outline` / `.btn-white-outline`)**: `background: #FFFFFF; border: 1.5px solid #ECEEF2; color: #374151;` (Hover: border & text `#0F172A`).
+- **Subtle Ghost (`.btn-subtle`)**: `background: #F1F5F9; color: #475569;` (Hover: `#E2E8F0`).
+- **Danger Pill (`.btn-danger-pill`)**: `background: #FFF1F2; border: 1px solid #FECDD3; color: #E11D48;` (Hover: `#E11D48`, text `#FFFFFF`).
+- **WhatsApp Pill (`.btn-wa-pill`)**: `background: #16A34A; color: #FFFFFF;` (Hover: `#15803D`).
+
+---
+
+### 7.2 Skala Form Fields (Uniform 42px Height Lock)
+
+Semua komponen input formulir satu baris dikunci memiliki **tinggi seragam 42px** agar garis grid formulir selalu rata:
+
+| Elemen Form | Tinggi Baku | Font Size | Border Radius | Padding & Focus |
+| :--- | :--- | :--- | :--- | :--- |
+| **Text / Number / Tel Input** | **`42px !important`** | `12.5px – 13px` | `12px` | Padding `0 14px`, Border `#ECEEF2`, Focus ring `#FF7A00` |
+| **Custom Select Trigger** | **`42px !important`** | `12.5px – 13px` | `12px` | Padding `0 14px`, Chevron ikon sejajar kanan |
+| **Datepicker Trigger** | **`42px !important`** | `12.5px – 13px` | `12px` | Padding `0 14px`, Kalender ikon di kiri |
+| **Textarea Multi-line** | Min-height **`84px`** | `12.5px` | `12px` | Padding `10px 14px`, Resize vertikal terkontrol |
+
+---
+
+### 7.3 Skala Modal & Dialog Standar
+
+| Tipe Modal | Lebar Baku (Width) | Padding Header | Padding Body | Radius | Aturan Scrollbar |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Modal Form Standar (1 Kolom)** | **`580px`** | `16px 22px` | `16px 22px` | `20px` | Wajib hidden scrollbar tapi tetap smooth-scrollable |
+| **Modal Kompak / Konfirmasi** | **`480px – 500px`** | `16px 20px` | `16px 20px` | `20px` | Wajib hidden scrollbar tapi tetap smooth-scrollable |
+| **Modal Komprehensif (2 Kolom)** | **`1040px`** | `16px 24px` | `20px 24px` | `20px` | Wajib hidden scrollbar tapi tetap smooth-scrollable |
+
+---
+
+### 7.4 Skala Status Badge & Pill
+
+| Tipe Badge | Tinggi | Padding | Font Size | Border Radius |
+| :--- | :--- | :--- | :--- | :--- |
+| **Badge Regular** | `24px` | `4px 10px` | `11px` SemiBold | `9999px` (Pill) |
+| **Badge Micro / Table** | `20px` | `2px 8px` | `10px – 10.5px` SemiBold | `6px` / `9999px` |

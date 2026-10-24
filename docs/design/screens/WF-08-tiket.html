@@ -3,148 +3,650 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RumaKost · Pemeliharaan & Tiket Kerusakan</title>
+  <title>RumaKost · Antrean &amp; Triase Tiket Pemeliharaan (SCR-14)</title>
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
+    /* ==========================================================================
+       ESTIFY MAINTENANCE TICKET QUEUE (WF-08 · SCR-14)
+       Visual DNA: Estify Modern Real-Estate Management Dashboard
+       Layout: Full-Width Dedicated Queue & Monitoring Dashboard
+       Compliance: F-07 Ticketing Kerusakan (RK-037 s.d. RK-040)
+       Pure Craftsmanship: 100% Lucide SVGs, Zero Emoji, Zero Native Alerts
+       ========================================================================== */
 
+    body {
+      background: var(--bg-canvas, #F7F8FA);
+      color: var(--text-main, #111111);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    .nav-pill-container {
+    /* Top canopy overlay masks content scrolling into top 24px gap */
+    .top-canopy-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: var(--bg-canvas, #F7F8FA);
+      z-index: 95;
+      pointer-events: none;
+    }
+
+    /* Pinned corner masks on topbar to eliminate peek-through during scroll */
+    .topbar::before,
+    .topbar::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      width: 25px;
+      height: 25px;
+      pointer-events: none;
+      z-index: 101;
+    }
+
+    .topbar::before {
+      left: -1px;
+      background: radial-gradient(circle at 100% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+    }
+
+    .topbar::after {
+      right: -1px;
+      background: radial-gradient(circle at 0% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+    }
+
+    .dashboard-wrapper {
+      max-width: 1440px;
+      width: calc(100% - 40px);
+      margin: 0 auto;
+      padding: 20px 0 40px;
+      box-sizing: border-box;
       display: flex;
-      align-items: center;
-      gap: 4px;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .nav-pill {
-      font-size: 13px;
-      font-weight: 500;
-      color: #6B7280;
-      padding: 8px 18px;
-      border-radius: 9999px;
-      text-decoration: none;
-      transition: all 150ms ease;
+    /* ══════════════════════════════════════════════════════════════
+       1. ESTIFY 2-COLUMN MASTER DASHBOARD GRID (SINKRON DENGAN WF-06 & WF-07)
+       ══════════════════════════════════════════════════════════════ */
+    .dashboard-2col-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 20px;
+      align-items: start;
+      width: 100%;
+      max-width: 1440px;
     }
 
-    .nav-pill:hover { color: #111111; background: #F3F4F6; }
-    .nav-pill.active {
-      background: #111111;
-      color: #FFFFFF;
-      font-weight: 600;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    }
-
-    .topbar-right {
+    .col-main-flow {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .col-sidebar-flow,
+    .card-detail-drawer {
+      background: var(--bg-card, #FFFFFF);
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      border-radius: var(--radius-2xl, 24px);
+      padding: 22px 20px 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+      width: 380px;
+      max-width: 380px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 110px;
+      height: fit-content;
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #E2E8F0 transparent;
+    }
+
+    .card-detail-drawer::-webkit-scrollbar {
+      width: 4px;
+    }
+    .card-detail-drawer::-webkit-scrollbar-thumb {
+      background: #E2E8F0;
+      border-radius: 4px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       2. TOP HERO ROW: 3 GAUGE METRIC CARDS (IDENTIK WF-02 & WF-06)
+       - Tinggi Computed: 156px
+       ══════════════════════════════════════════════════════════════ */
+    .metrics-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      align-items: stretch;
+    }
+
+    .metric-card-estify {
+      background: var(--bg-card, #FFFFFF);
+      border-radius: 20px;
+      padding: 22px 24px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all var(--transition-fast, 150ms ease);
+      min-height: 156px;
+      box-sizing: border-box;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .metric-card-estify:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      border-color: #CBD5E1;
+    }
+
+    .metric-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
       gap: 12px;
     }
 
-    /* TICKET CARDS LIST SPECIFIC */
-
-    /* TICKET CARDS LIST */
-    .tickets-container {
+    .metric-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
       display: flex;
-      flex-direction: column;
-      gap: 14px;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      color: var(--text-main, #111111);
     }
 
-    .ticket-card {
-      background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 20px;
-      padding: 20px 24px;
+    .metric-icon-box.is-green {
+      background: #DCFCE7;
+      border-color: #BBF7D0;
+      color: #16A34A;
+    }
+
+    .metric-icon-box.is-orange {
+      background: #FFF7ED;
+      border-color: #FFEDD5;
+      color: #FF7A00;
+    }
+
+    .metric-icon-box.is-dark {
+      background: #111111;
+      border-color: #111111;
+      color: #FFFFFF;
+    }
+
+    .metric-lbl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .metric-lbl-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+    }
+
+    .metric-badge-pill {
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 8px;
+      border-radius: var(--radius-full, 9999px);
+      line-height: 1.2;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pill-green-soft {
+      background: #DCFCE7;
+      color: #16A34A;
+      border: 1px solid #BBF7D0;
+    }
+
+    .pill-orange-soft {
+      background: #FFF7ED;
+      color: #FF7A00;
+      border: 1px solid #FFEDD5;
+    }
+
+    .pill-danger-soft {
+      background: #FEE2E2;
+      color: #DC2626;
+      border: 1px solid #FECDD3;
+    }
+
+    .pill-dark-soft {
+      background: #F1F5F9;
+      color: #111111;
+      border: 1px solid #E2E8F0;
+    }
+
+    .metric-card-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .metric-val-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .metric-lbl-sub {
+      font-size: 11.5px;
+      color: var(--text-muted, #9CA3AF);
+      font-weight: 500;
+    }
+
+    .metric-value-huge {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+      white-space: nowrap;
+    }
+
+    .metric-sub-val {
+      font-size: 13px;
+      color: var(--text-muted, #9CA3AF);
+      font-weight: 500;
+    }
+
+    /* ESTIFY RADIAL SPEEDOMETER GAUGE (CMP-06) */
+    .gauge-meter-wrap {
+      width: 104px;
+      height: 58px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      overflow: visible;
+    }
+
+    .gauge-meter-svg {
+      width: 104px;
+      height: 58px;
+      overflow: visible;
+    }
+
+
+
+    /* ══════════════════════════════════════════════════════════════
+       4. CONTROLS STRIP TOOLBAR (SEARCH + PILL TABS + CATEGORY FILTER)
+       Single Line Fixed Bar (No-wrap, Perfectly Proportioned Estify DNA)
+       ══════════════════════════════════════════════════════════════ */
+    .controls-strip-card {
+      background: var(--bg-card, #FFFFFF);
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      border-radius: var(--radius-xl, 18px);
+      padding: 10px 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.025);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 12px;
+      flex-wrap: nowrap;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .search-capsule-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 34px;
+      padding: 0 14px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-full, 9999px);
+      flex: 1 1 260px;
+      max-width: 375px;
+      min-width: 180px;
+      transition: all var(--transition-fast, 150ms ease);
+    }
+
+    .search-capsule-box:focus-within {
+      background: #FFFFFF;
+      border-color: var(--brand-primary, #FF7A00);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .search-capsule-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 11.5px;
+      color: var(--text-main, #111111);
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .search-capsule-box input::placeholder {
+      color: #94A3B8;
+    }
+
+    .btn-clear-search {
+      background: none;
+      border: none;
+      color: #94A3B8;
       cursor: pointer;
-      transition: all 150ms ease;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .filter-segment-tabs {
+      display: inline-flex;
+      align-items: center;
+      background: #F1F5F9;
+      padding: 2.5px;
+      border-radius: var(--radius-full, 9999px);
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .segment-tab-btn {
+      height: 29px;
+      padding: 0 10px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-full, 9999px);
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748B;
+      cursor: pointer;
+      transition: all var(--transition-fast, 150ms ease);
+      white-space: nowrap;
+    }
+
+    .segment-tab-btn:hover {
+      color: var(--text-main, #111111);
+    }
+
+    .segment-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--text-main, #111111);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .segment-badge-count {
+      font-weight: inherit;
+      color: inherit;
+    }
+
+    .toolbar-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .custom-select-trigger {
+      height: 34px;
+      padding: 0 11px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius-full, 9999px);
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: all var(--transition-fast, 150ms ease);
+    }
+
+    .custom-select-trigger:hover {
+      border-color: #CBD5E1;
+      color: var(--text-main, #111111);
+    }
+
+    .btn-action-catat {
+      background: var(--brand-primary, #FF7A00);
+      color: #FFFFFF;
+      border: none;
+      height: 34px;
+      padding: 0 13px;
+      border-radius: var(--radius-full, 9999px);
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all var(--transition-fast, 150ms ease);
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(255, 122, 0, 0.25);
+    }
+
+    .btn-action-catat:hover {
+      background: var(--brand-primary-hover, #E66E00);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       5. INTERACTIVE TICKET FEED & STREAM
+       ══════════════════════════════════════════════════════════════ */
+    .tickets-stream-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ticket-feed-card {
+      background: var(--bg-card, #FFFFFF);
+      border: 1.5px solid var(--border-subtle, #ECEEF2);
+      border-radius: 20px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      cursor: pointer;
+      transition: all var(--transition-fast, 150ms ease);
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
     }
 
-    .ticket-card:hover {
-      border-color: #FF7A00;
-      box-shadow: 0 4px 16px rgba(255, 122, 0, 0.08);
+    .ticket-feed-card:hover {
+      border-color: var(--brand-primary, #FF7A00);
+      box-shadow: 0 6px 20px rgba(255, 122, 0, 0.08);
       transform: translateY(-2px);
     }
 
-    .ticket-card.selected {
-      border-color: #FF7A00;
+    .ticket-feed-card.selected {
+      border-color: var(--brand-primary, #FF7A00);
       background: #FFFDFB;
-      box-shadow: 0 4px 16px rgba(255, 122, 0, 0.12);
+      box-shadow: 0 6px 22px rgba(255, 122, 0, 0.12);
     }
 
-    .ticket-left {
+    .ticket-feed-left {
       display: flex;
       align-items: center;
       gap: 16px;
       flex: 1;
+      min-width: 0;
     }
 
-    .ticket-photo-thumb {
-      width: 60px;
-      height: 60px;
-      border-radius: 14px;
-      object-fit: cover;
-      background: #ECEEF2;
+    .ticket-thumb-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: #F1F5F9;
+      position: relative;
+      overflow: hidden;
       flex-shrink: 0;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .ticket-main-info {
+    .ticket-thumb-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thumb-type-tag {
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      background: rgba(17, 17, 17, 0.80);
+      color: #FFFFFF;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .ticket-meta-col {
       display: flex;
       flex-direction: column;
       gap: 4px;
+      min-width: 0;
+      flex: 1;
     }
 
-    .ticket-badges-row {
+    .ticket-top-badges {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .badge-urgency {
+    .urgency-badge {
       font-size: 11px;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 2.5px 8px;
       border-radius: 6px;
       display: inline-flex;
       align-items: center;
       gap: 4px;
     }
 
-    .urgency-high { background: #FEE2E2; color: #DC2626; }
-    .urgency-medium { background: #FEF3C7; color: #D97706; }
-    .urgency-low { background: #E0E7FF; color: #4338CA; }
+    .urgency-urgent { background: #FEE2E2; color: #DC2626; border: 1px solid #FECDD3; }
+    .urgency-medium { background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; }
+    .urgency-low { background: #E0E7FF; color: #4338CA; border: 1px solid #C7D2FE; }
 
-    .ticket-id {
-      font-family: monospace;
-      font-size: 12px;
+    .ticket-id-pill {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 11px;
       font-weight: 600;
-      color: #6B7280;
+      color: #64748B;
+      background: #F1F5F9;
+      padding: 2px 7px;
+      border-radius: 6px;
     }
 
-    .ticket-title {
+    .ticket-category-tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748B;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ticket-timestamp-rel {
+      font-size: 11px;
+      color: #94A3B8;
+    }
+
+    .ticket-card-title {
       font-size: 15px;
       font-weight: 700;
-      color: #111111;
+      color: var(--text-main, #111111);
+      letter-spacing: -0.2px;
+      line-height: 1.35;
     }
 
-    .ticket-reporter {
+    .ticket-snippet-text {
       font-size: 12px;
-      color: #6B7280;
+      color: #64748B;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin: 2px 0 6px 0;
+    }
+
+    .ticket-reporter-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      font-size: 12px;
+      color: #475569;
     }
 
-    .ticket-right {
+    .reporter-avatar-tiny {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #111111;
+      color: #FFFFFF;
+      font-size: 9.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .reporter-room-badge {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      padding: 1px 7px;
+      border-radius: 6px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+    }
+
+    .ticket-feed-right {
       display: flex;
       align-items: center;
       gap: 20px;
+      flex-shrink: 0;
     }
 
-    .ticket-progress-summary {
+    .ticket-step-tracker {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -152,500 +654,2811 @@
       min-width: 140px;
     }
 
-    .progress-step-text {
-      font-size: 12px;
+    .step-current-text {
+      font-size: 11.5px;
       font-weight: 600;
-      color: #FF7A00;
+      color: var(--brand-primary, #FF7A00);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .step-current-text.is-done {
+      color: #16A34A;
+    }
+
+    .step-current-text.is-neutral {
+      color: #64748B;
     }
 
     /* 5-SEGMENT MINI DASH INDICATOR (CMP-07) */
-    .mini-segment-bar {
+    .mini-5dash-track {
       display: flex;
       gap: 4px;
       width: 120px;
     }
 
-    .mini-segment {
-      height: 4px;
+    .mini-dash-bar {
+      height: 5px;
       flex: 1;
-      border-radius: 2px;
-      background: #E5E7EB;
+      border-radius: 3px;
+      background: #E2E8F0;
+      transition: background 150ms ease;
     }
 
-    .mini-segment.filled { background: #FF7A00; }
+    .mini-dash-bar.filled { background: var(--brand-primary, #FF7A00); }
+    .mini-dash-bar.filled-green { background: #16A34A; }
 
-    /* RIGHT DRAWER: SCR-15 DETAIL TIKET */
-    .detail-drawer {
-      width: 400px;
+    .btn-open-detail {
       background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+      border: 1.5px solid #E2E8F0;
+      color: var(--text-main, #111111);
+      padding: 7px 14px;
+      border-radius: var(--radius-full, 9999px);
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      transition: all var(--transition-fast, 150ms ease);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .btn-open-detail:hover {
+      border-color: var(--brand-primary, #FF7A00);
+      color: var(--brand-primary, #FF7A00);
+      background: #FFF7ED;
+      transform: translateY(-1px);
+    }
+
+    .btn-select-arrow {
+      color: #CBD5E1;
+      width: 18px;
+      height: 18px;
+      transition: all var(--transition-fast, 150ms ease);
+    }
+
+    .ticket-feed-card:hover .btn-select-arrow,
+    .ticket-feed-card.selected .btn-select-arrow {
+      color: var(--brand-primary, #FF7A00);
+      transform: translateX(2px);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       6. LARGE COMPREHENSIVE TICKET DETAIL MODAL (1040px)
+       ══════════════════════════════════════════════════════════════ */
+    .modal-detail-dialog {
+      width: 1040px;
+      max-width: 95vw;
+      max-height: 90vh;
+      background: #FFFFFF;
+      border-radius: 20px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      align-self: flex-start;
-      position: sticky;
-      top: 96px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      animation: modalZoomIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .drawer-header {
+    @keyframes modalZoomIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-detail-topbar {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      border-bottom: 1px solid #F3F4F6;
-      padding-bottom: 16px;
+      padding: 16px 24px;
+      background: #FFFFFF;
+      border-bottom: 1px solid #ECEEF2;
+      flex-shrink: 0;
+      gap: 16px;
     }
 
-    /* ESTIFY 5-STEP DASH PROGRESS INDICATOR (CMP-07) */
-    .progress-timeline-box {
-      background: #F7F8FA;
-      border: 1px solid #ECEEF2;
-      border-radius: 18px;
-      padding: 16px;
+    .m-top-header-info {
       display: flex;
       flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .m-top-meta-chunk {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .m-title-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main, #0F172A);
+      margin: 4px 0 6px 0;
+      line-height: 1.3;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    .m-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .btn-open-fullscreen-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      border: 1px solid #E2E8F0;
+      background: #F8FAFC;
+      color: #475569;
+      font-size: 11.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 150ms ease;
+    }
+
+    .btn-open-fullscreen-link:hover {
+      background: #FFF7ED;
+      border-color: #FF7A00;
+      color: #FF7A00;
+    }
+
+    .modal-detail-content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 16px;
+      padding: 20px 24px;
+      background: #F8FAFC;
+      overflow-y: auto;
+      flex: 1;
+      max-height: calc(90vh - 78px);
+    }
+
+    .modal-detail-dialog,
+    .modal-detail-content-grid,
+    .m-comment-list {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .modal-detail-dialog::-webkit-scrollbar,
+    .modal-detail-content-grid::-webkit-scrollbar,
+    .m-comment-list::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .m-canvas-left {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .m-canvas-right {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .m-box-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 16px 18px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .m-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #F1F5F9;
+      padding-bottom: 10px;
+      gap: 8px;
+    }
+
+    .m-card-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .m-media-grid {
+      min-height: 184px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
     }
 
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-    }
-
-    .segmented-bar-full {
-      display: flex;
-      gap: 6px;
-      width: 100%;
-    }
-
-    .step-dash {
-      height: 6px;
-      flex: 1;
-      border-radius: 3px;
-      background: #E5E7EB;
-      transition: all 150ms ease;
-    }
-
-    .step-dash.active { background: #FF7A00; }
-
-    .step-labels-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      color: #9CA3AF;
-      font-weight: 600;
-    }
-
-    .step-labels-row .active { color: #111111; font-weight: 700; }
-
-    /* DETAIL PHOTO */
-    .detail-photo-wrapper {
-      position: relative;
-      border-radius: 16px;
+    .m-media-box {
+      border-radius: 14px;
       overflow: hidden;
-      height: 160px;
-      background: #E5E7EB;
+      height: 165px;
+      background: #E2E8F0;
+      position: relative;
+      cursor: pointer;
+      border: 1px solid #CBD5E1;
     }
 
-    .detail-photo-wrapper img {
+    .m-media-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 200ms ease;
     }
 
-    .detail-photo-tag {
-      position: absolute;
-      bottom: 8px;
-      left: 8px;
-      background: rgba(17, 17, 17, 0.75);
-      color: #FFFFFF;
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 6px;
+    .m-media-box:hover img {
+      transform: scale(1.03);
     }
 
-    /* TECHNICIAN CARD */
-    .tech-assignee-card {
-      background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 16px;
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .tech-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .tech-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #111111;
-      color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .btn-wa-direct {
-      background: #25D366;
-      color: #FFFFFF;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .drawer-actions {
+    .m-comment-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-top: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
-    .btn-drawer-full {
-      width: 100%;
-      padding: 11px;
-      border-radius: 9999px;
-      font-family: inherit;
+    .m-bubble-comment {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 12px;
       font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .m-bubble-comment.is-internal {
+      background: #FFFBEB;
+      border: 1px dashed #F59E0B;
+    }
+
+    .btn-wa-pill {
+      background: #25D366;
+      color: #FFFFFF;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 11.5px;
       font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
       cursor: pointer;
+      transition: background 150ms ease;
+    }
+
+    .btn-wa-pill:hover {
+      background: #1EBE5D;
+    }
+
+    /* 5-STEP TRACKER IN MODAL */
+    .modal-5step-track {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .modal-step-dash {
+      height: 7px;
+      flex: 1;
+      border-radius: 4px;
+      background: #E2E8F0;
+      transition: all 200ms ease;
+    }
+
+    .modal-step-dash.active { background: #FF7A00; }
+    .modal-step-dash.completed { background: #16A34A; }
+
+    /* ══════════════════════════════════════════════════════════════
+       7. EMPTY & SEARCH NOT FOUND STATES
+       ══════════════════════════════════════════════════════════════ */
+    .empty-state-box {
+      background: var(--bg-card, #FFFFFF);
+      border: 1.5px dashed #E2E8F0;
+      border-radius: 20px;
+      padding: 48px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .empty-icon-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #FFF7ED;
+      color: #FF7A00;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: all 150ms ease;
     }
 
-    .btn-black-solid { background: #111111; color: #FFFFFF; border: none; }
-    .btn-black-solid:hover { background: #222222; }
-    .btn-white-outline { background: #FFFFFF; border: 1.5px solid #ECEEF2; color: #4B5563; }
-    .btn-white-outline:hover { border-color: #111111; color: #111111; }
-
-    .wf-badge {
-      position: fixed;
-      bottom: 12px;
-      right: 12px;
+    /* ══════════════════════════════════════════════════════════════
+       8. MODAL SPECIFIC ENHANCEMENTS (ESTIFY DESIGN SYSTEM · IDENTIK WF-04)
+       ══════════════════════════════════════════════════════════════ */
+    .modal-card {
       background: #FFFFFF;
-      border: 1px solid #ECEEF2;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 640px;
+      max-height: calc(100vh - 48px);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.16);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(16px) scale(0.98);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header-pinned {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle, #ECEEF2);
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .modal-subtitle {
+      font-size: 11.5px;
+      color: var(--text-muted, #64748B);
+      margin: 2px 0 0 0;
+    }
+
+    .btn-modal-close,
+    .modal-close-btn {
+      background: #F1F5F9;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #64748B;
+      transition: all var(--transition-fast, 150ms ease);
+      flex-shrink: 0;
+    }
+
+    .btn-modal-close:hover,
+    .modal-close-btn:hover {
+      background: #E2E8F0;
+      color: #0F172A;
+    }
+
+    .modal-card,
+    .modal-body-scrollable {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .modal-card::-webkit-scrollbar,
+    .modal-body-scrollable::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .modal-body-scrollable {
+      padding: 18px 24px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-sizing: border-box;
+    }
+
+    .modal-section-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 6px;
+      margin-top: 4px;
+      border-top: 1px dashed #E2E8F0;
+    }
+
+    .modal-section-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label-txt,
+    .form-label-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+    }
+
+    .form-input-field,
+    .form-input-control {
+      height: 42px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 12.5px;
+      font-family: inherit;
+      color: var(--text-main, #111111);
+      background: #FFFFFF;
+      outline: none;
+      transition: all var(--transition-fast, 150ms ease);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .form-input-field:focus,
+    .form-input-control:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    textarea.form-input-field,
+    .form-textarea-control {
+      height: auto;
+      padding: 10px 14px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 12.5px;
+      color: var(--text-main, #111111);
+      background: #FFFFFF;
+      outline: none;
+      resize: vertical;
+      transition: all var(--transition-fast, 150ms ease);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    textarea.form-input-field:focus,
+    .form-textarea-control:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .file-upload-dropzone {
+      border: 1.5px dashed #CBD5E1;
+      border-radius: 12px;
+      background: #F8FAFC;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all var(--transition-fast, 150ms ease);
+    }
+
+    .file-upload-dropzone:hover {
+      border-color: var(--brand-primary, #FF7A00);
+      background: #FFF7ED;
+    }
+
+    .file-dropzone-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .file-dropzone-icon {
+      width: 34px;
+      height: 34px;
       border-radius: 8px;
-      padding: 4px 10px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-primary, #FF7A00);
+      flex-shrink: 0;
+    }
+
+    .file-dropzone-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .file-dropzone-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+    }
+
+    .file-dropzone-sub {
+      font-size: 10.5px;
+      color: var(--text-muted, #64748B);
+    }
+
+    .btn-choose-file {
+      height: 30px;
+      padding: 0 12px;
+      border-radius: var(--radius-full, 9999px);
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary, #475569);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .modal-footer-pinned {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-subtle, #ECEEF2);
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-shrink: 0;
+      z-index: 10;
+      box-sizing: border-box;
+    }
+
+    .btn-modal-cancel {
+      height: 38px;
+      padding: 0 18px;
+      border-radius: var(--radius-full, 9999px);
+      background: #F1F5F9;
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary, #475569);
+      cursor: pointer;
+      transition: all var(--transition-fast, 150ms ease);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .btn-modal-cancel:hover {
+      background: #E2E8F0;
+      color: var(--text-main, #111111);
+    }
+
+    .btn-modal-primary {
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: var(--brand-primary, #FF7A00);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full, 9999px);
+      padding: 0 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
+      transition: all var(--transition-fast, 150ms ease);
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    .btn-modal-primary:hover {
+      background: #E56E00;
+      transform: translateY(-1px);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       9. CUSTOM ESTIFY DROPDOWN COMPONENTS (FOR MODAL FORMS)
+       ══════════════════════════════════════════════════════════════ */
+    .custom-select-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .btn-custom-select-trigger {
+      width: 100%;
+      height: 42px;
+      padding: 0 14px;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all var(--transition-fast, 150ms ease);
+      box-sizing: border-box;
+      text-align: left;
+    }
+
+    .btn-custom-select-trigger:hover {
+      border-color: #CBD5E1;
+      background: #FAFAFC;
+    }
+
+    .btn-custom-select-trigger.active,
+    .btn-custom-select-trigger:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+      background: #FFFFFF;
+    }
+
+    .custom-select-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .custom-dropdown-panel {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 320px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+      padding: 6px;
+      z-index: 120;
+      max-height: 250px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      scrollbar-width: thin;
+      scrollbar-color: #CBD5E1 transparent;
+      animation: rumaPopUp 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+    }
+
+    .custom-select-wrap.align-right .custom-dropdown-panel {
+      left: auto;
+      right: 0;
+    }
+
+    .custom-dropdown-panel::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-dropdown-panel::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 6px;
+    }
+
+    .dropdown-option-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all var(--transition-fast, 150ms ease);
+      user-select: none;
+      border: 1px solid transparent;
+      box-sizing: border-box;
+      background: #FFFFFF;
+    }
+
+    .dropdown-option-item:hover {
+      background: #F8FAFC;
+      border-color: #E2E8F0;
+    }
+
+    .dropdown-option-item.selected {
+      background: #FFF7ED;
+      border-color: #FED7AA;
+    }
+
+    .option-icon-box {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: #F1F5F9;
+      color: #64748B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .dropdown-option-item.selected .option-icon-box {
+      background: #FFEDD5;
+      color: #FF7A00;
+    }
+
+    .option-text-cluster {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5px;
+    }
+
+    .option-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .option-title-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .dropdown-option-item.selected .option-title-text {
+      color: #C2410C;
+    }
+
+    .option-sub-text {
       font-size: 11px;
-      color: #6B7280;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      color: #64748B;
+      line-height: 1.35;
+      word-break: normal;
+    }
+
+    .option-badge-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1.5px 7px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      letter-spacing: 0.2px;
+    }
+
+    @keyframes rumaPopUp {
+      from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .wf-badge-floating {
+      position: fixed;
+      bottom: 14px;
+      right: 14px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       z-index: 999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Responsive adaptations for 2-column layout (Sinkron dengan WF-06) */
+    @media (max-width: 1240px) {
+      .dashboard-2col-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .col-sidebar-flow,
+      .card-detail-drawer {
+        width: 100%;
+        max-width: 100%;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .metrics-row-3 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .controls-strip-card {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .search-capsule-box {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="wf-badge">SCR-14 & SCR-15 · Tiket Kerusakan & Segmen Progres 5 Tahap</div>
+  <!-- FLOATING SCREEN IDENTIFIER BADGE -->
+  <div class="wf-badge-floating">
+    <i data-lucide="wrench" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+    SCR-14 &middot; Antrean &amp; Triase Tiket Pemeliharaan (F-07)
+  </div>
 
-  <!-- TOPBAR -->
   <!-- TOP CANOPY OVERLAY (Masking celah atas navbar floating) -->
   <div class="top-canopy-overlay" aria-hidden="true"></div>
 
-  <header class="topbar" id="mainTopbar">
-    <!-- Rendered dynamically by components.js -->
-  </header>
+  <!-- MAIN TOPBAR DINAMIS -->
+  <header class="topbar" id="mainTopbar"></header>
 
-  <!-- PAGE LAYOUT -->
-  <div class="page-layout">
-    
-    <!-- LEFT CONTENT: SCR-14 -->
-    <div class="content-area">
+  <!-- DASHBOARD MASTER CONTAINER -->
+  <div class="dashboard-wrapper">
 
-      <!-- HEADER -->
-      <div class="page-header">
-        <div class="page-title-group">
-          <h1>Pusat Pemeliharaan & Tiket Kerusakan</h1>
-          <p>Pantau laporan komplain fasilitas kamar dan penugasan teknisi perbaikan.</p>
+    <!-- 1. THREE HERO GAUGE METRICS (CMP-06) -->
+    <div class="metrics-row-3">
+
+      <!-- Card 1: Tingkat Penyelesaian Tiket (Resolution Rate) -->
+      <div class="metric-card-estify">
+        <div class="metric-card-top">
+          <div class="metric-icon-box is-green">
+            <i data-lucide="check-circle-2" style="width: 19px; height: 19px;"></i>
+          </div>
+          <div class="metric-lbl-group">
+            <span class="metric-lbl-title">Tingkat Penyelesaian</span>
+            <span class="metric-lbl-sub">Bulan Oktober 2026</span>
+          </div>
+          <span class="metric-badge-pill pill-green-soft">
+            <i data-lucide="trending-up" style="width: 11px; height: 11px;"></i> +6% MoM
+          </span>
         </div>
-        <button class="btn-pill btn-orange-primary" onclick="RumaUI.showToast('Dialog formulir laporan kerusakan dibuka')">
-          <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
-          Buat Tiket Baru
+        <div class="metric-card-bottom">
+          <div class="metric-val-col">
+            <span class="metric-lbl-sub">8 dari 10 Tiket Tuntas</span>
+            <span class="metric-value-huge">80%</span>
+          </div>
+          <!-- Gauge Meter Semi-Circle -->
+          <div class="gauge-meter-wrap" title="80% Tiket Selesai">
+            <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+              <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+              <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#16A34A" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="21.36"/>
+              <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">80%</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Tiket Mendesak Membutuhkan Tindakan -->
+      <div class="metric-card-estify">
+        <div class="metric-card-top">
+          <div class="metric-icon-box is-orange">
+            <i data-lucide="alert-triangle" style="width: 19px; height: 19px;"></i>
+          </div>
+          <div class="metric-lbl-group">
+            <span class="metric-lbl-title">Tiket Mendesak</span>
+            <span class="metric-lbl-sub">Prioritas Penanganan Cepat</span>
+          </div>
+          <span class="metric-badge-pill pill-danger-soft">
+            <i data-lucide="flame" style="width: 11px; height: 11px;"></i> Butuh Aksi
+          </span>
+        </div>
+        <div class="metric-card-bottom">
+          <div class="metric-val-col">
+            <span class="metric-lbl-sub">AC Kamar B-03 Bocor</span>
+            <span class="metric-value-huge" style="color: #DC2626;">1 <span class="metric-sub-val" style="color: #DC2626;">Tiket</span></span>
+          </div>
+          <div class="gauge-meter-wrap" title="1 Tiket Mendesak Aktif">
+            <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+              <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+              <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#DC2626" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="85.4"/>
+              <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#DC2626">Urgent</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Rata-rata Durasi Penanganan (SLA) -->
+      <div class="metric-card-estify">
+        <div class="metric-card-top">
+          <div class="metric-icon-box is-dark">
+            <i data-lucide="clock" style="width: 19px; height: 19px;"></i>
+          </div>
+          <div class="metric-lbl-group">
+            <span class="metric-lbl-title">Rata-rata Respon Kerja</span>
+            <span class="metric-lbl-sub">SLA Standar Kost: &lt; 8 Jam</span>
+          </div>
+          <span class="metric-badge-pill pill-dark-soft">
+            <i data-lucide="shield-check" style="width: 11px; height: 11px;"></i> SLA Terpenuhi
+          </span>
+        </div>
+        <div class="metric-card-bottom">
+          <div class="metric-val-col">
+            <span class="metric-lbl-sub">Waktu Hingga Teknisi Tiba</span>
+            <span class="metric-value-huge">4.8 <span class="metric-sub-val">Jam</span></span>
+          </div>
+          <div class="gauge-meter-wrap" title="SLA 4.8 Jam (Target 8 Jam)">
+            <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+              <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+              <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="42.7"/>
+              <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">60%</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. CONTROLS STRIP TOOLBAR (SEARCH + CENTERED STATUS TABS + ACTION CLUSTER) -->
+    <div class="controls-strip-card">
+          
+      <!-- 1. SEARCH CAPSULE (EXPANDED TO MATCH RIGHT ACTION CLUSTER) -->
+      <div class="search-capsule-box">
+        <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8; flex-shrink: 0;"></i>
+        <input type="text" id="searchInput" placeholder="Cari tiket, kamar, nama penghuni..." oninput="handleSearchInput()">
+        <button class="btn-clear-search" id="btnClearSearch" onclick="clearSearch()" title="Hapus pencarian">
+          <i data-lucide="x" style="width: 13px; height: 13px;"></i>
         </button>
       </div>
 
-      <!-- SUMMARY CHIPS -->
-      <div class="summary-chips-row">
-        <div class="chip-card">
-          <div class="chip-dot" style="background: #DC2626;"></div>
-          <div>
-            <div class="chip-label">Mendesak</div>
-            <div style="font-size: 11px; color: #9CA3AF;">Segera ditindak</div>
-          </div>
-          <div class="chip-count" style="color: #DC2626;">1</div>
-        </div>
-
-        <div class="chip-card">
-          <div class="chip-dot" style="background: #FF7A00;"></div>
-          <div>
-            <div class="chip-label">Sedang Dikerjakan</div>
-            <div style="font-size: 11px; color: #9CA3AF;">Teknisi di lokasi</div>
-          </div>
-          <div class="chip-count" style="color: #FF7A00;">2</div>
-        </div>
-
-        <div class="chip-card">
-          <div class="chip-dot" style="background: #F59E0B;"></div>
-          <div>
-            <div class="chip-label">Menunggu Teknisi</div>
-            <div style="font-size: 11px; color: #9CA3AF;">Belum ditugaskan</div>
-          </div>
-          <div class="chip-count">1</div>
-        </div>
-
-        <div class="chip-card">
-          <div class="chip-dot" style="background: #16A34A;"></div>
-          <div>
-            <div class="chip-label">Selesai Bulan Ini</div>
-            <div style="font-size: 11px; color: #9CA3AF;">Oktober 2026</div>
-          </div>
-          <div class="chip-count">8</div>
-        </div>
+      <!-- 2. STATUS SEGMENT TABS (CENTERED) -->
+      <div class="filter-segment-tabs">
+        <button class="segment-tab-btn active" onclick="setStatusTab('all')" id="tabAll">
+          Semua (<span id="badgeAll">6</span>)
+        </button>
+        <button class="segment-tab-btn" onclick="setStatusTab('urgent')" id="tabUrgent">
+          Mendesak (<span id="badgeUrgent">1</span>)
+        </button>
+        <button class="segment-tab-btn" onclick="setStatusTab('in_progress')" id="tabInProgress">
+          Dikerjakan (<span id="badgeInProgress">2</span>)
+        </button>
+        <button class="segment-tab-btn" onclick="setStatusTab('assigned')" id="tabAssigned">
+          Menunggu (<span id="badgeAssigned">1</span>)
+        </button>
+        <button class="segment-tab-btn" onclick="setStatusTab('resolved')" id="tabResolved">
+          Selesai (<span id="badgeResolved">2</span>)
+        </button>
       </div>
 
-      <!-- FILTER CONTROLS -->
-      <div class="controls-card">
-        <div class="filter-tabs">
-          <button class="filter-pill-btn active">Semua (4)</button>
-          <button class="filter-pill-btn">Mendesak (1)</button>
-          <button class="filter-pill-btn">Sedang Dikerjakan (2)</button>
-          <button class="filter-pill-btn">Menunggu (1)</button>
-          <button class="filter-pill-btn">Selesai (8)</button>
+      <!-- 3. RIGHT ACTIONS IN STRIP (CATEGORY FILTER + EXPORT + CREATE TICKET) -->
+      <div class="toolbar-actions-right">
+            <!-- CATEGORY DROPDOWN TRIGGER -->
+            <div style="position: relative;">
+              <button class="custom-select-trigger" onclick="toggleCategoryMenu()" id="btnCategoryFilter">
+                <i data-lucide="filter" style="width: 13px; height: 13px;"></i>
+                <span id="selectedCategoryLabel">Semua Kategori</span>
+                <i data-lucide="chevron-down" style="width: 13px; height: 13px;"></i>
+              </button>
+              
+              <div id="categoryDropdownMenu" style="display: none; position: absolute; top: calc(100% + 6px); right: 0; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); width: 190px; padding: 6px; z-index: 100;">
+                <div style="font-size: 10.5px; font-weight: 700; color: #94A3B8; padding: 6px 10px; text-transform: uppercase;">Kategori Kerusakan</div>
+                <div class="menu-item-cat" onclick="selectCategory('all', 'Semua Kategori')" style="padding: 7px 10px; font-size: 12px; font-weight: 600; color: #111111; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="layers" style="width: 14px; height: 14px; color: #64748B;"></i> Semua Kategori
+                </div>
+                <div class="menu-item-cat" onclick="selectCategory('AC', 'AC & Pendingin')" style="padding: 7px 10px; font-size: 12px; color: #334155; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="wind" style="width: 14px; height: 14px; color: #3B82F6;"></i> AC &amp; Pendingin
+                </div>
+                <div class="menu-item-cat" onclick="selectCategory('Plumbing', 'Plumbing & Sanitasi')" style="padding: 7px 10px; font-size: 12px; color: #334155; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="droplet" style="width: 14px; height: 14px; color: #0EA5E9;"></i> Plumbing &amp; Ledeng
+                </div>
+                <div class="menu-item-cat" onclick="selectCategory('Kelistrikan', 'Kelistrikan')" style="padding: 7px 10px; font-size: 12px; color: #334155; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="zap" style="width: 14px; height: 14px; color: #EAB308;"></i> Kelistrikan
+                </div>
+                <div class="menu-item-cat" onclick="selectCategory('Mebel', 'Mebel & Pintu')" style="padding: 7px 10px; font-size: 12px; color: #334155; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="wrench" style="width: 14px; height: 14px; color: #8B5CF6;"></i> Mebel &amp; Pintu
+                </div>
+                <div class="menu-item-cat" onclick="selectCategory('Gedung', 'Fasilitas Umum')" style="padding: 7px 10px; font-size: 12px; color: #334155; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="building-2" style="width: 14px; height: 14px; color: #64748B;"></i> Fasilitas Umum
+                </div>
+              </div>
+            </div>
+
+            <!-- EKSPOR REKAP BUTTON -->
+            <button class="custom-select-trigger" onclick="openExportModal()" title="Ekspor Rekap Laporan Pemeliharaan">
+              <i data-lucide="download" style="width: 13px; height: 13px;"></i>
+              <span>Ekspor</span>
+            </button>
+
+            <!-- BUAT TIKET BARU BUTTON -->
+            <button class="btn-action-catat" onclick="openCreateTicketModal()" title="Buat Tiket Perbaikan Baru">
+              <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+              <span>Buat Tiket Baru</span>
+            </button>
+          </div>
+
         </div>
 
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <button class="filter-pill-btn"><i data-lucide="filter" style="width: 13px; height: 13px; display: inline;"></i> Filter Kategori</button>
+        <!-- TICKETS STREAM FEED CONTAINER -->
+        <div class="tickets-stream-container" id="ticketsListFeed">
+          <!-- Dynamic ticket cards will be rendered here via renderTickets() -->
         </div>
+
+        <!-- EMPTY STATE (HIDDEN BY DEFAULT) -->
+        <div class="empty-state-box" id="emptyStateBox" style="display: none;">
+          <div class="empty-icon-circle">
+            <i data-lucide="inbox" style="width: 26px; height: 26px;"></i>
+          </div>
+          <div>
+            <div style="font-size: 14.5px; font-weight: 700; color: var(--text-main, #111111);">Tidak Ada Tiket yang Cocok</div>
+            <p style="font-size: 12px; color: #64748B; margin: 4px 0 0 0;">Coba sesuaikan kata kunci pencarian atau ubah filter status di atas.</p>
+          </div>
+          <button class="custom-select-trigger" onclick="resetAllFilters()" style="margin-top: 6px;">
+            <i data-lucide="rotate-ccw" style="width: 13px; height: 13px;"></i>
+            Reset Filter Pencarian
+          </button>
+        </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       9. MODAL 1: FORM BUAT TIKET BARU (SCR-14 · ESTIFY FORM STANDAR IDENTIK WF-04)
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop" id="modalCreateTicket">
+    <div class="modal-card" style="width: 640px; max-width: 95vw;">
+      
+      <!-- PINNED HEADER (IDENTIK DENGAN MODAL REGISTRASI PENGHUNI BARU WF-04) -->
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Buat Tiket Perbaikan Baru</h2>
+            <p class="modal-subtitle">Catat keluhan kerusakan fasilitas kamar atau area komunal kos</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalCreateTicket')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
       </div>
 
-      <!-- TICKET LIST -->
-      <div class="tickets-container">
+      <!-- SCROLLABLE BODY -->
+      <div class="modal-body-scrollable">
+        
+        <!-- BAGIAN 1: LOKASI UNIT & IDENTITAS PELAPOR -->
+        <div class="modal-section-title">
+          <i data-lucide="map-pin" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+          <span>1. Lokasi Unit &amp; Identitas Pelapor</span>
+        </div>
 
-        <!-- Ticket 1 (Selected): AC Bocor Menetes -->
-        <div class="ticket-card selected" onclick="selectTicket(1)">
-          <div class="ticket-left">
-            <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=200&auto=format&fit=crop&q=80" alt="Kerusakan AC" class="ticket-photo-thumb">
-            <div class="ticket-main-info">
-              <div class="ticket-badges-row">
-                <span class="badge-urgency urgency-high"><i data-lucide="alert-triangle" style="width: 12px; height: 12px;"></i> Mendesak</span>
-                <span class="ticket-id">TKT-202610-04</span>
-                <span style="font-size: 11px; color: #9CA3AF;">· Dilaporkan 2 jam lalu</span>
-              </div>
-              <div class="ticket-title">AC Kamar Menetes Air Deras Membasahi Kasur</div>
-              <div class="ticket-reporter">
-                <i data-lucide="user" style="width: 13px; height: 13px;"></i>
-                Reza Pratama · <strong>Kamar B-03 (Lt. 2)</strong>
-              </div>
+        <!-- SEARCHABLE ROOM SELECT (FULL WIDTH · NAMA PELAPOR OTOMATIS TERSINKRONISASI) -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Pilih Unit Kamar / Lokasi *</label>
+          <div class="custom-select-wrap" id="wrapRoomSelect">
+            <div style="position: relative; width: 100%;">
+              <i data-lucide="search" style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: #94A3B8; pointer-events: none; z-index: 2;"></i>
+              <input type="text" id="roomSearchInput" class="form-input-field" value="Kamar B-03 &middot; Lt. 2 (Reza Pratama)" placeholder="Cari kamar, lantai, atau nama..." autocomplete="off" style="padding-left: 36px; padding-right: 14px; font-weight: 600;" onfocus="openRoomDropdown()" onclick="openRoomDropdown()" oninput="filterRoomDropdown(this.value)">
             </div>
+            
+            <div class="custom-dropdown-panel" id="dropdownRoom" style="display: none;">
+              <!-- Populated and filtered dynamically via JavaScript renderRoomOptions() -->
+            </div>
+            <input type="hidden" id="createRoomSelect" value="B-03">
+            <input type="hidden" id="createReporterInput" value="Reza Pratama">
           </div>
 
-          <div class="ticket-right">
-            <div class="ticket-progress-summary">
-              <div class="progress-step-text">Tahap 3: Dikerjakan</div>
-              <div class="mini-segment-bar">
-                <div class="mini-segment filled"></div>
-                <div class="mini-segment filled"></div>
-                <div class="mini-segment filled"></div>
-                <div class="mini-segment"></div>
-                <div class="mini-segment"></div>
-              </div>
-            </div>
-            <i data-lucide="chevron-right" style="color: #9CA3AF; width: 18px; height: 18px;"></i>
+          <!-- INDIKATOR PELAPOR OTOMATIS DARI KAMAR -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; font-size: 11px;">
+            <span style="display: inline-flex; align-items: center; gap: 5px; color: #166534; background: #DCFCE7; border: 1px solid #BBF7D0; padding: 2.5px 8px; border-radius: 6px; font-weight: 600;">
+              <i data-lucide="user-check" style="width: 12px; height: 12px; color: #16A34A;"></i>
+              <span>Nama Pelapor: <strong id="detectedTenantName">Reza Pratama</strong> (Otomatis dari Kamar)</span>
+            </span>
+            <span style="color: #94A3B8;">Ketik di search bar untuk memilih kamar / area lain</span>
           </div>
         </div>
 
-        <!-- Ticket 2: Keran Wastafel Patah -->
-        <div class="ticket-card" onclick="selectTicket(2)">
-          <div class="ticket-left">
-            <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=200&auto=format&fit=crop&q=80" alt="Keran Patah" class="ticket-photo-thumb">
-            <div class="ticket-main-info">
-              <div class="ticket-badges-row">
-                <span class="badge-urgency urgency-medium"><i data-lucide="wrench" style="width: 12px; height: 12px;"></i> Normal</span>
-                <span class="ticket-id">TKT-202610-03</span>
-                <span style="font-size: 11px; color: #9CA3AF;">· Dilaporkan kemarin</span>
-              </div>
-              <div class="ticket-title">Kran Wastafel Kamar Mandi Patah & Air Merembes</div>
-              <div class="ticket-reporter">
-                <i data-lucide="user" style="width: 13px; height: 13px;"></i>
-                Rina Marliana · <strong>Kamar A-01 (Lt. 1)</strong>
-              </div>
-            </div>
-          </div>
-
-          <div class="ticket-right">
-            <div class="ticket-progress-summary">
-              <div class="progress-step-text" style="color: #4B5563;">Tahap 2: Ditugaskan</div>
-              <div class="mini-segment-bar">
-                <div class="mini-segment filled"></div>
-                <div class="mini-segment filled"></div>
-                <div class="mini-segment"></div>
-                <div class="mini-segment"></div>
-                <div class="mini-segment"></div>
-              </div>
-            </div>
-            <i data-lucide="chevron-right" style="color: #9CA3AF; width: 18px; height: 18px;"></i>
+        <!-- BAGIAN 2: KLASIFIKASI & RINCIAN MASALAH -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="alert-triangle" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+            <span>2. Klasifikasi &amp; Rincian Kerusakan</span>
           </div>
         </div>
 
-        <!-- Ticket 3: Lampu Lorong Lt. 3 Mati -->
-        <div class="ticket-card" onclick="selectTicket(3)">
-          <div class="ticket-left">
-            <div class="ticket-photo-thumb" style="display: flex; align-items: center; justify-content: center; background: #F3F4F6; color: #9CA3AF;">
-              <i data-lucide="lightbulb" style="width: 24px; height: 24px;"></i>
-            </div>
-            <div class="ticket-main-info">
-              <div class="ticket-badges-row">
-                <span class="badge-urgency urgency-low"><i data-lucide="info" style="width: 12px; height: 12px;"></i> Rendah</span>
-                <span class="ticket-id">TKT-202610-02</span>
-                <span style="font-size: 11px; color: #9CA3AF;">· Dilaporkan 2 hari lalu</span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <!-- CUSTOM DROPDOWN 2: KATEGORI KERUSAKAN -->
+          <div class="form-group-item">
+            <label class="form-label-txt">Kategori Kerusakan *</label>
+            <div class="custom-select-wrap" id="wrapCategorySelect">
+              <button type="button" class="btn-custom-select-trigger" id="btnTriggerCategory" onclick="toggleCustomDropdown('dropdownCategory', this)">
+                <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+                  <span id="iconTriggerCategory"><i data-lucide="wind" style="width: 15px; height: 15px; color: #3B82F6; flex-shrink: 0;"></i></span>
+                  <span class="custom-select-label" id="labelTriggerCategory">AC &amp; Pendingin Ruangan</span>
+                </div>
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8; flex-shrink: 0;"></i>
+              </button>
+
+              <div class="custom-dropdown-panel" id="dropdownCategory" style="display: none;">
+                <div class="dropdown-option-item selected" id="optCat-AC" onclick="selectCategoryOption('AC', 'AC &amp; Pendingin Ruangan', 'wind', '#3B82F6')">
+                  <div class="option-icon-box" style="background: #EFF6FF; color: #3B82F6;"><i data-lucide="wind" style="width: 14px; height: 14px;"></i></div>
+                  <div class="option-text-cluster">
+                    <div class="option-header-row">
+                      <span class="option-title-text">AC &amp; Pendingin Ruangan</span>
+                    </div>
+                    <div class="option-sub-text">Bocor air, kompresor mati, remote error</div>
+                  </div>
+                </div>
+
+                <div class="dropdown-option-item" id="optCat-Plumbing" onclick="selectCategoryOption('Plumbing', 'Plumbing &amp; Sanitasi Air', 'droplet', '#0EA5E9')">
+                  <div class="option-icon-box" style="background: #F0F9FF; color: #0EA5E9;"><i data-lucide="droplet" style="width: 14px; height: 14px;"></i></div>
+                  <div class="option-text-cluster">
+                    <div class="option-header-row">
+                      <span class="option-title-text">Plumbing &amp; Sanitasi Air</span>
+                    </div>
+                    <div class="option-sub-text">Kran wastafel patah, pipa bocor, toilet mampet</div>
+                  </div>
+                </div>
+
+                <div class="dropdown-option-item" id="optCat-Kelistrikan" onclick="selectCategoryOption('Kelistrikan', 'Kelistrikan &amp; Saklar MCB', 'zap', '#EAB308')">
+                  <div class="option-icon-box" style="background: #FEFCE8; color: #EAB308;"><i data-lucide="zap" style="width: 14px; height: 14px;"></i></div>
+                  <div class="option-text-cluster">
+                    <div class="option-header-row">
+                      <span class="option-title-text">Kelistrikan &amp; Saklar MCB</span>
+                    </div>
+                    <div class="option-sub-text">Stop kontak meletup, lampu padam, korsleting</div>
+                  </div>
+                </div>
+
+                <div class="dropdown-option-item" id="optCat-Mebel" onclick="selectCategoryOption('Mebel', 'Mebel, Pintu &amp; Kunci', 'wrench', '#8B5CF6')">
+                  <div class="option-icon-box" style="background: #F5F3FF; color: #8B5CF6;"><i data-lucide="wrench" style="width: 14px; height: 14px;"></i></div>
+                  <div class="option-text-cluster">
+                    <div class="option-header-row">
+                      <span class="option-title-text">Mebel, Pintu &amp; Kunci</span>
+                    </div>
+                    <div class="option-sub-text">Engsel pintu seret, kunci macet, ranjang goyang</div>
+                  </div>
+                </div>
+
+                <div class="dropdown-option-item" id="optCat-Gedung" onclick="selectCategoryOption('Gedung', 'Gedung &amp; Fasilitas Umum', 'building-2', '#64748B')">
+                  <div class="option-icon-box" style="background: #F1F5F9; color: #64748B;"><i data-lucide="building-2" style="width: 14px; height: 14px;"></i></div>
+                  <div class="option-text-cluster">
+                    <div class="option-header-row">
+                      <span class="option-title-text">Gedung &amp; Fasilitas Umum</span>
+                    </div>
+                    <div class="option-sub-text">Plafon bocor, dinding retak, keramik lepas</div>
+                  </div>
+                </div>
               </div>
-              <div class="ticket-title">Lampu Neon Koridor Depan Kamar C-03 & C-04 Redup/Mati</div>
-              <div class="ticket-reporter">
-                <i data-lucide="home" style="width: 13px; height: 13px;"></i>
-                Fasilitas Bersama · <strong>Lantai 3</strong>
+              <input type="hidden" id="createCategorySelect" value="AC">
+            </div>
+          </div>
+
+          <!-- CUSTOM DROPDOWN 3: TINGKAT URGENSI (ALIGN RIGHT) -->
+          <div class="form-group-item">
+            <label class="form-label-txt">Tingkat Urgensi Perbaikan *</label>
+            <div class="custom-select-wrap align-right" id="wrapUrgencySelect">
+              <button type="button" class="btn-custom-select-trigger" id="btnTriggerUrgency" onclick="toggleCustomDropdown('dropdownUrgency', this)">
+                <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
+                  <span id="iconTriggerUrgency"><i data-lucide="clock" style="width: 15px; height: 15px; color: #FF7A00; flex-shrink: 0;"></i></span>
+                  <span class="custom-select-label" id="labelTriggerUrgency">Normal (Respon 1x24 Jam)</span>
+                </div>
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8; flex-shrink: 0;"></i>
+              </button>
+
+              <div class="custom-dropdown-panel" id="dropdownUrgency" style="display: none;">
+                <div class="dropdown-option-item" id="optUrg-urgent" onclick="selectUrgencyOption('urgent', 'Mendesak (Respon Segera &lt; 1 Jam)', 'alert-triangle', '#DC2626')">
+                  <div class="option-icon-box" style="background: #FEE2E2; color: #DC2626;">
+                    <i data-lucide="alert-triangle" style="width: 14px; height: 14px;"></i>
+                  </div>
+                  <div class="option-text-cluster">
+                    <div class="option-header-row">
+                      <span class="option-title-text">Mendesak (Darurat)</span>
+                      <span class="option-badge-tag" style="background: #FEE2E2; color: #DC2626;">Respon Segera</span>
+                    </div>
+                    <div class="option-sub-text">Air bocor deras, korsleting atau MCB anjlok</div>
+                  </div>
+                </div>
+
+                <div class="dropdown-option-item selected" id="optUrg-medium" onclick="selectUrgencyOption('medium', 'Normal (Respon 1x24 Jam)', 'clock', '#FF7A00')">
+                  <div class="option-icon-box" style="background: #FFF7ED; color: #FF7A00;">
+                    <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+                  </div>
+                  <div class="option-text-cluster">
+                    <div class="option-header-row">
+                      <span class="option-title-text">Normal (Standar)</span>
+                      <span class="option-badge-tag" style="background: #FFF7ED; color: #FF7A00; border: 1px solid #FED7AA;">1x24 Jam</span>
+                    </div>
+                    <div class="option-sub-text">Kran menetes, AC kurang dingin, pintu seret</div>
+                  </div>
+                </div>
+
+                <div class="dropdown-option-item" id="optUrg-low" onclick="selectUrgencyOption('low', 'Rendah (Jadwal Rutin)', 'info', '#64748B')">
+                  <div class="option-icon-box" style="background: #F1F5F9; color: #64748B;">
+                    <i data-lucide="info" style="width: 14px; height: 14px;"></i>
+                  </div>
+                  <div class="option-text-cluster">
+                    <div class="option-header-row">
+                      <span class="option-title-text">Rendah (Minor)</span>
+                      <span class="option-badge-tag" style="background: #F1F5F9; color: #475569;">Rutin</span>
+                    </div>
+                    <div class="option-sub-text">Lampu lorong redup, touchup cat, estetik</div>
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" id="createUrgencySelect" value="medium">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt">Judul Keluhan / Kerusakan Ringkas *</label>
+          <input type="text" id="createTitleInput" class="form-input-field" placeholder="Contoh: AC menetes bocor ke ranjang tidur / Stop kontak berasap">
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt">Kronologi &amp; Rincian Lengkap *</label>
+          <textarea id="createDescInput" class="form-input-field" style="min-height: 80px; resize: vertical;" placeholder="Jelaskan secara detail lokasi kerusakan, sejak kapan terjadi, dan apakah mengganggu aktivitas penghuni..."></textarea>
+        </div>
+
+        <!-- BAGIAN 3: BUKTI FOTO ATAU VIDEO (DROPZONE ELEGAN IDENTIK WF-04) -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="camera" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+            <span>3. Lampiran Bukti Foto / Video (Wajib Minimal 1)</span>
+          </div>
+        </div>
+
+        <div class="form-group-item">
+          <div class="file-upload-dropzone" onclick="simulateFileUpload()">
+            <div class="file-dropzone-left">
+              <div class="file-dropzone-icon">
+                <i data-lucide="image" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div class="file-dropzone-text">
+                <span class="file-dropzone-title" id="dropzoneTextMain">Unggah Foto atau Video Kerusakan</span>
+                <span class="file-dropzone-sub" id="dropzoneTextSub">Format: JPG, PNG, atau MP4 (Maksimal 20MB)</span>
+              </div>
+            </div>
+            <button type="button" class="btn-choose-file">Pilih Berkas</button>
+          </div>
+
+          <div id="attachedFilesPreview" style="display: none; align-items: center; gap: 8px; margin-top: 6px;">
+            <span style="font-size: 11px; background: #DCFCE7; color: #16A34A; border: 1px solid #BBF7D0; padding: 4px 10px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+              <i data-lucide="check" style="width: 13px; height: 13px;"></i> 1 Berkas Terlampir: bukti_kerusakan_kamar.jpg (3.2 MB)
+            </span>
+          </div>
+        </div>
+
+        <!-- Checkbox Kirim Notifikasi via WhatsApp (Identik Pola WF-04 Registrasi Penghuni Baru) -->
+        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 11px 14px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none; margin-top: 14px;" onclick="document.getElementById('notifyViaWa').click()">
+          <input type="checkbox" id="notifyViaWa" checked style="width: 16px; height: 16px; accent-color: #16A34A; cursor: pointer; margin-top: 2px;" onclick="event.stopPropagation()">
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: #166534; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="message-square" style="width: 13px; height: 13px; color: #16A34A;"></i>
+              <span>Kirim Notifikasi Tiket Perbaikan via WhatsApp</span>
+            </div>
+            <div style="font-size: 10.5px; color: #15803D; margin-top: 2px; line-height: 1.4;">
+              Notifikasi instan tiket baru beserta detail kerusakan &amp; bukti foto akan langsung dikirimkan ke nomor WhatsApp teknisi bertugas dan pelapor.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PINNED FOOTER (IDENTIK DENGAN MODAL REGISTRASI PENGHUNI BARU WF-04) -->
+      <div class="modal-footer-pinned">
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalCreateTicket')">Batal</button>
+        <button type="button" class="btn-modal-primary" onclick="submitCreateTicket()">
+          <i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i>
+          <span>Simpan &amp; Terbitkan Tiket</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       10. MODAL 2: EKSPOR LAPORAN PEMELIHARAAN
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop" id="modalExportReport">
+    <div class="modal-card" style="width: 480px;">
+      <div class="modal-header">
+        <div>
+          <div style="font-size: 11px; font-weight: 700; color: #FF7A00; text-transform: uppercase;">Rekapitulasi Pemeliharaan</div>
+          <div class="modal-title" style="margin-top: 2px;">Ekspor Log Tiket &amp; Servis</div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modalExportReport')">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="form-group-item">
+          <label class="form-label-text">Periode Rekap</label>
+          <select class="form-input-control">
+            <option>Bulan Berjalan (Oktober 2026)</option>
+            <option>Triwulan 3 (Juli - Sept 2026)</option>
+            <option>Tahun Kalender 2026 Penuh</option>
+          </select>
+        </div>
+        <div class="form-group-item">
+          <label class="form-label-text">Format Berkas</label>
+          <div style="display: flex; gap: 10px;">
+            <label style="flex: 1; padding: 12px; border: 1.5px solid #FF7A00; border-radius: 12px; background: #FFF7ED; cursor: pointer; text-align: center; font-size: 12px; font-weight: 700; color: #FF7A00;">
+              <input type="radio" name="exportFormat" value="pdf" checked style="display: none;"> Dokumen PDF Resmi
+            </label>
+            <label style="flex: 1; padding: 12px; border: 1.5px solid #E2E8F0; border-radius: 12px; background: #FFFFFF; cursor: pointer; text-align: center; font-size: 12px; font-weight: 600; color: #64748B;">
+              <input type="radio" name="exportFormat" value="xlsx" style="display: none;"> Spreadsheet Excel
+            </label>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid #ECEEF2; padding-top: 16px;">
+        <button class="btn-pill btn-white-outline" onclick="closeModal('modalExportReport')">Batal</button>
+        <button class="btn-pill btn-primary" onclick="submitExportDownload()">
+          <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+          Unduh Berkas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       11. MODAL 3: DETAIL TIKET LENGKAP & INTERAKTIF (CMP-18 & F-07)
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop" id="modalTicketDetail" onclick="closeModal('modalTicketDetail')">
+    <div class="modal-detail-dialog" onclick="event.stopPropagation()">
+      
+      <!-- PINNED HEADER (IDENTIK MODAL REGISTRASI PENGHUNI BARU WF-04) -->
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Detail Tiket Perbaikan</h2>
+            <p class="modal-subtitle">Informasi keluhan, progres penanganan teknisi, dan bukti kerusakan</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalTicketDetail')" title="Tutup Modal (ESC)">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <!-- BODY CONTENT 2-COLUMN -->
+      <div class="modal-detail-content-grid">
+        
+        <!-- LEFT CANVAS (66%) -->
+        <div class="m-canvas-left">
+          
+          <!-- KARTU INFORMASI UTAMA TIKET -->
+          <div class="m-box-card" style="gap: 10px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="ticket-id-tag-lg" id="mdTicketId" style="font-family: inherit; font-size: 11px; font-weight: 700; background: #0F172A; color: #FFFFFF; padding: 2.5px 8px; border-radius: 6px; letter-spacing: 0.3px;">TKT-202610-04</span>
+                <span style="font-size: 11.5px; font-weight: 600; color: #475569; display: inline-flex; align-items: center; gap: 4px;" id="mdHeaderRoom">
+                  <i data-lucide="door-closed" style="width: 12px; height: 12px; color: #94A3B8;"></i>
+                  <span>Kamar B-03 &middot; Lantai 2</span>
+                </span>
+                <span style="color: #CBD5E1;">&bull;</span>
+                <span style="font-size: 11px; color: #94A3B8;" id="mdTimeRel">&middot; Dilaporkan 2 jam lalu</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="urgency-badge urgency-urgent" id="mdUrgencyBadge">
+                  <i data-lucide="alert-triangle" style="width: 11px; height: 11px;"></i> Mendesak
+                </span>
+                <span class="badge-role-owner" style="font-size: 11px; background: #EFF6FF; color: #2563EB; border: 1px solid #DBEAFE; font-weight: 600; padding: 2.5px 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 4px;" id="mdCategory">
+                  <i data-lucide="wind" style="width: 11px; height: 11px;"></i> AC &amp; Pendingin
+                </span>
+                <span class="badge-role-owner" style="font-size: 11px; background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; font-weight: 600; padding: 2.5px 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 4px;" id="mdStepBadge">
+                  <i data-lucide="clock" style="width: 11px; height: 11px;"></i> Tahap 3: Dikerjakan
+                </span>
+              </div>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 700; color: #0F172A; margin: 2px 0 0 0; line-height: 1.4;" id="mdTitle">AC Kamar Menetes Air Deras Membasahi Kasur</h3>
+          </div>
+          
+          <!-- KRONOLOGI MASALAH -->
+          <div class="m-box-card">
+            <div class="m-card-header">
+              <div class="m-card-title">
+                <i data-lucide="file-text" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+                Kronologi &amp; Rincian Kerusakan
+              </div>
+            </div>
+            <div style="font-size: 13px; color: #334155; line-height: 1.6; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 14px; border-radius: 14px;" id="mdDescription">
+              -
+            </div>
+          </div>
+
+          <!-- BUKTI MEDIA (F-07) -->
+          <div class="m-box-card">
+            <div class="m-card-header">
+              <div class="m-card-title">
+                <i data-lucide="image" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+                Lampiran Bukti Media (Foto / Video)
+              </div>
+              <span style="font-size: 11px; color: #16A34A; font-weight: 600;">Format F-07 Terverifikasi</span>
+            </div>
+
+            <div class="m-media-grid">
+              <div class="m-media-box" onclick="openLightboxFromModal()">
+                <img src="" alt="Bukti Foto" id="mdMainPhoto">
+                <div style="position: absolute; bottom: 8px; left: 8px; background: rgba(15,23,42,0.85); color: #FFF; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 6px; display: flex; align-items: center; gap: 4px;">
+                  <i data-lucide="camera" style="width: 11px; height: 11px;"></i>
+                  <span id="mdPhotoCaption">Foto Bukti Kerusakan</span>
+                </div>
+              </div>
+
+              <div class="m-media-box" id="mdVideoContainer" onclick="playVideoFromModal()" style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0F172A; color: #FFFFFF; text-align: center; padding: 14px;">
+                <div style="width: 42px; height: 42px; border-radius: 50%; background: #FF7A00; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; box-shadow: 0 4px 12px rgba(255,122,0,0.35);">
+                  <i data-lucide="play" style="width: 18px; height: 18px; color: #FFFFFF; margin-left: 2px;"></i>
+                </div>
+                <div style="font-size: 12px; font-weight: 700;" id="mdVideoName">video_bukti.mp4</div>
+                <div style="font-size: 10px; color: #94A3B8; margin-top: 2px;">Klik untuk putar cuplikan</div>
               </div>
             </div>
           </div>
 
-          <div class="ticket-right">
-            <div class="ticket-progress-summary">
-              <div class="progress-step-text" style="color: #6B7280;">Tahap 1: Diterima</div>
-              <div class="mini-segment-bar">
-                <div class="mini-segment filled"></div>
-                <div class="mini-segment"></div>
-                <div class="mini-segment"></div>
-                <div class="mini-segment"></div>
-                <div class="mini-segment"></div>
+        </div>
+
+        <!-- RIGHT SIDEBAR (34%) -->
+        <div class="m-canvas-right">
+          
+          <!-- STEPPER 5-TAHAP (CMP-07) -->
+          <div class="m-box-card">
+            <div class="m-card-header">
+              <div class="m-card-title">
+                <i data-lucide="check-circle-2" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+                <span>Progress Penanganan (F-07)</span>
+              </div>
+              <span style="font-size: 11px; font-weight: 700; color: #FF7A00;" id="mdStepSubText">Tahap 3 dari 5</span>
+            </div>
+
+            <div class="modal-5step-track" id="mdStepDashes">
+              <!-- Dashes rendered by JS -->
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-size: 10px; color: #64748B; font-weight: 600; margin-top: -4px;">
+              <span>1. Diterima</span>
+              <span>2. Tugas</span>
+              <span>3. Kerja</span>
+              <span>4. Cek</span>
+              <span>5. Selesai</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+              <button class="btn-pill btn-primary" id="btnMdAdvance" onclick="advanceTicketStepModal()" style="width: 100%; justify-content: center; padding: 10px; font-weight: 600;">
+                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+                <span id="btnMdAdvanceLabel">Majukan ke Tahap Berikutnya</span>
+              </button>
+              <button class="btn-pill btn-white-outline" id="btnMdReopen" onclick="reopenTicketModal()" style="width: 100%; justify-content: center; padding: 8px; display: none;">
+                <i data-lucide="rotate-ccw" style="width: 13px; height: 13px;"></i>
+                <span>Buka Kembali Tiket</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KARTU PENGHUNI -->
+          <div class="m-box-card">
+            <div class="m-card-header">
+              <div class="m-card-title">
+                <i data-lucide="user" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+                <span>Penghuni Pelapor</span>
               </div>
             </div>
-            <i data-lucide="chevron-right" style="color: #9CA3AF; width: 18px; height: 18px;"></i>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: #0F172A; color: #FFFFFF; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center;" id="mdTenantAvatar">RP</div>
+                <div>
+                  <div style="font-size: 13px; font-weight: 700; color: #0F172A;" id="mdTenantName">Reza Pratama</div>
+                  <div style="font-size: 11px; color: #64748B;" id="mdRoomInfo">Kamar B-03 &middot; Lantai 2</div>
+                </div>
+              </div>
+              <a href="#" target="_blank" class="btn-wa-pill" id="mdTenantWaBtn">
+                <i data-lucide="message-circle" style="width: 12px; height: 12px;"></i>
+                <span>WA</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- KARTU TEKNISI -->
+          <div class="m-box-card">
+            <div class="m-card-header">
+              <div class="m-card-title">
+                <i data-lucide="wrench" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+                <span>Teknisi Bertugas</span>
+              </div>
+              <button onclick="openAssignTechFromModal()" style="background: none; border: none; font-size: 11px; color: #FF7A00; font-weight: 600; cursor: pointer; text-decoration: underline;">
+                Ganti Teknisi
+              </button>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 36px; height: 36px; border-radius: 10px; background: #1E293B; color: #FFFFFF; font-weight: 700; font-size: 12px; display: flex; align-items: center; justify-content: center;" id="mdTechAvatar">PJ</div>
+                <div>
+                  <div style="font-size: 13px; font-weight: 700; color: #0F172A;" id="mdTechName">Pak Joko Santoso</div>
+                  <div style="font-size: 11px; color: #64748B;" id="mdTechSpec">Teknisi AC &amp; Ledeng</div>
+                </div>
+              </div>
+              <a href="#" target="_blank" class="btn-wa-pill" id="mdTechWaBtn">
+                <i data-lucide="message-circle" style="width: 12px; height: 12px;"></i>
+                <span>WA</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- BIAYA & GARANSI -->
+          <div class="m-box-card">
+            <div class="m-card-header">
+              <div class="m-card-title">
+                <i data-lucide="wallet" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+                <span>Estimasi Operasional</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px 12px; border-radius: 12px;">
+                <div style="font-size: 10px; color: #64748B; font-weight: 600; text-transform: uppercase;">Biaya Servis</div>
+                <div style="font-size: 14px; font-weight: 700; color: #FF7A00; margin-top: 2px;" id="mdCostValue">Rp 75.000</div>
+              </div>
+              <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px 12px; border-radius: 12px;">
+                <div style="font-size: 10px; color: #64748B; font-weight: 600; text-transform: uppercase;">Garansi</div>
+                <div style="font-size: 14px; font-weight: 700; color: #0F172A; margin-top: 2px;" id="mdWarrantyValue">30 Hari</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FULL-WIDTH SECTION: AKTIVITAS & CATATAN PENANGANAN (CMP-18 · 100% FULL SPAN) -->
+        <div class="m-full-width-section" style="grid-column: 1 / -1;">
+          <div class="m-box-card">
+            <div class="m-card-header">
+              <div class="m-card-title">
+                <i data-lucide="messages-square" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+                <span>Aktivitas &amp; Catatan Penanganan (<span id="mdCommentCount">0</span>)</span>
+              </div>
+            </div>
+
+            <!-- STREAM COMMENTS FULL-WIDTH -->
+            <div class="m-comment-list" id="mdCommentStream" style="max-height: 320px;">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- COMPOSER BALAS FULL-WIDTH -->
+            <div style="display: flex; flex-direction: column; gap: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; margin-top: 4px;">
+              <textarea id="mdReplyInput" placeholder="Tuliskan catatan tindak lanjut penanganan tiket..." style="width: 100%; border: none; background: transparent; outline: none; resize: none; font-family: inherit; font-size: 12px; color: #111111; min-height: 48px; box-sizing: border-box;"></textarea>
+              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 8px;">
+                <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: #64748B; cursor: pointer; user-select: none;">
+                  <input type="checkbox" id="mdInternalCheck" style="accent-color: #FF7A00; width: 14px; height: 14px;">
+                  <span>Catatan Internal Staf (Privat)</span>
+                </label>
+                <button class="btn-pill btn-primary" onclick="submitModalReply()" style="padding: 6px 16px; font-size: 11.5px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;">
+                  <i data-lucide="send" style="width: 12px; height: 12px;"></i>
+                  <span>Kirim Catatan</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
 
     </div>
-
-    <!-- RIGHT DRAWER: SCR-15 DETAIL TIKET -->
-    <aside class="detail-drawer" id="ticketDrawer">
-      
-      <div class="drawer-header">
-        <div>
-          <span class="badge-urgency urgency-high"><i data-lucide="alert-triangle" style="width: 12px; height: 12px;"></i> Mendesak</span>
-          <h2 style="font-size: 17px; font-weight: 700; margin-top: 6px;">TKT-202610-04</h2>
-          <div style="font-size: 11px; color: #6B7280;">Kamar B-03 · Reza Pratama (0812-9988-7711)</div>
-        </div>
-        <button class="icon-circle-btn" style="width: 32px; height: 32px;" onclick="RumaUI.showToast('Detail tiket ditutup')">
-          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
-        </button>
-      </div>
-
-      <!-- ESTIFY 5-STEP DASH PROGRESS INDICATOR -->
-      <div class="progress-timeline-box">
-        <div class="progress-header">
-          <span style="font-weight: 600; color: #111111;">Status Penanganan</span>
-          <span style="font-weight: 700; color: #FF7A00;">Langkah 3 dari 5</span>
-        </div>
-
-        <div class="segmented-bar-full">
-          <div class="step-dash active"></div>
-          <div class="step-dash active"></div>
-          <div class="step-dash active"></div>
-          <div class="step-dash"></div>
-          <div class="step-dash"></div>
-        </div>
-
-        <div class="step-labels-row">
-          <span class="active">Diterima</span>
-          <span class="active">Ditugaskan</span>
-          <span class="active" style="color: #FF7A00;">Dikerjakan</span>
-          <span>Diperiksa</span>
-          <span>Selesai</span>
-        </div>
-      </div>
-
-      <!-- DESKRIPSI & FOTO BUKTI -->
-      <div>
-        <div style="font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; margin-bottom: 6px;">Deskripsi Kerusakan</div>
-        <p style="font-size: 13px; color: #374151; line-height: 1.5; background: #F7F8FA; padding: 12px; border-radius: 12px; border: 1px solid #ECEEF2;">
-          "Pipa pembuangan AC outdoor tersumbat atau talang air dalam penuh, sejak tadi malam bocor menetes ke kasur. Mohon dibantu servis segera karena basah kuyup."
-        </p>
-      </div>
-
-      <div class="detail-photo-wrapper">
-        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80" alt="Foto Kerusakan AC">
-        <div class="detail-photo-tag"><i data-lucide="camera" style="width: 12px; height: 12px; display: inline;"></i> Foto Lampiran Penyewa</div>
-      </div>
-
-      <!-- TEKNISI YANG DITUGASKAN -->
-      <div>
-        <div style="font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; margin-bottom: 6px;">Teknisi Bertugas</div>
-        <div class="tech-assignee-card">
-          <div class="tech-info">
-            <div class="tech-avatar">PJ</div>
-            <div>
-              <div style="font-size: 13px; font-weight: 700;">Pak Joko Santoso</div>
-              <div style="font-size: 11px; color: #6B7280;">Teknisi AC & Pendingin</div>
-            </div>
-          </div>
-          <a href="https://wa.me/628123456789" target="_blank" class="btn-wa-direct">
-            <i data-lucide="message-circle" style="width: 13px; height: 13px;"></i>
-            WhatsApp
-          </a>
-        </div>
-      </div>
-
-      <!-- ACTION BUTTONS -->
-      <div class="drawer-actions">
-        <button class="btn-drawer-full btn-black-solid" onclick="RumaUI.showToast('Status tiket dimajukan ke: Tahap 4 - Diperiksa')">
-          <i data-lucide="arrow-right-circle" style="width: 15px; height: 15px;"></i>
-          Majukan ke: Diperiksa
-        </button>
-        <button class="btn-drawer-full btn-white-outline" onclick="RumaUI.showToast('Dialog penugasan teknisi baru dibuka')">
-          <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
-          Ganti Teknisi
-        </button>
-      </div>
-
-    </aside>
-
   </div>
 
-  <script src="assets/js/components.js"></script>
-  <script>
-    renderTopbar('tiket');
+  <!-- MODAL: GANTI TEKNISI -->
+  <div class="modal-backdrop" id="modalAssignTech">
+    <div class="modal-card" style="width: 500px;">
+      <div class="modal-header">
+        <div>
+          <div style="font-size: 11px; font-weight: 700; color: #FF7A00; text-transform: uppercase;">Triase &amp; Disposisi Staf</div>
+          <div class="modal-title" style="margin-top: 2px;">Tugaskan / Ganti Teknisi</div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modalAssignTech')">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
 
-    function selectTicket(index) {
-      document.querySelectorAll('.ticket-card').forEach((c, idx) => {
-        if (idx + 1 === index) {
-          c.classList.add('selected');
-        } else {
-          c.classList.remove('selected');
-        }
-      });
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border: 1.5px solid #E2E8F0; border-radius: 14px; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="radio" name="techRadioGroup" value="Pak Joko Santoso" checked style="accent-color: #FF7A00;">
+              <div>
+                <div style="font-size: 13px; font-weight: 700;">Pak Joko Santoso</div>
+                <div style="font-size: 11px; color: #64748B;">Teknisi AC, Pipa Saluran, &amp; Ledeng (0812-3456-7890)</div>
+              </div>
+            </div>
+            <span class="pill-green-soft" style="font-size: 10.5px; padding: 2px 7px; border-radius: 6px;">Siaga</span>
+          </label>
+
+          <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border: 1.5px solid #E2E8F0; border-radius: 14px; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="radio" name="techRadioGroup" value="Pak Yanto Listrik" style="accent-color: #FF7A00;">
+              <div>
+                <div style="font-size: 13px; font-weight: 700;">Pak Yanto Listrik</div>
+                <div style="font-size: 11px; color: #64748B;">Ahli Kelistrikan, MCB, Stop Kontak &amp; Lampu (0813-7788-9900)</div>
+              </div>
+            </div>
+            <span class="pill-dark-soft" style="font-size: 10.5px; padding: 2px 7px; border-radius: 6px;">Siaga</span>
+          </label>
+
+          <label style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border: 1.5px solid #E2E8F0; border-radius: 14px; cursor: pointer;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="radio" name="techRadioGroup" value="Pak Budi Tukang Kayu" style="accent-color: #FF7A00;">
+              <div>
+                <div style="font-size: 13px; font-weight: 700;">Pak Budi Tukang Kayu</div>
+                <div style="font-size: 11px; color: #64748B;">Pintu, Lemari, Engsel, &amp; Kusen Kayu (0811-2233-4455)</div>
+              </div>
+            </div>
+            <span class="pill-dark-soft" style="font-size: 10.5px; padding: 2px 7px; border-radius: 6px;">Siaga</span>
+          </label>
+        </div>
+
+        <!-- Checkbox Kirim Notifikasi Penugasan via WhatsApp (Pola Registrasi Penghuni WF-04) -->
+        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 11px 14px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none; margin-top: 6px;" onclick="document.getElementById('notifyAssignWa').click()">
+          <input type="checkbox" id="notifyAssignWa" checked style="width: 16px; height: 16px; accent-color: #16A34A; cursor: pointer; margin-top: 2px;" onclick="event.stopPropagation()">
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: #166534; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="message-square" style="width: 13px; height: 13px; color: #16A34A;"></i>
+              <span>Kirim Surat Tugas via WhatsApp ke Teknisi</span>
+            </div>
+            <div style="font-size: 10.5px; color: #15803D; margin-top: 2px; line-height: 1.4;">
+              Detail nomor kamar, kontak pelapor, dan deskripsi kerusakan akan otomatis dikirimkan ke nomor WhatsApp teknisi terpilih.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid #ECEEF2; padding-top: 16px;">
+        <button class="btn-pill btn-white-outline" onclick="closeModal('modalAssignTech')">Batal</button>
+        <button class="btn-pill btn-primary" onclick="submitAssignTechModal()">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          Simpan Penugasan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SELESAIKAN TIKET -->
+  <div class="modal-backdrop" id="modalResolveTicket">
+    <div class="modal-card" style="width: 500px;">
+      <div class="modal-header">
+        <div>
+          <div style="font-size: 11px; font-weight: 700; color: #16A34A; text-transform: uppercase;">Konfirmasi Penyelesaian</div>
+          <div class="modal-title" style="margin-top: 2px;">Tutup &amp; Selesaikan Tiket</div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modalResolveTicket')">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div class="form-group-item">
+          <label class="form-label-text">Ringkasan Pekerjaan Selesai *</label>
+          <textarea class="form-textarea-control" id="resolveSummaryInput" placeholder="Tindakan yang telah dilakukan...">Pekerjaan pembersihan pipa dan perbaikan talang telah tuntas dikerjakan dan diuji coba.</textarea>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group-item">
+            <label class="form-label-text">Biaya Operasional (Rp)</label>
+            <input type="number" class="form-input-control" id="resolveCostInput" value="75000">
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-text">Masa Garansi</label>
+            <input type="text" class="form-input-control" value="30 Hari Teknisi">
+          </div>
+        </div>
+
+        <!-- Checkbox Kirim Konfirmasi Penyelesaian via WhatsApp (Pola Registrasi Penghuni WF-04) -->
+        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 11px 14px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none; margin-top: 4px;" onclick="document.getElementById('notifyResolveWa').click()">
+          <input type="checkbox" id="notifyResolveWa" checked style="width: 16px; height: 16px; accent-color: #16A34A; cursor: pointer; margin-top: 2px;" onclick="event.stopPropagation()">
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: #166534; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="message-square" style="width: 13px; height: 13px; color: #16A34A;"></i>
+              <span>Kirim Konfirmasi Selesai via WhatsApp ke Penghuni</span>
+            </div>
+            <div style="font-size: 10.5px; color: #15803D; margin-top: 2px; line-height: 1.4;">
+              Penghuni akan menerima konfirmasi penutupan tiket dan formulir rating kepuasan perbaikan secara otomatis via WhatsApp.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid #ECEEF2; padding-top: 16px;">
+        <button class="btn-pill btn-white-outline" onclick="closeModal('modalResolveTicket')">Batal</button>
+        <button class="btn-pill btn-primary" style="background: #16A34A;" onclick="submitResolveTicketModal()">
+          <i data-lucide="check-check" style="width: 14px; height: 14px;"></i>
+          Konfirmasi Selesai
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MEDIA LIGHTBOX PREVIEW -->
+  <div class="modal-backdrop" id="modalMediaLightbox" onclick="closeModal('modalMediaLightbox')">
+    <div style="max-width: 820px; width: 90vw; background: #111111; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column;" onclick="event.stopPropagation()">
+      <div style="padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div style="color: #FFFFFF; font-size: 13px; font-weight: 600;" id="lightboxCaption">Foto Bukti Kerusakan F-07</div>
+        <button onclick="closeModal('modalMediaLightbox')" style="background: none; border: none; color: #FFFFFF; cursor: pointer;">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div style="padding: 20px; display: flex; align-items: center; justify-content: center; background: #000000; min-height: 400px;">
+        <img src="" alt="Preview Penuh" id="lightboxFullImage" style="max-width: 100%; max-height: 70vh; border-radius: 8px; object-fit: contain;">
+      </div>
+      <div style="padding: 12px 20px; background: rgba(255,255,255,0.06); font-size: 11px; color: #94A3B8; display: flex; justify-content: space-between;">
+        <span>Format Asli: Resolusi Tinggi (1920 &times; 1080)</span>
+        <span style="color: #FF7A00;">Disimpan aman sesuai kebijakan retensi RumaKost</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASSETS SCRIPTS -->
+  <script src="assets/js/components.js"></script>
+
+  <!-- INLINE DATA & APPLICATION LOGIC -->
+  <script>
+    // ══════════════════════════════════════════════════════════════
+    // STATE DATA SOURCE: TIKET PEMELIHARAAN KOST BUDI MAKMUR (F-07)
+    // ══════════════════════════════════════════════════════════════
+    const TICKETS_DB = [
+      {
+        id: "TKT-202610-04",
+        title: "AC Kamar Menetes Air Deras Membasahi Kasur",
+        room: "B-03",
+        floor: "Lantai 2",
+        roomType: "Deluxe",
+        tenant: "Reza Pratama",
+        tenantPhone: "6281299887711",
+        tenantAvatar: "RP",
+        urgency: "urgent", // urgent, medium, low
+        category: "AC",
+        status: "in_progress", // submitted, assigned, in_progress, checking, resolved
+        stepIndex: 3, // 1 to 5
+        reportedDate: "24 Okt 2026, 07:15 WIB",
+        timeRel: "2 jam lalu",
+        description: "Pipa pembuangan AC outdoor tersumbat atau talang air dalam penuh, sejak tadi malam bocor menetes ke kasur. Mohon dibantu servis segera karena basah kuyup dan tidak bisa tidur.",
+        mediaPhoto: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&auto=format&fit=crop&q=80",
+        mediaVideo: "rekaman_air_menetes.mp4",
+        techName: "Pak Joko Santoso",
+        techSpecialty: "Teknisi AC & Plumbing Ledeng",
+        techAvatar: "PJ",
+        techPhone: "628123456789",
+        comments: [
+          { sender: "Reza Pratama", role: "Penghuni", roleClass: "role-tag-tenant", time: "24 Okt 2026, 07:15", text: "Laporan kerusakan dibuat beserta foto dan video air menetes ke kasur.", isInternal: false },
+          { sender: "Rini Setiawati", role: "Staf", roleClass: "role-tag-staff", time: "24 Okt 2026, 07:35", text: "Laporan telah diverifikasi. Teknisi Pak Joko Santoso telah ditugaskan dan dijadwalkan tiba jam 10.00 WIB.", isInternal: false },
+          { sender: "Rini Setiawati", role: "Internal Note", roleClass: "role-tag-internal", time: "24 Okt 2026, 07:40", text: "Catatan internal staf: Unit AC ini terakhir diservis 4 bulan lalu. Perlu dicek talang belakang karena sering berlumut tebal.", isInternal: true },
+          { sender: "Pak Joko", role: "Teknisi", roleClass: "role-tag-owner", time: "24 Okt 2026, 09:10", text: "Saya sudah di lokasi kamar B-03, sedang membongkar casing indoor untuk membersihkan lumut.", isInternal: false }
+        ]
+      },
+      {
+        id: "TKT-202610-03",
+        title: "Kran Wastafel Kamar Mandi Patah & Air Merembes",
+        room: "A-01",
+        floor: "Lantai 1",
+        roomType: "Standar",
+        tenant: "Rina Marliana",
+        tenantPhone: "6281234567890",
+        tenantAvatar: "RM",
+        urgency: "medium",
+        category: "Plumbing",
+        status: "assigned",
+        stepIndex: 2,
+        reportedDate: "23 Okt 2026, 19:40 WIB",
+        timeRel: "Kemarin",
+        description: "Gagang kran wastafel patah saat diputar dan air merembes dari sambungan bawah pipa flexibel sehingga lantai kamar mandi selalu basah menggenang.",
+        mediaPhoto: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&auto=format&fit=crop&q=80",
+        mediaVideo: null,
+        techName: "Pak Joko Santoso",
+        techSpecialty: "Teknisi Sanitasi & Ledeng",
+        techAvatar: "PJ",
+        techPhone: "628123456789",
+        comments: [
+          { sender: "Rina Marliana", role: "Penghuni", roleClass: "role-tag-tenant", time: "23 Okt 2026, 19:40", text: "Kran patah tidak bisa ditutup rapat, sementara saya ganjal handuk.", isInternal: false },
+          { sender: "Rini Setiawati", role: "Staf", roleClass: "role-tag-staff", time: "24 Okt 2026, 08:00", text: "Jadwal penanganan telah disiapkan untuk siang ini setelah selesai di kamar B-03.", isInternal: false }
+        ]
+      },
+      {
+        id: "TKT-202610-02",
+        title: "Lampu Koridor Depan Kamar C-03 & C-04 Redup / Mati",
+        room: "Umum-3",
+        floor: "Lantai 3",
+        roomType: "Fasilitas Bersama",
+        tenant: "Kevin Sanjaya",
+        tenantPhone: "6281311223344",
+        tenantAvatar: "KS",
+        urgency: "low",
+        category: "Kelistrikan",
+        status: "submitted",
+        stepIndex: 1,
+        reportedDate: "22 Okt 2026, 21:00 WIB",
+        timeRel: "2 hari lalu",
+        description: "Lampu neon panjang di koridor lantai 3 berkedip-kedip lalu mati total tadi malam sehingga area lorong depan kamar C-03 dan C-04 gelap.",
+        mediaPhoto: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800&auto=format&fit=crop&q=80",
+        mediaVideo: null,
+        techName: "Pak Yanto Listrik",
+        techSpecialty: "Kelistrikan & Lampu",
+        techAvatar: "PY",
+        techPhone: "6281377889900",
+        comments: [
+          { sender: "Kevin Sanjaya", role: "Penghuni", roleClass: "role-tag-tenant", time: "22 Okt 2026, 21:00", text: "Lampu koridor padam, mohon diganti neon LED yang baru.", isInternal: false }
+        ]
+      },
+      {
+        id: "TKT-202610-01",
+        title: "Engsel Pintu Kamar Mandi Berderit & Susah Dikunci",
+        room: "A-04",
+        floor: "Lantai 1",
+        roomType: "Executive",
+        tenant: "Budi Santoso",
+        tenantPhone: "6281299887766",
+        tenantAvatar: "BS",
+        urgency: "low",
+        category: "Mebel",
+        status: "resolved",
+        stepIndex: 5,
+        reportedDate: "18 Okt 2026, 14:20 WIB",
+        timeRel: "6 hari lalu",
+        description: "Engsel aluminium pintu kamar mandi berkarat sehingga seret dan berbunyi keras saat dibuka malam hari.",
+        mediaPhoto: "https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?w=800&auto=format&fit=crop&q=80",
+        mediaVideo: null,
+        techName: "Pak Budi Tukang Kayu",
+        techSpecialty: "Pintu & Kusen Mebel",
+        techAvatar: "PB",
+        techPhone: "6281122334455",
+        comments: [
+          { sender: "Budi Santoso", role: "Penghuni", roleClass: "role-tag-tenant", time: "18 Okt 2026, 14:20", text: "Pintu kamar mandi engselnya seret.", isInternal: false },
+          { sender: "Pak Budi", role: "Teknisi", roleClass: "role-tag-owner", time: "19 Okt 2026, 11:00", text: "Engsel diganti dengan stainless baru dan disemprot pelumas anti karat. Selesai.", isInternal: false }
+        ]
+      },
+      {
+        id: "TKT-202609-18",
+        title: "Stop Kontak Meja Kerja Longgar Tidak Ada Arus",
+        room: "B-02",
+        floor: "Lantai 2",
+        roomType: "Deluxe",
+        tenant: "Hendra Wijaya",
+        tenantPhone: "6281288990011",
+        tenantAvatar: "HW",
+        urgency: "medium",
+        category: "Kelistrikan",
+        status: "resolved",
+        stepIndex: 5,
+        reportedDate: "18 Sept 2026, 10:15 WIB",
+        timeRel: "Bulan lalu",
+        description: "Stop kontak di dekat meja belajar goyang dan charger laptop tidak tersambung.",
+        mediaPhoto: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80",
+        mediaVideo: null,
+        techName: "Pak Yanto Listrik",
+        techSpecialty: "Kelistrikan & MCB",
+        techAvatar: "PY",
+        techPhone: "6281377889900",
+        comments: [
+          { sender: "Pak Yanto", role: "Teknisi", roleClass: "role-tag-owner", time: "18 Sept 2026, 16:30", text: "Inbow dos diganti dan soket listrik dikencangkan kembali.", isInternal: false }
+        ]
+      },
+      {
+        id: "TKT-202609-12",
+        title: "Shower Mandi Tekanan Air Lemah & Tersumbat",
+        room: "C-01",
+        floor: "Lantai 3",
+        roomType: "Standar",
+        tenant: "Anisa Putri",
+        tenantPhone: "6281766554433",
+        tenantAvatar: "AP",
+        urgency: "medium",
+        category: "Plumbing",
+        status: "in_progress",
+        stepIndex: 3,
+        reportedDate: "24 Okt 2026, 06:30 WIB",
+        timeRel: "3 jam lalu",
+        description: "Air yang keluar dari kepala shower sangat kecil karena lubang kepala shower tersumbat kerak kalsium kapur.",
+        mediaPhoto: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&auto=format&fit=crop&q=80",
+        mediaVideo: null,
+        techName: "Pak Joko Santoso",
+        techSpecialty: "Teknisi Sanitasi",
+        techAvatar: "PJ",
+        techPhone: "628123456789",
+        comments: [
+          { sender: "Anisa Putri", role: "Penghuni", roleClass: "role-tag-tenant", time: "24 Okt 2026, 06:30", text: "Shower tersumbat kerak kapur.", isInternal: false }
+        ]
+      }
+    ];
+
+    // CURRENT ACTIVE FILTER STATE
+    let currentStatusFilter = 'all'; // all, urgent, in_progress, assigned, resolved
+    let currentCategoryFilter = 'all';
+    let currentSearchQuery = '';
+
+    // ══════════════════════════════════════════════════════════════
+    // INITIALIZATION & TOPBAR ATTACHMENT
+    // ══════════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      // Render floating topbar with active role
+      if (typeof renderTopbar === 'function') {
+        renderTopbar('tiket');
+      }
+      
+      // Update badge counts and render initial list
+      updateBadgeCounts();
+      renderTickets();
+    });
+
+    // ══════════════════════════════════════════════════════════════
+    // FILTER & SEARCH LOGIC
+    // ══════════════════════════════════════════════════════════════
+    function handleSearchInput() {
+      const val = document.getElementById('searchInput').value.trim();
+      currentSearchQuery = val.toLowerCase();
+      document.getElementById('btnClearSearch').style.display = val.length > 0 ? 'inline-flex' : 'none';
+      checkFilterResetVisibility();
+      renderTickets();
     }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      currentSearchQuery = '';
+      document.getElementById('btnClearSearch').style.display = 'none';
+      checkFilterResetVisibility();
+      renderTickets();
+    }
+
+    function setStatusTab(status) {
+      currentStatusFilter = status;
+      
+      // Update active class on tab buttons
+      document.querySelectorAll('.segment-tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtnId = 'tab' + status.charAt(0).toUpperCase() + status.slice(1).replace('_', '');
+      const btnEl = document.getElementById(activeBtnId);
+      if (btnEl) btnEl.classList.add('active');
+
+      // Update summary chip active state (if exists)
+      document.querySelectorAll('.summary-chip-card').forEach(c => c.classList.remove('active'));
+      if (status === 'urgent') document.getElementById('chipUrgent')?.classList.add('active');
+      if (status === 'in_progress') document.getElementById('chipInProgress')?.classList.add('active');
+      if (status === 'assigned') document.getElementById('chipAssigned')?.classList.add('active');
+      if (status === 'resolved') document.getElementById('chipResolved')?.classList.add('active');
+
+      checkFilterResetVisibility();
+      renderTickets();
+    }
+
+    function filterByChip(chipType) {
+      if (currentStatusFilter === chipType) {
+        setStatusTab('all');
+      } else {
+        setStatusTab(chipType);
+      }
+    }
+
+    function toggleCategoryMenu() {
+      const menu = document.getElementById('categoryDropdownMenu');
+      menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function selectCategory(catKey, catLabel) {
+      currentCategoryFilter = catKey;
+      document.getElementById('selectedCategoryLabel').textContent = catLabel;
+      document.getElementById('categoryDropdownMenu').style.display = 'none';
+      checkFilterResetVisibility();
+      renderTickets();
+    }
+
+    function resetAllFilters() {
+      currentStatusFilter = 'all';
+      currentCategoryFilter = 'all';
+      currentSearchQuery = '';
+      document.getElementById('searchInput').value = '';
+      document.getElementById('btnClearSearch').style.display = 'none';
+      document.getElementById('selectedCategoryLabel').textContent = 'Semua Kategori';
+      
+      document.querySelectorAll('.segment-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('tabAll').classList.add('active');
+      document.querySelectorAll('.summary-chip-card').forEach(c => c.classList.remove('active'));
+
+      checkFilterResetVisibility();
+      renderTickets();
+      RumaUI.showToast('Semua filter berhasil disetel ulang');
+    }
+
+    function checkFilterResetVisibility() {
+      const btn = document.getElementById('btnResetFilter');
+      if (!btn) return;
+      const hasFilter = currentStatusFilter !== 'all' || currentCategoryFilter !== 'all' || currentSearchQuery !== '';
+      btn.style.display = hasFilter ? 'inline-flex' : 'none';
+    }
+
+    function updateBadgeCounts() {
+      const urgentCount = TICKETS_DB.filter(t => t.urgency === 'urgent' && t.status !== 'resolved').length;
+      const inProgCount = TICKETS_DB.filter(t => t.status === 'in_progress').length;
+      const assignedCount = TICKETS_DB.filter(t => t.status === 'assigned').length;
+      const resolvedCount = TICKETS_DB.filter(t => t.status === 'resolved').length;
+      const allCount = TICKETS_DB.length;
+
+      if (document.getElementById('badgeAll')) document.getElementById('badgeAll').textContent = allCount;
+      if (document.getElementById('badgeUrgent')) document.getElementById('badgeUrgent').textContent = urgentCount;
+      if (document.getElementById('badgeInProgress')) document.getElementById('badgeInProgress').textContent = inProgCount;
+      if (document.getElementById('badgeAssigned')) document.getElementById('badgeAssigned').textContent = assignedCount;
+      if (document.getElementById('badgeResolved')) document.getElementById('badgeResolved').textContent = resolvedCount;
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // RENDER TICKETS LIST (SCR-14)
+    // ══════════════════════════════════════════════════════════════
+    function renderTickets() {
+      const container = document.getElementById('ticketsListFeed');
+      const emptyBox = document.getElementById('emptyStateBox');
+      container.innerHTML = '';
+
+      const filtered = TICKETS_DB.filter(item => {
+        // Status filter
+        if (currentStatusFilter === 'urgent' && (item.urgency !== 'urgent' || item.status === 'resolved')) return false;
+        if (currentStatusFilter === 'in_progress' && item.status !== 'in_progress') return false;
+        if (currentStatusFilter === 'assigned' && item.status !== 'assigned') return false;
+        if (currentStatusFilter === 'resolved' && item.status !== 'resolved') return false;
+
+        // Category filter
+        if (currentCategoryFilter !== 'all' && item.category !== currentCategoryFilter) return false;
+
+        // Search text query
+        if (currentSearchQuery !== '') {
+          const matchId = item.id.toLowerCase().includes(currentSearchQuery);
+          const matchTitle = item.title.toLowerCase().includes(currentSearchQuery);
+          const matchRoom = item.room.toLowerCase().includes(currentSearchQuery);
+          const matchTenant = item.tenant.toLowerCase().includes(currentSearchQuery);
+          const matchDesc = item.description.toLowerCase().includes(currentSearchQuery);
+          if (!matchId && !matchTitle && !matchRoom && !matchTenant && !matchDesc) return false;
+        }
+
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        emptyBox.style.display = 'flex';
+        return;
+      } else {
+        emptyBox.style.display = 'none';
+      }
+
+      filtered.forEach(ticket => {
+        const card = document.createElement('div');
+        card.className = 'ticket-feed-card';
+        card.onclick = () => openTicketDetail(ticket.id);
+
+        // Urgency pill
+        let urgencyBadge = '';
+        if (ticket.urgency === 'urgent') {
+          urgencyBadge = `<span class="urgency-badge urgency-urgent"><i data-lucide="alert-triangle" style="width: 11px; height: 11px;"></i> Mendesak</span>`;
+        } else if (ticket.urgency === 'medium') {
+          urgencyBadge = `<span class="urgency-badge urgency-medium"><i data-lucide="wrench" style="width: 11px; height: 11px;"></i> Normal</span>`;
+        } else {
+          urgencyBadge = `<span class="urgency-badge urgency-low"><i data-lucide="info" style="width: 11px; height: 11px;"></i> Rendah</span>`;
+        }
+
+        // Mini 5-dash progress bars (CMP-07)
+        let dashesHtml = '';
+        for (let i = 1; i <= 5; i++) {
+          if (i <= ticket.stepIndex) {
+            dashesHtml += `<div class="mini-dash-bar ${ticket.stepIndex === 5 ? 'filled-green' : 'filled'}"></div>`;
+          } else {
+            dashesHtml += `<div class="mini-dash-bar"></div>`;
+          }
+        }
+
+        // Step Label
+        let stepText = `Tahap ${ticket.stepIndex}: `;
+        if (ticket.stepIndex === 1) stepText += 'Diterima';
+        else if (ticket.stepIndex === 2) stepText += 'Ditugaskan';
+        else if (ticket.stepIndex === 3) stepText += 'Dikerjakan';
+        else if (ticket.stepIndex === 4) stepText += 'Diperiksa';
+        else if (ticket.stepIndex === 5) stepText += 'Selesai';
+
+        const stepClass = ticket.stepIndex === 5 ? 'is-done' : (ticket.stepIndex === 1 ? 'is-neutral' : '');
+
+        card.innerHTML = `
+          <div class="ticket-feed-left">
+            <div class="ticket-thumb-box">
+              <img src="${ticket.mediaPhoto}" alt="Foto ${ticket.id}" loading="lazy">
+              ${ticket.mediaVideo ? '<span class="thumb-type-tag"><i data-lucide="play" style="width: 8px; height: 8px;"></i> VIDEO</span>' : '<span class="thumb-type-tag"><i data-lucide="camera" style="width: 8px; height: 8px;"></i> FOTO</span>'}
+            </div>
+
+            <div class="ticket-meta-col">
+              <div class="ticket-top-badges">
+                ${urgencyBadge}
+                <span class="ticket-id-pill">${ticket.id}</span>
+                <span class="ticket-category-tag"><i data-lucide="tag" style="width: 10px; height: 10px;"></i> ${ticket.category}</span>
+                <span class="ticket-timestamp-rel">&middot; Dilaporkan ${ticket.timeRel}</span>
+              </div>
+              <div class="ticket-card-title">${ticket.title}</div>
+              <div class="ticket-snippet-text">${ticket.description}</div>
+              <div class="ticket-reporter-row">
+                <div class="reporter-avatar-tiny">${ticket.tenantAvatar}</div>
+                <span style="font-weight: 600; color: #1E293B;">${ticket.tenant}</span>
+                <span class="reporter-room-badge">Kamar ${ticket.room} &middot; ${ticket.floor}</span>
+                <span style="color: #CBD5E1;">&bull;</span>
+                <span style="font-size: 11.5px; color: #64748B; display: inline-flex; align-items: center; gap: 4px;">
+                  <i data-lucide="wrench" style="width: 11px; height: 11px; color: #FF7A00;"></i>
+                  ${ticket.techName}
+                </span>
+                <span style="color: #CBD5E1;">&bull;</span>
+                <span style="font-size: 11.5px; color: #94A3B8; display: inline-flex; align-items: center; gap: 4px;">
+                  <i data-lucide="message-square" style="width: 11px; height: 11px;"></i>
+                  ${ticket.comments ? ticket.comments.length : 0} Catatan
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-feed-right">
+            <div class="ticket-step-tracker">
+              <span class="step-current-text ${stepClass}">${stepText}</span>
+              <div class="mini-5dash-track">
+                ${dashesHtml}
+              </div>
+            </div>
+            <button type="button" class="btn-open-detail" onclick="event.stopPropagation(); openTicketDetail('${ticket.id}')">
+              <span>Buka Detail</span>
+              <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
+            </button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      lucide.createIcons();
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // LARGE DETAIL MODAL LOGIC (CMP-18 & F-07)
+    // ══════════════════════════════════════════════════════════════
+    let activeModalTicketId = null;
+
+    function openTicketDetail(id) {
+      activeModalTicketId = id;
+      const ticket = TICKETS_DB.find(t => t.id === id);
+      if (!ticket) return;
+
+      // Header Meta
+      document.getElementById('mdTicketId').textContent = ticket.id;
+      document.getElementById('mdTitle').textContent = ticket.title;
+      document.getElementById('mdTimeRel').textContent = `· Dilaporkan ${ticket.timeRel}`;
+
+      const catIcon = ticket.category.includes('AC') ? 'wind' : (ticket.category.includes('Plumb') ? 'droplet' : (ticket.category.includes('Listrik') ? 'zap' : 'wrench'));
+      document.getElementById('mdCategory').innerHTML = `<i data-lucide="${catIcon}" style="width: 11px; height: 11px;"></i> ${ticket.category}`;
+
+      if (document.getElementById('mdHeaderRoom')) {
+        document.getElementById('mdHeaderRoom').innerHTML = `<i data-lucide="door-closed" style="width: 12px; height: 12px; color: #94A3B8;"></i><span>Kamar ${ticket.room} &middot; ${ticket.floor}</span>`;
+      }
+
+      // Dynamic Category Icon Box
+      const iconBox = document.getElementById('mdHeaderIconBox');
+      const iconEl = document.getElementById('mdHeaderIcon');
+      if (iconBox && iconEl) {
+        if (ticket.category.includes('AC')) {
+          iconEl.setAttribute('data-lucide', 'wind');
+          iconBox.style.background = '#EFF6FF';
+          iconBox.style.borderColor = '#BFDBFE';
+          iconBox.style.color = '#2563EB';
+        } else if (ticket.category.includes('Plumbing')) {
+          iconEl.setAttribute('data-lucide', 'droplet');
+          iconBox.style.background = '#F0F9FF';
+          iconBox.style.borderColor = '#BAE6FD';
+          iconBox.style.color = '#0284C7';
+        } else if (ticket.category.includes('Listrik')) {
+          iconEl.setAttribute('data-lucide', 'zap');
+          iconBox.style.background = '#FEFCE8';
+          iconBox.style.borderColor = '#FEF08A';
+          iconBox.style.color = '#CA8A04';
+        } else {
+          iconEl.setAttribute('data-lucide', 'wrench');
+          iconBox.style.background = '#FFF7ED';
+          iconBox.style.borderColor = '#FED7AA';
+          iconBox.style.color = '#EA580C';
+        }
+      }
+
+      if (document.getElementById('mdFullPageLink')) {
+        document.getElementById('mdFullPageLink').href = `WF-08-tiket-detail.html?id=${encodeURIComponent(ticket.id)}`;
+      }
+
+      // Urgency Pill
+      const urgEl = document.getElementById('mdUrgencyBadge');
+      if (ticket.urgency === 'urgent') {
+        urgEl.className = 'urgency-badge urgency-urgent';
+        urgEl.innerHTML = '<i data-lucide="alert-triangle" style="width: 11px; height: 11px;"></i> Mendesak';
+      } else if (ticket.urgency === 'medium') {
+        urgEl.className = 'urgency-badge urgency-medium';
+        urgEl.innerHTML = '<i data-lucide="wrench" style="width: 11px; height: 11px;"></i> Normal';
+      } else {
+        urgEl.className = 'urgency-badge urgency-low';
+        urgEl.innerHTML = '<i data-lucide="info" style="width: 11px; height: 11px;"></i> Rendah';
+      }
+
+      // Description
+      document.getElementById('mdDescription').textContent = ticket.description;
+
+      // Photos & Media
+      document.getElementById('mdMainPhoto').src = ticket.mediaPhoto;
+      document.getElementById('mdPhotoCaption').textContent = `Foto Bukti · ${ticket.tenant}`;
+      const videoBox = document.getElementById('mdVideoContainer');
+      if (videoBox) {
+        videoBox.style.display = ticket.mediaVideo ? 'flex' : 'none';
+        if (ticket.mediaVideo) {
+          document.getElementById('mdVideoName').textContent = ticket.mediaVideo;
+        }
+      }
+
+      // Tenant Card
+      document.getElementById('mdTenantAvatar').textContent = ticket.tenantAvatar;
+      document.getElementById('mdTenantName').textContent = ticket.tenant;
+      document.getElementById('mdRoomInfo').textContent = `Kamar ${ticket.room} · ${ticket.floor}`;
+      document.getElementById('mdTenantWaBtn').href = `https://wa.me/${ticket.tenantPhone}?text=Halo%20${encodeURIComponent(ticket.tenant)},%20update%20penanganan%20tiket%20${ticket.id}`;
+
+      // Tech Card
+      document.getElementById('mdTechAvatar').textContent = ticket.techAvatar;
+      document.getElementById('mdTechName').textContent = ticket.techName;
+      document.getElementById('mdTechSpec').textContent = ticket.techSpecialty;
+      document.getElementById('mdTechWaBtn').href = `https://wa.me/${ticket.techPhone}?text=Halo%20${encodeURIComponent(ticket.techName)},%20update%20penugasan%20tiket%20${ticket.id}`;
+
+      // Stepper & Comments
+      updateModalStepperDisplay(ticket);
+      renderModalComments(ticket.comments);
+
+      openModal('modalTicketDetail');
+      lucide.createIcons();
+    }
+
+    function updateModalStepperDisplay(ticket) {
+      const stepNames = ["Diterima", "Ditugaskan", "Pengerjaan", "Pengecekan", "Selesai"];
+      const stepIcons = ["inbox", "user-check", "wrench", "clipboard-check", "check-circle-2"];
+      const sIcon = stepIcons[ticket.stepIndex - 1] || 'clock';
+      const stepBadge = document.getElementById('mdStepBadge');
+      if (stepBadge) {
+        stepBadge.innerHTML = `<i data-lucide="${sIcon}" style="width: 11px; height: 11px;"></i> Tahap ${ticket.stepIndex}: ${stepNames[ticket.stepIndex - 1]}`;
+        if (ticket.stepIndex === 5) {
+          stepBadge.style.background = '#DCFCE7';
+          stepBadge.style.color = '#16A34A';
+          stepBadge.style.borderColor = '#BBF7D0';
+        } else {
+          stepBadge.style.background = '#FFF7ED';
+          stepBadge.style.color = '#EA580C';
+          stepBadge.style.borderColor = '#FED7AA';
+        }
+      }
+      document.getElementById('mdStepSubText').textContent = `Langkah ${ticket.stepIndex} dari 5`;
+
+      const track = document.getElementById('mdStepDashes');
+      track.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const dash = document.createElement('div');
+        dash.className = `modal-step-dash ${i <= ticket.stepIndex ? (ticket.stepIndex === 5 ? 'completed' : 'active') : ''}`;
+        track.appendChild(dash);
+      }
+
+      const btnAdv = document.getElementById('btnMdAdvance');
+      const btnAdvLabel = document.getElementById('btnMdAdvanceLabel');
+      const btnReop = document.getElementById('btnMdReopen');
+
+      if (ticket.stepIndex === 1) {
+        btnAdv.style.display = 'flex';
+        btnAdvLabel.textContent = 'Majukan ke: Tahap 2 (Ditugaskan)';
+        btnReop.style.display = 'none';
+      } else if (ticket.stepIndex === 2) {
+        btnAdv.style.display = 'flex';
+        btnAdvLabel.textContent = 'Majukan ke: Tahap 3 (Pengerjaan)';
+        btnReop.style.display = 'none';
+      } else if (ticket.stepIndex === 3) {
+        btnAdv.style.display = 'flex';
+        btnAdvLabel.textContent = 'Majukan ke: Tahap 4 (Pengecekan)';
+        btnReop.style.display = 'none';
+      } else if (ticket.stepIndex === 4) {
+        btnAdv.style.display = 'flex';
+        btnAdvLabel.textContent = 'Konfirmasi: Selesaikan Tiket';
+        btnReop.style.display = 'none';
+      } else {
+        btnAdv.style.display = 'none';
+        btnReop.style.display = 'flex';
+      }
+    }
+
+    function advanceTicketStepModal() {
+      const ticket = TICKETS_DB.find(t => t.id === activeModalTicketId);
+      if (!ticket) return;
+
+      if (ticket.stepIndex < 4) {
+        ticket.stepIndex += 1;
+        const stepNames = ["Diterima", "Ditugaskan", "Pengerjaan", "Pengecekan", "Selesai"];
+        ticket.comments.push({
+          sender: "Staf Operasional",
+          role: "Staf",
+          roleClass: "role-tag-staff",
+          time: "Baru saja",
+          text: `Status tiket dimajukan ke: Tahap ${ticket.stepIndex} (${stepNames[ticket.stepIndex - 1]}).`,
+          isInternal: false
+        });
+        updateBadgeCounts();
+        renderTickets();
+        updateModalStepperDisplay(ticket);
+        renderModalComments(ticket.comments);
+        RumaUI.showToast(`Status tiket ${ticket.id} dimajukan ke Tahap ${ticket.stepIndex}!`);
+        lucide.createIcons();
+      } else if (ticket.stepIndex === 4) {
+        openModal('modalResolveTicket');
+      }
+    }
+
+    function reopenTicketModal() {
+      const ticket = TICKETS_DB.find(t => t.id === activeModalTicketId);
+      if (!ticket) return;
+
+      ticket.stepIndex = 3;
+      ticket.status = 'in_progress';
+      ticket.comments.push({
+        sender: "Pemilik Kost",
+        role: "Pemilik",
+        roleClass: "role-tag-owner",
+        time: "Baru saja",
+        text: "Tiket dibuka kembali (re-open) untuk penanganan teknis lanjutan.",
+        isInternal: false
+      });
+      updateBadgeCounts();
+      renderTickets();
+      updateModalStepperDisplay(ticket);
+      renderModalComments(ticket.comments);
+      RumaUI.showToast(`Tiket ${ticket.id} dibuka kembali ke Tahap 3 (Pengerjaan)`);
+      lucide.createIcons();
+    }
+
+    function renderModalComments(comments) {
+      const container = document.getElementById('mdCommentStream');
+      container.innerHTML = '';
+      document.getElementById('mdCommentCount').textContent = comments ? comments.length : 0;
+
+      if (!comments || comments.length === 0) {
+        container.innerHTML = '<div style="font-size: 11px; color: #94A3B8; text-align: center; padding: 12px;">Belum ada catatan aktivitas.</div>';
+        return;
+      }
+
+      comments.forEach(c => {
+        const bubble = document.createElement('div');
+        bubble.className = `m-bubble-comment ${c.isInternal ? 'is-internal' : ''}`;
+        bubble.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <strong style="color: #111111; font-size: 11.5px;">${c.sender}</strong>
+              <span class="role-tag-pill ${c.roleClass || 'role-tag-staff'}">${c.role || 'Staf'}</span>
+            </div>
+            <span style="font-size: 10px; color: #94A3B8;">${c.time}</span>
+          </div>
+          <div style="color: #334155; font-size: 12px;">${c.text}</div>
+        `;
+        container.appendChild(bubble);
+      });
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function submitModalReply() {
+      const input = document.getElementById('mdReplyInput');
+      const text = input.value.trim();
+      const isInternal = document.getElementById('mdInternalCheck').checked;
+
+      if (!text) {
+        RumaUI.showToast('Ketikkan catatan terlebih dahulu');
+        return;
+      }
+
+      const ticket = TICKETS_DB.find(t => t.id === activeModalTicketId);
+      if (!ticket) return;
+
+      ticket.comments.push({
+        sender: isInternal ? "Catatan Internal Staf" : "Staf Operasional",
+        role: isInternal ? "Internal Note" : "Staf",
+        roleClass: isInternal ? "role-tag-internal" : "role-tag-staff",
+        time: "Baru saja",
+        text: text,
+        isInternal: isInternal
+      });
+
+      input.value = '';
+      document.getElementById('mdInternalCheck').checked = false;
+      renderModalComments(ticket.comments);
+      renderTickets();
+      RumaUI.showToast(isInternal ? 'Catatan internal berhasil disimpan' : 'Tanggapan berhasil ditambahkan');
+      lucide.createIcons();
+    }
+
+    function openAssignTechFromModal() {
+      openModal('modalAssignTech');
+    }
+
+    function submitAssignTechModal() {
+      const selectedRadio = document.querySelector('input[name="techRadioGroup"]:checked');
+      if (!selectedRadio) return;
+
+      const techName = selectedRadio.value;
+      const ticket = TICKETS_DB.find(t => t.id === activeModalTicketId);
+      if (!ticket) return;
+
+      ticket.techName = techName;
+      if (techName.includes('Joko')) {
+        ticket.techSpecialty = 'Teknisi AC & Plumbing';
+        ticket.techAvatar = 'PJ';
+        ticket.techPhone = '628123456789';
+      } else if (techName.includes('Yanto')) {
+        ticket.techSpecialty = 'Ahli Kelistrikan & MCB';
+        ticket.techAvatar = 'PY';
+        ticket.techPhone = '6281377889900';
+      } else {
+        ticket.techSpecialty = 'Pintu & Mebel Kayu';
+        ticket.techAvatar = 'PB';
+        ticket.techPhone = '6281122334455';
+      }
+
+      ticket.comments.push({
+        sender: "Staf Operasional",
+        role: "Staf",
+        roleClass: "role-tag-staff",
+        time: "Baru saja",
+        text: `Penugasan dialihkan kepada ${techName}.`,
+        isInternal: false
+      });
+
+      closeModal('modalAssignTech');
+      openTicketDetail(ticket.id);
+      renderTickets();
+      const waAssignChecked = document.getElementById('notifyAssignWa') && document.getElementById('notifyAssignWa').checked;
+      const waAssignMsg = waAssignChecked ? ` Surat tugas otomatis terkirim ke WhatsApp ${techName}.` : '';
+      RumaUI.showToast(`Teknisi ${techName} berhasil ditugaskan!${waAssignMsg}`);
+    }
+
+    function submitResolveTicketModal() {
+      const ticket = TICKETS_DB.find(t => t.id === activeModalTicketId);
+      if (!ticket) return;
+
+      const summary = document.getElementById('resolveSummaryInput').value;
+      const cost = document.getElementById('resolveCostInput').value;
+
+      ticket.stepIndex = 5;
+      ticket.status = 'resolved';
+      ticket.cost = cost || "75000";
+      ticket.comments.push({
+        sender: "Pemilik Kost",
+        role: "Pemilik",
+        roleClass: "role-tag-owner",
+        time: "Baru saja",
+        text: `Perbaikan selesai dikonfirmasi. Tindakan: "${summary}". Biaya tercatat: Rp ${parseInt(ticket.cost).toLocaleString('id-ID')}.`,
+        isInternal: false
+      });
+
+      closeModal('modalResolveTicket');
+      updateBadgeCounts();
+      renderTickets();
+      openTicketDetail(ticket.id);
+      const waResolveChecked = document.getElementById('notifyResolveWa') && document.getElementById('notifyResolveWa').checked;
+      const waResolveMsg = waResolveChecked ? ' Konfirmasi penyelesaian terkirim ke WhatsApp penghuni.' : '';
+      RumaUI.showToast(`Tiket ${ticket.id} ditandai selesai & diarsipkan!${waResolveMsg}`);
+    }
+
+    function openLightboxFromModal() {
+      const ticket = TICKETS_DB.find(t => t.id === activeModalTicketId);
+      if (!ticket) return;
+      document.getElementById('lightboxFullImage').src = ticket.mediaPhoto;
+      document.getElementById('lightboxCaption').textContent = `Foto Bukti Kerusakan · ${ticket.tenant} (${ticket.id})`;
+      openModal('modalMediaLightbox');
+    }
+
+    function playVideoFromModal() {
+      RumaUI.showToast('Memutar cuplikan rekaman video bukti keluhan...');
+      openLightboxFromModal();
+    }
+
+
+
+    // ══════════════════════════════════════════════════════════════
+    // MODAL DIALOGS CONTROLLERS
+    // ══════════════════════════════════════════════════════════════
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('open');
+      lucide.createIcons();
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('open');
+    }
+
+    function openCreateTicketModal() {
+      document.querySelectorAll('.custom-dropdown-panel').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.btn-custom-select-trigger').forEach(b => b.classList.remove('active'));
+      openModal('modalCreateTicket');
+      renderRoomOptions('');
+      lucide.createIcons();
+    }
+
+    function openExportModal() {
+      openModal('modalExportReport');
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // SIMULATED FORM SUBMISSIONS & VALIDATIONS (F-07)
+    // ══════════════════════════════════════════════════════════════
+    let hasSimulatedAttachment = true;
+
+    function simulateFileUpload() {
+      hasSimulatedAttachment = true;
+      document.getElementById('attachedFilesPreview').style.display = 'flex';
+      document.getElementById('dropzoneTextMain').textContent = '1 Berkas Media Berhasil Dilampirkan';
+      document.getElementById('dropzoneTextSub').textContent = 'bukti_kerusakan_kamar.jpg (3.2 MB)';
+      RumaUI.showToast('Foto bukti berhasil diunggah sesuai kualifikasi F-07');
+      lucide.createIcons();
+    }
+
+    function submitCreateTicket() {
+      const room = document.getElementById('createRoomSelect').value;
+      const urgency = document.getElementById('createUrgencySelect').value;
+      const category = document.getElementById('createCategorySelect').value;
+      const title = document.getElementById('createTitleInput').value.trim();
+      const desc = document.getElementById('createDescInput').value.trim();
+
+      if (!title || !desc) {
+        RumaUI.showToast('Harap lengkapi judul keluhan dan kronologi kerusakan');
+        return;
+      }
+
+      if (!hasSimulatedAttachment) {
+        RumaUI.showToast('F-07: Wajib melampirkan minimal 1 foto atau video bukti kerusakan!');
+        return;
+      }
+
+      // Generate New Ticket Object
+      const reporter = (document.getElementById('createReporterInput')?.value || '').trim() || ('Penghuni ' + room);
+      const newId = `TKT-202610-0${TICKETS_DB.length + 1}`;
+      const newTicket = {
+        id: newId,
+        title: title,
+        room: room,
+        floor: room.startsWith('A') ? 'Lantai 1' : (room.startsWith('B') ? 'Lantai 2' : 'Lantai 3'),
+        roomType: 'Standar Unit',
+        tenant: reporter,
+        tenantPhone: '6281234567890',
+        tenantAvatar: room.substring(0, 2),
+        urgency: urgency,
+        category: category,
+        status: 'submitted',
+        stepIndex: 1,
+        reportedDate: '24 Okt 2026, Baru saja',
+        timeRel: 'Baru saja',
+        description: desc,
+        mediaPhoto: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&auto=format&fit=crop&q=80',
+        mediaVideo: null,
+        techName: 'Belum Ditugaskan',
+        techSpecialty: 'Menunggu Disposisi',
+        techAvatar: '--',
+        techPhone: '628123456789',
+        comments: [
+          { sender: 'Staf / Pelapor', role: 'Staf', roleClass: 'role-tag-staff', time: 'Baru saja', text: 'Tiket diterbitkan ke dalam sistem.', isInternal: false }
+        ]
+      };
+
+      TICKETS_DB.unshift(newTicket);
+      closeModal('modalCreateTicket');
+      updateBadgeCounts();
+      renderTickets();
+      const waChecked = document.getElementById('notifyViaWa') && document.getElementById('notifyViaWa').checked;
+      const waMsg = waChecked ? ' Notifikasi instan terkirim via WhatsApp ke teknisi & pelapor.' : '';
+      RumaUI.showToast(`Tiket ${newId} berhasil dibuat dan masuk antrean!${waMsg}`);
+    }
+
+    function submitExportDownload() {
+      closeModal('modalExportReport');
+      RumaUI.showToast('Mengunduh rekap pemeliharaan format PDF (14 halaman)...');
+    }
+
+    function autoFillTenantByRoom() {
+      const room = document.getElementById('createRoomSelect').value;
+      const reporterInput = document.getElementById('createReporterInput');
+      const map = {
+        'B-03': 'Reza Pratama',
+        'A-01': 'Rina Marliana',
+        'A-04': 'Budi Santoso',
+        'B-02': 'Hendra Wijaya',
+        'C-01': 'Anisa Putri',
+        'C-03': 'Kevin Sanjaya',
+        'Umum-1': 'Staf Pengelola Kos (Area Lt. 1)',
+        'Umum-2': 'Staf Pengelola Kos (Area Lt. 2)',
+        'Umum-3': 'Staf Pengelola Kos (Area Lt. 3)'
+      };
+      const name = map[room] || 'Penghuni Kamar ' + room;
+      if (reporterInput) reporterInput.value = name;
+      const detectedEl = document.getElementById('detectedTenantName');
+      if (detectedEl) detectedEl.textContent = name;
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // CUSTOM DROPDOWN INTERACTION CONTROLLERS (MODAL FORMS)
+    // ══════════════════════════════════════════════════════════════
+    function toggleCustomDropdown(panelId, btn) {
+      const panel = document.getElementById(panelId);
+      if (!panel) return;
+      const isShown = panel.style.display !== 'none';
+      
+      // Close all other panels
+      document.querySelectorAll('.custom-dropdown-panel').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.btn-custom-select-trigger').forEach(b => b.classList.remove('active'));
+      
+      if (!isShown) {
+        panel.style.display = 'flex';
+        btn.classList.add('active');
+        lucide.createIcons();
+      }
+    }
+
+    const ROOMS_LIST = [
+      { code: 'B-03', title: 'Kamar B-03', floor: 'Lantai 2', tenant: 'Reza Pratama', type: 'Standar', icon: 'door-open', badgeBg: '#F1F5F9', badgeColor: '#475569' },
+      { code: 'A-01', title: 'Kamar A-01', floor: 'Lantai 1', tenant: 'Rina Marliana', type: 'Deluxe', icon: 'door-open', badgeBg: '#FFF7ED', badgeColor: '#FF7A00' },
+      { code: 'A-04', title: 'Kamar A-04', floor: 'Lantai 1', tenant: 'Budi Santoso', type: 'Standar', icon: 'door-open', badgeBg: '#F1F5F9', badgeColor: '#475569' },
+      { code: 'B-02', title: 'Kamar B-02', floor: 'Lantai 2', tenant: 'Hendra Wijaya', type: 'Deluxe', icon: 'door-open', badgeBg: '#FFF7ED', badgeColor: '#FF7A00' },
+      { code: 'C-01', title: 'Kamar C-01', floor: 'Lantai 3', tenant: 'Anisa Putri', type: 'Standar', icon: 'door-open', badgeBg: '#F1F5F9', badgeColor: '#475569' },
+      { code: 'C-03', title: 'Kamar C-03', floor: 'Lantai 3', tenant: 'Kevin Sanjaya', type: 'Standar', icon: 'door-open', badgeBg: '#F1F5F9', badgeColor: '#475569' },
+      { code: 'Umum-1', title: 'Area Umum Lantai 1', floor: 'Area Komunal', tenant: 'Staf Pengelola Kos (Area Lt. 1)', type: 'Publik', desc: 'Lobi, Ruang Tamu & Area Parkir Motor', icon: 'building-2', badgeBg: '#E0F2FE', badgeColor: '#0284C7' },
+      { code: 'Umum-2', title: 'Area Umum Lantai 2', floor: 'Area Komunal', tenant: 'Staf Pengelola Kos (Area Lt. 2)', type: 'Publik', desc: 'Dapur Komunal, Dispenser & Koridor', icon: 'building-2', badgeBg: '#E0F2FE', badgeColor: '#0284C7' },
+      { code: 'Umum-3', title: 'Area Umum Lantai 3', floor: 'Area Komunal', tenant: 'Staf Pengelola Kos (Area Lt. 3)', type: 'Publik', desc: 'Rooftop & Area Jemur Pakaian', icon: 'building-2', badgeBg: '#E0F2FE', badgeColor: '#0284C7' }
+    ];
+
+    function renderRoomOptions(filter = '') {
+      const panel = document.getElementById('dropdownRoom');
+      if (!panel) return;
+      const currentVal = document.getElementById('createRoomSelect').value;
+      const q = (filter || '').trim().toLowerCase();
+
+      const matched = ROOMS_LIST.filter(r => {
+        if (!q) return true;
+        return r.code.toLowerCase().includes(q) ||
+               r.title.toLowerCase().includes(q) ||
+               r.floor.toLowerCase().includes(q) ||
+               r.tenant.toLowerCase().includes(q) ||
+               r.type.toLowerCase().includes(q) ||
+               (r.desc && r.desc.toLowerCase().includes(q));
+      });
+
+      if (matched.length === 0) {
+        panel.innerHTML = `
+          <div style="padding: 16px 12px; text-align: center; color: #94A3B8; font-size: 11.5px;">
+            <i data-lucide="search-x" style="width: 20px; height: 20px; margin: 0 auto 6px; display: block; opacity: 0.6;"></i>
+            Kamar atau lokasi "${filter}" tidak ditemukan
+          </div>`;
+        lucide.createIcons();
+        return;
+      }
+
+      panel.innerHTML = matched.map(r => {
+        const isSelected = r.code === currentVal ? 'selected' : '';
+        const subtext = r.desc || `${r.floor} &middot; Penghuni: ${r.tenant}`;
+        return `
+          <div class="dropdown-option-item ${isSelected}" id="optRoom-${r.code}" onclick="selectRoomOption('${r.code}', '${r.title}', '${r.floor}', '${r.tenant}', '${r.type}')">
+            <div class="option-icon-box"><i data-lucide="${r.icon}" style="width: 14px; height: 14px;"></i></div>
+            <div class="option-text-cluster">
+              <div class="option-header-row">
+                <span class="option-title-text">${r.title}</span>
+                <span class="option-badge-tag" style="background: ${r.badgeBg}; color: ${r.badgeColor};">${r.type}</span>
+              </div>
+              <div class="option-sub-text">${subtext}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function filterRoomDropdown(val) {
+      openRoomDropdown();
+      renderRoomOptions(val);
+    }
+
+    function openRoomDropdown() {
+      const panel = document.getElementById('dropdownRoom');
+      if (!panel) return;
+      document.querySelectorAll('.custom-dropdown-panel').forEach(p => {
+        if (p !== panel) p.style.display = 'none';
+      });
+      document.querySelectorAll('.btn-custom-select-trigger').forEach(b => b.classList.remove('active'));
+
+      if (panel.style.display === 'none') {
+        panel.style.display = 'flex';
+        renderRoomOptions('');
+      }
+    }
+
+    function toggleRoomDropdown() {
+      const panel = document.getElementById('dropdownRoom');
+      if (!panel) return;
+      if (panel.style.display === 'none') {
+        openRoomDropdown();
+        document.getElementById('roomSearchInput').focus();
+      } else {
+        panel.style.display = 'none';
+      }
+    }
+
+    function selectRoomOption(roomCode, title, floor, tenantName, badge) {
+      document.getElementById('createRoomSelect').value = roomCode;
+      const label = `${title} · ${floor.replace('Lantai ', 'Lt. ')} (${tenantName})`;
+      document.getElementById('roomSearchInput').value = label;
+
+      document.getElementById('dropdownRoom').style.display = 'none';
+      autoFillTenantByRoom();
+    }
+
+    function selectCategoryOption(catCode, title, iconName, color) {
+      document.getElementById('createCategorySelect').value = catCode;
+      document.getElementById('iconTriggerCategory').innerHTML = `<i data-lucide="${iconName}" style="width: 15px; height: 15px; color: ${color}; flex-shrink: 0;"></i>`;
+      document.getElementById('labelTriggerCategory').textContent = title;
+      
+      document.querySelectorAll('#dropdownCategory .dropdown-option-item').forEach(el => el.classList.remove('selected'));
+      const activeEl = document.getElementById(`optCat-${catCode}`);
+      if (activeEl) activeEl.classList.add('selected');
+      
+      document.getElementById('dropdownCategory').style.display = 'none';
+      document.getElementById('btnTriggerCategory').classList.remove('active');
+      lucide.createIcons();
+    }
+
+    function selectUrgencyOption(urgencyCode, title, iconName, color) {
+      document.getElementById('createUrgencySelect').value = urgencyCode;
+      document.getElementById('iconTriggerUrgency').innerHTML = `<i data-lucide="${iconName}" style="width: 15px; height: 15px; color: ${color}; flex-shrink: 0;"></i>`;
+      document.getElementById('labelTriggerUrgency').textContent = title;
+      
+      document.querySelectorAll('#dropdownUrgency .dropdown-option-item').forEach(el => el.classList.remove('selected'));
+      const activeEl = document.getElementById(`optUrg-${urgencyCode}`);
+      if (activeEl) activeEl.classList.add('selected');
+      
+      document.getElementById('dropdownUrgency').style.display = 'none';
+      document.getElementById('btnTriggerUrgency').classList.remove('active');
+      lucide.createIcons();
+    }
+
+    // Global listener to close dropdowns when clicked outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select-wrap')) {
+        document.querySelectorAll('.custom-dropdown-panel').forEach(p => p.style.display = 'none');
+        document.querySelectorAll('.btn-custom-select-trigger').forEach(b => b.classList.remove('active'));
+      }
+    });
   </script>
 </body>
 </html>

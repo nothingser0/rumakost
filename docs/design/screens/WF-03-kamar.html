@@ -49,7 +49,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-2xl);
-      padding: 16px;
+      padding: 18px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
       display: flex;
       flex-direction: column;
@@ -415,10 +415,10 @@
       color: #FFFFFF !important;
       border: none;
       border-radius: 9999px;
-      height: 36px;
-      padding: 0 18px;
+      height: 40px;
+      padding: 0 20px;
       box-sizing: border-box;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
@@ -992,6 +992,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 2px;
       border-bottom: 1px solid #ECEEF2;
       flex-shrink: 0;
     }
@@ -1061,18 +1063,17 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       column-gap: 12px;
-      row-gap: 2px;
-      padding: 6px 10px !important;
+      row-gap: 4px;
       background: #F8FAFC;
-      padding: 12px 14px;
-      border-radius: 12px;
+      padding: 10px 14px;
+      border-radius: 14px;
       border: 1px solid #E2E8F0;
+      box-sizing: border-box;
     }
 
     .spec-unit-item {
       display: flex;
       flex-direction: column;
-      gap: 3px;
       gap: 1px;
       padding: 2px 0;
     }
@@ -1096,7 +1097,7 @@
     }
 
     .spec-unit-label {
-      font-size: 10px;
+      font-size: 9.5px;
       color: #64748B;
       text-transform: uppercase;
       font-weight: 600;
@@ -1105,7 +1106,7 @@
     }
 
     .spec-unit-val {
-      font-size: 12.5px;
+      font-size: 11px;
       font-weight: 600;
       color: #0F172A;
       line-height: 1.35;
@@ -1145,26 +1146,30 @@
 
     */
 
+    /* TENANT INFO POD (Identitas Penghuni Kamar Terisi - Persis Struktur Maintenance Pod) */
     .tenant-info-pod {
-      border-radius: 12px;
-      padding: 8px 12px;
-      border: 1px solid #FED7AA;
       background: #F8FAFC;
-      border: 1px solid #ECEEF2 !important;
-      padding: 6px 10px !important;
-      gap: 2px !important;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 10px;
       box-sizing: border-box;
     }
 
     .tenant-pod-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding-bottom: 4px;
+      justify-content: space-between;
+      padding-bottom: 8px;
       border-bottom: 1px dashed #E2E8F0;
+    }
+
+    .tenant-pod-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .tenant-pod-avatar {
@@ -1180,18 +1185,18 @@
       justify-content: center;
       flex-shrink: 0;
       letter-spacing: -0.2px;
+      box-shadow: 0 2px 5px rgba(255, 122, 0, 0.25);
     }
 
-    .tenant-pod-titles h4 {
+    .tenant-pod-title {
       font-size: 12.5px;
       font-weight: 700;
       color: #0F172A;
-      margin: 0;
       line-height: 1.25;
-      letter-spacing: -0.1px;
+      display: block;
     }
 
-    .tenant-pod-titles p {
+    .tenant-pod-sub {
       font-size: 11px;
       color: #64748B;
       margin: 2px 0 0 0;
@@ -1199,31 +1204,51 @@
       font-weight: 500;
     }
 
-    .tenant-meta-line {
-      font-size: 10.5px;
-      padding-top: 3px !important;
-      line-height: 1.25 !important;
-      font-size: 11px;
-      color: #64748B;
+    .tenant-work-list {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 5px;
-      border-top: 1px solid #F1F3F5;
-      line-height: 1.35;
-      font-weight: 500;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .tenant-meta-line:first-child {
+    .tenant-work-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      padding-top: 5px;
+      border-top: 1px solid #F1F5F9;
+      line-height: 1.35;
+    }
+
+    .tenant-work-row:first-child {
       border-top: none;
       padding-top: 0;
     }
 
-    .tenant-meta-line strong {
+    .t-work-lbl {
+      color: #64748B;
+      font-weight: 500;
+    }
+
+    .t-work-val {
       font-weight: 600;
-      font-size: 11.5px;
       color: #0F172A;
-      letter-spacing: -0.1px;
+      font-size: 11.5px;
+      text-align: right;
+    }
+
+    .tenant-note-bubble {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 10.5px;
+      color: #166534;
+      line-height: 1.4;
+      margin-top: 2px;
     }
 
     .dossier-actions-col {
@@ -1286,6 +1311,33 @@
       background: #F8FAFC;
       border-color: #CBD5E1;
       color: #FF7A00;
+      transform: translateY(-1px);
+    }
+
+    .btn-drawer-wa {
+      width: 100%;
+      height: 38px;
+      border-radius: 9999px;
+      background: #FFFFFF;
+      color: #1E293B;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #E2E8F0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    .btn-drawer-wa:hover {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      color: #0F172A;
       transform: translateY(-1px);
     }
 
@@ -1477,65 +1529,428 @@
       background: #FFF7ED;
     }
 
-    /* ═══════════════════════════════════════
-       CUSTOM FORM SELECT DROPDOWN (ESTIFY ZERO-NATIVE)
-       ═══════════════════════════════════════ */
+    /* ══════════════════════════════════════════════════════════════
+       3. MODAL DIALOGS (100% PERSIS CLONE DARI WF-04 REGISTRASI PENGHUNI)
+       ══════════════════════════════════════════════════════════════ */
+    .modal-backdrop {
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(15, 23, 42, 0.45) !important;
+      backdrop-filter: blur(5px) !important;
+      -webkit-backdrop-filter: blur(5px) !important;
+      z-index: 1000 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 20px !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: opacity 0.2s ease !important;
+      box-sizing: border-box !important;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+
+    #modalTambahKamar .modal-card,
+    #modalEditKamar .modal-card,
+    #modalIklanKamar .modal-card {
+      background: #FFFFFF !important;
+      border-radius: 20px !important;
+      width: 580px !important;
+      max-width: 580px !important;
+      max-height: calc(100vh - 48px) !important;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.16) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+      margin: 0 auto !important;
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0) scale(1) !important;
+    }
+
+    .modal-header-pinned {
+      padding: 15px 22px !important;
+      border-bottom: 1px solid var(--border-subtle) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+    }
+
+    .modal-title {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      color: var(--text-main) !important;
+      margin: 0 !important;
+      line-height: 1.25 !important;
+    }
+
+    .modal-subtitle {
+      font-size: 11.5px !important;
+      color: var(--text-muted) !important;
+      margin: 2px 0 0 0 !important;
+    }
+
+    .btn-modal-close {
+      background: #F1F5F9 !important;
+      border: none !important;
+      border-radius: 50% !important;
+      width: 32px !important;
+      height: 32px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      color: #64748B !important;
+      transition: all var(--transition-fast) !important;
+      flex-shrink: 0 !important;
+    }
+
+    .btn-modal-close:hover {
+      background: #E2E8F0 !important;
+      color: #0F172A !important;
+    }
+
+    .modal-body-scrollable {
+      padding: 12px 22px 18px !important;
+      overflow-y: auto !important;
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      box-sizing: border-box !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .modal-body-scrollable .modal-section-title:first-child {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
+    .modal-backdrop,
+    .modal-card,
+    .modal-body-scrollable,
+    .modal-body,
+    .modal-body-scroll {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .modal-backdrop::-webkit-scrollbar,
+    .modal-card::-webkit-scrollbar,
+    .modal-body-scrollable::-webkit-scrollbar,
+    .modal-body::-webkit-scrollbar,
+    .modal-body-scroll::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+
+    .modal-footer-pinned {
+      padding: 13px 22px !important;
+      border-top: 1px solid var(--border-subtle) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: 10px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Form Fields Standardized to Estify 42px (Exact WF-04) */
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label-txt {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .form-input-field:not(textarea) {
+      height: 42px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 12.5px;
+      font-family: inherit;
+      color: var(--text-main);
+      background: #FFFFFF;
+      outline: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    textarea.form-input-field {
+      min-height: 96px;
+      height: auto;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      font-family: inherit;
+      color: var(--text-main);
+      background: #FFFFFF;
+      outline: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      width: 100%;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .form-input-field:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .btn-modal-cancel {
+      height: 38px;
+      padding: 0 18px;
+      border-radius: var(--radius-full);
+      background: #F1F5F9;
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .btn-modal-cancel:hover {
+      background: #E2E8F0;
+      color: var(--text-main);
+    }
+
+    .btn-modal-primary {
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: var(--brand-primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 0 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    .btn-modal-primary:hover {
+      background: var(--brand-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-modal-danger {
+      height: 38px;
+      padding: 0 16px;
+      border-radius: var(--radius-full);
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #EF4444;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .btn-modal-danger:hover {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+
+    /* Modal Form Sub-Sections & Upload Dropzone */
+    .modal-section-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 6px;
+      margin-top: 4px;
+      border-top: 1px dashed #E2E8F0;
+    }
+
+    .modal-section-title {
+      font-size: 11.5px;
+      box-sizing: border-box;
+      font-weight: 700;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .file-upload-dropzone {
+      border: 1.5px dashed #CBD5E1;
+      border-radius: 12px;
+      background: #F8FAFC;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .file-upload-dropzone:hover {
+      border-color: var(--brand-primary);
+      background: #FFF7ED;
+    }
+
+    .file-dropzone-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .file-dropzone-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-primary);
+      flex-shrink: 0;
+    }
+
+    .file-dropzone-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .file-dropzone-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .file-dropzone-sub {
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    .btn-choose-file {
+      height: 30px;
+      padding: 0 10px;
+      border-radius: var(--radius-full);
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      font-size: 11.5px;
+      box-sizing: border-box;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    .duration-pills-row {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .duration-pill-opt {
+      flex: 1;
+      padding: 8px;
+      text-align: center;
+      border-radius: var(--radius-full);
+      font-size: 11.5px;
+      font-weight: 600;
+      border: 1px solid var(--border-subtle);
+      background: #F8FAFC;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .duration-pill-opt:hover {
+      border-color: #D1D5DB;
+      color: var(--text-main);
+    }
+
+    .duration-pill-opt.active {
+      background: var(--dark-pill);
+      border-color: var(--dark-pill);
+      color: #FFFFFF;
+    }
+
+    /* Custom Form Select (Dropdown Kamar) */
     .custom-form-select-wrap {
       position: relative;
       width: 100%;
     }
 
-    /* KONSISTENSI UKURAN: INPUT & TRIGGER TEPAT 42px */
-    #modalTambahKamar .form-input,
-    #modalEditKamar .form-input,
     .btn-form-select-trigger {
+      width: 100%;
       height: 42px;
-      min-height: 42px;
-      max-height: 42px;
       padding: 0 14px;
-      background: var(--bg-canvas);
-      border: 1.5px solid var(--border-input);
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
       border-radius: 12px;
-      font-family: inherit;
-      font-size: 12.5px;
-      font-weight: 500;
-      color: var(--text-main);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
       cursor: pointer;
-      outline: none;
+      font-family: inherit;
       transition: all var(--transition-fast);
       box-sizing: border-box;
+      color: var(--text-main);
       user-select: none;
-      width: 100%;
     }
 
-    #modalTambahKamar .form-input:focus,
-    #modalEditKamar .form-input:focus,
-    .btn-form-select-trigger:hover {
-      background: #FFFFFF;
-      border-color: #CBD5E1;
-    }
-
-    .btn-form-select-trigger.is-open,
-    #modalTambahKamar .form-input:focus,
-    #modalEditKamar .form-input:focus {
-      background: #FFFFFF;
+    .btn-form-select-trigger:focus,
+    .btn-form-select-trigger.is-open {
       border-color: #FF7A00;
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
-    }
-
-    .btn-form-select-trigger .chevron-icon {
-      transition: transform var(--transition-fast);
-      color: var(--text-muted);
-      flex-shrink: 0;
-      margin-left: 8px;
-    }
-
-    .btn-form-select-trigger.is-open .chevron-icon {
-      transform: rotate(180deg);
-      color: #FF7A00;
+      background: #FFFFFF;
     }
 
     .select-label-cluster {
@@ -1555,28 +1970,26 @@
       white-space: nowrap;
       font-weight: 500;
       font-size: 12.5px;
-      color: #111111;
+      color: var(--text-main);
     }
 
-    /* Floor Color Coding (Lantai 1 = Blue, Lantai 2 = Purple, Lantai 3 = Orange) */
     .floor-icon-mini {
       width: 24px;
       height: 24px;
       border-radius: 7px;
-      background: #EFF6FF;
-      color: #2563EB;
+      background: #FFF7ED;
+      color: #FF7A00;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border: 1px solid #BFDBFE;
+      border: 1px solid #FFEDD5;
       transition: all var(--transition-fast);
     }
-    .floor-icon-mini.is-lt1 { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
-    .floor-icon-mini.is-lt2 { background: #F5F3FF; color: #7C3AED; border: 1px solid #DDD6FE; }
-    .floor-icon-mini.is-lt3 { background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA; }
+    .floor-icon-mini i {
+      color: #FF7A00 !important;
+    }
 
-    /* Type Icon Mini (Consistent Brand Orange) */
     .type-icon-mini {
       width: 24px;
       height: 24px;
@@ -1612,18 +2025,6 @@
 
     .form-select-menu.is-open {
       display: flex;
-      animation: formSelectMenuFadeIn 0.15s ease forwards;
-    }
-
-    @keyframes formSelectMenuFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-4px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .form-select-item {
@@ -1651,171 +2052,10 @@
       font-weight: 600;
     }
 
-    .form-select-item .check-indicator {
-      display: none;
-      color: #FF7A00;
-      flex-shrink: 0;
-    }
-
-    .form-select-item.selected .check-indicator {
-      display: inline-block;
-    }
-
     .item-label-content {
       display: flex;
       align-items: center;
       gap: 8px;
-    }
-
-    /* ═══════════════════════════════════════
-       MODAL FOOTER ACTIONS (SEJAJAR & RAPI)
-       ═══════════════════════════════════════ */
-    .modal-actions-bar {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 6px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border-subtle);
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .modal-actions-bar.has-danger {
-      justify-content: space-between;
-    }
-
-    .btn-modal-cancel {
-      height: 40px;
-      padding: 0 20px;
-      border-radius: 9999px;
-      background: #FFFFFF;
-      border: 1.5px solid #CBD5E1;
-      color: #374151;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all var(--transition-fast);
-      box-sizing: border-box;
-      outline: none;
-      line-height: 1;
-    }
-
-    .btn-modal-cancel:hover {
-      background: #F8FAFC;
-      border-color: #94A3B8;
-      color: #111111;
-    }
-
-    .btn-modal-primary,
-    .btn-modal-submit {
-      height: 40px;
-      padding: 0 22px;
-      border-radius: 9999px;
-      background: #FF7A00;
-      border: 1.5px solid #FF7A00;
-      color: #FFFFFF;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
-      transition: all var(--transition-fast);
-      box-sizing: border-box;
-      outline: none;
-      line-height: 1;
-    }
-
-    .btn-modal-primary:hover,
-    .btn-modal-submit:hover {
-      background: #E66E00;
-      border-color: #E66E00;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.38);
-    }
-
-    .btn-modal-danger {
-      height: 40px;
-      padding: 0 16px;
-      border-radius: 9999px;
-      background: #FEF2F2;
-      border: 1.5px solid #FECACA;
-      color: #EF4444;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      transition: all var(--transition-fast);
-      box-sizing: border-box;
-      outline: none;
-      line-height: 1;
-    }
-
-    .btn-modal-danger:hover {
-      background: #FEE2E2;
-      border-color: #F87171;
-    }
-
-    /* Bulletproof Modal Architecture (Header, Body Scroll, Pinned Footer) */
-    #modalTambahKamar .modal-card,
-    #modalEditKamar .modal-card,
-    #modalIklanKamar .modal-card {
-      width: 580px !important;
-      max-width: 95vw !important;
-      max-height: 85vh !important;
-      display: flex !important;
-      flex-direction: column !important;
-      overflow: hidden !important;
-      padding: 0 !important;
-      gap: 0 !important;
-      border-radius: 24px !important;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-      background: #FFFFFF !important;
-      box-sizing: border-box !important;
-    }
-
-    .modal-header-pinned {
-      padding: 18px 24px !important;
-      border-bottom: 1px solid var(--border-subtle) !important;
-      display: flex !important;
-      justify-content: space-between !important;
-      align-items: center !important;
-      flex-shrink: 0 !important;
-      background: #FFFFFF !important;
-    }
-
-    .modal-body-scrollable {
-      padding: 20px 24px !important;
-      overflow-y: auto !important;
-      flex: 1 !important;
-      min-height: 0 !important;
-      max-height: calc(85vh - 132px) !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 14px !important;
-      box-sizing: border-box !important;
-    }
-
-    .modal-footer-pinned {
-      padding: 14px 24px 18px !important;
-      border-top: 1px solid var(--border-subtle) !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 10px !important;
-      background: #FFFFFF !important;
-      flex-shrink: 0 !important;
-      box-sizing: border-box !important;
-      border-radius: 0 0 24px 24px !important;
     }
 
     /* EMPTY FILTER STATE */
@@ -1869,7 +2109,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-2xl);
-      padding: 16px;
+      padding: 18px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
       display: flex;
       flex-direction: column;
@@ -1947,7 +2187,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-2xl);
-      padding: 16px;
+      padding: 18px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
       display: flex;
       flex-direction: column;
@@ -2543,11 +2783,11 @@
           <!-- Top Bar -->
           <div class="drawer-header-row">
             <div style="flex: 1; min-width: 0;">
-              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
                 <h3 id="drawerRoomNum" style="font-size: 16px; font-weight: 700; color: #0F172A; margin: 0; letter-spacing: -0.3px;">Kamar A-01</h3>
-                <span class="status-badge badge-dark" id="drawerStatusBadge">Terisi</span>
+                <span class="status-badge badge-dark" id="drawerStatusBadge" style="font-size: 10.5px; padding: 2px 8px;">Terisi</span>
               </div>
-              <p id="drawerRoomType" style="font-size: 11.5px; font-weight: 500; color: #64748B; margin: 0; line-height: 1.3;">Tipe Standar &middot; Lantai 1</p>
+              <p id="drawerRoomType" style="font-size: 11.5px; font-weight: 500; color: #64748B; margin: 0; line-height: 1.35;">Tipe Standar &middot; Lantai 1</p>
             </div>
             <button class="btn-drawer-edit" onclick="openEditCurrentRoomModal()" title="Edit data & spesifikasi kamar ini" style="flex-shrink: 0; margin-left: 8px;">
               <i data-lucide="edit-3" style="width: 12px; height: 12px;"></i>
@@ -2614,46 +2854,45 @@
             </div>
           </div>
 
-          <!-- Tenant Profile Card Section (Expanded with Full Living Dossier) -->
-          <div class="tenant-info-pod" id="drawerTenantCard">
+          <!-- Tenant Profile Card Section (Persis Struktur & Padding Maintenance Pod) -->
+          <div class="tenant-info-pod" id="drawerTenantCard" style="display: flex;">
             <div class="tenant-pod-header">
-              <div class="tenant-pod-avatar" id="drawerTenantAvatar">SA</div>
-              <div class="tenant-pod-titles" style="flex: 1;">
-                <h4 id="drawerTenantName">Siti Aminah</h4>
-                <p id="drawerTenantRole">Penyewa Aktif &middot; Karyawan Swasta</p>
+              <div class="tenant-pod-title-wrap">
+                <div class="tenant-pod-avatar" id="drawerTenantAvatar">SA</div>
+                <div>
+                  <span class="tenant-pod-title" id="drawerTenantName">Siti Aminah</span>
+                  <p class="tenant-pod-sub" id="drawerTenantRole">Penyewa Aktif · Karyawan Swasta</p>
+                </div>
+              </div>
+              <span class="status-badge badge-dark" id="drawerTenantBadge" style="font-size: 10px; padding: 2px 7px; background: #F4F5F7; color: #111111; border: 1px solid #E5E7EB;">Lunas Okt</span>
+            </div>
+
+            <div class="tenant-work-list">
+              <div class="tenant-work-row" id="rowKontak">
+                <span class="t-work-lbl">No. WhatsApp:</span>
+                <span class="t-work-val" id="drawerTenantPhone">0812-3456-7890</span>
+              </div>
+              <div class="tenant-work-row" id="rowMasaKontrak">
+                <span class="t-work-lbl">Masa Kontrak:</span>
+                <span class="t-work-val" id="drawerContractDate">28 Feb 2027</span>
+              </div>
+              <div class="tenant-work-row" id="rowCheckinDate">
+                <span class="t-work-lbl">Mulai Masuk:</span>
+                <span class="t-work-val" id="drawerCheckinDate">1 Mar 2026 (Sisa 4 Bln)</span>
+              </div>
+              <div class="tenant-work-row" id="rowAsal">
+                <span class="t-work-lbl">Kota Asal:</span>
+                <span class="t-work-val" id="drawerAsal">Bandung, Jawa Barat</span>
+              </div>
+              <div class="tenant-work-row" id="rowStatusTagihan">
+                <span class="t-work-lbl">Status Tagihan:</span>
+                <span class="t-work-val" id="drawerBillStatus" style="color: #059669; font-weight: 600;">Lunas (Okt 2026)</span>
               </div>
             </div>
-            
-            <div class="tenant-meta-line" id="rowKontak">
-              <span>No. WhatsApp:</span>
-              <div style="display: flex; align-items: center;">
-                <strong id="drawerTenantPhone">0812-3456-7890</strong>
-                <a href="https://wa.me/6281234567890" target="_blank" class="tenant-quick-wa-btn" id="linkDirectWa" title="Kirim WhatsApp ke penghuni">
-                  <i data-lucide="message-circle" style="width: 11px; height: 11px;"></i>
-                  <span>Chat WA</span>
-                </a>
-              </div>
-            </div>
 
-            <div class="tenant-meta-line" id="rowMasaKontrak">
-              <span>Masa Kontrak:</span>
-              <strong id="drawerContractDate">28 Feb 2027</strong>
-            </div>
-
-            <div class="tenant-meta-line" id="rowCheckinDate">
-              <span>Mulai Masuk:</span>
-              <strong id="drawerCheckinDate">1 Mar 2026 (Sisa 4 Bln)</strong>
-            </div>
-
-
-            <div class="tenant-meta-line" id="rowAsal">
-              <span>Kota Asal:</span>
-              <strong id="drawerAsal">Bandung, Jawa Barat</strong>
-            </div>
-
-            <div class="tenant-meta-line" id="rowStatusTagihan">
-              <span>Status Tagihan:</span>
-              <strong id="drawerBillStatus" style="color: #059669;">Lunas (Okt 2026)</strong>
+            <div class="tenant-note-bubble" id="drawerTenantNoteBubble">
+              <i data-lucide="check-circle" style="width: 12px; height: 12px; color: #166534; flex-shrink: 0; margin-top: 1px;"></i>
+              <p id="drawerTenantNotes" style="margin: 0;">Kontrak sewa aktif, pembayaran tagihan tepat waktu via transfer bank.</p>
             </div>
           </div>
 
@@ -2746,8 +2985,12 @@
               <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
               <span id="btnPrimaryText">Lihat Profil Penghuni</span>
             </a>
+            <a href="https://wa.me/6281234567890" target="_blank" class="btn-drawer-wa" id="linkDirectWa" title="Kirim WhatsApp ke penghuni">
+              <i data-lucide="message-circle" style="width: 14px; height: 14px;"></i>
+              <span>Chat WhatsApp Penghuni</span>
+            </a>
             <button type="button" class="btn-drawer-secondary" id="btnSharePromoAction" onclick="shareRoomPromo()" style="display: none;">
-              <i data-lucide="share-2" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+              <i data-lucide="share-2" style="width: 14px; height: 14px; color: #0F172A;"></i>
               <span>Iklankan / Siar WA Unit</span>
             </button>
           </div>
@@ -2763,33 +3006,39 @@
 
   </div>
 
-  <!-- MODAL 1: TAMBAH KAMAR BARU (SCR-03 ACTION) -->
+        <!-- MODAL 1: TAMBAH KAMAR BARU (SCR-03 · PERSIS 100% STRUKTUR WF-04) -->
   <div class="modal-backdrop" id="modalTambahKamar">
-    <div class="modal-card" style="width: 580px; max-width: 95vw;">
+    <div class="modal-card">
       <div class="modal-header-pinned">
-        <div>
-          <h2 class="modal-title" style="display: flex; align-items: center; gap: 8px; margin: 0; font-size: 16px;">
-            <i data-lucide="plus-circle" style="width: 20px; height: 20px; color: #FF7A00;"></i>
-            Tambah Kamar Baru
-          </h2>
-          <p class="modal-subtitle" style="margin: 3px 0 0 0; font-size: 11.5px; color: var(--text-muted);">
-            Daftarkan unit kamar baru ke properti RumaKost Anda.
-          </p>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--brand-primary-light); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="door-open" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Tambah Kamar Baru</h2>
+            <p class="modal-subtitle">Daftarkan unit kamar baru, spesifikasi, dan kelengkapan fasilitas</p>
+          </div>
         </div>
-        <button class="modal-close-btn" onclick="closeTambahKamarModal()" type="button" title="Tutup">
-          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        <button type="button" class="btn-modal-close" onclick="closeTambahKamarModal()" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
 
-      <form id="formTambahKamar" onsubmit="handleTambahKamar(event)" style="display: flex; flex-direction: column; flex: 1; min-height: 0; margin: 0; overflow: hidden;">
-        <div class="modal-body-scrollable">
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label" for="addNoKamar">Nomor / Kode Kamar <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="addNoKamar" placeholder="Contoh: A-06 atau D-01" required>
+      <div class="modal-body-scrollable">
+
+        <!-- 1. INFORMASI UNIT & SPESIFIKASI DASAR -->
+        <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
+          <i data-lucide="door-open" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+          <span>1. Informasi Unit & Spesifikasi Dasar</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Nomor / Kode Kamar *</label>
+            <input type="text" id="addNoKamar" class="form-input-field" placeholder="Contoh: A-06 atau D-01">
           </div>
-          <div class="form-group">
-            <label class="form-label">Lokasi Lantai & Blok <span style="color:#EF4444;">*</span></label>
+          <div class="form-group-item">
+            <label class="form-label-txt">Lokasi Lantai & Blok *</label>
             <div class="custom-form-select-wrap" id="wrapAddLantai">
               <input type="hidden" id="addLantaiKamar" value="1">
               <button type="button" class="btn-form-select-trigger" onclick="toggleFormDropdown('wrapAddLantai', event)">
@@ -2802,21 +3051,21 @@
               <div class="form-select-menu" id="menuAddLantai">
                 <div class="form-select-item selected" data-value="1" onclick="selectFormOption('addLantaiKamar', '1', this, 'wrapAddLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini is-lt1"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
+                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                     <span>Lantai 1 — Blok A</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="2" onclick="selectFormOption('addLantaiKamar', '2', this, 'wrapAddLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini is-lt2"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
+                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                     <span>Lantai 2 — Blok B</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="3" onclick="selectFormOption('addLantaiKamar', '3', this, 'wrapAddLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini is-lt3"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
+                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                     <span>Lantai 3 — Blok C</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
@@ -2826,14 +3075,14 @@
           </div>
         </div>
 
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label">Tipe Kamar <span style="color:#EF4444;">*</span></label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Tipe Kamar *</label>
             <div class="custom-form-select-wrap" id="wrapAddTipe">
               <input type="hidden" id="addTipeKamar" value="Standar">
               <button type="button" class="btn-form-select-trigger" onclick="toggleFormDropdown('wrapAddTipe', event)">
                 <div class="select-label-cluster">
-                  <i data-lucide="home" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+                  <div class="type-icon-mini"><i data-lucide="home" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                   <span class="selected-text">Standar</span>
                 </div>
                 <i data-lucide="chevron-down" class="chevron-icon" style="width: 14px; height: 14px;"></i>
@@ -2860,178 +3109,171 @@
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
-                <div class="form-select-item" data-value="VIP Suite" onclick="selectFormOption('addTipeKamar', 'VIP Suite', this, 'wrapAddTipe', event)">
+                <div class="form-select-item" data-value="Suite VIP" onclick="selectFormOption('addTipeKamar', 'Suite VIP', this, 'wrapAddTipe', event)">
                   <div class="item-label-content">
-                    <div class="type-icon-mini"><i data-lucide="award" style="width: 13px; height: 13px;"></i></div>
-                    <span>VIP Suite</span>
+                    <div class="type-icon-mini"><i data-lucide="crown" style="width: 13px; height: 13px;"></i></div>
+                    <span>Suite VIP</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="addUkuranKamar">Dimensi / Ukuran <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="addUkuranKamar" value="3 × 4 Meter" placeholder="e.g. 3 × 4 Meter" required>
+          <div class="form-group-item">
+            <label class="form-label-txt">Dimensi / Ukuran *</label>
+            <input type="text" id="addUkuranKamar" class="form-input-field" value="3 × 4 Meter" placeholder="Contoh: 3 × 4 Meter">
           </div>
         </div>
 
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label" for="addHargaKamar">Tarif Sewa per Bulan (Rp) <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="addHargaKamar" placeholder="Contoh: 1.250.000" value="1.250.000" required>
+        <!-- 2. TARIF SEWA, DEPOSIT & STATUS UNIT -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="wallet" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>2. Tarif Sewa, Deposit & Aturan Hunian</span>
           </div>
-          <div class="form-group">
-            <label class="form-label">Status Awal Unit <span style="color:#EF4444;">*</span></label>
-            <div class="custom-form-select-wrap" id="wrapAddStatus">
-              <input type="hidden" id="addStatusAwal" value="kosong">
-              <button type="button" class="btn-form-select-trigger" onclick="toggleFormDropdown('wrapAddStatus', event)">
-                <div class="select-label-cluster">
-                  <span class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 7px;">Siap Huni</span>
-                  <span class="selected-text">Kosong</span>
-                </div>
-                <i data-lucide="chevron-down" class="chevron-icon" style="width: 14px; height: 14px;"></i>
-              </button>
-              <div class="form-select-menu" id="menuAddStatus">
-                <div class="form-select-item selected" data-value="kosong" onclick="selectFormOption('addStatusAwal', 'kosong', this, 'wrapAddStatus', event)">
-                  <div class="item-label-content">
-                    <span class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 7px;">Siap Huni</span>
-                    <span>Kosong</span>
-                  </div>
-                  <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
-                </div>
-                <div class="form-select-item" data-value="perbaikan" onclick="selectFormOption('addStatusAwal', 'perbaikan', this, 'wrapAddStatus', event)">
-                  <div class="item-label-content">
-                    <span class="status-badge badge-warning" style="font-size: 10.5px; padding: 2px 7px; background:#FEF3C7; color:#D97706;">Perbaikan</span>
-                    <span>Maintenance</span>
-                  </div>
-                  <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
-                </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Tarif Sewa per Bulan (Rp) *</label>
+            <input type="text" id="addHargaKamar" class="form-input-field" value="1.250.000" placeholder="Contoh: 1.250.000">
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt">Nominal Deposit Default (Rp) *</label>
+            <input type="text" id="addDepositKamar" class="form-input-field" value="500.000" placeholder="Contoh: 500.000">
+          </div>
+        </div>
+
+        <!-- Kapasitas Maksimal Penghuni - Pills 100% Persis WF-04 -->
+        <div class="form-group-item">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label-txt">Kapasitas / Jumlah Penghuni *</label>
+            <span style="font-size: 11px; color: #64748B; font-weight: 500;">Standar Tipe Kamar</span>
+          </div>
+          <input type="hidden" id="addKapasitasKamar" value="1 Orang">
+          <div class="duration-pills-row" id="wrapAddCapPills">
+            <button type="button" class="duration-pill-opt active" onclick="setRoomPillStatus('addKapasitasKamar', '1 Orang', this, 'wrapAddCapPills')">1 Orang</button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addKapasitasKamar', '2 Orang', this, 'wrapAddCapPills')">2 Orang</button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addKapasitasKamar', '3 Orang', this, 'wrapAddCapPills')">3 Orang</button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addKapasitasKamar', '4+ Orang', this, 'wrapAddCapPills')">4+ Orang</button>
+          </div>
+        </div>
+
+        <!-- Aturan Gender / Penghuni - Pills 100% Persis WF-04 -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Aturan Gender / Penghuni *</label>
+          <input type="hidden" id="addGenderKamar" value="Campur">
+          <div class="duration-pills-row" id="wrapAddGenderPills">
+            <button type="button" class="duration-pill-opt active" onclick="setRoomPillStatus('addGenderKamar', 'Campur', this, 'wrapAddGenderPills')">
+              <i data-lucide="users" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Campur
+            </button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addGenderKamar', 'Putra', this, 'wrapAddGenderPills')">
+              <i data-lucide="user" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Putra
+            </button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addGenderKamar', 'Putri', this, 'wrapAddGenderPills')">
+              <i data-lucide="user" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Putri
+            </button>
+          </div>
+        </div>
+
+        <!-- Status Awal Kesiapan Unit - Pills 100% Persis WF-04 -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Status Awal Kesiapan Unit *</label>
+          <input type="hidden" id="addStatusAwal" value="kosong">
+          <div class="duration-pills-row" id="wrapAddStatusPills">
+            <button type="button" class="duration-pill-opt active" onclick="setRoomPillStatus('addStatusAwal', 'kosong', this, 'wrapAddStatusPills')">
+              <i data-lucide="sparkles" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Siap Huni
+            </button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addStatusAwal', 'perbaikan', this, 'wrapAddStatusPills')">
+              <i data-lucide="wrench" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Perbaikan
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. FASILITAS & DOKUMENTASI UNIT -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="sparkles" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>3. Fasilitas & Dokumentasi Unit</span>
+          </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt">No. Meteran Listrik PLN (ID Token)</label>
+          <input type="text" id="addTokenKamar" class="form-input-field" placeholder="Contoh: 1423-8890-1123">
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt" for="addCatatanKamar">Catatan Fasilitas / Posisi Kamar (Opsional)</label>
+          <textarea id="addCatatanKamar" class="form-input-field" rows="4" style="height: 100px !important; min-height: 100px !important; padding: 12px 14px !important; resize: vertical; line-height: 1.5; font-family: inherit;" placeholder="Contoh: Hadap taman dalam, sirkulasi sejuk"></textarea>
+        </div>
+
+        <!-- Dokumen / Foto Unit Kamar - Persis Dropzone KTP WF-04 -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Dokumen / Foto Unit Kamar *</label>
+          <div class="file-upload-dropzone" onclick="document.getElementById('addFotoKamarInput').click()">
+            <div class="file-dropzone-left">
+              <div class="file-dropzone-icon">
+                <i data-lucide="camera" style="width: 16px; height: 16px;"></i>
+              </div>
+              <div class="file-dropzone-text">
+                <span class="file-dropzone-title" id="addFotoKamarFileName">Unggah Foto Unit Kamar</span>
+                <span class="file-dropzone-sub">Format JPG, PNG, atau WEBP (Maksimal 5MB)</span>
               </div>
             </div>
+            <input type="file" id="addFotoKamarInput" style="display: none;" accept="image/*" onchange="handleKamarPhotoUpload(this, 'addFotoKamarFileName')">
+            <button type="button" class="btn-choose-file">Pilih Berkas</button>
           </div>
         </div>
 
-        <!-- Row 4: Deposit Default & Kapasitas / Gender -->
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label" for="addDepositKamar">Nominal Deposit Default (Rp) <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="addDepositKamar" placeholder="Contoh: 500.000" value="500.000" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="addKapasitasGender">Kapasitas & Aturan Gender <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="addKapasitasGender" placeholder="Contoh: 1 Orang (Campur/Bebas)" value="1 Orang (Campur / Bebas)">
-          </div>
-        </div>
+      </div>
 
-        <!-- Row 5: ID Meteran Listrik PLN -->
-        <div class="form-group">
-          <label class="form-label" for="addMeteranListrik">No. Meteran Listrik PLN (ID Token)</label>
-          <input type="text" class="form-input" id="addMeteranListrik" placeholder="Contoh: 1423-8899-0123" value="1423-8899-0123">
-        </div>
-
-        <!-- Row 6: Catatan / Posisi Kamar Textarea (Lega & Nyaman) -->
-        <div class="form-group">
-          <label class="form-label" for="addCatatanKamar">Catatan / Posisi Kamar (Opsional)</label>
-          <textarea class="form-input" id="addCatatanKamar" rows="2" placeholder="Contoh: Sirkulasi sejuk, hadap taman dalam, posisi pojok tenang..." style="height: auto; min-height: 56px; padding: 10px 14px; resize: vertical; line-height: 1.45; font-family: inherit;">Sirkulasi sejuk, posisi pojok tenang, hadap taman dalam</textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Fasilitas Kamar Termasuk</label>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px;">
-            <label class="facility-chip-label">
-              <input type="checkbox" checked value="AC"> AC Dingin
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" checked value="KM Dalam"> KM Dalam (Shower)
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" checked value="Kasur"> Kasur Springbed
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" checked value="Lemari & Meja"> Lemari & Meja Kerja
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" checked value="WiFi"> WiFi 100 Mbps
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" checked value="Listrik Token"> Listrik Token Mandiri
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" value="Water Heater"> Water Heater
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" checked value="Jendela Luar"> Jendela Luar
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" value="Kulkas Mini"> Kulkas Mini
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" value="Smart TV"> Smart TV
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" value="Wastafel"> Wastafel / Sink
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Foto Kamar (Opsional)</label>
-          <div class="modal-dropzone" onclick="document.getElementById('fileUploadTambah').click()">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <i data-lucide="image-plus" style="width: 18px; height: 18px;"></i>
-            </div>
-            <div style="flex: 1;">
-              <p style="font-size: 11.5px; font-weight: 600; color: #111111; margin: 0;">Pilih foto atau drag & drop file</p>
-              <p style="font-size: 10px; color: var(--text-muted); margin: 0;">Maksimal 5MB (JPG, PNG, WEBP)</p>
-            </div>
-            <input type="file" id="fileUploadTambah" style="display: none;" accept="image/*">
-          </div>
-        </div>
-
-        </div>
-
-        <div class="modal-footer-pinned" style="justify-content: flex-end;">
-          <button type="button" class="btn-modal-cancel" onclick="closeTambahKamarModal()">Batal</button>
-          <button type="submit" class="btn-modal-primary">
-            <i data-lucide="check" style="width: 15px; height: 15px;"></i>
-            <span>Simpan Kamar Baru</span>
-          </button>
-        </div>
-      </form>
+      <div class="modal-footer-pinned">
+        <button type="button" class="btn-modal-cancel" onclick="closeTambahKamarModal()">Batal</button>
+        <button type="button" class="btn-modal-primary" onclick="submitTambahKamar()">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          <span>Simpan & Daftarkan Kamar</span>
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- MODAL 2: EDIT DATA KAMAR (SCR-04 ACTION) -->
+  <!-- MODAL 2: EDIT DATA KAMAR (SCR-04 · PERSIS 100% STRUKTUR WF-04) -->
   <div class="modal-backdrop" id="modalEditKamar">
-    <div class="modal-card" style="width: 580px; max-width: 95vw;">
+    <div class="modal-card">
       <div class="modal-header-pinned">
-        <div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <h2 class="modal-title" style="display: flex; align-items: center; gap: 6px; margin: 0; font-size: 16px;">
-              <i data-lucide="sliders" style="width: 20px; height: 20px; color: #FF7A00;"></i>
-              Edit Data Kamar
-            </h2>
-            <span class="status-badge badge-dark" id="editModalBadgeKamar">A-01</span>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--brand-primary-light); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="sliders" style="width: 18px; height: 18px;"></i>
           </div>
-          <p class="modal-subtitle" style="margin: 3px 0 0 0; font-size: 11.5px; color: var(--text-muted);">
-            Perbarui tarif sewa, tipe, spesifikasi atau status unit kamar.
-          </p>
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <h2 class="modal-title">Edit Data Kamar</h2>
+              <span class="status-badge badge-dark" id="editModalBadgeKamar" style="font-size: 10.5px; padding: 2px 7px;">Kamar A-01</span>
+            </div>
+            <p class="modal-subtitle">Perbarui spesifikasi teknis, harga sewa, fasilitas, atau status kamar</p>
+          </div>
         </div>
-        <button class="modal-close-btn" onclick="closeEditKamarModal()" type="button" title="Tutup">
-          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        <button type="button" class="btn-modal-close" onclick="closeEditKamarModal()" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
 
-      <form id="formEditKamar" onsubmit="handleEditKamar(event)" style="display: flex; flex-direction: column; flex: 1; min-height: 0; margin: 0; overflow: hidden;">
-        <div class="modal-body-scrollable">
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label" for="editNoKamar">Nomor Kamar <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="editNoKamar" required>
+      <div class="modal-body-scrollable">
+
+        <!-- 1. INFORMASI UNIT & SPESIFIKASI DASAR -->
+        <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
+          <i data-lucide="door-open" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+          <span>1. Informasi Unit & Spesifikasi Dasar</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Nomor / Kode Kamar *</label>
+            <input type="text" id="editNoKamar" class="form-input-field">
           </div>
-          <div class="form-group">
-            <label class="form-label">Lokasi Lantai & Blok <span style="color:#EF4444;">*</span></label>
+          <div class="form-group-item">
+            <label class="form-label-txt">Lokasi Lantai & Blok *</label>
             <div class="custom-form-select-wrap" id="wrapEditLantai">
               <input type="hidden" id="editLantaiKamar" value="1">
               <button type="button" class="btn-form-select-trigger" onclick="toggleFormDropdown('wrapEditLantai', event)">
@@ -3044,21 +3286,21 @@
               <div class="form-select-menu" id="menuEditLantai">
                 <div class="form-select-item selected" data-value="1" onclick="selectFormOption('editLantaiKamar', '1', this, 'wrapEditLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini is-lt1"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
+                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                     <span>Lantai 1 — Blok A</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="2" onclick="selectFormOption('editLantaiKamar', '2', this, 'wrapEditLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini is-lt2"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
+                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                     <span>Lantai 2 — Blok B</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
                 <div class="form-select-item" data-value="3" onclick="selectFormOption('editLantaiKamar', '3', this, 'wrapEditLantai', event)">
                   <div class="item-label-content">
-                    <div class="floor-icon-mini is-lt3"><i data-lucide="layers" style="width: 13px; height: 13px;"></i></div>
+                    <div class="floor-icon-mini"><i data-lucide="layers" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                     <span>Lantai 3 — Blok C</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
@@ -3068,14 +3310,14 @@
           </div>
         </div>
 
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label">Tipe Kamar <span style="color:#EF4444;">*</span></label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Tipe Kamar *</label>
             <div class="custom-form-select-wrap" id="wrapEditTipe">
               <input type="hidden" id="editTipeKamar" value="Standar">
               <button type="button" class="btn-form-select-trigger" onclick="toggleFormDropdown('wrapEditTipe', event)">
                 <div class="select-label-cluster">
-                  <i data-lucide="home" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+                  <div class="type-icon-mini"><i data-lucide="home" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                   <span class="selected-text">Standar</span>
                 </div>
                 <i data-lucide="chevron-down" class="chevron-icon" style="width: 14px; height: 14px;"></i>
@@ -3102,166 +3344,147 @@
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
-                <div class="form-select-item" data-value="VIP Suite" onclick="selectFormOption('editTipeKamar', 'VIP Suite', this, 'wrapEditTipe', event)">
+                <div class="form-select-item" data-value="Suite VIP" onclick="selectFormOption('editTipeKamar', 'Suite VIP', this, 'wrapEditTipe', event)">
                   <div class="item-label-content">
-                    <div class="type-icon-mini"><i data-lucide="award" style="width: 13px; height: 13px;"></i></div>
-                    <span>VIP Suite</span>
+                    <div class="type-icon-mini"><i data-lucide="crown" style="width: 13px; height: 13px;"></i></div>
+                    <span>Suite VIP</span>
                   </div>
                   <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                 </div>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="editUkuranKamar">Dimensi / Ukuran <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="editUkuranKamar" required>
+          <div class="form-group-item">
+            <label class="form-label-txt">Dimensi / Ukuran *</label>
+            <input type="text" id="editUkuranKamar" class="form-input-field">
           </div>
         </div>
 
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label" for="editHargaKamar">Tarif Sewa per Bulan (Rp) <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="editHargaKamar" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Status Hunian / Fisik <span style="color:#EF4444;">*</span></label>
-            <div class="custom-form-select-wrap" id="wrapEditStatus">
-              <input type="hidden" id="editStatusKamar" value="terisi">
-              <button type="button" class="btn-form-select-trigger" onclick="toggleFormDropdown('wrapEditStatus', event)">
-                <div class="select-label-cluster">
-                  <span class="status-badge badge-dark" style="font-size: 10.5px; padding: 2px 7px;">Terisi</span>
-                  <span class="selected-text">Penyewa Aktif</span>
-                </div>
-                <i data-lucide="chevron-down" class="chevron-icon" style="width: 14px; height: 14px;"></i>
-              </button>
-              <div class="form-select-menu" id="menuEditStatus">
-                <div class="form-select-item selected" data-value="terisi" onclick="selectFormOption('editStatusKamar', 'terisi', this, 'wrapEditStatus', event)">
-                  <div class="item-label-content">
-                    <span class="status-badge badge-dark" style="font-size: 10.5px; padding: 2px 7px;">Terisi</span>
-                    <span>Penyewa Aktif</span>
-                  </div>
-                  <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
-                </div>
-                <div class="form-select-item" data-value="kosong" onclick="selectFormOption('editStatusKamar', 'kosong', this, 'wrapEditStatus', event)">
-                  <div class="item-label-content">
-                    <span class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 7px;">Siap Huni</span>
-                    <span>Kosong</span>
-                  </div>
-                  <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
-                </div>
-                <div class="form-select-item" data-value="perbaikan" onclick="selectFormOption('editStatusKamar', 'perbaikan', this, 'wrapEditStatus', event)">
-                  <div class="item-label-content">
-                    <span class="status-badge badge-warning" style="font-size: 10.5px; padding: 2px 7px; background:#FEF3C7; color:#D97706;">Perbaikan</span>
-                    <span>Maintenance</span>
-                  </div>
-                  <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
-                </div>
-              </div>
-            </div>
+        <!-- 2. TARIF SEWA, DEPOSIT & STATUS UNIT -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="wallet" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>2. Tarif Sewa, Deposit & Aturan Hunian</span>
           </div>
         </div>
 
-        <!-- Row 4: Deposit Default & Kapasitas / Gender -->
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label" for="editDepositKamar">Nominal Deposit Default (Rp) <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="editDepositKamar" value="500.000" required>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Tarif Sewa per Bulan (Rp) *</label>
+            <input type="text" id="editHargaKamar" class="form-input-field">
           </div>
-          <div class="form-group">
-            <label class="form-label" for="editKapasitasGender">Kapasitas & Aturan Gender <span style="color:#EF4444;">*</span></label>
-            <input type="text" class="form-input" id="editKapasitasGender" value="1 Orang (Campur / Bebas)">
-          </div>
-        </div>
-
-        <!-- Row 5: ID Meteran Listrik PLN -->
-        <div class="form-group">
-          <label class="form-label" for="editMeteranListrik">No. Meteran Listrik PLN (ID Token)</label>
-          <input type="text" class="form-input" id="editMeteranListrik" value="1423-8899-0123">
-        </div>
-
-        <!-- Row 6: Catatan / Posisi Kamar Textarea (Lega & Nyaman) -->
-        <div class="form-group">
-          <label class="form-label" for="editCatatanKamar">Catatan / Posisi Kamar (Opsional)</label>
-          <textarea class="form-input" id="editCatatanKamar" rows="2" style="height: auto; min-height: 56px; padding: 10px 14px; resize: vertical; line-height: 1.45; font-family: inherit;">Sirkulasi sejuk, posisi pojok tenang, hadap taman dalam</textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Fasilitas Kamar Termasuk</label>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 2px;">
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacAC" checked value="AC"> AC Dingin
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacKM" checked value="KM Dalam"> KM Dalam (Shower)
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacKasur" checked value="Kasur"> Kasur Springbed
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacLemari" checked value="Lemari & Meja"> Lemari & Meja Kerja
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacWifi" checked value="WiFi"> WiFi 100 Mbps
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacListrik" checked value="Listrik Token"> Listrik Token Mandiri
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacWaterHeater" value="Water Heater"> Water Heater
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacJendela" checked value="Jendela Luar"> Jendela Luar
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacKulkas" value="Kulkas Mini"> Kulkas Mini
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacTV" value="Smart TV"> Smart TV
-            </label>
-            <label class="facility-chip-label">
-              <input type="checkbox" id="editFacSink" value="Wastafel"> Wastafel / Sink
-            </label>
+          <div class="form-group-item">
+            <label class="form-label-txt">Nominal Deposit Default (Rp) *</label>
+            <input type="text" id="editDepositKamar" class="form-input-field" value="500.000">
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">Foto Kamar</label>
-          <div class="modal-dropzone" onclick="document.getElementById('fileUploadEdit').click()">
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <i data-lucide="image" style="width: 18px; height: 18px;"></i>
-            </div>
-            <div style="flex: 1;">
-              <p style="font-size: 11.5px; font-weight: 600; color: #111111; margin: 0;">Ganti foto unit kamar</p>
-              <p style="font-size: 10px; color: var(--text-muted); margin: 0;">Klik untuk upload foto baru atau biarkan jika tidak berubah</p>
-            </div>
-            <input type="file" id="fileUploadEdit" style="display: none;" accept="image/*">
+        <!-- Kapasitas Maksimal Penghuni - Pills 100% Persis WF-04 -->
+        <div class="form-group-item">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label-txt">Kapasitas / Jumlah Penghuni *</label>
+            <span style="font-size: 11px; color: #64748B; font-weight: 500;">Standar Tipe Kamar</span>
+          </div>
+          <input type="hidden" id="editKapasitasKamar" value="1 Orang">
+          <div class="duration-pills-row" id="wrapEditCapPills">
+            <button type="button" class="duration-pill-opt active" onclick="setRoomPillStatus('editKapasitasKamar', '1 Orang', this, 'wrapEditCapPills')">1 Orang</button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editKapasitasKamar', '2 Orang', this, 'wrapEditCapPills')">2 Orang</button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editKapasitasKamar', '3 Orang', this, 'wrapEditCapPills')">3 Orang</button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editKapasitasKamar', '4+ Orang', this, 'wrapEditCapPills')">4+ Orang</button>
           </div>
         </div>
 
-        </div>
-
-        <div class="modal-footer-pinned" style="justify-content: space-between;">
-          <button type="button" class="btn-modal-danger" onclick="handleDeleteKamar()">
-            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-            <span>Hapus Unit Kamar</span>
-          </button>
-
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <button type="button" class="btn-modal-cancel" onclick="closeEditKamarModal()">Batal</button>
-            <button type="submit" class="btn-modal-primary">
-              <i data-lucide="check" style="width: 15px; height: 15px;"></i>
-              <span>Simpan Perubahan</span>
+        <!-- Aturan Gender / Penghuni - Pills 100% Persis WF-04 -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Aturan Gender / Penghuni *</label>
+          <input type="hidden" id="editGenderKamar" value="Campur">
+          <div class="duration-pills-row" id="wrapEditGenderPills">
+            <button type="button" class="duration-pill-opt active" onclick="setRoomPillStatus('editGenderKamar', 'Campur', this, 'wrapEditGenderPills')">
+              <i data-lucide="users" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Campur
+            </button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editGenderKamar', 'Putra', this, 'wrapEditGenderPills')">
+              <i data-lucide="user" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Putra
+            </button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editGenderKamar', 'Putri', this, 'wrapEditGenderPills')">
+              <i data-lucide="user" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Putri
             </button>
           </div>
         </div>
-      </form>
+
+        <!-- Status Fisik Kamar - Pills 100% Persis WF-04 -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Status Hunian / Fisik *</label>
+          <input type="hidden" id="editStatusKamar" value="terisi">
+          <div class="duration-pills-row" id="wrapEditStatusPills">
+            <button type="button" class="duration-pill-opt active" onclick="setRoomPillStatus('editStatusKamar', 'terisi', this, 'wrapEditStatusPills')">
+              <i data-lucide="user-check" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Terisi
+            </button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editStatusKamar', 'kosong', this, 'wrapEditStatusPills')">
+              <i data-lucide="sparkles" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Siap Huni
+            </button>
+            <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editStatusKamar', 'perbaikan', this, 'wrapEditStatusPills')">
+              <i data-lucide="wrench" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Perbaikan
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. FASILITAS & DOKUMENTASI UNIT -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="sparkles" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>3. Fasilitas & Dokumentasi Unit</span>
+          </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt">No. Meteran Listrik PLN (ID Token)</label>
+          <input type="text" id="editMeteranListrik" class="form-input-field" value="1423-8899-0123">
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt" for="editCatatanKamar">Catatan Fasilitas / Posisi Kamar (Opsional)</label>
+          <textarea id="editCatatanKamar" class="form-input-field" rows="4" style="height: 100px !important; min-height: 100px !important; padding: 12px 14px !important; resize: vertical; line-height: 1.5; font-family: inherit;" placeholder="Contoh: Sirkulasi sejuk, posisi pojok tenang, hadap taman dalam">Sirkulasi sejuk, posisi pojok tenang, hadap taman dalam</textarea>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt">Dokumen / Foto Unit Kamar</label>
+          <div class="file-upload-dropzone" onclick="document.getElementById('fileUploadEdit').click()">
+            <div class="file-dropzone-left">
+              <div class="file-dropzone-icon">
+                <i data-lucide="camera" style="width: 16px; height: 16px;"></i>
+              </div>
+              <div class="file-dropzone-text">
+                <span class="file-dropzone-title" id="uploadEditFileName">Ganti Foto Unit Kamar</span>
+                <span class="file-dropzone-sub">Klik untuk upload foto baru atau biarkan jika tidak berubah</span>
+              </div>
+            </div>
+            <input type="file" id="fileUploadEdit" style="display: none;" accept="image/*" onchange="handleKamarPhotoUpload(this, 'uploadEditFileName')">
+            <button type="button" class="btn-choose-file">Pilih Berkas</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer-pinned" style="justify-content: space-between;">
+        <button type="button" class="btn-modal-danger" onclick="handleDeleteKamar()">
+          <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+          <span>Hapus Unit Kamar</span>
+        </button>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button type="button" class="btn-modal-cancel" onclick="closeEditKamarModal()">Batal</button>
+          <button type="button" class="btn-modal-primary" onclick="submitEditKamar()">
+            <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+            <span>Simpan Perubahan</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  
   <!-- MODAL 3: IKLANKAN KAMAR KOSONG VIA WHATSAPP (MARKETING PROMO) -->
   <div class="modal-backdrop" id="modalIklanKamar">
-    <div class="modal-card" style="width: 560px; max-width: 95vw;">
+    <div class="modal-card" style="width: 580px !important; max-width: 580px !important;">
       <div class="modal-header-pinned">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div style="width: 36px; height: 36px; border-radius: 10px; background: #DCFCE7; color: #16A34A; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -3274,8 +3497,8 @@
             </p>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="RumaUI.closeModal('modalIklanKamar')" type="button" title="Tutup">
-          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        <button type="button" class="btn-modal-close" onclick="RumaUI.closeModal('modalIklanKamar')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
 
@@ -3303,6 +3526,32 @@
         <button type="button" class="btn-modal-primary is-whatsapp" onclick="sendPromoWaDirect()">
           <i data-lucide="send" style="width: 14px; height: 14px;"></i>
           <span>Kirim via WhatsApp Web</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Konfirmasi Hapus Kamar (Standard Anti-Slop Modal) -->
+  <div class="modal-backdrop" id="modalKonfirmasiHapusKamar" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center; padding: 16px;">
+    <div class="modal-card" style="width: 460px !important; max-width: 460px !important; background: #FFFFFF; border-radius: 16px; box-shadow: 0 20px 40px -15px rgba(0,0,0,0.25); overflow: hidden; display: flex; flex-direction: column;">
+      <div style="padding: 24px 24px 16px; display: flex; gap: 16px; align-items: flex-start;">
+        <div style="width: 44px; height: 44px; border-radius: 12px; background: #FEF2F2; border: 1px solid #FEE2E2; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #DC2626;">
+          <i data-lucide="alert-triangle" style="width: 22px; height: 22px;"></i>
+        </div>
+        <div style="flex: 1;">
+          <h3 style="font-size: 16px; font-weight: 700; color: #111827; margin: 0 0 6px 0;">Hapus Unit Kamar?</h3>
+          <p style="font-size: 13px; color: #64748B; margin: 0; line-height: 1.5;">
+            Apakah Anda yakin ingin menghapus <strong id="delRoomConfirmLabel" style="color: #0F172A;">Kamar terpilih</strong> dari daftar unit kost? Tindakan ini tidak dapat dibatalkan.
+          </p>
+        </div>
+      </div>
+      <div style="padding: 14px 24px; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn-modal-cancel" onclick="closeKonfirmasiHapusModal()">
+          <span>Batal</span>
+        </button>
+        <button type="button" class="btn-modal-danger" onclick="executeDeleteKamar()" style="background: #EF4444 !important; color: #FFFFFF !important; border-color: #EF4444 !important;">
+          <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+          <span>Ya, Hapus Kamar</span>
         </button>
       </div>
     </div>
@@ -3444,8 +3693,10 @@
       const primaryBtn = document.getElementById('btnPrimaryAction');
       const primaryText = document.getElementById('btnPrimaryText');
       const shareBtn = document.getElementById('btnSharePromoAction');
+      const waBtn = document.getElementById('linkDirectWa');
 
       if (data.status === 'perbaikan') {
+        if (waBtn) waBtn.style.display = 'none';
         // Status: Kamar Kosong Dalam Masa Perbaikan
         badgeEl.className = 'status-badge badge-warning';
         badgeEl.textContent = 'Dalam Perbaikan';
@@ -3480,13 +3731,14 @@
         primaryBtn.innerHTML = '<i data-lucide="wrench" style="width: 14px; height: 14px;"></i> <span id="btnPrimaryText">Buka Tiket Perbaikan #' + (data.repairTicket || 'T-04') + '</span>';
         
         shareBtn.style.display = 'flex';
-        shareBtn.innerHTML = '<i data-lucide="check-circle-2" style="width: 14px; height: 14px; color: #16A34A;"></i> <span>Tandai Selesai & Siap Huni</span>';
+        shareBtn.innerHTML = '<i data-lucide="check-circle-2" style="width: 14px; height: 14px; color: #0F172A;"></i> <span>Tandai Selesai & Siap Huni</span>';
         shareBtn.onclick = function() {
           markMaintenanceDone(data.no);
         };
 
       } else if (data.status === 'kosong') {
         // Status: Kamar Kosong Siap Huni
+        if (waBtn) waBtn.style.display = 'none';
         badgeEl.className = 'status-badge badge-brand';
         badgeEl.textContent = 'Kosong';
         badgeEl.style.background = '';
@@ -3501,7 +3753,7 @@
         primaryBtn.innerHTML = '<i data-lucide="user-plus" style="width: 14px; height: 14px;"></i> <span id="btnPrimaryText">+ Daftarkan Penghuni Baru</span>';
         
         shareBtn.style.display = 'flex';
-        shareBtn.innerHTML = '<i data-lucide="share-2" style="width: 14px; height: 14px; color: #FF7A00;"></i> <span>Iklankan / Siar WA Unit</span>';
+        shareBtn.innerHTML = '<i data-lucide="share-2" style="width: 14px; height: 14px; color: #0F172A;"></i> <span>Iklankan / Siar WA Unit</span>';
         shareBtn.onclick = function() {
           shareRoomPromo();
         };
@@ -3516,13 +3768,48 @@
 
         if (vacantPod) vacantPod.style.display = 'none';
         maintenancePod.style.display = 'none';
-        tenantCard.style.display = 'block';
+        tenantCard.style.display = 'flex';
         tenantCard.className = 'tenant-info-pod';
         document.getElementById('drawerTenantAvatar').className = 'tenant-pod-avatar';
         const initials = (data.tenant || 'PN').split(' ').map(n => n[0]).join('').substring(0, 2);
         document.getElementById('drawerTenantAvatar').textContent = initials;
         document.getElementById('drawerTenantName').textContent = data.tenant;
         document.getElementById('drawerTenantRole').textContent = 'Penyewa Aktif · ' + data.role;
+        const tenantBadge = document.getElementById('drawerTenantBadge');
+        if (tenantBadge) {
+          let billStatusTxt = 'Lunas Okt';
+          if (data.bill) {
+            if (data.bill.toLowerCase().includes('jatuh tempo')) {
+              billStatusTxt = 'Jatuh Tempo';
+            } else if (data.bill.toLowerCase().includes('lunas')) {
+              const m = data.bill.match(/Lunas\s*\(([A-Za-z]+)/i);
+              billStatusTxt = m ? `Lunas ${m[1]}` : 'Lunas Okt';
+            } else {
+              billStatusTxt = data.bill;
+            }
+          }
+
+          if (data.billBadgeClass === 'badge-warning' || (data.bill && data.bill.toLowerCase().includes('tempo'))) {
+            tenantBadge.className = 'status-badge badge-warning';
+            tenantBadge.textContent = 'Jatuh Tempo';
+            tenantBadge.style.background = '#FEF3C7';
+            tenantBadge.style.color = '#B45309';
+            tenantBadge.style.border = '1px solid #FDE68A';
+          } else if (data.billBadgeClass === 'badge-danger' || (data.bill && data.bill.toLowerCase().includes('tunggak'))) {
+            tenantBadge.className = 'status-badge badge-danger';
+            tenantBadge.textContent = billStatusTxt;
+            tenantBadge.style.background = '#FEE2E2';
+            tenantBadge.style.color = '#B91C1C';
+            tenantBadge.style.border = '1px solid #FCA5A5';
+          } else {
+            // Lunas (Okt) - Persis styling badge-dark di kartu kamar
+            tenantBadge.className = 'status-badge badge-dark';
+            tenantBadge.textContent = billStatusTxt;
+            tenantBadge.style.background = '#F4F5F7';
+            tenantBadge.style.color = '#111111';
+            tenantBadge.style.border = '1px solid #E5E7EB';
+          }
+        }
 
         document.getElementById('rowCheckinDate').style.display = 'flex';
         document.getElementById('rowAsal').style.display = 'flex';
@@ -3533,10 +3820,11 @@
         if (document.getElementById('drawerAsal')) {
           document.getElementById('drawerAsal').textContent = data.city || 'Bandung, Jawa Barat';
         }
-        if (document.getElementById('linkDirectWa')) {
+        if (waBtn) {
           const cleanPhone = (data.phone || '081234567890').replace(/[^0-9]/g, '');
           const waNum = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;
-          document.getElementById('linkDirectWa').href = 'https://wa.me/' + waNum;
+          waBtn.href = 'https://wa.me/' + waNum;
+          waBtn.style.display = 'flex';
         }
 
         document.getElementById('rowKontak').style.display = 'flex';
@@ -3701,7 +3989,75 @@
     /* ═══════════════════════════════════════
        INTERACTIVE MODALS: TAMBAH & EDIT KAMAR
        ═══════════════════════════════════════ */
-    function openTambahKamarModal() {
+        function handleKamarPhotoUpload(input, labelId) {
+      if (input.files && input.files[0]) {
+        const el = document.getElementById(labelId);
+        if (el) el.textContent = input.files[0].name;
+        RumaUI.showToast('Foto kamar berhasil dipilih: ' + input.files[0].name, 'success');
+      }
+    }
+
+        function setRoomPillStatus(hiddenInputId, val, btnEl, containerId) {
+      const hidden = document.getElementById(hiddenInputId);
+      if (hidden) hidden.value = val;
+      const wrap = document.getElementById(containerId);
+      if (wrap) {
+        wrap.querySelectorAll('.duration-pill-opt').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+      }
+    }
+
+    function syncPillsUI(containerId, activeVal) {
+      const wrap = document.getElementById(containerId);
+      if (!wrap) return;
+      const btns = wrap.querySelectorAll('.duration-pill-opt');
+      btns.forEach(b => {
+        const txt = b.textContent.trim().toLowerCase();
+        if (txt.includes(activeVal.toLowerCase()) || activeVal.toLowerCase().includes(txt)) {
+          b.classList.add('active');
+        } else {
+          b.classList.remove('active');
+        }
+      });
+    }
+
+    function submitTambahKamar() {
+      const no = document.getElementById('addNoKamar') ? document.getElementById('addNoKamar').value.trim() : '';
+      const floor = document.getElementById('addLantaiKamar') ? document.getElementById('addLantaiKamar').value : '1';
+      if (!no) {
+        RumaUI.showToast('Nomor kamar wajib diisi!', 'warning');
+        return;
+      }
+      closeTambahKamarModal();
+      RumaUI.showToast('Unit ' + no + ' (Lantai ' + floor + ') berhasil didaftarkan ke sistem!', 'success');
+    }
+
+    function submitEditKamar() {
+      const updatedNo = document.getElementById('editNoKamar').value.trim();
+      const updatedType = document.getElementById('editTipeKamar').value;
+      const updatedSize = document.getElementById('editUkuranKamar').value.trim();
+      const rawPrice = document.getElementById('editHargaKamar').value.trim();
+      const updatedStatus = document.getElementById('editStatusKamar').value;
+      const floorNum = document.getElementById('editLantaiKamar').value;
+
+      if (window.currentActiveRoomData) {
+        window.currentActiveRoomData.no = updatedNo;
+        window.currentActiveRoomData.type = updatedType;
+        window.currentActiveRoomData.size = updatedSize;
+        window.currentActiveRoomData.price = 'Rp ' + rawPrice;
+        window.currentActiveRoomData.floor = 'Lantai ' + floorNum;
+        window.currentActiveRoomData.status = updatedStatus;
+
+        document.getElementById('drawerRoomNum').textContent = 'Kamar ' + updatedNo;
+        document.getElementById('drawerRoomType').textContent = 'Tipe ' + updatedType + ' · Lantai ' + floorNum;
+        document.getElementById('drawerRoomSize').textContent = updatedSize;
+        document.getElementById('drawerRoomPrice').textContent = 'Rp ' + rawPrice;
+      }
+      closeEditKamarModal();
+      RumaUI.showToast('Perubahan data Kamar ' + updatedNo + ' berhasil disimpan!', 'success');
+    }
+
+function openTambahKamarModal() {
       RumaUI.openModal('modalTambahKamar');
       document.getElementById('formTambahKamar').reset();
       setFormSelectValue('addLantaiKamar', '1', 'wrapAddLantai');
@@ -3762,8 +4118,18 @@
       const cleanPrice = (data.price || '').replace(/[^\d]/g, '');
       document.getElementById('editHargaKamar').value = cleanPrice ? parseInt(cleanPrice).toLocaleString('id-ID') : '1.200.000';
       
-      // Status
-      setFormSelectValue('editStatusKamar', data.status || 'terisi', 'wrapEditStatus');
+      // Status & Pills Synchronization
+      const st = data.status || 'terisi';
+      document.getElementById('editStatusKamar').value = st;
+      syncPillsUI('wrapEditStatusPills', st === 'kosong' ? 'Siap Huni' : (st === 'perbaikan' ? 'Perbaikan' : 'Terisi'));
+
+      const cap = data.capacity || '1 Orang';
+      document.getElementById('editKapasitasKamar').value = cap;
+      syncPillsUI('wrapEditCapPills', cap.includes('2') ? '2 Orang' : (cap.includes('3') ? '3+ Orang' : '1 Orang'));
+
+      const gen = data.gender || 'Campur / Bebas';
+      document.getElementById('editGenderKamar').value = gen;
+      syncPillsUI('wrapEditGenderPills', gen.includes('Putra') ? 'Putra' : (gen.includes('Putri') ? 'Putri' : 'Campur'));
 
       RumaUI.openModal('modalEditKamar');
       lucide.createIcons();
@@ -3822,13 +4188,31 @@
     function handleDeleteKamar() {
       const data = window.currentActiveRoomData;
       const no = data ? data.no : 'terpilih';
-      if (confirm('Apakah Anda yakin ingin menghapus Kamar ' + no + ' dari daftar unit kost?')) {
-        closeEditKamarModal();
-        if (window.currentActiveRoomElement) {
-          window.currentActiveRoomElement.remove();
-        }
-        RumaUI.showToast('Kamar ' + no + ' berhasil dihapus dari daftar.', 'info');
+      const labelEl = document.getElementById('delRoomConfirmLabel');
+      if (labelEl) labelEl.textContent = 'Kamar ' + no;
+      
+      const modal = document.getElementById('modalKonfirmasiHapusKamar');
+      if (modal) {
+        modal.style.display = 'flex';
+        lucide.createIcons();
       }
+    }
+
+    function closeKonfirmasiHapusModal() {
+      const modal = document.getElementById('modalKonfirmasiHapusKamar');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function executeDeleteKamar() {
+      const data = window.currentActiveRoomData;
+      const no = data ? data.no : 'terpilih';
+      closeKonfirmasiHapusModal();
+      closeEditKamarModal();
+      if (window.currentActiveRoomElement) {
+        window.currentActiveRoomElement.remove();
+      }
+      RumaUI.showToast('Kamar ' + no + ' berhasil dihapus dari daftar.', 'info');
+      handleKamarFilter(); // update count counter
     }
 
     // Fungsi Live Search & Filter Kamar

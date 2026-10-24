@@ -1171,6 +1171,8 @@
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   padding: 32px;
   box-shadow: var(--shadow-modal);
   transform: translateY(20px);
@@ -1178,6 +1180,14 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.modal-card::-webkit-scrollbar,
+.modal-body-scrollable::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .modal-backdrop.open .modal-card {
@@ -2187,9 +2197,67 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   animation: rumaPopUp 180ms cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+.ruma-datepicker-wrap.align-right .ruma-datepicker-popover,
 .ruma-datepicker-wrap.drop-up.align-right .ruma-datepicker-popover {
   left: auto !important;
   right: 0 !important;
+}
+
+/* Ultra-Compact Modal-Friendly DatePicker Sizing for All Wireframes */
+.ruma-datepicker-popover {
+  width: 228px !important;
+  max-width: calc(100vw - 20px) !important;
+  border-radius: 12px !important;
+  padding: 8px 10px !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12) !important;
+  box-sizing: border-box !important;
+}
+
+.ruma-datepicker-wrap.drop-up .ruma-datepicker-popover {
+  bottom: calc(100% + 5px) !important;
+  box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.14) !important;
+}
+
+.rdp-head-row {
+  margin-bottom: 5px !important;
+}
+
+.rdp-nav-btn {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.rdp-month-title {
+  font-size: 11px !important;
+}
+
+.rdp-weekdays-row {
+  font-size: 8.5px !important;
+  margin-bottom: 3px !important;
+}
+
+.rdp-days-grid {
+  gap: 1.5px !important;
+}
+
+.rdp-day-btn {
+  height: 22px !important;
+  border-radius: 5px !important;
+  font-size: 10px !important;
+}
+
+.rdp-footer-row {
+  margin-top: 5px !important;
+  padding-top: 5px !important;
+}
+
+.rdp-preset-btn {
+  font-size: 9px !important;
+  padding: 2px 6px !important;
+}
+
+.rdp-note-txt {
+  font-size: 9px !important;
 }
 
 @keyframes rumaPopUp {
@@ -2348,4 +2416,549 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .rdp-note-txt {
   font-size: 11px;
   color: var(--text-muted);
+}
+
+/* ==========================================================================
+   CUSTOM SEARCHABLE ROOM DROPDOWN (WF-04 & WF-05)
+   ========================================================================== */
+.custom-room-select-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.custom-room-dropdown-popover {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle, #E2E8F0);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  z-index: 100;
+  padding: 8px;
+  box-sizing: border-box;
+  animation: rumaPopUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-room-dropdown-popover.open {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.room-options-scroll {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 2px;
+  scrollbar-width: thin;
+}
+
+.room-option-tile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast, 150ms ease);
+  user-select: none;
+}
+
+.room-option-tile:hover {
+  background: #F8FAFC;
+  border-color: #E2E8F0;
+}
+
+.room-option-tile.active {
+  background: #FFF7ED;
+  border-color: #FED7AA;
+}
+
+/* ==========================================================================
+   CMP-GLOBAL: COMPLETE MOUSE CURSOR & AFFORDANCE SYSTEM (WF-01 - WF-12)
+   Comprehensive cursor mapping across all semantic states:
+   1. cursor: pointer     -> Semua tombol, link, tab, filter, menu, checkbox, card
+   2. cursor: text        -> Semua input teks, textarea, search bar, editable content
+   3. cursor: not-allowed -> Tombol/input disabled, read-only non-clickable
+   4. cursor: copy        -> Tombol salin rekening, copy ID, salin teks iklan/token
+   5. cursor: grab/grabbing -> Slider/carousel kamar, drag-and-drop handles
+   6. cursor: zoom-in     -> Foto kamar, thumbnail kuitansi/bukti bayar
+   7. cursor: help        -> Ikon info, bantuan, tooltip indicator
+   8. cursor: progress    -> Status loading, pengiriman data, sinkronisasi
+   ========================================================================== */
+
+/* 1. CURSOR: POINTER (Elemen Interaktif & Dapat Diklik) */
+a,
+a *,
+button,
+button *,
+summary,
+select,
+option,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="file"],
+label,
+label *,
+[role="button"],
+[role="button"] *,
+[role="tab"],
+[role="tab"] *,
+[role="checkbox"],
+[role="radio"],
+[role="switch"],
+[role="menuitem"],
+[role="option"],
+[onclick],
+[onclick] *,
+[tabindex="0"],
+.clickable,
+.is-clickable {
+  cursor: pointer;
+}
+
+/* Tombol & Action Triggers */
+.btn,
+[class*="btn-"],
+.button,
+.btn-pill,
+.btn-brand-add,
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-dark,
+.btn-light,
+.btn-white-outline,
+.btn-white-secondary,
+.btn-subtle,
+.btn-form-select-trigger,
+.btn-drawer-edit,
+.btn-drawer-primary,
+.btn-drawer-secondary,
+.btn-drawer-close,
+.btn-modal-cancel,
+.btn-modal-primary,
+.btn-modal-submit,
+.btn-modal-danger,
+.btn-modal-close,
+.btn-micro-brand,
+.btn-action-catat,
+.btn-dossier-primary,
+.btn-dossier-secondary-pill,
+.btn-exec-receipt,
+.btn-toggle-wa,
+.btn-portal-link,
+.modal-close-btn,
+.close-modal,
+.close-btn,
+.table-action-btn,
+.table-action-icon,
+.quick-action-btn,
+.action-link-btn,
+.tenant-quick-wa-btn,
+.room-float-arrow,
+.export-btn,
+.btn-circle,
+.btn-circle-filter,
+.btn-clear-search,
+.btn-action-tile,
+.icon-circle-btn,
+.input-eye-btn,
+.upload-remove-btn {
+  cursor: pointer !important;
+}
+
+/* Navigasi, Tab, Filter Pills, Pagination */
+.nav-link,
+.topbar-nav-link,
+.topbar-user-pill,
+.topbar-action-btn,
+.topbar-avatar,
+.nav-pill,
+.tab-btn,
+.tab-pill,
+.tab-nav-btn,
+.dossier-tab-btn,
+.drawer-tab-btn,
+.segment-tab-btn,
+.settings-nav-item,
+.sidebar-channel-item,
+.filter-pill,
+.filter-pill-btn,
+.filter-tab-pill,
+.filter-chip,
+.floor-pill-btn,
+.duration-pill-opt,
+.pill-arrow-btn,
+.pill-dropdown-trigger,
+.pill-target-btn,
+.pill-template-btn,
+.perpanjang-mode-btn,
+.segmented-item,
+.pagination-btn,
+.page-link,
+.page-num,
+.page-item,
+.btn-page-nav,
+.btn-page-num {
+  cursor: pointer !important;
+}
+
+/* Dropdown, Menu & Popovers */
+.form-select-item,
+.popover-item,
+.dropdown-item,
+.select-option,
+.menu-item,
+.menu-item-cat,
+.period-menu-item,
+.search-invoice-opt,
+.dropdown-trigger,
+.custom-select-trigger,
+.custom-select-trigger *,
+.custom-select-item,
+.custom-select-item *,
+.custom-select-tile,
+.custom-form-select-wrap,
+.custom-form-select-wrap button,
+.ruma-datepicker-trigger,
+.ruma-datepicker-trigger *,
+.room-option-tile,
+.room-option-tile * {
+  cursor: pointer !important;
+}
+
+/* Kartu & Baris Data yang Dapat Diklik (Serta Seluruh Anak Elemennya) */
+.room-unit-item,
+.room-thumb-area,
+.card-clickable,
+.card-clickable *,
+.clickable-card,
+.clickable-card *,
+.accordion-slip-card,
+.stat-card[onclick],
+.stat-card[onclick] *,
+.stat-tile[onclick],
+.stat-tile[onclick] *,
+.status-vacant-card,
+.status-repair-card,
+.summary-chip-card,
+.ticket-card,
+.ticket-row[onclick],
+.ticket-row[onclick] *,
+.tenant-message-row,
+.tenant-message-row *,
+.feed-tx-main-row,
+.table-row-clickable,
+.table-row-clickable *,
+.billing-table tbody tr,
+.billing-table tbody tr *,
+.tenants-table tbody tr,
+.tenants-table tbody tr *,
+.rooms-table tbody tr,
+.rooms-table tbody tr *,
+.tickets-table tbody tr,
+.tickets-table tbody tr *,
+tr[onclick],
+tr[onclick] *,
+tr.active-row,
+tr.active-row * {
+  cursor: pointer !important;
+}
+
+/* Chips, Checkboxes, Dropzone Area, Radio Boxes */
+.facility-chip-label,
+.amenity-chip,
+.badge-clickable,
+.clickable-badge,
+.status-pill-filter,
+.chip[onclick],
+.badge-role-owner[onclick],
+.method-radio-box,
+.method-radio-box *,
+.switch-box,
+.media-extra-bar,
+.media-preview-item,
+.modal-dropzone,
+.modal-dropzone *,
+.upload-zone,
+.upload-zone *,
+.upload-drag-zone,
+.upload-drag-zone *,
+.file-upload-dropzone,
+.file-upload-dropzone *,
+.upload-dropzone-f07,
+.upload-dropzone-f07 * {
+  cursor: pointer !important;
+}
+
+/* Datepicker Hari Aktif */
+.rdp-day-btn:not(.other-month),
+.rdp-nav-btn,
+.rdp-preset-btn,
+.rdp-clear-btn {
+  cursor: pointer !important;
+}
+
+/* 2. CURSOR: TEXT (Area Pengetikan & Pengisian Form Aktif) */
+input[type="text"]:not([readonly]):not(:disabled),
+input[type="password"]:not([readonly]):not(:disabled),
+input[type="email"]:not([readonly]):not(:disabled),
+input[type="number"]:not([readonly]):not(:disabled),
+input[type="tel"]:not([readonly]):not(:disabled),
+input[type="search"]:not([readonly]):not(:disabled),
+input[type="url"]:not([readonly]):not(:disabled),
+textarea:not([readonly]):not(:disabled),
+[contenteditable="true"],
+.form-input:not([readonly]):not(:disabled),
+.form-input-field:not([readonly]):not(:disabled),
+.form-input-custom:not([readonly]):not(:disabled),
+.form-textarea:not([readonly]):not(:disabled),
+.form-control:not([readonly]):not(:disabled),
+.search-input:not([readonly]):not(:disabled) {
+  cursor: text !important;
+}
+
+/* 3. CURSOR: NOT-ALLOWED (Elemen Terkunci, Nonaktif, Disabled) */
+:disabled,
+[disabled],
+.disabled,
+.is-disabled,
+[aria-disabled="true"],
+.btn:disabled,
+.btn:disabled *,
+button:disabled,
+button:disabled *,
+input:disabled,
+select:disabled,
+textarea:disabled,
+.btn.disabled,
+.btn-disabled,
+input[readonly].is-locked,
+input[readonly][style*="cursor: not-allowed"],
+input[readonly][style*="cursor:not-allowed"] {
+  cursor: not-allowed !important;
+  pointer-events: auto !important;
+}
+
+/* 3b. Readonly non-interactive display inputs */
+input[readonly]:not([onclick]):not(.ruma-datepicker-input):not(.clickable-input):not([style*="not-allowed"]) {
+  cursor: default !important;
+}
+
+/* 4. CURSOR: COPY (Aksi Salin ke Clipboard) */
+.btn-copy,
+.btn-copy-id,
+[onclick*="copy"],
+[onclick*="clipboard"],
+.copyable,
+.copy-badge,
+.btn-dossier-wa {
+  cursor: copy !important;
+}
+
+/* 5. CURSOR: GRAB & GRABBING (Slider / Carousel & Geser Elemen) */
+.rooms-carousel-track,
+.room-carousel-container,
+.carousel-draggable,
+.draggable-track,
+[data-draggable="true"] {
+  cursor: grab !important;
+}
+
+.rooms-carousel-track:active,
+.room-carousel-container:active,
+.carousel-draggable:active,
+.draggable-track:active,
+[data-draggable="true"]:active {
+  cursor: grabbing !important;
+}
+
+/* 6. CURSOR: ZOOM-IN (Foto Kamar & Bukti Pembayaran yang Dapat Diperbesar) */
+.drawer-photo-box img,
+.receipt-thumb img,
+.media-preview-item img,
+.photo-lightbox-trigger,
+.zoomable-photo,
+[onclick*="Lightbox"],
+[onclick*="PhotoModal"],
+[onclick*="BuktiModal"] {
+  cursor: zoom-in !important;
+}
+
+/* 7. CURSOR: HELP (Tooltip Bantuan & Penjelasan Info) */
+[data-tooltip],
+.tooltip-trigger,
+.info-bubble,
+i[data-lucide="help-circle"],
+i[data-lucide="info"][title],
+abbr[title],
+.help-icon {
+  cursor: help !important;
+}
+
+/* 8. CURSOR: PROGRESS & WAIT (Status Proses & Loading) */
+.is-loading,
+.btn-loading,
+[aria-busy="true"],
+.loading-spinner,
+.syncing-indicator {
+  cursor: progress !important;
+}
+
+/* 9. CURSOR: DEFAULT (Tanggal Luar Bulan di Datepicker) */
+.rdp-day-btn.other-month,
+.rdp-day-btn:disabled {
+  cursor: default !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   10. GLOBAL COMPONENT SIZING SYSTEM (ESTIFY SPECIFICATION · DESIGN.md)
+   ══════════════════════════════════════════════════════════════ */
+
+/* --- A. BUTTON SIZING SCALE --- */
+.btn-lg {
+  height: 48px !important;
+  padding: 0 24px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-full, 9999px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+.btn-md {
+  height: 40px !important;
+  padding: 0 20px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-full, 9999px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+.btn-sm {
+  height: 34px !important;
+  padding: 0 14px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-full, 9999px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+}
+
+.btn-xs,
+.btn-micro {
+  height: 28px !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  border-radius: var(--radius-full, 9999px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+}
+
+.btn-circle {
+  width: 36px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.btn-circle-topbar {
+  width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+/* --- B. FORM FIELDS 42px UNIFORM HEIGHT LOCK --- */
+.form-input-field:not(textarea),
+.form-control-base:not(textarea),
+.form-input-control:not(textarea),
+.btn-custom-select-trigger,
+.btn-form-select-trigger,
+.rdp-input-trigger {
+  height: 42px !important;
+  min-height: 42px !important;
+  box-sizing: border-box !important;
+  font-size: 12.5px !important;
+  border-radius: 12px !important;
+}
+
+textarea.form-input-field,
+textarea.form-control-base,
+textarea.form-input-control {
+  height: auto !important;
+  min-height: 96px !important;
+  box-sizing: border-box !important;
+  font-size: 12.5px !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  line-height: 1.5 !important;
+  resize: vertical;
+}
+
+/* --- C. MODAL WIDTH SCALE --- */
+.modal-card-md {
+  width: 580px !important;
+  max-width: 580px !important;
+}
+
+.modal-card-sm {
+  width: 480px !important;
+  max-width: 500px !important;
+}
+
+.modal-card-lg {
+  width: 1040px !important;
+  max-width: 1040px !important;
+}
+
+/* --- D. STATUS BADGE SCALE --- */
+.status-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  height: 24px !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  box-sizing: border-box !important;
+}
+
+.status-badge-xs,
+.status-badge-micro {
+  height: 20px !important;
+  padding: 0 7px !important;
+  font-size: 10.5px !important;
+  border-radius: 6px !important;
 }

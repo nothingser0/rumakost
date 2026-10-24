@@ -918,19 +918,20 @@
     .room-unit-item {
       background: #FFFFFF;
       border-radius: 16px;
-      border: 1.5px solid #ECEEF2;
+      border: 1.5px solid #FF7A00;
       padding: 7px;
       display: flex;
       flex-direction: column;
       gap: 7px;
       transition: all var(--transition-fast);
-      cursor: pointer;
+      cursor: default;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
       box-sizing: border-box;
       position: relative;
     }
 
-    .room-unit-item:hover {
+    /* Hover dinonaktifkan sementara (rollback ready) */
+    .room-unit-item.hover-disabled {
       transform: translateY(-2px);
       box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
       border-color: #FF7A00;
@@ -990,11 +991,11 @@
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .room-unit-item:hover .room-thumb-area img {
+    .room-unit-item.hover-disabled .room-thumb-area img {
       transform: scale(1.05);
     }
 
-    /* Estify Translucent Ice-Blue Floating Top-Right Circle Arrow */
+        /* Estify Floating Top-Right Circle Arrow (Matches Arus Kas & Operasional .pill-arrow-btn) */
     .room-float-arrow {
       position: absolute;
       top: 6px;
@@ -1002,23 +1003,26 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: rgba(224, 237, 252, 0.88);
+      background: #F7F8FA;
+      border: 1px solid var(--border-subtle);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #0F172A;
+      color: var(--text-secondary);
       text-decoration: none;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       transition: all var(--transition-fast);
+      cursor: pointer;
       z-index: 2;
     }
 
-    .room-unit-item:hover .room-float-arrow {
-      background: #111111 !important;
+    .room-float-arrow:hover {
+      background: var(--dark-pill) !important;
       color: #FFFFFF !important;
-      transform: scale(1.06);
+      border-color: var(--dark-pill) !important;
+      transform: scale(1.08);
     }
 
     /* Card Details below image */
@@ -1779,17 +1783,17 @@
           <div class="room-cards-3col" id="quickRoomList">
             
             <!-- Unit 1: Kamar A-01 (Terisi - Lunas) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-01">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-01">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-01</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 1 · Siti Aminah · Sewa s.d 28 Feb</div>
+                <div class="room-sub-specs">Lantai 1 · Siti Aminah</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.200.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1798,17 +1802,17 @@
             </div>
 
             <!-- Unit 2: Kamar A-02 (Jatuh Tempo H-3) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-02">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar A-02">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-02</span>
                   <span class="status-badge badge-warning">Jatuh Tempo H-3</span>
                 </div>
-                <div class="room-sub-specs">Lantai 1 · Dimas Prasetyo · Sewa s.d 25 Okt</div>
+                <div class="room-sub-specs">Lantai 1 · Dimas Prasetyo</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.200.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1817,17 +1821,17 @@
             </div>
 
             <!-- Unit 3: Kamar A-03 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-03">
+            <div class="room-unit-item status-vacant-card">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar A-03">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-03</span>
                   <span class="status-badge badge-brand">Kosong · Siap Huni</span>
                 </div>
-                <div class="room-sub-specs">Lantai 1 · Standar (3×4m) · Ready</div>
+                <div class="room-sub-specs">Lantai 1 · Standar (3×4m)</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.100.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1836,17 +1840,17 @@
             </div>
 
             <!-- Unit 4: Kamar A-04 (Jatuh Tempo H-3) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-04">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-04">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-04</span>
                   <span class="status-badge badge-warning">Jatuh Tempo H-3</span>
                 </div>
-                <div class="room-sub-specs">Lantai 1 · Budi Santoso · Sewa s.d 25 Okt</div>
+                <div class="room-sub-specs">Lantai 1 · Budi Santoso</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.500.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1855,17 +1859,17 @@
             </div>
 
             <!-- Unit 5: Kamar A-05 (Terisi - Lunas) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar A-05">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar A-05">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-05</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 1 · Sri Wahyuni · Sewa s.d 30 Nov</div>
+                <div class="room-sub-specs">Lantai 1 · Sri Wahyuni</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.100.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1874,17 +1878,17 @@
             </div>
 
             <!-- Unit 6: Kamar B-01 (Terisi - Lunas) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-01">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=700&q=80" alt="Kamar B-01">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-01</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 2 · Rian Hidayat · Sewa s.d 15 Jan</div>
+                <div class="room-sub-specs">Lantai 2 · Rian Hidayat</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.600.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1893,17 +1897,17 @@
             </div>
 
             <!-- Unit 7: Kamar B-02 (Terisi - Ada Tiket) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-02">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=700&q=80" alt="Kamar B-02">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-02</span>
                   <span class="status-badge badge-dark">Terisi · Tiket</span>
                 </div>
-                <div class="room-sub-specs">Lantai 2 · Siti Aminah · Servis Wastafel</div>
+                <div class="room-sub-specs">Lantai 2 · Siti Aminah</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.800.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1912,10 +1916,10 @@
             </div>
 
             <!-- Unit 8: Kamar B-03 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-03">
+            <div class="room-unit-item status-vacant-card">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar B-03">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1931,17 +1935,17 @@
             </div>
 
             <!-- Unit 9: Kamar B-04 (Terisi - Lunas) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-04">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80" alt="Kamar B-04">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-04</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 2 · Hendra Wijaya · Sewa s.d 10 Des</div>
+                <div class="room-sub-specs">Lantai 2 · Hendra Wijaya</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.500.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1950,10 +1954,10 @@
             </div>
 
             <!-- Unit 10: Kamar B-05 (Dalam Perbaikan) -->
-            <div class="room-unit-item status-repair-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar B-05 (Dalam Perbaikan)">
+            <div class="room-unit-item status-repair-card">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar B-05">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -1969,17 +1973,17 @@
             </div>
 
             <!-- Unit 11: Kamar C-01 (Terisi - Lunas) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-01">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar C-01">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar C-01</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 3 · Farah Diba · Sewa s.d 20 Mar</div>
+                <div class="room-sub-specs">Lantai 3 · Farah Diba</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.700.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1988,10 +1992,10 @@
             </div>
 
             <!-- Unit 12: Kamar C-02 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-02">
+            <div class="room-unit-item status-vacant-card">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar C-02">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -2007,17 +2011,17 @@
             </div>
 
             <!-- Unit 13: Kamar C-03 (Terisi - Lunas) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-03">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar C-03">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar C-03</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 3 · Fajar Nugraha · Sewa s.d 12 Mei</div>
+                <div class="room-sub-specs">Lantai 3 · Fajar Nugraha</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.400.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -2026,17 +2030,17 @@
             </div>
 
             <!-- Unit 14: Kamar C-04 (Terisi - Lunas) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-04">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=700&q=80" alt="Kamar C-04">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar C-04</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 3 · Mega Lestari · Sewa s.d 5 Agu</div>
+                <div class="room-sub-specs">Lantai 3 · Mega Lestari</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.350.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -2045,17 +2049,17 @@
             </div>
 
             <!-- Unit 15: Kamar C-05 (Terisi - Lunas) -->
-            <div class="room-unit-item" onclick="window.location.href='WF-03-kamar.html'" title="Lihat Detail Kamar C-05">
+            <div class="room-unit-item">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar C-05">
-                <div class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></div>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar C-05</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 3 · Aditya Pratama · Sewa s.d 31 Okt</div>
+                <div class="room-sub-specs">Lantai 3 · Aditya Pratama</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.350.000</span>
                   <span class="room-price-unit">/bln</span>
