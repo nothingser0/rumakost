@@ -4,61 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RumaKost · Dasbor Utama Pemilik</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-    /* Sembunyikan scrollbar bawaan browser tapi scroll tetap aktif */
-    html, body {
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    html::-webkit-scrollbar, body::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* Fillet rounded corner kiri (Inverted Radius) tepat di sudut kartu */
-    /* Top canopy fillet deprecated */
-    .top-canopy-overlay-deprecated::before {
-      content: '';
-      position: absolute;
-      top: 104px;
-      left: max(20px, calc((100% - 1440px) / 2));
-      width: 24px;
-      height: 24px;
-      background: radial-gradient(circle at 100% 100%, transparent 23.5px, var(--bg-canvas) 24px);
-      pointer-events: none;
-    }
-
-    /* Fillet rounded corner kanan (Inverted Radius) tepat di sudut kartu */
-    .top-canopy-overlay-deprecated::after {
-      content: '';
-      position: absolute;
-      top: 104px;
-      right: max(20px, calc((100% - 1440px) / 2));
-      width: 24px;
-      height: 24px;
-      background: radial-gradient(circle at 0% 100%, transparent 23.5px, var(--bg-canvas) 24px);
-      pointer-events: none;
-    }
-
     /* ==========================================================================
        ESTIFY 2-COLUMN MASTER DASHBOARD GRID (01-dashboard-flat.png DNA)
        ========================================================================== */
     body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
       background: var(--bg-canvas);
       color: var(--text-main);
       margin: 0;
       font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+    button, input, select, textarea {
+      font-family: inherit;
     }
 
     .dashboard-wrapper {
@@ -67,10 +31,6 @@
       margin: 0 auto;
       padding: 20px 0;
       box-sizing: border-box;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
 
     .dashboard-2col-layout {
@@ -97,8 +57,8 @@
       min-width: 0;
       width: 360px;
       max-width: 360px;
-      height: 100%;
       box-sizing: border-box;
+      height: 100%;
     }
 
     /* ═══════════════════════════════════════
@@ -173,15 +133,15 @@
     .metric-icon-sq.is-danger,
     .metric-icon-sq.is-peach,
     .metric-icon-sq.is-slate {
-      background: #FFE4E6;
-      color: #E11D48;
-      border: 1px solid #FECDD3;
+      background: var(--status-danger-bg, #FEE2E2);
+      color: var(--status-danger-text, #EF4444);
+      border: 1px solid #FECACA;
     }
 
     .pill-red-soft {
-      background: #FFE4E6;
-      color: #E11D48;
-      border: 1px solid #FECDD3;
+      background: var(--status-danger-bg, #FEE2E2);
+      color: var(--status-danger-text, #EF4444);
+      border: 1px solid #FECACA;
     }
 
     .metric-card-estify:hover .metric-icon-sq {
@@ -197,11 +157,11 @@
     }
 
     .metric-badge-pill {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       padding: 3px 10px;
       border-radius: var(--radius-full);
       line-height: 1.2;
@@ -244,7 +204,7 @@
     }
 
     .metric-lbl-sub {
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-muted);
       font-weight: 500;
     }
@@ -330,11 +290,115 @@
       gap: 8px;
     }
 
+    /* Custom Popover Dropdown (Standard Estify DNA) */
+    .custom-popover-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .btn-popover-trigger {
+      background: #FFFFFF !important;
+      border: 1.5px solid var(--border-control, #E2E8F0) !important;
+      border-radius: 9999px;
+      height: 40px !important;
+      padding: 0 14px !important;
+      box-sizing: border-box;
+      font-size: 12px !important;
+      font-weight: 500;
+      color: #374151;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      outline: none;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      width: auto !important;
+    }
+
+    .btn-popover-trigger:hover {
+      background: #F8FAFC !important;
+      border-color: #CBD5E1 !important;
+      color: #111111;
+    }
+
+    .btn-popover-trigger.is-open {
+      background: #FFFFFF !important;
+      border-color: var(--brand-primary) !important;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+      color: #111111;
+    }
+
+    .popover-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      width: max-content;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 6px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+      z-index: 50;
+      box-sizing: border-box;
+    }
+
+    .popover-dropdown-menu.active {
+      display: flex;
+    }
+
+    .popover-dropdown-menu.menu-right {
+      left: auto;
+      right: 0;
+    }
+
+    .popover-item {
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: background-color var(--transition-fast, 150ms ease), color var(--transition-fast, 150ms ease);
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    .popover-item:hover {
+      background: var(--bg-hover, #F3F4F6);
+      color: var(--text-main, #111827);
+    }
+
+    .popover-item.selected {
+      background: #111111;
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .popover-item.selected:hover {
+      background: #111111;
+      color: #FFFFFF;
+    }
+
+    .popover-item.selected .status-badge.badge-dark {
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+    }
+
     .pill-dropdown-trigger {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 0 12px;
+      height: 32px;
       background: #F7F8FA;
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-full);
@@ -343,31 +407,68 @@
       color: var(--text-secondary);
       cursor: pointer;
       transition: all var(--transition-fast);
+      box-sizing: border-box;
+      user-select: none;
     }
 
-    .pill-dropdown-trigger:hover {
+    .pill-dropdown-trigger:hover,
+    .pill-dropdown-trigger.is-open {
       background: #FFFFFF;
       border-color: #D1D5DB;
     }
 
+    /* Floating Arrow Navigation Link (Arus Kas & Operasional -> WF-07 Laporan) */
     .pill-arrow-btn {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: #F7F8FA;
       border: 1px solid var(--border-subtle);
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       color: var(--text-secondary);
       text-decoration: none;
       transition: all var(--transition-fast);
+      box-sizing: border-box;
+      flex-shrink: 0;
     }
 
-    .pill-arrow-btn:hover {
-      background: var(--dark-pill);
-      color: #FFFFFF;
-      border-color: var(--dark-pill);
+    .pill-arrow-btn:hover,
+    a.pill-arrow-btn:hover {
+      background: var(--dark-pill) !important;
+      color: #FFFFFF !important;
+      border-color: var(--dark-pill) !important;
+      transform: scale(1.08) !important;
+      box-shadow: 0 4px 12px rgba(17, 17, 17, 0.25) !important;
+    }
+
+    /* 3-Dot More Options Dropdown Trigger (Matches Hari ini v .pill-dropdown-trigger) */
+    .btn-more-options {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #F7F8FA;
+      border: 1px solid var(--border-subtle);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      flex-shrink: 0;
+      padding: 0;
+      outline: none;
+    }
+
+    .btn-more-options:hover,
+    .btn-more-options.is-open {
+      background: #FFFFFF !important;
+      border-color: #D1D5DB !important;
+      color: var(--text-main, #111827) !important;
+      transform: none !important;
+      box-shadow: none !important;
     }
 
     /* DOUBLE BAR CHART CANVAS (Estify Property Type Pattern) */
@@ -391,7 +492,7 @@
       position: absolute;
       right: 0;
       transform: translateY(-50%);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 500;
       color: var(--text-muted);
       text-align: right;
@@ -519,7 +620,7 @@
       bottom: -22px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 500;
       color: var(--text-muted);
       white-space: nowrap;
@@ -541,7 +642,7 @@
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       border: 1px solid var(--border-subtle);
-      font-size: 10.5px;
+      font-size: 11px;
       white-space: nowrap;
       z-index: 25;
       display: flex;
@@ -660,7 +761,7 @@
     }
 
     .highlight-sub-meta {
-      font-size: 11.5px;
+      font-size: 12px;
       color: rgba(255, 255, 255, 0.82);
       font-weight: 500;
       letter-spacing: 0.2px;
@@ -721,7 +822,7 @@
     }
 
     .emphasis-sub-txt {
-      font-size: 11.5px;
+      font-size: 11px;
       color: rgba(255, 255, 255, 0.78);
       font-weight: 500;
     }
@@ -750,7 +851,8 @@
       padding: 15px 24px 13px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
       border: 1px solid var(--border-subtle);
-      min-height: 242px;
+      min-height: 306px;
+      height: 306px;
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
@@ -777,54 +879,65 @@
       gap: 8px;
     }
 
-    /* Estify Seamless Capsule Search Box */
-    .capsule-search-box {
+    /* Estify Seamless Capsule Search Box (40px Toolbar Standard) */
+    .capsule-search-box,
+    .search-capsule-wide {
       display: flex;
       align-items: center;
       gap: 8px;
       background: #F4F5F7;
-      border: 1px solid transparent;
+      border: 1.5px solid var(--border-subtle, #ECEEF2);
       border-radius: var(--radius-full);
-      padding: 0 12px;
-      height: 34px;
-      width: 210px;
+      padding: 0 14px;
+      height: 40px !important;
+      width: 230px;
       transition: all var(--transition-fast);
       box-sizing: border-box;
     }
 
-    .capsule-search-box:focus-within {
+    .capsule-search-box:hover,
+    .search-capsule-wide:hover {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .capsule-search-box:focus-within,
+    .search-capsule-wide:focus-within {
       background: #FFFFFF;
       border-color: var(--brand-primary);
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
     }
 
-    .capsule-search-box input {
+    .capsule-search-box input,
+    .search-capsule-wide input {
       border: none;
       outline: none;
       background: transparent;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 500;
       color: var(--text-main);
       width: 100%;
       font-family: inherit;
     }
 
-    .capsule-search-box input::placeholder {
+    .capsule-search-box input::placeholder,
+    .search-capsule-wide input::placeholder {
       color: #94A3B8;
       font-weight: 400;
     }
 
-    /* Estify Round Circle Filter Button */
+    /* Estify Round Circle Filter Button (36px Action Circle Standard) */
     .btn-circle-filter {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: #F4F5F7;
+      background: #F7F8FA;
       border: 1px solid var(--border-subtle);
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: #111111;
+      color: var(--text-secondary);
       cursor: pointer;
       transition: all var(--transition-fast);
       flex-shrink: 0;
@@ -832,19 +945,23 @@
       outline: none;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      box-sizing: border-box;
     }
 
-    .btn-circle-filter:hover {
-      background: #E5E7EB;
-      color: var(--brand-primary);
-      transform: scale(1.04);
+    .btn-circle-filter:hover,
+    .btn-circle-filter.is-open {
+      background: #FFFFFF !important;
+      border-color: #D1D5DB !important;
+      color: var(--text-main, #111827) !important;
+      transform: none !important;
+      box-shadow: none !important;
     }
 
     .btn-circle-filter:focus,
     .btn-circle-filter:focus-visible {
       outline: none !important;
-      box-shadow: none !important;
-      border-color: var(--border-subtle);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12) !important;
+      border-color: var(--brand-primary);
     }
 
     .btn-circle-filter:active {
@@ -862,7 +979,8 @@
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
       padding: 4px 2px 8px;
-      min-height: 168px;
+      min-height: 228px;
+      height: 228px;
       align-items: stretch;
       flex: 1;
       width: 100%;
@@ -889,12 +1007,13 @@
 
     .room-empty-search {
       width: 100%;
-      min-height: 168px;
+      height: 100%;
+      min-height: 212px;
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
       color: var(--text-muted);
       text-align: center;
       padding: 16px;
@@ -918,7 +1037,7 @@
     .room-unit-item {
       background: #FFFFFF;
       border-radius: 16px;
-      border: 1.5px solid #FF7A00;
+      border: 1.5px solid var(--border-subtle, #ECEEF2);
       padding: 7px;
       display: flex;
       flex-direction: column;
@@ -1000,8 +1119,8 @@
       position: absolute;
       top: 6px;
       right: 6px;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: #F7F8FA;
       border: 1px solid var(--border-subtle);
@@ -1016,6 +1135,7 @@
       transition: all var(--transition-fast);
       cursor: pointer;
       z-index: 2;
+      box-sizing: border-box;
     }
 
     .room-float-arrow:hover {
@@ -1041,15 +1161,16 @@
     }
 
     .room-name-text {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.2px;
     }
 
     .room-sub-specs {
-      font-size: 10px;
-      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
       line-height: 1.25;
     }
 
@@ -1061,13 +1182,39 @@
     }
 
     .room-price-val {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--brand-primary);
     }
 
+    /* Ergonomic Cursor Differentiation (Dashboard Cards: text is selectable, only arrow triggers navigation) */
+    .room-cards-3col .room-unit-item {
+      cursor: default;
+    }
+
+    .room-cards-3col .room-thumb-area {
+      cursor: default;
+    }
+
+    .room-cards-3col .room-name-text,
+    .room-cards-3col .room-sub-specs,
+    .room-cards-3col .room-price-val,
+    .room-cards-3col .room-price-unit {
+      cursor: text;
+      user-select: text;
+    }
+
+    .room-cards-3col .status-badge {
+      cursor: default;
+      user-select: none;
+    }
+
+    .room-cards-3col .room-float-arrow {
+      cursor: pointer;
+    }
+
     .room-price-unit {
-      font-size: 9.5px;
+      font-size: 11px;
       font-weight: 500;
       color: var(--text-muted);
     }
@@ -1093,11 +1240,10 @@
     .card-activity {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      box-sizing: border-box;
       flex: 1;
       height: 100%;
-      min-height: 0;
-      box-sizing: border-box;
+      padding: 22px 24px;
     }
 
     /* Building Condition Progress Bars */
@@ -1149,7 +1295,7 @@
 
     .btn-maintenance-full {
       width: 100%;
-      padding: 12px 16px;
+      height: 44px;
       border-radius: var(--radius-full);
       background: var(--dark-pill);
       color: #FFFFFF;
@@ -1157,12 +1303,13 @@
       font-weight: 600;
       border: none;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
       text-decoration: none;
       transition: all var(--transition-fast);
+      box-sizing: border-box;
     }
 
     .btn-maintenance-full:hover {
@@ -1173,7 +1320,7 @@
     .tenant-message-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: auto;
     }
 
@@ -1218,7 +1365,7 @@
     }
 
     .tenant-msg-name {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-main);
       white-space: nowrap;
@@ -1228,6 +1375,7 @@
 
     .tenant-msg-snippet {
       font-size: 11px;
+      font-weight: 500;
       color: var(--text-secondary);
       white-space: nowrap;
       overflow: hidden;
@@ -1242,7 +1390,7 @@
     }
 
     .msg-timestamp {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-muted);
       white-space: nowrap;
     }
@@ -1256,8 +1404,8 @@
     }
 
     .activity-view-all-link {
-      margin-top: 14px;
-      padding-top: 12px;
+      margin-top: auto;
+      padding-top: 14px;
       border-top: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
@@ -1267,11 +1415,20 @@
       font-weight: 600;
       color: var(--text-secondary);
       text-decoration: none;
-      transition: all var(--transition-fast);
+      transition: color var(--transition-fast, 150ms ease);
+    }
+
+    .activity-view-all-link i {
+      transition: transform var(--transition-fast, 150ms ease);
     }
 
     .activity-view-all-link:hover {
-      color: var(--brand-primary);
+      color: var(--text-main, #111827) !important;
+      text-decoration: none;
+    }
+
+    .activity-view-all-link:hover i {
+      transform: translateX(3px);
     }
 
     /* MICRO-FOOTER MINIMALIS */
@@ -1281,7 +1438,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-muted);
       border-top: 1px solid var(--border-subtle);
     }
@@ -1319,7 +1476,7 @@
     @media (max-width: 1200px) {
       .dashboard-wrapper {
         width: calc(100% - 32px);
-        padding: 20px 0 28px;
+        padding: 20px 0;
       }
 
       /* Stack master columns cleanly on laptops & medium screens (e.g. 1110px / 1024px) */
@@ -1354,7 +1511,7 @@
     @media (max-width: 860px) {
       .dashboard-wrapper {
         width: calc(100% - 20px);
-        padding: 14px 0 20px;
+        padding: 14px 0;
       }
 
       .metrics-row-3 {
@@ -1375,6 +1532,11 @@
     }
 
     @media (max-width: 580px) {
+      .properties-section-card {
+        height: auto;
+        min-height: 420px;
+      }
+
       .room-cards-3col .room-unit-item {
         flex: 0 0 88%;
         min-width: 88%;
@@ -1436,7 +1598,7 @@
                 </div>
                 <span class="metric-lbl-title">Okupansi Kamar</span>
               </div>
-              <span class="metric-badge-pill pill-orange-soft">+1 Unit &uarr;</span>
+              <span class="metric-badge-pill pill-orange-soft">+1 Unit <i data-lucide="arrow-up" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i></span>
             </div>
             
             <div class="metric-card-bottom">
@@ -1465,7 +1627,7 @@
                 </div>
                 <span class="metric-lbl-title">Tagihan Lunas</span>
               </div>
-              <span class="metric-badge-pill pill-dark-soft">+8% &uarr;</span>
+              <span class="metric-badge-pill pill-dark-soft">+8% <i data-lucide="arrow-up" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i></span>
             </div>
             
             <div class="metric-card-bottom">
@@ -1494,7 +1656,7 @@
                 </div>
                 <span class="metric-lbl-title">Pengeluaran</span>
               </div>
-              <span class="metric-badge-pill pill-red-soft">-4% &darr;</span>
+              <span class="metric-badge-pill pill-red-soft">-4% <i data-lucide="arrow-down" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i></span>
             </div>
             
             <div class="metric-card-bottom">
@@ -1507,7 +1669,7 @@
               <div class="gauge-meter-wrap" title="Pengeluaran Rp 4,2 Jt (Sisa Budget Rp 800rb dari Rp 5 Jt)">
                 <svg class="gauge-meter-svg" viewBox="0 0 100 58">
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
-                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#E11D48" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="17"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#EF4444" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="17"/>
                   <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">84%</text>
                 </svg>
               </div>
@@ -1534,9 +1696,16 @@
                 </div>
               </div>
               <div class="header-ctrl-group">
-                <div class="pill-dropdown-trigger" onclick="RumaUI.showToast('Memilih arsip data tahun 2026')">
-                  <span>Tahun 2026</span>
-                  <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+                <div class="custom-popover-wrap" id="wrapYearFilter">
+                  <div class="pill-dropdown-trigger" onclick="toggleCustomDropdown('wrapYearFilter', event)" title="Pilih Periode Tahun">
+                    <span id="selectedYearLabel">Tahun 2026</span>
+                    <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
+                  </div>
+                  <div class="popover-dropdown-menu menu-right" id="menuYearFilter">
+                    <div class="popover-item selected" onclick="selectYearFilter('2026', this, event)">Tahun 2026 (Berjalan)</div>
+                    <div class="popover-item" onclick="selectYearFilter('2025', this, event)">Tahun 2025 (Arsip)</div>
+                    <div class="popover-item" onclick="selectYearFilter('2024', this, event)">Tahun 2024 (Arsip)</div>
+                  </div>
                 </div>
                 <a href="WF-07-laporan.html" class="pill-arrow-btn" title="Lihat Laporan Lengkap">
                   <i data-lucide="arrow-up-right" style="width: 15px; height: 15px;"></i>
@@ -1731,7 +1900,7 @@
                 <div class="emphasis-val-wrap">
                   <span class="emphasis-val-huge">Rp 12,3 Jt</span>
                   <span class="emphasis-pill-trend">
-                    +15% <i data-lucide="arrow-up" style="width: 10px; height: 10px;"></i>
+                    +15% <i data-lucide="arrow-up" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i>
                   </span>
                 </div>
                 <span class="emphasis-sub-txt">Akumulasi laba bersih berjalan</span>
@@ -1753,20 +1922,47 @@
           <div class="properties-top-bar">
             <div class="properties-title-group" style="display: flex; align-items: center; gap: 10px;">
               <h2 class="properties-title-main">Kamar Kost Terkini</h2>
-              <span class="status-badge badge-dark" style="font-size: 11px; padding: 2px 9px;">15 Unit</span>
+              <span class="status-badge badge-dark" id="quickRoomTotalCountBadge">15 Unit</span>
             </div>
             
             <div class="properties-controls-right">
-              <div class="capsule-search-box">
-                <i data-lucide="search" style="width: 16px; height: 16px; color: #111111;"></i>
+              <div class="search-capsule-wide capsule-search-box">
+                <i data-lucide="search" style="width: 16px; height: 16px; color: #111111; flex-shrink: 0;"></i>
                 <input type="text" id="quickRoomSearchInput" placeholder="Cari kamar (A-01, B-03, dll)..." oninput="filterQuickRooms(this.value)">
                 <button type="button" id="clearQuickRoomSearch" class="btn-clear-search" onclick="clearQuickSearch()" title="Hapus pencarian">
                   <i data-lucide="x" style="width: 12px; height: 12px;"></i>
                 </button>
               </div>
-              <button type="button" class="btn-circle-filter" onclick="RumaUI.showToast('Filter status unit kamar')" title="Filter Unit">
-                <i data-lucide="sliders-horizontal" style="width: 16px; height: 16px;"></i>
-              </button>
+
+              <!-- Custom Popover Dropdown Filter Unit -->
+              <div class="custom-popover-wrap" id="wrapFilterRoomStatus">
+                <button type="button" class="btn-circle-filter" onclick="toggleCustomDropdown('wrapFilterRoomStatus', event)" title="Filter Status Unit">
+                  <i data-lucide="sliders-horizontal" style="width: 16px; height: 16px;"></i>
+                </button>
+                <div class="popover-dropdown-menu menu-right" id="menuFilterRoomStatus">
+                  <div class="popover-item selected" onclick="applyDashboardRoomFilter('all', this, event)">
+                    <span>Semua Unit</span>
+                    <span class="status-badge badge-dark">15</span>
+                  </div>
+                  <div class="popover-item" onclick="applyDashboardRoomFilter('terisi', this, event)">
+                    <span>Terisi · Lunas</span>
+                    <span class="status-badge badge-success">8</span>
+                  </div>
+                  <div class="popover-item" onclick="applyDashboardRoomFilter('kosong', this, event)">
+                    <span>Kosong · Siap Huni</span>
+                    <span class="status-badge badge-brand">3</span>
+                  </div>
+                  <div class="popover-item" onclick="applyDashboardRoomFilter('terlambat', this, event)">
+                    <span>Terlambat / Tempo</span>
+                    <span class="status-badge badge-danger">3</span>
+                  </div>
+                  <div class="popover-item" onclick="applyDashboardRoomFilter('perbaikan', this, event)">
+                    <span>Dalam Perbaikan</span>
+                    <span class="status-badge badge-warning">1</span>
+                  </div>
+                </div>
+              </div>
+
               <!-- Carousel Navigation Buttons -->
               <div style="display: flex; align-items: center; gap: 6px;">
                 <button type="button" class="btn-circle-filter" onclick="scrollRoomCarousel(-1); this.blur();" title="Geser Kiri (Shift + Scroll)">
@@ -1783,7 +1979,7 @@
           <div class="room-cards-3col" id="quickRoomList">
             
             <!-- Unit 1: Kamar A-01 (Terisi - Lunas) -->
-            <div class="room-unit-item">
+            <div class="room-unit-item" data-status="terisi">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-01">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -1801,8 +1997,8 @@
               </div>
             </div>
 
-            <!-- Unit 2: Kamar A-02 (Jatuh Tempo H-3) -->
-            <div class="room-unit-item">
+            <!-- Unit 2: Kamar A-02 (Terlambat H+5 - Skenario 07) -->
+            <div class="room-unit-item" data-status="terlambat">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar A-02">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -1810,7 +2006,7 @@
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-02</span>
-                  <span class="status-badge badge-warning">Jatuh Tempo H-3</span>
+                  <span class="status-badge badge-danger">Terlambat H+5</span>
                 </div>
                 <div class="room-sub-specs">Lantai 1 · Dimas Prasetyo</div>
                 <div class="room-price-row">
@@ -1821,7 +2017,7 @@
             </div>
 
             <!-- Unit 3: Kamar A-03 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card">
+            <div class="room-unit-item status-vacant-card" data-status="kosong">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar A-03">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -1840,7 +2036,7 @@
             </div>
 
             <!-- Unit 4: Kamar A-04 (Jatuh Tempo H-3) -->
-            <div class="room-unit-item">
+            <div class="room-unit-item" data-status="terlambat">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-04">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -1859,9 +2055,9 @@
             </div>
 
             <!-- Unit 5: Kamar A-05 (Terisi - Lunas) -->
-            <div class="room-unit-item">
+            <div class="room-unit-item" data-status="terisi">
               <div class="room-thumb-area">
-                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar A-05">
+                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80" alt="Kamar A-05">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
@@ -1877,46 +2073,46 @@
               </div>
             </div>
 
-            <!-- Unit 6: Kamar B-01 (Terisi - Lunas) -->
-            <div class="room-unit-item">
+            <!-- Unit 6: Kamar B-01 (Terlambat 3 Hari) -->
+            <div class="room-unit-item" data-status="terlambat">
               <div class="room-thumb-area">
-                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=700&q=80" alt="Kamar B-01">
+                <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=700&q=80" alt="Kamar B-01">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-01</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-danger">Telat 3 Hari</span>
                 </div>
-                <div class="room-sub-specs">Lantai 2 · Rian Hidayat</div>
+                <div class="room-sub-specs">Lantai 2 · Dodi Firmansyah</div>
                 <div class="room-price-row">
-                  <span class="room-price-val">Rp 1.600.000</span>
+                  <span class="room-price-val">Rp 1.300.000</span>
                   <span class="room-price-unit">/bln</span>
                 </div>
               </div>
             </div>
 
-            <!-- Unit 7: Kamar B-02 (Terisi - Ada Tiket) -->
-            <div class="room-unit-item">
+            <!-- Unit 7: Kamar B-02 (Terisi - Lunas) -->
+            <div class="room-unit-item" data-status="terisi">
               <div class="room-thumb-area">
-                <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=700&q=80" alt="Kamar B-02">
+                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar B-02">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-02</span>
-                  <span class="status-badge badge-dark">Terisi · Tiket</span>
+                  <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 2 · Siti Aminah</div>
+                <div class="room-sub-specs">Lantai 2 · Rini Marlina</div>
                 <div class="room-price-row">
-                  <span class="room-price-val">Rp 1.800.000</span>
+                  <span class="room-price-val">Rp 1.300.000</span>
                   <span class="room-price-unit">/bln</span>
                 </div>
               </div>
             </div>
 
             <!-- Unit 8: Kamar B-03 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card">
+            <div class="room-unit-item status-vacant-card" data-status="kosong">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar B-03">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -1926,7 +2122,7 @@
                   <span class="room-name-text">Kamar B-03</span>
                   <span class="status-badge badge-brand">Kosong · Siap Huni</span>
                 </div>
-                <div class="room-sub-specs">Lantai 2 · Deluxe (AC, WiFi, KM Dalam)</div>
+                <div class="room-sub-specs">Lantai 2 · Deluxe (4×5m)</div>
                 <div class="room-price-row">
                   <span class="room-price-val">Rp 1.800.000</span>
                   <span class="room-price-unit">/bln</span>
@@ -1935,9 +2131,9 @@
             </div>
 
             <!-- Unit 9: Kamar B-04 (Terisi - Lunas) -->
-            <div class="room-unit-item">
+            <div class="room-unit-item" data-status="terisi">
               <div class="room-thumb-area">
-                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80" alt="Kamar B-04">
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=700&q=80" alt="Kamar B-04">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
@@ -1945,16 +2141,16 @@
                   <span class="room-name-text">Kamar B-04</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 2 · Hendra Wijaya</div>
+                <div class="room-sub-specs">Lantai 2 · Eko Prasetyo</div>
                 <div class="room-price-row">
-                  <span class="room-price-val">Rp 1.500.000</span>
+                  <span class="room-price-val">Rp 1.300.000</span>
                   <span class="room-price-unit">/bln</span>
                 </div>
               </div>
             </div>
 
             <!-- Unit 10: Kamar B-05 (Dalam Perbaikan) -->
-            <div class="room-unit-item status-repair-card">
+            <div class="room-unit-item status-repair-card" data-status="perbaikan">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar B-05">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -1962,20 +2158,20 @@
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-05</span>
-                  <span class="status-badge badge-warning" style="background:#FEF3C7; color:#D97706; border:1px solid #FDE68A;">Dalam Perbaikan</span>
+                  <span class="status-badge badge-warning">Dalam Perbaikan</span>
                 </div>
                 <div class="room-sub-specs">Lantai 2 · Servis AC & Teknisi</div>
                 <div class="room-price-row">
-                  <span class="room-price-val" style="color: #D97706;">Tiket #T-04</span>
+                  <span class="room-price-val" style="color: var(--status-warning-text, #D97706);">Tiket #T-04</span>
                   <span class="room-price-unit" style="color: var(--text-muted);">Pengerjaan</span>
                 </div>
               </div>
             </div>
 
             <!-- Unit 11: Kamar C-01 (Terisi - Lunas) -->
-            <div class="room-unit-item">
+            <div class="room-unit-item" data-status="terisi">
               <div class="room-thumb-area">
-                <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar C-01">
+                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar C-01">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
@@ -1983,16 +2179,16 @@
                   <span class="room-name-text">Kamar C-01</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 3 · Farah Diba</div>
+                <div class="room-sub-specs">Lantai 3 · Hendra Wijaya</div>
                 <div class="room-price-row">
-                  <span class="room-price-val">Rp 1.700.000</span>
+                  <span class="room-price-val">Rp 1.400.000</span>
                   <span class="room-price-unit">/bln</span>
                 </div>
               </div>
             </div>
 
             <!-- Unit 12: Kamar C-02 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card">
+            <div class="room-unit-item status-vacant-card" data-status="kosong">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar C-02">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -2011,9 +2207,9 @@
             </div>
 
             <!-- Unit 13: Kamar C-03 (Terisi - Lunas) -->
-            <div class="room-unit-item">
+            <div class="room-unit-item" data-status="terisi">
               <div class="room-thumb-area">
-                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar C-03">
+                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80" alt="Kamar C-03">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
@@ -2021,16 +2217,16 @@
                   <span class="room-name-text">Kamar C-03</span>
                   <span class="status-badge badge-dark">Terisi · Lunas</span>
                 </div>
-                <div class="room-sub-specs">Lantai 3 · Fajar Nugraha</div>
+                <div class="room-sub-specs">Lantai 3 · Rian Hidayat</div>
                 <div class="room-price-row">
-                  <span class="room-price-val">Rp 1.400.000</span>
+                  <span class="room-price-val">Rp 1.350.000</span>
                   <span class="room-price-unit">/bln</span>
                 </div>
               </div>
             </div>
 
             <!-- Unit 14: Kamar C-04 (Terisi - Lunas) -->
-            <div class="room-unit-item">
+            <div class="room-unit-item" data-status="terisi">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=700&q=80" alt="Kamar C-04">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -2049,7 +2245,7 @@
             </div>
 
             <!-- Unit 15: Kamar C-05 (Terisi - Lunas) -->
-            <div class="room-unit-item">
+            <div class="room-unit-item" data-status="terisi">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar C-05">
                 <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
@@ -2086,9 +2282,19 @@
         <div class="sidebar-card-box card-condition">
           <div class="card-top-header" style="margin-bottom: 18px;">
             <h2 class="card-title-text">Kondisi Properti</h2>
-            <button class="pill-arrow-btn" onclick="RumaUI.showToast('Menu opsi status perawatan')" title="Opsi">
-              <i data-lucide="more-vertical" style="width: 15px; height: 15px;"></i>
-            </button>
+            <div class="custom-popover-wrap" id="wrapConditionMenu">
+              <button type="button" class="btn-more-options" onclick="toggleCustomDropdown('wrapConditionMenu', event)" title="Opsi Pemeliharaan">
+                <i data-lucide="more-vertical" style="width: 15px; height: 15px;"></i>
+              </button>
+              <div class="popover-dropdown-menu menu-right" id="menuConditionMenu">
+                <div class="popover-item" onclick="handleConditionAction('sync', event)">
+                  <span style="display: inline-flex; align-items: center; gap: 6px;"><i data-lucide="refresh-cw" style="width: 13px; height: 13px;"></i> Sinkron Status</span>
+                </div>
+                <div class="popover-item" onclick="handleConditionAction('ticket', event)">
+                  <span style="display: inline-flex; align-items: center; gap: 6px;"><i data-lucide="plus-circle" style="width: 13px; height: 13px;"></i> Buat Tiket Baru</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="condition-progress-group">
@@ -2138,9 +2344,16 @@
         <div class="sidebar-card-box card-activity">
           <div class="card-top-header" style="margin-bottom: 14px;">
             <h2 class="card-title-text">Aktivitas Terkini</h2>
-            <div class="pill-dropdown-trigger" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Filter periode aktivitas')">
-              <span>Hari ini</span>
-              <i data-lucide="chevron-down" style="width: 12px; height: 12px;"></i>
+            <div class="custom-popover-wrap" id="wrapActivityFilter">
+              <div class="pill-dropdown-trigger" onclick="toggleCustomDropdown('wrapActivityFilter', event)" title="Filter periode aktivitas">
+                <span id="selectedActivityLabel">Hari ini</span>
+                <i data-lucide="chevron-down" style="width: 12px; height: 12px;"></i>
+              </div>
+              <div class="popover-dropdown-menu menu-right" id="menuActivityFilter">
+                <div class="popover-item selected" onclick="selectActivityFilter('Hari ini', this, event)">Hari ini</div>
+                <div class="popover-item" onclick="selectActivityFilter('7 Hari Terakhir', this, event)">7 Hari Terakhir</div>
+                <div class="popover-item" onclick="selectActivityFilter('Bulan Ini', this, event)">Bulan Ini</div>
+              </div>
             </div>
           </div>
 
@@ -2232,7 +2445,7 @@
 
   <script src="assets/js/components.js"></script>
   <script>
-    renderTopbar('dashboard', 'owner');
+    renderTopbar('dashboard');
     lucide.createIcons();
 
     // ══════════════════════════════════════════════════════════════
@@ -2352,25 +2565,46 @@
       }
     }
 
+    let currentRoomStatusFilter = 'all';
+    let currentRoomSearchQuery = '';
+
     function filterQuickRooms(query) {
+      currentRoomSearchQuery = (query || '').toLowerCase().trim();
       const clearBtn = document.getElementById('clearQuickRoomSearch');
       if (clearBtn) {
-        clearBtn.style.display = query.trim().length > 0 ? 'inline-flex' : 'none';
+        clearBtn.style.display = currentRoomSearchQuery.length > 0 ? 'inline-flex' : 'none';
         lucide.createIcons();
       }
-      const q = query.toLowerCase().trim();
+      runRoomCombinedFilter();
+    }
+
+    function runRoomCombinedFilter() {
+      const q = currentRoomSearchQuery;
+      const status = currentRoomStatusFilter;
       const clones = roomCarousel ? roomCarousel.querySelectorAll('.carousel-clone') : [];
-      
-      if (q.length > 0) {
-        // Hide clones during active text filter so only unique 15 rooms are matched
+
+      if (q.length > 0 || status !== 'all') {
+        // Hide clones during active filter so only unique 15 rooms are matched
         clones.forEach(c => c.style.display = 'none');
         let matchCount = 0;
         document.querySelectorAll('#quickRoomList .room-unit-item[data-original="true"]').forEach(card => {
-          const text = card.textContent.toLowerCase();
-          const isMatch = text.includes(q);
+          const cardText = card.textContent.toLowerCase();
+          const cardStatus = card.getAttribute('data-status') || '';
+          
+          const matchQuery = q.length === 0 || cardText.includes(q);
+          const matchStatus = status === 'all' || cardStatus === status ||
+            (status === 'terlambat' && (cardStatus === 'terlambat' || cardStatus === 'menunggak')) ||
+            (status === 'menunggak' && (cardStatus === 'terlambat' || cardStatus === 'menunggak'));
+          const isMatch = matchQuery && matchStatus;
+
           card.style.display = isMatch ? 'flex' : 'none';
           if (isMatch) matchCount++;
         });
+
+        const badgeCount = document.getElementById('quickRoomTotalCountBadge');
+        if (badgeCount) {
+          badgeCount.textContent = `${matchCount} Unit`;
+        }
 
         const emptyEl = document.getElementById('roomEmptySearch');
         if (emptyEl) {
@@ -2383,11 +2617,118 @@
         document.querySelectorAll('#quickRoomList .room-unit-item').forEach(card => {
           card.style.display = 'flex';
         });
+        const badgeCount = document.getElementById('quickRoomTotalCountBadge');
+        if (badgeCount) {
+          badgeCount.textContent = '15 Unit';
+        }
         const emptyEl = document.getElementById('roomEmptySearch');
         if (emptyEl) emptyEl.style.display = 'none';
         measureAndSetInitialScroll();
       }
+      lucide.createIcons();
     }
+
+    // ══════════════════════════════════════════════════════════════
+    // CUSTOM POPOVER DROPDOWN CONTROLLER (WCAG 2.1 & ZERO-VOID)
+    // ══════════════════════════════════════════════════════════════
+    function toggleCustomDropdown(wrapId, event) {
+      if (event) event.stopPropagation();
+      const wrap = document.getElementById(wrapId);
+      if (!wrap) return;
+      const menu = wrap.querySelector('.popover-dropdown-menu');
+      const trigger = wrap.querySelector('.btn-popover-trigger, .pill-dropdown-trigger, .btn-circle-filter, .pill-arrow-btn, .btn-more-options');
+      const isOpen = menu && menu.classList.contains('active');
+
+      closeAllCustomPopovers();
+
+      if (!isOpen && menu) {
+        menu.classList.add('active');
+        if (trigger) trigger.classList.add('is-open');
+        lucide.createIcons();
+      }
+    }
+
+    function closeAllCustomPopovers() {
+      document.querySelectorAll('.popover-dropdown-menu.active').forEach(m => m.classList.remove('active'));
+      document.querySelectorAll('.btn-popover-trigger.is-open, .pill-dropdown-trigger.is-open, .btn-circle-filter.is-open, .pill-arrow-btn.is-open, .btn-more-options.is-open').forEach(b => b.classList.remove('is-open'));
+    }
+
+    function applyDashboardRoomFilter(status, el, event) {
+      if (event) event.stopPropagation();
+      currentRoomStatusFilter = status;
+      const menu = document.getElementById('menuFilterRoomStatus');
+      if (menu) {
+        menu.querySelectorAll('.popover-item').forEach(item => item.classList.remove('selected'));
+      }
+      if (el) el.classList.add('selected');
+      closeAllCustomPopovers();
+      runRoomCombinedFilter();
+      const label = el ? el.querySelector('span')?.textContent || status : status;
+      if (window.RumaUI && window.RumaUI.showToast) {
+        window.RumaUI.showToast(`Menampilkan kamar: ${label}`, 'info', 'Filter Kamar');
+      }
+    }
+
+    function selectYearFilter(year, el, event) {
+      if (event) event.stopPropagation();
+      const label = document.getElementById('selectedYearLabel');
+      if (label) label.textContent = `Tahun ${year}`;
+      const menu = document.getElementById('menuYearFilter');
+      if (menu) {
+        menu.querySelectorAll('.popover-item').forEach(item => item.classList.remove('selected'));
+      }
+      if (el) el.classList.add('selected');
+      closeAllCustomPopovers();
+      if (window.RumaUI && window.RumaUI.showToast) {
+        window.RumaUI.showToast(`Memuat data keuangan Arus Kas tahun ${year}...`, 'info', 'Filter Periode');
+      }
+    }
+
+    function selectActivityFilter(period, el, event) {
+      if (event) event.stopPropagation();
+      const label = document.getElementById('selectedActivityLabel');
+      if (label) label.textContent = period;
+      const menu = document.getElementById('menuActivityFilter');
+      if (menu) {
+        menu.querySelectorAll('.popover-item').forEach(item => item.classList.remove('selected'));
+      }
+      if (el) el.classList.add('selected');
+      closeAllCustomPopovers();
+      if (window.RumaUI && window.RumaUI.showToast) {
+        window.RumaUI.showToast(`Aktivitas disaring ke: ${period}`, 'info', 'Aktivitas Terkini');
+      }
+    }
+
+    function handleConditionAction(action, event) {
+      if (event) event.stopPropagation();
+      closeAllCustomPopovers();
+      if (action === 'sync') {
+        if (window.RumaUI && window.RumaUI.showToast) {
+          window.RumaUI.showToast('Data perawatan sinkron dengan 4 tiket aktif.', 'success', 'Sinkronisasi Sukses');
+        }
+      } else if (action === 'ticket') {
+        window.location.href = 'WF-08-tiket.html';
+      }
+    }
+
+    // Global click listener to close popover dropdowns
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.custom-popover-wrap')) {
+        closeAllCustomPopovers();
+      }
+    });
+
+    // Global keyboard listener for ESC key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        closeAllCustomPopovers();
+        const searchInput = document.getElementById('quickRoomSearchInput');
+        if (searchInput && document.activeElement === searchInput) {
+          clearQuickSearch();
+          searchInput.blur();
+        }
+      }
+    });
 
     // Initialize infinite carousel on DOM ready
     window.addEventListener('DOMContentLoaded', initInfiniteCarousel);

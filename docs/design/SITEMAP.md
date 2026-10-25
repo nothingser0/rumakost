@@ -109,15 +109,15 @@ Seluruh 12 prototipe layar interaktif saling terhubung dan dapat diuji langsung:
 | File Prototipe | Kode Layar | Fokus Pengguna & Peran |
 |---|---|---|
 | `WF-01-login.html` | SCR-01 | Hub Masuk 3 Peran (Pemilik, Staf, Penghuni) + Visual 3D Meja Kerja |
-| `WF-02-dashboard.html` | SCR-02 | Dasbor Eksekutif (Pemilik & Staf) |
+| `WF-02-dashboard.html` | SCR-02 | Dasbor Eksekutif (Pemilik & Staf) · [Spesifikasi Skenario](SCENARIOS_WF02.md) |
 | `WF-03-kamar.html` | SCR-03 / 04 | Katalog 15 Unit Kamar & Drawer Tambah Kamar |
 | `WF-04-penghuni.html` | SCR-05 / 06 | Direktori Penyewa & Modal Tambah Penghuni |
 | `WF-05-tagihan.html` | SCR-09 / 10 | Matriks Penagihan Bulanan & Invoice Digital |
 | `WF-06-pembayaran.html` | SCR-11 | Verifikasi Pemilik & Pencatatan Pembayaran Parsial |
 | `WF-07-laporan.html` | SCR-12 / 13 | Laporan Finansial & Okupansi (Owner-only) |
-| `WF-08-tiket.html` | SCR-14 | Antrean & Triase Tiket Pemeliharaan (F-07) |
+| `WF-08-tiket.html` | SCR-14 | Antrean & Triase Tiket Pemeliharaan (F-07) · [Spesifikasi Skenario](SCENARIOS_WF08.md) |
 | `WF-08-tiket-detail.html` | SCR-15 | Detail Penanganan Tiket Kerusakan & Kolaborasi Multi-Role (F-07) |
-| `WF-09-pengaturan.html` | SCR-16 / 17 | Konfigurasi Properti, Rekening, & Akun Staf |
+| `WF-09-pengaturan.html` | SCR-16 / 17 | Konfigurasi Properti, Rekening, & Akun Staf · [Spesifikasi Skenario](SCENARIOS_WF09.md) |
 | `WF-10-portal-penghuni.html`| SCR-P01 | Beranda Penghuni Mandiri (Kamar A-04) |
 | `WF-11-portal-tiket-baru.html`| SCR-P04 | Form Lapor Komplain (Wajib Upload Foto/Video) |
 | `WF-12-portal-tiket-detail.html`| SCR-P05 | Detail Tiket Penghuni & Thread Diskusi Teknisi |

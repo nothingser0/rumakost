@@ -4,51 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RumaKost · Masuk ke Akun</title>
+  
+  <!-- Estify Google Fonts (Poppins: 300, 400, 500, 600, 700) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
+    /* ==========================================================================
+       ROOT & CANVAS VIEWPORT (ESTIFY MINIMALIST DNA)
+       ========================================================================== */
     html, body {
-      height: 100vh;
-      margin: 0;
-      padding: 0;
+      height: 100vh !important;
+      height: 100dvh !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-canvas, #F7F8FA);
+      color: var(--text-main, #111111);
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: var(--bg-canvas);
-      padding: 24px;
-      box-sizing: border-box;
-      overflow-y: auto;
+      height: 100vh !important;
+      height: 100dvh !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
     }
 
-    /* Dedicated Center Wrapper locked to 100vh */
     .login-page-root {
       width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      height: 100vh !important;
+      height: 100dvh !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
     }
 
     .login-container {
       display: flex;
       width: 100%;
       max-width: 1040px;
-      min-height: 600px;
+      height: 580px;
+      max-height: calc(100vh - 48px);
       margin: auto;
-      background: var(--bg-card);
-      border-radius: var(--radius-2xl);
-      box-shadow: var(--shadow-modal);
+      background: var(--bg-card, #FFFFFF);
+      border-radius: var(--radius-2xl, 24px);
+      box-shadow: var(--shadow-modal, 0 20px 40px rgba(0, 0, 0, 0.15));
       overflow: hidden;
-      border: 1px solid var(--border-card);
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      transition: all var(--transition-normal, 200ms ease);
     }
 
     /* ==========================================================================
-       LEFT SIDE: PURE ARCHITECTURAL VISUAL (Clean, Zero Text Clutter)
+       LEFT SIDE: ARCHITECTURAL VISUAL PANEL (Clean, Zero Text Clutter)
        ========================================================================== */
     .media-side-panel {
       flex: 1.12;
@@ -68,27 +88,28 @@
     }
 
     /* ==========================================================================
-       RIGHT SIDE: PROFESSIONAL FORM HIERARCHY
+       RIGHT SIDE: FORM HIERARCHY PANEL (PERFECT VERTICAL BALANCE)
        ========================================================================== */
     .form-panel {
       flex: 1;
-      padding: 48px 46px;
+      padding: 40px 44px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background: var(--bg-card);
+      background: var(--bg-card, #FFFFFF);
+      box-sizing: border-box;
     }
 
-    /* UNIFIED BRAND & HEADER SECTION (No Competing Headings) */
+    /* BRAND HERO SECTION */
     .brand-hero-section {
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .brand-emblem-badge {
       display: inline-flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .brand-icon-box {
@@ -99,7 +120,7 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      transition: transform var(--transition-fast);
+      transition: transform var(--transition-fast, 150ms ease);
     }
 
     .brand-icon-box:hover {
@@ -114,81 +135,117 @@
     .brand-name-title {
       font-size: 22px;
       font-weight: 700;
-      color: var(--text-main);
+      color: var(--text-main, #111111);
       letter-spacing: -0.5px;
       line-height: 1.15;
     }
 
     .brand-name-title span {
-      color: var(--brand-primary);
+      color: var(--brand-primary, #FF7A00);
     }
 
     .brand-tagline-sub {
       font-size: 11px;
       font-weight: 500;
-      color: var(--text-muted);
+      color: var(--text-muted, #6B7280);
       letter-spacing: 0.2px;
       margin-top: 2px;
     }
 
-    /* FORM HEADLINE (Single H1 Intent) */
+    /* FORM HEADLINE */
     .form-intent-title {
       font-size: 20px;
       font-weight: 700;
-      color: var(--text-main);
+      color: var(--text-main, #111111);
       letter-spacing: -0.3px;
       margin-bottom: 4px;
     }
 
     .form-intent-sub {
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--text-secondary, #374151);
       line-height: 1.4;
     }
 
-    /* 3-ROLE SEGMENTED CONTROL */
+    /* SESSION EXPIRED BANNER (SK-28) */
+    .session-expired-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--status-warning-bg, #FEF3C7);
+      border: 1px solid #FDE68A;
+      border-radius: var(--radius-md, 12px);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--status-warning-text, #D97706);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .session-expired-banner.show {
+      display: flex;
+    }
+
+    /* 3-ROLE SEGMENTED CONTROL (CMP-19) */
     .role-section {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .role-section-label {
       font-size: 11px;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--text-muted, #6B7280);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: block;
     }
 
-        .nav-pill-container.role-selector-bar {
+    .role-selector-bar {
       display: flex;
       width: 100%;
-      background: #F4F5F7;
-      padding: 5px;
-      border-radius: var(--radius-full);
-      border: 1px solid #ECEEF2;
+      background: var(--bg-subtle, #F3F4F6);
+      padding: 4px;
+      border-radius: var(--radius-full, 9999px);
+      border: 1px solid var(--border-subtle, #ECEEF2);
       gap: 4px;
     }
 
-    .nav-pill-container.role-selector-bar .nav-pill {
+    .role-selector-bar .nav-pill {
       flex: 1;
       justify-content: center;
       text-align: center;
       padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: var(--radius-full, 9999px);
+      border: none;
+      background: transparent;
+      color: var(--text-secondary, #374151);
+      cursor: pointer;
+      transition: all var(--transition-fast, 150ms ease);
+      display: flex;
+      align-items: center;
     }
 
-    /* FORM CONTROLS & LABELS */
+    .role-selector-bar .nav-pill.active {
+      background: var(--dark-pill, #111111);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(17, 17, 17, 0.15);
+    }
+
+    /* FORM CONTROLS (CMP-13 & 42px HEIGHT LOCK) */
     .form-group-item {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .field-label {
       font-size: 12px;
       font-weight: 600;
-      color: var(--text-main);
+      color: var(--text-main, #111111);
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
     }
 
     .input-wrapper {
@@ -197,48 +254,113 @@
       align-items: center;
     }
 
-    .input-field-main {
+    .form-input-field.input-field-main {
       width: 100%;
-      height: 46px;
-      border-radius: var(--radius-md);
-      border: 1.5px solid var(--border-subtle);
-      background: #FAFAFA;
-      padding: 10px 42px 10px 42px;
-      font-size: 13.5px;
-      color: var(--text-main);
+      height: 42px !important;
+      min-height: 42px !important;
+      border-radius: var(--radius-md, 12px) !important;
+      border: 1px solid var(--border-control, #E2E8F0);
+      background: var(--bg-canvas, #F7F8FA);
+      padding: 0 42px 0 42px;
+      font-size: 13px;
+      color: var(--text-main, #111111);
       font-family: inherit;
-      transition: all var(--transition-fast);
+      transition: all var(--transition-fast, 150ms ease);
+      box-sizing: border-box;
     }
 
-    .input-field-main:focus {
+    .form-input-field.input-field-main:focus {
       outline: none;
-      border-color: var(--brand-primary);
+      border-color: var(--brand-primary, #FF7A00);
       background: #FFFFFF;
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    /* Error highlight state (SK-07) */
+    .form-input-field.input-field-main.input-error {
+      border-color: var(--status-danger-text, #EF4444) !important;
+      background: var(--status-danger-bg, #FEE2E2) !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+    }
+
+    /* Normalisasi browser autofill (SK-27) */
+    .form-input-field.input-field-main:-webkit-autofill,
+    .form-input-field.input-field-main:-webkit-autofill:hover,
+    .form-input-field.input-field-main:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0px 1000px #F7F8FA inset !important;
+      -webkit-text-fill-color: var(--text-main, #111111) !important;
+      transition: background-color 5000s ease-in-out 0s;
     }
 
     .input-icon-left {
       position: absolute;
       left: 14px;
-      color: var(--text-subtle);
+      color: var(--text-subtle, #9CA3AF);
       pointer-events: none;
     }
 
     .input-eye-btn {
       position: absolute;
-      right: 14px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
       background: none;
       border: none;
+      border-radius: var(--radius-sm, 8px);
       cursor: pointer;
-      color: var(--text-subtle);
+      color: var(--text-subtle, #9CA3AF);
       display: flex;
       align-items: center;
+      justify-content: center;
       padding: 0;
-      transition: color var(--transition-fast);
+      transition: color var(--transition-fast, 150ms ease);
     }
 
     .input-eye-btn:hover {
-      color: var(--text-main);
+      color: var(--text-main, #111111);
+    }
+
+    /* SMOOTH EXPAND SLIDE CAPS LOCK BADGE (SK-26 & OPTION B) */
+    .caps-lock-slot {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 220ms cubic-bezier(0.16, 1, 0.3, 1), margin-top 220ms cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: 0px;
+    }
+
+    .caps-lock-slot.active {
+      grid-template-rows: 1fr;
+      margin-top: 8px;
+    }
+
+    .caps-lock-slot-inner {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .caps-lock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--status-warning-text, #D97706);
+      background: var(--status-warning-bg, #FEF3C7);
+      border: 1px solid #FDE68A;
+      padding: 3px 8px;
+      border-radius: var(--radius-xs, 6px);
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 180ms ease, transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .caps-lock-slot.active .caps-lock-badge {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     /* ACTION ROW & REMEMBER ME */
@@ -246,9 +368,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12.5px;
-      margin: 16px 0 22px;
-      color: var(--text-secondary);
+      font-size: 12px;
+      margin: 14px 0 18px;
+      color: var(--text-secondary, #374151);
     }
 
     .checkbox-label {
@@ -257,28 +379,30 @@
       gap: 7px;
       cursor: pointer;
       user-select: none;
+      font-weight: 500;
     }
 
     .forgot-link {
-      color: var(--brand-primary);
+      color: var(--brand-primary, #FF7A00);
       font-weight: 600;
       text-decoration: none;
-      transition: color var(--transition-fast);
+      transition: color var(--transition-fast, 150ms ease);
     }
 
     .forgot-link:hover {
       text-decoration: underline;
     }
 
-    /* PRIMARY CTA BUTTON (Authoritative 48px Height) */
+    /* PRIMARY HERO CTA BUTTON (CMP-03 & 44px HEIGHT LOCK WITH ROUNDED-FULL) */
     .btn-submit-main {
       width: 100%;
-      height: 48px;
-      border-radius: var(--radius-md);
-      background: var(--dark-pill);
+      height: 44px;
+      border-radius: var(--radius-full, 9999px);
+      background: var(--dark-pill, #111111);
       color: #FFFFFF;
       font-size: 14px;
       font-weight: 600;
+      font-family: inherit;
       letter-spacing: 0.2px;
       border: none;
       cursor: pointer;
@@ -286,37 +410,218 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all var(--transition-fast);
-      box-shadow: 0 4px 14px rgba(17, 17, 17, 0.22);
+      transition: all var(--transition-fast, 150ms ease);
+      box-shadow: 0 4px 14px rgba(17, 17, 17, 0.2);
     }
 
-    .btn-submit-main:hover {
-      background: var(--dark-pill-hover);
+    .btn-submit-main:hover:not(:disabled) {
+      background: var(--dark-pill-hover, #222222);
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(17, 17, 17, 0.3);
+      box-shadow: 0 6px 18px rgba(17, 17, 17, 0.28);
     }
 
-    .btn-submit-main:hover i {
+    .btn-submit-main:hover:not(:disabled) i {
       transform: translateX(3px);
     }
 
+    .btn-submit-main:disabled {
+      opacity: 0.75;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
     .btn-submit-main i {
-      transition: transform var(--transition-fast);
+      transition: transform var(--transition-fast, 150ms ease);
+    }
+
+    .btn-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ==========================================================================
+       PINNED MODAL ARCHITECTURE (BATAS ATAS & BATAS BAWAH KEDAP PELEPASAN)
+       ========================================================================== */
+    #modalForceChangePassword .modal-card {
+      padding: 0 !important;
+      gap: 0 !important;
+      overflow: hidden !important;
+      border-radius: var(--radius-2xl, 24px) !important;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18) !important;
+      background: #FFFFFF !important;
+      width: 440px !important;
+      max-width: 92vw !important;
+      display: flex !important;
+      flex-direction: column !important;
+      box-sizing: border-box !important;
+    }
+
+    .modal-header-pinned {
+      padding: 16px 24px !important;
+      border-bottom: 1px solid var(--border-subtle, #ECEEF2) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+      box-sizing: border-box !important;
+    }
+
+    .modal-subtitle {
+      font-size: 12px !important;
+      color: var(--text-secondary, #374151) !important;
+      margin: 4px 0 0 0 !important;
+      line-height: 1.35 !important;
+    }
+
+    .modal-body-scrollable {
+      padding: 20px 24px !important;
+      overflow-y: auto !important;
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      box-sizing: border-box !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .modal-body-scrollable::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .modal-footer-pinned {
+      padding: 14px 24px !important;
+      border-top: 1px solid var(--border-subtle, #ECEEF2) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: 10px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+      box-sizing: border-box !important;
+    }
+
+    /* MODAL FOOTER STANDARDIZATION */
+    .modal-btn-group {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-modal-cancel {
+      height: 38px !important;
+      padding: 0 18px !important;
+      border-radius: var(--radius-full, 9999px) !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      background: #F8FAFC !important;
+      border: 1px solid var(--border-control, #E2E8F0) !important;
+      color: var(--text-secondary, #374151) !important;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast, 150ms ease);
+    }
+
+    .btn-modal-cancel:hover {
+      background: #E2E8F0 !important;
+      color: var(--text-main, #111111) !important;
+    }
+
+    .btn-modal-primary {
+      height: 44px !important;
+      padding: 0 22px !important;
+      border-radius: var(--radius-full, 9999px) !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      background: var(--brand-primary, #FF7A00) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.25) !important;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all var(--transition-fast, 150ms ease);
+    }
+
+    .btn-modal-primary:hover {
+      background: var(--brand-primary-hover, #E66E00) !important;
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE COLLAPSE (< 900px Mobile / Tablet Guard - SK-18 & SK-32)
+       ========================================================================== */
+    @media (max-width: 900px) {
+      html, body {
+        height: auto !important;
+        min-height: 100dvh !important;
+        overflow-y: auto !important;
+      }
+
+      body {
+        padding: 16px !important;
+        height: auto !important;
+        min-height: 100dvh !important;
+        overflow-y: auto !important;
+      }
+
+      .login-page-root {
+        height: auto !important;
+        min-height: 100dvh !important;
+        padding: 16px 0 !important;
+        overflow-y: auto !important;
+      }
+
+      .login-container {
+        flex-direction: column;
+        max-width: 480px;
+        height: auto !important;
+        max-height: none !important;
+        margin: 16px auto;
+        border-radius: var(--radius-xl, 20px);
+      }
+
+      .media-side-panel {
+        display: none; /* Collapse panel visual kiri pada layar mobile */
+      }
+
+      .form-panel {
+        padding: 32px 24px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- CENTER WRAPPER (100vh Locked) -->
+  <!-- CENTER WRAPPER (100dvh Locked) -->
   <main class="login-page-root">
     <div class="login-container">
       
-      <!-- LEFT SIDE: ARSITEKTUR HUNIAN (Murni Visual, Tanpa Teks) -->
+      <!-- LEFT SIDE: ARSITEKTUR HUNIAN (Murni Visual, Tanpa Teks - SK-30) -->
       <div class="media-side-panel">
         <img 
           id="bgImage" 
           class="media-element" 
           src="assets/img/login-showcase.png" 
           alt="Arsitektur Hunian Kost Modern RumaKost"
+          onerror="this.style.display='none'"
         >
       </div>
 
@@ -342,14 +647,20 @@
             </div>
           </div>
 
+          <!-- SESSION EXPIRED ALERT BANNER (SK-28) -->
+          <div class="session-expired-banner" id="sessionExpiredBanner">
+            <i data-lucide="clock" style="width: 16px; height: 16px; flex-shrink: 0;"></i>
+            <span>Sesi Anda telah berakhir demi keamanan. Silakan masukkan kredensial Anda kembali.</span>
+          </div>
+
           <h1 class="form-intent-title">Masuk ke Akun</h1>
           <p class="form-intent-sub">Pilih peran Anda dan masukkan kredensial terdaftar.</p>
         </div>
 
-        <!-- 2. ROLE SEGMENTED CONTROL -->
+        <!-- 2. ROLE SEGMENTED CONTROL (CMP-19) -->
         <div class="role-section">
           <label class="role-section-label">Pilih Peran</label>
-          <div class="nav-pill-container role-selector-bar">
+          <div class="role-selector-bar">
             <button type="button" class="nav-pill active" id="btnRoleOwner" onclick="selectRole('owner')">Pemilik</button>
             <button type="button" class="nav-pill" id="btnRoleStaff" onclick="selectRole('staff')">Staf Pengelola</button>
             <button type="button" class="nav-pill" id="btnRoleTenant" onclick="selectRole('tenant')">Penghuni</button>
@@ -357,55 +668,220 @@
         </div>
 
         <!-- 3. CREDENTIALS INPUT FORM -->
-        <form onsubmit="handleLoginSubmit(event)">
+        <form onsubmit="handleLoginSubmit(event)" id="loginForm" autocomplete="on">
           <!-- EMAIL FIELD -->
           <div class="form-group-item">
             <label class="field-label" for="inputEmail">Alamat Email</label>
             <div class="input-wrapper">
               <i data-lucide="mail" class="input-icon-left" style="width: 16px; height: 16px;"></i>
-              <input type="email" class="input-field-main" id="inputEmail" value="budi.santoso@rumakost.id" required>
+              <input 
+                type="email" 
+                class="form-input-field input-field-main" 
+                id="inputEmail" 
+                value="budi.santoso@rumakost.id" 
+                required 
+                maxlength="120"
+                placeholder="nama@domain.com"
+                autocomplete="username"
+              >
             </div>
           </div>
 
           <!-- PASSWORD FIELD -->
-          <div class="form-group-item">
+          <div class="form-group-item" style="margin-bottom: 0;">
             <label class="field-label" for="inputPassword">Kata Sandi</label>
             <div class="input-wrapper">
               <i data-lucide="lock" class="input-icon-left" style="width: 16px; height: 16px;"></i>
-              <input type="password" class="input-field-main" id="inputPassword" value="password123" required>
+              <input 
+                type="password" 
+                class="form-input-field input-field-main" 
+                id="inputPassword" 
+                value="password123" 
+                required 
+                maxlength="100"
+                placeholder="Masukkan kata sandi"
+                autocomplete="current-password"
+              >
               <button type="button" class="input-eye-btn" onclick="togglePasswordVisibility()" title="Lihat Sandi">
                 <i data-lucide="eye" id="eyeIcon" style="width: 16px; height: 16px;"></i>
               </button>
             </div>
+            <!-- Smooth Animated Expand Slot (SK-26 Option B) -->
+            <div class="caps-lock-slot" id="capsLockSlot">
+              <div class="caps-lock-slot-inner">
+                <div class="caps-lock-badge" id="capsLockBadge">
+                  <i data-lucide="arrow-up-circle" style="width: 12px; height: 12px;"></i>
+                  <span>Caps Lock Aktif</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- REMEMBER ME & FORGOT PASSWORD -->
+          <!-- REMEMBER ME & FORGOT PASSWORD (SK-09 & SK-10) -->
           <div class="form-actions-row">
             <label class="checkbox-label">
-              <input type="checkbox" checked style="accent-color: #FF7A00; width: 15px; height: 15px;">
+              <input type="checkbox" id="checkboxRememberMe" checked style="accent-color: #FF7A00; width: 15px; height: 15px;">
               <span>Ingat saya di perangkat ini</span>
             </label>
-            <a href="#" class="forgot-link" onclick="RumaUI.showToast('Tautan pemulihan kata sandi telah dikirim ke email Anda', 'info', 'Lupa Sandi')">
+            <a href="#" class="forgot-link" onclick="handleForgotPassword(event)">
               Lupa kata sandi?
             </a>
           </div>
 
-          <!-- 4. PRIMARY ACTION BUTTON -->
-          <button type="submit" class="btn-submit-main">
-            <span>Masuk ke Akun</span>
-            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          <!-- 4. PRIMARY HERO CTA BUTTON (44px, Rounded-Full - SK-24) -->
+          <button type="submit" class="btn-submit-main" id="btnSubmitMain">
+            <span id="btnSubmitText">Masuk ke Akun</span>
+            <i data-lucide="arrow-right" id="btnSubmitIcon" style="width: 16px; height: 16px;"></i>
           </button>
         </form>
-
 
       </div>
 
     </div>
   </main>
 
+  <!-- MODAL: FIRST-TIME LOGIN / FORCE PASSWORD CHANGE (CMP-12 & SK-22) -->
+  <div class="modal-backdrop" id="modalForceChangePassword" onclick="handleModalBackdropClick(event)">
+    <div class="modal-card">
+      <!-- PINNED HEADER (BATAS ATAS MODAL: 16px 24px) -->
+      <div class="modal-header-pinned">
+        <div>
+          <h3 class="modal-title" style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: var(--text-main, #111111); margin: 0;">
+            <i data-lucide="shield-alert" style="width: 18px; height: 18px; color: var(--brand-primary, #FF7A00);"></i>
+            Aktivasi Akun Baru
+          </h3>
+          <p class="modal-subtitle">
+            Kata sandi sementara terdeteksi. Buat sandi baru untuk melanjutkan.
+          </p>
+        </div>
+        <!-- 36x36px Circular Close Button -->
+        <button type="button" class="btn-modal-close" onclick="RumaUI.closeModal('modalForceChangePassword')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <!-- SCROLLABLE BODY (20px 24px) -->
+      <form onsubmit="handleForcePasswordSubmit(event)" style="display: flex; flex-direction: column; flex: 1; margin: 0;">
+        <div class="modal-body-scrollable">
+          <div class="form-group-item">
+            <label class="field-label">Kata Sandi Baru</label>
+            <div class="input-wrapper">
+              <i data-lucide="lock" class="input-icon-left" style="width: 16px; height: 16px;"></i>
+              <input 
+                type="password" 
+                class="form-input-field input-field-main" 
+                id="inputNewPassword" 
+                required 
+                minlength="8" 
+                maxlength="100"
+                placeholder="Minimal 8 karakter"
+              >
+            </div>
+          </div>
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="field-label">Konfirmasi Kata Sandi Baru</label>
+            <div class="input-wrapper">
+              <i data-lucide="check-circle" class="input-icon-left" style="width: 16px; height: 16px;"></i>
+              <input 
+                type="password" 
+                class="form-input-field input-field-main" 
+                id="inputConfirmPassword" 
+                required 
+                minlength="8" 
+                maxlength="100"
+                placeholder="Ulangi kata sandi baru"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- PINNED FOOTER (BATAS BAWAH MODAL: 14px 24px) -->
+        <div class="modal-footer-pinned">
+          <div class="modal-btn-group">
+            <button type="button" class="btn-modal-cancel" onclick="RumaUI.closeModal('modalForceChangePassword')">
+              <span>Batal</span>
+            </button>
+            <button type="submit" class="btn-modal-primary">
+              <span>Simpan & Masuk</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="assets/js/components.js"></script>
   <script>
-    let activeRole = 'owner';
+    // ==========================================================================
+    // 1. DATA BASELINE FIXTURE TESTING (MOCK USERS REPOSITORY)
+    // ==========================================================================
+    const MOCK_USERS = {
+      // USR-01: Pemilik Properti (Owner Superadmin)
+      'budi.santoso@rumakost.id': {
+        password: 'password123',
+        role: 'owner',
+        name: 'Budi Santoso',
+        dest: 'WF-02-dashboard.html',
+        status: 'active'
+      },
+      // USR-02: Staf Pengelola Operasional
+      'rini.operasional@rumakost.id': {
+        password: 'password123',
+        role: 'staff',
+        name: 'Rini Setiawati',
+        dest: 'WF-02-dashboard.html?role=staf',
+        status: 'active'
+      },
+      // USR-03: Penghuni Kamar A-04
+      'budi.penghuni@rumakost.id': {
+        password: 'password123',
+        role: 'tenant',
+        name: 'Budi Santoso (Penghuni)',
+        dest: 'WF-10-portal-penghuni.html',
+        status: 'active'
+      },
+      // USR-04: Staf Nonaktif (Disabled Account Guard - SK-08)
+      'joko.nonaktif@rumakost.id': {
+        password: 'password123',
+        role: 'staff',
+        name: 'Joko Supriyanto',
+        dest: '',
+        status: 'disabled'
+      },
+      // USR-05: Penghuni Alumni Kontrak Selesai (Read-Only Archive - SK-23)
+      'siti.alumni@rumakost.id': {
+        password: 'password123',
+        role: 'tenant',
+        name: 'Siti Rahmawati',
+        dest: 'WF-10-portal-penghuni.html?mode=archive',
+        status: 'expired'
+      },
+      // USR-06: Akun Baru Wajib Ganti Sandi Pertama Kali (SK-22)
+      'ahmad.staf@rumakost.id': {
+        password: 'RumaKost#2026!',
+        role: 'staff',
+        name: 'Ahmad Zaelani',
+        dest: 'WF-02-dashboard.html?role=staf',
+        status: 'must_change_password'
+      },
+      // USR-07: Penghuni Multi-Kamar dalam 1 Properti (SK-34)
+      'hendra.multi@rumakost.id': {
+        password: 'password123',
+        role: 'tenant',
+        name: 'Hendra Kusuma',
+        dest: 'WF-10-portal-penghuni.html?kamar=A-04&multi=true',
+        status: 'active'
+      },
+      // USR-08: Calon Penghuni Pra-Hunian (Pending Move-In - SK-36)
+      'reza.calon@rumakost.id': {
+        password: 'password123',
+        role: 'tenant',
+        name: 'Reza Firmansyah',
+        dest: 'WF-10-portal-penghuni.html?status=pending_checkin',
+        status: 'active'
+      }
+    };
 
     const ROLE_CONFIG = {
       owner: {
@@ -428,18 +904,128 @@
       }
     };
 
+    let activeRole = 'owner';
+    let isEmailDirty = false;
+    let failedAttempts = 0;
+    let isLockedOut = false;
+
+    // ==========================================================================
+    // 2. LIFECYCLE & EVENT INITIALIZATION
+    // ==========================================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      // Periksa Session Expired Banner dari URL (SK-28)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('reason') === 'session_expired') {
+        const banner = document.getElementById('sessionExpiredBanner');
+        if (banner) banner.classList.add('show');
+      }
+
+      // Restore Remember Me Email jika tersimpan (SK-09)
+      const savedEmail = localStorage.getItem('rumakost_remember_email');
+      if (savedEmail) {
+        document.getElementById('inputEmail').value = savedEmail;
+        document.getElementById('checkboxRememberMe').checked = true;
+        isEmailDirty = true;
+      }
+
+      // Deteksi dirty state pada email input (SK-35)
+      const emailInput = document.getElementById('inputEmail');
+      emailInput.addEventListener('input', () => {
+        const currentVal = emailInput.value.trim().toLowerCase();
+        const defaultPreset = ROLE_CONFIG[activeRole].email.toLowerCase();
+        isEmailDirty = (currentVal !== '' && currentVal !== defaultPreset);
+        emailInput.classList.remove('input-error');
+      });
+
+      // Caps Lock Listener pada Password Field (SK-26 & Smooth Expand Slide)
+      const passwordInput = document.getElementById('inputPassword');
+      const capsSlot = document.getElementById('capsLockSlot');
+
+      const checkCapsLock = (e) => {
+        if (e.getModifierState && e.getModifierState('CapsLock')) {
+          capsSlot.classList.add('active');
+        } else {
+          capsSlot.classList.remove('active');
+        }
+      };
+
+      passwordInput.addEventListener('keydown', checkCapsLock);
+      passwordInput.addEventListener('keyup', checkCapsLock);
+      passwordInput.addEventListener('focus', (e) => {
+        if (e.getModifierState && e.getModifierState('CapsLock')) {
+          capsSlot.classList.add('active');
+        } else {
+          capsSlot.classList.remove('active');
+        }
+      });
+      passwordInput.addEventListener('input', () => {
+        passwordInput.classList.remove('input-error');
+      });
+
+      // Auto-Mask Password on Window Blur (SK-31)
+      window.addEventListener('blur', () => {
+        if (passwordInput.type === 'text') {
+          togglePasswordVisibility();
+        }
+      });
+
+      // BFCache Sensitive Clearing (SK-37)
+      window.addEventListener('pageshow', (e) => {
+        if (e.persisted) {
+          passwordInput.value = '';
+          resetButtonState();
+        }
+      });
+
+      // Global ESC Key Listener untuk menutup Modal (Pilar 5)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          RumaUI.closeModal('modalForceChangePassword');
+        }
+      });
+
+      // Multi-Tab Session Synchronization (SK-14)
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'rumakost_active_session' && e.newValue) {
+          RumaUI.showToast('Sesi aktif terdeteksi di tab lain. Mengarahkan...', 'info', 'Sinkronisasi Sesi');
+          setTimeout(() => {
+            window.location.href = 'WF-02-dashboard.html';
+          }, 800);
+        }
+      });
+
+      // Network Offline Listener (SK-25)
+      window.addEventListener('offline', () => {
+        RumaUI.showToast('Koneksi internet Anda terputus.', 'danger', 'Mode Offline');
+      });
+
+      lucide.createIcons();
+    });
+
+    // ==========================================================================
+    // 3. INTERACTIVE ACTIONS & HANDLERS
+    // ==========================================================================
+
+    // Pemilihan Peran & Form Dirty State Protection (SK-04 & SK-35)
     function selectRole(role) {
       activeRole = role;
-      document.querySelectorAll('.nav-pill-container.role-selector-bar .nav-pill').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.role-selector-bar .nav-pill').forEach(btn => btn.classList.remove('active'));
       if (role === 'owner') document.getElementById('btnRoleOwner').classList.add('active');
       if (role === 'staff') document.getElementById('btnRoleStaff').classList.add('active');
       if (role === 'tenant') document.getElementById('btnRoleTenant').classList.add('active');
 
       const config = ROLE_CONFIG[role];
-      document.getElementById('inputEmail').value = config.email;
-      RumaUI.showToast(config.toast, 'info', config.title);
+      const emailInput = document.getElementById('inputEmail');
+
+      if (isEmailDirty) {
+        RumaUI.showToast(`Peran dialihkan ke ${config.title}. Alamat email Anda dipertahankan.`, 'info', 'Peran Diperbarui');
+      } else {
+        emailInput.value = config.email;
+        RumaUI.showToast(config.toast, 'info', config.title);
+      }
     }
 
+    // Toggle Visibilitas Kata Sandi (SK-05)
     function togglePasswordVisibility() {
       const input = document.getElementById('inputPassword');
       const icon = document.getElementById('eyeIcon');
@@ -453,12 +1039,166 @@
       lucide.createIcons();
     }
 
+    // Lupa Kata Sandi Handler (SK-10)
+    function handleForgotPassword(e) {
+      e.preventDefault();
+      RumaUI.showToast('Tautan pemulihan kata sandi telah dikirim ke email terdaftar Anda.', 'info', 'Lupa Sandi');
+    }
+
+    // Click-Outside Dismiss Modal (Pilar 5)
+    function handleModalBackdropClick(e) {
+      if (e.target.classList.contains('modal-backdrop')) {
+        RumaUI.closeModal('modalForceChangePassword');
+      }
+    }
+
+    function resetButtonState() {
+      const btn = document.getElementById('btnSubmitMain');
+      const text = document.getElementById('btnSubmitText');
+      const icon = document.getElementById('btnSubmitIcon');
+      btn.disabled = false;
+      text.textContent = 'Masuk ke Akun';
+      icon.style.display = 'inline-block';
+      const existingSpinner = btn.querySelector('.btn-spinner');
+      if (existingSpinner) existingSpinner.remove();
+    }
+
+    // Handler Utama Login Form Submit (SK-01 s/d SK-40)
     function handleLoginSubmit(e) {
       e.preventDefault();
-      const config = ROLE_CONFIG[activeRole];
-      RumaUI.showToast('Kredensial valid. Mengarahkan Anda ke sistem...', 'success', 'Masuk Berhasil');
+
+      // Proteksi Offline (SK-25)
+      if (!navigator.onLine) {
+        RumaUI.showToast('Koneksi internet terputus. Harap periksa jaringan Anda dan coba kembali.', 'danger', 'Gagal Masuk');
+        return;
+      }
+
+      // Proteksi Rate Limiting & Brute-Force Lockout (SK-11)
+      if (isLockedOut) {
+        RumaUI.showToast('Akun terkunci sementara karena terlalu banyak percobaan salah. Coba lagi dalam 15 menit.', 'danger', 'Akun Terkunci (429)');
+        return;
+      }
+
+      const emailInput = document.getElementById('inputEmail');
+      const passwordInput = document.getElementById('inputPassword');
+      const btnSubmit = document.getElementById('btnSubmitMain');
+      const btnText = document.getElementById('btnSubmitText');
+      const btnIcon = document.getElementById('btnSubmitIcon');
+
+      // Sanitasi Masukan: Trim & Case-Insensitive (SK-29)
+      const cleanEmail = emailInput.value.trim().toLowerCase();
+      const rawPassword = passwordInput.value;
+
+      // Dobel Submit Prevention & Button Spinner Loading (SK-24)
+      btnSubmit.disabled = true;
+      btnText.textContent = 'Memverifikasi kredensial...';
+      btnIcon.style.display = 'none';
+
+      let spinner = btnSubmit.querySelector('.btn-spinner');
+      if (!spinner) {
+        spinner = document.createElement('span');
+        spinner.className = 'btn-spinner';
+        btnSubmit.prepend(spinner);
+      }
+
       setTimeout(() => {
-        window.location.href = config.dest;
+        const user = MOCK_USERS[cleanEmail];
+
+        // Validasi Kredensial Salah / Password Tidak Cocok (SK-07)
+        if (!user || user.password !== rawPassword) {
+          failedAttempts++;
+          resetButtonState();
+
+          passwordInput.value = '';
+          passwordInput.classList.add('input-error');
+          passwordInput.focus();
+
+          if (failedAttempts >= 5) {
+            isLockedOut = true;
+            btnSubmit.disabled = true;
+            RumaUI.showToast('Terlalu banyak percobaan masuk yang gagal. Akun dikunci sementara selama 15 menit.', 'danger', 'Brute-Force Lockout (429)');
+            return;
+          }
+
+          RumaUI.showToast('Alamat email atau kata sandi yang Anda masukkan salah. Silakan periksa kembali.', 'danger', 'Gagal Masuk (401)');
+          return;
+        }
+
+        // Kredensial Valid -> Reset counter gagal
+        failedAttempts = 0;
+
+        // Penolakan Akun Nonaktif / Ditangguhkan (SK-08)
+        if (user.status === 'disabled') {
+          resetButtonState();
+          RumaUI.showToast('Akun Anda sedang dinonaktifkan oleh Pemilik properti. Hubungi pengelola kost untuk mengaktifkan kembali akses Anda.', 'danger', 'Akses Ditolak (403)');
+          return;
+        }
+
+        // Intersepsi Akun Baru Pertama Kali Wajib Ganti Sandi (SK-22)
+        if (user.status === 'must_change_password') {
+          resetButtonState();
+          RumaUI.openModal('modalForceChangePassword');
+          lucide.createIcons();
+          return;
+        }
+
+        // Role Mismatch Auto-Switching Otoritatif (SK-21)
+        if (user.role !== activeRole) {
+          activeRole = user.role;
+          document.querySelectorAll('.role-selector-bar .nav-pill').forEach(btn => btn.classList.remove('active'));
+          if (user.role === 'owner') document.getElementById('btnRoleOwner').classList.add('active');
+          if (user.role === 'staff') document.getElementById('btnRoleStaff').classList.add('active');
+          if (user.role === 'tenant') document.getElementById('btnRoleTenant').classList.add('active');
+          RumaUI.showToast(`Kredensial terverifikasi sebagai ${ROLE_CONFIG[user.role].title}. Mengalihkan Anda...`, 'info', 'Penyelarasan Peran Otomatis');
+        }
+
+        // Simpan / Hapus Remember Me (SK-09)
+        const rememberMe = document.getElementById('checkboxRememberMe').checked;
+        if (rememberMe) {
+          localStorage.setItem('rumakost_remember_email', cleanEmail);
+        } else {
+          localStorage.removeItem('rumakost_remember_email');
+        }
+
+        // Sinkronisasi Sesi Lintas Tab (SK-14)
+        localStorage.setItem('rumakost_active_session', Date.now());
+
+        // Penanganan Deep Linking URL Redirect Parameter (SK-13)
+        const urlParams = new URLSearchParams(window.location.search);
+        let targetDest = user.dest;
+        const redirectParam = urlParams.get('redirect');
+        if (redirectParam && redirectParam.startsWith('/')) {
+          targetDest = redirectParam;
+        }
+
+        // Berikan Notifikasi Berdasarkan Status Khusus
+        if (user.status === 'expired') {
+          RumaUI.showToast('Masa sewa Anda telah selesai. Masuk ke Mode Arsip Terbatas...', 'info', 'Akses Arsip');
+        } else {
+          RumaUI.showToast('Kredensial valid. Mengarahkan Anda ke sistem...', 'success', 'Masuk Berhasil');
+        }
+
+        setTimeout(() => {
+          window.location.href = targetDest;
+        }, 700);
+
+      }, 600);
+    }
+
+    // Handler Submit Ganti Kata Sandi Pertama Kali (SK-22)
+    function handleForcePasswordSubmit(e) {
+      e.preventDefault();
+      const p1 = document.getElementById('inputNewPassword').value;
+      const p2 = document.getElementById('inputConfirmPassword').value;
+
+      if (p1 !== p2) {
+        RumaUI.showToast('Konfirmasi kata sandi tidak cocok. Silakan ulangi.', 'danger', 'Validasi Gagal');
+        return;
+      }
+
+      RumaUI.showToast('Kata sandi baru berhasil diaktifkan! Mengarahkan Anda ke dasbor...', 'success', 'Aktivasi Berhasil');
+      setTimeout(() => {
+        window.location.href = 'WF-02-dashboard.html?role=staf';
       }, 700);
     }
   </script>

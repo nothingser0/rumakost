@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    GLOBAL SCROLLBAR HIDING (Native smooth scrolling without scrollbars)
    ========================================================================== */
 *,
@@ -20,10 +20,32 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 20px;
+  height: 24px;
   background: var(--bg-canvas, #F7F8FA);
-  z-index: 90;
+  z-index: 95;
   pointer-events: none;
+}
+
+/* Pinned corner masks on topbar to eliminate any scrolling content peek-through */
+.topbar::before,
+.topbar::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  width: 25px;
+  height: 25px;
+  pointer-events: none;
+  z-index: 101;
+}
+
+.topbar::before {
+  left: -1px;
+  background: radial-gradient(circle at 100% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+}
+
+.topbar::after {
+  right: -1px;
+  background: radial-gradient(circle at 0% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
 }
 
 /**
@@ -96,8 +118,63 @@
   padding: 5px;
   border-radius: var(--radius-full);
   border: 1px solid #ECEEF2;
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
   flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.nav-pill-container::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1380px) {
+  .topbar,
+  .topbar-shell {
+    padding: 0 16px;
+  }
+  .nav-pill {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+  .nav-pill-container {
+    gap: 2px !important;
+    padding: 4px !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .nav-pill {
+    padding: 5px 8px !important;
+    font-size: 11px !important;
+  }
+  .nav-pill-container {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .nav-pill-container::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .topbar,
+  .topbar-shell {
+    width: calc(100% - 24px);
+    margin: 12px auto 0;
+    top: 12px;
+    height: 60px;
+    padding: 0 12px;
+  }
+  .brand-name {
+    font-size: 16px;
+  }
+  .nav-pill-container {
+    max-width: calc(100vw - 160px);
+  }
 }
 
 .nav-pill {
@@ -124,6 +201,11 @@
   color: #FFFFFF;
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.nav-pill.active:hover {
+  background: var(--dark-pill-hover, #222222) !important;
+  color: #FFFFFF !important;
 }
 
 .topbar-right {
@@ -533,6 +615,7 @@
 
 
 .user-avatar {
+  background: #111111 !important;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -1128,7 +1211,19 @@
   gap: 20px;
   align-self: flex-start;
   position: sticky;
-  top: 96px;
+  top: 110px !important;
+}
+@media (min-width: 1201px) {
+  .card-detail-drawer {
+    position: fixed !important;
+    top: 110px !important;
+    right: max(20px, calc((100vw - 1440px) / 2)) !important;
+    width: 360px !important;
+    max-height: calc(100vh - 130px) !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    z-index: 30 !important;
+  }
 }
 
 .drawer-header {
@@ -1148,7 +1243,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(17, 17, 17, 0.45);
+  background: rgba(17, 17, 17, 0.45); display: none !important;
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -1159,7 +1254,7 @@
   transition: opacity var(--transition-normal);
 }
 
-.modal-backdrop.open {
+.modal-backdrop.open { display: flex !important;
   opacity: 1;
   pointer-events: auto;
 }
@@ -1830,6 +1925,19 @@ button:active, .btn:active, [class*="btn-"]:active, .pill-arrow-btn:active, .rol
   transform: scale(0.97) !important;
 }
 
+/* Universal Button Icon Sync: Icons inside buttons must always match button text color */
+button svg,
+button [data-lucide],
+button i,
+.btn svg,
+.btn [data-lucide],
+.btn i,
+[class*="btn-"] svg,
+[class*="btn-"] [data-lucide],
+[class*="btn-"] i {
+  color: inherit;
+}
+
 /* Primary Brand (Orange) Buttons */
 .btn-primary,
 .btn-brand-primary,
@@ -1952,6 +2060,24 @@ button:active, .btn:active, [class*="btn-"]:active, .pill-arrow-btn:active, .rol
   border-color: #CBD5E1 !important;
   color: var(--text-main) !important;
   transform: translateY(-1px) !important;
+}
+
+.floor-pill-btn.active,
+.duration-pill-opt.active,
+.pill-target-btn.active,
+.pill-template-btn.active {
+  background: var(--dark-pill, #111111) !important;
+  border-color: var(--dark-pill, #111111) !important;
+  color: #FFFFFF !important;
+}
+
+.floor-pill-btn.active:hover,
+.duration-pill-opt.active:hover,
+.pill-target-btn.active:hover,
+.pill-template-btn.active:hover {
+  background: var(--dark-pill-hover, #222222) !important;
+  border-color: var(--dark-pill-hover, #222222) !important;
+  color: #FFFFFF !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
 }
 
@@ -2000,6 +2126,24 @@ button:active, .btn:active, [class*="btn-"]:active, .pill-arrow-btn:active, .rol
   color: #DC2626 !important;
   border-color: #F87171 !important;
   transform: translateY(-1px) !important;
+}
+
+.floor-pill-btn.active,
+.duration-pill-opt.active,
+.pill-target-btn.active,
+.pill-template-btn.active {
+  background: var(--dark-pill, #111111) !important;
+  border-color: var(--dark-pill, #111111) !important;
+  color: #FFFFFF !important;
+}
+
+.floor-pill-btn.active:hover,
+.duration-pill-opt.active:hover,
+.pill-target-btn.active:hover,
+.pill-template-btn.active:hover {
+  background: var(--dark-pill-hover, #222222) !important;
+  border-color: var(--dark-pill-hover, #222222) !important;
+  color: #FFFFFF !important;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15) !important;
 }
 
@@ -2029,6 +2173,24 @@ button:active, .btn:active, [class*="btn-"]:active, .pill-arrow-btn:active, .rol
   color: var(--text-main) !important;
   border-color: #CBD5E1 !important;
   transform: translateY(-1px) !important;
+}
+
+.floor-pill-btn.active,
+.duration-pill-opt.active,
+.pill-target-btn.active,
+.pill-template-btn.active {
+  background: var(--dark-pill, #111111) !important;
+  border-color: var(--dark-pill, #111111) !important;
+  color: #FFFFFF !important;
+}
+
+.floor-pill-btn.active:hover,
+.duration-pill-opt.active:hover,
+.pill-target-btn.active:hover,
+.pill-template-btn.active:hover {
+  background: var(--dark-pill-hover, #222222) !important;
+  border-color: var(--dark-pill-hover, #222222) !important;
+  color: #FFFFFF !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
 }
 
@@ -2064,6 +2226,24 @@ button:active, .btn:active, [class*="btn-"]:active, .pill-arrow-btn:active, .rol
   color: var(--text-main) !important;
   background: #F8FAFC !important;
   transform: translateY(-1px) !important;
+}
+
+.floor-pill-btn.active,
+.duration-pill-opt.active,
+.pill-target-btn.active,
+.pill-template-btn.active {
+  background: var(--dark-pill, #111111) !important;
+  border-color: var(--dark-pill, #111111) !important;
+  color: #FFFFFF !important;
+}
+
+.floor-pill-btn.active:hover,
+.duration-pill-opt.active:hover,
+.pill-target-btn.active:hover,
+.pill-template-btn.active:hover {
+  background: var(--dark-pill-hover, #222222) !important;
+  border-color: var(--dark-pill-hover, #222222) !important;
+  color: #FFFFFF !important;
 }
 
 
@@ -2639,8 +2819,8 @@ label *,
 }
 
 /* Kartu & Baris Data yang Dapat Diklik (Serta Seluruh Anak Elemennya) */
-.room-unit-item,
-.room-thumb-area,
+.room-unit-item[onclick],
+.room-unit-item[onclick] .room-thumb-area,
 .card-clickable,
 .card-clickable *,
 .clickable-card,
@@ -2650,8 +2830,8 @@ label *,
 .stat-card[onclick] *,
 .stat-tile[onclick],
 .stat-tile[onclick] *,
-.status-vacant-card,
-.status-repair-card,
+.status-vacant-card[onclick],
+.status-repair-card[onclick],
 .summary-chip-card,
 .ticket-card,
 .ticket-row[onclick],
@@ -2756,6 +2936,28 @@ input[readonly]:not([onclick]):not(.ruma-datepicker-input):not(.clickable-input)
   cursor: default !important;
 }
 
+/* 3c. Form labels & Info text (Label deskriptif default, bukan not-allowed) */
+.form-label,
+.form-label-txt,
+.form-label-custom,
+.label-info-text {
+  cursor: default !important;
+  user-select: text;
+}
+
+/* 3d. Duration & Occupancy Pills (Selalu pointer saat aktif/dapat dipilih) */
+.duration-pill-opt,
+.duration-pill-opt:hover,
+.duration-pill-opt:active,
+.duration-pill-opt.active {
+  cursor: pointer !important;
+}
+
+/* 3e. Readonly non-interactive display inputs fallback */
+input[readonly]:not([onclick]):not(.ruma-datepicker-input):not(.clickable-input):not([style*="not-allowed"]) {
+  cursor: default !important;
+}
+
 /* 4. CURSOR: COPY (Aksi Salin ke Clipboard) */
 .btn-copy,
 .btn-copy-id,
@@ -2843,7 +3045,9 @@ abbr[title],
 .btn-md {
   height: 40px !important;
   padding: 0 20px !important;
-  font-size: 12.5px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--text-main, #111827) !important;
   font-weight: 600 !important;
   border-radius: var(--radius-full, 9999px) !important;
   display: inline-flex !important;
@@ -2909,7 +3113,9 @@ abbr[title],
   height: 42px !important;
   min-height: 42px !important;
   box-sizing: border-box !important;
-  font-size: 12.5px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--text-main, #111827) !important;
   border-radius: 12px !important;
 }
 
@@ -2919,7 +3125,9 @@ textarea.form-input-control {
   height: auto !important;
   min-height: 96px !important;
   box-sizing: border-box !important;
-  font-size: 12.5px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--text-main, #111827) !important;
   border-radius: 12px !important;
   padding: 10px 14px !important;
   line-height: 1.5 !important;

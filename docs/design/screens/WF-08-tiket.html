@@ -1003,34 +1003,56 @@
        8. MODAL SPECIFIC ENHANCEMENTS (ESTIFY DESIGN SYSTEM · IDENTIK WF-04)
        ══════════════════════════════════════════════════════════════ */
     .modal-card {
-      background: #FFFFFF;
-      border-radius: 20px;
+      background: #FFFFFF !important;
+      border-radius: 20px !important;
       width: 100%;
-      max-width: 640px;
+      max-width: 620px;
       max-height: calc(100vh - 48px);
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.16);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.16) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      gap: 0 !important;
+      margin: 0 auto !important;
       transform: translateY(16px) scale(0.98);
       transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      box-sizing: border-box;
+      box-sizing: border-box !important;
+    }
+
+    #modalCreateTicket .modal-card {
+      width: 620px !important;
+      max-width: 95vw !important;
+      max-height: 88vh !important;
+      height: 88vh !important;
+      padding: 0 !important;
+      gap: 0 !important;
+    }
+
+    #modalExportReport .modal-card,
+    #modalAssignTech .modal-card,
+    #modalResolveTicket .modal-card {
+      padding: 24px !important;
+      gap: 16px !important;
+      overflow-y: auto !important;
     }
 
     .modal-backdrop.open .modal-card {
-      transform: translateY(0) scale(1);
+      transform: translateY(0) scale(1) !important;
     }
 
     .modal-header-pinned {
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--border-subtle, #ECEEF2);
-      background: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-shrink: 0;
-      z-index: 10;
+      padding: 16px 24px !important;
+      border-bottom: 1px solid var(--border-subtle, #ECEEF2) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+      border-top-left-radius: 20px !important;
+      border-top-right-radius: 20px !important;
     }
 
     .modal-title {
@@ -1069,34 +1091,38 @@
       color: #0F172A;
     }
 
-    .modal-card,
     .modal-body-scrollable {
-      scrollbar-width: none !important;
-      -ms-overflow-style: none !important;
+      padding: 20px 24px !important;
+      overflow-y: auto !important;
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 15px !important;
+      box-sizing: border-box !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: #CBD5E1 transparent !important;
     }
 
-    .modal-card::-webkit-scrollbar,
     .modal-body-scrollable::-webkit-scrollbar {
-      display: none !important;
-      width: 0 !important;
-      height: 0 !important;
+      display: block !important;
+      width: 5px !important;
     }
 
-    .modal-body-scrollable {
-      padding: 18px 24px;
-      overflow-y: auto;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      box-sizing: border-box;
+    .modal-body-scrollable::-webkit-scrollbar-thumb {
+      background: #CBD5E1 !important;
+      border-radius: 9999px !important;
+    }
+
+    .modal-body-scrollable::-webkit-scrollbar-track {
+      background: transparent !important;
     }
 
     .modal-section-divider {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding-top: 6px;
+      padding-top: 10px;
       margin-top: 4px;
       border-top: 1px dashed #E2E8F0;
     }
@@ -1107,9 +1133,113 @@
       color: var(--text-main, #111111);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 7px !important;
+      line-height: 1 !important;
+    }
+
+    .modal-section-title .section-title-icon {
+      width: 14px !important;
+      height: 14px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      color: #FF7A00;
+    }
+
+    .modal-section-title .section-title-icon i,
+    .modal-section-title .section-title-icon svg,
+    .modal-section-title i,
+    .modal-section-title svg {
+      width: 13.5px !important;
+      height: 13.5px !important;
+      flex-shrink: 0 !important;
+      display: block !important;
+    }
+
+    .modal-section-title span:last-child {
+      display: inline-flex !important;
+      align-items: center !important;
+      line-height: 1 !important;
+    }
+
+    .search-leading-holder {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .search-leading-holder i,
+    .search-leading-holder svg {
+      width: 15px !important;
+      height: 15px !important;
+      color: #94A3B8;
+      display: block !important;
+    }
+
+    .tenant-auto-badge {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      color: #166534 !important;
+      background: #DCFCE7 !important;
+      border: 1px solid #BBF7D0 !important;
+      padding: 4px 9px !important;
+      border-radius: 6px !important;
+      font-weight: 600 !important;
+      font-size: 11px !important;
+      line-height: 1 !important;
+    }
+
+    .tenant-auto-badge .tenant-badge-icon {
+      width: 13px !important;
+      height: 13px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+    }
+
+    .tenant-auto-badge .tenant-badge-icon i,
+    .tenant-auto-badge .tenant-badge-icon svg,
+    .tenant-auto-badge i,
+    .tenant-auto-badge svg {
+      width: 12.5px !important;
+      height: 12.5px !important;
+      color: #16A34A !important;
+      flex-shrink: 0 !important;
+      display: block !important;
+    }
+
+    .tenant-auto-badge .tenant-badge-text {
+      display: inline-flex !important;
+      align-items: center !important;
+      line-height: 1 !important;
+    }
+
+    .modal-footer-pinned {
+      padding: 14px 24px !important;
+      border-top: 1px solid var(--border-subtle, #ECEEF2) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: 10px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+      box-sizing: border-box !important;
+      border-bottom-left-radius: 20px !important;
+      border-bottom-right-radius: 20px !important;
     }
 
     .form-group-item {
@@ -1239,17 +1369,10 @@
       cursor: pointer;
     }
 
-    .modal-footer-pinned {
-      padding: 16px 24px;
-      border-top: 1px solid var(--border-subtle, #ECEEF2);
-      background: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 10px;
-      flex-shrink: 0;
-      z-index: 10;
-      box-sizing: border-box;
+    .btn-choose-file:hover {
+      background: #F8FAFC;
+      border-color: #94A3B8;
+      color: #0F172A;
     }
 
     .btn-modal-cancel {
@@ -1309,14 +1432,15 @@
 
     .btn-custom-select-trigger {
       width: 100%;
-      height: 42px;
-      padding: 0 14px;
+      height: 42px !important;
+      min-height: 42px !important;
+      padding: 0 14px !important;
       background: #FFFFFF;
       border: 1.5px solid #E2E8F0;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
       gap: 10px;
       cursor: pointer;
       font-family: inherit;
@@ -1337,13 +1461,58 @@
       background: #FFFFFF;
     }
 
+    .trigger-content-box {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 9px !important;
+      min-width: 0 !important;
+      height: 100% !important;
+    }
+
+    .trigger-icon-holder {
+      width: 16px !important;
+      height: 16px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+    }
+
+    .trigger-icon-holder i,
+    .trigger-icon-holder svg {
+      width: 15px !important;
+      height: 15px !important;
+      display: block !important;
+      flex-shrink: 0 !important;
+    }
+
+    .trigger-chevron-icon {
+      width: 14px !important;
+      height: 14px !important;
+      color: #94A3B8;
+      flex-shrink: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .trigger-chevron-icon i,
+    .trigger-chevron-icon svg {
+      width: 14px !important;
+      height: 14px !important;
+      display: block !important;
+    }
+
     .custom-select-label {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
       color: var(--text-main, #111111);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      display: inline-flex !important;
+      align-items: center !important;
+      line-height: 1 !important;
     }
 
     .custom-dropdown-panel {
@@ -1559,15 +1728,15 @@
         </div>
         <div class="metric-card-bottom">
           <div class="metric-val-col">
-            <span class="metric-lbl-sub">8 dari 10 Tiket Tuntas</span>
-            <span class="metric-value-huge">80%</span>
+            <span class="metric-lbl-sub" id="metricResSub">8 dari 10 Tiket Tuntas</span>
+            <span class="metric-value-huge" id="metricResValue">80%</span>
           </div>
           <!-- Gauge Meter Semi-Circle -->
-          <div class="gauge-meter-wrap" title="80% Tiket Selesai">
+          <div class="gauge-meter-wrap" title="Rasio Tiket Selesai">
             <svg class="gauge-meter-svg" viewBox="0 0 100 58">
               <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
-              <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#16A34A" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="21.36"/>
-              <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">80%</text>
+              <path id="metricResPath" d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#16A34A" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="21.36"/>
+              <text id="metricResGaugeText" x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">80%</text>
             </svg>
           </div>
         </div>
@@ -1583,20 +1752,20 @@
             <span class="metric-lbl-title">Tiket Mendesak</span>
             <span class="metric-lbl-sub">Prioritas Penanganan Cepat</span>
           </div>
-          <span class="metric-badge-pill pill-danger-soft">
+          <span class="metric-badge-pill pill-danger-soft" id="metricUrgentBadge">
             <i data-lucide="flame" style="width: 11px; height: 11px;"></i> Butuh Aksi
           </span>
         </div>
         <div class="metric-card-bottom">
           <div class="metric-val-col">
-            <span class="metric-lbl-sub">AC Kamar B-03 Bocor</span>
-            <span class="metric-value-huge" style="color: #DC2626;">1 <span class="metric-sub-val" style="color: #DC2626;">Tiket</span></span>
+            <span class="metric-lbl-sub" id="metricUrgentSub">AC Kamar B-03 Bocor</span>
+            <span class="metric-value-huge" id="metricUrgentValue" style="color: #DC2626;">1 <span class="metric-sub-val" style="color: #DC2626;">Tiket</span></span>
           </div>
-          <div class="gauge-meter-wrap" title="1 Tiket Mendesak Aktif">
+          <div class="gauge-meter-wrap" title="Tiket Mendesak Aktif">
             <svg class="gauge-meter-svg" viewBox="0 0 100 58">
               <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
-              <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#DC2626" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="85.4"/>
-              <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#DC2626">Urgent</text>
+              <path id="metricUrgentPath" d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#DC2626" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="85.4"/>
+              <text id="metricUrgentGaugeText" x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#DC2626">Urgent</text>
             </svg>
           </div>
         </div>
@@ -1738,7 +1907,7 @@
        9. MODAL 1: FORM BUAT TIKET BARU (SCR-14 · ESTIFY FORM STANDAR IDENTIK WF-04)
        ══════════════════════════════════════════════════════════════ -->
   <div class="modal-backdrop" id="modalCreateTicket">
-    <div class="modal-card" style="width: 640px; max-width: 95vw;">
+    <div class="modal-card">
       
       <!-- PINNED HEADER (IDENTIK DENGAN MODAL REGISTRASI PENGHUNI BARU WF-04) -->
       <div class="modal-header-pinned">
@@ -1761,17 +1930,20 @@
         
         <!-- BAGIAN 1: LOKASI UNIT & IDENTITAS PELAPOR -->
         <div class="modal-section-title">
-          <i data-lucide="map-pin" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+          <span class="section-title-icon"><i data-lucide="map-pin"></i></span>
           <span>1. Lokasi Unit &amp; Identitas Pelapor</span>
         </div>
 
         <!-- SEARCHABLE ROOM SELECT (FULL WIDTH · NAMA PELAPOR OTOMATIS TERSINKRONISASI) -->
         <div class="form-group-item">
-          <label class="form-label-txt">Pilih Unit Kamar / Lokasi *</label>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
+            <label class="form-label-txt" style="margin-bottom: 0;">Pilih Unit Kamar / Lokasi *</label>
+            <span style="color: #94A3B8; font-size: 11px;">Cari kamar atau area lain pada dropdown</span>
+          </div>
           <div class="custom-select-wrap" id="wrapRoomSelect">
             <div style="position: relative; width: 100%;">
-              <i data-lucide="search" style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: #94A3B8; pointer-events: none; z-index: 2;"></i>
-              <input type="text" id="roomSearchInput" class="form-input-field" value="Kamar B-03 &middot; Lt. 2 (Reza Pratama)" placeholder="Cari kamar, lantai, atau nama..." autocomplete="off" style="padding-left: 36px; padding-right: 14px; font-weight: 600;" onfocus="openRoomDropdown()" onclick="openRoomDropdown()" oninput="filterRoomDropdown(this.value)">
+              <span class="search-leading-holder"><i data-lucide="search"></i></span>
+              <input type="text" id="roomSearchInput" class="form-input-field" value="Kamar B-03 &middot; Lt. 2 (Reza Pratama)" placeholder="Cari kamar, lantai, atau nama..." autocomplete="off" style="padding-left: 38px; padding-right: 14px; font-weight: 600; line-height: 40px;" onfocus="openRoomDropdown()" onclick="openRoomDropdown()" oninput="filterRoomDropdown(this.value)">
             </div>
             
             <div class="custom-dropdown-panel" id="dropdownRoom" style="display: none;">
@@ -1782,19 +1954,18 @@
           </div>
 
           <!-- INDIKATOR PELAPOR OTOMATIS DARI KAMAR -->
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; font-size: 11px;">
-            <span style="display: inline-flex; align-items: center; gap: 5px; color: #166534; background: #DCFCE7; border: 1px solid #BBF7D0; padding: 2.5px 8px; border-radius: 6px; font-weight: 600;">
-              <i data-lucide="user-check" style="width: 12px; height: 12px; color: #16A34A;"></i>
-              <span>Nama Pelapor: <strong id="detectedTenantName">Reza Pratama</strong> (Otomatis dari Kamar)</span>
+          <div style="display: flex; align-items: center; margin-top: 6px;">
+            <span class="tenant-auto-badge">
+              <span class="tenant-badge-icon"><i data-lucide="user-check"></i></span>
+              <span class="tenant-badge-text">Nama Pelapor: <strong id="detectedTenantName">Reza Pratama</strong> (Otomatis dari Kamar)</span>
             </span>
-            <span style="color: #94A3B8;">Ketik di search bar untuk memilih kamar / area lain</span>
           </div>
         </div>
 
         <!-- BAGIAN 2: KLASIFIKASI & RINCIAN MASALAH -->
         <div class="modal-section-divider">
           <div class="modal-section-title">
-            <i data-lucide="alert-triangle" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+            <span class="section-title-icon"><i data-lucide="alert-triangle"></i></span>
             <span>2. Klasifikasi &amp; Rincian Kerusakan</span>
           </div>
         </div>
@@ -1805,11 +1976,11 @@
             <label class="form-label-txt">Kategori Kerusakan *</label>
             <div class="custom-select-wrap" id="wrapCategorySelect">
               <button type="button" class="btn-custom-select-trigger" id="btnTriggerCategory" onclick="toggleCustomDropdown('dropdownCategory', this)">
-                <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-                  <span id="iconTriggerCategory"><i data-lucide="wind" style="width: 15px; height: 15px; color: #3B82F6; flex-shrink: 0;"></i></span>
+                <div class="trigger-content-box">
+                  <span class="trigger-icon-holder" id="iconTriggerCategory"><i data-lucide="wind" style="color: #3B82F6;"></i></span>
                   <span class="custom-select-label" id="labelTriggerCategory">AC &amp; Pendingin Ruangan</span>
                 </div>
-                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8; flex-shrink: 0;"></i>
+                <span class="trigger-chevron-icon"><i data-lucide="chevron-down"></i></span>
               </button>
 
               <div class="custom-dropdown-panel" id="dropdownCategory" style="display: none;">
@@ -1872,11 +2043,11 @@
             <label class="form-label-txt">Tingkat Urgensi Perbaikan *</label>
             <div class="custom-select-wrap align-right" id="wrapUrgencySelect">
               <button type="button" class="btn-custom-select-trigger" id="btnTriggerUrgency" onclick="toggleCustomDropdown('dropdownUrgency', this)">
-                <div style="display: flex; align-items: center; gap: 9px; min-width: 0;">
-                  <span id="iconTriggerUrgency"><i data-lucide="clock" style="width: 15px; height: 15px; color: #FF7A00; flex-shrink: 0;"></i></span>
+                <div class="trigger-content-box">
+                  <span class="trigger-icon-holder" id="iconTriggerUrgency"><i data-lucide="clock" style="color: #FF7A00;"></i></span>
                   <span class="custom-select-label" id="labelTriggerUrgency">Normal (Respon 1x24 Jam)</span>
                 </div>
-                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8; flex-shrink: 0;"></i>
+                <span class="trigger-chevron-icon"><i data-lucide="chevron-down"></i></span>
               </button>
 
               <div class="custom-dropdown-panel" id="dropdownUrgency" style="display: none;">
@@ -1937,7 +2108,7 @@
         <!-- BAGIAN 3: BUKTI FOTO ATAU VIDEO (DROPZONE ELEGAN IDENTIK WF-04) -->
         <div class="modal-section-divider">
           <div class="modal-section-title">
-            <i data-lucide="camera" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+            <span class="section-title-icon"><i data-lucide="camera"></i></span>
             <span>3. Lampiran Bukti Foto / Video (Wajib Minimal 1)</span>
           </div>
         </div>
@@ -1956,10 +2127,14 @@
             <button type="button" class="btn-choose-file">Pilih Berkas</button>
           </div>
 
-          <div id="attachedFilesPreview" style="display: none; align-items: center; gap: 8px; margin-top: 6px;">
-            <span style="font-size: 11px; background: #DCFCE7; color: #16A34A; border: 1px solid #BBF7D0; padding: 4px 10px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
-              <i data-lucide="check" style="width: 13px; height: 13px;"></i> 1 Berkas Terlampir: bukti_kerusakan_kamar.jpg (3.2 MB)
+          <div id="attachedFilesPreview" style="display: none; align-items: center; justify-content: space-between; margin-top: 8px; background: #DCFCE7; border: 1px solid #BBF7D0; border-radius: 10px; padding: 6px 12px;">
+            <span style="font-size: 11px; color: #16A34A; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+              <i data-lucide="check" style="width: 13px; height: 13px;"></i> <span id="attachedFileNameTxt">1 Berkas Terlampir: bukti_kerusakan_kamar.jpg (3.2 MB)</span>
             </span>
+            <button type="button" onclick="removeUploadedFile(event)" style="background: none; border: none; color: #DC2626; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Hapus Berkas">
+              <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+              <span>Hapus</span>
+            </button>
           </div>
         </div>
 
@@ -1967,8 +2142,8 @@
         <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 11px 14px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none; margin-top: 14px;" onclick="document.getElementById('notifyViaWa').click()">
           <input type="checkbox" id="notifyViaWa" checked style="width: 16px; height: 16px; accent-color: #16A34A; cursor: pointer; margin-top: 2px;" onclick="event.stopPropagation()">
           <div style="flex: 1;">
-            <div style="font-size: 12px; font-weight: 700; color: #166534; display: flex; align-items: center; gap: 6px;">
-              <i data-lucide="message-square" style="width: 13px; height: 13px; color: #16A34A;"></i>
+            <div style="font-size: 12px; font-weight: 700; color: #166534; display: inline-flex; align-items: center; gap: 6px; line-height: 1;">
+              <span style="width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;"><i data-lucide="message-square" style="width: 13px; height: 13px; color: #16A34A; display: block;"></i></span>
               <span>Kirim Notifikasi Tiket Perbaikan via WhatsApp</span>
             </div>
             <div style="font-size: 10.5px; color: #15803D; margin-top: 2px; line-height: 1.4;">
@@ -2416,9 +2591,20 @@
       </div>
       <div style="padding: 20px; display: flex; align-items: center; justify-content: center; background: #000000; min-height: 400px;">
         <img src="" alt="Preview Penuh" id="lightboxFullImage" style="max-width: 100%; max-height: 70vh; border-radius: 8px; object-fit: contain;">
+        <!-- Container Video Player Simulation -->
+        <div id="lightboxVideoPlayer" style="display: none; width: 100%; max-width: 640px; aspect-ratio: 16/9; background: #0F172A; border-radius: 12px; border: 1px solid #334155; position: relative; overflow: hidden; align-items: center; justify-content: center; flex-direction: column; color: #FFFFFF; padding: 24px; box-sizing: border-box;">
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: #FF7A00; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(255,122,0,0.4);">
+            <i data-lucide="play" style="width: 24px; height: 24px; color: #FFFFFF; margin-left: 3px;"></i>
+          </div>
+          <div style="font-size: 14px; font-weight: 700;" id="lightboxVideoTitle">rekaman_air_menetes.mp4</div>
+          <div style="font-size: 11px; color: #94A3B8; margin-top: 4px;">Durasi: 00:18 &middot; Ukuran: 8.4 MB (Kepatuhan F-07: &le; 12 MB / 30s)</div>
+          <div style="width: 80%; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-top: 20px; overflow: hidden;">
+            <div style="width: 45%; height: 100%; background: #FF7A00;"></div>
+          </div>
+        </div>
       </div>
       <div style="padding: 12px 20px; background: rgba(255,255,255,0.06); font-size: 11px; color: #94A3B8; display: flex; justify-content: space-between;">
-        <span>Format Asli: Resolusi Tinggi (1920 &times; 1080)</span>
+        <span id="lightboxFooterInfo">Format Asli: Resolusi Tinggi (1920 &times; 1080)</span>
         <span style="color: #FF7A00;">Disimpan aman sesuai kebijakan retensi RumaKost</span>
       </div>
     </div>
@@ -2613,6 +2799,26 @@
       // Update badge counts and render initial list
       updateBadgeCounts();
       renderTickets();
+
+      // Check URL query parameter for ticket highlight from WF-07 or WF-03
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = urlParams.get('highlight') || urlParams.get('id');
+      if (targetId) {
+        setTimeout(() => {
+          const matchTicket = TICKETS_DB.find(t => 
+            t.id === targetId || 
+            t.id.toLowerCase() === targetId.toLowerCase() || 
+            t.id.endsWith(targetId) || 
+            t.id.includes(targetId)
+          );
+          if (matchTicket && typeof openTicketDetail === 'function') {
+            openTicketDetail(matchTicket.id);
+            if (window.RumaUI && typeof RumaUI.showToast === 'function') {
+              RumaUI.showToast(`Membuka rincian tiket maintenance #${matchTicket.id}`, 'info');
+            }
+          }
+        }, 350);
+      }
     });
 
     // ══════════════════════════════════════════════════════════════
@@ -2711,6 +2917,63 @@
       if (document.getElementById('badgeInProgress')) document.getElementById('badgeInProgress').textContent = inProgCount;
       if (document.getElementById('badgeAssigned')) document.getElementById('badgeAssigned').textContent = assignedCount;
       if (document.getElementById('badgeResolved')) document.getElementById('badgeResolved').textContent = resolvedCount;
+
+      updateHeroGauges();
+    }
+
+    function updateHeroGauges() {
+      const allCount = TICKETS_DB.length;
+      const resolvedCount = TICKETS_DB.filter(t => t.status === 'resolved').length;
+      const urgentTickets = TICKETS_DB.filter(t => t.urgency === 'urgent' && t.status !== 'resolved');
+      const urgentCount = urgentTickets.length;
+      
+      // 1. Resolution Rate Card
+      const resRate = allCount > 0 ? Math.round((resolvedCount / allCount) * 100) : 0;
+      if (document.getElementById('metricResSub')) {
+        document.getElementById('metricResSub').textContent = `${resolvedCount} dari ${allCount} Tiket Tuntas`;
+      }
+      if (document.getElementById('metricResValue')) {
+        document.getElementById('metricResValue').textContent = `${resRate}%`;
+      }
+      if (document.getElementById('metricResPath')) {
+        const offset = 106.8 * (1 - (resRate / 100));
+        document.getElementById('metricResPath').setAttribute('stroke-dashoffset', offset.toFixed(2));
+      }
+      if (document.getElementById('metricResGaugeText')) {
+        document.getElementById('metricResGaugeText').textContent = `${resRate}%`;
+      }
+
+      // 2. Urgent Card
+      if (document.getElementById('metricUrgentSub')) {
+        if (urgentCount > 0) {
+          const firstUrg = urgentTickets[0];
+          document.getElementById('metricUrgentSub').textContent = `${firstUrg.category} ${firstUrg.room} (${firstUrg.title.slice(0, 16)}...)`;
+        } else {
+          document.getElementById('metricUrgentSub').textContent = 'Semua Tiket Terkendali';
+        }
+      }
+      if (document.getElementById('metricUrgentValue')) {
+        document.getElementById('metricUrgentValue').innerHTML = `${urgentCount} <span class="metric-sub-val" style="color: ${urgentCount > 0 ? '#DC2626' : '#16A34A'};">Tiket</span>`;
+      }
+      if (document.getElementById('metricUrgentPath')) {
+        const uOffset = urgentCount > 0 ? (106.8 * (1 - Math.min(urgentCount / 3, 1))) : 106.8;
+        document.getElementById('metricUrgentPath').setAttribute('stroke-dashoffset', uOffset.toFixed(2));
+      }
+      if (document.getElementById('metricUrgentGaugeText')) {
+        document.getElementById('metricUrgentGaugeText').textContent = urgentCount > 0 ? 'Urgent' : 'Aman';
+        document.getElementById('metricUrgentGaugeText').setAttribute('fill', urgentCount > 0 ? '#DC2626' : '#16A34A');
+      }
+      if (document.getElementById('metricUrgentBadge')) {
+        const badge = document.getElementById('metricUrgentBadge');
+        if (urgentCount > 0) {
+          badge.className = 'metric-badge-pill pill-danger-soft';
+          badge.innerHTML = '<i data-lucide="flame" style="width: 11px; height: 11px;"></i> Butuh Aksi';
+        } else {
+          badge.className = 'metric-badge-pill pill-green-soft';
+          badge.innerHTML = '<i data-lucide="check" style="width: 11px; height: 11px;"></i> Terkendali';
+        }
+        lucide.createIcons();
+      }
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -2935,6 +3198,20 @@
       // Stepper & Comments
       updateModalStepperDisplay(ticket);
       renderModalComments(ticket.comments);
+
+      // Cost & Warranty Display
+      if (document.getElementById('mdCostValue')) {
+        if (ticket.cost) {
+          document.getElementById('mdCostValue').textContent = `Rp ${parseInt(ticket.cost).toLocaleString('id-ID')}`;
+        } else if (ticket.stepIndex === 5) {
+          document.getElementById('mdCostValue').textContent = 'Rp 75.000';
+        } else {
+          document.getElementById('mdCostValue').textContent = 'Dalam Estimasi';
+        }
+      }
+      if (document.getElementById('mdWarrantyValue')) {
+        document.getElementById('mdWarrantyValue').textContent = ticket.warranty || (ticket.stepIndex === 5 ? '30 Hari Teknisi' : 'Sesuai SPK');
+      }
 
       openModal('modalTicketDetail');
       lucide.createIcons();
@@ -3175,14 +3452,39 @@
     function openLightboxFromModal() {
       const ticket = TICKETS_DB.find(t => t.id === activeModalTicketId);
       if (!ticket) return;
-      document.getElementById('lightboxFullImage').src = ticket.mediaPhoto;
+      if (document.getElementById('lightboxFullImage')) {
+        document.getElementById('lightboxFullImage').style.display = 'block';
+        document.getElementById('lightboxFullImage').src = ticket.mediaPhoto;
+      }
+      if (document.getElementById('lightboxVideoPlayer')) {
+        document.getElementById('lightboxVideoPlayer').style.display = 'none';
+      }
       document.getElementById('lightboxCaption').textContent = `Foto Bukti Kerusakan · ${ticket.tenant} (${ticket.id})`;
+      if (document.getElementById('lightboxFooterInfo')) {
+        document.getElementById('lightboxFooterInfo').textContent = 'Format Asli: Resolusi Tinggi (1920 × 1080)';
+      }
       openModal('modalMediaLightbox');
     }
 
     function playVideoFromModal() {
+      const ticket = TICKETS_DB.find(t => t.id === activeModalTicketId);
+      if (!ticket || !ticket.mediaVideo) return;
+      if (document.getElementById('lightboxFullImage')) {
+        document.getElementById('lightboxFullImage').style.display = 'none';
+      }
+      if (document.getElementById('lightboxVideoPlayer')) {
+        document.getElementById('lightboxVideoPlayer').style.display = 'flex';
+      }
+      if (document.getElementById('lightboxVideoTitle')) {
+        document.getElementById('lightboxVideoTitle').textContent = ticket.mediaVideo;
+      }
+      document.getElementById('lightboxCaption').textContent = `Cuplikan Rekaman Video Bukti Kerusakan · ${ticket.tenant} (${ticket.id})`;
+      if (document.getElementById('lightboxFooterInfo')) {
+        document.getElementById('lightboxFooterInfo').textContent = 'Format Asli: Video MP4 (1080p, 30fps)';
+      }
       RumaUI.showToast('Memutar cuplikan rekaman video bukti keluhan...');
-      openLightboxFromModal();
+      openModal('modalMediaLightbox');
+      lucide.createIcons();
     }
 
 
@@ -3204,6 +3506,12 @@
     function openCreateTicketModal() {
       document.querySelectorAll('.custom-dropdown-panel').forEach(p => p.style.display = 'none');
       document.querySelectorAll('.btn-custom-select-trigger').forEach(b => b.classList.remove('active'));
+      
+      // Clean form fields
+      if (document.getElementById('createTitleInput')) document.getElementById('createTitleInput').value = '';
+      if (document.getElementById('createDescInput')) document.getElementById('createDescInput').value = '';
+      removeUploadedFile();
+      
       openModal('modalCreateTicket');
       renderRoomOptions('');
       lucide.createIcons();
@@ -3216,7 +3524,7 @@
     // ══════════════════════════════════════════════════════════════
     // SIMULATED FORM SUBMISSIONS & VALIDATIONS (F-07)
     // ══════════════════════════════════════════════════════════════
-    let hasSimulatedAttachment = true;
+    let hasSimulatedAttachment = false;
 
     function simulateFileUpload() {
       hasSimulatedAttachment = true;
@@ -3224,6 +3532,23 @@
       document.getElementById('dropzoneTextMain').textContent = '1 Berkas Media Berhasil Dilampirkan';
       document.getElementById('dropzoneTextSub').textContent = 'bukti_kerusakan_kamar.jpg (3.2 MB)';
       RumaUI.showToast('Foto bukti berhasil diunggah sesuai kualifikasi F-07');
+      lucide.createIcons();
+    }
+
+    function removeUploadedFile(e) {
+      if (e) e.stopPropagation();
+      hasSimulatedAttachment = false;
+      const preview = document.getElementById('attachedFilesPreview');
+      if (preview) preview.style.display = 'none';
+      if (document.getElementById('dropzoneTextMain')) {
+        document.getElementById('dropzoneTextMain').textContent = 'Unggah Foto atau Video Kerusakan';
+      }
+      if (document.getElementById('dropzoneTextSub')) {
+        document.getElementById('dropzoneTextSub').textContent = 'Format: JPG, PNG, atau MP4 (Maksimal 20MB)';
+      }
+      if (e) {
+        RumaUI.showToast('Lampiran berkas dihapus. Harap lampirkan bukti untuk memenuhi syarat F-07.');
+      }
       lucide.createIcons();
     }
 
@@ -3275,6 +3600,7 @@
       };
 
       TICKETS_DB.unshift(newTicket);
+      removeUploadedFile();
       closeModal('modalCreateTicket');
       updateBadgeCounts();
       renderTickets();
@@ -3284,8 +3610,15 @@
     }
 
     function submitExportDownload() {
+      const format = document.querySelector('input[name="exportFormat"]:checked')?.value || 'pdf';
+      const periodSelect = document.querySelector('#modalExportReport select');
+      const period = periodSelect ? periodSelect.value : 'Bulan Berjalan';
       closeModal('modalExportReport');
-      RumaUI.showToast('Mengunduh rekap pemeliharaan format PDF (14 halaman)...');
+      if (format === 'xlsx') {
+        RumaUI.showToast(`Mengunduh rekap pemeliharaan (${period}) format Spreadsheet Excel (.xlsx)...`);
+      } else {
+        RumaUI.showToast(`Mengunduh rekap pemeliharaan (${period}) format Dokumen PDF Resmi (14 halaman)...`);
+      }
     }
 
     function autoFillTenantByRoom() {
@@ -3426,7 +3759,7 @@
 
     function selectCategoryOption(catCode, title, iconName, color) {
       document.getElementById('createCategorySelect').value = catCode;
-      document.getElementById('iconTriggerCategory').innerHTML = `<i data-lucide="${iconName}" style="width: 15px; height: 15px; color: ${color}; flex-shrink: 0;"></i>`;
+      document.getElementById('iconTriggerCategory').innerHTML = `<i data-lucide="${iconName}" style="color: ${color};"></i>`;
       document.getElementById('labelTriggerCategory').textContent = title;
       
       document.querySelectorAll('#dropdownCategory .dropdown-option-item').forEach(el => el.classList.remove('selected'));
@@ -3440,7 +3773,7 @@
 
     function selectUrgencyOption(urgencyCode, title, iconName, color) {
       document.getElementById('createUrgencySelect').value = urgencyCode;
-      document.getElementById('iconTriggerUrgency').innerHTML = `<i data-lucide="${iconName}" style="width: 15px; height: 15px; color: ${color}; flex-shrink: 0;"></i>`;
+      document.getElementById('iconTriggerUrgency').innerHTML = `<i data-lucide="${iconName}" style="color: ${color};"></i>`;
       document.getElementById('labelTriggerUrgency').textContent = title;
       
       document.querySelectorAll('#dropdownUrgency .dropdown-option-item').forEach(el => el.classList.remove('selected'));

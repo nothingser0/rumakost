@@ -11,10 +11,14 @@
     /* ==========================================================================
        ESTIFY SIGNATURE RENT COLLECTION & DIGITAL INVOICE WORKBENCH (WF-05)
        Visual DNA: Estify Real Estate Dashboard (01-dashboard-flat.png)
-       Konsisten Tinggi 138px dengan Kartu Metrik di WF-02 & WF-03 + Estify Signature Orange
+       Konsisten Tinggi 156px dengan Kartu Metrik di WF-02 & WF-03 + Estify Signature Orange
        Features: F-04 (Recurring Billing & Delivery Status) & F-05 (Partial Payments)
        100% Craftsmanship: Zero Native Select, Zero Alert, Zero Emoji, Pure Lucide SVG
        ========================================================================== */
+    html {
+      scrollbar-gutter: stable;
+    }
+
     body {
       background: var(--bg-canvas);
       color: var(--text-main);
@@ -265,7 +269,7 @@
 
     .metric-badge-pill,
     .clean-pill-badge {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
@@ -292,7 +296,7 @@
     }
 
     .dark-lbl-sub {
-      font-size: 11.5px;
+      font-size: 11px;
       color: #94A3B8;
       font-weight: 500;
     }
@@ -318,7 +322,7 @@
 
     .metric-lbl-sub,
     .clean-sub-caption {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-muted);
       font-weight: 500;
     }
@@ -342,7 +346,7 @@
     }
 
     .clean-target-note {
-      font-size: 10.5px;
+      font-size: 11px;
       color: #64748B;
       font-weight: 500;
     }
@@ -398,7 +402,7 @@
       box-shadow: 0 8px 24px rgba(225, 29, 72, 0.06);
     }
 
-    /* ── CARD 3: EFISIENSI & DISTRIBUSI (Clean White Estify Card — 156PX) ── */
+    /* ── CARD 3: EFISIENSI & DISTRIBUSI (Clean White Estify Card — 156PX · Konsisten WF-02) ── */
     .metric-card-action {
       background: var(--bg-card);
       border-radius: 20px;
@@ -423,7 +427,7 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
     }
 
-    /* Architectural Pattern Motif on Dark Card (Hidden on White Card) */
+    /* Architectural Pattern Motif on Dark Card */
     .dark-card-pattern-svg {
       display: none;
     }
@@ -445,7 +449,7 @@
     }
 
     .dark-property-tag {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
       padding: 4px 11px;
       border-radius: var(--radius-full);
@@ -488,7 +492,7 @@
     }
 
     .dark-sub-lbl {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 500;
       color: #94A3B8;
     }
@@ -498,7 +502,7 @@
       font-weight: 800;
       letter-spacing: -0.4px;
       line-height: 1.1;
-      color: #FFFFFF;
+      color: #0F172A;
     }
 
     .dark-btn-cluster {
@@ -514,7 +518,7 @@
       color: #FFFFFF;
       border: none;
       border-radius: var(--radius-full);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
@@ -589,7 +593,7 @@
       align-items: center;
       gap: 5px;
       color: #64748B;
-      padding: 2px 5px;
+      padding: 2px 6px;
       border-radius: 5px;
       transition: all 0.15s ease;
       user-select: none;
@@ -597,8 +601,8 @@
     }
 
     .dark-legend-chip:hover {
-      color: #0F172A;
-      background: #F1F5F9;
+      color: #0F172A !important;
+      background: #F1F5F9 !important;
     }
 
     .dark-legend-chip strong {
@@ -654,6 +658,29 @@
       flex-wrap: wrap;
     }
 
+    .btn-export-csv {
+      height: 32px;
+      padding: 0 12px;
+      border-radius: var(--radius-full);
+      background: #FFFFFF;
+      color: var(--text-main);
+      border: 1.5px solid var(--border-subtle, #ECEEF2);
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .btn-export-csv:hover {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      transform: translateY(-1px);
+    }
+
     .card-head-title-group {
       display: flex;
       align-items: center;
@@ -704,7 +731,7 @@
       gap: 6px;
       padding: 6px 12px;
       border-radius: var(--radius-full);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -745,7 +772,7 @@
       border: none;
       background: transparent;
       color: var(--text-secondary);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 500;
       text-align: left;
       cursor: pointer;
@@ -773,7 +800,7 @@
       height: 34px;
       padding: 0 12px;
       border-radius: var(--radius-full);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -796,7 +823,7 @@
       height: 34px;
       padding: 0 16px;
       border-radius: var(--radius-full);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       background: var(--brand-primary);
       color: #FFFFFF;
@@ -813,12 +840,53 @@
       box-shadow: 0 4px 12px rgba(255, 122, 0, 0.38);
     }
 
+    /* Level 1 Primary CTA Button (DESIGN.md Bab 7.2 & 8.1 - Estify Full Rounded Pill) */
+    .btn-brand-add {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 44px !important;
+      padding: 0 22px !important;
+      background: var(--brand-primary, #FF7A00) !important;
+      color: #FFFFFF !important;
+      border: none;
+      border-radius: 9999px !important;
+      font-size: 13px !important;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .btn-brand-add:hover {
+      background: #E66E00 !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.38);
+    }
+
+    .btn-brand-add:active {
+      transform: scale(0.98);
+    }
+
     .ledger-controls-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 12px;
+      flex-wrap: nowrap;
       justify-content: space-between;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 1180px) {
+      .ledger-controls-row {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
     }
 
     .search-capsule-box {
@@ -829,9 +897,10 @@
       border: 1px solid transparent;
       border-radius: var(--radius-full);
       padding: 0 14px;
-      height: 36px;
+      height: 40px;
       flex: 1;
-      min-width: 220px;
+      min-width: 180px;
+      max-width: 300px;
       transition: all var(--transition-fast);
       box-sizing: border-box;
     }
@@ -894,7 +963,7 @@
       background: transparent;
       color: #64748B;
       cursor: pointer;
-      transition: all var(--transition-fast);
+      transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
       white-space: nowrap;
       user-select: none;
     }
@@ -907,7 +976,7 @@
       background: #FFFFFF;
       color: var(--dark-pill);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      font-weight: 700;
+      font-weight: 600;
     }
 
     .floor-filter-pills {
@@ -920,12 +989,12 @@
       padding: 4px 8px;
       border-radius: var(--radius-full);
       font-size: 11px;
-      font-weight: 500;
+      font-weight: 600;
       border: 1px solid var(--border-subtle);
       background: #F8FAFC;
       color: var(--text-secondary);
       cursor: pointer;
-      transition: all var(--transition-fast);
+      transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
       white-space: nowrap;
     }
 
@@ -948,7 +1017,7 @@
       border-radius: var(--radius-lg);
       overflow-x: auto;
       background: #FFFFFF;
-      min-height: 520px;
+      min-height: 560px;
     }
 
     .billing-table {
@@ -968,7 +1037,7 @@
 
     .billing-table th {
       padding: 10px 12px;
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       color: #64748B;
       text-transform: uppercase;
@@ -1021,7 +1090,7 @@
       padding: 4px 8px;
       border-radius: 7px;
       background: #F1F5F9;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
       color: #0F172A;
       white-space: nowrap;
@@ -1064,7 +1133,7 @@
     }
 
     .tenant-phone-sub {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
@@ -1080,14 +1149,14 @@
 
     .due-main-date {
       font-weight: 600;
-      font-size: 11.5px;
+      font-size: 12px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .due-chip {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -1131,7 +1200,7 @@
       gap: 4px;
       padding: 3px 8px;
       border-radius: var(--radius-full);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 600;
       white-space: nowrap;
     }
@@ -1160,13 +1229,19 @@
       border: 1px solid #FECACA;
     }
 
+    .badge-batal {
+      background: #F1F5F9;
+      color: #64748B;
+      border: 1px solid #CBD5E1;
+    }
+
     .btn-toggle-wa {
       display: inline-flex;
       align-items: center;
       gap: 4px;
       padding: 3px 8px;
       border-radius: var(--radius-full);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       border: 1px solid transparent;
@@ -1223,7 +1298,7 @@
     }
 
     .pagination-info-txt {
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
@@ -1247,7 +1322,7 @@
       border: 1px solid var(--border-subtle);
       background: #FFFFFF;
       color: var(--text-secondary);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all var(--transition-fast);
@@ -1278,7 +1353,7 @@
       border: 1px solid var(--border-subtle);
       background: #FFFFFF;
       color: var(--text-secondary);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -1353,7 +1428,7 @@
     }
 
     .paper-stamp-badge {
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 6px;
@@ -1423,7 +1498,7 @@
       align-items: center;
       gap: 6px;
       font-weight: 700;
-      font-size: 11.5px;
+      font-size: 12px;
       color: #9A3412;
     }
 
@@ -1471,7 +1546,7 @@
 
     .dossier-tenant-names h4 {
       margin: 0;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--text-main);
       line-height: 1.25;
@@ -1479,7 +1554,7 @@
 
     .dossier-tenant-names p {
       margin: 0;
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-muted);
     }
 
@@ -1513,7 +1588,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-secondary);
     }
 
@@ -1568,7 +1643,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      font-size: 10.5px;
+      font-size: 11px;
     }
 
     .partial-stat-box {
@@ -1584,7 +1659,7 @@
     .partial-stat-val {
       font-weight: 700;
       color: #7C2D12;
-      font-size: 11.5px;
+      font-size: 12px;
     }
 
     .delivery-audit-strip {
@@ -1614,14 +1689,14 @@
     }
 
     .audit-meta {
-      font-size: 10px;
+      font-size: 11px;
       color: var(--text-muted);
     }
 
     .btn-audit-toggle {
       padding: 3px 8px;
       border-radius: var(--radius-full);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
       border: 1px solid var(--border-subtle);
       background: #FFFFFF;
@@ -1644,12 +1719,12 @@
 
     .btn-dossier-primary {
       width: 100%;
-      height: 40px;
+      height: 42px;
       border-radius: var(--radius-full);
       background: var(--dark-pill, #111111);
       color: #FFFFFF;
-      border: 1px solid var(--dark-pill, #111111);
-      font-size: 12px;
+      border: none;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -1662,18 +1737,31 @@
 
     .btn-dossier-primary:hover {
       background: var(--dark-pill-hover, #222222);
-      border-color: var(--dark-pill-hover, #222222);
       transform: translateY(-1px);
       box-shadow: 0 6px 18px rgba(17, 17, 17, 0.28);
     }
 
+    /* Style Khusus Draf: Oranye Tanpa Border Hitam (DESIGN.md Bab 7.2) */
+    .btn-dossier-primary.is-draft-action {
+      background: var(--brand-primary, #FF7A00) !important;
+      border: none !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35) !important;
+    }
+
+    .btn-dossier-primary.is-draft-action:hover {
+      background: #E66E00 !important;
+      border: none !important;
+      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.45) !important;
+    }
+
     .btn-dossier-secondary-pill {
-      height: 36px;
+      height: 38px;
       border-radius: var(--radius-full);
       background: #FFFFFF;
       color: var(--text-main);
-      border: 1px solid var(--border-subtle);
-      font-size: 11px;
+      border: 1.5px solid var(--border-subtle, #ECEEF2);
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
@@ -1686,7 +1774,21 @@
 
     .btn-dossier-secondary-pill:hover {
       background: #F8FAFC;
-      border-color: #94A3B8;
+      border-color: #CBD5E1;
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    .btn-dossier-secondary-pill.is-danger {
+      background: #FFF1F2;
+      color: #DC2626;
+      border-color: #FECDD3;
+    }
+
+    .btn-dossier-secondary-pill.is-danger:hover {
+      background: #FFE4E6;
+      border-color: #FDA4AF;
+      color: #B91C1C;
       transform: translateY(-1px);
     }
 
@@ -1710,7 +1812,7 @@
     }
 
     .terms-pod-lbl {
-      font-size: 10px;
+      font-size: 11px;
       color: var(--text-muted);
       display: inline-flex;
       align-items: center;
@@ -1764,7 +1866,7 @@
     }
 
     .history-ref {
-      font-size: 9.5px;
+      font-size: 11px;
       font-weight: 600;
       font-family: monospace;
       padding: 2px 6px;
@@ -1793,7 +1895,7 @@
     }
 
     .history-amount {
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 800;
       color: #16A34A;
       letter-spacing: -0.2px;
@@ -1801,7 +1903,7 @@
     }
 
     .history-status-badge {
-      font-size: 9.5px;
+      font-size: 11px;
       font-weight: 700;
       color: #166534;
       background: #DCFCE7;
@@ -1812,7 +1914,7 @@
     }
 
     .history-time {
-      font-size: 10.5px;
+      font-size: 11px;
       color: #64748B;
       display: flex;
       align-items: center;
@@ -1836,7 +1938,7 @@
       background: #FFFFFF;
       color: var(--brand-primary);
       border: 1px dashed var(--brand-peach);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
@@ -1948,7 +2050,7 @@
     }
 
     .form-lbl {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
     }
@@ -2008,7 +2110,7 @@
     }
 
     .tile-sub {
-      font-size: 10px;
+      font-size: 11px;
       color: var(--text-muted);
     }
 
@@ -2053,7 +2155,7 @@
       border: none;
       border-radius: var(--radius-full);
       padding: 9px 20px;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
@@ -2077,8 +2179,8 @@
     }
 
     .btn-modal-close {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: transparent;
       border: none;
@@ -2093,6 +2195,71 @@
     .btn-modal-close:hover {
       background: #F1F5F9;
       color: var(--text-main);
+    }
+
+    /* Modal Pinned Header/Footer/Body Architecture (Identik dengan WF-04) */
+    #modalBroadcast .modal-card {
+      width: 520px !important;
+      max-width: 520px !important;
+      border-radius: 20px !important;
+    }
+
+    .modal-header-pinned {
+      padding: 15px 22px !important;
+      border-bottom: 1px solid var(--border-subtle) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+    }
+
+    .modal-header-pinned .modal-title {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      color: var(--text-main) !important;
+      margin: 0 !important;
+      line-height: 1.25 !important;
+      display: block !important;
+    }
+
+    .modal-header-pinned .modal-subtitle {
+      font-size: 11px !important;
+      color: var(--text-muted) !important;
+      margin: 2px 0 0 0 !important;
+    }
+
+    .modal-body-scrollable {
+      padding: 14px 22px 18px !important;
+      overflow-y: auto !important;
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      box-sizing: border-box !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .modal-body-scrollable::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .modal-footer-pinned {
+      padding: 13px 22px !important;
+      border-top: 1px solid var(--border-subtle) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: 10px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+      box-sizing: border-box !important;
     }
 
     .modal-head-row {
@@ -2113,7 +2280,7 @@
     }
 
     .form-label-txt {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
     }
@@ -2192,7 +2359,7 @@
     .receipt-kv-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11.5px;
+      font-size: 12px;
     }
 
     .receipt-kv-table td {
@@ -2212,13 +2379,13 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       MODAL ARCHITECTURE (EXACT MATCH WF-06 CATAT PENERIMAAN BAYAR)
+       MODAL ARCHITECTURE (DESIGN.md Bab 7.3 & 7.4)
        ══════════════════════════════════════════════════════════════ */
     .modal-card {
       background: #FFFFFF;
-      border-radius: 24px;
+      border-radius: 20px;
       width: 100%;
-      max-width: 540px;
+      max-width: 580px;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
       display: flex;
       flex-direction: column;
@@ -2236,7 +2403,7 @@
     }
 
     .modal-card-header {
-      padding: 18px 24px 14px;
+      padding: 16px 22px;
       border-bottom: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
@@ -2245,7 +2412,7 @@
     }
 
     .modal-card-title {
-      font-size: 15.5px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
       margin: 0;
@@ -2255,8 +2422,8 @@
     }
 
     .btn-modal-close {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: #F3F4F6;
       border: none;
@@ -2276,7 +2443,7 @@
     }
 
     .modal-card-body {
-      padding: 18px 24px;
+      padding: 16px 22px;
       flex: 1 1 auto;
       min-height: 0;
       max-height: calc(88vh - 135px);
@@ -2288,7 +2455,7 @@
     }
 
     .modal-card-footer {
-      padding: 14px 24px 18px;
+      padding: 14px 22px;
       border-top: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
@@ -2348,7 +2515,7 @@
     }
 
     .form-label-custom {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
       display: flex;
@@ -2357,11 +2524,11 @@
     }
 
     .form-input-custom {
-      height: 40px;
+      height: 42px !important;
       border: 1.5px solid var(--border-input, #E2E8F0);
       border-radius: 12px;
       padding: 0 14px;
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-main);
       font-family: inherit;
       outline: none;
@@ -2390,7 +2557,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11.5px;
+      font-size: 12px;
       color: #64748B;
     }
 
@@ -2408,7 +2575,7 @@
       background: #F8FAFC;
       color: var(--text-secondary);
       border: 1px solid #CBD5E1;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
@@ -2473,11 +2640,36 @@
       box-shadow: 0 5px 16px rgba(255, 122, 0, 0.45);
     }
 
+    .btn-modal-danger {
+      height: 38px;
+      padding: 0 20px;
+      background: #DC2626;
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+    }
+
+    .btn-modal-danger:hover {
+      background: #B91C1C;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+    }
+
     .form-textarea-custom {
+      min-height: 84px;
       border: 1.5px solid var(--border-input, #E2E8F0);
       border-radius: 12px;
       padding: 10px 14px;
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-main);
       font-family: inherit;
       outline: none;
@@ -2635,7 +2827,7 @@
         </div>
       </div>
 
-      <!-- Card 3: Efisiensi & Distribusi Penagihan (Clean White Estify Card) -->
+      <!-- Card 3: Efisiensi & Distribusi Penagihan (Clean White Estify Card — 156px · Konsisten WF-02) -->
       <div class="metric-card-action">
         <!-- Baris Atas: Icon Square, Judul 14px, Siklus & Tombol WA -->
         <div class="metric-card-top dark-clean-top">
@@ -2645,7 +2837,7 @@
             </div>
             <span class="metric-lbl-title" style="color: #0F172A; font-weight: 700;">Efisiensi &amp; Distribusi Tagihan</span>
             <span class="metric-badge-pill dark-cycle-tag">
-              <i data-lucide="calendar" style="width: 10.5px; height: 10.5px;"></i>
+              <i data-lucide="calendar" style="width: 11px; height: 11px;"></i>
               <span>Okt 2026</span>
             </span>
           </div>
@@ -2660,19 +2852,19 @@
           <div style="display: flex; align-items: baseline; gap: 8px;">
             <span class="metric-value-huge" style="font-size: 26px; font-weight: 800; color: #0F172A; line-height: 1.1; letter-spacing: -0.4px;">64%</span>
             <span style="font-size: 13px; font-weight: 700; color: #10B981;">Lunas</span>
-            <span style="font-size: 11.5px; color: #64748B; font-weight: 500;">&middot; Rp 14,2 Jt <span style="font-size: 10.5px; color: #94A3B8;">/ Rp 18,25 Jt</span></span>
+            <span style="font-size: 12px; color: #64748B; font-weight: 500;">&middot; Rp 14,2 Jt <span style="font-size: 11px; color: #94A3B8;">/ Rp 18,25 Jt</span></span>
           </div>
           <span style="font-size: 11px; color: #64748B; font-weight: 600;">7 dari 11 Kamar Lunas</span>
         </div>
 
         <!-- Baris Bawah: Segmented Bar Track & Clickable Micro-Legends -->
         <div style="display: flex; flex-direction: column; gap: 7px; z-index: 2; margin-top: auto;">
-          <!-- Visual Segmented Bar Breakdown -->
-          <div class="dark-bar-track">
+          <!-- Visual Segmented Bar Breakdown (Sinkron 100% dengan 11 Kamar Aktif) -->
+          <div class="dark-bar-track" style="background: #F1F5F9;">
             <div style="width: 64%; background: #10B981;" onclick="switchFilterStatus('lunas')" title="7 Kamar Lunas (64% &middot; Rp 9,8 Jt) — Klik untuk filter"></div>
-            <div style="width: 18%; background: #F59E0B;" onclick="switchFilterStatus('partial')" title="2 Kamar Cicilan (18% &middot; Rp 2,4 Jt) — Klik untuk filter"></div>
-            <div style="width: 13%; background: #EA580C;" onclick="switchFilterStatus('attention')" title="2 Kamar Jatuh Tempo (13% &middot; Rp 2,8 Jt) — Klik untuk filter"></div>
-            <div style="width: 5%; background: #EF4444;" onclick="switchFilterStatus('attention')" title="1 Kamar Terlambat (5% &middot; Rp 1,2 Jt) — Klik untuk filter"></div>
+            <div style="width: 9%; background: #F59E0B;" onclick="switchFilterStatus('partial')" title="1 Kamar Cicilan (9% &middot; Rp 1,45 Jt) — Klik untuk filter"></div>
+            <div style="width: 18%; background: #EA580C;" onclick="switchFilterStatus('attention')" title="2 Kamar Jatuh Tempo (18% &middot; Rp 2,7 Jt) — Klik untuk filter"></div>
+            <div style="width: 9%; background: #EF4444;" onclick="switchFilterStatus('attention')" title="1 Kamar Terlambat (9% &middot; Rp 1,3 Jt) — Klik untuk filter"></div>
           </div>
 
           <!-- Interactive Status Legend Chips -->
@@ -2681,17 +2873,17 @@
               <span style="width: 6px; height: 6px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
               <span><strong>7</strong> Lunas (64%)</span>
             </span>
-            <span onclick="switchFilterStatus('partial')" class="dark-legend-chip" title="Filter 2 Kamar Cicilan (Rp 2,4 Jt)">
+            <span onclick="switchFilterStatus('partial')" class="dark-legend-chip" title="Filter 1 Kamar Cicilan (Rp 1,45 Jt)">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: #F59E0B; display: inline-block;"></span>
-              <span><strong>2</strong> Cicilan (18%)</span>
+              <span><strong>1</strong> Cicilan (9%)</span>
             </span>
-            <span onclick="switchFilterStatus('attention')" class="dark-legend-chip" title="Filter 2 Kamar Jatuh Tempo (Rp 2,8 Jt)">
+            <span onclick="switchFilterStatus('attention')" class="dark-legend-chip" title="Filter 2 Kamar Jatuh Tempo (Rp 2,7 Jt)">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: #EA580C; display: inline-block;"></span>
-              <span><strong>2</strong> Tempo (13%)</span>
+              <span><strong>2</strong> Tempo (18%)</span>
             </span>
-            <span onclick="switchFilterStatus('attention')" class="dark-legend-chip" title="Filter 1 Kamar Terlambat (Rp 1,2 Jt)">
+            <span onclick="switchFilterStatus('attention')" class="dark-legend-chip" title="Filter 1 Kamar Terlambat (Rp 1,3 Jt)">
               <span style="width: 6px; height: 6px; border-radius: 50%; background: #EF4444; display: inline-block;"></span>
-              <span><strong>1</strong> Telat (5%)</span>
+              <span><strong>1</strong> Telat (9%)</span>
             </span>
           </div>
         </div>
@@ -2708,22 +2900,32 @@
            ======================================================== -->
       <section class="master-ledger-card">
         
-        <!-- Header Baris Atas Kartu: Judul & Aksi Cepat Terintegrasi -->
+        <!-- Header Baris Atas Kartu: Judul & Informasi Siklus Penagihan -->
         <div class="card-head-row">
           <div class="card-head-title-group">
             <h2 class="card-head-title">
               <i data-lucide="receipt" style="width: 16px; height: 16px; color: var(--brand-primary);"></i>
               <span>Matriks Penagihan Sewa</span>
             </h2>
-            <span class="badge-count-pill" id="totalBillsCountDisplay">11 Unit</span>
+            <span class="badge-count-pill" id="totalBillsCountDisplay">14 Tagihan (11 Aktif · 3 Draf)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: #64748B; font-weight: 500;">
+              <i data-lucide="calendar" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+              <span>Siklus Penagihan: <strong style="color: #0F172A;">1–31 Oktober 2026</strong></span>
+            </div>
+            <button type="button" class="btn-export-csv" onclick="exportBillingMatrixToCSV()" title="Ekspor seluruh data penagihan bulan berjalan ke file CSV (Excel)">
+              <i data-lucide="download" style="width: 13px; height: 13px;"></i>
+              <span>Ekspor CSV</span>
+            </button>
           </div>
         </div>
 
-        <!-- Controls & Filters Bar -->
+        <!-- Controls & Filters Bar (DESIGN.md Bab 8.1 Single Horizontal Row Toolbar) -->
         <div class="ledger-controls-row">
           <div class="search-capsule-box">
             <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8; flex-shrink: 0;"></i>
-            <input type="text" id="billSearchInput" placeholder="Cari nama penghuni, kamar, atau nomor invoice..." oninput="handleSearch(this.value)">
+            <input type="text" id="billSearchInput" placeholder="Cari nama penghuni, kamar, atau invoice..." oninput="handleSearch(this.value)">
             <button type="button" id="clearSearchBtn" class="btn-clear-search" onclick="clearSearch()" title="Hapus pencarian">
               <i data-lucide="x" style="width: 11px; height: 11px;"></i>
             </button>
@@ -2733,10 +2935,11 @@
             <!-- Segment Tabs Status -->
             <div class="filter-segment-tabs">
               <button type="button" class="segment-tab-btn active" onclick="switchFilterStatus('all', this)">Semua (<span id="countTabAll">14</span>)</button>
-              <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('draf', this)">Draf Verifikasi (<span id="countTabDraf">3</span>)</button>
-              <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('attention', this)">Perlu Aksi (<span id="countTabAttention">4</span>)</button>
-              <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('partial', this)">Cicilan (<span id="countTabPartial">2</span>)</button>
+              <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('draf', this)">Draf (<span id="countTabDraf">3</span>)</button>
+              <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('attention', this)">Perlu Aksi (<span id="countTabAttention">3</span>)</button>
+              <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('partial', this)">Cicilan (<span id="countTabPartial">1</span>)</button>
               <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('lunas', this)">Lunas (<span id="countTabLunas">7</span>)</button>
+              <button type="button" class="segment-tab-btn" onclick="switchFilterStatus('batal', this)">Batal (<span id="countTabBatal">0</span>)</button>
             </div>
 
             <!-- Floor Filter Pills -->
@@ -2756,16 +2959,16 @@
               <i data-lucide="file-clock" style="width: 18px; height: 18px;"></i>
             </div>
             <div>
-              <div style="font-size: 12.5px; font-weight: 700; color: #111111; display: flex; align-items: center; gap: 6px;">
+              <div style="font-size: 13px; font-weight: 700; color: #111111; display: flex; align-items: center; gap: 6px;">
                 <span>Draf Tagihan Rutin Dibuat Otomatis Sistem Setiap Tanggal 1</span>
-                <span style="font-size: 10px; background: var(--brand-primary); color: #FFFFFF; font-weight: 600; padding: 1px 6px; border-radius: 6px;" id="bannerDraftCount">3 Draf Belum Terbit</span>
+                <span style="font-size: 11px; background: var(--brand-primary); color: #FFFFFF; font-weight: 600; padding: 1px 6px; border-radius: 6px;" id="bannerDraftCount">3 Draf Belum Terbit</span>
               </div>
               <div style="font-size: 11px; color: #64748B; margin-top: 1px;">
                 Penghuni <strong>belum dapat melihat tagihan</strong> ini di portal. Silakan sesuaikan biaya listrik/air/diskon terlebih dahulu, lalu klik tombol verifikasi di bawah atau per kamar.
               </div>
             </div>
           </div>
-          <button type="button" class="btn-action-orange" style="height: 36px; padding: 0 16px; font-size: 11.5px; flex-shrink: 0;" onclick="verifyAllDrafts()">
+          <button type="button" class="btn-action-orange" style="height: 36px; padding: 0 16px; font-size: 12px; flex-shrink: 0;" onclick="verifyAllDrafts()">
             <i data-lucide="check-check" style="width: 14px; height: 14px;"></i>
             <span>Verifikasi &amp; Terbitkan Semua Draf</span>
           </button>
@@ -2832,7 +3035,7 @@
             <i data-lucide="receipt" style="width: 16px; height: 16px; color: var(--brand-primary);"></i>
             <span>Dossier Tagihan Sewa</span>
           </h4>
-          <span style="font-size: 10px; font-weight: 600; background: #F1F5F9; color: #475569; padding: 2px 7px; border-radius: 6px;">Live Preview</span>
+          <span style="font-size: 11px; font-weight: 600; background: #F1F5F9; color: #475569; padding: 2px 7px; border-radius: 6px;">Live Preview</span>
         </div>
 
         <div class="paper-invoice-sheet">
@@ -2860,6 +3063,17 @@
             </p>
           </div>
 
+          <!-- Notice Khusus Tagihan Dibatalkan (Void) -->
+          <div id="dossierVoidNotice" class="dossier-void-notice" style="display: none; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #DC2626;">
+              <i data-lucide="ban" style="width: 13px; height: 13px; flex-shrink: 0;"></i>
+              <span>Tagihan Telah Dibatalkan (Void)</span>
+            </div>
+            <p style="font-size: 11px; color: #7F1D1D; margin: 4px 0 0; line-height: 1.4;">
+              Alasan: <strong id="dossierVoidReasonTxt">-</strong>. Seluruh kewajiban pembayaran dinonaktifkan.
+            </p>
+          </div>
+
           <!-- Tenant Snapshot Card -->
           <div class="dossier-tenant-pod">
             <div class="dossier-tenant-left">
@@ -2869,9 +3083,6 @@
                 <p id="dossierRoomDetails">Kamar A-04 · Lantai 1</p>
               </div>
             </div>
-            <button type="button" class="btn-wa-shortcut" onclick="openDirectWhatsApp()" title="Kirim Pesan WhatsApp">
-              <i data-lucide="message-circle" style="width: 16px; height: 16px;"></i>
-            </button>
           </div>
 
           <!-- Itemized Breakdown -->
@@ -2880,21 +3091,30 @@
               <span>Sewa Pokok Kamar:</span>
               <strong id="dossierBaseRent">Rp 1.200.000</strong>
             </div>
+            <div class="breakdown-item-row" id="dossierArrearsRow" style="display: none;">
+              <span style="display: flex; align-items: center; gap: 5px;">
+                <span>Tunggakan Bulan Lalu:</span>
+                <span id="dossierArrearsLabel" style="font-size: 11px; color: #D97706; background: #FEF3C7; padding: 1px 5px; border-radius: 4px; font-weight: 600;">Okt 2026</span>
+              </span>
+              <strong id="dossierArrears" style="color: #EA580C;">+ Rp 500.000</strong>
+            </div>
             <div class="breakdown-item-row" id="dossierDiscountRow" style="display: none;">
               <span>Diskon / Potongan Sewa:</span>
               <strong id="dossierDiscount" style="color: var(--brand-primary);">- Rp 0</strong>
+            </div>
+            <div class="breakdown-item-row" id="dossierCreditRow" style="display: none;">
+              <span style="display: flex; align-items: center; gap: 5px;">
+                <span>Saldo Kredit Mengendap:</span>
+                <span style="font-size: 11px; color: #16A34A; background: #DCFCE7; padding: 1px 5px; border-radius: 4px; font-weight: 600;">Bulan Depan</span>
+              </span>
+              <strong id="dossierCreditVal" style="color: #16A34A;">+ Rp 50.000</strong>
             </div>
             <div class="breakdown-item-row">
               <span>Iuran Sampah & Wi-Fi:</span>
               <strong id="dossierAddOns">Rp 100.000</strong>
             </div>
             <div class="breakdown-item-row" id="dossierLateFeeRow">
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <span>Denda Keterlambatan:</span>
-                <button type="button" id="btnWaiveLateFee" onclick="waiveInvoiceLateFee()" style="display: none; background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; border-radius: 6px; padding: 1px 6px; font-size: 9.5px; font-weight: 600; cursor: pointer;" title="Bebaskan denda atas kebijaksanaan pemilik kost">
-                  <i data-lucide="shield-check" style="width: 10px; height: 10px; vertical-align: middle;"></i> Waive Fee
-                </button>
-              </div>
+              <span>Denda Keterlambatan:</span>
               <strong id="dossierLateFee" style="color: #64748B;">Rp 0</strong>
             </div>
             <div class="breakdown-item-row total">
@@ -2980,17 +3200,196 @@
               <i data-lucide="printer" style="width: 13px; height: 13px; color: #475569;"></i>
               <span>Cetak Kuitansi</span>
             </button>
-            <button type="button" class="btn-portal-link" style="height: 36px; margin: 0;" onclick="copyTenantPortalLink()" title="Salin Tautan Portal Tagihan Penghuni">
-              <i data-lucide="external-link" style="width: 12px; height: 12px;"></i>
+            <button type="button" class="btn-dossier-secondary-pill" onclick="copyTenantPortalLink()" title="Salin Tautan Portal Tagihan Penghuni">
+              <i data-lucide="external-link" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
               <span>Link Portal</span>
             </button>
           </div>
+
+          <!-- Destructive / Void Action Pill (Khusus Pemilik Kost) -->
+          <button type="button" class="btn-dossier-secondary-pill is-danger" id="btnVoidInvoiceAction" style="width: 100%;" onclick="openModalVoidInvoice()" title="Batalkan penerbitan tagihan ini (Void Invoice)">
+            <i data-lucide="ban" style="width: 13px; height: 13px; color: #DC2626;"></i>
+            <span>Batalkan Tagihan</span>
+          </button>
         </div>
 
       </aside>
 
     </main>
 
+  </div>
+
+  <!-- ========================================================
+       MODAL: TERBITKAN TAGIHAN BARU (ON-DEMAND / INSIDENTAL) (DESIGN.md Bab 6.2 & 7.4)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalTerbitkanTagihan">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
+          <span>Terbitkan Tagihan Baru</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalTerbitkanTagihan')" title="Tutup">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body">
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255,122,0,0.12); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #111111;">Tagihan On-Demand / Insidental</div>
+            <div style="font-size: 11px; color: #64748B; margin-top: 1px;">Untuk sewa susulan, kelebihan listrik kWh, denda keterlambatan, atau perbaikan fasilitas.</div>
+          </div>
+        </div>
+
+        <!-- Pilih Kamar & Penghuni -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">Pilih Unit Kamar &amp; Penghuni *</label>
+          <div class="popover-dropdown-wrap" id="wrapNewBillRoom" style="width: 100%;">
+            <button type="button" class="btn-popover-trigger" style="width: 100%; height: 42px !important; justify-content: space-between; border-radius: 12px; padding: 0 14px; font-size: 13px; box-sizing: border-box;" onclick="toggleNewBillRoomDropdown(event)">
+              <span id="selectedNewBillRoomLabel" style="font-weight: 600; color: #111111;">KM-101 &middot; Siti Aminah (Lt 1)</span>
+              <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+            </button>
+            <div class="popover-menu-card" id="menuNewBillRoom" style="width: 100%; max-height: 200px; overflow-y: auto; box-sizing: border-box;">
+              <button type="button" class="popover-item-btn selected" onclick="selectNewBillRoom('A-01', 'Siti Aminah', 1200000, event)">A-01 &middot; Siti Aminah (Lantai 1)</button>
+              <button type="button" class="popover-item-btn" onclick="selectNewBillRoom('A-02', 'Rahmat Hidayat', 1500000, event)">A-02 &middot; Rahmat Hidayat (Lantai 1)</button>
+              <button type="button" class="popover-item-btn" onclick="selectNewBillRoom('A-03', 'Dewi Lestari', 1200000, event)">A-03 &middot; Dewi Lestari (Lantai 1)</button>
+              <button type="button" class="popover-item-btn" onclick="selectNewBillRoom('A-04', 'Budi Santoso', 1300000, event)">A-04 &middot; Budi Santoso (Lantai 1)</button>
+              <button type="button" class="popover-item-btn" onclick="selectNewBillRoom('B-01', 'Fajar Ramadhan', 1850000, event)">B-01 &middot; Fajar Ramadhan (Lantai 2)</button>
+              <button type="button" class="popover-item-btn" onclick="selectNewBillRoom('B-02', 'Indah Permata', 1600000, event)">B-02 &middot; Indah Permata (Lantai 2)</button>
+              <button type="button" class="popover-item-btn" onclick="selectNewBillRoom('C-01', 'Hendra Kusuma', 1700000, event)">C-01 &middot; Hendra Kusuma (Lantai 3)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Jenis Tagihan -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">Jenis / Kategori Tagihan *</label>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+            <div class="method-radio-box active" onclick="selectBillType(this, 'Sewa Kamar')" id="btypeSewa">
+              <i data-lucide="home" style="width: 16px; height: 16px;"></i>
+              <span>Sewa Kamar</span>
+            </div>
+            <div class="method-radio-box" onclick="selectBillType(this, 'Listrik / Air')" id="btypeListrik">
+              <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
+              <span>Listrik / Air</span>
+            </div>
+            <div class="method-radio-box" onclick="selectBillType(this, 'Denda / Fasilitas')" id="btypeLainnya">
+              <i data-lucide="alert-circle" style="width: 16px; height: 16px;"></i>
+              <span>Denda / Fasilitas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode Skema Sewa & Kalkulator Prorata (Khusus Sewa Kamar F-04) -->
+        <div id="newBillRentOptionsWrap" style="display: flex; flex-direction: column; gap: 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label-custom" style="margin: 0;">Skema Hitungan Sewa</label>
+            <span style="font-size: 11px; color: #64748B;">Tarif Kontrak: <strong id="newBillBaseRateDisplay" style="color: #0F172A;">Rp 1.200.000</strong>/bln</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div class="method-radio-box active" onclick="selectRentScheme(this, 'full')" id="schemeFullMonth">
+              <i data-lucide="calendar-check" style="width: 15px; height: 15px;"></i>
+              <span>1 Bulan Penuh</span>
+            </div>
+            <div class="method-radio-box" onclick="selectRentScheme(this, 'prorata')" id="schemeProrata">
+              <i data-lucide="calculator" style="width: 15px; height: 15px;"></i>
+              <span>Prorata Tengah Bulan</span>
+            </div>
+          </div>
+
+          <!-- Kalkulator Prorata Hari Berjalan (Tampil jika prorata dipilih) -->
+          <div id="prorataCalcBox" style="display: none; flex-direction: column; gap: 10px; background: #FFFFFF; border: 1.5px solid #FED7AA; border-radius: 10px; padding: 12px; margin-top: 2px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 700; color: #C2410C;">
+              <span style="display: flex; align-items: center; gap: 5px;">
+                <i data-lucide="calendar-range" style="width: 14px; height: 14px;"></i>
+                Hitungan Prorata Hari Berjalan (F-04)
+              </span>
+              <span style="font-size: 11px; background: #FFEDD5; color: #9A3412; padding: 2px 7px; border-radius: 6px; font-weight: 700;" id="prorataDaysBadge">17 Hari</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div>
+                <label style="font-size: 11px; color: #64748B; display: block; margin-bottom: 4px; font-weight: 500;">Tanggal Masuk Check-in</label>
+                <input type="date" id="inputProrataStartDate" value="2026-10-15" class="form-input-custom" style="height: 38px !important; font-size: 12px;" onchange="calculateProrataTotal()">
+              </div>
+              <div>
+                <label style="font-size: 11px; color: #64748B; display: block; margin-bottom: 4px; font-weight: 500;">Akhir Siklus Bulan</label>
+                <input type="date" id="inputProrataEndDate" value="2026-10-31" class="form-input-custom" style="height: 38px !important; font-size: 12px;" onchange="calculateProrataTotal()">
+              </div>
+            </div>
+
+            <div style="background: #FFF7ED; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #9A3412; display: flex; align-items: center; justify-content: space-between;">
+              <span id="prorataFormulaText">Rumus: (17 hr &divide; 31 hr) &times; Rp 1.200.000</span>
+              <strong style="font-size: 12px; color: var(--brand-primary);" id="prorataResultText">Rp 658.000</strong>
+            </div>
+          </div>
+
+          <!-- Opsi Gabungkan Uang Jaminan Deposit (Escrow Perdana - F-04) -->
+          <div style="border-top: 1px dashed #E2E8F0; padding-top: 8px;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; font-weight: 600; color: #0F172A;">
+              <input type="checkbox" id="checkIncludeDeposit" onchange="toggleDepositOption()" style="width: 15px; height: 15px; accent-color: var(--brand-primary); cursor: pointer;">
+              <span>Gabungkan Uang Jaminan Deposit (Escrow Perdana)</span>
+            </label>
+            <div id="depositInputRow" style="display: none; align-items: center; gap: 10px; margin-top: 8px; padding-left: 23px;">
+              <span style="font-size: 11px; color: #64748B; min-width: 90px;">Besaran Deposit:</span>
+              <div style="position: relative; flex: 1;">
+                <span style="position: absolute; left: 12px; top: 11px; font-size: 12px; font-weight: 600; color: #64748B;">Rp</span>
+                <input type="text" id="inputDepositAmount" class="form-input-custom" value="1.000.000" style="padding-left: 36px; height: 38px !important; font-size: 12px;" oninput="formatNominalInput(this); updateNewBillFinalTotal();">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 Kolom: Nominal & Jatuh Tempo -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group-custom">
+            <label class="form-label-custom">Total Nominal Tagihan (Rp) *</label>
+            <input type="text" class="form-input-custom" id="inputNewBillAmount" value="1.200.000" oninput="formatNominalInput(this)" placeholder="1.200.000">
+          </div>
+          <div class="form-group-custom">
+            <label class="form-label-custom">Batas Jatuh Tempo *</label>
+            <div class="ruma-datepicker-wrap align-right" id="wrapNewBillDueDate" style="width: 100%;">
+              <input type="hidden" id="inputNewBillDueDate" value="2026-10-31">
+              <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapNewBillDueDate', 'inputNewBillDueDate')" style="height: 42px !important; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input, #E2E8F0); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
+                <div class="ruma-datepicker-trigger-content" style="display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="calendar" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
+                  <span class="ruma-datepicker-val-txt" id="displayNewBillDueDate" style="font-size: 12px; font-weight: 600; color: var(--text-main);">31 Oktober 2026</span>
+                </div>
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Catatan / Keterangan Tagihan -->
+        <div class="form-group-custom">
+          <label class="form-label-custom">Keterangan / Rincian Tagihan</label>
+          <textarea class="form-textarea-custom" id="inputNewBillNotes" rows="2" style="min-height: 84px; font-size: 13px;" placeholder="Contoh: Tagihan sewa bulan berjalan susulan, pemakaian daya AC berlebih, dll."></textarea>
+        </div>
+
+        <!-- Checkbox Otomatis Kirim Notifikasi WA -->
+        <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; padding: 10px 12px; background: #F0FDF4; border: 1px solid #DCFCE7; border-radius: 10px;">
+          <input type="checkbox" id="checkSendWaNewBill" checked style="width: 16px; height: 16px; accent-color: #16A34A; cursor: pointer; margin-top: 2px;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700; color: #166534;">Kirim Invoice Digital ke WhatsApp Penghuni</div>
+            <div style="font-size: 11px; color: #15803D; margin-top: 1px;">Notifikasi rincian tagihan &amp; nomor rekening transfer otomatis dikirimkan ke kontak WhatsApp penghuni.</div>
+          </div>
+        </label>
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-micro-outline" style="height: 38px; padding: 0 16px; font-size: 12px;" onclick="closeModal('modalTerbitkanTagihan')">Batal</button>
+        <button type="button" class="btn-micro-brand" style="height: 38px; padding: 0 20px; font-size: 13px;" onclick="submitTerbitkanTagihan()">
+          <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+          <span>Terbitkan &amp; Kirim Notifikasi</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- ========================================================
@@ -3013,12 +3412,12 @@
         <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px;">
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
             <div>
-              <span style="font-size: 10px; color: #64748B; text-transform: uppercase; font-weight: 600;">Tagihan Berjalan:</span>
-              <div style="font-size: 13.5px; font-weight: 700; color: #0F172A;" id="adjustModalTenantTitle">Budi Santoso &middot; Kamar A-04</div>
+              <span style="font-size: 11px; color: #64748B; text-transform: uppercase; font-weight: 600;">Tagihan Berjalan:</span>
+              <div style="font-size: 14px; font-weight: 700; color: #0F172A;" id="adjustModalTenantTitle">Budi Santoso &middot; Kamar A-04</div>
             </div>
-            <span class="clean-pill-badge" id="adjustModalInvIdBadge" style="font-size: 10.5px; padding: 2px 8px; border-radius: 6px; font-family: monospace; font-weight: 700; background: #EEF2F6; color: #334155;">#INV-202610-04</span>
+            <span class="clean-pill-badge" id="adjustModalInvIdBadge" style="font-size: 11px; padding: 2px 8px; border-radius: 6px; font-family: monospace; font-weight: 700; background: #EEF2F6; color: #334155;">#INV-202610-04</span>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 11.5px; border-top: 1px solid #ECEEF2; padding-top: 8px;">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 12px; border-top: 1px solid #ECEEF2; padding-top: 8px;">
             <div>
               <span style="color: #64748B;">Sewa Pokok Kontrak:</span>
               <strong style="color: #0F172A; display: block;" id="adjustModalBaseRate">Rp 1.200.000</strong>
@@ -3079,7 +3478,10 @@
             <strong id="adjustSummaryAddon">+ Rp 100.000</strong>
           </div>
           <div class="calc-row" id="adjustSummaryLateFeeRow" style="display: none;">
-            <span>Denda Keterlambatan:</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span>Denda Keterlambatan:</span>
+              <button type="button" id="btnAdjustWaiveLateFee" onclick="waiveAdjustLateFee()" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600; cursor: pointer;" title="Bebaskan denda keterlambatan">Bebaskan Denda</button>
+            </div>
             <strong id="adjustSummaryLateFee" style="color: #DC2626;">+ Rp 0</strong>
           </div>
           <div class="calc-row highlight">
@@ -3099,6 +3501,62 @@
         <button type="button" class="btn-action-catat" style="height: 38px; padding: 0 20px; font-size: 12px;" onclick="saveInvoiceAdjustment()">
           <i data-lucide="check" style="width: 14px; height: 14px;"></i>
           <span>Simpan Penyesuaian Tagihan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: BATALKAN TAGIHAN (VOID INVOICE)
+       ======================================================== -->
+  <div class="modal-overlay" id="modalVoidInvoice">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
+          <i data-lucide="ban" style="width: 18px; height: 18px; color: #DC2626;"></i>
+          <span>Batalkan Tagihan (Void)</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalVoidInvoice')" title="Tutup">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-card-body">
+        <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 12px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;">
+          <i data-lucide="alert-triangle" style="width: 18px; height: 18px; color: #DC2626; flex-shrink: 0; margin-top: 1px;"></i>
+          <div style="font-size: 12px; color: #991B1B; line-height: 1.5;">
+            <strong>Prinsip Void Tagihan:</strong> Pembatalan tagihan akan mengubah status menjadi <strong>BATAL (VOID)</strong> dan menonaktifkan seluruh kewajiban pembayaran kamar ini. Riwayat audit akan tetap disimpan demi transparansi pembukuan.
+          </div>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 14px; margin-top: 14px; display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #64748B;">Nomor Tagihan:</span>
+            <strong style="color: #0F172A;" id="voidModalInvId">#INV-202611-D01</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #64748B;">Kamar &amp; Penghuni:</span>
+            <strong style="color: #0F172A;" id="voidModalRoomTenant">Kamar A-01 &middot; Siti Aminah</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #64748B;">Total Kewajiban:</span>
+            <strong style="color: #DC2626;" id="voidModalTotal">Rp 1.200.000</strong>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <label style="display: block; font-size: 12px; font-weight: 600; color: #0F172A; margin-bottom: 6px;">
+            Alasan Pembatalan Tagihan <span style="color: #DC2626;">*</span>
+          </label>
+          <textarea id="voidReasonInput" rows="3" style="width: 100%; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 10px 12px; font-size: 12px; outline: none; font-family: inherit; resize: vertical;" placeholder="Contoh: Penghuni batal check-in, kamar dipindah, atau draf otomatis salah buat ganda..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-card-footer">
+        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 18px;" onclick="closeModal('modalVoidInvoice')">Batal</button>
+        <button type="button" class="btn-modal-danger" onclick="confirmVoidInvoice()">
+          <i data-lucide="ban" style="width: 14px; height: 14px;"></i>
+          <span>Konfirmasi Batalkan Tagihan</span>
         </button>
       </div>
     </div>
@@ -3131,7 +3589,7 @@
         <div class="form-group-custom">
           <label class="form-label-custom">
             <span>Tagihan &amp; Kamar Penghuni Terpilih</span>
-            <span id="invoiceSelectedBadge" style="font-size: 10.5px; font-weight: 600; color: #16A34A; background: #DCFCE7; padding: 1px 7px; border-radius: 6px;">Kamar A-04 Terpilih</span>
+            <span id="invoiceSelectedBadge" style="font-size: 11px; font-weight: 600; color: #16A34A; background: #DCFCE7; padding: 1px 7px; border-radius: 6px;">Kamar A-04 Terpilih</span>
           </label>
           <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 11px 14px; display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center; gap: 10px;">
@@ -3139,12 +3597,12 @@
                 A-04
               </div>
               <div>
-                <div style="font-size: 12.5px; font-weight: 700; color: #0F172A;" id="payModalTenantName">Budi Santoso</div>
+                <div style="font-size: 13px; font-weight: 700; color: #0F172A;" id="payModalTenantName">Budi Santoso</div>
                 <div style="font-size: 11px; color: #64748B;" id="payModalUnitDesc">Lantai 1 &middot; Standar (3&times;4m)</div>
               </div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 10px; color: #64748B; text-transform: uppercase; font-weight: 600;">Nomor Invoice:</div>
+              <div style="font-size: 11px; color: #64748B; text-transform: uppercase; font-weight: 600;">Nomor Invoice:</div>
               <strong style="font-size: 12px; color: var(--brand-primary); font-family: monospace;" id="payModalInvId">#INV-202610-04</strong>
             </div>
           </div>
@@ -3177,7 +3635,7 @@
           </div>
 
           <!-- Callout Informasi Pemotongan Deposit -->
-          <div id="depositCalloutBox" style="display: none; background: #F5F3FF; border: 1px solid #DDD6FE; border-radius: 12px; padding: 10px 14px; font-size: 11.5px; color: #5B21B6; margin-top: 10px;">
+          <div id="depositCalloutBox" style="display: none; background: #F5F3FF; border: 1px solid #DDD6FE; border-radius: 12px; padding: 10px 14px; font-size: 12px; color: #5B21B6; margin-top: 10px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
               <span style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
                 <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #7C3AED;"></i>
@@ -3201,7 +3659,7 @@
             <label class="form-label-custom">Tanggal Bayar *</label>
             <div class="ruma-datepicker-wrap align-right" id="wrapPayDate" style="width: 100%;">
               <input type="hidden" id="inputPayDate" value="2026-10-23">
-              <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapPayDate', 'inputPayDate')" style="height: 40px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input, #E2E8F0); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
+              <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapPayDate', 'inputPayDate')" style="height: 42px !important; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input, #E2E8F0); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
                 <div class="ruma-datepicker-trigger-content" style="display: flex; align-items: center; gap: 8px;">
                   <i data-lucide="calendar" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
                   <span class="ruma-datepicker-val-txt" id="inputPayDateDisplay" style="font-size: 12px; font-weight: 600; color: var(--text-main);">23 Oktober 2026</span>
@@ -3232,7 +3690,7 @@
               <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
             </div>
             <div style="font-size: 12px; font-weight: 600; color: var(--text-main);" id="uploadFileName">Klik untuk unggah slip transfer bank</div>
-            <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">Format JPG, PNG, atau PDF sintetis (Maks. 5 MB)</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Format JPG, PNG, atau PDF sintetis (Maks. 5 MB)</div>
           </div>
         </div>
 
@@ -3240,9 +3698,9 @@
         <div class="form-group-custom">
           <label class="form-label-custom">
             <span>Catatan / Keterangan Pembayaran</span>
-            <span style="font-size: 10.5px; font-weight: 400; color: #64748B;">(Opsional)</span>
+            <span style="font-size: 11px; font-weight: 400; color: #64748B;">(Opsional)</span>
           </label>
-          <textarea class="form-textarea-custom" id="inputPayNotes" rows="2" style="min-height: 55px; font-size: 12px;" placeholder="Contoh: Titip lewat satpam, transfer via rekening ibu Siti, sisa pelunasan tgl 28"></textarea>
+          <textarea class="form-textarea-custom" id="inputPayNotes" rows="2" style="min-height: 84px; font-size: 13px;" placeholder="Contoh: Titip lewat satpam, transfer via rekening ibu Siti, sisa pelunasan tgl 28"></textarea>
         </div>
 
         <!-- Kalkulasi Sisa Tagihan Otomatis -->
@@ -3269,7 +3727,7 @@
               <i data-lucide="message-square" style="width: 13px; height: 13px; color: #16A34A;"></i>
               <span>Kirim Kuitansi &amp; Bukti Bayar via WhatsApp ke Penghuni</span>
             </div>
-            <div style="font-size: 10.5px; color: #15803D; margin-top: 2px;">
+            <div style="font-size: 11px; color: #15803D; margin-top: 2px;">
               Kuitansi resmi digital akan otomatis dikirimkan ke nomor WhatsApp penghuni setelah transaksi disimpan.
             </div>
           </div>
@@ -3288,27 +3746,27 @@
   </div>
 
   <!-- ========================================================
-       MODAL: SIARAN PENGINGAT WA MASSAL (SEPERTI DI DAFTAR PENYEWA WF-04)
+       MODAL 5: SIARAN PENGINGAT WA MASSAL (CMP-05 · Identik WF-04)
        ======================================================== -->
   <div class="modal-overlay" id="modalBroadcast">
-    <div class="modal-card-box modal-container-card" style="max-width: 540px; background: #FFFFFF; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.25);">
-      <div class="modal-head-row" style="background: #FFFFFF; padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between;">
+    <div class="modal-card">
+      <div class="modal-header-pinned">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 122, 0, 0.1); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--brand-primary-light); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
             <i data-lucide="megaphone" style="width: 18px; height: 18px;"></i>
           </div>
           <div>
-            <h3 style="font-size: 15px; margin: 0; font-weight: 700; color: var(--text-main);">Siaran Pengingat Penagihan WA</h3>
-            <span style="font-size: 11.5px; color: var(--text-muted);">Kirim pesan massal WhatsApp terpadu ke penghuni yang belum lunas</span>
+            <h2 class="modal-title">Siaran Pengingat Penagihan WA</h2>
+            <p class="modal-subtitle">Kirim pesan massal terpadu via WhatsApp ke penghuni yang belum lunas</p>
           </div>
         </div>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalBroadcast')">
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalBroadcast')" title="Tutup Modal">
           <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
       
-      <div class="modal-body-scroll" style="background: #FFFFFF; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px;">
-        <!-- Target Penerima -->
+      <div class="modal-body-scrollable">
+        <!-- Target Penerima Tagihan -->
         <div class="form-group-item">
           <label class="form-label-txt">Target Penerima Tagihan</label>
           <div style="display: flex; flex-wrap: wrap; gap: 6px;">
@@ -3319,36 +3777,40 @@
           </div>
         </div>
 
-        <!-- Draf Template Cepat -->
+        <!-- Gunakan Draf Template Cepat -->
         <div class="form-group-item">
           <label class="form-label-txt">Gunakan Draf Template Cepat</label>
           <div style="display: flex; flex-wrap: wrap; gap: 6px;">
             <button type="button" class="pill-template-btn" onclick="applyBroadcastTemplate('santai')">Pengingat Santai (H-3)</button>
             <button type="button" class="pill-template-btn" onclick="applyBroadcastTemplate('tempo')">Jatuh Tempo Hari Ini (H-0)</button>
             <button type="button" class="pill-template-btn" onclick="applyBroadcastTemplate('telat')">Peringatan Keterlambatan + Denda</button>
+            <button type="button" class="pill-template-btn" onclick="applyBroadcastTemplate('sp1')" style="color: #DC2626; border-color: #FECACA; background: #FEF2F2;">
+              <i data-lucide="alert-triangle" style="width: 12px; height: 12px; vertical-align: middle; margin-right: 4px;"></i>
+              <span>Surat Peringatan (SP-1 &gt; H+7)</span>
+            </button>
           </div>
         </div>
 
         <!-- Isi Pesan -->
         <div class="form-group-item">
           <label class="form-label-txt">Isi Pesan Siaran WhatsApp *</label>
-          <textarea id="broadcastMsgInput" class="form-input-field" rows="4" style="resize: vertical; font-size: 11.5px; line-height: 1.5; height: 90px; padding: 10px;" placeholder="Ketik pesan siaran..." oninput="updateBroadcastPreview(this.value)">Halo Kak [Nama Penyewa], mengingatkan tagihan sewa Kost Budi Makmur Kamar [Kamar] periode Oktober 2026 sebesar [Total Tagihan] akan jatuh tempo pada 25 Oktober 2026. Mohon konfirmasi bila telah melakukan pembayaran via transfer bank BCA. Terima kasih!</textarea>
-          <span style="font-size: 10.5px; color: #64748B;">Variabel otomatis: <code>[Nama Penyewa]</code>, <code>[Kamar]</code>, <code>[Total Tagihan]</code> akan disesuaikan secara personal ke masing-masing nomor WA.</span>
+          <textarea id="broadcastMsgInput" class="form-input-field" rows="4" style="resize: vertical; font-size: 12px; line-height: 1.5;" placeholder="Ketik pesan pengingat tagihan..." oninput="updateBroadcastPreview(this.value)">Halo Kak [Nama Penyewa], mengingatkan bahwa tagihan sewa Kost Budi Makmur Kamar [Kamar] periode Oktober 2026 sebesar [Total Tagihan] akan jatuh tempo pada 25 Oktober 2026. Pembayaran dapat dilakukan via transfer Bank BCA 8472-9182 a/n Budi Santoso. Terima kasih!</textarea>
+          <span style="font-size: 11px; color: #64748B; margin-top: 4px; display: block;">Variabel otomatis: <code>[Nama Penyewa]</code>, <code>[Kamar]</code>, <code>[Total Tagihan]</code> akan disesuaikan secara personal ke masing-masing nomor WA.</span>
         </div>
 
-        <!-- Live WhatsApp Preview Box -->
+        <!-- Live WhatsApp Preview Bubble (Identik dengan WF-04) -->
         <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 12px 14px;">
           <div style="font-size: 11px; font-weight: 700; color: #16A34A; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
             <i data-lucide="message-circle" style="width: 13px; height: 13px;"></i>
             <span>Preview Pesan WhatsApp ke Penghuni</span>
           </div>
           <div style="background: #FFFFFF; border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-left: 3px solid #22C55E; line-height: 1.5;" id="broadcastPreviewTxt">
-            Halo Kak Budi Santoso, mengingatkan tagihan sewa Kost Budi Makmur Kamar A-04 periode Oktober 2026 sebesar Rp 1.300.000 akan jatuh tempo pada 25 Oktober 2026. Mohon konfirmasi bila telah melakukan pembayaran via transfer bank BCA. Terima kasih!
+            Halo Kak Budi Santoso, mengingatkan bahwa tagihan sewa Kost Budi Makmur Kamar A-04 periode Oktober 2026 sebesar Rp 1.300.000 akan jatuh tempo pada 25 Oktober 2026. Pembayaran dapat dilakukan via transfer Bank BCA 8472-9182 a/n Budi Santoso. Terima kasih!
           </div>
         </div>
       </div>
 
-      <div class="modal-footer-row" style="background: #FFFFFF; padding: 16px 24px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: flex-end; gap: 10px;">
+      <div class="modal-footer-pinned">
         <button type="button" class="btn-modal-cancel" onclick="closeModal('modalBroadcast')">Batal</button>
         <button type="button" class="btn-modal-primary is-whatsapp" onclick="executeBroadcast()">
           <i data-lucide="send" style="width: 14px; height: 14px;"></i>
@@ -3378,11 +3840,11 @@
           <div class="receipt-header-row">
             <div>
               <strong style="font-size: 15px; color: #0F172A;">RUMAKOST</strong>
-              <div style="font-size: 10.5px; color: #64748B;">Kost Budi Makmur · Jakarta Selatan</div>
+              <div style="font-size: 11px; color: #64748B;">Kost Budi Makmur · Jakarta Selatan</div>
             </div>
             <div style="text-align: right;">
               <span style="font-size: 11px; font-weight: 700; color: #16A34A;">BUKTI TANDA TERIMA</span>
-              <div style="font-size: 10.5px; font-family: monospace; color: #475569;" id="receiptInvNo">#INV-202610-01</div>
+              <div style="font-size: 11px; font-family: monospace; color: #475569;" id="receiptInvNo">#INV-202610-01</div>
             </div>
           </div>
           <table class="receipt-kv-table">
@@ -3411,13 +3873,17 @@
               <td class="val" style="font-size: 13px; font-weight: 700; color: var(--brand-primary);" id="receiptTotalAmount">Rp 1.200.000</td>
             </tr>
           </table>
-          <div style="font-size: 10px; color: #94A3B8; text-align: center; margin-top: 4px;">
+          <div style="font-size: 11px; color: #94A3B8; text-align: center; margin-top: 4px;">
             Dokumen ini merupakan bukti pembayaran sah yang diterbitkan melalui Sistem RumaKost.
           </div>
         </div>
       </div>
       <div class="modal-footer-row">
         <button type="button" class="btn-modal-cancel" onclick="closeModal('modalReceipt')">Tutup</button>
+        <button type="button" class="btn-modal-primary is-whatsapp" onclick="sendReceiptWhatsApp()">
+          <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+          <span>Kirim Kwitansi via WA</span>
+        </button>
         <button type="button" class="btn-modal-primary" onclick="window.print()">
           <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
           <span>Cetak Dokumen</span>
@@ -3496,21 +3962,23 @@
         period: 'November 2026',
         baseRent: 1500000,
         addOns: 0,
+        previousArrears: 500000,
+        previousArrearsLabel: 'Sisa Piutang Sewa Okt 2026',
         lateFee: 0,
-        discount: 100000,
-        totalAmount: 1400000,
+        discount: 0,
+        totalAmount: 2000000,
         paidAmount: 0,
-        dueAmount: 1400000,
+        dueAmount: 2000000,
         due: '10 Nov 2026',
         dueDaysLeft: 'Draf Otomatis Sistem',
         dueClass: 'warn',
         status: 'draf',
-        statusLabel: 'Draf Verifikasi Staf',
+        statusLabel: 'Draf (+Tunggakan Okt)',
         method: '—',
         payDate: 'Belum Terbit',
         refNo: '—',
         deliveryStatus: 'pending',
-        deliveryMeta: 'Dibuat otomatis 1 Nov · Menunggu Verifikasi'
+        deliveryMeta: 'Dibuat otomatis 1 Nov · Termasuk Tunggakan Okt (Rp 500rb)'
       },
       {
         id: 'INV-202610-01',
@@ -3523,15 +3991,17 @@
         baseRent: 1200000,
         addOns: 0,
         lateFee: 0,
+        discount: 0,
+        creditBalance: 50000,
         totalAmount: 1200000,
-        paidAmount: 1200000,
+        paidAmount: 1250000,
         dueAmount: 0,
         due: '25 Okt 2026',
         dueDaysLeft: 'Sudah Terbayar',
         dueClass: 'safe',
         status: 'lunas',
-        statusLabel: 'Lunas Terverifikasi',
-        method: 'Transfer Bank BCA',
+        statusLabel: 'Lunas (Kredit +Rp 50rb)',
+        method: 'Transfer BCA (Kelebihan Rp 50rb)',
         payDate: '23 Okt 2026, 08:30 WIB',
         refNo: 'REF-BCA-948211',
         deliveryStatus: 'sent',
@@ -3789,7 +4259,7 @@
       }
     ];
 
-    let currentSelectedId = 'INV-202610-04';
+    let currentSelectedId = 'INV-202611-D01';
     let currentFilterStatus = 'all';
     let currentFilterFloor = 'all';
     let currentSearchQuery = '';
@@ -3817,22 +4287,30 @@
       const countAttn = invoicesData.filter(i => i.status === 'tempo' || i.status === 'telat').length;
       const countPart = invoicesData.filter(i => i.status === 'sebagian').length;
       const countLunas = invoicesData.filter(i => i.status === 'lunas').length;
+      const countBatal = invoicesData.filter(i => i.status === 'batal').length;
 
       const elAll = document.getElementById('countTabAll');
       const elDraf = document.getElementById('countTabDraf');
       const elAttn = document.getElementById('countTabAttention');
       const elPart = document.getElementById('countTabPartial');
       const elLunas = document.getElementById('countTabLunas');
+      const elBatal = document.getElementById('countTabBatal');
       if (elAll) elAll.textContent = countAll;
       if (elDraf) elDraf.textContent = countDraf;
       if (elAttn) elAttn.textContent = countAttn;
       if (elPart) elPart.textContent = countPart;
       if (elLunas) elLunas.textContent = countLunas;
+      if (elBatal) elBatal.textContent = countBatal;
 
-      // Toggle Banner Verifikasi Draf Bulanan Otomatis
+      const totalBillsBadge = document.getElementById('totalBillsCountDisplay');
+      if (totalBillsBadge) {
+        totalBillsBadge.textContent = `${countAll} Tagihan (${countAll - countDraf} Aktif · ${countDraf} Draf)`;
+      }
+
+      // Banner Verifikasi Draf Bulanan Otomatis (Fokus pada Tab Draf agar tidak menimbulkan layout jitter di tab umum)
       const banner = document.getElementById('draftVerificationBanner');
       if (banner) {
-        if (countDraf > 0 && (currentFilterStatus === 'all' || currentFilterStatus === 'draf')) {
+        if (countDraf > 0 && currentFilterStatus === 'draf') {
           banner.style.display = 'flex';
           const bannerCount = document.getElementById('bannerDraftCount');
           if (bannerCount) bannerCount.textContent = `${countDraf} Draf Belum Terbit`;
@@ -3848,6 +4326,7 @@
         if (currentFilterStatus === 'tempo' && inv.status !== 'tempo') return false;
         if (currentFilterStatus === 'partial' && inv.status !== 'sebagian') return false;
         if (currentFilterStatus === 'lunas' && inv.status !== 'lunas') return false;
+        if (currentFilterStatus === 'batal' && inv.status !== 'batal') return false;
 
         if (currentFilterFloor !== 'all' && inv.floorNum !== currentFilterFloor) return false;
 
@@ -3876,8 +4355,8 @@
           <tr>
             <td colspan="6" style="text-align: center; padding: 130px 20px; color: #94A3B8;">
               <i data-lucide="inbox" style="width: 36px; height: 36px; margin-bottom: 10px; opacity: 0.5;"></i>
-              <div style="font-size: 13.5px; font-weight: 600; color: #64748B;">Tidak ada tagihan yang cocok dengan filter</div>
-              <div style="font-size: 11.5px; margin-top: 3px;">Coba ubah kata kunci pencarian atau status filter.</div>
+              <div style="font-size: 14px; font-weight: 600; color: #64748B;">Tidak ada tagihan yang cocok dengan filter</div>
+              <div style="font-size: 12px; margin-top: 3px;">Coba ubah kata kunci pencarian atau status filter.</div>
             </td>
           </tr>
         `;
@@ -3899,6 +4378,8 @@
         let statusBadgeHtml = '';
         if (inv.status === 'draf') {
           statusBadgeHtml = `<span class="status-badge" style="background: rgba(255, 122, 0, 0.1); color: var(--brand-primary); border: 1px solid rgba(255,122,0,0.25);"><i data-lucide="file-clock" style="width: 11px; height: 11px;"></i>Draf Verifikasi</span>`;
+        } else if (inv.status === 'batal') {
+          statusBadgeHtml = `<span class="status-badge badge-batal"><i data-lucide="ban" style="width: 11px; height: 11px;"></i>Batal (Void)</span>`;
         } else if (inv.status === 'lunas') {
           statusBadgeHtml = `<span class="status-badge badge-lunas"><i data-lucide="check-circle" style="width: 11px; height: 11px;"></i>Lunas</span>`;
         } else if (inv.status === 'sebagian') {
@@ -3917,6 +4398,13 @@
               <span>Belum Terbit</span>
             </span>
           `;
+        } else if (inv.status === 'batal') {
+          deliveryBadgeHtml = `
+            <span style="font-size: 11px; color: #94A3B8; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+              <i data-lucide="ban" style="width: 11px; height: 11px;"></i>
+              <span>Dibatalkan</span>
+            </span>
+          `;
         } else {
           const isSent = inv.deliveryStatus === 'sent';
           deliveryBadgeHtml = `
@@ -3929,19 +4417,19 @@
 
         let progressHtml = '';
         if (inv.status === 'draf') {
-          progressHtml = `<span style="font-size: 10px; color: var(--brand-primary); font-weight: 600;">Menunggu Verifikasi Staf</span>`;
+          progressHtml = `<span style="font-size: 11px; color: var(--brand-primary); font-weight: 600;">Menunggu Verifikasi Staf</span>`;
         } else if (inv.status === 'sebagian') {
           const percent = Math.round((inv.paidAmount / inv.totalAmount) * 100);
           progressHtml = `
             <div class="mini-progress-track">
               <div class="mini-progress-fill" style="width: ${percent}%;"></div>
             </div>
-            <span style="font-size: 10px; color: #D97706; font-weight: 600;">Sisa: ${formatRupiah(inv.dueAmount)}</span>
+            <span style="font-size: 11px; color: #D97706; font-weight: 600;">Sisa: ${formatRupiah(inv.dueAmount)}</span>
           `;
         } else if (inv.dueAmount > 0) {
-          progressHtml = `<span style="font-size: 10.5px; color: ${inv.status === 'telat' ? '#DC2626' : '#EA580C'}; font-weight: 500;">Sisa: ${formatRupiah(inv.dueAmount)}</span>`;
+          progressHtml = `<span style="font-size: 11px; color: ${inv.status === 'telat' ? '#DC2626' : '#EA580C'}; font-weight: 500;">Sisa: ${formatRupiah(inv.dueAmount)}</span>`;
         } else {
-          progressHtml = `<span style="font-size: 10.5px; color: #16A34A; font-weight: 500;">Lunas 100%</span>`;
+          progressHtml = `<span style="font-size: 11px; color: #16A34A; font-weight: 500;">Lunas 100%</span>`;
         }
 
         return `
@@ -3969,9 +4457,11 @@
             </td>
             <td>
               <div class="amount-stack">
-                <div style="display: flex; align-items: center; gap: 5px;">
+                <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
                   <span class="amount-val-bold">${formatRupiah(inv.totalAmount)}</span>
-                  ${inv.discount && inv.discount > 0 ? `<span style="font-size: 9.5px; font-weight: 700; color: var(--brand-primary); background: var(--brand-primary-light); padding: 1px 5px; border-radius: 4px;" title="Diskon ${formatRupiah(inv.discount)}">Diskon</span>` : ''}
+                  ${inv.discount && inv.discount > 0 ? `<span style="font-size: 11px; font-weight: 700; color: var(--brand-primary); background: var(--brand-primary-light); padding: 1px 5px; border-radius: 4px;" title="Diskon ${formatRupiah(inv.discount)}">Diskon</span>` : ''}
+                  ${inv.previousArrears && inv.previousArrears > 0 ? `<span style="font-size: 11px; font-weight: 700; color: #EA580C; background: #FFF7ED; border: 1px solid #FFEDD5; padding: 1px 5px; border-radius: 4px;" title="Termasuk tunggakan bulan lalu ${formatRupiah(inv.previousArrears)}">+Tunggakan</span>` : ''}
+                  ${inv.creditBalance && inv.creditBalance > 0 ? `<span style="font-size: 11px; font-weight: 700; color: #16A34A; background: #DCFCE7; border: 1px solid #BBF7D0; padding: 1px 5px; border-radius: 4px;" title="Saldo kredit mengendap ${formatRupiah(inv.creditBalance)}">Kredit ${formatRupiah(inv.creditBalance)}</span>` : ''}
                 </div>
                 ${progressHtml}
               </div>
@@ -4048,6 +4538,7 @@
       
       const stampElem = document.getElementById('paperStampBadge');
       const draftNotice = document.getElementById('dossierDraftNotice');
+      const voidNotice = document.getElementById('dossierVoidNotice');
 
       if (inv.status === 'draf') {
         stampElem.textContent = 'DRAF VERIFIKASI';
@@ -4055,8 +4546,21 @@
         stampElem.style.color = 'var(--brand-primary)';
         stampElem.style.borderColor = 'rgba(255, 122, 0, 0.25)';
         if (draftNotice) draftNotice.style.display = 'flex';
+        if (voidNotice) voidNotice.style.display = 'none';
+      } else if (inv.status === 'batal') {
+        stampElem.textContent = 'DIBATALKAN';
+        stampElem.style.background = '#F1F5F9';
+        stampElem.style.color = '#64748B';
+        stampElem.style.borderColor = '#CBD5E1';
+        if (draftNotice) draftNotice.style.display = 'none';
+        if (voidNotice) {
+          voidNotice.style.display = 'flex';
+          const voidTxt = document.getElementById('dossierVoidReasonTxt');
+          if (voidTxt) voidTxt.textContent = inv.voidReason || 'Dibatalkan oleh Pemilik';
+        }
       } else {
         if (draftNotice) draftNotice.style.display = 'none';
+        if (voidNotice) voidNotice.style.display = 'none';
         if (inv.status === 'lunas') {
           stampElem.textContent = 'LUNAS';
           stampElem.style.background = '#DCFCE7';
@@ -4087,6 +4591,20 @@
 
       document.getElementById('dossierBaseRent').textContent = formatRupiah(inv.baseRent);
 
+      // Tunggakan Periode Sebelumnya (Arrears Carry-Over)
+      const arrearsRow = document.getElementById('dossierArrearsRow');
+      const arrearsVal = document.getElementById('dossierArrears');
+      const arrearsLbl = document.getElementById('dossierArrearsLabel');
+      if (arrearsRow && arrearsVal) {
+        if (inv.previousArrears && inv.previousArrears > 0) {
+          arrearsRow.style.display = 'flex';
+          arrearsVal.textContent = `+ ${formatRupiah(inv.previousArrears)}`;
+          if (arrearsLbl) arrearsLbl.textContent = inv.previousArrearsLabel || 'Bulan Lalu';
+        } else {
+          arrearsRow.style.display = 'none';
+        }
+      }
+
       const discRow = document.getElementById('dossierDiscountRow');
       const discVal = document.getElementById('dossierDiscount');
       if (discRow && discVal) {
@@ -4095,6 +4613,18 @@
           discVal.textContent = `- ${formatRupiah(inv.discount)}`;
         } else {
           discRow.style.display = 'none';
+        }
+      }
+
+      // Saldo Kredit Mengendap (Kelebihan Bayar)
+      const creditRow = document.getElementById('dossierCreditRow');
+      const creditVal = document.getElementById('dossierCreditVal');
+      if (creditRow && creditVal) {
+        if (inv.creditBalance && inv.creditBalance > 0) {
+          creditRow.style.display = 'flex';
+          creditVal.textContent = `+ ${formatRupiah(inv.creditBalance)}`;
+        } else {
+          creditRow.style.display = 'none';
         }
       }
 
@@ -4122,7 +4652,19 @@
       // Riwayat Transaksi Terakhir (History Pod - Estify Clean Refined Pod)
       const histPod = document.getElementById('dossierPaymentHistoryPod');
       if (histPod) {
-        if (inv.paidAmount > 0) {
+        if (inv.status === 'batal') {
+          histPod.innerHTML = `
+            <div class="history-pod-title">
+              <div class="history-pod-title-label">
+                <i data-lucide="ban" style="width: 12px; height: 12px; color: #DC2626; flex-shrink: 0;"></i>
+                <span style="color: #DC2626; font-weight: 600;">Status Tagihan Dibatalkan</span>
+              </div>
+            </div>
+            <div class="history-body-wrap">
+              <p class="history-empty-txt" style="color: #991B1B;">Tagihan telah dibatalkan (Status: VOID) pada ${inv.voidAt || '25 Okt 2026'}. Alasan: "${inv.voidReason || 'Dibatalkan oleh Pemilik'}".</p>
+            </div>
+          `;
+        } else if (inv.paidAmount > 0) {
           histPod.innerHTML = `
             <div class="history-pod-title">
               <div class="history-pod-title-label">
@@ -4137,7 +4679,7 @@
                 <span class="history-status-badge">Diterima</span>
               </div>
               <div class="history-time">
-                <i data-lucide="calendar" style="width: 10.5px; height: 10.5px; color: #94A3B8; flex-shrink: 0;"></i>
+                <i data-lucide="calendar" style="width: 11px; height: 11px; color: #94A3B8; flex-shrink: 0;"></i>
                 <span>${inv.payDate || '22 Okt 2026, 14:10 WIB'} &middot; ${inv.method || 'Transfer BCA'}</span>
               </div>
             </div>
@@ -4167,43 +4709,64 @@
         methodSummaryElem.textContent = inv.method && inv.method !== '—' ? inv.method : (inv.status === 'lunas' ? 'Transfer Bank' : 'Belum Dipilih');
       }
 
-      // Waive Fee Button & Status
-      const waiveBtn = document.getElementById('btnWaiveLateFee');
+      // Late Fee Status
       const lateFeeElem = document.getElementById('dossierLateFee');
       if (inv.lateFee > 0) {
-        if (waiveBtn) waiveBtn.style.display = 'inline-flex';
-        if (lateFeeElem) lateFeeElem.style.color = '#DC2626';
+        if (lateFeeElem) {
+          lateFeeElem.textContent = `+ ${formatRupiah(inv.lateFee)}`;
+          lateFeeElem.style.color = '#DC2626';
+        }
       } else {
-        if (waiveBtn) waiveBtn.style.display = 'none';
-        if (lateFeeElem) lateFeeElem.style.color = '#64748B';
+        if (lateFeeElem) {
+          lateFeeElem.textContent = 'Rp 0';
+          lateFeeElem.style.color = '#64748B';
+        }
       }
 
       // Dynamic Contextual Primary Button (Orange for Draft Verification, Obsidian Black for Payment/Receipt)
       const primaryBtn = document.getElementById('btnDossierPrimaryAction');
       const primaryIcon = document.getElementById('btnDossierPrimaryIcon');
       const primaryTxt = document.getElementById('btnDossierPrimaryText');
-      if (primaryTxt && primaryIcon) {
+      if (primaryTxt && primaryIcon && primaryBtn) {
+        primaryBtn.style.border = 'none';
         if (inv.status === 'draf') {
           primaryTxt.textContent = 'Verifikasi & Terbitkan Tagihan';
           primaryIcon.setAttribute('data-lucide', 'check-check');
-          if (primaryBtn) {
-            primaryBtn.style.background = 'var(--brand-primary)';
-            primaryBtn.style.boxShadow = '0 4px 14px rgba(255, 122, 0, 0.35)';
-          }
-        } else if (inv.status === 'lunas') {
-          primaryTxt.textContent = 'Lihat / Cetak Kuitansi Lunas';
-          primaryIcon.setAttribute('data-lucide', 'printer');
-          if (primaryBtn) {
-            primaryBtn.style.background = '#111111';
-            primaryBtn.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.15)';
-          }
+          primaryBtn.classList.add('is-draft-action');
+          primaryBtn.style.background = '';
+          primaryBtn.style.boxShadow = '';
+          primaryBtn.style.cursor = 'pointer';
+        } else if (inv.status === 'batal') {
+          primaryTxt.textContent = 'Tagihan Dibatalkan (Void)';
+          primaryIcon.setAttribute('data-lucide', 'ban');
+          primaryBtn.classList.remove('is-draft-action');
+          primaryBtn.style.background = '#94A3B8';
+          primaryBtn.style.boxShadow = 'none';
+          primaryBtn.style.cursor = 'not-allowed';
         } else {
-          primaryTxt.textContent = 'Catat Pembayaran Masuk';
-          primaryIcon.setAttribute('data-lucide', 'plus-circle');
-          if (primaryBtn) {
+          primaryBtn.classList.remove('is-draft-action');
+          primaryBtn.style.cursor = 'pointer';
+          if (inv.status === 'lunas') {
+            primaryTxt.textContent = 'Lihat / Cetak Kuitansi Lunas';
+            primaryIcon.setAttribute('data-lucide', 'printer');
+            primaryBtn.style.background = '#111111';
+            primaryBtn.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.15)';
+          } else {
+            primaryTxt.textContent = 'Catat Pembayaran Masuk';
+            primaryIcon.setAttribute('data-lucide', 'plus-circle');
             primaryBtn.style.background = '#111111';
             primaryBtn.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.15)';
           }
+        }
+      }
+
+      // Tombol Batalkan Tagihan (Void) visibility
+      const btnVoid = document.getElementById('btnVoidInvoiceAction');
+      if (btnVoid) {
+        if (inv.status === 'batal' || inv.status === 'lunas') {
+          btnVoid.style.display = 'none';
+        } else {
+          btnVoid.style.display = 'inline-flex';
         }
       }
 
@@ -4213,6 +4776,10 @@
     function handleDossierPrimaryAction() {
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
+      if (inv.status === 'batal') {
+        triggerToast('Tagihan ini telah dibatalkan (Status: VOID) dan tidak dapat diproses lagi.', 'info');
+        return;
+      }
       if (inv.status === 'draf') {
         verifyAndPublishInvoice(inv.id);
       } else if (inv.status === 'lunas') {
@@ -4220,6 +4787,48 @@
       } else {
         openModalCatatBayar();
       }
+    }
+
+    // Pembatalan Tagihan (Void Invoice Handlers)
+    function openModalVoidInvoice() {
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      if (!inv) return;
+      if (inv.status === 'lunas') {
+        triggerToast('Tagihan yang sudah Lunas tidak dapat dibatalkan lewat Void. Lakukan Koreksi / Reversal di menu Pembayaran terlebih dahulu.', 'warning');
+        return;
+      }
+      if (inv.status === 'batal') {
+        triggerToast('Tagihan ini sudah berstatus BATAL (VOID).', 'info');
+        return;
+      }
+      document.getElementById('voidModalInvId').textContent = '#' + inv.id;
+      document.getElementById('voidModalRoomTenant').textContent = `Kamar ${inv.room} · ${inv.tenant}`;
+      document.getElementById('voidModalTotal').textContent = formatRupiah(inv.totalAmount);
+      document.getElementById('voidReasonInput').value = '';
+      openModal('modalVoidInvoice');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function confirmVoidInvoice() {
+      const reason = document.getElementById('voidReasonInput').value.trim();
+      if (!reason) {
+        triggerToast('Mohon tuliskan alasan pembatalan tagihan terlebih dahulu.', 'warning');
+        return;
+      }
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      if (!inv) return;
+
+      inv.status = 'batal';
+      inv.statusLabel = 'Dibatalkan (Void)';
+      inv.dueDaysLeft = 'Tagihan Dibatalkan';
+      inv.dueClass = 'neutral';
+      inv.voidReason = reason;
+      inv.voidAt = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+      closeModal('modalVoidInvoice');
+      renderBillingTable();
+      renderInvoiceDossier();
+      triggerToast(`Tagihan #${inv.id} (Kamar ${inv.room}) resmi dibatalkan (Status: VOID).`, 'success');
     }
 
     function verifyAndPublishInvoice(invId) {
@@ -4265,7 +4874,7 @@
       
       const prevFee = inv.lateFee;
       inv.lateFee = 0;
-      inv.totalAmount = inv.baseRent + inv.addOns;
+      inv.totalAmount = (inv.baseRent || 0) + (inv.addOns || 0) + (inv.previousArrears || 0) - (inv.discount || 0);
       inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
       
       renderBillingTable();
@@ -4388,11 +4997,211 @@
       }
     }
 
+    // Modal Terbitkan Tagihan Baru (On-Demand / Insidental - DESIGN.md Bab 6.1 & 6.2)
+    let newBillSelectedRoom = { room: 'A-01', tenant: 'Siti Aminah', rate: 1200000 };
+    let newBillSelectedType = 'Sewa Kamar';
+    let newBillRentScheme = 'full';
+    let newBillCalculatedRent = 1200000;
+
+    function openModalTerbitkanTagihan() {
+      openModal('modalTerbitkanTagihan');
+      if (window.RumaDatePicker) {
+        RumaDatePicker.init('wrapNewBillDueDate', 'inputNewBillDueDate', '2026-10-31');
+      }
+      updateNewBillFinalTotal();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleNewBillRoomDropdown(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('menuNewBillRoom');
+      if (menu) menu.classList.toggle('active');
+    }
+
+    function selectNewBillRoom(room, tenant, rate, event) {
+      if (event) event.stopPropagation();
+      newBillSelectedRoom = { room, tenant, rate };
+      const label = document.getElementById('selectedNewBillRoomLabel');
+      if (label) label.textContent = `${room} · ${tenant}`;
+      const baseDisplay = document.getElementById('newBillBaseRateDisplay');
+      if (baseDisplay) baseDisplay.textContent = formatRupiah(rate);
+      
+      const menu = document.getElementById('menuNewBillRoom');
+      if (menu) {
+        menu.classList.remove('active');
+        menu.querySelectorAll('.popover-item-btn').forEach(btn => {
+          btn.classList.toggle('selected', btn.textContent.includes(room));
+        });
+      }
+
+      calculateProrataTotal();
+      updateNewBillFinalTotal();
+    }
+
+    function selectBillType(elem, type) {
+      newBillSelectedType = type;
+      document.querySelectorAll('#modalTerbitkanTagihan .method-radio-box').forEach(el => el.classList.remove('active'));
+      elem.classList.add('active');
+
+      const rentOptions = document.getElementById('newBillRentOptionsWrap');
+      const notesInput = document.getElementById('inputNewBillNotes');
+      const amountInput = document.getElementById('inputNewBillAmount');
+
+      if (type === 'Sewa Kamar') {
+        if (rentOptions) rentOptions.style.display = 'flex';
+        updateNewBillFinalTotal();
+      } else {
+        if (rentOptions) rentOptions.style.display = 'none';
+        if (type === 'Listrik / Air') {
+          if (notesInput) notesInput.value = 'Kelebihan pemakaian listrik AC 45 kWh x Rp 2.500';
+          if (amountInput) amountInput.value = '112.500';
+        } else if (type === 'Denda / Fasilitas') {
+          if (notesInput) notesInput.value = 'Denda keterlambatan sewa / penggantian fasilitas';
+          if (amountInput) amountInput.value = '50.000';
+        }
+      }
+    }
+
+    function selectRentScheme(elem, scheme) {
+      newBillRentScheme = scheme;
+      document.querySelectorAll('#newBillRentOptionsWrap .method-radio-box').forEach(el => el.classList.remove('active'));
+      elem.classList.add('active');
+
+      const calcBox = document.getElementById('prorataCalcBox');
+      if (calcBox) {
+        calcBox.style.display = scheme === 'prorata' ? 'flex' : 'none';
+      }
+
+      calculateProrataTotal();
+      updateNewBillFinalTotal();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function calculateProrataTotal() {
+      if (newBillRentScheme !== 'prorata') {
+        newBillCalculatedRent = newBillSelectedRoom.rate;
+        return;
+      }
+
+      const startVal = document.getElementById('inputProrataStartDate')?.value || '2026-10-15';
+      const endVal = document.getElementById('inputProrataEndDate')?.value || '2026-10-31';
+
+      const d1 = new Date(startVal);
+      const d2 = new Date(endVal);
+
+      let diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+      if (diffDays < 1) diffDays = 1;
+      if (diffDays > 31) diffDays = 31;
+
+      const totalDaysInMonth = 31;
+      const prorataAmount = Math.round((diffDays / totalDaysInMonth) * newBillSelectedRoom.rate / 1000) * 1000;
+      newBillCalculatedRent = prorataAmount;
+
+      const badge = document.getElementById('prorataDaysBadge');
+      if (badge) badge.textContent = `${diffDays} Hari Berjalan`;
+
+      const formula = document.getElementById('prorataFormulaText');
+      if (formula) formula.innerHTML = `Rumus: (${diffDays} hr &divide; ${totalDaysInMonth} hr) &times; ${formatRupiah(newBillSelectedRoom.rate)}`;
+
+      const resTxt = document.getElementById('prorataResultText');
+      if (resTxt) resTxt.textContent = formatRupiah(prorataAmount);
+
+      updateNewBillFinalTotal();
+    }
+
+    function toggleDepositOption() {
+      const isChecked = document.getElementById('checkIncludeDeposit')?.checked;
+      const depositRow = document.getElementById('depositInputRow');
+      if (depositRow) {
+        depositRow.style.display = isChecked ? 'flex' : 'none';
+      }
+      updateNewBillFinalTotal();
+    }
+
+    function updateNewBillFinalTotal() {
+      if (newBillSelectedType !== 'Sewa Kamar') return;
+
+      let total = newBillCalculatedRent;
+      const includeDeposit = document.getElementById('checkIncludeDeposit')?.checked;
+      let depositVal = 0;
+
+      if (includeDeposit) {
+        const depStr = document.getElementById('inputDepositAmount')?.value || '1.000.000';
+        depositVal = parseInt(depStr.replace(/\D/g, ''), 10) || 1000000;
+        total += depositVal;
+      }
+
+      const amountInput = document.getElementById('inputNewBillAmount');
+      if (amountInput) amountInput.value = total.toLocaleString('id-ID');
+
+      const notesInput = document.getElementById('inputNewBillNotes');
+      if (notesInput) {
+        if (newBillRentScheme === 'prorata') {
+          const diffDays = document.getElementById('prorataDaysBadge')?.textContent || '17 Hari';
+          const depText = includeDeposit ? ` + Uang Jaminan Deposit ${formatRupiah(depositVal)}` : '';
+          notesInput.value = `Tagihan perdana: Sewa prorata (${diffDays}) ${formatRupiah(newBillCalculatedRent)}${depText} periode Oktober 2026.`;
+        } else {
+          const depText = includeDeposit ? ` + Uang Jaminan Deposit ${formatRupiah(depositVal)}` : '';
+          notesInput.value = `Tagihan sewa 1 bulan penuh ${formatRupiah(newBillCalculatedRent)}${depText} periode Oktober 2026.`;
+        }
+      }
+    }
+
+    function submitTerbitkanTagihan() {
+      const amountStr = document.getElementById('inputNewBillAmount')?.value || '1.200.000';
+      const amount = parseInt(amountStr.replace(/\D/g, ''), 10) || 1200000;
+      const dueDate = document.getElementById('displayNewBillDueDate')?.textContent || '31 Oktober 2026';
+      const notes = document.getElementById('inputNewBillNotes')?.value || newBillSelectedType;
+      const sendWa = document.getElementById('checkSendWaNewBill')?.checked;
+
+      const newId = `INV-202610-OD${Math.floor(10 + Math.random() * 89)}`;
+      const newInv = {
+        id: newId,
+        room: newBillSelectedRoom.room,
+        floorNum: newBillSelectedRoom.room.startsWith('A') ? '1' : (newBillSelectedRoom.room.startsWith('B') ? '2' : '3'),
+        floor: `Lantai ${newBillSelectedRoom.room.startsWith('A') ? '1' : (newBillSelectedRoom.room.startsWith('B') ? '2' : '3')} · Standar`,
+        tenant: newBillSelectedRoom.tenant,
+        phone: '0812-3456-7890',
+        period: 'Oktober 2026',
+        baseRent: newBillSelectedType === 'Sewa Kamar' ? newBillCalculatedRent : amount,
+        addOns: newBillSelectedType === 'Sewa Kamar' ? Math.max(0, amount - newBillCalculatedRent) : 0,
+        lateFee: 0,
+        discount: 0,
+        totalAmount: amount,
+        paidAmount: 0,
+        dueAmount: amount,
+        due: dueDate,
+        dueDaysLeft: 'Tagihan Baru',
+        dueClass: 'warn',
+        status: 'tempo',
+        statusLabel: 'Menunggu Pembayaran',
+        method: '—',
+        payDate: 'Belum Dibayar',
+        refNo: '—',
+        deliveryStatus: sendWa ? 'sent' : 'pending',
+        deliveryMeta: sendWa ? 'Diterbitkan & Terkirim WA' : 'Diterbitkan sistem',
+        adjustReason: notes
+      };
+
+      invoicesData.unshift(newInv);
+      currentSelectedId = newId;
+      closeModal('modalTerbitkanTagihan');
+      renderBillingTable();
+      renderInvoiceDossier();
+      const waNote = sendWa ? ' & notifikasi invoice digital terkirim via WhatsApp' : '';
+      triggerToast(`Tagihan #${newId} (${newBillSelectedRoom.room} - ${newBillSelectedRoom.tenant}) berhasil diterbitkan${waNote}!`, 'success');
+    }
+
     // Modal Sesuaikan Tagihan & Diskon (Untuk Penghuni Lama / Tagihan Berjalan)
     function openModalAdjustInvoice(invId) {
       const targetId = invId || currentSelectedId;
       const inv = invoicesData.find(i => i.id === targetId);
       if (!inv) return;
+
+      if (inv.status === 'batal') {
+        triggerToast(`Tagihan #${inv.id} telah dibatalkan (Status: VOID). Tidak dapat disesuaikan lagi.`, 'warning');
+        return;
+      }
 
       currentSelectedId = inv.id;
       document.getElementById('adjustModalTenantTitle').textContent = `${inv.tenant} · Kamar ${inv.room}`;
@@ -4449,6 +5258,16 @@
 
       document.getElementById('adjustSummaryTotal').textContent = formatRupiah(total);
       document.getElementById('adjustSummaryDue').textContent = formatRupiah(due);
+    }
+
+    function waiveAdjustLateFee() {
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      if (!inv || inv.lateFee === 0) return;
+
+      const prevFee = inv.lateFee;
+      inv.lateFee = 0;
+      recalcAdjustTotal();
+      triggerToast(`Denda keterlambatan sebesar ${formatRupiah(prevFee)} dinolkan. Klik Simpan Penyesuaian untuk menerapkan.`, 'info');
     }
 
     function saveInvoiceAdjustment() {
@@ -4618,15 +5437,20 @@
       const payDate = document.getElementById('inputPayDateDisplay')?.textContent || '23 Oktober 2026';
       const sendWa = document.getElementById('checkboxSendWaReceipt')?.checked;
 
+      const surplus = (entered > inv.dueAmount) ? (entered - inv.dueAmount) : 0;
       inv.paidAmount = Math.min(inv.totalAmount, inv.paidAmount + entered);
       inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
       inv.method = selectedPayMethod;
       inv.refNo = refNo;
       inv.payDate = `${payDate}, ` + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
 
+      if (surplus > 0) {
+        inv.creditBalance = (inv.creditBalance || 0) + surplus;
+      }
+
       if (inv.dueAmount === 0) {
         inv.status = 'lunas';
-        inv.statusLabel = 'Lunas Terverifikasi';
+        inv.statusLabel = surplus > 0 ? `Lunas (Kredit +${formatRupiah(surplus)})` : 'Lunas Terverifikasi';
         inv.dueDaysLeft = 'Sudah Terbayar';
         inv.dueClass = 'safe';
       } else {
@@ -4641,7 +5465,14 @@
       renderInvoiceDossier();
 
       const waMsg = sendWa ? ' Kuitansi pembayaran resmi otomatis dikirimkan ke WhatsApp penghuni.' : '';
-      triggerToast(`Pembayaran ${formatRupiah(entered)} untuk Kamar ${inv.room} (${inv.tenant}) berhasil dicatat!${waMsg}`, 'success');
+      const surplusMsg = surplus > 0 ? ` Kelebihan bayar ${formatRupiah(surplus)} otomatis disimpan sebagai Saldo Kredit Penghuni untuk periode berikutnya.` : '';
+      triggerToast(`Pembayaran ${formatRupiah(entered)} untuk Kamar ${inv.room} (${inv.tenant}) berhasil dicatat!${surplusMsg}${waMsg}`, 'success');
+
+      if (sendWa) {
+        setTimeout(() => {
+          sendReceiptWhatsApp(inv.id);
+        }, 500);
+      }
     }
 
     // Delivery Status Toggle (RK-029)
@@ -4673,7 +5504,8 @@
     const broadcastTagihanTemplates = {
       santai: 'Halo Kak [Nama Penyewa], mengingatkan bahwa tagihan sewa Kost Budi Makmur Kamar [Kamar] periode Oktober 2026 sebesar [Total Tagihan] akan jatuh tempo pada 25 Oktober 2026. Pembayaran dapat dilakukan via transfer Bank BCA 8472-9182 a/n Budi Santoso. Terima kasih!',
       tempo: 'Halo Kak [Nama Penyewa], tagihan sewa Kost Budi Makmur Kamar [Kamar] sebesar [Total Tagihan] jatuh tempo HARI INI. Mohon segera menyelesaikan pembayaran dan konfirmasi bukti transfer via WhatsApp ini ya. Terima kasih banyak atas kerja samanya!',
-      telat: 'PENTING: Yth. Kak [Nama Penyewa], pembayaran sewa Kost Budi Makmur Kamar [Kamar] telah melewati batas jatuh tempo (terlambat 3 hari). Total tunggakan saat ini adalah [Total Tagihan] (termasuk denda harian). Mohon segera diselesaikan hari ini guna menghindari penghentian fasilitas.'
+      telat: 'PENTING: Yth. Kak [Nama Penyewa], pembayaran sewa Kost Budi Makmur Kamar [Kamar] telah melewati batas jatuh tempo (terlambat 3 hari). Total tunggakan saat ini adalah [Total Tagihan] (termasuk denda harian). Mohon segera diselesaikan hari ini guna menghindari penghentian fasilitas.',
+      sp1: 'SURAT PERINGATAN (SP-1) — TUNGGAKAN SEWA KOST BUDI MAKMUR.\n\nKepada Yth. Kak [Nama Penyewa] (Kamar [Kamar]),\nBerdasarkan catatan sistem per hari ini, kewajiban sewa periode berjalan sebesar [Total Tagihan] telah menunggak melebihi batas toleransi. Sesuai perjanjian sewa, mohon melunasi seluruh kewajiban dalam waktu maksimal 2x24 jam sejak pesan ini dikirimkan. Apabila tidak ada penyelesaian atau konfirmasi resmi, pengelola berhak membekukan fasilitas (WiFi/akses kamar) dan memulai prosedur terminasi sewa. Terima kasih.'
     };
 
     function selectBroadcastTarget(btn, target) {
@@ -4717,10 +5549,19 @@
       triggerToast('Pesan pengingat penagihan WA berhasil dikirim serentak ke penyewa terpilih!', 'success');
     }
 
+    function closeBroadcastModal() {
+      closeModal('modalBroadcast');
+    }
+
     // WhatsApp Direct Send
     function sendInvoiceWhatsApp() {
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
+
+      if (inv.status === 'batal') {
+        triggerToast(`Tagihan #${inv.id} telah dibatalkan (Status: VOID). Tidak dapat dikirim ke WhatsApp penghuni.`, 'warning');
+        return;
+      }
 
       if (inv.status === 'draf') {
         triggerToast(`Tagihan #${inv.id} masih berstatus Draf. Silakan klik 'Verifikasi & Terbitkan' terlebih dahulu sebelum mengirim rincian ke WhatsApp penghuni.`, 'warning');
@@ -4740,6 +5581,20 @@
 
     function openDirectWhatsApp() {
       sendInvoiceWhatsApp();
+    }
+
+    function sendReceiptWhatsApp(targetInvId) {
+      const invId = targetInvId || currentSelectedId;
+      const inv = invoicesData.find(i => i.id === invId);
+      if (!inv) return;
+
+      const receiptId = 'KWT-' + (inv.refNo && inv.refNo !== '—' ? inv.refNo.replace(/[^0-9]/g, '').slice(-6) : inv.id.replace(/[^0-9]/g, '').slice(-6));
+      const payAmount = inv.paidAmount > 0 ? inv.paidAmount : inv.totalAmount;
+      const text = `Halo Kak ${inv.tenant},\n\nTerima kasih! Pembayaran sewa Kost Budi Makmur Kamar ${inv.room} (#${inv.id}) sebesar ${formatRupiah(payAmount)} telah kami terima dan diverifikasi ${inv.status === 'lunas' ? 'LUNAS' : 'SEBAGIAN'}.\n\nNo. Kwitansi: ${receiptId}\nMetode: ${inv.method !== '—' ? inv.method : 'Transfer Bank'}\nWaktu: ${inv.payDate || '23 Okt 2026'}\n\nKwitansi resmi ini sah diterbitkan oleh manajemen RumaKost dan dapat diakses kapan saja melalui Portal Penghuni. Terima kasih atas kerja samanya!`;
+      const cleanPhone = (inv.phone || '081234567890').replace(/[^0-9]/g, '');
+      const waUrl = `https://api.whatsapp.com/send?phone=62${cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone}&text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
+      triggerToast(`Kwitansi resmi pelunasan Kamar ${inv.room} dibuka via WhatsApp Web!`, 'success');
     }
 
     // Modal Receipt
@@ -4770,6 +5625,70 @@
       }
 
       openModal('modalReceipt');
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // EKSPOR MATRIKS PENAGIHAN KE CSV / EXCEL (STORY F-10)
+    // ══════════════════════════════════════════════════════════════
+    function exportBillingMatrixToCSV() {
+      const headers = [
+        'ID Invoice',
+        'Nomor Kamar',
+        'Lantai',
+        'Nama Penghuni',
+        'No WhatsApp',
+        'Periode',
+        'Sewa Pokok (Rp)',
+        'Biaya Tambahan (Rp)',
+        'Tunggakan Lalu (Rp)',
+        'Denda (Rp)',
+        'Diskon (Rp)',
+        'Saldo Kredit (Rp)',
+        'Total Tagihan (Rp)',
+        'Jumlah Terbayar (Rp)',
+        'Sisa Piutang (Rp)',
+        'Status Tagihan',
+        'Metode Bayar',
+        'Status WhatsApp'
+      ];
+
+      const rows = invoicesData.map(inv => [
+        inv.id,
+        inv.room,
+        `"${inv.floor}"`,
+        `"${inv.tenant}"`,
+        `'${inv.phone}`,
+        `"${inv.period}"`,
+        inv.baseRent,
+        inv.addOns || 0,
+        inv.previousArrears || 0,
+        inv.lateFee || 0,
+        inv.discount || 0,
+        inv.creditBalance || 0,
+        inv.totalAmount,
+        inv.paidAmount,
+        inv.dueAmount,
+        `"${inv.statusLabel || inv.status}"`,
+        `"${inv.method || '—'}"`,
+        inv.deliveryStatus === 'sent' ? 'Terkirim WA' : 'Belum Terkirim'
+      ]);
+
+      const csvContent = '\uFEFF' + [
+        headers.join(','),
+        ...rows.map(r => r.join(','))
+      ].join('\r\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Matriks_Penagihan_RumaKost_Okt_2026_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      triggerToast(`Data matriks penagihan (${invoicesData.length} tagihan) berhasil diekspor ke file CSV (Excel)!`, 'success');
     }
 
     // ══════════════════════════════════════════════════════════════

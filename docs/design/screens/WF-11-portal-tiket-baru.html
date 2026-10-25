@@ -8,14 +8,639 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
+    /* ══════════════════════════════════════════════════════════════
+       WF-11: PORTAL TIKET KERUSAKAN BARU (F-07 MEDIA WAJIB)
+       ══════════════════════════════════════════════════════════════ */
+    .form-ticket-container {
+      max-width: 840px;
+      margin: 24px auto 64px;
+      padding: 0 16px;
+    }
+
     .form-ticket-card {
-      max-width: 760px;
-      margin: 24px auto;
-      background: var(--bg-card);
-      border-radius: var(--radius-2xl);
-      border: 1px solid var(--border-subtle);
-      padding: 36px;
-      box-shadow: var(--shadow-card);
+      background: var(--bg-card, #FFFFFF);
+      border-radius: var(--radius-2xl, 24px);
+      border: 1px solid var(--border-subtle, #E2E8F0);
+      padding: 36px 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Tenant Room Pinned Header */
+    .tenant-context-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      margin-bottom: 28px;
+    }
+
+    .tenant-badge-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tenant-unit-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: #FFF7ED;
+      color: var(--brand-primary, #FF7A00);
+      border: 1px solid #FFEDD5;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Section Headers */
+    .ticket-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 28px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid #F1F5F9;
+    }
+
+    .section-icon-box {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFF7ED;
+      color: var(--brand-primary, #FF7A00);
+      border: 1px solid #FFEDD5;
+      flex-shrink: 0;
+    }
+
+    .section-title-txt {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0F172A;
+      letter-spacing: -0.2px;
+    }
+
+    /* Form Fields */
+    .form-group-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .form-label-custom {
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-label-custom .required-mark {
+      color: #EF4444;
+      font-weight: 700;
+      margin-left: 2px;
+    }
+
+    .form-input-text,
+    .form-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 14px;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 11px;
+      font-size: 12.5px;
+      font-family: inherit;
+      color: #0F172A;
+      transition: all var(--transition-fast, 0.15s);
+      outline: none;
+    }
+
+    .form-input-text:focus,
+    .form-textarea:focus {
+      border-color: var(--brand-primary, #FF7A00);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    /* Suggestion Pills */
+    .suggestion-chips-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .suggestion-chip {
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748B;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 9999px;
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .suggestion-chip:hover {
+      background: #FFF7ED;
+      color: var(--brand-primary, #FF7A00);
+      border-color: #FED7AA;
+    }
+
+    /* CUSTOM SELECT DROPDOWN (0 NATIVE SELECT) */
+    .custom-form-select-wrap {
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .btn-form-select-trigger {
+      width: 100%;
+      height: 42px;
+      box-sizing: border-box;
+      padding: 0 14px;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 11px;
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .btn-form-select-trigger:focus,
+    .custom-form-select-wrap.open .btn-form-select-trigger {
+      border-color: var(--brand-primary, #FF7A00);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .select-label-cluster {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .type-icon-mini {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: #F1F5F9;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .form-select-menu {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.10);
+      z-index: 100;
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 6px;
+      display: none;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .custom-form-select-wrap.open .form-select-menu {
+      display: flex;
+    }
+
+    .form-select-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #334155;
+      transition: all 0.12s ease;
+    }
+
+    .form-select-item:hover {
+      background: #F8FAFC;
+      color: #0F172A;
+    }
+
+    .form-select-item.selected {
+      background: #FFF7ED;
+      color: var(--brand-primary, #FF7A00);
+      font-weight: 600;
+    }
+
+    .item-label-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* MANDATORY MEDIA UPLOAD ZONE (F-07) */
+    .upload-dropzone-box {
+      border: 2px dashed #CBD5E1;
+      border-radius: 16px;
+      background: #F8FAFC;
+      padding: 24px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .upload-dropzone-box:hover,
+    .upload-dropzone-box.dragover {
+      border-color: var(--brand-primary, #FF7A00);
+      background: #FFFBF7;
+    }
+
+    .upload-cloud-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      color: var(--brand-primary, #FF7A00);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s ease;
+    }
+
+    .upload-dropzone-box:hover .upload-cloud-circle {
+      transform: scale(1.08);
+      border-color: #FED7AA;
+    }
+
+    /* Upload Preview Grid */
+    .upload-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .upload-preview-card {
+      position: relative;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.15s ease;
+    }
+
+    .upload-preview-card:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+
+    .preview-thumb-area {
+      height: 105px;
+      background: #0F172A;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .preview-thumb-area img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-meta-area {
+      padding: 8px 10px;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .preview-file-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #0F172A;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preview-file-size {
+      font-size: 10px;
+      color: #64748B;
+    }
+
+    .preview-badge-tag {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(15, 23, 42, 0.75);
+      color: #FFFFFF;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .upload-remove-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.9);
+      color: #FFFFFF;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .upload-remove-btn:hover {
+      background: #DC2626;
+      transform: scale(1.1);
+    }
+
+    /* Warning Alert Banner (0 Media Notice) */
+    .media-warning-alert {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #B91C1C;
+      margin-top: 10px;
+    }
+
+    .media-warning-alert.visible {
+      display: flex;
+    }
+
+    /* PREFERENCE CARDS (VISIT TIME) */
+    .pref-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .pref-card {
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      user-select: none;
+    }
+
+    .pref-card:hover {
+      border-color: #CBD5E1;
+    }
+
+    .pref-card.active {
+      border-color: var(--brand-primary, #FF7A00);
+      background: #FFF7ED;
+    }
+
+    .pref-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pref-card.active .pref-card-title {
+      color: var(--brand-primary, #FF7A00);
+    }
+
+    .pref-card-sub {
+      font-size: 10.5px;
+      color: #64748B;
+    }
+
+    /* ACCESS PERMISSION BOX */
+    .access-toggle-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+
+    .access-toggle-box:hover {
+      background: #F1F5F9;
+    }
+
+    .custom-checkbox-sq {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 2px solid #CBD5E1;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: all 0.15s ease;
+    }
+
+    .access-toggle-box.checked .custom-checkbox-sq {
+      background: var(--brand-primary, #FF7A00);
+      border-color: var(--brand-primary, #FF7A00);
+      color: #FFFFFF;
+    }
+
+    /* FOOTER ACTIONS */
+    .form-footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-top: 32px;
+      padding-top: 22px;
+      border-top: 1.5px solid #F1F5F9;
+    }
+
+    .btn-submit-ticket {
+      height: 44px;
+      padding: 0 24px;
+      background: var(--brand-primary, #FF7A00);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-full, 9999px);
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+      transition: all var(--transition-fast, 0.15s);
+      user-select: none;
+    }
+
+    .btn-submit-ticket:hover {
+      background: #EA580C;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.45);
+    }
+
+    .btn-submit-ticket.disabled-look {
+      background: #CBD5E1 !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* SUCCESS MODAL */
+    .success-icon-bubble {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #ECFDF5;
+      color: #059669;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      border: 2px solid #A7F3D0;
+    }
+
+    .stepper-mini-track {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 18px 0;
+      position: relative;
+    }
+
+    .stepper-mini-track::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: #E2E8F0;
+      z-index: 1;
+    }
+
+    .stepper-mini-node {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .node-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #F1F5F9;
+      border: 2px solid #CBD5E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748B;
+    }
+
+    .stepper-mini-node.done .node-circle {
+      background: #10B981;
+      border-color: #10B981;
+      color: #FFFFFF;
+    }
+
+    .node-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    .stepper-mini-node.done .node-label {
+      color: #059669;
+      font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      .form-ticket-card {
+        padding: 24px 20px;
+      }
+      .tenant-context-strip {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .pref-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-footer-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+      }
+      .btn-submit-ticket {
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -29,157 +654,748 @@
 
   <div class="app-container">
     <!-- Topbar (Role: Tenant) -->
-    <!-- TOP CANOPY OVERLAY (Masking celah atas navbar floating) -->
-  <div class="top-canopy-overlay" aria-hidden="true"></div>
+    <div class="top-canopy-overlay" aria-hidden="true"></div>
+    <header class="topbar" id="mainTopbar"></header>
 
-  <header class="topbar" id="mainTopbar"></header>
-
-    <div class="form-ticket-card">
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
-        <div>
-          <a href="WF-10-portal-penghuni.html" style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); text-decoration: none; margin-bottom: 8px;">
-            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
-            Kembali ke Beranda Kamar
-          </a>
-          <h1 style="font-size: 22px; font-weight: 700; color: var(--text-main);">Lapor Kerusakan Fasilitas</h1>
-          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
-            Sampaikan kendala fasilitas kamar Anda. Pengelola kost akan menugaskan teknisi secepatnya.
-          </p>
-        </div>
-        <span class="badge-status badge-brand" style="font-size: 11px;">
-          <i data-lucide="door-closed" style="width: 12px; height: 12px;"></i>
-          Unit: Kamar A-04
-        </span>
+    <div class="form-ticket-container">
+      
+      <!-- Back Navigation Header -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <a href="WF-10-portal-penghuni.html" style="display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: #64748B; text-decoration: none; transition: color 0.15s ease;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#64748B'">
+          <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+          <span>Kembali ke Beranda Kamar</span>
+        </a>
+        <span style="font-size: 11.5px; color: #94A3B8;">Est. Respon Penugasan: &le; 2 Jam</span>
       </div>
 
-      <form onsubmit="handleSubmitTicket(event)">
-        <!-- KATEGORI & JUDUL -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px;">
-          <div class="form-group">
-            <label class="form-label">Kategori Kerusakan</label>
-            <div style="position: relative;">
-              <select class="form-input" id="ticketCategory" required style="padding-right: 32px; appearance: none; background: #FFFFFF;">
-                <option value="plumbing">Sanitasi & Pipa Air (Kran, Wastafel, WC)</option>
-                <option value="electrical">Kelistrikan (Lampu, Stopkontak)</option>
-                <option value="cooling">Pendingin Ruangan (AC Bocor/Tidak Dingin)</option>
-                <option value="door">Pintu, Kunci & Jendela</option>
-                <option value="furniture">Furnitur & Kasur</option>
-                <option value="general">Fasilitas Bersama (Dapur, Parkir)</option>
-              </select>
-              <i data-lucide="chevron-down" style="position: absolute; right: 12px; top: 14px; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none;"></i>
+      <!-- Main Form Card -->
+      <div class="form-ticket-card">
+        
+        <!-- Pinned Room Identity Strip -->
+        <div class="tenant-context-strip">
+          <div class="tenant-badge-group">
+            <span class="tenant-unit-pill">
+              <i data-lucide="door-closed" style="width: 13px; height: 13px;"></i>
+              <span>Kamar A-04</span>
+            </span>
+            <div>
+              <div style="font-size: 13px; font-weight: 700; color: #0F172A;">Budi Santoso &middot; Lantai 1 (Blok A)</div>
+              <div style="font-size: 11px; color: #64748B;">Unit Standard Plus &bull; Masa Sewa Aktif s/d 31 Okt 2026</div>
             </div>
           </div>
+          <span class="audit-pill-badge pill-emerald" style="font-size: 11px; padding: 4px 10px;">
+            <i data-lucide="shield-check" style="width: 12px; height: 12px;"></i>
+            Penghuni Terverifikasi
+          </span>
+        </div>
 
-          <div class="form-group">
-            <label class="form-label">Tingkat Urgensi</label>
-            <div style="position: relative;">
-              <select class="form-input" id="ticketPriority" required style="padding-right: 32px; appearance: none; background: #FFFFFF;">
-                <option value="normal">Normal (Bisa ditangani dalam 24 jam)</option>
-                <option value="urgent">Mendesak (Air meluap, korsleting listrik)</option>
-                <option value="low">Rendah (Pengecekan berkala / minor)</option>
-              </select>
-              <i data-lucide="chevron-down" style="position: absolute; right: 12px; top: 14px; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none;"></i>
+        <!-- Form Heading -->
+        <div style="margin-bottom: 22px;">
+          <h1 style="font-size: 22px; font-weight: 800; color: #0F172A; letter-spacing: -0.4px; margin: 0 0 6px;">
+            Lapor Kerusakan Fasilitas
+          </h1>
+          <p style="font-size: 12.5px; color: #64748B; margin: 0; line-height: 1.5;">
+            Sampaikan kendala fasilitas kamar atau area kost Anda. Tim pengelola akan menugaskan teknisi ahli dan mengabari progres perbaikan secara berkala.
+          </p>
+        </div>
+
+        <form id="formNewTicket" onsubmit="handleFormTicketSubmit(event)">
+          
+          <!-- ── SEKSI 1: KATEGORI & URGENSI KERUSAKAN ── -->
+          <div class="ticket-section-header" style="margin-top: 10px;">
+            <div class="section-icon-box">
+              <i data-lucide="tag" style="width: 14px; height: 14px;"></i>
             </div>
+            <div class="section-title-txt">1. Klasifikasi Masalah</div>
           </div>
-        </div>
 
-        <div class="form-group" style="margin-bottom: 18px;">
-          <label class="form-label">Judul Masalah / Kerusakan</label>
-          <input type="text" class="form-input" placeholder="Contoh: Kran wastafel kamar mandi patah dan air merembes" required value="Kran wastafel bocor menetes">
-        </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            
+            <!-- Kategori Kerusakan (Custom Dropdown - 0 Native Select) -->
+            <div class="form-group-wrap">
+              <label class="form-label-custom">
+                <span>Kategori Kerusakan <span class="required-mark">*</span></span>
+              </label>
+              <div class="custom-form-select-wrap" id="wrapCategorySelect">
+                <input type="hidden" id="ticketCategoryVal" value="plumbing">
+                <button type="button" class="btn-form-select-trigger" onclick="toggleCustomDropdown('wrapCategorySelect', event)">
+                  <div class="select-label-cluster">
+                    <div class="type-icon-mini" id="catSelectedIcon">
+                      <i data-lucide="bath" style="width: 13px; height: 13px; color: #0284C7;"></i>
+                    </div>
+                    <span id="catSelectedLabel">Sanitasi &amp; Pipa Air (Kran, WC, Wastafel)</span>
+                  </div>
+                  <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+                </button>
+                <div class="form-select-menu" id="menuCategorySelect">
+                  <div class="form-select-item selected" onclick="selectCategory('plumbing', 'Sanitasi &amp; Pipa Air (Kran, WC, Wastafel)', 'bath', '#0284C7', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="bath" style="width: 13px; height: 13px; color: #0284C7;"></i></div>
+                      <span>Sanitasi &amp; Pipa Air (Kran, WC, Wastafel)</span>
+                    </div>
+                    <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                  </div>
+                  <div class="form-select-item" onclick="selectCategory('cooling', 'Pendingin Ruangan (AC Bocor / Tidak Dingin)', 'wind', '#059669', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="wind" style="width: 13px; height: 13px; color: #059669;"></i></div>
+                      <span>Pendingin Ruangan (AC Bocor / Tidak Dingin)</span>
+                    </div>
+                  </div>
+                  <div class="form-select-item" onclick="selectCategory('electrical', 'Kelistrikan (Lampu, Stopkontak, MCB)', 'zap', '#D97706', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="zap" style="width: 13px; height: 13px; color: #D97706;"></i></div>
+                      <span>Kelistrikan (Lampu, Stopkontak, MCB)</span>
+                    </div>
+                  </div>
+                  <div class="form-select-item" onclick="selectCategory('door', 'Pintu, Kunci, Gagang &amp; Jendela', 'key', '#EA580C', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="key" style="width: 13px; height: 13px; color: #EA580C;"></i></div>
+                      <span>Pintu, Kunci, Gagang &amp; Jendela</span>
+                    </div>
+                  </div>
+                  <div class="form-select-item" onclick="selectCategory('furniture', 'Furnitur &amp; Kasur (Lemari, Meja, Ranjang)', 'bed', '#7C3AED', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="bed" style="width: 13px; height: 13px; color: #7C3AED;"></i></div>
+                      <span>Furnitur &amp; Kasur (Lemari, Meja, Ranjang)</span>
+                    </div>
+                  </div>
+                  <div class="form-select-item" onclick="selectCategory('shared', 'Fasilitas Bersama (Dapur, WiFi, Parkir)', 'home', '#475569', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="home" style="width: 13px; height: 13px; color: #475569;"></i></div>
+                      <span>Fasilitas Bersama (Dapur, WiFi, Parkir)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="form-group" style="margin-bottom: 22px;">
-          <label class="form-label">Deskripsi Kronologi & Lokasi Spesifik</label>
-          <textarea class="form-input" rows="4" style="height: auto; padding: 12px;" placeholder="Jelaskan sejak kapan kendala muncul dan posisi persis kerusakan..." required>Sejak kemarin malam sekitar jam 21.00 kran bawah wastafel mulai menetes dan air mulai menggenang di lantai kamar mandi. Mohon dibantu perbaikan kran/pipanya.</textarea>
-        </div>
+            <!-- Tingkat Urgensi (Custom Dropdown - 0 Native Select) -->
+            <div class="form-group-wrap">
+              <label class="form-label-custom">
+                <span>Tingkat Urgensi <span class="required-mark">*</span></span>
+              </label>
+              <div class="custom-form-select-wrap" id="wrapUrgencySelect">
+                <input type="hidden" id="ticketUrgencyVal" value="normal">
+                <button type="button" class="btn-form-select-trigger" onclick="toggleCustomDropdown('wrapUrgencySelect', event)">
+                  <div class="select-label-cluster">
+                    <div class="type-icon-mini" id="urgencySelectedIcon">
+                      <i data-lucide="clock" style="width: 13px; height: 13px; color: #D97706;"></i>
+                    </div>
+                    <span id="urgencySelectedLabel">Normal (Penanganan &le; 24 Jam)</span>
+                  </div>
+                  <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+                </button>
+                <div class="form-select-menu" id="menuUrgencySelect">
+                  <div class="form-select-item selected" onclick="selectUrgency('normal', 'Normal (Penanganan &le; 24 Jam)', 'clock', '#D97706', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="clock" style="width: 13px; height: 13px; color: #D97706;"></i></div>
+                      <span>Normal (Penanganan &le; 24 Jam)</span>
+                    </div>
+                    <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                  </div>
+                  <div class="form-select-item" onclick="selectUrgency('urgent', 'Mendesak (Air meluap / Korsleting listrik)', 'alert-triangle', '#DC2626', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="alert-triangle" style="width: 13px; height: 13px; color: #DC2626;"></i></div>
+                      <span>Mendesak (Air meluap / Korsleting listrik)</span>
+                    </div>
+                  </div>
+                  <div class="form-select-item" onclick="selectUrgency('low', 'Rendah (Pengecekan berkala / Minor)', 'check-circle', '#059669', this, event)">
+                    <div class="item-label-content">
+                      <div class="type-icon-mini"><i data-lucide="check-circle" style="width: 13px; height: 13px; color: #059669;"></i></div>
+                      <span>Rendah (Pengecekan berkala / Minor)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <!-- F-07 MANDATORY PHOTO / VIDEO UPLOAD -->
-        <div class="form-group" style="margin-bottom: 24px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <label class="form-label" style="margin-bottom: 0;">
-              Bukti Foto / Video Kerusakan <span style="color: #EF4444; font-weight: 700;">* (Wajib Minimal 1 Berkas)</span>
+          </div>
+
+          <!-- ── SEKSI 2: URAIAN & LOKASI KERUSAKAN ── -->
+          <div class="ticket-section-header">
+            <div class="section-icon-box">
+              <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
+            </div>
+            <div class="section-title-txt">2. Rincian Kendala</div>
+          </div>
+
+          <!-- Judul Masalah -->
+          <div class="form-group-wrap">
+            <label class="form-label-custom">
+              <span>Judul Laporan Kerusakan <span class="required-mark">*</span></span>
+              <span style="font-size: 11px; color: #94A3B8; font-weight: 500;" id="titleCharCount">31 / 80 karakter</span>
             </label>
-            <span style="font-size: 11px; color: var(--text-muted);">Sesuai Ketentuan Scope F-07</span>
+            <input type="text" id="inputTicketTitle" class="form-input-text" placeholder="Contoh: Kran wastafel bocor dan air merembes" maxlength="80" required value="Kran wastafel kamar mandi bocor" oninput="updateCharCount(this)">
+            
+            <!-- Quick Title Suggestions -->
+            <div class="suggestion-chips-row">
+              <span style="font-size: 10.5px; color: #94A3B8;">Saran cepat:</span>
+              <span class="suggestion-chip" onclick="applyTitleSuggestion('Kran wastafel bocor menetes')">Kran wastafel bocor</span>
+              <span class="suggestion-chip" onclick="applyTitleSuggestion('AC kamar tidak dingin &amp; berisik')">AC kurang dingin</span>
+              <span class="suggestion-chip" onclick="applyTitleSuggestion('Lampu kamar mandi redup dan berkedip')">Lampu kamar mati</span>
+              <span class="suggestion-chip" onclick="applyTitleSuggestion('Kunci selot pintu macet susah diputar')">Kunci pintu macet</span>
+            </div>
           </div>
 
-          <div class="upload-dropzone" id="uploadZone" onclick="simulateMediaUpload()">
-            <div class="upload-icon-circle">
-              <i data-lucide="video" style="width: 22px; height: 22px;"></i>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <!-- Lokasi Spesifik -->
+            <div class="form-group-wrap">
+              <label class="form-label-custom">
+                <span>Lokasi Spesifik di Kamar <span class="required-mark">*</span></span>
+              </label>
+              <input type="text" id="inputTicketLocation" class="form-input-text" placeholder="Contoh: Bawah wastafel kamar mandi" required value="Kamar mandi dalam (bawah wastafel)">
+            </div>
+
+            <!-- Nomor HP WhatsApp untuk Koordinasi -->
+            <div class="form-group-wrap">
+              <label class="form-label-custom">
+                <span>No. WhatsApp untuk Kontak Teknisi <span class="required-mark">*</span></span>
+              </label>
+              <input type="text" id="inputTicketPhone" class="form-input-text" placeholder="08xx-xxxx-xxxx" required value="0821-1122-3344">
+            </div>
+          </div>
+
+          <!-- Deskripsi Kronologi -->
+          <div class="form-group-wrap">
+            <label class="form-label-custom">
+              <span>Deskripsi Kronologi &amp; Dampak Kerusakan <span class="required-mark">*</span></span>
+              <span style="font-size: 11px; color: #94A3B8; font-weight: 500;">Minimal 20 karakter</span>
+            </label>
+            <textarea id="inputTicketDesc" class="form-textarea" rows="4" placeholder="Jelaskan sejak kapan kendala muncul, seberapa parah kebocoran/kerusakan, dan apakah memerlukan penggantian suku cadang..." required>Sejak kemarin malam sekitar jam 21.00 kran bawah wastafel mulai menetes dan air mulai menggenang di lantai kamar mandi. Mohon dibantu perbaikan kran atau pipa sambungannya agar air tidak terbuang.</textarea>
+          </div>
+
+          <!-- ── SEKSI 3: BUKTI FOTO / VIDEO KERUSAKAN (WAJIB SESUAI F-07) ── -->
+          <div class="ticket-section-header">
+            <div class="section-icon-box" style="background: #ECFDF5; color: #059669; border-color: #A7F3D0;">
+              <i data-lucide="camera" style="width: 14px; height: 14px;"></i>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 8px;">
+              <span class="section-title-txt">3. Bukti Foto / Video Kerusakan</span>
+              <span class="required-mark" style="font-size: 12px; font-weight: 700;">(Wajib Sesuai F-07)</span>
+            </div>
+          </div>
+
+          <!-- Notice F-07 Mandatory Upload -->
+          <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; display: flex; align-items: flex-start; gap: 10px;">
+            <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #16A34A; flex-shrink: 0; margin-top: 1px;"></i>
+            <div style="font-size: 11.5px; color: #166534; line-height: 1.5;">
+              <strong>Ketentuan Standard Scope F-07:</strong> Penghuni diwajibkan melampirkan <strong>minimal 1 foto atau video</strong> kondisi kerusakan agar teknisi dapat menyiapkan peralatan dan suku cadang yang tepat sebelum datang ke unit.
+            </div>
+          </div>
+
+          <!-- Hidden Native File Input for Simulation -->
+          <input type="file" id="ticketFileInput" style="display: none;" accept="image/*,video/*" multiple onchange="handleFileSelected(event)">
+
+          <!-- Drag and Dropzone -->
+          <div class="upload-dropzone-box" id="ticketDropzone" onclick="triggerFileInput()">
+            <div class="upload-cloud-circle">
+              <i data-lucide="upload-cloud" style="width: 22px; height: 22px;"></i>
             </div>
             <div>
-              <div style="font-size: 13px; font-weight: 600; color: var(--text-main);">
-                Tarik Foto / Video ke sini atau <span style="color: var(--brand-primary); text-decoration: underline;">Klik untuk Memilih</span>
+              <div style="font-size: 13px; font-weight: 700; color: #0F172A;">
+                Tarik Foto / Video ke sini atau <span style="color: var(--brand-primary, #FF7A00); text-decoration: underline;">Pilih dari Galeri</span>
               </div>
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
-                Mendukung file PNG, JPG, MP4 atau MOV (Maksimal 25MB per file)
+              <div style="font-size: 11px; color: #64748B; margin-top: 3px;">
+                Mendukung file JPG, PNG, MP4, atau MOV (Maksimal 25MB per berkas)
               </div>
             </div>
+          </div>
+
+          <!-- Warning Notice when 0 files -->
+          <div class="media-warning-alert" id="mediaWarningAlert">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px; flex-shrink: 0;"></i>
+            <span><strong>Belum ada bukti lampiran:</strong> Anda wajib mengunggah minimal satu foto atau video kerusakan untuk dapat mengirim laporan ini.</span>
+          </div>
+
+          <!-- Live Media Counter Header -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+            <span style="font-size: 12px; font-weight: 700; color: #0F172A;" id="mediaCounterLabel">
+              2 Berkas Terlampir (1 Foto, 1 Video)
+            </span>
+            <span style="font-size: 11px; color: #059669; font-weight: 600;" id="mediaValidationStatus">
+              <i data-lucide="check" style="width: 11px; height: 11px; vertical-align: middle;"></i> Syarat F-07 Terpenuhi
+            </span>
           </div>
 
           <!-- Uploaded Media Preview Grid -->
-          <div class="upload-preview-grid" id="previewGrid">
-            <div class="upload-preview-card">
-              <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=300&q=80" alt="Bukti 1">
-              <button type="button" class="upload-remove-btn" onclick="removeMedia(this)" title="Hapus">&times;</button>
-            </div>
-            <div class="upload-preview-card" style="display: flex; align-items: center; justify-content: center; background: #111111; color: #FFFFFF;">
-              <div style="text-align: center;">
-                <i data-lucide="play-circle" style="width: 26px; height: 26px; color: #FF7A00;"></i>
-                <div style="font-size: 9px; margin-top: 2px;">video_bocor.mp4</div>
+          <div class="upload-preview-grid" id="mediaPreviewGrid">
+            
+            <!-- File 1: Foto Kran Bocor -->
+            <div class="upload-preview-card" id="cardFile_1">
+              <div class="preview-thumb-area">
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80" alt="Bukti Kran Bocor">
+                <span class="preview-badge-tag"><i data-lucide="image" style="width: 9px; height: 9px;"></i> Foto</span>
+                <button type="button" class="upload-remove-btn" onclick="removeMediaCard('cardFile_1')" title="Hapus Berkas">&times;</button>
               </div>
-              <button type="button" class="upload-remove-btn" onclick="removeMedia(this)" title="Hapus">&times;</button>
+              <div class="preview-meta-area">
+                <span class="preview-file-name" title="kran_bawah_bocor.jpg">kran_bawah_bocor.jpg</span>
+                <span class="preview-file-size">1.8 MB &bull; Baru Saja</span>
+              </div>
             </div>
+
+            <!-- File 2: Video Tetesan Air -->
+            <div class="upload-preview-card" id="cardFile_2">
+              <div class="preview-thumb-area" style="background: linear-gradient(135deg, #1E293B, #0F172A);">
+                <div style="text-align: center; color: #FFFFFF;">
+                  <i data-lucide="play-circle" style="width: 32px; height: 32px; color: #FF7A00;"></i>
+                  <div style="font-size: 10px; font-weight: 600; margin-top: 3px;">00:14 Detik</div>
+                </div>
+                <span class="preview-badge-tag" style="background: rgba(234, 88, 12, 0.85);"><i data-lucide="video" style="width: 9px; height: 9px;"></i> Video</span>
+                <button type="button" class="upload-remove-btn" onclick="removeMediaCard('cardFile_2')" title="Hapus Berkas">&times;</button>
+              </div>
+              <div class="preview-meta-area">
+                <span class="preview-file-name" title="tetesan_air_merembes.mp4">tetesan_air_merembes.mp4</span>
+                <span class="preview-file-size">8.4 MB &bull; Baru Saja</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ── SEKSI 4: PREFERENSI KUNJUNGAN & AKSES MASUK KAMAR ── -->
+          <div class="ticket-section-header">
+            <div class="section-icon-box" style="background: #EFF6FF; color: #2563EB; border-color: #BFDBFE;">
+              <i data-lucide="calendar-clock" style="width: 14px; height: 14px;"></i>
+            </div>
+            <div class="section-title-txt">4. Jadwal Kunjungan Teknisi</div>
+          </div>
+
+          <!-- Preference Time Slots -->
+          <div class="form-group-wrap">
+            <label class="form-label-custom">
+              <span>Waktu Preferensi Pengecekan Unit Kamar</span>
+            </label>
+            <div class="pref-cards-grid">
+              <div class="pref-card" id="slotMorning" onclick="selectTimeSlot('morning', this)">
+                <div class="pref-card-title">
+                  <span>Pagi Hari</span>
+                  <i data-lucide="sun" style="width: 14px; height: 14px; color: #D97706;"></i>
+                </div>
+                <div class="pref-card-sub">09:00 &ndash; 12:00 WIB</div>
+              </div>
+              <div class="pref-card active" id="slotAfternoon" onclick="selectTimeSlot('afternoon', this)">
+                <div class="pref-card-title">
+                  <span>Siang &ndash; Sore</span>
+                  <i data-lucide="sunset" style="width: 14px; height: 14px; color: var(--brand-primary, #FF7A00);"></i>
+                </div>
+                <div class="pref-card-sub">13:00 &ndash; 17:00 WIB (Dipilih)</div>
+              </div>
+              <div class="pref-card" id="slotFlexible" onclick="selectTimeSlot('flexible', this)">
+                <div class="pref-card-title">
+                  <span>Fleksibel</span>
+                  <i data-lucide="clock" style="width: 14px; height: 14px; color: #64748B;"></i>
+                </div>
+                <div class="pref-card-sub">Kapan saja teknisi siap</div>
+              </div>
+            </div>
+            <input type="hidden" id="visitTimeSlot" value="afternoon">
+          </div>
+
+          <!-- Access Permission Box -->
+          <div class="access-toggle-box checked" id="accessToggleBox" onclick="toggleAccessPerm()">
+            <div class="custom-checkbox-sq" id="accessCheckbox">
+              <i data-lucide="check" style="width: 12px; height: 12px;"></i>
+            </div>
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700; color: #0F172A;">
+                Izinkan teknisi masuk didampingi staf pengelola kost jika saya sedang tidak di tempat
+              </div>
+              <div style="font-size: 11px; color: #64748B; margin-top: 3px; line-height: 1.4;">
+                Kamar Anda akan diawasi langsung oleh staf pengelola selama perbaikan berlangsung untuk memastikan keamanan barang berharga.
+              </div>
+            </div>
+            <input type="hidden" id="accessPermVal" value="yes">
+          </div>
+
+          <!-- ── FORM FOOTER ACTIONS ── -->
+          <div class="form-footer-actions">
+            <a href="WF-10-portal-penghuni.html" class="btn-pill btn-white-outline" style="text-decoration: none; font-size: 12.5px;">
+              <i data-lucide="x" style="width: 13px; height: 13px;"></i>
+              Batal &amp; Kembali
+            </a>
+            
+            <button type="submit" class="btn-submit-ticket" id="btnSubmitTicket">
+              <i data-lucide="send" style="width: 15px; height: 15px;"></i>
+              <span>Kirim Laporan Kerusakan</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SUCCESS MODAL: TIKET BERHASIL DIBUAT (F-07 FLOW)
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop" id="modalTicketSuccess">
+    <div class="modal-card" style="max-width: 520px; text-align: center; padding: 32px 28px;">
+      
+      <div class="success-icon-bubble">
+        <i data-lucide="check-circle" style="width: 28px; height: 28px;"></i>
+      </div>
+
+      <span class="audit-pill-badge pill-emerald" style="font-size: 11px; padding: 4px 10px; margin-bottom: 8px;">
+        Tiket #TK-2026-005 Berhasil Terdaftar
+      </span>
+
+      <h3 style="font-size: 18px; font-weight: 800; color: #0F172A; margin: 4px 0 6px;">
+        Laporan Kerusakan Diterima Pengelola
+      </h3>
+
+      <p style="font-size: 12.5px; color: #64748B; margin: 0 0 16px; line-height: 1.5;">
+        Notifikasi otomatis telah diteruskan ke Staf Pengelola Kost &amp; Pemilik. Teknisi akan ditugaskan dalam waktu kurang dari 2 jam.
+      </p>
+
+      <!-- 5-Step Progress Snapshot -->
+      <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px 16px; text-align: left; margin-bottom: 20px;">
+        <div style="font-size: 11px; font-weight: 700; color: #0F172A; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+          <span>Tahapan Perbaikan Estify:</span>
+          <span style="color: #059669; font-weight: 700;">Tahap 1 Aktif</span>
+        </div>
+        
+        <div class="stepper-mini-track">
+          <div class="stepper-mini-node done">
+            <div class="node-circle"><i data-lucide="check" style="width: 12px; height: 12px;"></i></div>
+            <span class="node-label">1. Diterima</span>
+          </div>
+          <div class="stepper-mini-node">
+            <div class="node-circle">2</div>
+            <span class="node-label">2. Ditugaskan</span>
+          </div>
+          <div class="stepper-mini-node">
+            <div class="node-circle">3</div>
+            <span class="node-label">3. Pengerjaan</span>
+          </div>
+          <div class="stepper-mini-node">
+            <div class="node-circle">4</div>
+            <span class="node-label">4. Cek Hasil</span>
+          </div>
+          <div class="stepper-mini-node">
+            <div class="node-circle">5</div>
+            <span class="node-label">5. Selesai</span>
           </div>
         </div>
+      </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid var(--border-subtle);">
-          <a href="WF-10-portal-penghuni.html" class="btn-pill btn-white-outline" style="text-decoration: none;">
-            Batal
-          </a>
-          <button type="submit" class="btn-pill btn-primary" style="background: var(--brand-primary); color: #FFFFFF; padding: 12px 24px;">
-            <i data-lucide="send" style="width: 15px; height: 15px;"></i>
-            Kirim Laporan Kerusakan
-          </button>
-        </div>
-      </form>
+      <!-- Modal Action Buttons -->
+      <div style="display: flex; gap: 10px; justify-content: center;">
+        <a href="WF-10-portal-penghuni.html" class="btn-pill btn-white-outline" style="text-decoration: none; flex: 1;">
+          Ke Beranda Kamar
+        </a>
+        <a href="WF-12-portal-tiket-detail.html" class="btn-pill btn-primary" style="background: var(--brand-primary, #FF7A00); color: #FFFFFF; text-decoration: none; flex: 1.2;">
+          <i data-lucide="message-square" style="width: 14px; height: 14px;"></i>
+          <span>Lihat Detail &amp; Chat ↗</span>
+        </a>
+      </div>
+
     </div>
   </div>
 
   <script src="assets/js/components.js"></script>
   <script>
-    renderTopbar('lapor-kerusakan', 'tenant');
+    // ══════════════════════════════════════════════════════════════
+    // INTERACTIVE TICKET FORM CONTROLLER (F-07)
+    // ══════════════════════════════════════════════════════════════
+    let uploadedFilesCount = 2; // Initial simulated sample files
 
-    let uploadedCount = 2;
+    document.addEventListener('DOMContentLoaded', () => {
+      // Render tenant floating topbar
+      if (typeof window.renderTopbar === 'function') {
+        window.renderTopbar('lapor-kerusakan', 'tenant');
+      }
 
-    function simulateMediaUpload() {
-      uploadedCount++;
-      const grid = document.getElementById('previewGrid');
+      // Close dropdowns on outside click
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-form-select-wrap')) {
+          closeAllDropdowns();
+        }
+      });
+
+      syncMediaValidationState();
+      if (window.lucide) lucide.createIcons();
+    });
+
+    // ── Dropdown Handlers (0 Native Select) ──
+    function toggleCustomDropdown(wrapId, e) {
+      if (e) e.stopPropagation();
+      const targetWrap = document.getElementById(wrapId);
+      const isAlreadyOpen = targetWrap && targetWrap.classList.contains('open');
+      closeAllDropdowns();
+      if (targetWrap && !isAlreadyOpen) {
+        targetWrap.classList.add('open');
+      }
+    }
+
+    function closeAllDropdowns() {
+      document.querySelectorAll('.custom-form-select-wrap.open').forEach(w => w.classList.remove('open'));
+    }
+
+    function selectCategory(val, label, iconName, iconColor, itemElem, e) {
+      if (e) e.stopPropagation();
+      document.getElementById('ticketCategoryVal').value = val;
+      document.getElementById('catSelectedLabel').textContent = label;
+      
+      const iconWrap = document.getElementById('catSelectedIcon');
+      if (iconWrap) {
+        iconWrap.innerHTML = `<i data-lucide="${iconName}" style="width: 13px; height: 13px; color: ${iconColor};"></i>`;
+      }
+
+      document.querySelectorAll('#menuCategorySelect .form-select-item').forEach(it => {
+        it.classList.remove('selected');
+        const check = it.querySelector('[data-lucide="check"]');
+        if (check) check.remove();
+      });
+
+      if (itemElem) {
+        itemElem.classList.add('selected');
+        const checkIcon = document.createElement('i');
+        checkIcon.setAttribute('data-lucide', 'check');
+        checkIcon.style.width = '13px';
+        checkIcon.style.height = '13px';
+        itemElem.appendChild(checkIcon);
+      }
+
+      closeAllDropdowns();
+      if (window.lucide) lucide.createIcons();
+      if (window.RumaUI) RumaUI.showToast(`Kategori dipilih: ${label}`);
+    }
+
+    function selectUrgency(val, label, iconName, iconColor, itemElem, e) {
+      if (e) e.stopPropagation();
+      document.getElementById('ticketUrgencyVal').value = val;
+      document.getElementById('urgencySelectedLabel').textContent = label;
+
+      const iconWrap = document.getElementById('urgencySelectedIcon');
+      if (iconWrap) {
+        iconWrap.innerHTML = `<i data-lucide="${iconName}" style="width: 13px; height: 13px; color: ${iconColor};"></i>`;
+      }
+
+      document.querySelectorAll('#menuUrgencySelect .form-select-item').forEach(it => {
+        it.classList.remove('selected');
+        const check = it.querySelector('[data-lucide="check"]');
+        if (check) check.remove();
+      });
+
+      if (itemElem) {
+        itemElem.classList.add('selected');
+        const checkIcon = document.createElement('i');
+        checkIcon.setAttribute('data-lucide', 'check');
+        checkIcon.style.width = '13px';
+        checkIcon.style.height = '13px';
+        itemElem.appendChild(checkIcon);
+      }
+
+      closeAllDropdowns();
+      if (window.lucide) lucide.createIcons();
+      if (window.RumaUI) RumaUI.showToast(`Urgensi diatur: ${label}`);
+    }
+
+    // ── Quick Title Suggestion Handler ──
+    function applyTitleSuggestion(titleTxt) {
+      const input = document.getElementById('inputTicketTitle');
+      if (input) {
+        input.value = titleTxt;
+        updateCharCount(input);
+        input.focus();
+      }
+      if (window.RumaUI) RumaUI.showToast('Judul saran diterapkan');
+    }
+
+    function updateCharCount(input) {
+      const countLabel = document.getElementById('titleCharCount');
+      if (countLabel) {
+        countLabel.textContent = `${input.value.length} / 80 karakter`;
+      }
+    }
+
+    // ── Media Upload & Validation (F-07) ──
+    function triggerFileInput() {
+      const fileInput = document.getElementById('ticketFileInput');
+      if (fileInput) fileInput.click();
+    }
+
+    function handleFileSelected(e) {
+      const files = e.target.files;
+      if (!files || !files.length) return;
+
+      Array.from(files).forEach((file, idx) => {
+        simulateAddMediaCard(file.name, file.size, file.type.startsWith('video'));
+      });
+      e.target.value = '';
+    }
+
+    let dynamicMediaIndex = 3;
+    function simulateAddMediaCard(fileName, fileSizeNum, isVideo) {
+      uploadedFilesCount++;
+      dynamicMediaIndex++;
+      const grid = document.getElementById('mediaPreviewGrid');
+      const cardId = `cardFile_${dynamicMediaIndex}`;
+      const sizeStr = fileSizeNum ? `${(fileSizeNum / (1024 * 1024)).toFixed(1)} MB` : '2.1 MB';
+
       const card = document.createElement('div');
       card.className = 'upload-preview-card';
-      card.innerHTML = `
-        <img src="https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=300&q=80" alt="Bukti Tambahan">
-        <button type="button" class="upload-remove-btn" onclick="removeMedia(this)">&times;</button>
-      `;
+      card.id = cardId;
+
+      if (isVideo) {
+        card.innerHTML = `
+          <div class="preview-thumb-area" style="background: linear-gradient(135deg, #1E293B, #0F172A);">
+            <div style="text-align: center; color: #FFFFFF;">
+              <i data-lucide="play-circle" style="width: 32px; height: 32px; color: #FF7A00;"></i>
+              <div style="font-size: 10px; font-weight: 600; margin-top: 3px;">Video Baru</div>
+            </div>
+            <span class="preview-badge-tag" style="background: rgba(234, 88, 12, 0.85);"><i data-lucide="video" style="width: 9px; height: 9px;"></i> Video</span>
+            <button type="button" class="upload-remove-btn" onclick="removeMediaCard('${cardId}')" title="Hapus Berkas">&times;</button>
+          </div>
+          <div class="preview-meta-area">
+            <span class="preview-file-name" title="${fileName}">${fileName}</span>
+            <span class="preview-file-size">${sizeStr} &bull; Baru Saja</span>
+          </div>
+        `;
+      } else {
+        card.innerHTML = `
+          <div class="preview-thumb-area">
+            <img src="https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&w=400&q=80" alt="Bukti Foto">
+            <span class="preview-badge-tag"><i data-lucide="image" style="width: 9px; height: 9px;"></i> Foto</span>
+            <button type="button" class="upload-remove-btn" onclick="removeMediaCard('${cardId}')" title="Hapus Berkas">&times;</button>
+          </div>
+          <div class="preview-meta-area">
+            <span class="preview-file-name" title="${fileName}">${fileName}</span>
+            <span class="preview-file-size">${sizeStr} &bull; Baru Saja</span>
+          </div>
+        `;
+      }
+
       grid.appendChild(card);
-      RumaUI.showToast('Lampiran foto baru berhasil diunggah');
+      syncMediaValidationState();
+      if (window.lucide) lucide.createIcons();
+      if (window.RumaUI) RumaUI.showToast(`Berkas ${fileName} berhasil dilampirkan`, 'success');
     }
 
-    function removeMedia(button) {
-      button.closest('.upload-preview-card').remove();
-      uploadedCount--;
-      RumaUI.showToast('Berkas lampiran dihapus');
+    function removeMediaCard(cardId) {
+      const card = document.getElementById(cardId);
+      if (card) {
+        card.remove();
+        uploadedFilesCount--;
+        syncMediaValidationState();
+        if (window.RumaUI) RumaUI.showToast('Berkas lampiran dihapus');
+      }
     }
 
-    function handleSubmitTicket(e) {
+    function syncMediaValidationState() {
+      const warningAlert = document.getElementById('mediaWarningAlert');
+      const counterLabel = document.getElementById('mediaCounterLabel');
+      const valStatus = document.getElementById('mediaValidationStatus');
+      const submitBtn = document.getElementById('btnSubmitTicket');
+
+      if (uploadedFilesCount <= 0) {
+        uploadedFilesCount = 0;
+        if (warningAlert) warningAlert.classList.add('visible');
+        if (counterLabel) counterLabel.textContent = '0 Berkas Terlampir (Foto/Video Belum Ada)';
+        if (valStatus) {
+          valStatus.innerHTML = '<span style="color: #DC2626;"><i data-lucide="alert-circle" style="width: 11px; height: 11px; vertical-align: middle;"></i> Belum Memenuhi Syarat F-07</span>';
+        }
+        if (submitBtn) submitBtn.classList.add('disabled-look');
+      } else {
+        if (warningAlert) warningAlert.classList.remove('visible');
+        if (counterLabel) {
+          counterLabel.textContent = `${uploadedFilesCount} Berkas Terlampir`;
+        }
+        if (valStatus) {
+          valStatus.innerHTML = '<span style="color: #059669;"><i data-lucide="check" style="width: 11px; height: 11px; vertical-align: middle;"></i> Syarat F-07 Terpenuhi</span>';
+        }
+        if (submitBtn) submitBtn.classList.remove('disabled-look');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Drag and Drop Zone Visual Cues
+    const dropzone = document.getElementById('ticketDropzone');
+    if (dropzone) {
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('dragover');
+        }, false);
+      });
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('dragover');
+        }, false);
+      });
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files && files.length) {
+          Array.from(files).forEach(file => {
+            simulateAddMediaCard(file.name, file.size, file.type.startsWith('video'));
+          });
+        }
+      }, false);
+    }
+
+    // ── Time Preference Handler ──
+    function selectTimeSlot(slot, elem) {
+      document.querySelectorAll('.pref-card').forEach(c => {
+        c.classList.remove('active');
+        const sub = c.querySelector('.pref-card-sub');
+        if (sub) sub.textContent = sub.textContent.replace(' (Dipilih)', '');
+      });
+
+      if (elem) {
+        elem.classList.add('active');
+        const sub = elem.querySelector('.pref-card-sub');
+        if (sub) sub.textContent += ' (Dipilih)';
+      }
+      document.getElementById('visitTimeSlot').value = slot;
+      if (window.RumaUI) RumaUI.showToast('Preferensi waktu kunjungan diperbarui');
+    }
+
+    // ── Access Permission Toggle ──
+    function toggleAccessPerm() {
+      const box = document.getElementById('accessToggleBox');
+      const valInput = document.getElementById('accessPermVal');
+      const isChecked = box.classList.contains('checked');
+
+      if (isChecked) {
+        box.classList.remove('checked');
+        valInput.value = 'no';
+        if (window.RumaUI) RumaUI.showToast('Izin akses masuk diatur: Hanya saat penghuni di kamar');
+      } else {
+        box.classList.add('checked');
+        valInput.value = 'yes';
+        if (window.RumaUI) RumaUI.showToast('Izin akses masuk diatur: Boleh didampingi staf pengelola');
+      }
+    }
+
+    // ── Submit Ticket Form Handler ──
+    function handleFormTicketSubmit(e) {
       e.preventDefault();
-      if (uploadedCount <= 0) {
-        RumaUI.showToast('Wajib melampirkan minimal satu foto atau video kerusakan!', 'error');
+
+      // Enforce F-07 Mandatory Media Upload
+      if (uploadedFilesCount <= 0) {
+        if (window.RumaUI) {
+          RumaUI.showToast('Gagal kirim: Minimal 1 foto atau video kondisi kerusakan wajib dilampirkan sesuai ketentuan F-07!', 'error');
+        }
+        const warningAlert = document.getElementById('mediaWarningAlert');
+        if (warningAlert) {
+          warningAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
-      RumaUI.showToast('Laporan kerusakan berhasil dikirim! Menugaskan staf & teknisi...', 'success');
-      setTimeout(() => {
-        window.location.href = 'WF-12-portal-tiket-detail.html';
-      }, 700);
+
+      // Show Success Modal
+      const modal = document.getElementById('modalTicketSuccess');
+      if (modal) {
+        modal.classList.add('open');
+      }
+      if (window.RumaUI) {
+        RumaUI.showToast('Laporan kerusakan berhasil dikirim! Menugaskan teknisi...', 'success');
+      }
+      if (window.lucide) lucide.createIcons();
     }
   </script>
 </body>

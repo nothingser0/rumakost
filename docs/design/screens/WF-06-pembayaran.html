@@ -206,7 +206,7 @@
     }
 
     .metric-badge-pill {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
@@ -252,7 +252,7 @@
     }
 
     .metric-lbl-sub {
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-muted);
       font-weight: 500;
     }
@@ -407,7 +407,7 @@
     }
 
     .channel-meta-name {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-main);
       margin: 0;
@@ -415,7 +415,7 @@
     }
 
     .channel-meta-sub {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-muted);
       margin: 2px 0 0;
     }
@@ -430,15 +430,15 @@
     }
 
     .channel-amount-txt {
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-main);
     }
 
     .channel-share-pill {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 600;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: var(--radius-full);
       background: #F1F5F9;
       color: #475569;
@@ -522,7 +522,7 @@
     }
 
     .pending-recorded-note {
-      font-size: 10.5px;
+      font-size: 11px;
       color: #64748B;
       background: #FFFFFF;
       border: 1px solid #E2E8F0;
@@ -545,7 +545,7 @@
       color: #FFFFFF;
       border: 1px solid var(--dark-pill, #111111);
       border-radius: var(--radius-full);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
@@ -570,7 +570,7 @@
       color: #EF4444;
       border: 1px solid #FECDD3;
       border-radius: var(--radius-full);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       transition: all var(--transition-fast);
@@ -591,7 +591,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-xl);
-      padding: 10px 16px;
+      padding: 10px 14px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.025);
       display: flex;
       align-items: center;
@@ -600,13 +600,14 @@
       flex-wrap: nowrap;
       box-sizing: border-box;
       width: 100%;
+      min-height: 60px;
     }
 
     .search-capsule-box {
       display: flex;
       align-items: center;
       gap: 8px;
-      height: 34px;
+      height: 40px;
       padding: 0 12px;
       background: #F8FAFC;
       border: 1px solid #E2E8F0;
@@ -615,6 +616,7 @@
       max-width: 240px;
       min-width: 140px;
       transition: all var(--transition-fast);
+      box-sizing: border-box;
     }
 
     .search-capsule-box:focus-within {
@@ -627,7 +629,7 @@
       border: none;
       background: transparent;
       outline: none;
-      font-size: 11.5px;
+      font-size: 13px;
       color: var(--text-main);
       width: 100%;
       font-family: inherit;
@@ -651,15 +653,15 @@
       display: inline-flex;
       align-items: center;
       background: #F1F5F9;
-      padding: 2.5px;
+      padding: 3px 4px;
       border-radius: var(--radius-full);
       gap: 2px;
       flex-shrink: 0;
     }
 
     .segment-tab-btn {
-      height: 29px;
-      padding: 0 10px;
+      height: 34px;
+      padding: 0 9px;
       border: none;
       background: transparent;
       border-radius: var(--radius-full);
@@ -689,13 +691,13 @@
     }
 
     .btn-export-action {
-      height: 34px;
-      padding: 0 13px;
+      height: 40px;
+      padding: 0 14px;
       border-radius: var(--radius-full);
       border: 1px solid var(--border-subtle);
       background: #FFFFFF;
       color: var(--text-main);
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
@@ -704,6 +706,7 @@
       transition: all var(--transition-fast);
       white-space: nowrap;
       flex-shrink: 0;
+      box-sizing: border-box;
     }
 
     .btn-export-action:hover {
@@ -713,13 +716,13 @@
     }
 
     .btn-action-catat {
-      height: 34px;
+      height: 44px;
       padding: 0 16px;
       background: var(--brand-primary);
       color: #FFFFFF;
       border: none;
       border-radius: var(--radius-full);
-      font-size: 11.5px;
+      font-size: 13px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
@@ -728,18 +731,8 @@
       transition: all var(--transition-fast);
       white-space: nowrap;
       flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(255, 122, 0, 0.2);
-    }
-      border: none;
-      border-radius: var(--radius-full);
-      font-size: 11.5px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.25);
+      box-sizing: border-box;
     }
 
     .btn-action-catat:hover {
@@ -873,7 +866,7 @@
     }
 
     .feed-tenant-name {
-      font-size: 13.5px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text-main);
       display: flex;
@@ -967,7 +960,7 @@
     }
 
     .feed-due-sub {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-muted);
     }
 
@@ -1093,7 +1086,7 @@
     }
 
     .slip-ref-meta {
-      font-size: 10.5px;
+      font-size: 11px;
       color: #64748B;
       display: flex;
       justify-content: space-between;
@@ -1126,7 +1119,7 @@
     }
 
     .reconcile-item-lbl {
-      font-size: 10.5px;
+      font-size: 11px;
       color: var(--text-muted);
     }
 
@@ -1196,7 +1189,7 @@
       background: #111111;
       color: #FFFFFF;
       border: none;
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
@@ -1283,7 +1276,7 @@
       border: 1px solid #FFEDD5;
       border-radius: 8px;
       padding: 8px 10px;
-      font-size: 10.5px;
+      font-size: 11px;
       color: #C2410C;
       text-align: center;
       line-height: 1.3;
@@ -1392,7 +1385,7 @@
     }
 
     .form-label-custom {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
       display: flex;
@@ -1400,15 +1393,16 @@
     }
 
     .form-input-custom {
-      height: 40px;
+      height: 42px !important;
       border: 1.5px solid var(--border-input);
       border-radius: 12px;
       padding: 0 14px;
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-main);
       font-family: inherit;
       outline: none;
       transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      box-sizing: border-box;
     }
 
     .form-input-custom:focus {
@@ -1420,13 +1414,14 @@
       border: 1.5px solid var(--border-input);
       border-radius: 12px;
       padding: 10px 14px;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-main);
       font-family: inherit;
       outline: none;
       resize: vertical;
-      min-height: 70px;
+      min-height: 84px;
       transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      box-sizing: border-box;
     }
 
     .form-textarea-custom:focus {
@@ -1515,7 +1510,7 @@
     }
 
     .method-popover-opt strong {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
       flex-shrink: 0;
       margin-left: 8px;
@@ -1601,7 +1596,7 @@
     .calc-row {
       display: flex;
       justify-content: space-between;
-      font-size: 11.5px;
+      font-size: 12px;
       color: #64748B;
     }
 
@@ -1636,7 +1631,7 @@
       border: none;
       padding: 4px 10px;
       border-radius: var(--radius-full);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
@@ -1748,7 +1743,7 @@
             <div class="metric-card-bottom">
               <div class="metric-val-col">
                 <span class="metric-lbl-sub">Bulan ini (12 Mutasi)</span>
-                <div class="metric-value-huge">Rp 21,65 <span class="metric-sub-val">Jt</span></div>
+                <div class="metric-value-huge" id="metricValRealized">Rp 21,65 <span class="metric-sub-val">Jt</span></div>
               </div>
 
               <!-- Estify Smooth Semi-Circle Radial Progress Gauge (Emerald Green) -->
@@ -1771,13 +1766,13 @@
                 </div>
                 <span class="metric-lbl-title">Menunggu Verifikasi</span>
               </div>
-              <span class="metric-badge-pill pill-orange-soft">2 Transaksi</span>
+              <span class="metric-badge-pill pill-orange-soft" id="metricBadgePending">2 Transaksi</span>
             </div>
             
             <div class="metric-card-bottom">
               <div class="metric-val-col">
                 <span class="metric-lbl-sub">Persetujuan Pemilik</span>
-                <div class="metric-value-huge">Rp 3,40 <span class="metric-sub-val">Jt</span></div>
+                <div class="metric-value-huge" id="metricValPending">Rp 3,40 <span class="metric-sub-val">Jt</span></div>
               </div>
 
               <!-- Estify Smooth Semi-Circle Radial Progress Gauge (Signature Brand Orange) -->
@@ -1825,10 +1820,10 @@
         <!-- 2. CONTROLS STRIP: SEARCH & STATUS PILL SEGMENTS (SINGLE LINE TOOLBAR) -->
         <div class="controls-strip-card">
           <div class="search-capsule-box">
-            <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8; flex-shrink: 0;"></i>
+            <i data-lucide="search" style="width: 15px; height: 15px; color: #94A3B8; flex-shrink: 0;"></i>
             <input type="text" id="txSearchInput" placeholder="Cari transaksi, kamar, nama..." oninput="handleSearch(this.value)">
             <button type="button" id="clearSearchBtn" class="btn-clear-search" onclick="clearSearch()" title="Hapus pencarian">
-              <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+              <i data-lucide="x" style="width: 14px; height: 14px;"></i>
             </button>
           </div>
 
@@ -1842,12 +1837,12 @@
 
           <div class="controls-actions-cluster">
             <button type="button" class="btn-export-action" onclick="RumaUI.showToast('Rekap transaksi Oktober 2026 berhasil diekspor (CSV)!', 'success')" title="Ekspor rekap mutasi kas ke CSV">
-              <i data-lucide="download" style="width: 13px; height: 13px;"></i>
+              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
               <span>Ekspor</span>
             </button>
 
             <button type="button" class="btn-action-catat" onclick="openModalCatatBayar()" title="Catat penerimaan pembayaran manual baru">
-              <i data-lucide="plus" style="width: 13px; height: 13px;"></i>
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
               <span>Catat Penerimaan</span>
             </button>
           </div>
@@ -1870,7 +1865,7 @@
               <i data-lucide="landmark" style="width: 16px; height: 16px; color: var(--brand-primary);"></i>
               <span>Kanal Kasir Aktif</span>
             </h4>
-            <span class="status-pill-badge is-success" style="font-size: 10px; padding: 2px 8px;">3 Kanal</span>
+            <span class="status-pill-badge is-success" style="font-size: 11px; padding: 2px 8px;">3 Kanal</span>
           </div>
 
           <div class="sidebar-channel-list">
@@ -1954,9 +1949,10 @@
               <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #EA580C;"></i>
               <span>Verifikasi Pencatatan Staf</span>
             </h4>
+            <span class="status-pill-badge is-warning" id="pendingSidebarCountBadge" style="font-size: 11px; padding: 2px 8px;">2 Antrean</span>
           </div>
 
-          <div class="sidebar-pending-list" style="max-height: 290px; overflow-y: auto; padding-right: 2px;">
+          <div class="sidebar-pending-list" id="sidebarPendingList" style="max-height: 290px; overflow-y: auto; padding-right: 2px;">
             <!-- Pending Item 1 -->
             <div class="sidebar-pending-card">
               <div onclick="focusAndInspectFeedTx('PAY-202610-11')" style="cursor: pointer;" title="Klik untuk periksa slip bukti transfer & detail transaksi di feed utama">
@@ -2018,7 +2014,7 @@
             </div>
           </div>
 
-          <div style="font-size: 10.5px; color: #64748B; background: #FFFBEB; border: 1px solid #FEF3C7; padding: 8px 12px; border-radius: 10px; display: flex; align-items: flex-start; gap: 6px;">
+          <div style="font-size: 11px; color: #64748B; background: #FFFBEB; border: 1px solid #FEF3C7; padding: 8px 12px; border-radius: 10px; display: flex; align-items: flex-start; gap: 6px;">
             <i data-lucide="info" style="width: 13px; height: 13px; color: #D97706; flex-shrink: 0; margin-top: 1px;"></i>
             <span><strong>Zero Self-Approval:</strong> Staf operasional tidak dapat memvalidasi pembayarannya sendiri. Hanya Pemilik Kost yang berwenang mengesahkan mutasi bank.</span>
           </div>
@@ -2057,7 +2053,7 @@
         <div class="form-group-custom">
           <label class="form-label-custom">
             <span>Pilih Tagihan & Kamar Penghuni *</span>
-            <span id="invoiceSelectedBadge" style="font-size: 10.5px; font-weight: 600; color: #16A34A; background: #DCFCE7; padding: 1px 7px; border-radius: 6px;">Kamar A-04 Terpilih</span>
+            <span id="invoiceSelectedBadge" style="font-size: 11px; font-weight: 600; color: #16A34A; background: #DCFCE7; padding: 2px 8px; border-radius: 6px;">Kamar A-04 Terpilih</span>
           </label>
           <div class="search-invoice-wrap" style="position: relative; width: 100%;">
             <div style="position: relative; display: flex; align-items: center;">
@@ -2065,7 +2061,7 @@
               <input type="text" 
                      id="searchInvoiceInput" 
                      class="form-input-custom" 
-                     style="width: 100%; padding-left: 38px; padding-right: 32px; font-size: 12.5px; font-weight: 500;" 
+                     style="width: 100%; padding-left: 38px; padding-right: 32px; font-size: 13px; font-weight: 500; height: 42px;" 
                      placeholder="Ketik nama penghuni, nomor kamar (A-04), atau nomor invoice..." 
                      value="Kamar A-04 · Budi Santoso (#INV-202610-004)"
                      onfocus="openInvoiceSearchResults()"
@@ -2113,7 +2109,7 @@
           </div>
 
           <!-- Callout Informasi Pemotongan Deposit (Escrow Deduction) -->
-          <div id="depositCalloutBox" style="display: none; background: #F5F3FF; border: 1px solid #DDD6FE; border-radius: 12px; padding: 10px 14px; font-size: 11.5px; color: #5B21B6; margin-top: 10px;">
+          <div id="depositCalloutBox" style="display: none; background: #F5F3FF; border: 1px solid #DDD6FE; border-radius: 12px; padding: 10px 14px; font-size: 12px; color: #5B21B6; margin-top: 10px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
               <span style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
                 <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #7C3AED;"></i>
@@ -2137,7 +2133,7 @@
             <label class="form-label-custom">Tanggal Bayar *</label>
             <div class="ruma-datepicker-wrap align-right" id="wrapPayDate" style="width: 100%;">
               <input type="hidden" id="inputPayDate" value="2026-10-23">
-              <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapPayDate', 'inputPayDate')" style="height: 40px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
+              <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapPayDate', 'inputPayDate')" style="height: 42px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
                 <div class="ruma-datepicker-trigger-content" style="display: flex; align-items: center; gap: 8px;">
                   <i data-lucide="calendar" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
                   <span class="ruma-datepicker-val-txt" id="inputPayDateDisplay" style="font-size: 12px; font-weight: 600; color: var(--text-main);">23 Oktober 2026</span>
@@ -2172,7 +2168,7 @@
               <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
             </div>
             <div style="font-size: 12px; font-weight: 600; color: var(--text-main);" id="uploadFileName">Klik untuk unggah slip transfer bank</div>
-            <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 2px;">Format JPG, PNG, atau PDF sintetis (Maks. 5 MB)</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Format JPG, PNG, atau PDF sintetis (Maks. 5 MB)</div>
           </div>
         </div>
 
@@ -2180,9 +2176,9 @@
         <div class="form-group-custom">
           <label class="form-label-custom">
             Catatan / Keterangan Pembayaran
-            <span style="font-size: 10.5px; font-weight: 400; color: #64748B;">(Opsional)</span>
+            <span style="font-size: 11px; font-weight: 400; color: #64748B;">(Opsional)</span>
           </label>
-          <textarea class="form-textarea-custom" id="inputPayNotes" rows="2" style="min-height: 60px; font-size: 12px;" placeholder="Contoh: Titip lewat satpam, transfer via rekening ibu Siti, sisa pelunasan tgl 28"></textarea>
+          <textarea class="form-textarea-custom" id="inputPayNotes" rows="2" style="min-height: 84px; font-size: 13px;" placeholder="Contoh: Titip lewat satpam, transfer via rekening ibu Siti, sisa pelunasan tgl 28"></textarea>
         </div>
 
         <!-- Kalkulasi Sisa Tagihan Otomatis (Story RK-032) -->
@@ -2209,7 +2205,7 @@
               <i data-lucide="message-square" style="width: 13px; height: 13px; color: #16A34A;"></i>
               <span>Kirim Kuitansi & Bukti Bayar via WhatsApp ke Penghuni</span>
             </div>
-            <div style="font-size: 10.5px; color: #15803D; margin-top: 2px;">
+            <div style="font-size: 11px; color: #15803D; margin-top: 2px;">
               Kuitansi resmi digital akan otomatis dikirimkan ke nomor WhatsApp penghuni setelah transaksi disimpan.
             </div>
           </div>
@@ -2218,9 +2214,9 @@
       </div>
 
       <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalCatatBayar')">Batal</button>
-        <button type="button" class="btn-action-catat" style="height: 38px; padding: 0 20px; font-size: 12px;" onclick="submitPaymentRecord()">
-          <i data-lucide="save" style="width: 14px; height: 14px;"></i>
+        <button type="button" class="btn-exec-receipt" style="width: auto; height: 42px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalCatatBayar')">Batal</button>
+        <button type="button" class="btn-action-catat" style="height: 42px; padding: 0 22px; font-size: 13px; font-weight: 600;" onclick="submitPaymentRecord()">
+          <i data-lucide="save" style="width: 15px; height: 15px;"></i>
           <span>Simpan Catatan Pembayaran</span>
         </button>
       </div>
@@ -2248,7 +2244,7 @@
           <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding-bottom: 12px;">
             <div>
               <div style="font-size: 13px; font-weight: 700; color: #1D4ED8;" id="zoomSlipBank">MANDIRI ONLINE TRANSFER</div>
-              <div style="font-size: 10.5px; color: #64748B;">Resi Resmi Transaksi Finansial</div>
+              <div style="font-size: 11px; color: #64748B;">Resi Resmi Transaksi Finansial</div>
             </div>
             <span class="status-pill-badge is-success">VALID MUTASI</span>
           </div>
@@ -2258,7 +2254,7 @@
             <div style="font-size: 24px; font-weight: 800; color: #111827; letter-spacing: -0.02em;" id="zoomSlipAmount">Rp 1.500.000</div>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 11.5px; border-top: 1px dashed #CBD5E1; padding-top: 10px;">
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; border-top: 1px dashed #CBD5E1; padding-top: 10px;">
             <div style="display: flex; justify-content: space-between;">
               <span style="color: #64748B;">Rekening Tujuan:</span>
               <strong id="zoomSlipDestination">BCA - 8472-9182-01 (Budi Makmur)</strong>
@@ -2281,9 +2277,9 @@
       </div>
 
       <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalProofZoom')">Tutup</button>
-        <button type="button" class="btn-exec-approve" style="width: auto; padding: 0 18px;" id="btnZoomApprove" onclick="approveSelectedFromModal();">
-          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+        <button type="button" class="btn-exec-receipt" style="width: auto; height: 40px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalProofZoom')">Tutup</button>
+        <button type="button" class="btn-exec-approve" style="width: auto; height: 40px; padding: 0 20px; font-size: 13px;" id="btnZoomApprove" onclick="approveSelectedFromModal();">
+          <i data-lucide="check" style="width: 15px; height: 15px;"></i>
           <span>Sahkan Transaksi Ini</span>
         </button>
       </div>
@@ -2312,14 +2308,14 @@
 
         <div class="form-group-custom">
           <label class="form-label-custom">Alasan Penolakan Bukti *</label>
-          <textarea class="form-textarea-custom" id="rejectReasonInput" placeholder="Contoh: Dana belum masuk ke mutasi rekening bank, atau nominal bukti transfer tidak cocok dengan invoice."></textarea>
+          <textarea class="form-textarea-custom" id="rejectReasonInput" style="min-height: 84px; font-size: 13px;" placeholder="Contoh: Dana belum masuk ke mutasi rekening bank, atau nominal bukti transfer tidak cocok dengan invoice."></textarea>
         </div>
       </div>
 
       <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalReject')">Batal</button>
-        <button type="button" class="btn-exec-reject" style="width: auto; padding: 0 18px;" onclick="confirmRejectPayment()">
-          <i data-lucide="x-circle" style="width: 14px; height: 14px;"></i>
+        <button type="button" class="btn-exec-receipt" style="width: auto; height: 40px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalReject')">Batal</button>
+        <button type="button" class="btn-exec-reject" style="width: auto; height: 40px; padding: 0 20px; font-size: 13px;" onclick="confirmRejectPayment()">
+          <i data-lucide="x-circle" style="width: 15px; height: 15px;"></i>
           <span>Konfirmasi Tolak Bukti</span>
         </button>
       </div>
@@ -2342,7 +2338,7 @@
       </div>
 
       <div class="modal-card-body">
-        <div style="background: #FEE2E2; border: 1px solid #FECDD3; border-radius: 12px; padding: 12px 14px; font-size: 11.5px; color: #991B1B; line-height: 1.4;">
+        <div style="background: #FEE2E2; border: 1px solid #FECDD3; border-radius: 12px; padding: 12px 14px; font-size: 12px; color: #991B1B; line-height: 1.4;">
           <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
           <strong>Prinsip Jejak Audit:</strong> Transaksi asli tidak akan dihapus fisik. Sistem akan membuat entri pembalik (reversal negatif) dan mengembalikan saldo tagihan kamar ke status belum terbayar.
         </div>
@@ -2403,17 +2399,17 @@
           <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111111; padding-bottom: 12px;">
             <div>
               <div style="font-size: 15px; font-weight: 800; color: #111111;">KOST BUDI MAKMUR</div>
-              <div style="font-size: 10px; color: #64748B;">Jl. Babakan Jeruk I No. 12, Bandung</div>
-              <div style="font-size: 10px; color: #64748B;">Telp / WA: 0812-3456-7890</div>
+              <div style="font-size: 11px; color: #64748B;">Jl. Babakan Jeruk I No. 12, Bandung</div>
+              <div style="font-size: 11px; color: #64748B;">Telp / WA: 0812-3456-7890</div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 10px; font-weight: 600; color: #64748B;">NO. KUITANSI</div>
+              <div style="font-size: 11px; font-weight: 600; color: #64748B;">NO. KUITANSI</div>
               <div style="font-size: 12px; font-weight: 700; font-family: monospace;" id="receiptSerialNo">KW-202610-001</div>
             </div>
           </div>
 
           <!-- Rincian Kuitansi -->
-          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11.5px;">
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
             <div style="display: flex; justify-content: space-between;">
               <span style="color: #64748B;">Telah diterima dari:</span>
               <strong id="receiptTenantName">Rina Marliana</strong>
@@ -2434,17 +2430,17 @@
 
           <!-- Kotak Nominal Besar -->
           <div style="background: #FAFAFA; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px; text-align: center;">
-            <span style="font-size: 10.5px; color: #64748B; text-transform: uppercase; font-weight: 600;">Jumlah yang Diterima</span>
+            <span style="font-size: 11px; color: #64748B; text-transform: uppercase; font-weight: 600;">Jumlah yang Diterima</span>
             <div style="font-size: 22px; font-weight: 800; color: #111111;" id="receiptTotalAmount">Rp 1.800.000</div>
           </div>
 
           <!-- Tanda Tangan Digital Pengelola -->
           <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 10px;">
-            <div style="font-size: 9.5px; color: #94A3B8;">
+            <div style="font-size: 11px; color: #94A3B8;">
               Dicetak resmi melalui sistem RumaKost.<br>Bukti transaksi sah tanpa tanda tangan basah.
             </div>
             <div style="text-align: center;">
-              <div style="font-size: 10px; color: #64748B;">Penerima / Pengelola</div>
+              <div style="font-size: 11px; color: #64748B;">Penerima / Pengelola</div>
               <div style="font-size: 11px; font-weight: 700; color: #111111; margin-top: 24px;">Budi Makmur (Pemilik)</div>
             </div>
           </div>
@@ -2453,8 +2449,8 @@
       </div>
 
       <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalReceipt')">Tutup</button>
-        <button type="button" class="btn-action-catat" style="height: 38px; padding: 0 20px; font-size: 12px;" onclick="printReceiptDocument()">
+        <button type="button" class="btn-exec-receipt" style="width: auto; height: 40px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalReceipt')">Tutup</button>
+        <button type="button" class="btn-action-catat" style="height: 40px; padding: 0 20px; font-size: 13px; font-weight: 600;" onclick="printReceiptDocument()">
           <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
           <span>Cetak Dokumen</span>
         </button>
@@ -2480,7 +2476,7 @@
       <div class="modal-card-body">
         
         <!-- Callout Info Standar Pembukuan -->
-        <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 11px 14px; font-size: 11.5px; color: #9A3412; display: flex; align-items: flex-start; gap: 8px;">
+        <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 11px 14px; font-size: 12px; color: #9A3412; display: flex; align-items: flex-start; gap: 8px;">
           <i data-lucide="info" style="width: 15px; height: 15px; color: #EA580C; flex-shrink: 0; margin-top: 2px;"></i>
           <div style="line-height: 1.45;">
             <strong>Pencatatan Otomatis Kas Keluar:</strong> Pengembalian dana akan langsung dibukukan sebagai transaksi <strong>Pengeluaran Kas (Kredit)</strong> pada mutasi kas kost untuk menjaga keseimbangan buku kas.
@@ -2530,15 +2526,15 @@
 
         <div class="form-group-custom">
           <label class="form-label-custom">Catatan Tambahan (Opsional)</label>
-          <textarea class="form-textarea-custom" id="refundNotes" rows="2" style="font-size: 12px; min-height: 52px;" placeholder="Contoh: Pengembalian dana transfer dobel atas permintaan penghuni"></textarea>
+          <textarea class="form-textarea-custom" id="refundNotes" rows="2" style="font-size: 13px; min-height: 84px;" placeholder="Contoh: Pengembalian dana transfer dobel atas permintaan penghuni"></textarea>
         </div>
 
       </div>
 
       <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalRefundSurplus')">Batal</button>
-        <button type="button" class="btn-action-catat" style="height: 38px; padding: 0 20px; font-size: 12px; background: #EA580C; border-color: #EA580C;" onclick="submitRefundSurplus()">
-          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+        <button type="button" class="btn-exec-receipt" style="width: auto; height: 40px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalRefundSurplus')">Batal</button>
+        <button type="button" class="btn-action-catat" style="height: 42px; padding: 0 22px; font-size: 13px; font-weight: 600; background: #EA580C; border-color: #EA580C;" onclick="submitRefundSurplus()">
+          <i data-lucide="check" style="width: 15px; height: 15px;"></i>
           <span>Konfirmasi &amp; Catat Kas Keluar</span>
         </button>
       </div>
@@ -3048,6 +3044,8 @@
       });
 
       container.innerHTML = html;
+      renderSidebarPendingList();
+      updateSummaryMetrics();
       lucide.createIcons();
     }
 
@@ -3230,7 +3228,7 @@
                   <span>Resi Finansial</span>
                 </div>
                 <div class="slip-center-nominal">
-                  <div style="font-size: 10px; color: #64748B;">Nominal Mutasi</div>
+                  <div style="font-size: 11px; color: #64748B;">Nominal Mutasi</div>
                   <div class="slip-nominal-txt">${formatRupiah(item.amount)}</div>
                 </div>
                 <div class="slip-ref-meta">
@@ -3238,11 +3236,11 @@
                   <span style="font-family: monospace;">${item.refNo}</span>
                 </div>
                 ${item.destination ? `
-                <div style="font-size: 10px; color: #64748B; padding-top: 3px; border-top: 1px dashed #E2E8F0; margin-top: 4px; display: flex; justify-content: space-between;">
+                <div style="font-size: 11px; color: #64748B; padding-top: 3px; border-top: 1px dashed #E2E8F0; margin-top: 4px; display: flex; justify-content: space-between;">
                   <span>Tujuan:</span>
                   <strong style="color: #334155;">${item.destination.split('·')[0].trim()}</strong>
                 </div>` : ''}
-                <div style="text-align: center; font-size: 10.5px; color: var(--brand-primary); font-weight: 600; padding-top: 4px;">
+                <div style="text-align: center; font-size: 11px; color: var(--brand-primary); font-weight: 600; padding-top: 4px;">
                   <i data-lucide="zoom-in" style="width: 11px; height: 11px; vertical-align: middle;"></i> Klik untuk Perbesar Slip
                 </div>
               </div>
@@ -3436,7 +3434,7 @@
       if (!panel) return;
       if (!items || items.length === 0) {
         panel.innerHTML = `
-          <div style="padding: 16px 12px; text-align: center; color: #94A3B8; font-size: 11.5px;">
+          <div style="padding: 16px 12px; text-align: center; color: #94A3B8; font-size: 12px;">
             <i data-lucide="search-x" style="width: 20px; height: 20px; margin: 0 auto 6px; display: block; opacity: 0.6;"></i>
             Tidak ada tagihan atau kamar penghuni yang cocok
           </div>
@@ -3456,16 +3454,16 @@
               <div>
                 <div style="font-size: 12px; font-weight: 600; color: var(--text-main, #111111); display: flex; align-items: center; gap: 6px;">
                   <span>${inv.tenant}</span>
-                  <span style="font-size: 10px; font-weight: 500; color: #64748B;">#${inv.id}</span>
+                  <span style="font-size: 11px; font-weight: 500; color: #64748B;">#${inv.id}</span>
                 </div>
                 <div style="font-size: 11px; color: #64748B; margin-top: 2px;">
-                  Total ${formatRupiah(inv.total)} · <span style="font-size: 10px; font-weight: 600; color: ${inv.badgeColor}; background: ${inv.badgeBg}; padding: 1px 6px; border-radius: 4px;">${inv.status}</span>
+                  Total ${formatRupiah(inv.total)} · <span style="font-size: 11px; font-weight: 600; color: ${inv.badgeColor}; background: ${inv.badgeBg}; padding: 1px 6px; border-radius: 4px;">${inv.status}</span>
                 </div>
               </div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 10px; color: #94A3B8; font-weight: 500;">Sisa Tagihan</div>
-              <div style="font-size: 12.5px; font-weight: 700; color: #EA580C;">${formatRupiah(inv.due)}</div>
+              <div style="font-size: 11px; color: #94A3B8; font-weight: 500;">Sisa Tagihan</div>
+              <div style="font-size: 13px; font-weight: 700; color: #EA580C;">${formatRupiah(inv.due)}</div>
             </div>
           </div>
         `;
@@ -3830,11 +3828,113 @@
       closeModal('modalProofZoom');
     }
 
-    // Reject Card Modal
+    // Reject Modal Triggers (Sidebar & Card)
+    function openModalReject(id, name, amount) {
+      openModalRejectCard(id);
+    }
+
     function openModalRejectCard(id) {
       activeActionTxId = id;
       document.getElementById('rejectReasonInput').value = '';
       openModal('modalReject');
+    }
+
+    function renderSidebarPendingList() {
+      const container = document.getElementById('sidebarPendingList');
+      const badge = document.getElementById('pendingSidebarCountBadge');
+      if (!container) return;
+
+      const pendingItems = paymentsData.filter(d => d.status === 'pending');
+      if (badge) {
+        badge.textContent = `${pendingItems.length} Antrean`;
+        badge.className = pendingItems.length > 0 ? 'status-pill-badge is-warning' : 'status-pill-badge is-success';
+      }
+
+      if (pendingItems.length === 0) {
+        container.innerHTML = `
+          <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 12px; padding: 24px 14px; text-align: center; color: #64748B;">
+            <i data-lucide="check-circle-2" style="width: 24px; height: 24px; color: #16A34A; margin-bottom: 6px; display: inline-block;"></i>
+            <div style="font-size: 12px; font-weight: 600; color: #1E293B;">Semua Mutasi Telah Disahkan</div>
+            <div style="font-size: 11px; color: #94A3B8; margin-top: 2px;">Tidak ada transaksi tertunda dari staf</div>
+          </div>
+        `;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = pendingItems.map(item => `
+        <div class="sidebar-pending-card" id="pendingCard-${item.id}">
+          <div onclick="focusAndInspectFeedTx('${item.id}')" style="cursor: pointer;" title="Klik untuk periksa slip bukti transfer & detail transaksi di feed utama">
+            <div class="pending-header-row">
+              <div>
+                <div class="pending-tenant-name" style="display: flex; align-items: center; gap: 7px;">
+                  <span>${item.tenant}</span>
+                  <span class="pending-float-arrow" title="Buka &amp; periksa di feed"><i data-lucide="arrow-up-right" style="width: 11px; height: 11px;"></i></span>
+                </div>
+                <div class="pending-room-sub">Kamar ${item.room} (${item.floor}) &bull; ${item.method}</div>
+              </div>
+              <div class="pending-amount-huge">${formatRupiah(item.amount)}</div>
+            </div>
+            <div class="pending-recorded-note" style="margin-top: 8px;">
+              <i data-lucide="user-check" style="width: 12px; height: 12px; color: #64748B;"></i>
+              <span>${item.auditLog && item.auditLog[0] ? item.auditLog[0].text : 'Dicatat oleh Staf'}</span>
+            </div>
+          </div>
+          <div class="pending-action-btn-row">
+            <button type="button" class="btn-quick-sah-pembayaran" onclick="approveDirectFromSidebar('${item.id}', '${item.tenant}', '${formatRupiah(item.amount)}')" title="Sahkan langsung jika mutasi sudah cocok di m-Banking">
+              <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+              <span>Sahkan Pembayaran</span>
+            </button>
+            <button type="button" class="btn-quick-tolak-pembayaran" onclick="openModalReject('${item.id}', '${item.tenant}', '${formatRupiah(item.amount)}')" title="Tolak &amp; Kembalikan ke Staf">
+              <i data-lucide="x" style="width: 13px; height: 13px;"></i>
+              <span>Tolak</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function updateSummaryMetrics() {
+      // Pending count & total
+      const pendingItems = paymentsData.filter(d => d.status === 'pending');
+      const pendingTotal = pendingItems.reduce((acc, curr) => acc + curr.amount, 0);
+
+      // Verified / Surplus total (Kas Masuk Realisasi)
+      const realizedItems = paymentsData.filter(d => d.status === 'verified' || d.status === 'surplus' || d.status === 'double_transfer');
+      const realizedTotal = realizedItems.reduce((acc, curr) => acc + Math.max(0, curr.amount), 0);
+
+      // Top metric card values
+      const valRealized = document.getElementById('metricValRealized');
+      if (valRealized) {
+        valRealized.innerHTML = `Rp ${(realizedTotal / 1000000).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span class="metric-sub-val">Jt</span>`;
+      }
+
+      const badgePending = document.getElementById('metricBadgePending');
+      if (badgePending) {
+        badgePending.textContent = `${pendingItems.length} Transaksi`;
+      }
+      const valPending = document.getElementById('metricValPending');
+      if (valPending) {
+        valPending.innerHTML = `Rp ${(pendingTotal / 1000000).toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span class="metric-sub-val">Jt</span>`;
+      }
+
+      // Update segment tabs counts
+      const allCount = paymentsData.length;
+      const pendingCount = pendingItems.length;
+      const verifiedCount = paymentsData.filter(d => d.status === 'verified' || d.status === 'surplus' || d.status === 'double_transfer').length;
+      const partialCount = paymentsData.filter(d => d.status === 'partial').length;
+      const reversedCount = paymentsData.filter(d => d.status === 'reversed').length;
+
+      const tabs = document.querySelectorAll('.filter-segment-tabs .segment-tab-btn');
+      if (tabs && tabs.length >= 5) {
+        tabs[0].textContent = `Semua (${allCount})`;
+        tabs[1].textContent = `Menunggu Cek (${pendingCount})`;
+        tabs[2].textContent = `Lunas (${verifiedCount})`;
+        tabs[3].textContent = `Cicilan (${partialCount})`;
+        tabs[4].textContent = `Reversal (${reversedCount})`;
+      }
     }
 
     function confirmRejectPayment() {

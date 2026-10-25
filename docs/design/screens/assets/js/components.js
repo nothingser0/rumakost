@@ -43,6 +43,7 @@
     if (window.location.pathname.includes('portal')) return 'tenant';
     return 'owner';
   }
+  window.getCurrentRole = getCurrentRole;
 
   /**
    * Render Topbar Component with 3-Role Support
@@ -62,6 +63,17 @@
     }
 
     const role = explicitRole || getCurrentRole();
+
+    // Guardrail RBAC: Jika Penghuni membuka dasbor utama manajemen atau master kamar, redirect paksa ke portal penghuni (SK-20)
+    if (role === 'tenant' && (
+      window.location.pathname.includes('WF-02-dashboard') ||
+      window.location.pathname.includes('WF-03-kamar') ||
+      activeId === 'dashboard' ||
+      activeId === 'kamar'
+    )) {
+      window.location.href = 'WF-10-portal-penghuni.html';
+      return;
+    }
     const navItems = NAV_CONFIG[role] || NAV_CONFIG.owner;
 
     const navPillsHtml = navItems.map(item => {
@@ -82,7 +94,7 @@
           </span>
           <div class="user-dropdown-wrap" id="userDropdownWrap">
             <button type="button" class="user-profile-btn" onclick="toggleUserDropdown(event)" title="Menu Penghuni">
-              <div class="user-avatar" style="background: #FF7A00; color: #FFFFFF;">BS</div>
+              <div class="user-avatar" style="background: #111111; color: #FFFFFF;">BS</div>
               <div style="font-size: 12px; font-weight: 600;">Budi S. <span style="font-size: 10px; color: var(--text-muted);">(Penghuni)</span></div>
               <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted); margin-left: 2px;"></i>
             </button>
@@ -182,12 +194,26 @@
             <div class="notif-header">
               <div class="notif-header-title">
                 Notifikasi
-                <span class="notif-badge-count" id="notifBadgeCount">2 Baru</span>
+                <span class="notif-badge-count" id="notifBadgeCount">3 Baru</span>
               </div>
               <button type="button" class="notif-mark-read-btn" onclick="markAllNotifsRead(event)">Tandai dibaca</button>
             </div>
 
             <div class="notif-list">
+              <!-- Item 0: Tagihan Terlambat (Danger Overdue - Skenario 07) -->
+              <div class="notif-item unread" onclick="RumaUI.showToast('Membuka tagihan terlambat Kamar A-02...', 'info'); location.href='WF-05-tagihan.html';">
+                <div class="notif-icon-circle" style="background:#FEE2E2; color:#DC2626;">
+                  <i data-lucide="alert-circle" style="width: 17px; height: 17px;"></i>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-item-header">
+                    <span class="notif-title">Sewa Terlambat Kritis</span>
+                    <span class="notif-micro-badge" style="background:#FEE2E2; color:#DC2626; border:1px solid #FECACA;">H+5 Overdue</span>
+                  </div>
+                  <div class="notif-desc">Dimas Prasetyo (Kamar A-02) telah melewati tempo 5 hari (Rp 1.200.000).</div>
+                  <div class="notif-time">10 menit yang lalu</div>
+                </div>
+              </div>
               <!-- Item 1: Tagihan Jatuh Tempo (Warning) -->
               <div class="notif-item unread" onclick="RumaUI.showToast('Membuka daftar tagihan jatuh tempo...', 'info'); location.href='WF-05-tagihan.html';">
                 <div class="notif-icon-circle warning">

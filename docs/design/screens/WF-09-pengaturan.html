@@ -3,488 +3,1804 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RumaKost · Pengaturan Properti & Hak Akses</title>
+  <title>RumaKost · Pengaturan Properti & Hak Akses (SCR-16 & SCR-17)</title>
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
-
-
-
-
-    /* SETTINGS SHELL GRID */
-    .settings-shell {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 28px;
+    /* Sembunyikan scrollbar bawaan browser tapi scroll tetap aktif (Persis WF-02) */
+    html, body {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    html::-webkit-scrollbar, body::-webkit-scrollbar {
+      display: none;
     }
 
-    /* LEFT SIDEBAR NAV */
-    .settings-nav-card {
-      background: #FFFFFF;
-      border: 1px solid #ECEEF2;
-      border-radius: 20px;
-      padding: 16px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    /* Top canopy overlay masks content scrolling into top 20px gap */
+    .top-canopy-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: var(--bg-canvas, #F7F8FA);
+      z-index: 95;
+      pointer-events: none;
+    }
+
+    /* Pinned corner masks on topbar to eliminate any scrolling content peek-through */
+    .topbar::before,
+    .topbar::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      width: 25px;
+      height: 25px;
+      pointer-events: none;
+      z-index: 101;
+    }
+
+    .topbar::before {
+      left: -1px;
+      background: radial-gradient(circle at 100% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+    }
+
+    .topbar::after {
+      right: -1px;
+      background: radial-gradient(circle at 0% 100%, transparent 24px, var(--bg-canvas, #F7F8FA) 24.5px);
+    }
+
+    /* ==========================================================================
+       ESTIFY WORKBENCH: PENGATURAN SISTEM (SESUAI BLUEPRINT WF-02)
+       ========================================================================== */
+    body {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      height: fit-content;
+      background: var(--bg-canvas);
+      color: var(--text-main);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dashboard-wrapper {
+      max-width: 1440px;
+      width: calc(100% - 40px);
+      margin: 0 auto;
+      padding: 20px 0;
+      box-sizing: border-box;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+
+
+    /* 2-COLUMN WORKBENCH GRID */
+    .settings-workbench-grid {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* LEFT SIDEBAR NAVIGATION (STICKY MIRIP WF-04 PAGE PENGHUNI) */
+    .settings-nav-sidebar {
+      background: var(--bg-card, #FFFFFF);
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      border-radius: var(--radius-xl, 20px);
+      padding: 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 110px;
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+    }
+
+    .settings-nav-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .settings-nav-sidebar::-webkit-scrollbar-thumb {
+      background: #E2E8F0;
+      border-radius: 4px;
     }
 
     .settings-nav-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 16px;
+      padding: 12px 14px;
       border-radius: 12px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: #6B7280;
+      color: #64748B;
       text-decoration: none;
       cursor: pointer;
-      transition: all 150ms ease;
+      transition: all var(--transition-fast);
+      border: 1px solid transparent;
+      box-sizing: border-box;
     }
 
-    .settings-nav-item:hover { background: #F7F8FA; color: #111111; }
+    .settings-nav-item:hover {
+      background: #F8FAFC;
+      color: #0F172A;
+    }
+
     .settings-nav-item.active {
       background: #111111;
       color: #FFFFFF;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
     }
 
-    /* RIGHT CONTENT CARDS */
-    .settings-main {
+    .settings-nav-item.active i {
+      color: #FF7A00 !important;
+    }
+
+    .settings-sidebar-property-pod {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed #E2E8F0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .property-pod-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .property-pod-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #FFF7ED;
+      color: #FF7A00;
+      border: 1px solid #FFEDD5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .property-pod-text h4 {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0F172A;
+      margin: 0;
+    }
+
+    .property-pod-text p {
+      font-size: 11px;
+      color: #64748B;
+      margin: 1px 0 0 0;
+    }
+
+    /* RIGHT CONTENT FLOW */
+    .settings-content-flow {
       display: flex;
       flex-direction: column;
       gap: 24px;
+      min-width: 0;
     }
 
-    .card-settings {
+    .card-settings-section {
       background: #FFFFFF;
       border: 1px solid #ECEEF2;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+      border-radius: 20px;
+      padding: 24px 26px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
       display: flex;
       flex-direction: column;
       gap: 20px;
+      box-sizing: border-box;
+      scroll-margin-top: 110px;
     }
 
-    .card-settings-header {
-      border-bottom: 1px solid #ECEEF2;
-      padding-bottom: 16px;
+    .section-card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #F1F5F9;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    .card-settings-title {
-      font-size: 17px;
+    .section-header-title h2 {
+      font-size: 16px;
       font-weight: 700;
-      color: #111111;
+      color: #0F172A;
+      margin: 0;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .card-settings-sub {
+    .section-header-title p {
       font-size: 12px;
-      color: #6B7280;
-      margin-top: 2px;
+      color: #64748B;
+      margin: 3px 0 0 0;
     }
 
     /* FORM CONTROLS */
     .form-grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
     }
 
-    .form-group {
+    .form-group-item {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    .form-label {
+    .form-label-txt {
       font-size: 12px;
       font-weight: 600;
-      color: #374151;
+      color: #334155;
     }
 
-    .form-input, .form-textarea {
-      width: 100%;
-      padding: 11px 16px;
-      background: #F7F8FA;
-      border: 1px solid #ECEEF2;
+    .form-input-field:not(textarea) {
+      height: 42px;
+      border: 1.5px solid #E2E8F0;
       border-radius: 12px;
+      padding: 0 14px;
+      font-size: 12.5px;
       font-family: inherit;
-      font-size: 13px;
-      color: #111111;
-      outline: none;
-      transition: all 150ms ease;
-    }
-
-    .form-textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .form-input:focus, .form-textarea:focus {
+      color: #0F172A;
       background: #FFFFFF;
+      outline: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .form-input-field:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .form-input-readonly {
+      background: #F8FAFC !important;
+      color: #64748B !important;
+      cursor: not-allowed;
+      border-color: #E2E8F0 !important;
+    }
+
+    textarea.form-input-field {
+      min-height: 96px !important;
+      height: auto !important;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 12px 14px !important;
+      font-size: 12.5px;
+      font-family: inherit;
+      color: #0F172A;
+      background: #FFFFFF;
+      outline: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      width: 100%;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    /* TATA TERTIB / RULES BUILDER */
+    .rules-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .rule-item-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 6px 10px 6px 12px;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .rule-item-row:focus-within {
       border-color: #FF7A00;
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+      background: #FFFFFF;
     }
 
-    /* STAF RBAC TABLE */
+    .rule-number {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #F1F5F9;
+      color: #334155;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rule-input-field {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 12.5px;
+      font-family: inherit;
+      color: #0F172A;
+      outline: none;
+      padding: 6px 4px;
+    }
+
+    .rule-input-field::placeholder {
+      color: #94A3B8;
+    }
+
+    .btn-rule-delete {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: #94A3B8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+    }
+
+    .btn-rule-delete:hover {
+      background: #FEE2E2;
+      color: #EF4444;
+    }
+
+    /* BANK ATM CARD VISUAL */
+    .bank-card-dossier {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 20px;
+      align-items: center;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 18px 20px;
+    }
+
+    .bank-atm-card {
+      background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 50%, #3B82F6 100%);
+      border-radius: 14px;
+      padding: 18px;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 130px;
+      box-shadow: 0 8px 20px rgba(30, 58, 138, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bank-atm-card::after {
+      content: '';
+      position: absolute;
+      right: -20px;
+      bottom: -20px;
+      width: 110px;
+      height: 110px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+    }
+
+    .bank-atm-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .bank-atm-num {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin: 8px 0;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .bank-atm-holder {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    /* STAFF & USER TABLE */
+    .staff-table-wrap {
+      overflow-x: auto;
+      border: 1px solid #ECEEF2;
+      border-radius: 14px;
+    }
+
     .staff-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
+      font-size: 12px;
     }
 
     .staff-table th {
+      background: #F8FAFC;
+      color: #64748B;
       font-size: 11px;
       font-weight: 600;
-      color: #6B7280;
       text-transform: uppercase;
+      letter-spacing: 0.3px;
       padding: 12px 14px;
       border-bottom: 1px solid #ECEEF2;
     }
 
     .staff-table td {
-      padding: 14px;
-      border-bottom: 1px solid #F3F4F6;
+      padding: 13px 14px;
+      border-bottom: 1px solid #F1F5F9;
       vertical-align: middle;
-      font-size: 13px;
+      color: #0F172A;
     }
 
-    .role-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 600;
+    .staff-table tr:last-child td {
+      border-bottom: none;
     }
 
-    .role-owner { background: #111111; color: #FFFFFF; }
-    .role-staff { background: #FFF7ED; color: #FF7A00; border: 1px solid #FDBA74; }
-
-    /* SWITCH TOGGLE */
-    .toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      border-bottom: 1px solid #F3F4F6;
+    .staff-table tr:hover td {
+      background: #FAFAFA;
     }
 
-    .toggle-row:last-child { border-bottom: none; }
-
-    .toggle-label-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #111111;
-    }
-
-    .toggle-label-desc {
-      font-size: 11px;
-      color: #6B7280;
-    }
-
-    .switch-box {
-      width: 44px;
-      height: 24px;
-      background: #FF7A00;
-      border-radius: 9999px;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .switch-box.off {
-      background: #D1D5DB;
-    }
-
-    .switch-handle {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #FFFFFF;
-      position: absolute;
-      top: 3px;
-      right: 3px;
-      transition: all 150ms ease;
-    }
-
-    .switch-box.off .switch-handle {
-      right: auto;
-      left: 3px;
-    }
-
-    .btn-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border-radius: 9999px;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 150ms ease;
-    }
-
-    .btn-orange-primary {
+    /* BUTTONS */
+    .btn-brand-primary {
+      height: 38px;
+      padding: 0 18px;
+      border-radius: var(--radius-full);
       background: #FF7A00;
       color: #FFFFFF;
       border: none;
-      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.25);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      box-shadow: 0 3px 12px rgba(255, 122, 0, 0.24);
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      outline: none;
     }
 
-    .btn-orange-primary:hover { background: #E66E00; transform: translateY(-1px); }
+    .btn-brand-primary:hover {
+      background: #E66E00;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 16px rgba(255, 122, 0, 0.35);
+    }
 
-    .btn-white-secondary {
+    .btn-neutral-secondary {
+      height: 38px;
+      padding: 0 16px;
+      border-radius: var(--radius-full);
       background: #FFFFFF;
-      color: #4B5563;
-      border: 1px solid #ECEEF2;
+      color: #1E293B;
+      border: 1px solid #E2E8F0;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      outline: none;
     }
 
-    .btn-white-secondary:hover { background: #F9FAFB; color: #111111; border-color: #D1D5DB; }
+    .btn-neutral-secondary:hover {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      transform: translateY(-1px);
+    }
 
-    .wf-badge {
+    /* MODAL ARCHITECTURE (PERSIS 100% WF-04) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-dialog-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      width: 580px;
+      max-width: 95vw;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16);
+      border: 1px solid #E2E8F0;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+      box-sizing: border-box;
+      overflow: hidden;
+      animation: modalZoomIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalZoomIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header-pinned {
+      padding: 15px 22px;
+      border-bottom: 1px solid #ECEEF2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      background: #FFFFFF;
+    }
+
+    .modal-header-titles h3 {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #0F172A;
+      margin: 0;
+      letter-spacing: -0.2px;
+    }
+
+    .modal-header-titles p {
+      font-size: 11.5px;
+      color: #64748B;
+      margin: 2px 0 0 0;
+    }
+
+    .btn-modal-close {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #F1F5F9;
+      border: none;
+      color: #64748B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-modal-close:hover {
+      background: #E2E8F0;
+      color: #0F172A;
+    }
+
+    .modal-body-scrollable {
+      padding: 18px 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+      box-sizing: border-box;
+    }
+
+    .modal-footer-pinned {
+      padding: 13px 22px;
+      border-top: 1px solid #ECEEF2;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      align-items: center;
+      flex-shrink: 0;
+      background: #FFFFFF;
+    }
+
+    .permission-checkbox-card {
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #F8FAFC;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .permission-checkbox-card:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+    }
+
+    .permission-checkbox-card input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: #FF7A00;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    .wf-badge-fixed {
       position: fixed;
       bottom: 12px;
       right: 12px;
       background: #FFFFFF;
       border: 1px solid #ECEEF2;
       border-radius: 8px;
-      padding: 4px 10px;
+      padding: 5px 12px;
       font-size: 11px;
-      color: #6B7280;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      z-index: 999;
+      font-weight: 600;
+      color: #0F172A;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    @media (max-width: 1100px) {
+      .settings-workbench-grid {
+        grid-template-columns: 1fr;
+      }
+      .settings-nav-sidebar {
+        position: static;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+        max-height: none;
+      }
+      .settings-sidebar-header,
+      .settings-sidebar-property-pod {
+        display: none;
+      }
+      .bank-card-dossier {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="wf-badge">SCR-16 & SCR-17 · Profil Properti & Hak Akses Staf (RBAC)</div>
+  <!-- Screen Identity Badge -->
+  <div class="wf-badge-fixed">
+    <i data-lucide="shield-check" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+    SCR-16 & SCR-17 · Profil Properti & Akun Pengguna (F-01)
+  </div>
 
-  <!-- TOPBAR -->
-  <!-- TOP CANOPY OVERLAY (Masking celah atas navbar floating) -->
+  <!-- TOP CANOPY OVERLAY (Masking batas scroll atas ber-rounded) -->
   <div class="top-canopy-overlay" aria-hidden="true"></div>
 
-  <header class="topbar" id="mainTopbar">
-    <!-- Rendered dynamically by components.js -->
-  </header>
+  <!-- TOPBAR NAVIGATION (Estify Horizontal Pill Navbar) -->
+  <header class="topbar" id="mainTopbar"></header>
 
-  <!-- PAGE LAYOUT -->
-  <div class="page-layout">
+  <!-- MASTER WORKBENCH WRAPPER -->
+  <div class="dashboard-wrapper">
 
-    <div class="page-header">
-      <div class="page-title-group">
-        <h1>Pengaturan Sistem & Properti</h1>
-        <p>Kelola identitas properti Kost Budi Makmur, nomor rekening, dan hak akses pengguna staf.</p>
-      </div>
-
-      <button class="btn-pill btn-orange-primary" onclick="RumaUI.showToast('Semua perubahan pengaturan berhasil disimpan')">
-        <i data-lucide="save" style="width: 15px; height: 15px;"></i>
-        Simpan Perubahan
-      </button>
-    </div>
-
-    <div class="settings-shell">
+    <!-- 2-COLUMN WORKBENCH GRID -->
+    <main class="settings-workbench-grid">
       
-      <!-- LEFT SETTINGS NAV -->
-      <nav class="settings-nav-card">
+      <!-- LEFT COLUMN: SIDEBAR NAVIGATION CARD (STICKY) -->
+      <nav class="settings-nav-sidebar">
+        <!-- Master Header Row with Title & Status -->
+        <div class="settings-sidebar-header" style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #F1F5F9; margin-bottom: 4px;">
+          <div style="font-size: 13px; font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="sliders" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+            <span>Menu Pengaturan</span>
+          </div>
+          <span class="status-badge badge-dark" style="font-size: 10px; padding: 1px 7px;">3 Seksi</span>
+        </div>
+
         <a class="settings-nav-item active" onclick="activateSection('property', this)">
-          <i data-lucide="home" style="width: 16px; height: 16px;"></i>
-          Profil Properti (SCR-17)
+          <i data-lucide="home" style="width: 16px; height: 16px; color: #FF7A00;"></i>
+          <span>1. Profil Properti & Rekening (SCR-17)</span>
         </a>
         <a class="settings-nav-item" onclick="activateSection('rbac', this)">
-          <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i>
-          Staf & RBAC (SCR-16)
+          <i data-lucide="users" style="width: 16px; height: 16px;"></i>
+          <span>2. Akun Staf & Penghuni (SCR-16 · F-01)</span>
         </a>
-        <a class="settings-nav-item" onclick="activateSection('billing', this)">
-          <i data-lucide="credit-card" style="width: 16px; height: 16px;"></i>
-          Rekening & Notifikasi
+        <a class="settings-nav-item" onclick="activateSection('security', this)">
+          <i data-lucide="lock" style="width: 16px; height: 16px;"></i>
+          <span>3. Keamanan Akun Pemilik</span>
         </a>
+
+        <!-- Property Summary Pod -->
+        <div class="settings-sidebar-property-pod">
+          <div class="property-pod-badge">
+            <div class="property-pod-icon">
+              <i data-lucide="building-2" style="width: 16px; height: 16px;"></i>
+            </div>
+            <div class="property-pod-text">
+              <h4>Kost Budi Makmur</h4>
+              <p>15 Unit Kamar · 3 Lantai</p>
+            </div>
+          </div>
+          <div style="font-size: 11px; color: #64748B; line-height: 1.4; margin-top: 4px;">
+            Alamat fisik & nomor rekening resmi tercetak pada lembar kuitansi dan invoice sewa.
+          </div>
+        </div>
       </nav>
 
-      <!-- RIGHT SETTINGS CONTENT -->
-      <div class="settings-main">
+      <!-- RIGHT COLUMN: CONTENT CARDS FLOW -->
+      <div class="settings-content-flow">
         
-        <!-- SECTION 1: PROFIL PROPERTI (SCR-17) -->
-        <section id="section-property" class="card-settings">
-          <div class="card-settings-header">
-            <div>
-              <h2 class="card-settings-title">Identitas Properti Kost</h2>
-              <p class="card-settings-sub">Informasi fisik kosan yang tercetak pada kuitansi dan lembar tagihan.</p>
+        <!-- SECTION 1: PROFIL PROPERTI & REKENING (SCR-17) -->
+        <section id="section-property" class="card-settings-section">
+          <div class="section-card-header">
+            <div class="section-header-title">
+              <h2><i data-lucide="home" style="width: 18px; height: 18px; color: #FF7A00;"></i> Identitas Properti & Rekening Bank Resmi (SCR-17)</h2>
+              <p>Data profil fisik kost dan rekening penampungan pembayaran sewa bulanan penyewa.</p>
             </div>
-          </div>
-
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label">Nama Properti Kost</label>
-              <input type="text" class="form-input" value="Kost Budi Makmur">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Nama Pemilik / Superadmin</label>
-              <input type="text" class="form-input" value="Budi Santoso">
-            </div>
-          </div>
-
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label">Total Unit Kamar</label>
-              <input type="number" class="form-input" value="15" readonly style="background: #F3F4F6;">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Jumlah Lantai</label>
-              <input type="number" class="form-input" value="3" readonly style="background: #F3F4F6;">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Alamat Lengkap Properti</label>
-            <textarea class="form-textarea">Jl. Kemanggisan Raya No. 42, RT 04 / RW 08, Kel. Palmerah, Kec. Palmerah, Kota Jakarta Barat, DKI Jakarta 11480</textarea>
-          </div>
-
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label">Nomor WhatsApp Pengelola</label>
-              <input type="text" class="form-input" value="0812-3456-7890">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Email Operasional</label>
-              <input type="email" class="form-input" value="pengelola@kostbudimakmur.id">
-            </div>
-          </div>
-        </section>
-
-        <!-- SECTION 2: STAF & RBAC (SCR-16) -->
-        <section id="section-rbac" class="card-settings">
-          <div class="card-settings-header">
-            <div>
-              <h2 class="card-settings-title">Akses Staf & Peran (Role-Based Access Control)</h2>
-              <p class="card-settings-sub">Daftar akun pengelola yang berwenang mengakses modul sistem.</p>
-            </div>
-            <button class="btn-pill btn-white-secondary" style="padding: 6px 14px; font-size: 12px;" onclick="RumaUI.showToast('Dialog undang staf baru dibuka')">
-              <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i>
-              Tambah Akun Staf
+            <button type="button" class="btn-brand-primary" style="height: 34px; font-size: 11.5px; padding: 0 14px; gap: 6px;" onclick="saveAllSettings()">
+              <i data-lucide="save" style="width: 14px; height: 14px;"></i>
+              <span>Simpan Profil</span>
             </button>
           </div>
 
-          <table class="staff-table">
-            <thead>
-              <tr>
-                <th>Nama Pengguna</th>
-                <th>Email Login</th>
-                <th>Peran Sistem</th>
-                <th>Hak Akses Modul</th>
-                <th>Status</th>
-                <th style="text-align: right;">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div style="font-weight: 700; color: #111111;">Budi Santoso</div>
-                  <div style="font-size: 11px; color: #6B7280;">Pemilik Properti</div>
-                </td>
-                <td style="font-size: 12px; color: #4B5563;">budi.santoso@kostbudimakmur.id</td>
-                <td><span class="role-badge role-owner"><i data-lucide="crown" style="width: 12px; height: 12px;"></i> Pemilik (Superadmin)</span></td>
-                <td style="font-size: 12px; color: #16A34A; font-weight: 600;">Semua Modul (Full Access)</td>
-                <td><span style="font-size: 11px; font-weight: 600; color: #16A34A; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="check-circle-2" style="width: 12px; height: 12px;"></i> Aktif</span></td>
-                <td style="text-align: right; color: #9CA3AF; font-size: 11px;">Utama</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div style="font-weight: 700; color: #111111;">Rini Setiawati</div>
-                  <div style="font-size: 11px; color: #6B7280;">Pengelola Lapangan</div>
-                </td>
-                <td style="font-size: 12px; color: #4B5563;">rini.staf@kostbudimakmur.id</td>
-                <td><span class="role-badge role-staff"><i data-lucide="shield" style="width: 12px; height: 12px;"></i> Staf Operasional</span></td>
-                <td style="font-size: 12px; color: #4B5563;">Kamar, Penghuni, Tiket, Catat Bayar (Tanpa Hapus Kas)</td>
-                <td><span style="font-size: 11px; font-weight: 600; color: #16A34A; display: inline-flex; align-items: center; gap: 4px;"><i data-lucide="check-circle-2" style="width: 12px; height: 12px;"></i> Aktif</span></td>
-                <td style="text-align: right;">
-                  <button class="btn-pill btn-white-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="RumaUI.showToast('Dialog kelola izin staf dibuka')">
-                    <i data-lucide="edit-2" style="width: 12px; height: 12px;"></i> Edit Izin
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <!-- SECTION 3: REKENING & NOTIFIKASI -->
-        <section id="section-billing" class="card-settings">
-          <div class="card-settings-header">
-            <div>
-              <h2 class="card-settings-title">Rekening Pembayaran & Otomasi Notifikasi</h2>
-              <p class="card-settings-sub">Rekening tujuan transfer penyewa dan pengingat jatuh tempo sewa otomatis.</p>
+          <!-- Form Identitas Kost -->
+          <div class="form-grid-2">
+            <div class="form-group-item">
+              <label class="form-label-txt" for="propName">Nama Properti Kost *</label>
+              <input type="text" id="propName" class="form-input-field" value="Kost Budi Makmur">
+            </div>
+            <div class="form-group-item">
+              <label class="form-label-txt" for="propOwner">Nama Pemilik Properti (Superadmin) *</label>
+              <input type="text" id="propOwner" class="form-input-field" value="Budi Santoso">
             </div>
           </div>
 
           <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label">Nama Bank Rekening Utama</label>
-              <input type="text" class="form-input" value="BCA (Bank Central Asia)">
+            <div class="form-group-item">
+              <label class="form-label-txt" for="propRooms">Kapasitas Total Kamar</label>
+              <input type="text" id="propRooms" class="form-input-field form-input-readonly" value="15 Unit Kamar (Sinkron Otomatis dari Modul Kamar)" readonly>
             </div>
-            <div class="form-group">
-              <label class="form-label">Nomor Rekening</label>
-              <input type="text" class="form-input" value="8830-1928-11">
+            <div class="form-group-item">
+              <label class="form-label-txt" for="propFloors">Jumlah Lantai Gedung</label>
+              <input type="text" id="propFloors" class="form-input-field form-input-readonly" value="3 Lantai (Lantai 1, 2, dan 3)" readonly>
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label">Atas Nama Rekening</label>
-            <input type="text" class="form-input" value="BUDI SANTOSO">
+          <div class="form-group-item">
+            <label class="form-label-txt" for="propAddress">Alamat Fisik Lengkap Kost *</label>
+            <textarea id="propAddress" class="form-input-field" rows="2">Jl. Kemanggisan Raya No. 42, RT 04 / RW 08, Kel. Palmerah, Kec. Palmerah, Kota Jakarta Barat, DKI Jakarta 11480</textarea>
           </div>
 
-          <div style="margin-top: 10px;">
-            <div class="toggle-row">
-              <div>
-                <div class="toggle-label-title">Kirim Pengingat Tagihan Otomatis (H-3)</div>
-                <div class="toggle-label-desc">Kirim pesan notifikasi pengingat sebelum tanggal jatuh tempo sewa bulanan.</div>
+          <div class="form-grid-2">
+            <div class="form-group-item">
+              <label class="form-label-txt" for="propPhone">Nomor WhatsApp Pengelola *</label>
+              <input type="text" id="propPhone" class="form-input-field" value="0812-3456-7890">
+            </div>
+            <div class="form-group-item">
+              <label class="form-label-txt" for="propEmail">Email Operasional Kost *</label>
+              <input type="email" id="propEmail" class="form-input-field" value="pengelola@kostbudimakmur.id">
+            </div>
+          </div>
+
+          <!-- Rekening Bank Resmi Pemilik (Untuk Transfer Manual Penyewa Sesuai F-05) -->
+          <div style="margin-top: 10px; padding-top: 16px; border-top: 1px dashed #E2E8F0;">
+            <div style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="credit-card" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+              <span>Rekening Bank Resmi Penampungan Pembayaran Sewa</span>
+            </div>
+
+            <!-- Visual ATM Card Preview -->
+            <div class="bank-card-dossier" style="margin-bottom: 14px;">
+              <div class="bank-atm-card" id="atmCardPreview">
+                <div class="bank-atm-header">
+                  <span id="cardBankName">BANK BCA</span>
+                  <i data-lucide="radio" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div>
+                  <div style="font-size: 9px; opacity: 0.8; text-transform: uppercase;">Nomor Rekening Penerima</div>
+                  <div class="bank-atm-num" id="cardAccNum">8830-1928-11</div>
+                </div>
+                <div class="bank-atm-holder">
+                  <div>
+                    <div style="font-size: 8px; opacity: 0.7;">Atas Nama</div>
+                    <div style="font-weight: 700; font-size: 11px;" id="cardHolderName">BUDI SANTOSO</div>
+                  </div>
+                  <span style="font-size: 9px; padding: 2px 6px; background: rgba(255,255,255,0.2); border-radius: 4px;">UTAMA</span>
+                </div>
               </div>
-              <div class="switch-box" onclick="this.classList.toggle('off')">
-                <div class="switch-handle"></div>
+
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="status-badge badge-success" style="font-size: 10.5px; padding: 2px 8px; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">
+                    <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i> Rekening Aktif
+                  </span>
+                  <span style="font-size: 11px; color: #64748B;">Transfer Manual Tanpa Payment Gateway</span>
+                </div>
+                <p style="font-size: 11.5px; color: #475569; margin: 0; line-height: 1.45;">
+                  Penyewa mentransfer biaya sewa ke rekening ini. Bukti transfer yang diunggah penyewa hanya dapat diverifikasi oleh akun Pemilik (Zero Self-Approval).
+                </p>
               </div>
             </div>
 
-            <div class="toggle-row">
+            <div class="form-grid-2">
+              <div class="form-group-item">
+                <label class="form-label-txt" for="bankName">Nama Bank *</label>
+                <input type="text" id="bankName" class="form-input-field" value="BCA (Bank Central Asia)" oninput="updateCardPreview()">
+              </div>
+              <div class="form-group-item">
+                <label class="form-label-txt" for="bankAccNum">Nomor Rekening *</label>
+                <input type="text" id="bankAccNum" class="form-input-field" value="8830-1928-11" oninput="updateCardPreview()">
+              </div>
+            </div>
+
+            <div class="form-group-item" style="margin-top: 12px;">
+              <label class="form-label-txt" for="bankHolder">Atas Nama Pemilik Rekening *</label>
+              <input type="text" id="bankHolder" class="form-input-field" value="BUDI SANTOSO" oninput="updateCardPreview()">
+            </div>
+          </div>
+
+          <!-- TATA TERTIB & PERATURAN KOST (KLAUSUL KONTRAK SEWA) -->
+          <div class="form-group-item" style="margin-top: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2px;">
               <div>
-                <div class="toggle-label-title">Pemberitahuan Instan Saat Bukti Transfer Diunggah</div>
-                <div class="toggle-label-desc">Notifikasi langsung ke aplikasi ketika penyewa mengirim konfirmasi pembayaran.</div>
+                <label class="form-label-txt" style="display: flex; align-items: center; gap: 8px;">
+                  <span>Tata Tertib & Peraturan Kost (Klausul Perjanjian Sewa)</span>
+                  <span class="status-badge" style="font-size: 10px; padding: 1px 7px; background: #FFF7ED; color: #EA580C; border: 1px solid #FFEDD5;">
+                    Sinkron ke Kontrak & Portal Penghuni
+                  </span>
+                </label>
+                <p style="font-size: 11px; color: #64748B; margin: 3px 0 0 0;">
+                  Setiap butir aturan ini otomatis diterbitkan ke dalam Surat Perjanjian Sewa (Kontrak Digital) dan menjadi acuan tata tertib bagi penghuni.
+                </p>
               </div>
-              <div class="switch-box" onclick="this.classList.toggle('off')">
-                <div class="switch-handle"></div>
+              <button type="button" class="btn-neutral-secondary" style="height: 32px; font-size: 11.5px; padding: 0 12px; gap: 6px;" onclick="addNewRule()">
+                <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+                <span>Tambah Aturan</span>
+              </button>
+            </div>
+
+            <!-- List Aturan Dinamis -->
+            <div id="rulesListContainer" class="rules-list-container">
+              <!-- Item 1 -->
+              <div class="rule-item-row">
+                <span class="rule-number">1</span>
+                <input type="text" class="rule-input-field" value="Jam malam gerbang dikunci pukul 23.00 WIB demi keamanan bersama." placeholder="Tuliskan butir aturan...">
+                <button type="button" class="btn-rule-delete" title="Hapus Aturan" onclick="removeRule(this)">
+                  <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                </button>
               </div>
+
+              <!-- Item 2 -->
+              <div class="rule-item-row">
+                <span class="rule-number">2</span>
+                <input type="text" class="rule-input-field" value="Dilarang keras merokok atau vaping di dalam kamar tidur ber-AC." placeholder="Tuliskan butir aturan...">
+                <button type="button" class="btn-rule-delete" title="Hapus Aturan" onclick="removeRule(this)">
+                  <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                </button>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="rule-item-row">
+                <span class="rule-number">3</span>
+                <input type="text" class="rule-input-field" value="Tamu lawan jenis dilarang masuk atau menginap di dalam kamar tidur penghuni." placeholder="Tuliskan butir aturan...">
+                <button type="button" class="btn-rule-delete" title="Hapus Aturan" onclick="removeRule(this)">
+                  <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                </button>
+              </div>
+
+              <!-- Item 4 -->
+              <div class="rule-item-row">
+                <span class="rule-number">4</span>
+                <input type="text" class="rule-input-field" value="Dilarang membawa atau memelihara hewan peliharaan di area gedung kost." placeholder="Tuliskan butir aturan...">
+                <button type="button" class="btn-rule-delete" title="Hapus Aturan" onclick="removeRule(this)">
+                  <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                </button>
+              </div>
+
+              <!-- Item 5 -->
+              <div class="rule-item-row">
+                <span class="rule-number">5</span>
+                <input type="text" class="rule-input-field" value="Wajib menjaga ketenangan dan toleransi setelah pukul 22.00 WIB (tidak menyetel musik bising)." placeholder="Tuliskan butir aturan...">
+                <button type="button" class="btn-rule-delete" title="Hapus Aturan" onclick="removeRule(this)">
+                  <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Footer Action & Count -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding: 4px 2px;">
+              <span id="rulesCountSummary" style="font-size: 11.5px; color: #64748B;">Total 5 butir tata tertib aktif terdaftar</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: AKUN STAF & PENGHUNI (SCR-16 · F-01) -->
+        <section id="section-rbac" class="card-settings-section">
+          <div class="section-card-header">
+            <div class="section-header-title">
+              <h2><i data-lucide="users" style="width: 18px; height: 18px; color: #FF7A00;"></i> Manajemen Pengguna & Hak Akses (SCR-16 · F-01)</h2>
+              <p>Pemilik membuat & mengaktifkan akun Staf dan Penghuni tanpa pendaftaran publik (F-01).</p>
+            </div>
+            <button type="button" class="btn-brand-primary" style="height: 34px; font-size: 11.5px; padding: 0 14px;" onclick="openAddAccountModal()">
+              <i data-lucide="user-plus" style="width: 14px; height: 14px;"></i>
+              <span>+ Buat Akun Baru (F-01)</span>
+            </button>
+          </div>
+
+          <!-- Tab Filter Role: Semua, Staf, Penghuni -->
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+            <button type="button" class="btn-neutral-secondary" id="btnFilterAll" style="height: 30px; font-size: 11px; padding: 0 12px; background: #111111; color: #FFFFFF;" onclick="filterUserRole('all', this)">Semua Pengguna (4)</button>
+            <button type="button" class="btn-neutral-secondary" id="btnFilterStaff" style="height: 30px; font-size: 11px; padding: 0 12px;" onclick="filterUserRole('staff', this)">Staf Operasional (2)</button>
+            <button type="button" class="btn-neutral-secondary" id="btnFilterTenant" style="height: 30px; font-size: 11px; padding: 0 12px;" onclick="filterUserRole('tenant', this)">Penghuni Kost (1)</button>
+          </div>
+
+          <!-- Tabel Akun Pengguna Sesuai F-01 -->
+          <div class="staff-table-wrap">
+            <table class="staff-table">
+              <thead>
+                <tr>
+                  <th>Nama Pengguna</th>
+                  <th>Email Login</th>
+                  <th>Peran Sistem</th>
+                  <th>Batasan Hak Akses (RBAC)</th>
+                  <th>Status Akun</th>
+                  <th style="text-align: right;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="userTableBody">
+                <!-- 1. Owner -->
+                <tr data-role="owner">
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 28px; height: 28px; border-radius: 50%; background: #111111; color: #FFFFFF; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">BS</div>
+                      <div>
+                        <div style="font-weight: 700; color: #0F172A;">Budi Santoso</div>
+                        <div style="font-size: 10.5px; color: #64748B;">0812-3456-7890</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="font-size: 11.5px; color: #475569;">budi.santoso@kostbudimakmur.id</td>
+                  <td>
+                    <span class="status-badge badge-dark" style="font-size: 10px; padding: 2px 7px; background: #111111; color: #FFFFFF;">
+                      <i data-lucide="crown" style="width: 11px; height: 11px; color: #F59E0B;"></i> Pemilik (Owner)
+                    </span>
+                  </td>
+                  <td>
+                    <span style="color: #16A34A; font-weight: 600; font-size: 11px;">Akses Penuh (Full Access)</span>
+                  </td>
+                  <td>
+                    <span class="status-badge badge-success" style="font-size: 10px; padding: 2px 7px; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">Aktif</span>
+                  </td>
+                  <td style="text-align: right; color: #94A3B8; font-size: 11px;">Utama</td>
+                </tr>
+
+                <!-- 2. Staf: Rini Setiawati -->
+                <tr data-role="staff">
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 28px; height: 28px; border-radius: 50%; background: #FF7A00; color: #FFFFFF; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">RS</div>
+                      <div>
+                        <div style="font-weight: 700; color: #0F172A;">Rini Setiawati</div>
+                        <div style="font-size: 10.5px; color: #64748B;">0813-9988-7766</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="font-size: 11.5px; color: #475569;">rini.staf@kostbudimakmur.id</td>
+                  <td>
+                    <span class="status-badge badge-warning" style="font-size: 10px; padding: 2px 7px; background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A;">
+                      <i data-lucide="shield" style="width: 11px; height: 11px;"></i> Staf Operasional
+                    </span>
+                  </td>
+                  <td>
+                    <div style="font-size: 11px; font-weight: 600; color: #0F172A;">Operasional & Catat Bayar</div>
+                    <div style="font-size: 10px; color: #D97706;">Zero Self-Approval (Tanpa Laporan Laba)</div>
+                  </td>
+                  <td>
+                    <span class="status-badge badge-success" style="font-size: 10px; padding: 2px 7px; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">Aktif</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <button type="button" class="btn-neutral-secondary" style="height: 26px; padding: 0 8px; font-size: 10.5px;" onclick="openEditAccountModal('Rini Setiawati', 'rini.staf@kostbudimakmur.id', 'Staf Operasional', 'aktif')">
+                      <i data-lucide="edit-2" style="width: 11px; height: 11px;"></i> Edit Izin
+                    </button>
+                  </td>
+                </tr>
+
+                <!-- 3. Staf: Pak Joko -->
+                <tr data-role="staff">
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 28px; height: 28px; border-radius: 50%; background: #0284C7; color: #FFFFFF; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">PJ</div>
+                      <div>
+                        <div style="font-weight: 700; color: #0F172A;">Pak Joko Santoso</div>
+                        <div style="font-size: 10.5px; color: #64748B;">0856-7788-9900</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="font-size: 11.5px; color: #475569;">joko.teknisi@kostbudimakmur.id</td>
+                  <td>
+                    <span class="status-badge" style="font-size: 10px; padding: 2px 7px; background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">
+                      <i data-lucide="wrench" style="width: 11px; height: 11px;"></i> Teknisi Lapangan
+                    </span>
+                  </td>
+                  <td>
+                    <div style="font-size: 11px; font-weight: 600; color: #0F172A;">Modul Tiket Perbaikan Saja</div>
+                    <div style="font-size: 10px; color: #64748B;">Hanya pemeliharaan & status unit kamar</div>
+                  </td>
+                  <td>
+                    <span class="status-badge badge-success" style="font-size: 10px; padding: 2px 7px; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">Aktif</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <button type="button" class="btn-neutral-secondary" style="height: 26px; padding: 0 8px; font-size: 10.5px;" onclick="openEditAccountModal('Pak Joko Santoso', 'joko.teknisi@kostbudimakmur.id', 'Teknisi Lapangan', 'aktif')">
+                      <i data-lucide="edit-2" style="width: 11px; height: 11px;"></i> Edit Izin
+                    </button>
+                  </td>
+                </tr>
+
+                <!-- 4. Penghuni: Budi Santoso (Kamar A-04) -->
+                <tr data-role="tenant">
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <div style="width: 28px; height: 28px; border-radius: 50%; background: #16A34A; color: #FFFFFF; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">BS</div>
+                      <div>
+                        <div style="font-weight: 700; color: #0F172A;">Budi Santoso (Penghuni)</div>
+                        <div style="font-size: 10.5px; color: #64748B;">Kamar A-04 · 0811-2233-4455</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td style="font-size: 11.5px; color: #475569;">budi.penghuni@rumakost.id</td>
+                  <td>
+                    <span class="status-badge badge-brand" style="font-size: 10px; padding: 2px 7px;">
+                      <i data-lucide="home" style="width: 11px; height: 11px;"></i> Penghuni Kamar
+                    </span>
+                  </td>
+                  <td>
+                    <div style="font-size: 11px; font-weight: 600; color: #0F172A;">Portal Mandiri Kamar A-04</div>
+                    <div style="font-size: 10px; color: #64748B;">Hanya data sewa, tagihan & tiket sendiri</div>
+                  </td>
+                  <td>
+                    <span class="status-badge badge-success" style="font-size: 10px; padding: 2px 7px; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">Aktif</span>
+                  </td>
+                  <td style="text-align: right;">
+                    <button type="button" class="btn-neutral-secondary" style="height: 26px; padding: 0 8px; font-size: 10.5px;" onclick="openEditAccountModal('Budi Santoso (Penghuni)', 'budi.penghuni@rumakost.id', 'Penghuni Kamar', 'aktif')">
+                      <i data-lucide="edit-2" style="width: 11px; height: 11px;"></i> Kelola
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Callout Kebijakan F-01 & Zero Self-Approval -->
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 10px;">
+            <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #FF7A00; flex-shrink: 0; margin-top: 1px;"></i>
+            <div style="font-size: 11.5px; color: #475569; line-height: 1.45;">
+              <strong style="color: #0F172A;">Kebijakan Akses F-01:</strong> Tidak ada registrasi publik. Seluruh akun Staf dan Penghuni dibuat & diaktifkan langsung oleh Pemilik agar akses terikat secara aman ke unit kamar yang tepat. Staf dilarang memverifikasi pembayarannya sendiri (Zero Self-Approval).
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 3: KEAMANAN AKUN PEMILIK -->
+        <section id="section-security" class="card-settings-section">
+          <div class="section-card-header">
+            <div class="section-header-title">
+              <h2><i data-lucide="lock" style="width: 18px; height: 18px; color: #FF7A00;"></i> Keamanan Akun Pemilik (Ganti Kata Sandi)</h2>
+              <p>Perbarui kredensial kata sandi akun Pemilik untuk keamanan akses superadmin.</p>
+            </div>
+            <span class="status-badge badge-dark" style="font-size: 10px; padding: 2px 8px;">Keamanan</span>
+          </div>
+
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 18px 20px;">
+            <div class="form-group-item" style="margin-bottom: 14px;">
+              <label class="form-label-txt" for="currPass">Kata Sandi Saat Ini *</label>
+              <input type="password" id="currPass" class="form-input-field" placeholder="Masukkan kata sandi lama Anda">
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group-item">
+                <label class="form-label-txt" for="newPass">Kata Sandi Baru *</label>
+                <input type="password" id="newPass" class="form-input-field" placeholder="Minimal 8 karakter kombinasi">
+              </div>
+              <div class="form-group-item">
+                <label class="form-label-txt" for="confirmPass">Konfirmasi Kata Sandi Baru *</label>
+                <input type="password" id="confirmPass" class="form-input-field" placeholder="Ulangi kata sandi baru">
+              </div>
+            </div>
+
+            <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+              <button type="button" class="btn-brand-primary" style="height: 36px; font-size: 12px;" onclick="changePasswordSubmit()">
+                <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+                <span>Perbarui Kata Sandi</span>
+              </button>
             </div>
           </div>
         </section>
 
       </div>
 
-    </div>
+    </main>
 
   </div>
 
+  <!-- ==========================================================================
+       MODAL: BUAT / AKTIFKAN AKUN PENGGUNA BARU (F-01)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modalAddAccount" onclick="closeModalOnBackdrop(event, 'modalAddAccount')">
+    <div class="modal-dialog-card">
+      <div class="modal-header-pinned">
+        <div class="modal-header-titles">
+          <h3>Buat / Aktifkan Akun Pengguna Baru (F-01)</h3>
+          <p>Buat akun resmi untuk staf operasional atau penghuni kost</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalAddAccount')">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body-scrollable">
+        <div class="form-group-item">
+          <label class="form-label-txt" for="accType">Jenis Peran Akun *</label>
+          <select id="accType" class="form-input-field" style="cursor: pointer;" onchange="handleAccountTypeChange(this.value)">
+            <option value="staff">Staf Operasional (Pengelola Lapangan)</option>
+            <option value="technician">Teknisi Lapangan (Maintenance & Perbaikan)</option>
+            <option value="tenant">Penghuni Kost (Akses Portal Mandiri Kamar)</option>
+          </select>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt" for="accName">Nama Lengkap Pengguna *</label>
+          <input type="text" id="accName" class="form-input-field" placeholder="Contoh: Rian Anggara">
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group-item">
+            <label class="form-label-txt" for="accEmail">Email Login Akun *</label>
+            <input type="email" id="accEmail" class="form-input-field" placeholder="rian@kostbudimakmur.id">
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt" for="accPhone">Nomor WhatsApp *</label>
+            <input type="text" id="accPhone" class="form-input-field" placeholder="0812-9988-7766">
+          </div>
+        </div>
+
+        <div class="form-group-item" id="roomAssignGroup" style="display: none;">
+          <label class="form-label-txt" for="accRoomSelect">Penugasan Kamar Penghuni *</label>
+          <select id="accRoomSelect" class="form-input-field" style="cursor: pointer;" onchange="handleRoomSelectChange(this)">
+            <option value="A-01">Kamar A-01 · Lantai 1 (Tersedia)</option>
+            <option value="A-02">Kamar A-02 · Lantai 1 (Tersedia)</option>
+            <option value="A-04" data-occupied="true">Kamar A-04 · Lantai 1 (Terisi Kontrak: Budi Santoso)</option>
+            <option value="B-01">Kamar B-01 · Lantai 2 (Tersedia)</option>
+          </select>
+          <div id="roomOccupiedAlert" style="display: none; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 8px; padding: 8px 12px; font-size: 11px; color: #DC2626; margin-top: 4px;">
+            <i data-lucide="alert-triangle" style="width: 13px; height: 13px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i>
+            <strong>Peringatan Tabrakan Kamar (Skenario 12):</strong> Kamar A-04 memiliki kontrak sewa aktif hingga 2026-11-01. Pilih kamar kosong atau selesaikan kontrak lama terlebih dahulu.
+          </div>
+        </div>
+
+        <div class="form-group-item" id="permissionCheckGroup">
+          <label class="form-label-txt">Hak Akses Modul Staf (Checklist Kewenangan) *</label>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+            <label class="permission-checkbox-card">
+              <input type="checkbox" checked id="pModKamar">
+              <div>
+                <strong style="font-size: 12px; color: #0F172A; display: block;">Modul Kamar</strong>
+                <span style="font-size: 11px; color: #64748B;">Melihat status hunian dan catatan fasilitas kamar.</span>
+              </div>
+            </label>
+            <label class="permission-checkbox-card">
+              <input type="checkbox" checked id="pModPenghuni">
+              <div>
+                <strong style="font-size: 12px; color: #0F172A; display: block;">Modul Penghuni & Kontak</strong>
+                <span style="font-size: 11px; color: #64748B;">Melihat daftar penyewa dan nomor kontak darurat.</span>
+              </div>
+            </label>
+            <label class="permission-checkbox-card">
+              <input type="checkbox" checked id="pModTiket">
+              <div>
+                <strong style="font-size: 12px; color: #0F172A; display: block;">Modul Tiket & Kerusakan</strong>
+                <span style="font-size: 11px; color: #64748B;">Menerima laporan dan memperbarui status servis.</span>
+              </div>
+            </label>
+            <label class="permission-checkbox-card">
+              <input type="checkbox" checked id="pModCatatBayar">
+              <div>
+                <strong style="font-size: 12px; color: #0F172A; display: block;">Catat Pembayaran Masuk (Pending)</strong>
+                <span style="font-size: 11px; color: #64748B;">Mencatat titipan uang tunai/transfer (Wajib verifikasi Pemilik).</span>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer-pinned">
+        <button type="button" class="btn-neutral-secondary" onclick="closeModal('modalAddAccount')">Batal</button>
+        <button type="button" class="btn-brand-primary" onclick="submitNewAccount()">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          <span>Buat & Aktifkan Akun</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: EDIT IZIN / STATUS AKUN (SCR-16)
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modalEditAccount" onclick="closeModalOnBackdrop(event, 'modalEditAccount')">
+    <div class="modal-dialog-card">
+      <div class="modal-header-pinned">
+        <div class="modal-header-titles">
+          <h3>Kelola Status & Izin Akun</h3>
+          <p id="editAccountSubtitle">Perbarui akses pengguna</p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalEditAccount')">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body-scrollable">
+        <div class="form-group-item">
+          <label class="form-label-txt">Nama Pengguna</label>
+          <input type="text" id="editAccName" class="form-input-field" value="">
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group-item">
+            <label class="form-label-txt">Email Login</label>
+            <input type="email" id="editAccEmail" class="form-input-field form-input-readonly" value="" readonly>
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt">Status Akun</label>
+            <select id="editAccStatus" class="form-input-field" style="cursor: pointer;" onchange="handleEditStatusChange(this.value)">
+              <option value="aktif">Aktif (Bisa Login)</option>
+              <option value="nonaktif">Nonaktifkan (Kunci Akses)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="staffDeactivateAlert" style="display: none; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #B45309;">
+          <i data-lucide="alert-circle" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-right: 4px;"></i>
+          <strong>Perhatian Tugas Aktif (Skenario 13):</strong> Pengguna ini memiliki tiket perbaikan aktif yang sedang dikerjakan. Pastikan tugas dialihkan ke staf lain setelah dinonaktifkan.
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt">Peran Sistem</label>
+          <input type="text" id="editAccRole" class="form-input-field form-input-readonly" value="" readonly>
+        </div>
+
+        <!-- Skenario 21: Relokasi Kamar Penghuni -->
+        <div class="form-group-item" id="editRoomAssignGroup" style="display: none;">
+          <label class="form-label-txt" for="editAccRoomSelect">Relokasi Kamar Penghuni (Skenario 21) *</label>
+          <select id="editAccRoomSelect" class="form-input-field" style="cursor: pointer;">
+            <option value="A-01">Kamar A-01 · Lantai 1 (Tersedia)</option>
+            <option value="A-02">Kamar A-02 · Lantai 1 (Tersedia)</option>
+            <option value="A-04">Kamar A-04 · Lantai 1 (Kamar Saat Ini)</option>
+            <option value="B-01">Kamar B-01 · Lantai 2 (Tersedia)</option>
+          </select>
+          <span style="font-size: 10.5px; color: #64748B;">Memindahkan unit kamar penghuni tanpa menghilangkan histori tagihan & tiket lama.</span>
+        </div>
+
+        <!-- Skenario 22: Pembaruan Hak Akses Granular Staf -->
+        <div class="form-group-item" id="editPermissionCheckGroup" style="display: none;">
+          <label class="form-label-txt">Pembaruan Hak Akses Modul Staf (Skenario 22)</label>
+          <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+            <label class="permission-checkbox-card" style="padding: 8px 12px;">
+              <input type="checkbox" checked id="editPModKamar">
+              <div>
+                <strong style="font-size: 11.5px; color: #0F172A;">Modul Kamar</strong>
+                <span style="font-size: 10.5px; color: #64748B; display: block;">Melihat status hunian kamar.</span>
+              </div>
+            </label>
+            <label class="permission-checkbox-card" style="padding: 8px 12px;">
+              <input type="checkbox" checked id="editPModPenghuni">
+              <div>
+                <strong style="font-size: 11.5px; color: #0F172A;">Modul Penghuni & Kontak</strong>
+                <span style="font-size: 10.5px; color: #64748B; display: block;">Melihat direktori kontak penyewa.</span>
+              </div>
+            </label>
+            <label class="permission-checkbox-card" style="padding: 8px 12px;">
+              <input type="checkbox" checked id="editPModTiket">
+              <div>
+                <strong style="font-size: 11.5px; color: #0F172A;">Modul Tiket & Kerusakan</strong>
+                <span style="font-size: 10.5px; color: #64748B; display: block;">Menerima & memperbarui status servis.</span>
+              </div>
+            </label>
+            <label class="permission-checkbox-card" style="padding: 8px 12px;">
+              <input type="checkbox" checked id="editPModCatatBayar">
+              <div>
+                <strong style="font-size: 11.5px; color: #0F172A;">Catat Pembayaran Masuk (Pending)</strong>
+                <span style="font-size: 10.5px; color: #64748B; display: block;">Mencatat titipan uang tunai (Zero Self-Approval).</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Reset Password Section (Skenario 16) -->
+        <div style="margin-top: 6px; padding-top: 14px; border-top: 1px dashed #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 12px; font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="key" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+              <span>Atur Ulang Sandi Pengguna (Skenario 16)</span>
+            </div>
+            <div style="font-size: 10.5px; color: #64748B; margin-top: 2px;">Terbitkan sandi sementara untuk staf/penghuni yang lupa login</div>
+          </div>
+          <button type="button" class="btn-neutral-secondary" style="height: 30px; font-size: 11px; padding: 0 12px; gap: 5px;" onclick="resetUserPasswordModal()">
+            <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i>
+            <span>Reset Sandi</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer-pinned">
+        <button type="button" class="btn-neutral-secondary" onclick="closeModal('modalEditAccount')">Batal</button>
+        <button type="button" class="btn-brand-primary" onclick="saveAccountChanges()">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+          <span>Simpan Perubahan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT ENGINE -->
   <script src="assets/js/components.js"></script>
   <script>
+    // 1. Inisialisasi Topbar Pemilik
     renderTopbar('pengaturan');
+
+    // 2. Navigasi Tab Samping & ScrollSpy (Sticky Navigation)
+    let isClickScrolling = false;
 
     function activateSection(secId, navElem) {
       document.querySelectorAll('.settings-nav-item').forEach(item => item.classList.remove('active'));
-      navElem.classList.add('active');
+      if (navElem) navElem.classList.add('active');
 
       const el = document.getElementById('section-' + secId);
       if (el) {
+        isClickScrolling = true;
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+          isClickScrolling = false;
+        }, 600);
       }
     }
+
+    // ScrollSpy: Mengupdate indikator tab aktif secara otomatis saat halaman discroll
+    window.addEventListener('scroll', () => {
+      if (isClickScrolling) return;
+      const sections = ['property', 'rbac', 'security'];
+      const scrollPos = window.scrollY + 140;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sec = document.getElementById('section-' + sections[i]);
+        if (sec && sec.offsetTop <= scrollPos) {
+          const items = document.querySelectorAll('.settings-nav-item');
+          items.forEach(item => item.classList.remove('active'));
+          if (items[i]) items[i].classList.add('active');
+          break;
+        }
+      }
+    }, { passive: true });
+
+    // 3. Realtime Update Kartu ATM BCA
+    function updateCardPreview() {
+      const bankVal = document.getElementById('bankName').value.trim() || 'BANK BCA';
+      const numVal = document.getElementById('bankAccNum').value.trim() || '8830-1928-11';
+      const holderVal = document.getElementById('bankHolder').value.trim() || 'BUDI SANTOSO';
+
+      document.getElementById('cardBankName').textContent = bankVal.toUpperCase();
+      document.getElementById('cardAccNum').textContent = numVal;
+      document.getElementById('cardHolderName').textContent = holderVal.toUpperCase();
+    }
+
+    // 4. Filter Tabel Role
+    function filterUserRole(role, btnElem) {
+      document.querySelectorAll('.settings-workbench-grid .btn-neutral-secondary').forEach(b => {
+        b.style.background = '#FFFFFF';
+        b.style.color = '#1E293B';
+      });
+      btnElem.style.background = '#111111';
+      btnElem.style.color = '#FFFFFF';
+
+      const rows = document.querySelectorAll('#userTableBody tr');
+      rows.forEach(row => {
+        if (role === 'all' || row.getAttribute('data-role') === role) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    // 5. Ganti Password Akun Pemilik
+    function changePasswordSubmit() {
+      const curr = document.getElementById('currPass').value;
+      const newP = document.getElementById('newPass').value;
+      const conf = document.getElementById('confirmPass').value;
+
+      if (!curr) {
+        RumaUI.showToast('Masukkan kata sandi saat ini!', 'warning', 'Keamanan');
+        return;
+      }
+      if (!newP || newP.length < 8) {
+        RumaUI.showToast('Kata sandi baru minimal 8 karakter!', 'warning', 'Keamanan');
+        return;
+      }
+      if (newP !== conf) {
+        RumaUI.showToast('Konfirmasi kata sandi tidak cocok!', 'warning', 'Keamanan');
+        return;
+      }
+
+      document.getElementById('currPass').value = '';
+      document.getElementById('newPass').value = '';
+      document.getElementById('confirmPass').value = '';
+      RumaUI.showToast('Kata sandi berhasil diperbarui! Seluruh sesi aktif di perangkat lain dinonaktifkan (Skenario 17).', 'success', 'Keamanan Akun');
+    }
+
+    // 6. Modal F-01 Management & Skenario Lanjutan
+    function openAddAccountModal() {
+      document.getElementById('roomOccupiedAlert').style.display = 'none';
+      document.getElementById('modalAddAccount').classList.add('active');
+      lucide.createIcons();
+    }
+
+    function handleAccountTypeChange(val) {
+      const roomGroup = document.getElementById('roomAssignGroup');
+      const permGroup = document.getElementById('permissionCheckGroup');
+      if (val === 'tenant') {
+        roomGroup.style.display = 'flex';
+        permGroup.style.display = 'none';
+        const roomSelect = document.getElementById('accRoomSelect');
+        handleRoomSelectChange(roomSelect);
+      } else {
+        roomGroup.style.display = 'none';
+        permGroup.style.display = 'flex';
+      }
+    }
+
+    function handleRoomSelectChange(selectEl) {
+      const selectedOpt = selectEl.options[selectEl.selectedIndex];
+      const alertBox = document.getElementById('roomOccupiedAlert');
+      if (selectedOpt && selectedOpt.getAttribute('data-occupied') === 'true') {
+        alertBox.style.display = 'block';
+        lucide.createIcons();
+      } else {
+        alertBox.style.display = 'none';
+      }
+    }
+
+    function handleEditStatusChange(statusVal) {
+      const role = document.getElementById('editAccRole').value;
+      const alertBox = document.getElementById('staffDeactivateAlert');
+      if (statusVal === 'nonaktif' && (role.includes('Staf') || role.includes('Teknisi'))) {
+        alertBox.style.display = 'block';
+        lucide.createIcons();
+      } else {
+        alertBox.style.display = 'none';
+      }
+    }
+
+    function resetUserPasswordModal() {
+      const email = document.getElementById('editAccEmail').value;
+      const tempPass = 'Ruma#' + Math.floor(1000 + Math.random() * 9000) + '!';
+      RumaUI.showToast('Sandi sementara ' + email + ': ' + tempPass + ' (Skenario 16). Wajib ganti saat login.', 'info', 'Reset Kredensial');
+    }
+
+    let currentEditingEmail = '';
+
+    function openEditAccountModal(name, email, role, status) {
+      currentEditingEmail = email;
+      document.getElementById('editAccName').value = name;
+      document.getElementById('editAccEmail').value = email;
+      document.getElementById('editAccRole').value = role;
+      document.getElementById('editAccStatus').value = status || 'aktif';
+      document.getElementById('editAccountSubtitle').textContent = 'Perbarui akun ' + name;
+      
+      const alertBox = document.getElementById('staffDeactivateAlert');
+      if (status === 'nonaktif' && (role.includes('Staf') || role.includes('Teknisi'))) {
+        alertBox.style.display = 'block';
+      } else {
+        alertBox.style.display = 'none';
+      }
+
+      // Skenario 21 & 22: Tampilkan form relokasi kamar jika penghuni, atau checklist izin jika staf
+      const roomGroup = document.getElementById('editRoomAssignGroup');
+      const permGroup = document.getElementById('editPermissionCheckGroup');
+      if (role.includes('Penghuni')) {
+        roomGroup.style.display = 'flex';
+        permGroup.style.display = 'none';
+      } else {
+        roomGroup.style.display = 'none';
+        permGroup.style.display = 'flex';
+        document.getElementById('editPModCatatBayar').checked = role.includes('Staf Operasional');
+      }
+
+      document.getElementById('modalEditAccount').classList.add('active');
+      lucide.createIcons();
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    function closeModalOnBackdrop(e, modalId) {
+      if (e.target.id === modalId) {
+        closeModal(modalId);
+      }
+    }
+
+    function updateFilterCounts() {
+      const allRows = document.querySelectorAll('#userTableBody tr');
+      const staffRows = document.querySelectorAll('#userTableBody tr[data-role="staff"]');
+      const tenantRows = document.querySelectorAll('#userTableBody tr[data-role="tenant"]');
+
+      const btnAll = document.getElementById('btnFilterAll');
+      const btnStaff = document.getElementById('btnFilterStaff');
+      const btnTenant = document.getElementById('btnFilterTenant');
+
+      if (btnAll) btnAll.textContent = `Semua Pengguna (${allRows.length})`;
+      if (btnStaff) btnStaff.textContent = `Staf Operasional (${staffRows.length})`;
+      if (btnTenant) btnTenant.textContent = `Penghuni Kost (${tenantRows.length})`;
+    }
+
+    function submitNewAccount() {
+      const type = document.getElementById('accType').value;
+      const name = document.getElementById('accName').value.trim();
+      const email = document.getElementById('accEmail').value.trim();
+      const phone = document.getElementById('accPhone').value.trim() || '0812-0000-0000';
+      const room = document.getElementById('accRoomSelect').value;
+
+      if (!name || !email) {
+        RumaUI.showToast('Nama dan email wajib diisi!', 'warning', 'Validasi F-01');
+        return;
+      }
+
+      // Validasi duplikasi email sederhana
+      const existingEmails = Array.from(document.querySelectorAll('#userTableBody tr td:nth-child(2)')).map(td => td.textContent.trim().toLowerCase());
+      if (existingEmails.includes(email.toLowerCase())) {
+        RumaUI.showToast('Email ' + email + ' sudah terdaftar pada sistem!', 'danger', 'Duplikasi Akun');
+        return;
+      }
+
+      const tbody = document.getElementById('userTableBody');
+      const tr = document.createElement('tr');
+      const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'U';
+
+      let roleAttr = 'staff';
+      let badgeHtml = '';
+      let rbacDesc = '';
+      let roleLabel = '';
+
+      if (type === 'tenant') {
+        const roomSelect = document.getElementById('accRoomSelect');
+        const selectedOpt = roomSelect.options[roomSelect.selectedIndex];
+        if (selectedOpt && selectedOpt.getAttribute('data-occupied') === 'true') {
+          RumaUI.showToast('Kamar ' + room + ' sedang terisi kontrak aktif! Mencegah tabrakan kamar (Skenario 12).', 'danger', 'Tabrakan Kamar');
+          return;
+        }
+
+        roleAttr = 'tenant';
+        roleLabel = 'Penghuni Kamar';
+        badgeHtml = `
+          <span class="status-badge badge-brand" style="font-size: 10px; padding: 2px 7px;">
+            <i data-lucide="home" style="width: 11px; height: 11px;"></i> Penghuni Kamar
+          </span>`;
+        rbacDesc = `
+          <div style="font-size: 11px; font-weight: 600; color: #0F172A;">Portal Mandiri Kamar ${room}</div>
+          <div style="font-size: 10px; color: #64748B;">Hanya data sewa, tagihan & tiket sendiri</div>`;
+      } else if (type === 'technician') {
+        roleAttr = 'staff';
+        roleLabel = 'Teknisi Lapangan';
+        badgeHtml = `
+          <span class="status-badge" style="font-size: 10px; padding: 2px 7px; background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD;">
+            <i data-lucide="wrench" style="width: 11px; height: 11px;"></i> Teknisi Lapangan
+          </span>`;
+        rbacDesc = `
+          <div style="font-size: 11px; font-weight: 600; color: #0F172A;">Modul Tiket Perbaikan Saja</div>
+          <div style="font-size: 10px; color: #64748B;">Hanya pemeliharaan & status unit kamar</div>`;
+      } else {
+        roleAttr = 'staff';
+        roleLabel = 'Staf Operasional';
+        badgeHtml = `
+          <span class="status-badge badge-warning" style="font-size: 10px; padding: 2px 7px; background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A;">
+            <i data-lucide="shield" style="width: 11px; height: 11px;"></i> Staf Operasional
+          </span>`;
+        rbacDesc = `
+          <div style="font-size: 11px; font-weight: 600; color: #0F172A;">Operasional & Catat Bayar</div>
+          <div style="font-size: 10px; color: #D97706;">Zero Self-Approval (Tanpa Laporan Laba)</div>`;
+      }
+
+      tr.setAttribute('data-role', roleAttr);
+      tr.innerHTML = `
+        <td>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: ${type === 'tenant' ? '#16A34A' : '#FF7A00'}; color: #FFFFFF; font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">${initials}</div>
+            <div>
+              <div style="font-weight: 700; color: #0F172A;">${name}</div>
+              <div style="font-size: 10.5px; color: #64748B;">${type === 'tenant' ? 'Kamar ' + room + ' · ' : ''}${phone}</div>
+            </div>
+          </div>
+        </td>
+        <td style="font-size: 11.5px; color: #475569;">${email}</td>
+        <td>${badgeHtml}</td>
+        <td>${rbacDesc}</td>
+        <td>
+          <span class="status-badge badge-success" style="font-size: 10px; padding: 2px 7px; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">Aktif</span>
+        </td>
+        <td style="text-align: right;">
+          <button type="button" class="btn-neutral-secondary" style="height: 26px; padding: 0 8px; font-size: 10.5px;" onclick="openEditAccountModal('${name}', '${email}', '${roleLabel}', 'aktif')">
+            <i data-lucide="edit-2" style="width: 11px; height: 11px;"></i> Edit Izin
+          </button>
+        </td>
+      `;
+
+      tbody.appendChild(tr);
+      lucide.createIcons();
+
+      // Reset form modal
+      document.getElementById('accName').value = '';
+      document.getElementById('accEmail').value = '';
+      document.getElementById('accPhone').value = '';
+
+      updateFilterCounts();
+      closeModal('modalAddAccount');
+      RumaUI.showToast('Akun ' + name + ' berhasil dibuat & diaktifkan (F-01).', 'success', 'Aktivasi Akun');
+    }
+
+    function saveAccountChanges() {
+      const name = document.getElementById('editAccName').value.trim();
+      const status = document.getElementById('editAccStatus').value;
+      const role = document.getElementById('editAccRole').value;
+      const isTenant = role.includes('Penghuni');
+      let newRoom = '';
+      if (isTenant) {
+        newRoom = document.getElementById('editAccRoomSelect').value;
+      }
+
+      // Cari baris berdasarkan email
+      const rows = document.querySelectorAll('#userTableBody tr');
+      rows.forEach(row => {
+        const emailCell = row.cells[1];
+        if (emailCell && emailCell.textContent.trim().toLowerCase() === currentEditingEmail.toLowerCase()) {
+          // Update nama
+          const nameEl = row.querySelector('div > div > div:first-child');
+          if (nameEl) nameEl.textContent = name;
+
+          // Update room info jika peran penghuni (Skenario 21)
+          if (isTenant && newRoom) {
+            const subText = row.querySelector('div > div > div:nth-child(2)');
+            if (subText) subText.textContent = 'Kamar ' + newRoom + ' · 0811-2233-4455';
+            const rbacCell = row.cells[3];
+            if (rbacCell) {
+              rbacCell.innerHTML = `
+                <div style="font-size: 11px; font-weight: 600; color: #0F172A;">Portal Mandiri Kamar ${newRoom}</div>
+                <div style="font-size: 10px; color: #64748B;">Hanya data sewa, tagihan & tiket sendiri</div>
+              `;
+            }
+          }
+
+          // Update status badge
+          const statusCell = row.cells[4];
+          if (statusCell) {
+            if (status === 'aktif') {
+              statusCell.innerHTML = `<span class="status-badge badge-success" style="font-size: 10px; padding: 2px 7px; background: #DCFCE7; color: #15803D; border: 1px solid #86EFAC;">Aktif</span>`;
+            } else {
+              statusCell.innerHTML = `<span class="status-badge" style="font-size: 10px; padding: 2px 7px; background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5;">Nonaktif</span>`;
+            }
+          }
+
+          // Update button onclick
+          const actionBtn = row.querySelector('button');
+          if (actionBtn) {
+            actionBtn.setAttribute('onclick', `openEditAccountModal('${name}', '${currentEditingEmail}', '${role}', '${status}')`);
+          }
+        }
+      });
+
+      closeModal('modalEditAccount');
+      if (isTenant && newRoom) {
+        RumaUI.showToast('Akun ' + name + ' berhasil diperbarui. Kamar dipindahkan ke ' + newRoom + ' (Skenario 21).', 'success', 'Relokasi Kamar');
+      } else {
+        RumaUI.showToast('Perubahan status & izin akun ' + name + ' berhasil disimpan (Skenario 22).', 'success', 'Kelola Akun');
+      }
+    }
+
+    function saveAllSettings() {
+      RumaUI.showToast('Profil properti & rekening resmi disimpan. Perubahan rekening otomatis berlaku ke penagihan berjalan (Skenario 14).', 'success', 'Pengaturan Disimpan');
+    }
+
+    function resetSettingsForm() {
+      RumaUI.showToast('Perubahan formulir dibatalkan.', 'info', 'Batal');
+    }
+
+    // ==========================================================================
+    // DYNAMIC RULES BUILDER (TATA TERTIB / KLAUSUL KONTRAK SEWA)
+    // ==========================================================================
+    function updateRuleNumbers() {
+      const rows = document.querySelectorAll('#rulesListContainer .rule-item-row');
+      rows.forEach((row, index) => {
+        const numSpan = row.querySelector('.rule-number');
+        if (numSpan) numSpan.textContent = index + 1;
+      });
+      const summary = document.getElementById('rulesCountSummary');
+      if (summary) summary.textContent = 'Total ' + rows.length + ' butir tata tertib aktif terdaftar';
+    }
+
+    function addNewRule() {
+      const container = document.getElementById('rulesListContainer');
+      const count = container.querySelectorAll('.rule-item-row').length + 1;
+      const row = document.createElement('div');
+      row.className = 'rule-item-row';
+      row.innerHTML = `
+        <span class="rule-number">${count}</span>
+        <input type="text" class="rule-input-field" placeholder="Tuliskan butir aturan kost..." value="">
+        <button type="button" class="btn-rule-delete" title="Hapus Aturan" onclick="removeRule(this)">
+          <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+        </button>
+      `;
+      container.appendChild(row);
+      lucide.createIcons();
+      updateRuleNumbers();
+      const input = row.querySelector('.rule-input-field');
+      if (input) input.focus();
+      RumaUI.showToast('Butir aturan baru ditambahkan.', 'info', 'Tata Tertib');
+    }
+
+    function removeRule(btn) {
+      const row = btn.closest('.rule-item-row');
+      const container = document.getElementById('rulesListContainer');
+      if (container.querySelectorAll('.rule-item-row').length <= 1) {
+        RumaUI.showToast('Minimal harus ada 1 butir tata tertib kost.', 'warning', 'Tata Tertib');
+        return;
+      }
+      if (row) {
+        row.remove();
+        updateRuleNumbers();
+        RumaUI.showToast('Butir aturan berhasil dihapus.', 'info', 'Tata Tertib');
+      }
+    }
+
+    // ESC Key listener
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeModal('modalAddAccount');
+        closeModal('modalEditAccount');
+      }
+    });
+
+    // Inisialisasi ikon Lucide
+    lucide.createIcons();
   </script>
 </body>
 </html>

@@ -1594,67 +1594,67 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       5. BULLETPROOF MODAL ARCHITECTURE (IDENTIK MODAL TAMBAH KAMAR)
+       5. BULLETPROOF MODAL ARCHITECTURE (100% IDENTIK DENGAN WF-04 REGISTRASI PENGHUNI BARU)
        ══════════════════════════════════════════════════════════════ */
-    .modal-backdrop,
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 23, 42, 0.45);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--transition-normal, 0.2s);
-      padding: 16px;
-      box-sizing: border-box;
+    .modal-backdrop {
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(15, 23, 42, 0.45) !important;
+      backdrop-filter: blur(5px) !important;
+      -webkit-backdrop-filter: blur(5px) !important;
+      z-index: 1000 !important;
+      display: none !important;
+      visibility: hidden !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 20px !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: opacity 0.2s ease !important;
+      box-sizing: border-box !important;
     }
 
-    .modal-backdrop.open,
-    .modal-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
+    .modal-backdrop:not(.open),
+    .modal-backdrop:not(.open) * {
+      pointer-events: none !important;
     }
 
-    .modal-card {
-      width: 580px;
-      max-width: 95vw;
-      max-height: calc(100vh - 48px);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      padding: 0;
-      gap: 0;
-      border-radius: 20px;
-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.16);
-      background: #FFFFFF;
-      box-sizing: border-box;
-      transform: translateY(16px);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    .modal-backdrop.open {
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
     }
 
-    .modal-backdrop.open .modal-card,
-    .modal-overlay.open .modal-card {
-      transform: translateY(0);
+    #modalExport .modal-card,
+    #modalExpense .modal-card,
+    #modalProofView .modal-card {
+      background: #FFFFFF !important;
+      border-radius: 20px !important;
+      width: 580px !important;
+      max-width: 580px !important;
+      max-height: calc(100vh - 48px) !important;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.16) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+      margin: 0 auto !important;
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0) scale(1) !important;
     }
 
     .modal-header-pinned {
       padding: 15px 22px !important;
       border-bottom: 1px solid var(--border-subtle, #E2E8F0) !important;
+      background: #FFFFFF !important;
       display: flex !important;
       align-items: center !important;
       justify-content: space-between !important;
       gap: 12px !important;
       flex-shrink: 0 !important;
-      background: #FFFFFF !important;
-      box-sizing: border-box !important;
       z-index: 10 !important;
     }
 
@@ -1664,16 +1664,14 @@
       color: var(--text-main, #0F172A) !important;
       margin: 0 !important;
       line-height: 1.25 !important;
-      letter-spacing: -0.2px;
     }
 
     .modal-subtitle {
-      font-size: 11.5px !important;
+      font-size: 11px !important;
       color: var(--text-muted, #64748B) !important;
       margin: 2px 0 0 0 !important;
     }
 
-    .modal-close-btn,
     .btn-modal-close {
       background: #F1F5F9 !important;
       border: none !important;
@@ -1687,34 +1685,50 @@
       color: #64748B !important;
       transition: all var(--transition-fast) !important;
       flex-shrink: 0 !important;
-      padding: 0;
+      padding: 0 !important;
     }
 
-    .modal-close-btn:hover,
     .btn-modal-close:hover {
       background: #E2E8F0 !important;
       color: #0F172A !important;
-      transform: scale(1.05);
     }
 
     .modal-body-scrollable {
-      padding: 16px 22px 20px !important;
+      padding: 12px 22px 18px !important;
       overflow-y: auto !important;
       flex: 1 !important;
-      min-height: 0 !important;
-      max-height: calc(85vh - 120px) !important;
       display: flex !important;
       flex-direction: column !important;
-      gap: 14px !important;
+      gap: 12px !important;
       box-sizing: border-box !important;
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
     }
 
-    .modal-body-scrollable::-webkit-scrollbar {
+    .modal-body-scrollable .modal-section-title:first-child {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
+    /* Sembunyikan scrollbar di seluruh modal namun tetap dapat di-scroll lancar */
+    .modal-backdrop,
+    .modal-card,
+    .modal-body-scrollable,
+    .modal-body,
+    .modal-body-scroll {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .modal-backdrop::-webkit-scrollbar,
+    .modal-card::-webkit-scrollbar,
+    .modal-body-scrollable::-webkit-scrollbar,
+    .modal-body::-webkit-scrollbar,
+    .modal-body-scroll::-webkit-scrollbar {
       display: none !important;
       width: 0 !important;
       height: 0 !important;
+      background: transparent !important;
     }
 
     .modal-footer-pinned {
@@ -1730,7 +1744,54 @@
       box-sizing: border-box !important;
     }
 
-    /* Modal Form Sub-Sections & Upload Dropzone (Identik WF-04) */
+    .btn-modal-cancel {
+      height: 38px !important;
+      padding: 0 18px !important;
+      border-radius: var(--radius-full, 9999px) !important;
+      background: #F1F5F9 !important;
+      border: 1px solid var(--border-subtle, #E2E8F0) !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      color: var(--text-secondary, #64748B) !important;
+      cursor: pointer !important;
+      transition: all var(--transition-fast) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+    }
+
+    .btn-modal-cancel:hover {
+      background: #E2E8F0 !important;
+      color: var(--text-main, #0F172A) !important;
+    }
+
+    .btn-modal-primary {
+      height: 38px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      background: var(--brand-primary, #FF7A00) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      border-radius: var(--radius-full, 9999px) !important;
+      padding: 0 20px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28) !important;
+      transition: all var(--transition-fast) !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+    }
+
+    .btn-modal-primary:hover {
+      background: var(--brand-primary-hover, #EA6C00) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    /* Modal Form Sub-Sections & Upload Dropzone (100% Identik WF-04 Registrasi Penghuni Baru) */
     .modal-section-divider {
       display: flex;
       align-items: center;
@@ -1741,10 +1802,10 @@
     }
 
     .modal-section-title {
-      font-size: 11.5px;
+      font-size: 11px;
       box-sizing: border-box;
       font-weight: 700;
-      color: var(--text-main, #0F172A);
+      color: var(--text-main, #111111);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       display: flex;
@@ -1757,28 +1818,34 @@
       flex-direction: column;
       gap: 6px;
       width: 100%;
+      min-width: 0 !important;
       box-sizing: border-box;
     }
 
     .form-label-txt {
       font-size: 12px;
       font-weight: 600;
-      color: var(--text-main, #0F172A);
+      color: var(--text-main, #111111);
+      cursor: default !important;
+      user-select: text;
     }
 
     .form-input-field {
-      height: 42px;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 12px;
-      padding: 0 14px;
-      font-size: 12.5px;
-      font-family: inherit;
-      color: var(--text-main, #0F172A);
-      background: #FFFFFF;
-      outline: none;
-      transition: all var(--transition-fast);
-      box-sizing: border-box;
-      width: 100%;
+      height: 42px !important;
+      min-height: 42px !important;
+      max-height: 42px !important;
+      border: 1px solid var(--border-subtle, #ECEEF2) !important;
+      border-radius: 12px !important;
+      padding: 0 14px !important;
+      font-size: 13px !important;
+      font-family: inherit !important;
+      color: var(--text-main, #111111) !important;
+      background: #FFFFFF !important;
+      outline: none !important;
+      transition: all var(--transition-fast) !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+      min-width: 0 !important;
     }
 
     .form-input-field:focus {
@@ -1954,44 +2021,44 @@
     .custom-form-select-wrap {
       position: relative;
       width: 100%;
-      min-width: 0;
+      min-width: 0 !important;
       box-sizing: border-box;
     }
 
     .btn-form-select-trigger {
-      height: 42px;
-      min-height: 42px;
-      max-height: 42px;
-      padding: 0 14px;
-      background: #FFFFFF;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 12.5px;
-      font-weight: 500;
-      color: var(--text-main, #0F172A);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      outline: none;
-      transition: all var(--transition-fast, 0.15s);
-      box-sizing: border-box;
-      user-select: none;
-      width: 100%;
-      min-width: 0;
-      overflow: hidden;
+      height: 42px !important;
+      min-height: 42px !important;
+      max-height: 42px !important;
+      padding: 0 14px !important;
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-subtle, #ECEEF2) !important;
+      border-radius: 12px !important;
+      font-family: inherit !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--text-main, #111111) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      cursor: pointer !important;
+      outline: none !important;
+      transition: all var(--transition-fast, 0.15s) !important;
+      box-sizing: border-box !important;
+      user-select: none !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      overflow: hidden !important;
     }
 
     .btn-form-select-trigger:hover {
-      background: #FFFFFF;
-      border-color: #CBD5E1;
+      background: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
     }
 
     .btn-form-select-trigger.is-open {
-      background: #FFFFFF;
-      border-color: #FF7A00;
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+      background: #FFFFFF !important;
+      border-color: #FF7A00 !important;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12) !important;
     }
 
     .btn-form-select-trigger .chevron-icon {
@@ -2021,17 +2088,17 @@
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
       font-weight: 500;
-      font-size: 12.5px;
-      color: #111111;
+      font-size: 13px;
+      color: var(--text-main, #111111);
       min-width: 0 !important;
       flex: 1 !important;
       text-align: left;
     }
 
     .floor-icon-mini {
-      width: 24px;
-      height: 24px;
-      border-radius: 7px;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
       background: #FFF7ED;
       color: #FF7A00;
       display: inline-flex;
@@ -2043,9 +2110,9 @@
     }
 
     .type-icon-mini {
-      width: 24px;
-      height: 24px;
-      border-radius: 7px;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
       background: #FFF7ED;
       color: #FF7A00;
       display: inline-flex;
@@ -2068,43 +2135,43 @@
     #wrapExpenseDate.ruma-datepicker-wrap {
       position: relative;
       width: 100%;
-      min-width: 0;
+      min-width: 0 !important;
       box-sizing: border-box;
     }
 
     #wrapExpenseDate .ruma-datepicker-trigger {
-      height: 42px;
-      min-height: 42px;
-      max-height: 42px;
-      padding: 0 14px;
-      background: #FFFFFF;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 12.5px;
-      font-weight: 500;
-      color: var(--text-main, #0F172A);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      box-sizing: border-box;
-      width: 100%;
-      min-width: 0;
-      overflow: hidden;
-      user-select: none;
-      transition: all var(--transition-fast, 0.15s);
+      height: 42px !important;
+      min-height: 42px !important;
+      max-height: 42px !important;
+      padding: 0 14px !important;
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-subtle, #ECEEF2) !important;
+      border-radius: 12px !important;
+      font-family: inherit !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--text-main, #111111) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      cursor: pointer !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      overflow: hidden !important;
+      user-select: none !important;
+      transition: all var(--transition-fast, 0.15s) !important;
     }
 
     #wrapExpenseDate .ruma-datepicker-trigger:hover {
-      background: #FFFFFF;
-      border-color: #CBD5E1;
+      background: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
     }
 
     #wrapExpenseDate.open .ruma-datepicker-trigger {
-      background: #FFFFFF;
-      border-color: #FF7A00;
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+      background: #FFFFFF !important;
+      border-color: #FF7A00 !important;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12) !important;
     }
 
     #wrapExpenseDate .ruma-datepicker-trigger-content {
@@ -2117,9 +2184,9 @@
     }
 
     #wrapExpenseDate .ruma-datepicker-val-txt {
-      font-size: 12.5px;
-      font-weight: 500;
-      color: var(--text-main, #0F172A);
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--text-main, #111111) !important;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -2223,22 +2290,22 @@
     }
 
     .direct-ticket-input {
-      height: 42px;
-      min-height: 42px;
-      max-height: 42px;
-      padding: 0 38px 0 38px;
-      background: #FFFFFF;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 12.5px;
-      font-weight: 500;
-      color: var(--text-main, #0F172A);
-      box-sizing: border-box;
-      outline: none;
-      transition: all var(--transition-fast, 0.15s);
-      width: 100%;
-      min-width: 0;
+      height: 42px !important;
+      min-height: 42px !important;
+      max-height: 42px !important;
+      padding: 0 38px 0 38px !important;
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-subtle, #ECEEF2) !important;
+      border-radius: 12px !important;
+      font-family: inherit !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--text-main, #111111) !important;
+      box-sizing: border-box !important;
+      outline: none !important;
+      transition: all var(--transition-fast, 0.15s) !important;
+      width: 100% !important;
+      min-width: 0 !important;
     }
 
     .direct-ticket-input:focus {
@@ -2386,71 +2453,6 @@
       font-weight: 600;
     }
 
-    /* PINNED FOOTER ACTIONS (IDENTIK MODAL TAMBAH KAMAR) */
-    .modal-footer-pinned {
-      padding: 18px 24px !important;
-      border-top: 1px solid var(--border-subtle, #E2E8F0) !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 10px !important;
-      background: #FFFFFF !important;
-      flex-shrink: 0 !important;
-      box-sizing: border-box !important;
-      border-radius: 0 0 24px 24px !important;
-    }
-
-    .btn-modal-cancel {
-      height: 40px;
-      padding: 0 20px;
-      border-radius: 9999px;
-      background: #FFFFFF;
-      border: 1.5px solid #CBD5E1;
-      color: #374151;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: all var(--transition-fast, 0.15s);
-      box-sizing: border-box;
-      outline: none;
-      line-height: 1;
-    }
-
-    .btn-modal-cancel:hover {
-      background: #F8FAFC;
-      border-color: #94A3B8;
-      color: #111111;
-    }
-
-    .btn-modal-primary {
-      height: 40px;
-      padding: 0 22px;
-      border-radius: 9999px;
-      background: var(--brand-primary, #FF7A00);
-      border: 1.5px solid transparent;
-      color: #FFFFFF;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      box-shadow: 0 2px 6px rgba(255, 122, 0, 0.28);
-      transition: all var(--transition-fast, 0.15s);
-      box-sizing: border-box;
-      outline: none;
-      line-height: 1;
-    }
-
-    .btn-modal-primary:hover {
-      background: var(--brand-primary-hover, #E66E00);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
-    }
-
     /* Floating Role Simulator Bar */
     .wf-badge-role-bar {
       position: fixed;
@@ -2526,6 +2528,89 @@
         grid-template-columns: 1fr;
         gap: 12px;
         padding: 12px 4px;
+      }
+    }
+
+    /* Duration & Scope Pills (Identik 100% WF-04 Registrasi Penghuni Baru) */
+    .duration-pills-row {
+      display: flex;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .duration-pill-opt {
+      flex: 1;
+      padding: 8px !important;
+      text-align: center;
+      border-radius: var(--radius-full, 9999px) !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      border: 1px solid var(--border-subtle, #ECEEF2) !important;
+      background: #F8FAFC !important;
+      color: var(--text-secondary, #374151) !important;
+      cursor: pointer !important;
+      transition: all var(--transition-fast, 0.15s) !important;
+      user-select: none;
+      -webkit-user-select: none;
+      outline: none;
+      white-space: nowrap;
+    }
+
+    .duration-pill-opt:hover {
+      border-color: #FF7A00 !important;
+      color: #FF7A00 !important;
+      background: #FFF7ED !important;
+      cursor: pointer !important;
+      transform: translateY(-1px);
+    }
+
+    .duration-pill-opt.active {
+      background: var(--dark-pill, #111111) !important;
+      border-color: var(--dark-pill, #111111) !important;
+      color: #FFFFFF !important;
+      cursor: pointer !important;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18) !important;
+    }
+
+    /* Formal Print A4 Stylesheet */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .top-canopy-overlay,
+      .topbar,
+      .audit-filter-bar,
+      .report-tabs-bar,
+      .wf-badge-role-bar,
+      .modal-backdrop,
+      .doc-dropdown-wrap,
+      .btn-doc-trigger,
+      .btn-action-primary,
+      .btn-action-outline,
+      .btn-audit-period,
+      .period-popover-menu,
+      .period-dropdown-wrap,
+      .btn-account-filter,
+      #btnClearAuditSearch {
+        display: none !important;
+      }
+      .dashboard-wrapper {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .audit-workbench-card,
+      .metric-card-estify {
+        box-shadow: none !important;
+        border: 1px solid #CBD5E1 !important;
+        page-break-inside: avoid;
+      }
+      .report-tab-panel {
+        display: flex !important;
       }
     }
   </style>
@@ -3439,7 +3524,7 @@
             <span>1. Rincian Mutasi &amp; Pos Akun Kas</span>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt">Kategori Akun Pengeluaran *</label>
               <div class="custom-form-select-wrap" id="wrapExpenseCat">
@@ -3514,12 +3599,12 @@
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt">Nominal Biaya / Pengeluaran *</label>
               <div style="position: relative;">
-                <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 12.5px; font-weight: 600; color: #64748B;">Rp</span>
-                <input type="text" class="form-input-field" id="inputExpenseAmount" placeholder="Contoh: 450.000" style="padding-left: 36px; font-weight: 600;" oninput="formatRupiahInput(this)" required>
+                <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 13px; font-weight: 600; color: #64748B; pointer-events: none;">Rp</span>
+                <input type="text" class="form-input-field" id="inputExpenseAmount" placeholder="0" style="padding-left: 38px; font-weight: 600;" oninput="formatRupiahInput(this)" required>
               </div>
             </div>
             <div class="form-group-item">
@@ -3729,56 +3814,150 @@
   </div>
 
   <!-- ========================================================
-       MODAL 3: EKSPOR LAPORAN KEUANGAN (F-10)
+       MODAL 3: EKSPOR LAPORAN KEUANGAN (F-10 · 100% IDENTIK WF-04 REGISTRASI PENGHUNI BARU)
        ======================================================== -->
   <div class="modal-backdrop" id="modalExport">
-    <div class="modal-card" style="width: 520px; max-width: 95vw;">
+    <div class="modal-card">
       <div class="modal-header-pinned">
-        <div>
-          <h2 class="modal-title" style="display: flex; align-items: center; gap: 8px; margin: 0; font-size: 17px; font-weight: 700; color: #0F172A; letter-spacing: -0.3px;">
-            <i data-lucide="download" style="width: 20px; height: 20px; color: #FF7A00;"></i>
-            Ekspor Laporan Keuangan
-          </h2>
-          <p class="modal-subtitle" style="margin: 3px 0 0 0; font-size: 11.5px; color: var(--text-muted);">
-            Unduh rekonsiliasi kas dan pembukuan dalam format standar.
-          </p>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--brand-primary-light, #FFF7ED); color: var(--brand-primary, #FF7A00); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="download" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Ekspor &amp; Cetak Laporan Finansial</h2>
+            <p class="modal-subtitle">Unduh pembukuan kas, rekapitulasi laba rugi, dan arsip audit properti</p>
+          </div>
         </div>
-        <button class="modal-close-btn" onclick="closeModal('modalExport')" type="button" title="Tutup">
-          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalExport')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
 
       <div class="modal-body-scrollable">
-        <p style="font-size: 12px; color: #64748B; margin: 0 0 10px;">Pilih format file dan jenis laporan yang ingin Anda unduh ke perangkat:</p>
-
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          <label class="export-format-card is-active" id="labelFormatCsv" onclick="selectExportFormat('csv')">
-            <input type="radio" name="exportFormat" value="csv" checked style="accent-color: var(--brand-primary); cursor: pointer;">
-            <div>
-              <div style="font-size: 13px; font-weight: 700; color: #0F172A;">File CSV / Spreadsheet Excel (.csv)</div>
-              <div style="font-size: 11.5px; color: #64748B; margin-top: 2px;">Data mutasi mentah baris per baris lengkap untuk rekonsiliasi</div>
-            </div>
-          </label>
-
-          <label class="export-format-card" id="labelFormatPdf" onclick="selectExportFormat('pdf')">
-            <input type="radio" name="exportFormat" value="pdf" style="accent-color: var(--brand-primary); cursor: pointer;">
-            <div>
-              <div style="font-size: 13px; font-weight: 700; color: #0F172A;">Dokumen Resmi PDF Siap Cetak (.pdf)</div>
-              <div style="font-size: 11.5px; color: #64748B; margin-top: 2px;">Format Laporan Laba Rugi (P&amp;L) komprehensif formal bertanda tangan</div>
-            </div>
-          </label>
+        
+        <!-- BAGIAN 1: PILIHAN FORMAT BERKAS (PILLS IDENTIK WF-04) -->
+        <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
+          <i data-lucide="file-spreadsheet" style="width: 13px; height: 13px; color: var(--brand-primary, #FF7A00);"></i>
+          <span>1. Format Berkas &amp; Dokumen Ekspor</span>
         </div>
 
-        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 14px; font-size: 11.5px; color: #64748B; margin-top: 12px;">
-          Rentang ekspor: <strong style="color: var(--text-main);">Oktober 2026 (16 Baris Transaksi)</strong>
+        <div class="form-group-item">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label-txt">Pilihan Format Berkas *</label>
+            <span id="exportFormatBadge" class="status-badge badge-dark" style="font-size: 11px; padding: 2px 8px;">Standar Tabular (.CSV)</span>
+          </div>
+          <div class="duration-pills-row" id="wrapExportFormatPills">
+            <button type="button" class="duration-pill-opt active" id="btnFormatCsv" onclick="selectExportFormatPill('csv')">
+              <i data-lucide="file-spreadsheet" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Spreadsheet (.CSV)
+            </button>
+            <button type="button" class="duration-pill-opt" id="btnFormatPdf" onclick="selectExportFormatPill('pdf')">
+              <i data-lucide="file-text" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Dokumen Resmi (.PDF)
+            </button>
+          </div>
         </div>
+
+        <div style="font-size: 11px; color: #0284C7; background: #F0F9FF; border: 1px solid #BAE6FD; padding: 8px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="info" style="width: 14px; height: 14px; flex-shrink: 0;"></i>
+          <span id="exportFormatNotice">Format <strong>.CSV</strong> menyediakan baris mutasi mentah lengkap untuk rekonsiliasi kas di Microsoft Excel atau Google Sheets.</span>
+        </div>
+
+        <!-- BAGIAN 2: CAKUPAN MODUL & PERIODE PEMBUKUAN (IDENTIK SECTION 2 WF-04) -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="filter" style="width: 13px; height: 13px; color: var(--brand-primary, #FF7A00);"></i>
+            <span>2. Cakupan Modul &amp; Periode Pembukuan</span>
+          </div>
+        </div>
+
+        <div class="form-group-item">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label-txt">Cakupan Data yang Diekspor *</label>
+            <span id="exportScopeBadge" class="status-badge badge-dark" style="font-size: 11px; padding: 2px 8px;">16 Transaksi Kas</span>
+          </div>
+          <div class="duration-pills-row" id="wrapExportScopePills">
+            <button type="button" class="duration-pill-opt active" id="btnScopeAll" onclick="selectExportScope(this, 'all')">Semua Modul</button>
+            <button type="button" class="duration-pill-opt" id="btnScopeLedger" onclick="selectExportScope(this, 'ledger')">Buku Kas Saja</button>
+            <button type="button" class="duration-pill-opt" id="btnScopePL" onclick="selectExportScope(this, 'pl')">Laba Rugi (P&amp;L)</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
+          <div class="form-group-item">
+            <label class="form-label-txt">Periode Pembukuan *</label>
+            <input type="text" id="exportPeriodTxt" class="form-input-field" value="Oktober 2026 (Bulan Berjalan)" readonly style="background: #F8FAFC; color: #334155; font-weight: 600;">
+          </div>
+          <div class="form-group-item">
+            <label class="form-label-txt">Pemohon / Penanggung Jawab *</label>
+            <input type="text" id="exportAuthorTxt" class="form-input-field" value="Budi Santoso (Pemilik)" readonly style="background: #F8FAFC; color: #64748B;">
+          </div>
+        </div>
+
+        <!-- BAGIAN 3: KALKULASI & RINGKASAN PRA-UNDUH (IDENTIK KALKULASI TAGIHAN WF-04) -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="receipt" style="width: 13px; height: 13px; color: var(--brand-primary, #FF7A00);"></i>
+            <span>3. Rincian Pra-Ekspor &amp; Rekonsiliasi Audit</span>
+          </div>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; margin-top: 4px;" id="exportSummaryCard">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="file-check" style="width: 14px; height: 14px; color: var(--brand-primary, #FF7A00);"></i>
+              <span id="exportSummaryTitle">Spesifikasi Berkas Spreadsheet (.CSV)</span>
+            </div>
+            <span id="exportDataCountBadge" class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 7px;">16 Baris Transaksi</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
+            <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+              <span>Identitas Properti:</span>
+              <span style="font-weight: 600; color: var(--text-main);">Kost Eksklusif RumaKost (15 Kamar)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+              <span>Format &amp; Tipe Berkas:</span>
+              <span id="exportEncodingLabel" style="font-weight: 600; color: #0284C7;">Comma Separated Values (UTF-8 with BOM)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+              <span>Status Rekonsiliasi Saldo:</span>
+              <span style="font-weight: 700; color: #16A34A;">100% Cocok (Selisih Kas Rp 0)</span>
+            </div>
+            <div style="border-top: 1px dashed #CBD5E1; padding-top: 6px; margin-top: 2px; display: flex; justify-content: space-between; align-items: baseline;">
+              <div>
+                <span style="font-weight: 700; color: var(--text-main);">Target Nama Berkas:</span>
+                <span style="font-size: 11px; color: var(--text-muted); display: block;" id="exportTargetDesc">Siap dibuka langsung di Microsoft Excel &amp; Google Sheets.</span>
+              </div>
+              <span id="exportFilenamePreview" style="font-size: 13px; font-weight: 700; color: var(--brand-primary, #FF7A00); font-family: monospace;">RumaKost_Buku_Kas_Okt2026_all.csv</span>
+            </div>
+          </div>
+
+          <div style="font-size: 11px; color: #0284C7; background: #F0F9FF; border: 1px solid #BAE6FD; padding: 6px 10px; border-radius: 8px; margin-top: 8px; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="shield-check" style="width: 12px; height: 12px; flex-shrink: 0;"></i>
+            <span>Data finansial ini dilindungi hak akses peran (*RBAC*) dan sah diverifikasi Pemilik Kost.</span>
+          </div>
+        </div>
+
+        <!-- Checkbox Cetak Lembar Audit Formal (Identik Checkbox WhatsApp WF-04) -->
+        <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 12px; padding: 11px 14px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none; margin-top: 4px;" onclick="document.getElementById('autoPrintAfterDownload').click()">
+          <input type="checkbox" id="autoPrintAfterDownload" style="width: 16px; height: 16px; accent-color: #16A34A; cursor: pointer; margin-top: 2px;" onclick="event.stopPropagation()">
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: #166534; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="printer" style="width: 13px; height: 13px; color: #16A34A;"></i>
+              <span>Buka Pratinjau Cetak Formal (A4) Sekaligus</span>
+            </div>
+            <div style="font-size: 11px; color: #15803D; margin-top: 2px; line-height: 1.4;">
+              Secara otomatis menyiapkan dialog cetak dokumen pembukuan A4 resmi bertanda tangan Pemilik setelah pengunduhan berkas.
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <div class="modal-footer-pinned" style="justify-content: flex-end;">
+      <div class="modal-footer-pinned">
         <button type="button" class="btn-modal-cancel" onclick="closeModal('modalExport')">Batal</button>
-        <button type="button" class="btn-modal-primary" onclick="executeExportDownload()">
+        <button type="button" class="btn-modal-primary" onclick="executeExportDownload()" id="btnSubmitExport">
           <i data-lucide="download" style="width: 14px; height: 14px;"></i>
-          <span>Unduh Sekarang</span>
+          <span>Unduh Berkas Sekarang</span>
         </button>
       </div>
     </div>
@@ -4520,7 +4699,11 @@
     }
 
     function openExportModal() {
+      selectExportFormatPill('csv');
+      const allScopeBtn = document.getElementById('btnScopeAll');
+      if (allScopeBtn) selectExportScope(allScopeBtn, 'all');
       openModal('modalExport');
+      if (window.lucide) lucide.createIcons();
     }
 
     /* -------------------------------------------------------------------------
@@ -4820,22 +5003,240 @@
       setTimeout(() => { window.print(); }, 500);
     }
 
-    function selectExportFormat(fmt) {
-      document.querySelectorAll('.export-format-card').forEach(c => c.classList.remove('is-active'));
-      const radio = document.querySelector(`input[name="exportFormat"][value="${fmt}"]`);
-      if (radio) radio.checked = true;
+    let currentExportFormat = 'csv';
+    let currentExportScope = 'all';
+
+    function selectExportFormatPill(fmt) {
+      currentExportFormat = fmt;
+      document.querySelectorAll('#wrapExportFormatPills .duration-pill-opt').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(fmt === 'csv' ? 'btnFormatCsv' : 'btnFormatPdf');
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const badge = document.getElementById('exportFormatBadge');
+      const title = document.getElementById('exportSummaryTitle');
+      const encoding = document.getElementById('exportEncodingLabel');
+      const targetDesc = document.getElementById('exportTargetDesc');
+      const filenamePreview = document.getElementById('exportFilenamePreview');
+      const notice = document.getElementById('exportFormatNotice');
+
       if (fmt === 'csv') {
-        const el = document.getElementById('labelFormatCsv');
-        if (el) el.classList.add('is-active');
+        if (badge) badge.textContent = 'Standar Tabular (.CSV)';
+        if (title) title.textContent = 'Spesifikasi Berkas Spreadsheet (.CSV)';
+        if (encoding) encoding.textContent = 'Comma Separated Values (UTF-8 with BOM)';
+        if (targetDesc) targetDesc.textContent = 'Siap dibuka langsung di Microsoft Excel & Google Sheets.';
+        if (filenamePreview) filenamePreview.textContent = `RumaKost_Buku_Kas_Okt2026_${currentExportScope}.csv`;
+        if (notice) notice.innerHTML = 'Format <strong>.CSV</strong> menyediakan baris mutasi mentah lengkap untuk rekonsiliasi kas di Microsoft Excel atau Google Sheets.';
       } else {
-        const el = document.getElementById('labelFormatPdf');
-        if (el) el.classList.add('is-active');
+        if (badge) badge.textContent = 'Dokumen Formal (.PDF)';
+        if (title) title.textContent = 'Spesifikasi Dokumen PDF Siap Cetak';
+        if (encoding) encoding.textContent = 'Dokumen Resmi Audit A4 (Adobe PDF 1.4)';
+        if (targetDesc) targetDesc.textContent = 'Format eksekutif resmi lengkap tanda tangan Pemilik.';
+        if (filenamePreview) filenamePreview.textContent = `RumaKost_Laporan_Finansial_Okt2026_${currentExportScope}.pdf`;
+        if (notice) notice.innerHTML = 'Format <strong>.PDF</strong> menyajikan ringkasan 4 Gauges KPI, Laporan Laba Rugi komprehensif, dan lembar pengesahan tanda tangan.';
       }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function selectExportScope(btn, scope) {
+      currentExportScope = scope;
+      document.querySelectorAll('#wrapExportScopePills .duration-pill-opt').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      
+      const scopeBadge = document.getElementById('exportScopeBadge');
+      if (scopeBadge) {
+        if (scope === 'all') scopeBadge.textContent = '16 Transaksi Kas (Lengkap)';
+        else if (scope === 'ledger') scopeBadge.textContent = '16 Baris Jurnal Buku Kas';
+        else if (scope === 'pl') scopeBadge.textContent = 'Rekapitulasi Laba Rugi Saja';
+      }
+      selectExportFormatPill(currentExportFormat);
+    }
+
+    // Generator Dummy Berkas CSV (F-10: Ekspor Data Tabular Riil)
+    function downloadCsvReport() {
+      const headers = [
+        "No Bukti",
+        "Tanggal",
+        "Kategori Akun",
+        "Tipe Mutasi",
+        "Uraian Transaksi",
+        "Pihak / Entitas",
+        "Pemasukan Debit (Rp)",
+        "Pengeluaran Kredit (Rp)",
+        "Saldo Berjalan (Rp)",
+        "No Tiket",
+        "Pencatat Transaksi"
+      ];
+
+      const rows = ledgerData.map(item => [
+        `"${item.id}"`,
+        `"${item.date}"`,
+        `"${item.category}"`,
+        `"${item.type === 'income' ? 'Pemasukan (Debit)' : 'Pengeluaran (Kredit)'}"`,
+        `"${item.desc.replace(/"/g, '""')}"`,
+        `"${item.entity.replace(/"/g, '""')}"`,
+        item.type === 'income' ? item.amount : 0,
+        item.type === 'expense' ? item.amount : 0,
+        item.balance,
+        `"${item.ticketNo || '-'}"`,
+        `"${item.author}"`
+      ]);
+
+      let csvStr = "\uFEFF"; // Prepend UTF-8 Byte Order Mark (BOM) agar Excel Windows langsung membaca simbol dan aksen rapi
+      csvStr += "LAPORAN BUKU KAS & AUDIT PEMBUKUAN - RUMAKOST\r\n";
+      csvStr += "Identitas Properti: Kost Eksklusif RumaKost (15 Kamar) | Periode: Oktober 2026\r\n";
+      csvStr += `Cakupan Ekspor: ${currentExportScope.toUpperCase()} | Dicetak oleh: Budi Santoso (Pemilik)\r\n`;
+      csvStr += "Status Rekonsiliasi: 100% Cocok (Selisih Kas Rp 0) | Tanggal Unduh: 25 Oktober 2026\r\n\r\n";
+      csvStr += headers.join(",") + "\r\n";
+      csvStr += rows.map(r => r.join(",")).join("\r\n") + "\r\n\r\n";
+      csvStr += ",,,,TOTAL PEMASUKAN KAS (DEBIT),,,21400000,,,\r\n";
+      csvStr += ",,,,TOTAL PENGELUARAN KAS (KREDIT),,,,4000000,,\r\n";
+      csvStr += ",,,,SURPLUS KAS BERSIH OPERASIONAL (NOI),,,,,17400000,,\r\n";
+      csvStr += ",,,,STATUS SALDO AKHIR: COCOK & TERVERIFIKASI,,,,,\r\n";
+
+      const blob = new Blob([csvStr], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `RumaKost_Buku_Kas_Oktober_2026_${currentExportScope}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Generator Dummy Berkas PDF Standar PDF-1.4 (F-10: Dokumen Resmi Siap Baca)
+    function downloadPdfReport() {
+      const contentLines = [
+        "BT",
+        "/F1 16 Tf",
+        "50 780 Td",
+        "(RUMAKOST - LAPORAN KEUANGAN & PEMBUKUAN RESMI) Tj",
+        "/F1 10 Tf",
+        "0 -22 Td",
+        "(Properti: Kost Eksklusif RumaKost [15 Kamar] | Periode: Oktober 2026) Tj",
+        "0 -15 Td",
+        "(Status Rekonsiliasi: 100% Cocok [Selisih Kas Rp 0] | Tanggal Ekspor: 25 Okt 2026) Tj",
+        "/F1 12 Tf",
+        "0 -28 Td",
+        "(1. RINGKASAN EKSEKUTIF KINERJA OPERASIONAL [ESTIFY KPI]) Tj",
+        "/F1 9 Tf",
+        "0 -18 Td",
+        "(- Surplus Kas Bersih [NOI]: Rp 17.400.000 [Margin Kas: 84.3%]) Tj",
+        "0 -15 Td",
+        "(- Beban Operasional [OER]: Rp 4.000.000 [Rasio Beban: 15.7%]) Tj",
+        "0 -15 Td",
+        "(- Hasil Rata-rata per Kamar [RevPAR]: Rp 1.420.000 / Kamar [Utilisasi: 93.3%]) Tj",
+        "0 -15 Td",
+        "(- Ketepatan Bayar Penghuni: 82.4% Tepat Waktu [Rata-rata H-1.4 Hari]) Tj",
+        "/F1 12 Tf",
+        "0 -28 Td",
+        "(2. JURNAL BUKU KAS UMUM & MUTASI KAS BULANAN [16 TRANSAKSI]) Tj",
+        "/F1 8 Tf",
+        "0 -16 Td",
+        "(No Bukti         Tanggal       Pos Akun         Uraian Transaksi                    Nominal) Tj",
+        "0 -12 Td",
+        "(--------------------------------------------------------------------------------------------------) Tj",
+        "0 -12 Td",
+        "(TRX-202610-016   23 Okt 2026   Operasional      Retribusi sampah RT & sabun         Rp 400.000 [K]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-015   18 Okt 2026   Pemeliharaan     Cuci AC rutin 3 unit [#TKT-003]     Rp 1.500.000 [K]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-014   15 Okt 2026   Utilitas         Internet WiFi IndiHome Fiber 100M   Rp 650.000 [K]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-013   10 Okt 2026   Utilitas         Air Bersih PDAM Tirta Moedal        Rp 450.000 [K]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-012   08 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar C-03           Rp 1.650.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-011   07 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar A-03           Rp 1.650.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-010   05 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar B-03           Rp 1.650.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-009   04 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar C-01           Rp 1.650.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-008   04 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar B-04           Rp 1.300.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-007   04 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar B-01           Rp 1.650.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-006   03 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar B-02           Rp 1.650.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-005   03 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar A-04           Rp 1.800.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-004   02 Okt 2026   Utilitas         Beli Token Listrik PLN Prabayar     Rp 1.250.000 [K]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-003   02 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar B-05           Rp 1.650.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-002   02 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar A-01           Rp 1.400.000 [D]) Tj",
+        "0 -12 Td",
+        "(TRX-202610-001   01 Okt 2026   Sewa Kamar       Pelunasan Sewa Kamar A-05           Rp 1.100.000 [D]) Tj",
+        "0 -12 Td",
+        "(--------------------------------------------------------------------------------------------------) Tj",
+        "0 -14 Td",
+        "(Total Debit Kas: Rp 21.400.000 | Total Kredit Kas: Rp 4.000.000 | Saldo Berjalan: Rp 17.400.000) Tj",
+        "/F1 10 Tf",
+        "0 -32 Td",
+        "(Mengetahui & Mengesahkan Dokumen Audit,) Tj",
+        "0 -40 Td",
+        "(Budi Santoso) Tj",
+        "/F1 8 Tf",
+        "0 -10 Td",
+        "(Pemilik & Pengelola Kost Eksklusif RumaKost) Tj",
+        "ET"
+      ];
+
+      const stream = contentLines.join("\n");
+      const encoder = new TextEncoder();
+      const streamBytes = encoder.encode(stream);
+
+      let pdf = "%PDF-1.4\n";
+      const offsets = [];
+
+      function addObj(s) {
+        offsets.push(encoder.encode(pdf).length);
+        pdf += s + "\n";
+      }
+
+      addObj("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj");
+      addObj("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj");
+      addObj("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>\nendobj");
+      addObj("4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj");
+      addObj("5 0 obj\n<< /Length " + streamBytes.length + " >>\nstream\n" + stream + "\nendstream\nendobj");
+
+      const xrefOffset = encoder.encode(pdf).length;
+      pdf += "xref\n0 6\n0000000000 65535 f \n";
+      for (let i = 0; i < offsets.length; i++) {
+        pdf += String(offsets[i]).padStart(10, '0') + " 00000 n \n";
+      }
+      pdf += "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" + xrefOffset + "\n%%EOF";
+
+      const blob = new Blob([encoder.encode(pdf)], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `RumaKost_Laporan_Finansial_Oktober_2026_${currentExportScope}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
 
     function executeExportDownload() {
+      const isPdf = currentExportFormat === 'pdf';
+      const autoPrint = document.getElementById('autoPrintAfterDownload') && document.getElementById('autoPrintAfterDownload').checked;
       closeModal('modalExport');
-      RumaUI.showToast('Laporan Pembukuan Kas & P&L berhasil diekspor (CSV/Excel)!', 'success');
+      
+      if (isPdf) {
+        downloadPdfReport();
+        RumaUI.showToast(`Dokumen PDF Resmi RumaKost (${currentExportScope}) berhasil diunduh!`, 'success');
+      } else {
+        downloadCsvReport();
+        RumaUI.showToast(`Berkas CSV Laporan Finansial RumaKost (${currentExportScope}) berhasil diunduh!`, 'success');
+      }
+
+      if (autoPrint) {
+        setTimeout(() => {
+          printFormalReport();
+        }, 600);
+      }
     }
 
     // Close popovers and custom selects on click outside
