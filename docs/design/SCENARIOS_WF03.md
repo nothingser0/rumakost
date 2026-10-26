@@ -643,6 +643,286 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
+### SKENARIO 35: Proteksi Rekalkulasi Metrik saat Katalog Kosong Total (Zero State Metric Reset)
+* **Tujuan**: Memastikan radial gauge, persentase okupansi, dan counter pendapatan ter-reset sempurna ke angka 0 (tanpa mempertahankan nilai usang / *frozen stale values*) ketika seluruh unit kamar terhapus dari sistem.
+* **Kondisi Awal**: Seluruh kamar di katalog dihapus bertahap hingga menyisakan 0 unit.
+* **Langkah-langkah Pengujian**:
+  1. Hapus kamar terakhir di sistem melalui aksi modal konfirmasi hapus.
+  2. Amati 3 kartu metrik ringkasan di area header dasbor.
+* **Hasil Diharapkan**:
+  - `refreshGlobalMetrics()` mendeteksi kondisi `totalUnits === 0`.
+  - Kartu Unit Kosong: menampilkan `0 Siap Huni`, `0 / 0 Unit`, gauge terisi 0% (`stroke-dashoffset: 106.8`).
+  - Kartu Okupansi: menampilkan `0% Okupansi`, `0 Penyewa aktif · 0 Servis`, gauge terisi 0%.
+  - Kartu Potensi Pendapatan: menampilkan `Realisasi 0%`, `Rp 0 Jt`, gauge terisi 0%.
+  - Filter toolbar dropdown ter-update: *"Semua Lantai (0)"*, *"Semua Status (0)"*, dsb.
+
+---
+
+### SKENARIO 36: Sanitasi Injeksi HTML / XSS pada Nomor Kamar & Spesifikasi (Stored XSS Guard)
+* **Tujuan**: Mencegah serangan Cross-Site Scripting (XSS) melalui injeksi script berbahaya (seperti `<script>alert(1)</script>` atau `<img src=x onerror=...>`) ke dalam atribut nomor kamar, tipe, ukuran, atau catatan fasilitas.
+* **Kondisi Awal**: Modal Tambah Kamar atau Edit Kamar terbuka.
+* **Langkah-langkah Pengujian**:
+  1. Pada formulir Tambah Kamar, masukkan nomor kamar atau deskripsi yang disisipi karakter HTML: `<script>alert(1)</script>`.
+  2. Sistem memvalidasi regex nomor kamar (`/^[A-Z0-9\-\. ]+$/`) yang secara otomatis menolak karakter kurung siku sudut (`<`, `>`).
+  3. Pada rendering template string dinamis kartu grid dan dossier, seluruh variabel diproses melalui fungsi `escapeHTML()`.
+* **Hasil Diharapkan**:
+  - Input berbahaya dinetralkan menjadi entitas HTML aman (`&lt;script&gt;alert(1)&lt;/script&gt;`).
+  - Tidak ada script asing yang dapat dieksekusi di konteks DOM pengguna.
+  - Keamanan integritas data runtime tetap terlindungi 100%.
+
+---
+
+### SKENARIO 37: Proteksi Double-Submit & Rapid-Click pada Formulir Mutasi Kamar (Double-Click Shield)
+* **Tujuan**: Mencegah duplikasi data entitas atau pemanggilan ganda (*race condition*) akibat klik berulang secara cepat (*rapid-clicking*) pada tombol submit atau konfirmasi hapus.
+* **Kondisi Awal**: Pengguna telah mengisi formulir tambah/edit kamar atau membuka modal konfirmasi hapus kamar/lantai.
+* **Langkah-langkah Pengujian**:
+  1. Klik tombol **"Daftarkan Kamar"** atau **"Hapus Kamar"** secara cepat sebanyak 3-4 kali berturut-turut.
+* **Hasil Diharapkan**:
+  - Flag penahan konkurensi (`isAddSubmitting` / `isEditSubmitting` / `isDeleteRoomSubmitting` / `isDeleteFloorSubmitting`) seketika aktif pada klik pertama.
+  - Tombol submit formulir seketika dinonaktifkan (`disabled = true`) dengan visual opacity `0.7`.
+  - Klik ke-2, ke-3, dan seterusnya ditolak seketika oleh guard clause (`if (isSubmitting) return;`).
+  - Tidak terjadi duplikasi ID kartu di DOM, duplikasi data di `ROOMS_DATA`, maupun pemanggilan toast berulang.
+  - Flag konkurensi di-reset kembali setelah siklus eksekusi tuntas.
+
+---
+
+### SKENARIO 38: Pengamanan Kehilangan Data Formulir saat Refresh / Navigasi (Dirty Form Guard)
+* **Tujuan**: Mencegah hilangnya data ketikan pengguna secara tidak sengaja ketika sedang mengisi formulir tambah/edit kamar lalu me-refresh halaman atau menutup tab.
+* **Kondisi Awal**: Pengguna membuka modal Tambah Kamar dan telah mengetikkan beberapa informasi data unit.
+* **Langkah-langkah Pengujian**:
+  1. Ketikkan beberapa nilai pada field nomor kamar atau catatan unit (`isAddFormDirty = true`).
+  2. Tekan pintasan keyboard reload browser (`Ctrl + R` / `F5`) atau klik tombol back navigasi browser.
+* **Hasil Diharapkan**:
+  - Event listener `window.onbeforeunload` mendeteksi status form dalam kondisi dirty (`isAddFormDirty === true`).
+  - Browser memunculkan dialog konfirmasi bawaan: *"Perubahan yang Anda buat mungkin tidak tersimpan. Tinggalkan situs?"*.
+  - Jika pengguna memilih "Batal", halaman tetap bertahan dan seluruh ketikan formulir tidak hilang.
+  - Jika form di-submit sukses atau ditutup secara resmi melalui tombol batal/silang, status dirty di-reset ke `false`.
+
+---
+
+### SKENARIO 39: Penanganan Riwayat Browser & Back-Button Trapping pada Modal (History API Modal Dismiss)
+* **Tujuan**: Memberikan pengalaman pengguna native pada perangkat mobile dan desktop: menekan tombol Back browser saat modal terbuka akan menutup modal tersebut alih-alih me-redirect pengguna keluar dari aplikasi.
+* **Kondisi Awal**: Pengguna sedang membuka modal Tambah Kamar atau modal Edit Kamar.
+* **Langkah-langkah Pengujian**:
+  1. Buka modal Tambah Kamar $\rightarrow$ `history.pushState({ modalOpen: true, modalId: 'modalTambahKamar' }, '')` tercatat di stack riwayat peramban.
+  2. Tekan tombol **Back** pada browser (atau gesture swipe back di ponsel/tablet).
+* **Hasil Diharapkan**:
+  - Event `popstate` tertangkap oleh listener sistem.
+  - Sistem mendeteksi elemen modal aktif dan memanggil `closeTambahKamarModal()`.
+  - Modal dan backdrop menutup secara mulus tanpa memicu navigasi keluar dari halaman `WF-03-kamar.html`.
+
+---
+
+### SKENARIO 40: Pembersihan Memori Objek Pratinjau Foto Unit (Object URL Memory Leak Prevention)
+* **Tujuan**: Mencegah kebocoran memori RAM peramban (*memory leak*) akibat penumpukan objek blob `URL.createObjectURL` yang tidak pernah dibebaskan saat berkas foto diunggah berkali-kali atau modal dibatalkan.
+* **Kondisi Awal**: Pengguna mengunggah beberapa kali pratinjau foto unit kamar pada modal.
+* **Langkah-langkah Pengujian**:
+  1. Pilih foto kamar pertama pada dropzone unggah foto. Pratinjau tampil di box.
+  2. Pilih kembali foto kedua untuk mengganti pratinjau sebelumnya.
+  3. Klik tombol silang/batal untuk menutup modal.
+* **Hasil Diharapkan**:
+  - Fungsi utilitas `cleanupPhotoUrls()` dipanggil secara otomatis saat modal ditutup atau saat foto baru dipilih.
+  - Sistem mengeksekusi `URL.revokeObjectURL(url)` untuk mencabut izin akses memori blob lama.
+  - Variabel penampung pratinjau di-reset kembali ke `null`, menjaga jejak memori (*memory footprint*) aplikasi tetap ringan dan stabil.
+
+---
+
+### SKENARIO 41: Validasi Batas Maksimal Karakter & Plafon Nominal Finansial (Upper-Bound Ceiling Guard)
+* **Tujuan**: Mencegah kerusakan tata letak UI dan anomali kalkulasi finansial akibat injeksi nilai string berukuran raksasa atau nominal angka di luar batas kewajaran bisnis.
+* **Kondisi Awal**: Modal Tambah Kamar atau Edit Kamar terbuka.
+* **Langkah-langkah Pengujian**:
+  1. Cek pembatasan panjang karakter input:
+     - Nomor Kamar dibatasi atribut `maxlength="10"` dan pola regex alfanumerik.
+     - Dimensi Ukuran dan Token Meteran dibatasi `maxlength="30"`.
+     - Tarif Sewa dan Deposit dibatasi `maxlength="15"`.
+     - Catatan Kamar dibatasi `maxlength="500"`.
+  2. Masukkan tarif sewa atau deposit fiktif bernilai Rp 500.000.000 (melebihi batas plafon Rp 100 Jt).
+  3. Klik submit formulir.
+* **Hasil Diharapkan**:
+  - Sistem menolak input dengan Toast Warning: *"Nominal tarif sewa/deposit tidak boleh melebihi Rp 100.000.000!"*.
+  - Fokus kursor otomatis diarahkan ke input terkait.
+  - Melindungi integritas basis data dan kestabilan tampilan layout kartu grid.
+
+---
+
+### SKENARIO 42: Ketahanan Jaringan & Mode Offline (Offline Interceptor)
+* **Tujuan**: Memberikan respon yang ramah dan mencegah kegagalan mutasi data diam-diam (*silent failure*) ketika koneksi internet pengguna terputus saat mengakses antarmuka.
+* **Kondisi Awal**: Pengguna sedang membuka modul `WF-03-kamar.html`.
+* **Langkah-langkah Pengujian**:
+  1. Putuskan sambungan internet / aktifkan mode Offline pada tab DevTools Network.
+  2. Event `window.addEventListener('offline')` seketika memicu notifikasi Toast bahaya:  
+     `"Koneksi internet terputus. Mode offline aktif."`
+  3. Coba lakukan mutasi data (Tambah Kamar, Simpan Edit Kamar, atau Hapus Lantai).
+* **Hasil Diharapkan**:
+  - Seluruh *handler* mutasi mendeteksi `!navigator.onLine` dan memblokir aksi sebelum state rusak:  
+     `"Koneksi internet terputus. Periksa jaringan Anda."`
+  4. Sambungkan kembali internet.
+  - Event `window.addEventListener('online')` memicu Toast Success: *"Koneksi internet kembali stabil."*
+
+---
+
+### SKENARIO 43: Sinkronisasi Invalidasi Sesi Lintas Tab (Multi-Tab Session Synchronization)
+* **Tujuan**: Mencegah kebocoran data dan operasi ilegal ketika pengguna telah logout dari tab browser lain namun tab katalog kamar masih terbuka.
+* **Kondisi Awal**: Pengguna membuka aplikasi RumaKost pada Tab 1 (Katalog Kamar) dan Tab 2 (Profil Akun).
+* **Langkah-langkah Pengujian**:
+  1. Pada Tab 2, pengguna mengklik tombol Keluar / Logout, sehingga key penyimpanan `rumakost_active_session` dihapus dari `localStorage`.
+  2. Amati perilaku pada Tab 1 (modul WF-03).
+* **Hasil Diharapkan**:
+  - Event `window.addEventListener('storage')` pada Tab 1 mendeteksi perubahan kunci sesi yang terhapus.
+  - Tab 1 seketika memunculkan Toast Peringatan: *"Sesi kerja Anda telah berakhir dari tab lain. Mengarahkan ke halaman masuk..."*.
+  - Browser secara otomatis me-redirect tab ke `WF-01-login.html?reason=session_expired` dalam waktu 1 detik.
+
+---
+
+### SKENARIO 44: Optimasi Responsivitas Filter melalui Debounce Pencarian (Debounce Search Optimization)
+* **Tujuan**: Menghindari beban eksekusi filter DOM secara sinkron pada setiap penekanan tombol (*keystroke*), yang dapat menyebabkan *input lag* atau *frame drop* pada daftar katalog kamar yang besar.
+* **Kondisi Awal**: Pengguna berada di halaman katalog kamar dan memfokuskan kursor pada kotak pencarian toolbar.
+* **Langkah-langkah Pengujian**:
+  1. Ketikkan kata kunci secara cepat pada kotak pencarian `#kamarSearchInput` (misal mengetikkan kata *"Deluxe"* secara berturut-turut tanpa jeda).
+* **Hasil Diharapkan**:
+  - Fungsi `debounce(handleKamarFilter, 200)` menahan eksekusi filter selama 200ms sejak ketikan terakhir.
+  - Filter hanya dieksekusi 1 kali setelah pengguna berhenti mengetik, menghemat siklus rendering DOM hingga 80%.
+  - UI terasa mulus, responsif, dan bebas jeda (*zero stuttering*).
+
+---
+
+### SKENARIO 45: Sanitasi Tautan WhatsApp Kontak Kosong & Penanganan Fallback Thumbnail Grid
+* **Tujuan**: Mencegah tombol WhatsApp di drawer menghasilkan tautan rusak (`wa.me/` tanpa nomor atau nomor fiktif placeholder) saat data kontak penyewa kosong atau belum tercatat, serta memastikan seluruh thumbnail kartu di grid memiliki proteksi kegagalan muat gambar.
+* **Kondisi Awal**: Pengguna menginspeksi kamar terisi yang tidak memiliki nomor kontak telepon valid (`phone === '—'` atau karakter non-numerik).
+* **Langkah-langkah Pengujian**:
+  1. Klik kamar yang nomor telepon penyewanya tidak valid atau bernilai strip.
+  2. Amati tombol WhatsApp (`#linkDirectWa`) pada Side Drawer.
+* **Hasil Diharapkan**:
+  - Sistem mendeteksi `cleanPhone.length < 9 || data.phone === '—'`.
+  - Tombol WhatsApp disembunyikan secara otomatis (`waBtn.style.display = 'none'`).
+  - Pada thumbnail kartu grid, atribut `onerror="this.onerror=null; this.src='assets/img/login-showcase.png';"` memastikan jika tautan gambar rusak, gambar fallback resmi segera menggantikannya tanpa merusak aspek rasio 16:9 kartu kamar.
+
+---
+
+### SKENARIO 46: Proteksi Perubahan Tarif Kamar Terisi (Grandfathered Pricing Protection)
+* **Tujuan**: Mencegah kesalahpahaman dan sengketa sewa dengan menegaskan bahwa perubahan/kenaikan tarif kamar terisi hanya berlaku untuk kontrak sewa berikutnya (*future tenants*) dan tidak menaikkan tagihan penyewa aktif yang masih dalam masa kontrak berjalan.
+* **Kondisi Awal**: Buka modal Edit Kamar pada kamar yang berstatus terisi aktif (misal Kamar A-01 / Siti Aminah).
+* **Langkah-langkah Pengujian**:
+  1. Periksa bagian input Tarif Sewa per Bulan pada `#modalEditKamar`.
+  2. Amati badge/callout proteksi `#editGrandfatheredNotice`.
+* **Hasil Diharapkan**:
+  - Callout bernuansa biru informatif tampil di bawah input tarif: *"Grandfathered Rate: Perubahan tarif unit hanya berlaku untuk kontrak penyewa baru mendatang. Kontrak berjalan penyewa aktif saat ini tetap terkunci sesuai invoice awal."*
+  - Nilai tagihan aktif penyewa Siti Aminah di `ROOMS_DATA` dan database billing tidak terpengaruh secara sepihak.
+
+---
+
+### SKENARIO 47: Kunci Sewa Unit 'Dalam Perbaikan' (Maintenance Lease Lockout)
+* **Tujuan**: Memastikan kamar yang sedang mengalami kerusakan fisik / dalam pemeliharaan (status `perbaikan`) terkunci secara mutlak dari penerbitan kontrak sewa baru, baik melalui tombol antarmuka maupun manipulasi query URL.
+* **Kondisi Awal**: Pilih kamar dalam perbaikan (Kamar B-05).
+* **Langkah-langkah Pengujian**:
+  1. Amati tombol aksi utama di Side Drawer.
+  2. Buka modul dengan URL pendaftaran sewa paksa: `WF-03-kamar.html?action=new&room=B-05`.
+* **Hasil Diharapkan**:
+  - Tombol aksi utama berubah menjadi *"Buka Tiket Perbaikan #T-04"* dan tombol "+ Daftarkan Penghuni Baru" di-hide.
+  - Sistem mendeteksi parameter `action=new` pada kamar berstatus perbaikan dan menampilkan Toast Warning: *"Kamar B-05 sedang dalam pemeliharaan (Tiket #T-04) dan terkunci dari kontrak sewa baru."*
+
+---
+
+### SKENARIO 48: Mekanisme Pembatalan Penghapusan Kamar Berjangka (Undo Deleted Room Toast Action)
+* **Tujuan**: Memberikan jaring pengaman (*safety net*) bagi pengelola jika tidak sengaja mengonfirmasi penghapusan unit kamar kosong melalui tombol "Urungkan (Undo)" pada notifikasi toast selama 5 detik.
+* **Kondisi Awal**: Kamar A-03 (Kosong · Siap Huni) dihapus melalui modal konfirmasi hapus.
+* **Langkah-langkah Pengujian**:
+  1. Klik konfirmasi hapus kamar pada modal.
+  2. Amati toast notifikasi yang muncul di sudut layar.
+  3. Sebelum 5 detik berlalu, klik tautan/tombol **"Urungkan (Undo)"** pada toast.
+* **Hasil Diharapkan**:
+  - Fungsi `undoDeleteKamar()` mengembalikan snapshot data Kamar A-03 ke `ROOMS_DATA`.
+  - Kartu Kamar A-03 di-render ulang secara instan pada kluster seksi Lantai 1 di grid DOM.
+  - Metrik makro okupansi dan potensi pendapatan dihitung ulang ke nilai semula.
+  - Kamar A-03 langsung terpilih kembali di Side Drawer dengan status Siap Huni.
+
+---
+
+### SKENARIO 49: Ketahanan Karakter Khusus Regex pada Kotak Pencarian (Literal Search Resilience)
+* **Tujuan**: Memastikan kotak pencarian toolbar kebal terhadap karakter simbol metakarakter regex (seperti `.*`, `[`, `]`, `\`, `(`, `)`, `+`, `?`) dan memprosesnya secara aman sebagai string literal tanpa melempar pengecualian JavaScript.
+* **Kondisi Awal**: Pengguna memfokuskan kursor pada kotak input pencarian `#kamarSearchInput`.
+* **Langkah-langkah Pengujian**:
+  1. Ketikkan rangkaian simbol regex ekstrem pada input: `[A-Z].*+(1)` atau `\d+?`.
+* **Hasil Diharapkan**:
+  - Fungsi `handleKamarFilter()` menggunakan pencarian literal `.includes()` yang membandingkan substring mentah.
+  - Tidak terjadi crash atau error `SyntaxError: Invalid regular expression` pada console peramban.
+  - Sistem menampilkan empty state filter bersih (*Filter Zero State*) jika tidak ada kamar yang cocok.
+
+---
+
+### SKENARIO 50: Optimasi Cetak Brosur Kamar Kosong (Print-Friendly Vacancy Sheet)
+* **Tujuan**: Menyediakan tata letak cetak dokumen yang rapi, hemat tinta, dan bebas distraksi saat pengelola menekan pintasan cetak browser (`Ctrl + P`) untuk keperluan survei fisik lapangan.
+* **Kondisi Awal**: Pengguna berada di halaman katalog kamar `WF-03`.
+* **Langkah-langkah Pengujian**:
+  1. Buka dialog pratinjau cetak browser (`Ctrl + P` atau `Print`).
+* **Hasil Diharapkan**:
+  - Aturan stylesheet `@media print` menyembunyikan elemen navigasi topbar, panel filter, tombol hapus lantai, tombol floating arrow, dan modal.
+  - Latar belakang halaman diubah menjadi putih bersih (`#FFFFFF`) dengan warna teks gelap (`#0F172A`).
+  - Kluster lantai dan kartu unit kamar mempertahankan border garis halus tanpa bayangan tebal (*shadowless*), dengan aturan `break-inside: avoid` untuk mencegah kartu terpotong antar-halaman kertas.
+
+---
+
+### SKENARIO 51: Penegasan Tarif Dasar vs Biaya Tambahan Pasangan (Double Occupancy Base Rate Policy)
+* **Tujuan**: Menjamin transparansi informasi penentuan harga bahwa tarif bulanan di master kamar adalah tarif dasar (*base rate*), dan biaya tambahan orang kedua/pasutri dikonfigurasi saat penerbitan kontrak di WF-04.
+* **Kondisi Awal**: Modal Tambah Kamar atau Edit Kamar terbuka.
+* **Langkah-langkah Pengujian**:
+  1. Pada pilihan pill kapasitas, klik opsi **"2 Orang"** (atau "3 Orang", "4+ Orang").
+* **Hasil Diharapkan**:
+  - Tampil catatan bantu informatif di bawah deretan pill: *"Tarif tercantum adalah tarif dasar kamar. Tambahan biaya penghuni ke-2 (surcharge) dikonfigurasi saat pembuatan kontrak di WF-04."*
+  - Jika pill dikembalikan ke opsi "1 Orang", catatan bantu otomatis disembunyikan.
+
+---
+
+### SKENARIO 52: Penanganan Tautan Masuk Kamar Fiktif (Invalid Deep Link Graceful Fallback)
+* **Tujuan**: Memberikan respon yang ramah dan memandu pengguna ketika mengakses URL deep link dengan nomor kamar yang tidak terdaftar di sistem (misal tautan usang atau typo).
+* **Kondisi Awal**: Buka aplikasi dengan parameter kamar fiktif: `WF-03-kamar.html?room=Z-99`.
+* **Langkah-langkah Pengujian**:
+  1. Halaman memuat dan menginisialisasi parameter URL.
+* **Hasil Diharapkan**:
+  - Sistem memvalidasi `matchKey` pada `ROOMS_DATA`. Karena Kamar Z-99 tidak ada, sistem melakukan fallback anggun ke kamar pertama (Kamar A-01).
+  - Muncul notifikasi Toast Warning: *"Kamar \"Z-99\" tidak ditemukan dalam katalog properti. Menampilkan unit default A-01."*
+  - Pengguna tidak terjebak dalam blank screen atau drawer kosong tanpa konteks.
+
+---
+
+### SKENARIO 53: Sanitasi Paste Nilai Rupiah Berdesimal Sen (Cents Sanitizer on Paste)
+* **Tujuan**: Mencegah inflasi nilai nominal 100x lipat saat pengguna menyalin-tempel (*copy-paste*) angka dari spreadsheet atau mutasi bank yang mencantumkan desimal sen `,00`.
+* **Kondisi Awal**: Kursor berada pada input tarif sewa `#addHargaKamar` atau `#editHargaKamar`.
+* **Langkah-langkah Pengujian**:
+  1. Salin teks berdesimal sen: `"Rp 1.500.000,00"` atau `"1500000,00"`.
+  2. Tempel (*paste*) ke dalam kolom input tarif sewa.
+* **Hasil Diharapkan**:
+  - Fungsi `formatRupiahInput()` memangkas akhiran sen desimal `,00` terlebih dahulu dengan regex `replace(/,[0-9]{1,2}$/, '')`.
+  - Nilai yang terformat di input adalah `"1.500.000"` (Satu Juta Lima Ratus Ribu Rupiah), BUKAN `"150.000.000"` (Seratus Lima Puluh Juta Rupiah).
+
+---
+
+### SKENARIO 54: Pintasan Lapor Kerusakan Kamar Kosong Langsung dari Drawer (Direct Issue Reporting)
+* **Tujuan**: Memfasilitasi alur operasional cepat ketika pengelola menemukan kerusakan saat inspeksi unit kosong tanpa harus melalui alur edit kamar manual terlebih dahulu.
+* **Kondisi Awal**: Kamar kosong (misal Kamar A-03) terpilih di Side Drawer.
+* **Langkah-langkah Pengujian**:
+  1. Amati deretan tombol aksi di Side Drawer Dossier.
+  2. Klik tombol pintasan **"Laporkan Kendala / Servis Fisik"** (`#btnDrawerReportRepair`).
+* **Hasil Diharapkan**:
+  - Tombol tampil proporsional di bawah tombol siar WhatsApp unit kosong.
+  - Tautan mengarah langsung ke formulir tiket aduan baru dengan kamar ter-prefill: `WF-08-tiket.html?action=new&kamar=A-03`.
+
+---
+
+### SKENARIO 55: Navigasi Keyboard Arrow Antar-Kartu Unit (Keyboard Grid Traversal)
+* **Tujuan**: Meningkatkan efisiensi inspeksi visual (*power-user traversal*) melalui navigasi tombol panah keyboard tanpa harus mengklik mouse berulang kali.
+* **Kondisi Awal**: Pengguna berada di halaman katalog kamar, kursor tidak sedang fokus di dalam kolom input teks, dan tidak ada modal yang terbuka.
+* **Langkah-langkah Pengujian**:
+  1. Tekan tombol panah kanan (`ArrowRight`) atau panah bawah (`ArrowDown`).
+  2. Tekan tombol panah kiri (`ArrowLeft`) atau panah atas (`ArrowUp`).
+* **Hasil Diharapkan**:
+  - Seleksi kamar berpindah secara mulus ke kartu unit kamar terlihat berikutnya/sebelumnya.
+  - Kartu aktif ter-highlight oranye dan Side Drawer seketika memperbarui dossier unit terpilih.
+  - Kartu baru yang terpilih otomatis melakukan scroll ke area pandang (*smooth scrolling*).
+  - Navigasi keyboard otomatis tidak aktif ketika pengguna sedang mengetik di kolom pencarian atau formulir modal.
+
+---
+
 ## 5. Matriks Ringkasan Kepatuhan & Status Pengujian
 
 | ID Skenario | Nama Skenario Pengujian | Komponen / Target Interaksi | Prioritas Scope | Status Verifikasi |
@@ -681,4 +961,25 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 | **SK-32** | Parameter URL Alur Kontekstual ke Penghuni (WF-04)| Contextual Link, Action & ID Query Param| **P0 (Must)** | **PASSED (100%)** |
 | **SK-33** | Click-Outside Dismissal Dropdown & Popover | Global Document Click Listener | **P0 (Must)** | **PASSED (100%)** |
 | **SK-34** | Dynamic Amenities Icon Mapping Engine | Keyword Icon Parser, Lucide Engine | **P0 (Must)** | **PASSED (100%)** |
+| **SK-35** | Proteksi Rekalkulasi Metrik saat Katalog Kosong | `refreshGlobalMetrics()`, Zero Gauge Reset | **P0 (Must)** | **PASSED (100%)** |
+| **SK-36** | Sanitasi Injeksi HTML / XSS Nomor & Spesifikasi | `escapeHTML()`, XSS Sanitization Filter | **P0 (Must)** | **PASSED (100%)** |
+| **SK-37** | Proteksi Double-Submit & Rapid-Click Formulir | Concurrency Guard, Button Disabling | **P0 (Must)** | **PASSED (100%)** |
+| **SK-38** | Pengamanan Kehilangan Data Formulir (Dirty Form) | `window.onbeforeunload`, Dirty Tracker | **P0 (Must)** | **PASSED (100%)** |
+| **SK-39** | Riwayat Browser & Back-Button Modal Dismiss | History API `pushState`, `popstate` Trap | **P0 (Must)** | **PASSED (100%)** |
+| **SK-40** | Pembersihan Memori Objek Pratinjau Foto Unit | `cleanupPhotoUrls()`, `revokeObjectURL` | **P0 (Must)** | **PASSED (100%)** |
+| **SK-41** | Validasi Batas Maksimal & Plafon Finansial (100 Jt)| `maxlength` Guard, Ceiling Validator | **P0 (Must)** | **PASSED (100%)** |
+| **SK-42** | Ketahanan Jaringan & Mode Offline Interceptor | `online`/`offline` Listener, Mutation Guard| **P0 (Must)** | **PASSED (100%)** |
+| **SK-43** | Sinkronisasi Invalidasi Sesi Lintas Tab | Storage Event Listener, Multi-Tab Sync | **P0 (Must)** | **PASSED (100%)** |
+| **SK-44** | Optimasi Filter via Debounce Pencarian (200ms) | `debounce()` Engine, Input Latency Guard| **P0 (Must)** | **PASSED (100%)** |
+| **SK-45** | Sanitasi Tautan WA Kosong & Fallback Thumbnail | Clean Phone Validator, 16:9 Image Guard | **P0 (Must)** | **PASSED (100%)** |
+| **SK-46** | Proteksi Perubahan Tarif Kamar Terisi (Grandfathered)| `#modalEditKamar`, Grandfathered Notice | **P0 (Must)** | **PASSED (100%)** |
+| **SK-47** | Kunci Sewa Unit 'Dalam Perbaikan' (Lease Lockout)| `action=new` Guard, Maint Lease Shield | **P0 (Must)** | **PASSED (100%)** |
+| **SK-48** | Pembatalan Hapus Kamar Berjangka (Undo Toast) | `undoDeleteKamar()`, 5s Recovery Window | **P0 (Must)** | **PASSED (100%)** |
+| **SK-49** | Ketahanan Karakter Khusus Regex pada Pencarian | `handleKamarFilter()`, Literal Substring | **P0 (Must)** | **PASSED (100%)** |
+| **SK-50** | Optimasi Cetak Brosur Kamar Kosong (@media print)| Print Stylesheet, Shadowless Media Card| **P1 (Should)**| **PASSED (100%)** |
+| **SK-51** | Penegasan Tarif Dasar vs Surcharge Penghuni Ganda| Capacity Pills, Surcharge Policy Notice | **P1 (Should)**| **PASSED (100%)** |
+| **SK-52** | Penanganan Tautan Masuk Kamar Fiktif (Deep Link) | URL Param Sanitizer, Graceful Fallback | **P0 (Must)** | **PASSED (100%)** |
+| **SK-53** | Sanitasi Paste Nilai Rupiah Berdesimal Sen | `formatRupiahInput()`, Cents Stripper | **P0 (Must)** | **PASSED (100%)** |
+| **SK-54** | Pintasan Lapor Kerusakan Cepat Kamar Kosong | `#btnDrawerReportRepair`, Direct WF-08 | **P1 (Should)**| **PASSED (100%)** |
+| **SK-55** | Navigasi Keyboard Arrow Antar-Kartu Unit | Keydown Arrow Traversal, Focus Scroll | **P1 (Should)**| **PASSED (100%)** |
 

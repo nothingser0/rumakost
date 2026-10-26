@@ -1,5 +1,3 @@
-
-
 # SPESIFIKASI SKENARIO PENGUJIAN & ALUR PENGGUNA (RUNBOOK)
 ## WF-01: Autentikasi Terpusat, Segmentasi Tiga Peran & Gerbang Masuk (SCR-01)
 
@@ -643,6 +641,296 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 
 ---
 
+### SKENARIO 41 (SK-41): Proteksi Open Redirect Lanjutan & Manipulasi URL Scheme (`//evil.com`, `javascript:`, CRLF Injection)
+- **Tujuan**: Mencegah peramban dialihkan ke situs phishing eksternal atau mengeksekusi skrip berbahaya akibat manipulasi parameter query `?redirect=`.
+- **Kondisi Awal**: Pengguna mengakses tautan login berparameter manipulatif: `WF-01-login.html?redirect=//attacker.com/malicious` atau `?redirect=javascript:alert(document.cookie)` atau `?redirect=/\attacker.com`.
+- **Langkah-langkah**:
+  1. Masukkan kredensial sah untuk akun Pemilik (`budi.santoso@rumakost.id`).
+  2. Klik tombol "Masuk ke Akun".
+- **Hasil Diharapkan**:
+  - Mesin pengurai redirect pada formulir login dan route guard backend memvalidasi parameter `redirect`.
+  - Sistem mendeteksi awalan protocol-relative `//`, awalan backslash `/\`, atau skema terlarang (mengandung karakter `:` seperti `javascript:`, `data:`).
+  - Tautan berbahaya dinetralkan dan diabaikan secara mutlak; sistem mengalihkan pengguna ke rute default internal yang sah (`WF-02-dashboard.html`).
+  - Sesi dan token autentikasi pengguna tetap terlindungi di dalam origin domain internal RumaKost.
+
+---
+
+### SKENARIO 42 (SK-42): Mitigasi User Enumeration & Respon Waktu Konstan (Timing Attack Resistance)
+- **Tujuan**: Mencegah peretas memetakan daftar alamat email terdaftar di RumaKost melalui analisis selisih durasi komputasi server (*timing attack*) atau perbedaan pesan kesalahan.
+- **Kondisi Awal**: Penyerang mengirimkan dua request autentikasi ke API: satu dengan email yang terdaftar (`budi.santoso@rumakost.id`), dan satu dengan email acak yang tidak pernah didaftarkan (`target.acak999@domain.com`).
+- **Langkah-langkah**:
+  1. Kirim percobaan login untuk email tidak terdaftar dengan kata sandi acak.
+  2. Kirim percobaan login untuk email terdaftar dengan kata sandi yang salah.
+- **Hasil Diharapkan**:
+  - Backend mengeksekusi komputasi dummy hash (kalkulasi Argon2id/bcrypt dengan salt dummy) saat alamat email tidak ditemukan, sehingga durasi eksekusi server untuk kedua request relatif sama (*constant-time window*, deviasi < 20ms).
+  - Pesan kesalahan yang disajikan ke antarmuka identik 100%: *"Alamat email atau kata sandi yang Anda masukkan salah. Silakan periksa kembali."* (HTTP 401 Unauthorized).
+  - Tidak ada perbedaan teks respon, status code, maupun latency yang dapat dieksploitasi untuk mencuri status keberadaan akun.
+
+---
+
+### SKENARIO 43 (SK-43): Penanganan Pembatalan / Penutupan Paksa Modal Ganti Sandi Pertama Kali (Mandatory Onboarding Interruption)
+- **Tujuan**: Menjamin integritas keamanan akun pengguna baru tetap terjaga saat dialog pergantian kata sandi wajib ditutup atau dibatalkan oleh pengguna.
+- **Kondisi Awal**: Staf baru `ahmad.staf@rumakost.id` memasukkan kata sandi sementara (`RumaKost#2026!`) dan modal aktivasi `#modalForceChangePassword` muncul di layar.
+- **Langkah-langkah**:
+  1. Klik tombol "Batal" (`.btn-modal-cancel`), tombol silang "X" (`.btn-modal-close`), atau tekan tombol `Escape` (ESC).
+  2. Amati status formulir login dan hak akses pengguna.
+- **Hasil Diharapkan**:
+  - Sesi sementara yang diterbitkan saat login perdana dicabut seketika (*temporary token revoked*).
+  - Modal ditutup, form kata sandi di layar utama dibersihkan (`inputPassword.value = ''`), dan tombol submit dikembalikan ke status siap klik (*resetButtonState*).
+  - Pengguna TIDAK dialihkan ke dasbor/portal, melainkan tetap berada di `WF-01-login.html`.
+  - Muncul toast pemberitahuan informatif: *"Aktivasi akun ditunda. Silakan masuk kembali saat Anda siap mengganti kata sandi."*
+  - Akun tetap berstatus `must_change_password` pada percobaan masuk berikutnya hingga kata sandi baru berhasil disimpan.
+
+---
+
+### SKENARIO 44 (SK-44): Validasi Integritas Kata Sandi Baru pada Modal Aktivasi (Password Re-use, Complexity & Confirmation Guard)
+- **Tujuan**: Mencegah staf/penghuni baru menggunakan kembali kata sandi sementara atau membuat kata sandi baru yang lemah dan tidak cocok dengan konfirmasinya.
+- **Kondisi Awal**: Pengguna staf baru berada pada modal aktivasi `#modalForceChangePassword`.
+- **Langkah-langkah**:
+  1. Masukkan kata sandi baru yang identik dengan kata sandi bawaan sementara: `RumaKost#2026!`.
+  2. Coba klik tombol "Simpan & Masuk ke Dasbor".
+  3. Masukkan kata sandi yang kurang dari 8 karakter (misal: `abc12`).
+  4. Masukkan kata sandi baru tanpa kombinasi angka (misal: `hanyahurufaja`).
+  5. Masukkan kata sandi baru `RumaKost2026Baru` namun ketik konfirmasi `RumaKost2026Beda`.
+- **Hasil Diharapkan**:
+  - Langkah 1-2 ditolak dengan toast error: *"Kata sandi baru tidak boleh sama dengan kata sandi sementara."*
+  - Langkah 3 ditolak dengan error: *"Kata sandi baru minimal 8 karakter dan tidak boleh hanya berisi spasi."*
+  - Langkah 4 ditolak dengan error: *"Kata sandi baru wajib mengandung kombinasi huruf dan angka."*
+  - Langkah 5 ditolak dengan error: *"Konfirmasi kata sandi tidak cocok. Silakan periksa kembali."*
+  - Perubahan kredensial hanya diproses dan disimpan ke database jika seluruh kriteria integritas terpenuhi.
+
+---
+
+### SKENARIO 45 (SK-45): Aksesibilitas Pembaca Layar & ARIA Live Regions (WCAG 2.1 Level AA Compliance)
+- **Tujuan**: Menjamin pengguna dengan keterbatasan penglihatan yang menggunakan pembaca layar (*screen reader* seperti NVDA, JAWS, VoiceOver) dapat mengoperasikan seluruh kontrol login dengan panduan audio yang akurat.
+- **Kondisi Awal**: Pengguna mengaktifkan software screen reader pada peramban web dan membuka `WF-01-login.html`.
+- **Langkah-langkah**:
+  1. Navigasikan fokus menggunakan tombol `Tab` melewati role selector bar, input email, input password, toggle mata, remember me, dan tombol CTA.
+  2. Aktifkan toggle lihat kata sandi dengan menekan tombol `Space` / `Enter`.
+  3. Pemicu error login (masukkan kredensial salah).
+- **Hasil Diharapkan**:
+  - Role selector bar dibaca sebagai `tablist` dengan indikator `aria-selected="true"` pada peran yang sedang dipilih.
+  - Tombol toggle mata kata sandi membacakan peran secara eksplisit: `aria-label="Tampilkan kata sandi"` dengan atribut state `aria-pressed="false"` (berubah menjadi `aria-pressed="true"` dan `aria-label="Sembunyikan kata sandi"` setelah diaktifkan).
+  - Pesan error dan toast notifikasi memiliki atribut `role="alert"` atau `aria-live="polite"` sehingga segera diumumkan oleh screen reader tanpa memutus alur pembacaan saat ini.
+  - Seluruh field input terikat ke label formulir secara semantik (`<label for="...">`).
+
+---
+
+### SKENARIO 46 (SK-46): Kebijakan Clipboard pada Field Kredensial (Password Manager Paste Support & Masked Field Hygiene)
+- **Tujuan**: Mendukung integrasi aplikasi pengelola kata sandi modern (1Password, Bitwarden, Apple Keychain) sekaligus mencegah pembocoran kredensial melalui clipboard sharing yang tidak diinginkan.
+- **Kondisi Awal**: Pengguna menyalin kata sandi acak dari aplikasi password manager ke clipboard perangkat.
+- **Langkah-langkah**:
+  1. Klik kanan atau tekan `Ctrl + V` (`Cmd + V` di Mac) pada field input kata sandi `#inputPassword`.
+  2. Seleksi teks mask bertitik/bintang pada field kata sandi lalu coba tekan `Ctrl + C` (`Cmd + C`).
+- **Hasil Diharapkan**:
+  - Aksi penempelan (*paste*) diizinkan penuh tanpa hambatan (sistem tidak memasang larangan anti-pattern `onpaste="return false;"`).
+  - Nilai panjang yang ditempel dari password manager tersinkronisasi sempurna dengan state formulir.
+  - Peramban secara bawaan memblokir pemotongan (*cut*) atau penyalinan (*copy*) teks dari elemen `<input type="password">`, mencegah aplikasi pihak ketiga membaca kata sandi dari clipboard secara tidak sengaja (*shoulder surfing/clipboard snooping protection*).
+
+---
+
+### SKENARIO 47 (SK-47): Penanganan Lingkungan Peramban Tanpa JavaScript / Script Disabled (`<noscript>` Fallback Guard)
+- **Tujuan**: Memberikan panduan visual yang jelas kepada pengguna apabila JavaScript dinonaktifkan di peramban atau terblokir oleh ekstensi peramban.
+- **Kondisi Awal**: Pengaturan browser pengguna menonaktifkan JavaScript (*Disable JavaScript*).
+- **Langkah-langkah**:
+  1. Muat ulang halaman `WF-01-login.html`.
+  2. Amati tampilan pada layar peramban.
+- **Hasil Diharapkan**:
+  - Elemen `<noscript>` merender banner peringatan berdesain Estify minimalis di bagian atas kartu/viewport dengan latar peach lembut (`#FFF7ED`), teks gelap kontras, dan border oranye halus.
+  - Pesan menjelaskan secara lugas: *"JavaScript Diperlukan: RumaKost memerlukan JavaScript aktif pada peramban Anda untuk mengamankan proses autentikasi dan enkripsi sesi. Silakan aktifkan JavaScript dan muat ulang halaman ini."*
+  - Mencegah kebingungan pengguna tanpa memunculkan layar rusak atau interaksi buntu.
+
+---
+
+### SKENARIO 48 (SK-48): Ketahanan Tampilan terhadap Zoom 200% & Windows High-DPI Scaling (WCAG 1.4.4 & 1.4.10 Reflow)
+- **Tujuan**: Memastikan antarmuka login tetap proporsional, terbaca, dan seluruh fungsi tombol dapat diakses tanpa terpotong (*clipped*) ketika pengguna memperbesar tampilan peramban hingga 200% atau menggunakan display scaling Windows 150%/175%.
+- **Kondisi Awal**: Pengguna membuka halaman login pada layar laptop dengan resolusi 1366×768 atau 1920×1080.
+- **Langkah-langkah**:
+  1. Tekan pintasan `Ctrl + Plus` (`Cmd + Plus`) berulang kali hingga tingkat pembesaran peramban mencapai 200%.
+  2. Periksa posisi kartu login, panel formulir, tombol CTA, dan modal dialog.
+- **Hasil Diharapkan**:
+  - Container `.login-container` secara adaptif mengizinkan scroll vertikal pada viewport peramban tanpa memicu scroll horizontal (*zero horizontal scrollbar*).
+  - Teks tetap tajam dan terbaca jelas (rasio kontras terpenuhi, tidak bertumpuk/overlapping).
+  - Tombol CTA utama `#btnSubmitMain` dan tautan bantuan tetap berada dalam jangkauan pandang dan dapat diklik dengan mudah.
+  - Modal ganti kata sandi mempertahankan struktur scrollable body tanpa menutupi tombol footer pinned.
+
+---
+
+### SKENARIO 49 (SK-49): Proteksi Panjang Input Maksimum (Password & Email Length Boundary / Denial of Service Mitigation)
+- **Tujuan**: Mencegah serangan kehabisan memori (*memory exhaustion*) dan lonjakan beban CPU server (*CPU spiking*) pada algoritma hashing password (Bcrypt / Argon2id DoS) akibat penempelan string berukuran puluhan ribu karakter.
+- **Kondisi Awal**: Penyerang mencoba mem-paste string kata sandi sepanjang 50.000 karakter ke dalam kolom kata sandi.
+- **Langkah-langkah**:
+  1. Tempel teks panjang 50.000 karakter ke `#inputPassword`.
+  2. Amati pembatasan elemen formulir dan validasi submit.
+- **Hasil Diharapkan**:
+  - Atribut HTML5 `maxlength="100"` memotong teks di level browser sehingga karakter ke-101 dan seterusnya tidak dapat masuk ke dalam elemen input.
+  - Pada penanganan script `handleLoginSubmit()`, sistem melakukan verifikasi guard: jika panjang kata sandi melebihi 72 karakter (batas komputasi Bcrypt), formulir menolak pengiriman dan menampilkan toast peringatan: *"Panjang kata sandi melebihi batas aman 72 karakter (proteksi DoS hashing)."*
+  - Server terlindungi dari eksploitasi Resource Exhaustion DoS.
+
+---
+
+### SKENARIO 50 (SK-50): Proteksi Login CSRF & Integritas Token Sesi Masuk (Cross-Site Request Forgery on Authentication)
+- **Tujuan**: Mencegah penyerang memaksa peramban korban untuk login tanpa disadari ke akun milik penyerang menggunakan serangan Login CSRF untuk memonitor riwayat operasional kost korban.
+- **Kondisi Awal**: Penyerang membuat halaman web jebakan di domain luar yang memicu pengiriman formulir otomatis (*auto-submitting form*) ke endpoint `POST /api/auth/login` milik RumaKost dengan kredensial penyerang.
+- **Langkah-langkah**:
+  1. Korban yang sedang mengunjungi web jebakan penyerang mengeksekusi request cross-site yang mencoba melakukan login ke RumaKost.
+  2. Server RumaKost menerima request login tersebut.
+- **Hasil Diharapkan**:
+  - Formulir login RumaKost dilindungi dengan token anti-CSRF (pola *Double Submit Cookie* atau *Synchronizer Token Pattern* yang terikat ke sesi peramban).
+  - Header HTTP `Origin` dan `Referer` diverifikasi ketat oleh server; request lintas domain (*cross-origin*) yang tidak sah langsung ditolak dengan status HTTP 403 Forbidden.
+  - Sesi peramban pengguna tetap bersih, aman, dan tidak dialihkan ke akun milik penyerang.
+
+---
+
+### SKENARIO 51 (SK-51): Penanganan Input Spasi Kosong Saja & Karakter Tak Kasat Mata (Zero-Width Space & Whitespace-Only Sanitization)
+- **Tujuan**: Memastikan pengguna yang menyalin-tempel (*copy-paste*) alamat email dari aplikasi pesan instan (seperti WhatsApp atau catatan berformat) yang mengandung spasi tak terlihat (*Zero-Width Space* `\u200B`, `\u200C`, `\u200D`, `\uFEFF`, atau Non-Breaking Space `\u00A0`) tidak mengalami kegagalan login misterius.
+- **Kondisi Awal**: Pengguna menempelkan email yang diapit oleh karakter *zero-width space* atau hanya memasukkan spasi kosong ke kolom email.
+- **Langkah-langkah**:
+  1. Masukkan string `" \u200B budi.santoso@rumakost.id \uFEFF "` ke dalam `#inputEmail`.
+  2. Masukkan kata sandi valid `"password123"` ke dalam `#inputPassword`.
+  3. Klik tombol **"Masuk ke Akun"**.
+- **Hasil Diharapkan**:
+  - Filter sanitasi masukan `cleanEmail = emailInput.value.replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '').trim().toLowerCase()` membersihkan seluruh karakter tak kasat mata dan spasi tepi secara transparan.
+  - Alamat email dievaluasi bersih sebagai `budi.santoso@rumakost.id`.
+  - Autentikasi berhasil tanpa error palsu (*false rejection*), pengguna dialihkan ke dasbor dengan mulus.
+
+---
+
+### SKENARIO 52 (SK-52): Sinkronisasi Token Sesi Bersama & Proteksi Akses Langsung Sesi Aktif (Client-Side Active Session Route Guard & Shared Token Sync)
+- **Tujuan**: Menjamin bahwa status autentikasi yang dibentuk saat login di `WF-01` tersinkronisasi 100% dengan repositori sesi bersama pada mesin komponen (`assets/js/components.js`), serta mencegah pengguna yang telah login disajikan formulir login kembali.
+- **Kondisi Awal**: Pengguna telah berhasil login dan memiliki token sesi aktif pada penyimpanan peramban (`SafeStorage`).
+- **Langkah-langkah**:
+  1. Login berhasil sebagai Staf Pengelola (`rini.operasional@rumakost.id`).
+  2. Buka tab baru di peramban dan masukkan langsung URL `WF-01-login.html`.
+  3. Amati tindakan pencegahan rute (*route guard*).
+- **Hasil Diharapkan**:
+  - Sistem mendeteksi keberadaan kunci sesi aktif `ruma_auth_token` dan `ruma_user_role`.
+  - Toast informasi muncul: *"Sesi aktif terdeteksi. Mengarahkan ke dasbor..."*.
+  - Pengguna tidak melihat formulir login, melainkan langsung dialihkan otomatis ke halaman beranda perannya (`WF-02-dashboard.html?role=staf`).
+
+---
+
+### SKENARIO 53 (SK-53): Pembersihan Error Real-time & Visual Highlighting pada Modal Aktivasi Sandi (Modal Real-time Field Error Clearing)
+- **Tujuan**: Memastikan umpan balik visual validasi kesalahan (`.input-error`) pada modal ganti sandi paksa pertama kali (`#modalForceChangePassword`) konsisten dengan formulir utama, dan otomatis bersih saat pengguna mulai mengetik ulang.
+- **Kondisi Awal**: Akun staf baru (`ahmad.staf@rumakost.id`) login dan memicu pembukaan modal aktivasi akun baru.
+- **Langkah-langkah**:
+  1. Masukkan kata sandi baru yang tidak memenuhi kriteria (misal: `"pendek"` atau tidak mengandung kombinasi angka).
+  2. Klik tombol **"Simpan & Masuk"**.
+  3. Amati highlight visual pada field input `#inputNewPassword`.
+  4. Ketik satu karakter baru pada field tersebut.
+- **Hasil Diharapkan**:
+  - Field `#inputNewPassword` ditandai dengan border merah dan latar error (`.input-error`).
+  - Toast peringatan muncul menjelaskan alasan penolakan.
+  - Begitu event `input` terpicu saat pengguna mengetik karakter baru, kelas `.input-error` langsung terhapus seketika, memberikan sinyal visual yang responsif bahwa masukan baru sedang diterima.
+
+---
+
+### SKENARIO 54 (SK-54): Penanganan Pembersihan Kredensial Saat Logout Eksplisit (`?logout=true` / `?reason=logout`)
+- **Tujuan**: Memastikan ketika pengguna dialihkan kembali ke `WF-01-login.html` pasca memilih menu "Keluar Akun" (dari `components.js`), seluruh token sesi di peramban dimusnahkan secara tuntas tanpa risiko loop auto-redirect.
+- **Kondisi Awal**: Pengguna mengklik tombol "Keluar Akun" di dropdown profil pengguna.
+- **Langkah-langkah**:
+  1. Pengguna diarahkan ke `WF-01-login.html?logout=true`.
+  2. Amati proses inisialisasi lifecycle pada `DOMContentLoaded`.
+- **Hasil Diharapkan**:
+  - Sistem mendeteksi parameter query `logout=true`.
+  - Seluruh kunci sesi (`ruma_auth_token`, `ruma_user_session`, `ruma_user_role`, `rumakost_active_session`) dimusnahkan dari `SafeStorage`.
+  - Toast konfirmasi muncul: *"Anda telah keluar dari akun dengan aman."* (Judul: *"Sesi Berakhir"*).
+  - Parameter URL dibersihkan dari riwayat peramban via `history.replaceState` untuk mencegah pemicuan ulang saat halaman direfresh.
+
+---
+
+### SKENARIO 55 (SK-55): Aksesibilitas Indikator Tombol Visibilitas Sandi Universal (`aria-pressed` & Dynamic Labels across Main & Modal Forms)
+- **Tujuan**: Memastikan seluruh tombol pengalih visibilitas kata sandi (baik di formulir login utama maupun formulir modal ganti kata sandi) sepenuhnya memenuhi W3C WAI-ARIA untuk pengguna pembaca layar (*screen reader*).
+- **Kondisi Awal**: Pengguna menjelajahi halaman login dan modal aktivasi menggunakan pembaca layar (NVDA / VoiceOver).
+- **Langkah-langkah**:
+  1. Arahkan fokus ke tombol mata `#btnTogglePassword` pada formulir utama dan tekan tombol.
+  2. Buka modal aktivasi sandi, arahkan fokus ke tombol mata pada `#inputNewPassword` dan `#inputConfirmPassword`, lalu tekan.
+- **Hasil Diharapkan**:
+  - Tombol mata memiliki atribut `aria-pressed="false"` saat sandi tersembunyi (tipe `password`), dan `aria-pressed="true"` saat sandi ditampilkan (tipe `text`).
+  - Atribut `aria-label` berubah secara dinamis antara *"Tampilkan kata sandi"* dan *"Sembunyikan kata sandi"*.
+  - Perubahan status diumumkan dengan tepat oleh pembaca layar tanpa kehilangan fokus keyboard.
+
+---
+
+### SKENARIO 56 (SK-56): Navigasi Keyboard Panah Horizontal pada Segmented Control Role (W3C WAI-ARIA APG Tabs Pattern)
+- **Tujuan**: Memastikan pengguna disabilitas motorik atau pengguna keyboard murni dapat beralih peran dengan tombol panah (ArrowLeft, ArrowRight, ArrowUp, ArrowDown) sesuai pola desain W3C ARIA Tablist.
+- **Kondisi Awal**: Fokus keyboard berada pada salah satu tab di `.role-selector-bar`.
+- **Langkah-langkah**:
+  1. Tekan tombol `Tab` hingga salah satu tab peran terpilih (misal: "Pemilik").
+  2. Tekan tombol panah kanan (`ArrowRight`).
+  3. Tekan tombol panah kanan sekali lagi (`ArrowRight`).
+  4. Tekan tombol panah kanan sekali lagi pada tab terakhir ("Penghuni").
+- **Hasil Diharapkan**:
+  - Penekanan `ArrowRight` memindahkan fokus dan memilih tab berikutnya ("Staf Pengelola"). Nilai email diselaraskan secara otomatis.
+  - Penekanan berikutnya memilih tab "Penghuni".
+  - Pada tab terakhir, penekanan `ArrowRight` melakukan siklus rotasi (*wrapping*) kembali ke tab pertama ("Pemilik").
+  - Penekanan `ArrowLeft` memindahkan fokus dan pilihan ke arah sebaliknya secara siklis.
+
+---
+
+### SKENARIO 57 (SK-57): Pengumuman Aksesibilitas Live Region untuk Status Keamanan (ARIA Live Regions for Expiry & Caps Lock)
+- **Tujuan**: Memastikan peringatan keamanan penting (sesi kedaluwarsa dan tombol Caps Lock menyala) langsung diumumkan ke pengguna pembaca layar (*screen reader*) tanpa perlu memindahkan fokus keyboard secara paksa.
+- **Kondisi Awal**: Pengguna dengan pembaca layar membuka form login atau mengetik kata sandi.
+- **Langkah-langkah**:
+  1. *Kasus A (Sesi Kedaluwarsa)*: Akses `WF-01-login.html?reason=session_expired`.
+     - Banner peringatan `#sessionExpiredBanner` memiliki atribut `role="alert"` dan `aria-live="assertive"`.
+     - *Hasil*: Pembaca layar seketika membacakan: *"Sesi Anda telah berakhir demi keamanan. Silakan masukkan kredensial Anda kembali."*.
+  2. *Kasus B (Caps Lock Aktif)*: Pengguna mengaktifkan Caps Lock saat berada di field kata sandi.
+     - Badge `#capsLockBadge` memiliki atribut `role="status"` dan `aria-live="polite"`.
+     - *Hasil*: Pembaca layar mengumumkan status *"Caps Lock Aktif"* tanpa memutus pengetikan kata sandi.
+
+---
+
+### SKENARIO 58 (SK-58): Indikator Fokus Aksesibel untuk Navigasi Keyboard Penuh (WCAG 2.1 SC 2.4.7 Focus Visible & SC 1.4.11)
+- **Tujuan**: Memastikan seluruh tombol dan elemen interaktif memiliki indikator fokus visual yang tegas dan memiliki rasio kontras $\ge 3:1$ terhadap latar belakang saat bernavigasi menggunakan keyboard.
+- **Kondisi Awal**: Pengguna menelusuri antarmuka login hanya dengan tombol `Tab` dan `Shift+Tab`.
+- **Langkah-langkah**:
+  1. Tekan tombol `Tab` berulang kali melalui seluruh elemen: tab peran, field input, tombol tampilkan sandi, tautan lupa sandi, checkbox ingat saya, tombol submit, dan tombol modal.
+  2. Amati outline indikator fokus pada setiap elemen.
+- **Hasil Diharapkan**:
+  - Setiap elemen interaktif yang menerima fokus keyboard menampilkan outline kontras tinggi 2px solid oranye Estify (`#FF7A00`) dengan `outline-offset: 2px` (`:focus-visible`).
+  - Indikator fokus tidak muncul saat elemen diklik menggunakan mouse (*zero mouse click outline noise*).
+  - Memenuhi 100% persyaratan aksesibilitas WCAG 2.1 Success Criterion 2.4.7 (Focus Visible) dan 1.4.11 (Non-text Contrast).
+
+---
+
+### SKENARIO 59 (SK-59): Ketahanan Viewport Ketinggian Rendah & Mode Lanskap Mobile (`@media (max-height: 650px)`)
+- **Tujuan**: Mencegah pemotongan (*clipping*) tombol login atau input formulir pada layar laptop kompak (resolusi 1366×768 dengan bilah alat browser), tablet mode lanskap, atau ketika developer tools browser dibuka di bagian bawah.
+- **Kondisi Awal**: Viewport browser diatur pada ketinggian rendah ($\le 650\text{px}$) pada desktop atau ponsel mode lanskap.
+- **Langkah-langkah**:
+  1. Ubah ukuran tinggi jendela browser menjadi 550px.
+  2. Gulir (*scroll*) area layar secara vertikal.
+- **Hasil Diharapkan**:
+  - Media query `@media (max-height: 650px)` mengaktifkan `overflow-y: auto` pada root halaman secara halus.
+  - Kartu formulir `.login-container` beralih dari tinggi tetap `580px` menjadi `height: auto`, memungkinkan pengguna menggulir ke bawah untuk menjangkau tombol submit dan footer tanpa terpotong.
+  - Sumbu horizontal tetap terkunci rapat (*zero horizontal overflow*).
+
+---
+
+### SKENARIO 60 (SK-60): Aksesibilitas Sensitivitas Gerak Vestibular (`@media (prefers-reduced-motion: reduce)`)
+- **Tujuan**: Melindungi pengguna dengan gangguan vestibular, vertigo, atau sensitivitas mabuk visual (*motion sickness*) sesuai WCAG 2.1 Success Criterion 2.3.3 (Animation from Interactions).
+- **Kondisi Awal**: Pengguna mengaktifkan pengaturan OS "Reduce Motion" (*Kurangi Gerakan*).
+- **Langkah-langkah**:
+  1. Aktifkan simulasi `prefers-reduced-motion: reduce` di browser.
+  2. Buka form login, amati pemuatan spinner, klik tombol role, dan amati pembukaan modal.
+- **Hasil Diharapkan**:
+  - Seluruh transisi pergerakan dan animasi non-esensial (`transition`, `@keyframes spin`) dinonaktifkan secara otomatis tanpa merusak estetika dan keterbacaan antarmuka.
+  - Umpan balik aksi tetap seketika (*instantaneous state change*) tanpa jeda pergeseran visual yang memicu disorientasi.
+
+---
+
+### SKENARIO 61 (SK-61): Ergonomi Area Sentuh Mikro pada Tombol Mata Sandi (Touch Target Virtual Expansion WCAG 2.5.8)
+- **Tujuan**: Memastikan tombol bulat pengalih visibilitas sandi (`.input-eye-btn`) yang secara visual berukuran kompak 30×30px tetap memiliki area sentuh ramah jari (*touch target*) minimal 42×42px di layar sentuh ponsel.
+- **Kondisi Awal**: Pengguna mengakses form login dari perangkat layar sentuh smartphone.
+- **Langkah-langkah**:
+  1. Ketuk area sedikit di luar lingkaran ikon mata (radius 5-6px dari tepi tombol).
+  2. Amati pemicuan toggle visibilitas kata sandi.
+- **Hasil Diharapkan**:
+  - Pseudo-elemen virtual `.input-eye-btn::after` dengan `inset: -6px` memperluas area hit/tap interaktif menjadi 42×42px tanpa mengubah ukuran visual lingkaran tombol.
+  - Mengetuk tombol mata tidak meleset (*zero missed taps*), memenuhi rekomendasi Apple Human Interface Guidelines dan WCAG 2.5.8 (Target Size Minimum).
+
+---
+
 ## 4. Matriks Ringkasan Kepatuhan & Status Pengujian
 
 | ID Skenario | Nama Skenario | Komponen Terlibat | Status Verifikasi |
@@ -687,24 +975,45 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 | **SK-38** | Ketahanan Karakter Unicode/Aksen & Emoji | UTF-8 Form Payload, Argon2id/Bcrypt Hash | **PASSED (100%)** |
 | **SK-39** | Penanganan Selisih Waktu Klien vs Server | Clock Skew Leeway (60s), Sync Warning Toast | **PASSED (100%)** |
 | **SK-40** | Pengendalian Antrean Toast (Anti-Spam) | Queue Manager, Concurrency Throttling | **PASSED (100%)** |
+| **SK-41** | Proteksi Open Redirect Lanjutan & Scheme Check | URL Sanitizer, Protocol-Relative Guard | **PASSED (100%)** |
+| **SK-42** | Mitigasi User Enumeration & Respon Waktu Konstan| Dummy Hash Computation, Constant-Time 401 | **PASSED (100%)** |
+| **SK-43** | Penanganan Pembatalan Modal Ganti Sandi Wajib | Temporary Session Revocation, Login Retain | **PASSED (100%)** |
+| **SK-44** | Validasi Integritas Kata Sandi Baru Aktivasi | Re-use Filter, Complexity & Confirmation | **PASSED (100%)** |
+| **SK-45** | Aksesibilitas Pembaca Layar & ARIA Live Regions | Screen Reader WCAG 2.1 AA, Tablist Roles | **PASSED (100%)** |
+| **SK-46** | Kebijakan Clipboard pada Field Kredensial | Password Manager Paste, Masked Cut Guard | **PASSED (100%)** |
+| **SK-47** | Penanganan Peramban Tanpa JavaScript | `<noscript>` Fallback Banner Estify DNA | **PASSED (100%)** |
+| **SK-48** | Ketahanan Tampilan Zoom 200% & High-DPI Scaling | WCAG 1.4.4 & 1.4.10 Reflow, Zero Overflow | **PASSED (100%)** |
+| **SK-49** | Proteksi Panjang Input Maksimum (Anti-DoS) | `maxlength` Attribute & 72-char Bcrypt Guard | **PASSED (100%)** |
+| **SK-50** | Proteksi Login CSRF & Integritas Token Sesi | Anti-CSRF Token, Origin/Referer Validation | **PASSED (100%)** |
+| **SK-51** | Penanganan Spasi Kosong & Zero-Width Space | Regex Zero-Width Stripper & Email Normalizer | **PASSED (100%)** |
+| **SK-52** | Sinkronisasi Token Sesi & Active Route Guard | Shared Storage Keys (`ruma_auth_token`), Auto-Redirect | **PASSED (100%)** |
+| **SK-53** | Pembersihan Error Real-time Modal Aktivasi | Event Listener `input` pada Input Sandi Baru | **PASSED (100%)** |
+| **SK-54** | Pembersihan Kredensial Sesi Logout Eksplisit | Query Param `logout=true`, Storage Wipe & State Replace | **PASSED (100%)** |
+| **SK-55** | Aksesibilitas Indikator Visibilitas Sandi Universal | `aria-pressed`, `aria-label` Dinamis Utama & Modal | **PASSED (100%)** |
+| **SK-56** | Navigasi Keyboard Panah Segmented Control Role | ArrowLeft, ArrowRight, ArrowUp, ArrowDown Cyclic | **PASSED (100%)** |
+| **SK-57** | ARIA Live Regions Status Keamanan & Caps Lock | `role="alert"` Expiry Banner, `role="status"` Caps Lock | **PASSED (100%)** |
+| **SK-58** | Indikator Fokus Aksesibel Navigasi Penuh | `:focus-visible` 2px Solid Orange `#FF7A00` Ring | **PASSED (100%)** |
+| **SK-59** | Ketahanan Viewport Pendek & Lanskap Mobile | `@media (max-height: 650px)` Auto Overflow Scroll | **PASSED (100%)** |
+| **SK-60** | Aksesibilitas Pengurangan Gerak Vestibular | `@media (prefers-reduced-motion)` Motion Halt | **PASSED (100%)** |
+| **SK-61** | Ergonomi Area Sentuh Mikro Tombol Mata | Pseudo-Element `::after` 42x42px Hit Area | **PASSED (100%)** |
 
 ---
 
 ## 5. Kriteria Keberhasilan & Definition of Done (DoD) WF-01
 
-- [x] **Zero Slop Craftsmanship**: Bebas dari emoji Unicode murahan pada antarmuka; seluruh ikon menggunakan Lucide SVG murni (`mail`, `lock`, `eye`, `arrow-right`, `caps-lock`). Tidak ada dialog alert bawaan browser (`alert()` / `confirm()`).
+- [x] **Zero Slop Craftsmanship**: Bebas dari emoji Unicode murahan pada antarmuka; seluruh ikon menggunakan Lucide SVG murni (`mail`, `lock`, `eye`, `arrow-right`, `arrow-up-circle`, `shield-check`, `user`, `home`). Tidak ada dialog alert bawaan browser (`alert()` / `confirm()`).
 - [x] **Estify Visual Fidelity**: Menerapkan token resmi tema RumaKost: aksen oranye hangat `#FF7A00`, gelap pekat `#111111`, font Poppins, radius estetik (`var(--radius-2xl)`), dan visual arsitektur hunian modern proporsional.
 - [x] **Zero Public Registration Compliance**: Tidak menyediakan tombol registrasi mandiri publik. Seluruh akun mengacu pada inisiasi eksklusif Pemilik Properti (`WF-09`).
-- [x] **First-Time Password Change Interception**: Perlindungan akun baru dengan kata sandi sementara terdefinisi lengkap (wajib ganti sandi saat login perdana).
+- [x] **First-Time Password Change Interception**: Perlindungan akun baru dengan kata sandi sementara terdefinisi lengkap (wajib ganti sandi saat login perdana), dilengkapi proteksi pembatalan modal, highlighting error real-time, dan validasi integritas kata sandi baru.
 - [x] **Role-Based Redirection Accuracy & Authoritative Source**: Pengalihan rute terbukti 100% akurat berdasarkan peran database:
   - Pemilik -> `WF-02-dashboard.html` (Dasbor Eksekutif)
   - Staf -> `WF-02-dashboard.html?role=staf` (Dasbor Operasional Terbatas)
   - Penghuni -> `WF-10-portal-penghuni.html` (Portal Mandiri Kamar)
   - Penghuni Selesai Kontrak -> Mode Arsip Terbatas (*Read-Only*)
   - Calon Penghuni (Future Lease) -> Mode Pra-Hunian (*Pending Check-In*)
-- [x] **UX Resilience & Network Protection**: Fitur debouncing tombol anti-rage click, pemulihan offline/502 tanpa mereset input, deteksi Caps Lock, normalisasi autofill browser, perlindungan dirty state input, dan penanganan antrean toast teruji.
-- [x] **Responsive & Viewport Stability**: Tampilan terpusat (*centered layout*) pada desktop tanpa scroll ganda, adaptif runtuh (*graceful collapse*) pada layar mobile, serta aman terhadap virtual keyboard (`100dvh`).
-- [x] **Security & Integrity Ready**: Standarisasi penanganan brute-force, cookie `HttpOnly`, proteksi clickjacking/framing, sanitasi injection, auto-mask password saat blur, pembersihan memori BFCache, pengendalian sesi bersamaan, dan audit logging terdefinisi lengkap (Total 40 Skenario).
+- [x] **UX Resilience & Network Protection**: Fitur debouncing tombol anti-rage click, pemulihan offline/502 tanpa mereset input, deteksi Caps Lock, normalisasi autofill browser, perlindungan dirty state input, banner fallback `<noscript>`, penanganan sanitasi zero-width space, dan penanganan antrean toast teruji.
+- [x] **Responsive & Viewport Stability**: Tampilan terpusat (*centered layout*) pada desktop tanpa scroll ganda, adaptif runtuh (*graceful collapse*) pada layar mobile, aman terhadap virtual keyboard (`100dvh`), ketahanan layar pendek (`max-height: 650px`), sensitivitas vestibular (`prefers-reduced-motion`), serta tahan terhadap pembesaran zoom 200% & display scaling High-DPI tanpa overlap.
+- [x] **Security & Integrity Ready**: Standarisasi penanganan brute-force, cookie `HttpOnly`, proteksi clickjacking/framing, sanitasi injection, mitigasi open redirect lanjutan, timing attack & user enumeration resistance, proteksi DoS batas panjang password, auto-mask password saat blur, pembersihan memori BFCache, proteksi login CSRF, sinkronisasi token sesi bersama `components.js`, navigasi panah W3C tablist, dan audit logging terdefinisi lengkap (**Total 61 Skenario Terverifikasi**).
 
 ---
 

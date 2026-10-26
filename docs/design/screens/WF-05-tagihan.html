@@ -190,7 +190,7 @@
     .metric-card-estify:hover,
     .metric-card-kas:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+      box-shadow: none !important;
     }
 
     .metric-card-top,
@@ -399,7 +399,7 @@
 
     .metric-card-piutang:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(225, 29, 72, 0.06);
+      box-shadow: none !important;
     }
 
     /* ── CARD 3: EFISIENSI & DISTRIBUSI (Clean White Estify Card — 156PX · Konsisten WF-02) ── */
@@ -424,7 +424,7 @@
 
     .metric-card-action:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+      box-shadow: none !important;
     }
 
     /* Architectural Pattern Motif on Dark Card */
@@ -532,7 +532,7 @@
     .dark-btn-primary:hover {
       background: #15803D;
       transform: translateY(-1px);
-      box-shadow: 0 5px 16px rgba(22, 163, 74, 0.38);
+      box-shadow: none !important;
     }
 
     .dark-btn-circle {
@@ -837,7 +837,7 @@
     .btn-micro-brand:hover {
       background: #EA580C;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.38);
+      box-shadow: none !important;
     }
 
     /* Level 1 Primary CTA Button (DESIGN.md Bab 7.2 & 8.1 - Estify Full Rounded Pill) */
@@ -865,7 +865,7 @@
     .btn-brand-add:hover {
       background: #E66E00 !important;
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.38);
+      box-shadow: none !important;
     }
 
     .btn-brand-add:active {
@@ -1738,7 +1738,7 @@
     .btn-dossier-primary:hover {
       background: var(--dark-pill-hover, #222222);
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(17, 17, 17, 0.28);
+      box-shadow: none !important;
     }
 
     /* Style Khusus Draf: Oranye Tanpa Border Hitam (DESIGN.md Bab 7.2) */
@@ -1752,7 +1752,7 @@
     .btn-dossier-primary.is-draft-action:hover {
       background: #E66E00 !important;
       border: none !important;
-      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.45) !important;
+      box-shadow: none !important;
     }
 
     .btn-dossier-secondary-pill {
@@ -2318,7 +2318,7 @@
     .btn-action-primary:hover {
       background: #EA580C;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
+      box-shadow: none !important;
     }
 
     /* Kwitansi Printable Sheet */
@@ -2613,7 +2613,7 @@
     .btn-action-catat:hover {
       background: #222222;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      box-shadow: none !important;
     }
 
     .btn-action-orange {
@@ -2637,7 +2637,7 @@
     .btn-action-orange:hover {
       background: #EA580C;
       transform: translateY(-1px);
-      box-shadow: 0 5px 16px rgba(255, 122, 0, 0.45);
+      box-shadow: none !important;
     }
 
     .btn-modal-danger {
@@ -2661,7 +2661,7 @@
     .btn-modal-danger:hover {
       background: #B91C1C;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+      box-shadow: none !important;
     }
 
     .form-textarea-custom {
@@ -3469,6 +3469,10 @@
             <span>Sewa Pokok Kamar:</span>
             <strong id="adjustSummaryBase">Rp 1.200.000</strong>
           </div>
+          <div class="calc-row" id="adjustSummaryArrearsRow" style="display: none;">
+            <span>Tunggakan Bulan Lalu:</span>
+            <strong id="adjustSummaryArrears" style="color: #EA580C;">+ Rp 0</strong>
+          </div>
           <div class="calc-row" id="adjustSummaryDiscountRow" style="display: none;">
             <span>Potongan / Diskon Sewa:</span>
             <strong id="adjustSummaryDiscount" style="color: var(--brand-primary);">- Rp 0</strong>
@@ -3773,7 +3777,7 @@
             <button type="button" class="pill-target-btn active" onclick="selectBroadcastTarget(this, 'all_unpaid')">Semua Belum Lunas (4)</button>
             <button type="button" class="pill-target-btn" onclick="selectBroadcastTarget(this, 'overdue')">Terlambat (1)</button>
             <button type="button" class="pill-target-btn" onclick="selectBroadcastTarget(this, 'tempo')">Jatuh Tempo (2)</button>
-            <button type="button" class="pill-target-btn" onclick="selectBroadcastTarget(this, 'partial')">Cicilan Sebagian (2)</button>
+            <button type="button" class="pill-target-btn" onclick="selectBroadcastTarget(this, 'partial')">Cicilan Sebagian (1)</button>
           </div>
         </div>
 
@@ -4271,7 +4275,12 @@
     let billingFilteredData = [];
 
     function formatRupiah(num) {
-      return 'Rp ' + Number(num).toLocaleString('id-ID');
+      return 'Rp ' + (Number(num) || 0).toLocaleString('id-ID');
+    }
+
+    function getPaymentPercentage(paid, total) {
+      if (!total || total <= 0) return (paid && paid > 0) ? 100 : 0;
+      return Math.min(100, Math.max(0, Math.round(((paid || 0) / total) * 100)));
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -4373,7 +4382,7 @@
 
       tbody.innerHTML = pageItems.map(inv => {
         const isActive = inv.id === currentSelectedId ? 'active-row' : '';
-        const initials = inv.tenant.split(' ').map(n => n[0]).slice(0, 2).join('');
+        const initials = (inv.tenant || '').trim().split(/\s+/).filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'RK';
         
         let statusBadgeHtml = '';
         if (inv.status === 'draf') {
@@ -4383,7 +4392,7 @@
         } else if (inv.status === 'lunas') {
           statusBadgeHtml = `<span class="status-badge badge-lunas"><i data-lucide="check-circle" style="width: 11px; height: 11px;"></i>Lunas</span>`;
         } else if (inv.status === 'sebagian') {
-          statusBadgeHtml = `<span class="status-badge badge-sebagian"><i data-lucide="clock" style="width: 11px; height: 11px;"></i>Cicilan (${Math.round((inv.paidAmount / inv.totalAmount) * 100)}%)</span>`;
+          statusBadgeHtml = `<span class="status-badge badge-sebagian"><i data-lucide="clock" style="width: 11px; height: 11px;"></i>Cicilan (${getPaymentPercentage(inv.paidAmount, inv.totalAmount)}%)</span>`;
         } else if (inv.status === 'tempo') {
           statusBadgeHtml = `<span class="status-badge badge-tempo"><i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i>Jatuh Tempo</span>`;
         } else {
@@ -4418,8 +4427,10 @@
         let progressHtml = '';
         if (inv.status === 'draf') {
           progressHtml = `<span style="font-size: 11px; color: var(--brand-primary); font-weight: 600;">Menunggu Verifikasi Staf</span>`;
+        } else if (inv.status === 'batal') {
+          progressHtml = `<span style="font-size: 11px; color: #64748B; font-weight: 500;">Tagihan Dibatalkan</span>`;
         } else if (inv.status === 'sebagian') {
-          const percent = Math.round((inv.paidAmount / inv.totalAmount) * 100);
+          const percent = getPaymentPercentage(inv.paidAmount, inv.totalAmount);
           progressHtml = `
             <div class="mini-progress-track">
               <div class="mini-progress-fill" style="width: ${percent}%;"></div>
@@ -4584,7 +4595,7 @@
         }
       }
 
-      const initials = inv.tenant.split(' ').map(n => n[0]).slice(0, 2).join('');
+      const initials = (inv.tenant || '').trim().split(/\s+/).filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'RK';
       document.getElementById('dossierAvatar').textContent = initials;
       document.getElementById('dossierTenantName').textContent = inv.tenant;
       document.getElementById('dossierRoomDetails').textContent = `Kamar ${inv.room} · ${inv.floor}`;
@@ -4633,9 +4644,14 @@
       document.getElementById('dossierTotalAmount').textContent = formatRupiah(inv.totalAmount);
 
       // Partial Progress
-      const percent = Math.min(100, Math.round((inv.paidAmount / inv.totalAmount) * 100));
-      document.getElementById('dossierPercentPaid').textContent = percent + '% Terbayar';
-      document.getElementById('dossierProgressFill').style.width = percent + '%';
+      if (inv.status === 'batal') {
+        document.getElementById('dossierPercentPaid').textContent = 'Dibatalkan';
+        document.getElementById('dossierProgressFill').style.width = '0%';
+      } else {
+        const percent = getPaymentPercentage(inv.paidAmount, inv.totalAmount);
+        document.getElementById('dossierPercentPaid').textContent = percent + '% Terbayar';
+        document.getElementById('dossierProgressFill').style.width = percent + '%';
+      }
       document.getElementById('dossierPaidVal').textContent = formatRupiah(inv.paidAmount);
       document.getElementById('dossierDueVal').textContent = formatRupiah(inv.dueAmount);
 
@@ -4789,12 +4805,22 @@
       }
     }
 
+    // Sanitasi Teks Bebas (Defensif XSS)
+    function sanitizeText(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
     // Pembatalan Tagihan (Void Invoice Handlers)
+    let isConfirmingVoid = false;
+
     function openModalVoidInvoice() {
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
-      if (inv.status === 'lunas') {
-        triggerToast('Tagihan yang sudah Lunas tidak dapat dibatalkan lewat Void. Lakukan Koreksi / Reversal di menu Pembayaran terlebih dahulu.', 'warning');
+      if (inv.status === 'lunas' || (inv.paidAmount && inv.paidAmount > 0)) {
+        triggerToast('Tagihan yang memiliki riwayat pembayaran (Lunas / Cicilan) tidak dapat dibatalkan lewat Void. Lakukan Koreksi / Reversal di menu Pembayaran terlebih dahulu.', 'warning');
         return;
       }
       if (inv.status === 'batal') {
@@ -4810,30 +4836,68 @@
     }
 
     function confirmVoidInvoice() {
-      const reason = document.getElementById('voidReasonInput').value.trim();
-      if (!reason) {
+      if (isConfirmingVoid) return;
+
+      const rawReason = document.getElementById('voidReasonInput').value.trim();
+      if (!rawReason) {
         triggerToast('Mohon tuliskan alasan pembatalan tagihan terlebih dahulu.', 'warning');
         return;
       }
+      const reason = sanitizeText(rawReason);
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
 
-      inv.status = 'batal';
-      inv.statusLabel = 'Dibatalkan (Void)';
-      inv.dueDaysLeft = 'Tagihan Dibatalkan';
-      inv.dueClass = 'neutral';
-      inv.voidReason = reason;
-      inv.voidAt = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+      if (inv.status === 'batal') {
+        triggerToast(`Tagihan #${inv.id} sudah berstatus BATAL (VOID).`, 'info');
+        return;
+      }
 
-      closeModal('modalVoidInvoice');
-      renderBillingTable();
-      renderInvoiceDossier();
-      triggerToast(`Tagihan #${inv.id} (Kamar ${inv.room}) resmi dibatalkan (Status: VOID).`, 'success');
+      if (inv.status === 'lunas' || (inv.paidAmount && inv.paidAmount > 0)) {
+        triggerToast('Tagihan yang memiliki riwayat pembayaran tidak dapat dibatalkan (VOID). Lakukan Reversal di menu Pembayaran terlebih dahulu.', 'warning');
+        return;
+      }
+
+      const voidBtn = document.querySelector('#modalVoidInvoice .btn-modal-danger');
+      if (voidBtn) {
+        voidBtn.disabled = true;
+        voidBtn.style.opacity = '0.6';
+        voidBtn.style.pointerEvents = 'none';
+      }
+      isConfirmingVoid = true;
+
+      try {
+        inv.status = 'batal';
+        inv.statusLabel = 'Dibatalkan (Void)';
+        inv.dueDaysLeft = 'Tagihan Dibatalkan';
+        inv.dueClass = 'neutral';
+        inv.voidReason = reason;
+        inv.voidAt = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+        inv.dueAmount = 0;
+
+        closeModal('modalVoidInvoice');
+        renderBillingTable();
+        renderInvoiceDossier();
+        triggerToast(`Tagihan #${inv.id} (Kamar ${inv.room}) resmi dibatalkan (Status: VOID).`, 'success');
+      } finally {
+        setTimeout(() => {
+          isConfirmingVoid = false;
+          if (voidBtn) {
+            voidBtn.disabled = false;
+            voidBtn.style.opacity = '1';
+            voidBtn.style.pointerEvents = 'auto';
+          }
+        }, 400);
+      }
     }
 
     function verifyAndPublishInvoice(invId) {
       const inv = invoicesData.find(i => i.id === invId);
       if (!inv) return;
+
+      if (inv.status !== 'draf') {
+        triggerToast(`Tagihan #${inv.id} (${inv.room}) sudah aktif atau berstatus ${inv.status.toUpperCase()}. Tidak perlu diverifikasi lagi.`, 'info');
+        return;
+      }
 
       inv.status = 'tempo';
       inv.statusLabel = 'Menunggu Bayar';
@@ -4847,35 +4911,57 @@
       triggerToast(`Tagihan Kamar ${inv.room} (${inv.tenant}) berhasil diverifikasi & resmi diterbitkan! Penghuni sekarang dapat melihat & membayar tagihan.`, 'success');
     }
 
+    let isVerifyingDrafts = false;
+
     function verifyAllDrafts() {
+      if (isVerifyingDrafts) return;
+
       const drafts = invoicesData.filter(i => i.status === 'draf');
       if (drafts.length === 0) {
         triggerToast('Tidak ada draf tagihan yang perlu diverifikasi.', 'info');
         return;
       }
 
-      drafts.forEach(inv => {
-        inv.status = 'tempo';
-        inv.statusLabel = 'Menunggu Bayar';
-        inv.dueDaysLeft = 'Sisa 10 Hari';
-        inv.dueClass = 'warn';
-        inv.deliveryStatus = 'sent';
-        inv.deliveryMeta = `Diterbitkan tgl 1 Nov · oleh Staf & WA terkirim`;
-      });
+      isVerifyingDrafts = true;
+      try {
+        drafts.forEach(inv => {
+          inv.status = 'tempo';
+          inv.statusLabel = 'Menunggu Bayar';
+          inv.dueDaysLeft = 'Sisa 10 Hari';
+          inv.dueClass = 'warn';
+          inv.deliveryStatus = 'sent';
+          inv.deliveryMeta = `Diterbitkan tgl 1 Nov · oleh Staf & WA terkirim`;
+        });
 
-      renderBillingTable();
-      renderInvoiceDossier();
-      triggerToast(`${drafts.length} draf tagihan rutin bulanan berhasil diverifikasi dan resmi diterbitkan ke portal penghuni!`, 'success');
+        renderBillingTable();
+        renderInvoiceDossier();
+        triggerToast(`${drafts.length} draf tagihan rutin bulanan berhasil diverifikasi dan resmi diterbitkan ke portal penghuni!`, 'success');
+      } finally {
+        setTimeout(() => {
+          isVerifyingDrafts = false;
+        }, 400);
+      }
     }
 
     function waiveInvoiceLateFee() {
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv || inv.lateFee === 0) return;
+      if (inv.status === 'batal') {
+        triggerToast('Tagihan yang telah dibatalkan (VOID) tidak dapat diubah dendanya.', 'warning');
+        return;
+      }
       
       const prevFee = inv.lateFee;
       inv.lateFee = 0;
       inv.totalAmount = (inv.baseRent || 0) + (inv.addOns || 0) + (inv.previousArrears || 0) - (inv.discount || 0);
       inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
+      
+      if (inv.dueAmount === 0 && inv.paidAmount > 0) {
+        inv.status = 'lunas';
+        inv.statusLabel = 'Lunas Terverifikasi';
+        inv.dueDaysLeft = 'Sudah Terbayar';
+        inv.dueClass = 'safe';
+      }
       
       renderBillingTable();
       renderInvoiceDossier();
@@ -4959,7 +5045,8 @@
         triggerToast(`Tagihan #${inv.id} masih berstatus Draf. Tagihan belum aktif di portal penghuni sampai Anda memverifikasi & menerbitkannya.`, 'warning');
         return;
       }
-      const url = `${window.location.origin}/portal.html?inv=${currentSelectedId}`;
+      const baseUrl = window.location.href.split('?')[0].replace(/WF-05-tagihan\.html.*$/, 'WF-10-portal-penghuni.html');
+      const url = `${baseUrl}?inv=${currentSelectedId}`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(url).then(() => {
           triggerToast(`Tautan portal tagihan untuk ${inv ? inv.tenant : 'penghuni'} berhasil disalin!`, 'success');
@@ -4988,7 +5075,12 @@
     function formatNominalInput(input) {
       const raw = input.value.replace(/\D/g, '');
       if (raw) {
-        input.value = parseInt(raw, 10).toLocaleString('id-ID');
+        let val = parseInt(raw, 10);
+        if (val > 1000000000) {
+          val = 1000000000;
+          triggerToast('Batas maksimal input nominal adalah Rp 1.000.000.000 (1 Miliar)', 'warning');
+        }
+        input.value = val.toLocaleString('id-ID');
       } else {
         input.value = '0';
       }
@@ -5147,49 +5239,109 @@
       }
     }
 
+    let isSubmittingNewBill = false;
+
+    function generateSequentialODId() {
+      let maxNum = 0;
+      invoicesData.forEach(inv => {
+        const m = inv.id.match(/^INV-\d{6}-OD(\d+)$/);
+        if (m) {
+          const n = parseInt(m[1], 10);
+          if (n > maxNum) maxNum = n;
+        }
+      });
+      const nextNum = String(maxNum + 1).padStart(2, '0');
+      return `INV-202610-OD${nextNum}`;
+    }
+
     function submitTerbitkanTagihan() {
+      if (isSubmittingNewBill) return;
+
+      // Duplicate billing check per room and period
+      if (newBillSelectedType === 'Sewa Kamar') {
+        const existingActiveBill = invoicesData.find(i => 
+          i.room === newBillSelectedRoom.room && 
+          i.period === 'Oktober 2026' && 
+          i.status !== 'batal'
+        );
+        if (existingActiveBill) {
+          triggerToast(`Unit Kamar ${newBillSelectedRoom.room} sudah memiliki tagihan sewa aktif (#${existingActiveBill.id}) untuk periode Oktober 2026. Mencegah tagihan ganda!`, 'warning');
+          return;
+        }
+      }
+
       const amountStr = document.getElementById('inputNewBillAmount')?.value || '1.200.000';
-      const amount = parseInt(amountStr.replace(/\D/g, ''), 10) || 1200000;
+      const amount = parseInt(amountStr.replace(/\D/g, ''), 10);
+      if (isNaN(amount) || amount <= 0) {
+        triggerToast('Nominal tagihan harus lebih besar dari Rp 0.', 'warning');
+        return;
+      }
+      if (amount > 1000000000) {
+        triggerToast('Nominal tagihan melebihi batas wajar sistem (Maks Rp 1 Miliar).', 'warning');
+        return;
+      }
+
       const dueDate = document.getElementById('displayNewBillDueDate')?.textContent || '31 Oktober 2026';
-      const notes = document.getElementById('inputNewBillNotes')?.value || newBillSelectedType;
+      const rawNotes = document.getElementById('inputNewBillNotes')?.value || newBillSelectedType;
+      const notes = sanitizeText(rawNotes.trim());
       const sendWa = document.getElementById('checkSendWaNewBill')?.checked;
 
-      const newId = `INV-202610-OD${Math.floor(10 + Math.random() * 89)}`;
-      const newInv = {
-        id: newId,
-        room: newBillSelectedRoom.room,
-        floorNum: newBillSelectedRoom.room.startsWith('A') ? '1' : (newBillSelectedRoom.room.startsWith('B') ? '2' : '3'),
-        floor: `Lantai ${newBillSelectedRoom.room.startsWith('A') ? '1' : (newBillSelectedRoom.room.startsWith('B') ? '2' : '3')} · Standar`,
-        tenant: newBillSelectedRoom.tenant,
-        phone: '0812-3456-7890',
-        period: 'Oktober 2026',
-        baseRent: newBillSelectedType === 'Sewa Kamar' ? newBillCalculatedRent : amount,
-        addOns: newBillSelectedType === 'Sewa Kamar' ? Math.max(0, amount - newBillCalculatedRent) : 0,
-        lateFee: 0,
-        discount: 0,
-        totalAmount: amount,
-        paidAmount: 0,
-        dueAmount: amount,
-        due: dueDate,
-        dueDaysLeft: 'Tagihan Baru',
-        dueClass: 'warn',
-        status: 'tempo',
-        statusLabel: 'Menunggu Pembayaran',
-        method: '—',
-        payDate: 'Belum Dibayar',
-        refNo: '—',
-        deliveryStatus: sendWa ? 'sent' : 'pending',
-        deliveryMeta: sendWa ? 'Diterbitkan & Terkirim WA' : 'Diterbitkan sistem',
-        adjustReason: notes
-      };
+      const submitBtn = document.querySelector('#modalTerbitkanTagihan .btn-micro-brand');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.6';
+        submitBtn.style.pointerEvents = 'none';
+      }
+      isSubmittingNewBill = true;
 
-      invoicesData.unshift(newInv);
-      currentSelectedId = newId;
-      closeModal('modalTerbitkanTagihan');
-      renderBillingTable();
-      renderInvoiceDossier();
-      const waNote = sendWa ? ' & notifikasi invoice digital terkirim via WhatsApp' : '';
-      triggerToast(`Tagihan #${newId} (${newBillSelectedRoom.room} - ${newBillSelectedRoom.tenant}) berhasil diterbitkan${waNote}!`, 'success');
+      try {
+        const newId = generateSequentialODId();
+        const existingPhone = invoicesData.find(i => i.tenant === newBillSelectedRoom.tenant)?.phone || '0812-3456-7890';
+        const newInv = {
+          id: newId,
+          room: newBillSelectedRoom.room,
+          floorNum: newBillSelectedRoom.room.startsWith('A') ? '1' : (newBillSelectedRoom.room.startsWith('B') ? '2' : '3'),
+          floor: `Lantai ${newBillSelectedRoom.room.startsWith('A') ? '1' : (newBillSelectedRoom.room.startsWith('B') ? '2' : '3')} · Standar`,
+          tenant: newBillSelectedRoom.tenant,
+          phone: existingPhone,
+          period: 'Oktober 2026',
+          baseRent: newBillSelectedType === 'Sewa Kamar' ? newBillCalculatedRent : amount,
+          addOns: newBillSelectedType === 'Sewa Kamar' ? Math.max(0, amount - newBillCalculatedRent) : 0,
+          lateFee: 0,
+          discount: 0,
+          totalAmount: amount,
+          paidAmount: 0,
+          dueAmount: amount,
+          due: dueDate,
+          dueDaysLeft: 'Tagihan Baru',
+          dueClass: 'warn',
+          status: 'tempo',
+          statusLabel: 'Menunggu Pembayaran',
+          method: '—',
+          payDate: 'Belum Dibayar',
+          refNo: '—',
+          deliveryStatus: sendWa ? 'sent' : 'pending',
+          deliveryMeta: sendWa ? 'Diterbitkan & Terkirim WA' : 'Diterbitkan sistem',
+          adjustReason: notes
+        };
+
+        invoicesData.unshift(newInv);
+        currentSelectedId = newId;
+        closeModal('modalTerbitkanTagihan');
+        renderBillingTable();
+        renderInvoiceDossier();
+        const waNote = sendWa ? ' & notifikasi invoice digital terkirim via WhatsApp' : '';
+        triggerToast(`Tagihan #${newId} (${newBillSelectedRoom.room} - ${newBillSelectedRoom.tenant}) berhasil diterbitkan${waNote}!`, 'success');
+      } finally {
+        setTimeout(() => {
+          isSubmittingNewBill = false;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.style.pointerEvents = 'auto';
+          }
+        }, 400);
+      }
     }
 
     // Modal Sesuaikan Tagihan & Diskon (Untuk Penghuni Lama / Tagihan Berjalan)
@@ -5223,14 +5375,26 @@
       if (!inv) return;
 
       const base = inv.baseRent || 0;
+      const arrears = inv.previousArrears || 0;
       const discount = parseInt((document.getElementById('adjustInvDiscount')?.value || '0').replace(/\D/g, ''), 10) || 0;
       const addon = parseInt((document.getElementById('adjustInvAddon')?.value || '0').replace(/\D/g, ''), 10) || 0;
       const late = inv.lateFee || 0;
 
-      const total = Math.max(0, base - discount + addon + late);
+      const total = Math.max(0, base + arrears - discount + addon + late);
       const due = Math.max(0, total - (inv.paidAmount || 0));
 
       document.getElementById('adjustSummaryBase').textContent = formatRupiah(base);
+
+      const arrearsRow = document.getElementById('adjustSummaryArrearsRow');
+      const arrearsVal = document.getElementById('adjustSummaryArrears');
+      if (arrearsRow && arrearsVal) {
+        if (arrears > 0) {
+          arrearsRow.style.display = 'flex';
+          arrearsVal.textContent = `+ ${formatRupiah(arrears)}`;
+        } else {
+          arrearsRow.style.display = 'none';
+        }
+      }
       
       const discRow = document.getElementById('adjustSummaryDiscountRow');
       const discVal = document.getElementById('adjustSummaryDiscount');
@@ -5270,32 +5434,65 @@
       triggerToast(`Denda keterlambatan sebesar ${formatRupiah(prevFee)} dinolkan. Klik Simpan Penyesuaian untuk menerapkan.`, 'info');
     }
 
+    let isSavingAdjustment = false;
+
     function saveInvoiceAdjustment() {
+      if (isSavingAdjustment) return;
+
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
 
       const discount = parseInt((document.getElementById('adjustInvDiscount')?.value || '0').replace(/\D/g, ''), 10) || 0;
       const addon = parseInt((document.getElementById('adjustInvAddon')?.value || '0').replace(/\D/g, ''), 10) || 0;
-      const reason = (document.getElementById('adjustInvReason').value || '').trim() || 'Penyesuaian tagihan';
+      const rawReason = (document.getElementById('adjustInvReason').value || '').trim() || 'Penyesuaian tagihan';
+      const reason = sanitizeText(rawReason);
 
-      inv.discount = discount;
-      inv.addOns = addon;
-      inv.adjustReason = reason;
-      inv.totalAmount = Math.max(0, inv.baseRent - discount + addon + (inv.lateFee || 0));
-      inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
+      const arrears = inv.previousArrears || 0;
+      const computedTotal = Math.max(0, inv.baseRent + arrears - discount + addon + (inv.lateFee || 0));
 
-      if (inv.dueAmount === 0 && inv.paidAmount > 0) {
-        inv.status = 'lunas';
-        inv.statusLabel = 'Lunas Terverifikasi';
-      } else if (inv.paidAmount > 0) {
-        inv.status = 'sebagian';
-        inv.statusLabel = `Dibayar Sebagian (${Math.round((inv.paidAmount / inv.totalAmount) * 100)}%)`;
+      // Guard: Diskon tidak boleh menyebabkan total tagihan lebih kecil dari uang yang sudah disetor penghuni
+      if (computedTotal < (inv.paidAmount || 0)) {
+        triggerToast(`Diskon terlalu besar! Total tagihan (${formatRupiah(computedTotal)}) tidak boleh lebih kecil dari uang yang sudah dicicil (${formatRupiah(inv.paidAmount)}).`, 'warning');
+        return;
       }
 
-      closeModal('modalAdjustInvoice');
-      renderBillingTable();
-      renderInvoiceDossier();
-      triggerToast(`Tagihan ${inv.id} (${inv.room}) berhasil disesuaikan: Total ${formatRupiah(inv.totalAmount)}.`, 'success');
+      const saveBtn = document.querySelector('#modalAdjustInvoice .btn-action-catat');
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.style.opacity = '0.6';
+        saveBtn.style.pointerEvents = 'none';
+      }
+      isSavingAdjustment = true;
+
+      try {
+        inv.discount = discount;
+        inv.addOns = addon;
+        inv.adjustReason = reason;
+        inv.totalAmount = computedTotal;
+        inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
+
+        if (inv.dueAmount === 0 && inv.paidAmount > 0) {
+          inv.status = 'lunas';
+          inv.statusLabel = 'Lunas Terverifikasi';
+        } else if (inv.paidAmount > 0) {
+          inv.status = 'sebagian';
+          inv.statusLabel = `Dibayar Sebagian (${getPaymentPercentage(inv.paidAmount, inv.totalAmount)}%)`;
+        }
+
+        closeModal('modalAdjustInvoice');
+        renderBillingTable();
+        renderInvoiceDossier();
+        triggerToast(`Tagihan ${inv.id} (${inv.room}) berhasil disesuaikan: Total ${formatRupiah(inv.totalAmount)}.`, 'success');
+      } finally {
+        setTimeout(() => {
+          isSavingAdjustment = false;
+          if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.style.opacity = '1';
+            saveBtn.style.pointerEvents = 'auto';
+          }
+        }, 400);
+      }
     }
 
     // Modal Catat Penerimaan Pembayaran (Sama seperti di Page Pembayaran WF-06)
@@ -5304,6 +5501,15 @@
     function openModalCatatBayar() {
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
+
+      if (inv.status === 'batal') {
+        triggerToast(`Tagihan #${inv.id} telah dibatalkan (Status: VOID) dan tidak dapat menerima pembayaran.`, 'warning');
+        return;
+      }
+      if (inv.status === 'draf') {
+        triggerToast(`Tagihan #${inv.id} masih berstatus Draf. Verifikasi & terbitkan tagihan terlebih dahulu sebelum mencatat pembayaran.`, 'warning');
+        return;
+      }
 
       const tenantName = document.getElementById('payModalTenantName');
       if (tenantName) tenantName.textContent = inv.tenant;
@@ -5427,51 +5633,92 @@
       triggerToast('Bukti transfer berhasil dilampirkan!', 'info');
     }
 
+    let isSubmittingPayment = false;
+
     function submitPaymentRecord() {
+      if (isSubmittingPayment) return;
+
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
 
-      const enteredStr = document.getElementById('inputPayAmount')?.value || '0';
-      const entered = parseInt(enteredStr.replace(/\D/g, ''), 10) || inv.dueAmount;
-      const refNo = document.getElementById('inputPayRef')?.value || ('TRF-BCA-' + Math.floor(100000 + Math.random() * 900000));
-      const payDate = document.getElementById('inputPayDateDisplay')?.textContent || '23 Oktober 2026';
-      const sendWa = document.getElementById('checkboxSendWaReceipt')?.checked;
-
-      const surplus = (entered > inv.dueAmount) ? (entered - inv.dueAmount) : 0;
-      inv.paidAmount = Math.min(inv.totalAmount, inv.paidAmount + entered);
-      inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
-      inv.method = selectedPayMethod;
-      inv.refNo = refNo;
-      inv.payDate = `${payDate}, ` + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
-
-      if (surplus > 0) {
-        inv.creditBalance = (inv.creditBalance || 0) + surplus;
+      if (inv.status === 'batal' || inv.status === 'draf') {
+        triggerToast('Tagihan berstatus Draf atau Batal tidak dapat diproses pembayarannya.', 'warning');
+        return;
       }
 
-      if (inv.dueAmount === 0) {
-        inv.status = 'lunas';
-        inv.statusLabel = surplus > 0 ? `Lunas (Kredit +${formatRupiah(surplus)})` : 'Lunas Terverifikasi';
-        inv.dueDaysLeft = 'Sudah Terbayar';
-        inv.dueClass = 'safe';
-      } else {
-        inv.status = 'sebagian';
-        inv.statusLabel = `Dibayar Sebagian (${Math.round((inv.paidAmount / inv.totalAmount) * 100)}%)`;
-        inv.dueDaysLeft = 'Cicilan Parsial';
-        inv.dueClass = 'warn';
+      const enteredStr = (document.getElementById('inputPayAmount')?.value || '').replace(/\D/g, '');
+      const entered = parseInt(enteredStr, 10);
+
+      // Defend against 0, negative, NaN or empty inputs
+      if (isNaN(entered) || entered <= 0) {
+        triggerToast('Nominal pembayaran harus lebih besar dari Rp 0.', 'warning');
+        document.getElementById('inputPayAmount')?.focus();
+        return;
       }
 
-      closeModal('modalCatatBayar');
-      renderBillingTable();
-      renderInvoiceDossier();
+      if (entered > 1000000000) {
+        triggerToast('Nominal pembayaran melebihi batas wajar sistem (Maks Rp 1 Miliar).', 'warning');
+        return;
+      }
 
-      const waMsg = sendWa ? ' Kuitansi pembayaran resmi otomatis dikirimkan ke WhatsApp penghuni.' : '';
-      const surplusMsg = surplus > 0 ? ` Kelebihan bayar ${formatRupiah(surplus)} otomatis disimpan sebagai Saldo Kredit Penghuni untuk periode berikutnya.` : '';
-      triggerToast(`Pembayaran ${formatRupiah(entered)} untuk Kamar ${inv.room} (${inv.tenant}) berhasil dicatat!${surplusMsg}${waMsg}`, 'success');
+      const submitBtn = document.querySelector('#modalCatatBayar .btn-action-catat');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.6';
+        submitBtn.style.pointerEvents = 'none';
+      }
+      isSubmittingPayment = true;
 
-      if (sendWa) {
+      try {
+        const refNo = document.getElementById('inputPayRef')?.value || ('TRF-BCA-' + Math.floor(100000 + Math.random() * 900000));
+        const payDate = document.getElementById('inputPayDateDisplay')?.textContent || '23 Oktober 2026';
+        const sendWa = document.getElementById('checkboxSendWaReceipt')?.checked;
+
+        const surplus = (entered > inv.dueAmount) ? (entered - inv.dueAmount) : 0;
+        inv.paidAmount = Math.min(inv.totalAmount, inv.paidAmount + entered);
+        inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
+        inv.method = selectedPayMethod;
+        inv.refNo = refNo;
+        inv.payDate = `${payDate}, ` + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+        if (surplus > 0) {
+          inv.creditBalance = (inv.creditBalance || 0) + surplus;
+        }
+
+        if (inv.dueAmount === 0) {
+          inv.status = 'lunas';
+          inv.statusLabel = surplus > 0 ? `Lunas (Kredit +${formatRupiah(surplus)})` : 'Lunas Terverifikasi';
+          inv.dueDaysLeft = 'Sudah Terbayar';
+          inv.dueClass = 'safe';
+        } else {
+          inv.status = 'sebagian';
+          inv.statusLabel = `Dibayar Sebagian (${getPaymentPercentage(inv.paidAmount, inv.totalAmount)}%)`;
+          inv.dueDaysLeft = 'Cicilan Parsial';
+          inv.dueClass = 'warn';
+        }
+
+        closeModal('modalCatatBayar');
+        renderBillingTable();
+        renderInvoiceDossier();
+
+        const waMsg = sendWa ? ' Kuitansi pembayaran resmi otomatis dikirimkan ke WhatsApp penghuni.' : '';
+        const surplusMsg = surplus > 0 ? ` Kelebihan bayar ${formatRupiah(surplus)} otomatis disimpan sebagai Saldo Kredit Penghuni untuk periode berikutnya.` : '';
+        triggerToast(`Pembayaran ${formatRupiah(entered)} untuk Kamar ${inv.room} (${inv.tenant}) berhasil dicatat!${surplusMsg}${waMsg}`, 'success');
+
+        if (sendWa) {
+          setTimeout(() => {
+            sendReceiptWhatsApp(inv.id);
+          }, 500);
+        }
+      } finally {
         setTimeout(() => {
-          sendReceiptWhatsApp(inv.id);
-        }, 500);
+          isSubmittingPayment = false;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.style.pointerEvents = 'auto';
+          }
+        }, 400);
       }
     }
 
@@ -5516,7 +5763,7 @@
       let targetCount = 4;
       if (target === 'overdue') targetCount = 1;
       else if (target === 'tempo') targetCount = 2;
-      else if (target === 'partial') targetCount = 2;
+      else if (target === 'partial') targetCount = 1;
       
       triggerToast(`Filter siaran disetel ke ${btn.textContent.trim()}`, 'info');
     }
@@ -5546,11 +5793,27 @@
 
     function executeBroadcast() {
       closeModal('modalBroadcast');
-      triggerToast('Pesan pengingat penagihan WA berhasil dikirim serentak ke penyewa terpilih!', 'success');
+      triggerToast('Sesuai kebijakan Zero-Bot, tautan WhatsApp perorangan disiapkan di daftar aksi untuk pengiriman manual serial.', 'info');
     }
 
     function closeBroadcastModal() {
       closeModal('modalBroadcast');
+    }
+
+    // Validasi Nomor Telepon Seluler Indonesia (08... / 628...)
+    function validateIndonesianPhone(phone) {
+      if (!phone) return null;
+      const clean = phone.replace(/[^0-9]/g, '');
+      let normalized = clean;
+      if (normalized.startsWith('0')) {
+        normalized = '62' + normalized.slice(1);
+      } else if (!normalized.startsWith('62')) {
+        normalized = '62' + normalized;
+      }
+      if (/^628[1-9][0-9]{7,11}$/.test(normalized)) {
+        return normalized;
+      }
+      return null;
     }
 
     // WhatsApp Direct Send
@@ -5568,15 +5831,21 @@
         return;
       }
 
+      const validPhone = validateIndonesianPhone(inv.phone);
+      if (!validPhone) {
+        triggerToast(`Nomor kontak WhatsApp penghuni (${inv.phone || 'kosong'}) tidak valid! Format wajib nomor seluler aktif (08...).`, 'warning');
+        return;
+      }
+
       const text = `Halo Kak ${inv.tenant}, berikut lembar rincian tagihan sewa Kost Budi Makmur Kamar ${inv.room} (#${inv.id}) periode ${inv.period}: Total ${formatRupiah(inv.totalAmount)}, Sisa: ${formatRupiah(inv.dueAmount)}. Status: ${inv.status.toUpperCase()}. Terima kasih!`;
-      const cleanPhone = inv.phone.replace(/[^0-9]/g, '');
-      const waUrl = `https://api.whatsapp.com/send?phone=62${cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone}&text=${encodeURIComponent(text)}`;
+      const waUrl = `https://api.whatsapp.com/send?phone=${validPhone}&text=${encodeURIComponent(text)}`;
       window.open(waUrl, '_blank');
       
       inv.deliveryStatus = 'sent';
       inv.deliveryMeta = '23 Okt 2026, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' · via WhatsApp Web';
       renderBillingTable();
       renderInvoiceDossier();
+      triggerToast(`Tautan WhatsApp untuk Kamar ${inv.room} dibuka. Mohon pastikan pesan terkirim di WhatsApp Web!`, 'info');
     }
 
     function openDirectWhatsApp() {
@@ -5588,11 +5857,31 @@
       const inv = invoicesData.find(i => i.id === invId);
       if (!inv) return;
 
+      if (inv.status === 'batal') {
+        triggerToast('Tagihan yang telah dibatalkan (VOID) tidak memiliki kuitansi pembayaran.', 'warning');
+        return;
+      }
+
+      if (inv.status === 'draf') {
+        triggerToast('Tagihan berstatus draf belum memiliki kuitansi pembayaran.', 'warning');
+        return;
+      }
+
+      if (inv.paidAmount === 0 && inv.status !== 'lunas') {
+        triggerToast('Tagihan ini belum memiliki pembayaran tercatat untuk diterbitkan kuitansi.', 'warning');
+        return;
+      }
+
+      const validPhone = validateIndonesianPhone(inv.phone);
+      if (!validPhone) {
+        triggerToast(`Nomor kontak WhatsApp penghuni (${inv.phone || 'kosong'}) tidak valid. Gagal membuka WhatsApp.`, 'warning');
+        return;
+      }
+
       const receiptId = 'KWT-' + (inv.refNo && inv.refNo !== '—' ? inv.refNo.replace(/[^0-9]/g, '').slice(-6) : inv.id.replace(/[^0-9]/g, '').slice(-6));
       const payAmount = inv.paidAmount > 0 ? inv.paidAmount : inv.totalAmount;
       const text = `Halo Kak ${inv.tenant},\n\nTerima kasih! Pembayaran sewa Kost Budi Makmur Kamar ${inv.room} (#${inv.id}) sebesar ${formatRupiah(payAmount)} telah kami terima dan diverifikasi ${inv.status === 'lunas' ? 'LUNAS' : 'SEBAGIAN'}.\n\nNo. Kwitansi: ${receiptId}\nMetode: ${inv.method !== '—' ? inv.method : 'Transfer Bank'}\nWaktu: ${inv.payDate || '23 Okt 2026'}\n\nKwitansi resmi ini sah diterbitkan oleh manajemen RumaKost dan dapat diakses kapan saja melalui Portal Penghuni. Terima kasih atas kerja samanya!`;
-      const cleanPhone = (inv.phone || '081234567890').replace(/[^0-9]/g, '');
-      const waUrl = `https://api.whatsapp.com/send?phone=62${cleanPhone.startsWith('0') ? cleanPhone.slice(1) : cleanPhone}&text=${encodeURIComponent(text)}`;
+      const waUrl = `https://api.whatsapp.com/send?phone=${validPhone}&text=${encodeURIComponent(text)}`;
       window.open(waUrl, '_blank');
       triggerToast(`Kwitansi resmi pelunasan Kamar ${inv.room} dibuka via WhatsApp Web!`, 'success');
     }
@@ -5602,10 +5891,20 @@
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
 
+      if (inv.status === 'batal') {
+        triggerToast('Tagihan yang telah dibatalkan (VOID) tidak memiliki lembar kuitansi sah.', 'warning');
+        return;
+      }
+
+      if (inv.status === 'draf') {
+        triggerToast('Tagihan berstatus draf belum memiliki lembar kuitansi.', 'warning');
+        return;
+      }
+
       document.getElementById('receiptInvNo').textContent = '#' + inv.id;
       document.getElementById('receiptTenant').textContent = inv.tenant;
       document.getElementById('receiptRoom').textContent = `Kamar ${inv.room} (${inv.floor})`;
-      document.getElementById('receiptDate').textContent = inv.payDate.split(',')[0] || '23 Okt 2026';
+      document.getElementById('receiptDate').textContent = (inv.payDate || '23 Okt 2026').split(',')[0];
       document.getElementById('receiptMethod').textContent = inv.method !== '—' ? inv.method : 'Transfer Bank BCA';
       document.getElementById('receiptTotalAmount').textContent = formatRupiah(inv.paidAmount > 0 ? inv.paidAmount : inv.totalAmount);
 
@@ -5631,6 +5930,10 @@
     // EKSPOR MATRIKS PENAGIHAN KE CSV / EXCEL (STORY F-10)
     // ══════════════════════════════════════════════════════════════
     function exportBillingMatrixToCSV() {
+      if (!invoicesData || invoicesData.length === 0) {
+        triggerToast('Tidak ada data tagihan untuk diekspor.', 'warning');
+        return;
+      }
       const headers = [
         'ID Invoice',
         'Nomor Kamar',
@@ -5655,10 +5958,10 @@
       const rows = invoicesData.map(inv => [
         inv.id,
         inv.room,
-        `"${inv.floor}"`,
-        `"${inv.tenant}"`,
+        `"${(inv.floor || '').replace(/"/g, '""')}"`,
+        `"${(inv.tenant || '').replace(/"/g, '""')}"`,
         `'${inv.phone}`,
-        `"${inv.period}"`,
+        `"${(inv.period || '').replace(/"/g, '""')}"`,
         inv.baseRent,
         inv.addOns || 0,
         inv.previousArrears || 0,
@@ -5703,8 +6006,12 @@
       const paramId = urlParams.get('id');
       const paramAction = urlParams.get('action');
 
-      if (paramId && invoicesData.some(i => i.id === paramId)) {
-        currentSelectedId = paramId;
+      if (paramId) {
+        if (invoicesData.some(i => i.id === paramId)) {
+          currentSelectedId = paramId;
+        } else {
+          triggerToast(`ID Tagihan #${paramId} dari URL tidak ditemukan. Menampilkan data awal.`, 'warning');
+        }
       }
 
       renderBillingTable();

@@ -54,9 +54,9 @@ Layar ini dirancang dengan filosofi **Estify Minimalist DNA** dan tata letak **A
 
 ---
 
-## 2. Matriks Entitas Data Baseline (12 Tagihan Fixture Testing)
+## 2. Matriks Entitas Data Baseline (14 Tagihan Fixture Testing: 3 Draf + 11 Unit Aktif)
 
-Berikut adalah 12 data fixture awal yang termuat dalam objek `invoicesData` pada pengujian layar `WF-05`:
+Berikut adalah 14 data fixture awal yang termuat dalam objek `invoicesData` pada pengujian layar `WF-05`:
 
 | ID Tagihan | Unit | Lantai | Nama Penyewa | No. WhatsApp | Periode | Pokok (Rp) | Add-on / Denda / Tunggakan / Diskon | Total Kewajiban | Sisa Saldo | Status Tagihan | Delivery WA |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -503,7 +503,7 @@ Berikut adalah 12 data fixture awal yang termuat dalam objek `invoicesData` pada
   - Textarea dan kotak preview langsung terisi klausul tegas surat peringatan tunggakan sewa (toleransi 2x24 jam dan pembekuan fasilitas).
   6. Klik tombol hijau utama: **"Kirim Siaran via WA"** (`executeBroadcast()`).
   - Modal tertutup.
-  - Toast konfirmasi sukses muncul: *"Pesan pengingat penagihan WA berhasil dikirim serentak ke penyewa terpilih!"*.
+  - Toast konfirmasi muncul: *"Sesuai kebijakan Zero-Bot, tautan WhatsApp perorangan disiapkan di daftar aksi untuk pengiriman manual serial."*.
 
 ---
 
@@ -533,7 +533,7 @@ Berikut adalah 12 data fixture awal yang termuat dalam objek `invoicesData` pada
   - Nilai teks `INV-202610-04` tersalin ke clipboard sistem.
   - Toast notifikasi sukses muncul: *"Nomor invoice #INV-202610-04 berhasil disalin!"*.
   2. Klik tombol sekunder **"Link Portal"** pada footer dossier (`copyTenantPortalLink()`).
-  - URL format portal penghuni (`https://.../portal.html?inv=INV-202610-04`) tersalin ke clipboard.
+  - URL format portal penghuni (`https://.../WF-10-portal-penghuni.html?inv=INV-202610-04`) tersalin ke clipboard.
   - Toast notifikasi sukses muncul: *"Tautan portal tagihan untuk Budi Santoso berhasil disalin!"*.
   3. **Uji Proteksi Draf**: Pilih tagihan draf (`INV-202611-D01`), lalu klik "Link Portal".
   - Sistem menolak menyalin URL dan menampilkan Toast Warning:  
@@ -885,7 +885,7 @@ Berikut adalah 12 data fixture awal yang termuat dalam objek `invoicesData` pada
   - Blok `.catch()` terpanggil saat `navigator.clipboard.writeText()` ditolak browser.
   - Sistem menampilkan Toast Info yang mencantumkan nomor invoice: *"Nomor invoice #INV-202610-04"*.
   2. Klik tombol "Link Portal" (`copyTenantPortalLink()`).
-  - Blok `.catch()` menampilkan Toast Info memuat URL lengkap: *"Tautan portal tagihan: http://.../portal.html?inv=INV-202610-04"*.
+  - Blok `.catch()` menampilkan Toast Info memuat URL lengkap: *"Tautan portal tagihan: http://.../WF-10-portal-penghuni.html?inv=INV-202610-04"*.
 
 ---
 
@@ -912,6 +912,177 @@ Berikut adalah 12 data fixture awal yang termuat dalam objek `invoicesData` pada
   - Teks saldo baru tertera hijau cerah:  
     `Rp 0 (Tagihan Sudah Lunas Sebelumnya)`.
   - Mencegah kebingungan pengelola bahwa tagihan tersebut memang tidak memiliki sisa piutang terutang.
+
+---
+
+### SKENARIO 49: Proteksi Double-Click & Idempotensi Tombol Transaksi Finansial (Debounce & Button Disabling Guard)
+* **Tujuan**: Mencegah terjadinya duplikasi pencatatan pembayaran atau penerbitan tagihan ganda akibat klik ganda cepat (*rapid double-click*) oleh pengelola.
+* **Kondisi Awal**: Modal `#modalCatatBayar` atau `#modalTerbitkanTagihan` terbuka.
+* **Langkah-langkah**:
+  1. Klik tombol submit secara cepat sebanyak 2 kali berturut-turut (*rapid double-click*).
+* **Hasil Diharapkan**:
+  - Flag lock (`isSubmittingPayment` / `isSubmittingNewBill`) aktif seketika pada klik pertama.
+  - Tombol submit memperoleh atribut `disabled="true"`, penurunan opasitas, dan pointer-events dinonaktifkan.
+  - Klik kedua diblokir sepenuhnya tanpa memicu eksekusi mutasi data tambahan.
+  - Hanya tepat 1 transaksi yang tersimpan ke dalam array buku besar `invoicesData`.
+
+---
+
+### SKENARIO 50: Validasi Defensif Nominal Rp 0 pada Modal Pembayaran (Zero-Value Payment Guard)
+* **Tujuan**: Memastikan pengguna tidak dapat mencatat pembayaran dengan nominal Rp 0 atau string kosong yang berisiko memicu bug pelunasan fiktif.
+* **Kondisi Awal**: Modal `#modalCatatBayar` terbuka untuk tagihan aktif Kamar A-04 (sisa Rp 1.300.000).
+* **Langkah-langkah**:
+  1. Pada field nominal diterima (`#inputPayAmount`), ketikkan angka `0` atau hapus seluruh isinya.
+  2. Klik tombol **"Simpan Catatan Pembayaran"**.
+* **Hasil Diharapkan**:
+  - Sistem menolak pemrosesan transaksi.
+  - Toast Warning muncul: *"Nominal pembayaran harus lebih besar dari Rp 0."*.
+  - Fokus kursor otomatis kembali ke field `#inputPayAmount`.
+  - Tagihan tetap berstatus belum lunas tanpa perubahan saldo.
+
+---
+
+### SKENARIO 51: Pencegahan Penerbitan Tagihan Ganda untuk Unit & Periode Sama (Duplicate Billing Guard)
+* **Tujuan**: Mencegah pembuatan dua faktur sewa aktif untuk kamar dan bulan yang sama (*overbilling prevention*).
+* **Kondisi Awal**: Modal `#modalTerbitkanTagihan` terbuka. Kamar A-01 sudah memiliki tagihan aktif periode Oktober 2026.
+* **Langkah-langkah**:
+  1. Pilih unit Kamar A-01 dengan kategori "Sewa Kamar".
+  2. Klik tombol **"Terbitkan & Kirim Notifikasi"**.
+* **Hasil Diharapkan**:
+  - Sistem mendeteksi `existingActiveBill` dengan kriteria unit sama, periode sama, dan status belum dibatalkan.
+  - Proses penerbitan dibatalkan seketika.
+  - Toast Warning muncul: *"Unit Kamar A-01 sudah memiliki tagihan sewa aktif (#INV-...) untuk periode Oktober 2026. Mencegah tagihan ganda!"*.
+  - Tidak ada faktur baru yang ditambahkan ke daftar ledger.
+
+---
+
+### SKENARIO 52: Pencegahan Selisih Buku Besar akibat Diskon Melebihi Sisa Tagihan (Ledger Consistency Guard)
+* **Tujuan**: Memastikan nilai penyesuaian diskon tidak menurunkan total tagihan di bawah nominal uang yang telah disetor oleh penghuni (`computedTotal < inv.paidAmount`).
+* **Kondisi Awal**: Kamar B-02 memiliki total tagihan Rp 1.500.000 dan telah dicicil sebesar Rp 1.000.000 (`paidAmount = 1000000`, sisa piutang Rp 500.000). Modal `#modalAdjustInvoice` terbuka.
+* **Langkah-langkah**:
+  1. Masukkan diskon sebesar `Rp 700.000` (sehingga total tagihan menjadi Rp 800.000, padahal penghuni sudah bayar Rp 1.000.000).
+  2. Klik tombol **"Simpan Penyesuaian Tagihan"**.
+* **Hasil Diharapkan**:
+  - Sistem mengevaluasi `computedTotal < inv.paidAmount`.
+  - Sistem menolak menyimpan perubahan.
+  - Toast Warning muncul: *"Diskon terlalu besar! Total tagihan (Rp 800.000) tidak boleh lebih kecil dari uang yang sudah dicicil (Rp 1.000.000)."*.
+  - Menjaga konsistensi neraca buku besar agar tidak terjadi anomali `paidAmount > totalAmount`.
+
+---
+
+### SKENARIO 53: Proteksi Pembatalan (Void) pada Tagihan dengan Pembayaran Cicilan Aktif (Partial Payment Void Guard)
+* **Tujuan**: Memastikan tagihan yang sudah memiliki mutasi kas masuk sebagian (cicilan) dilarang dibatalkan langsung via Void.
+* **Kondisi Awal**: Kamar B-02 (status cicilan, telah membayar Rp 1.000.000) terpilih di dossier.
+* **Langkah-langkah**:
+  1. Buka modal pembatalan tagihan melalui fungsi `openModalVoidInvoice()`.
+* **Hasil Diharapkan**:
+  - Sistem memeriksa `inv.paidAmount > 0`.
+  - Modal pembatalan dilarang terbuka.
+  - Toast Warning muncul: *"Tagihan yang memiliki riwayat pembayaran (Lunas / Cicilan) tidak dapat dibatalkan lewat Void. Lakukan Koreksi / Reversal di menu Pembayaran terlebih dahulu."*.
+
+---
+
+### SKENARIO 54: Validasi Format Nomor Kontak Seluler Indonesia pada Tautan WhatsApp (Indonesian Phone Sanitizer)
+* **Tujuan**: Mencegah tautan WhatsApp rusak (*broken link*) saat kontak penghuni tidak valid atau kosong.
+* **Kondisi Awal**: Salah satu data tagihan memiliki nomor telepon non-standar (misal: "021-123456" atau hanya 3 digit "081").
+* **Langkah-langkah**:
+  1. Klik tombol **"Kirim ke WA"** (`sendInvoiceWhatsApp()`).
+* **Hasil Diharapkan**:
+  - Fungsi `validateIndonesianPhone()` memvalidasi format regex `/^628[1-9][0-9]{7,11}$/`.
+  - Validasi gagal.
+  - Browser tidak membuka tab WhatsApp kosong/rusak.
+  - Toast Warning muncul: *"Nomor kontak WhatsApp penghuni (...) tidak valid! Format wajib nomor seluler aktif (08...)."*.
+
+---
+
+### SKENARIO 55: Penanganan Deep Link ID Tagihan yang Tidak Ditemukan (Invalid Query Parameter Fallback)
+* **Tujuan**: Memastikan aplikasi tidak mengalami error senyap atau tampilan kosong jika pengguna mengakses tautan dengan parameter ID yang salah atau telah dihapus.
+* **Kondisi Awal**: Browser membuka URL: `WF-05-tagihan.html?id=INV-999999-NOTFOUND`.
+* **Langkah-langkah**:
+  1. Halaman dimuat secara lengkap.
+* **Hasil Diharapkan**:
+  - Skrip inisialisasi mendeteksi `paramId` tidak ada di array `invoicesData`.
+  - Toast Warning muncul: *"ID Tagihan #INV-999999-NOTFOUND dari URL tidak ditemukan. Menampilkan data awal."*.
+  - Sistem otomatis memilih tagihan pertama yang valid (`currentSelectedId = 'INV-202611-D01'`) sebagai fallback aman tanpa layar putih (*no blank screen crash*).
+
+---
+
+### SKENARIO 56: Proteksi Integritas Akumulasi Tunggakan Lalu saat Penyesuaian Biaya (Arrears Preservation Guard)
+* **Tujuan**: Memastikan nilai tunggakan bulan sebelumnya (`previousArrears`) tidak terhapus saat pengelola menyimpan penyesuaian biaya tambahan atau diskon sewa.
+* **Kondisi Awal**: Kamar B-04 (`INV-202611-D03`) memiliki sewa pokok Rp 1.500.000 dan tunggakan lalu Rp 500.000 (Total Rp 2.000.000). Modal `#modalAdjustInvoice` dibuka.
+* **Langkah-langkah**:
+  1. Periksa kotak kalkulasi: baris `#adjustSummaryArrearsRow` menampilkan *"Tunggakan Bulan Lalu: + Rp 500.000"*.
+  2. Tambahkan biaya tambahan WiFi: `Rp 50.000`.
+  3. Klik tombol **"Simpan Penyesuaian Tagihan"** (`saveInvoiceAdjustment()`).
+* **Hasil Diharapkan**:
+  - Formula perhitungan menyertakan tunggakan: `Rp 1.500.000 + Rp 500.000 + Rp 50.000 = Rp 2.050.000`.
+  - Total kewajiban tersimpan `Rp 2.050.000` (tunggakan Rp 500.000 tetap terjaga dan tidak hilang).
+  - Toast sukses mengonfirmasi penyesuaian total baru Rp 2.050.000.
+
+---
+
+### SKENARIO 57: Proteksi Pembagian Nol pada Kalkulasi Progres Pelunasan (Zero-Division Percentage Guard)
+* **Tujuan**: Memastikan antarmuka tidak menampilkan teks rusak `"NaN%"` saat total kewajiban tagihan bernilai Rp 0.
+* **Kondisi Awal**: Tagihan memiliki `totalAmount = 0` (misal akibat pembebasan penuh atau diskon 100%).
+* **Langkah-langkah**:
+  1. Amati rendering baris tabel dan lembar dossier untuk tagihan tersebut.
+* **Hasil Diharapkan**:
+  - Fungsi `getPaymentPercentage()` mengevaluasi `total <= 0` dan mengembalikan nilai aman `0%` (atau `100%` jika `paidAmount > 0`).
+  - Tidak ada teks `"NaN% Terbayar"` atau `"Cicilan (NaN%)"` di layar.
+  - Lebar progress bar disetel aman (`width: 0%` atau `100%`) tanpa layout glitch.
+
+---
+
+### SKENARIO 58: Proteksi Akses Catat Bayar pada Tagihan Draf & Batal (Draft & Void Payment Blocker)
+* **Tujuan**: Memastikan modal pencatatan pembayaran dilarang dibuka untuk faktur yang masih draf belum terbit atau yang telah dibatalkan (VOID).
+* **Kondisi Awal**: Tagihan berstatus Draf (`INV-202611-D01`) atau Batal terpilih di sistem.
+* **Langkah-langkah**:
+  1. Jalankan fungsi `openModalCatatBayar()` (misal via parameter URL `?action=bayar`).
+* **Hasil Diharapkan**:
+  - Sistem mendeteksi `inv.status === 'draf'` atau `'batal'`.
+  - Modal pembayaran ditolak untuk dibuka.
+  - Toast Warning muncul: *"Tagihan #INV-... masih berstatus Draf / Batal. Verifikasi & terbitkan tagihan terlebih dahulu sebelum mencatat pembayaran."*.
+  - Eksekusi `submitPaymentRecord()` juga memiliki guard clause ganda untuk menolak mutasi data pada status draf/batal.
+
+---
+
+### SKENARIO 59: Penanganan Tampilan Kolom Progres & Persentase Pelunasan pada Tagihan Dibatalkan (Void State Display Guard)
+* **Tujuan**: Memastikan tabel master dan lembar dossier tidak menampilkan status "Lunas 100%" atau kalkulasi persentase aktif saat tagihan telah dibatalkan (VOID).
+* **Kondisi Awal**: Tagihan Kamar A-01 atau B-05 dibatalkan melalui modal pembatalan (`confirmVoidInvoice()`), menyetel `dueAmount = 0` dan `status = 'batal'`.
+* **Langkah-langkah**:
+  1. Amati rendering baris tabel pada kolom Total Tagihan & Progres Pelunasan.
+  2. Amati panel dossier kanan pada pod progres pelunasan.
+* **Hasil Diharapkan**:
+  - Kolom progres tabel master menampilkan label abu-abu netral: *"Tagihan Dibatalkan"*, bukan label hijau *"Lunas 100%"*.
+  - Pod progres dossier menampilkan teks *"Dibatalkan"* dengan bar progres 0%.
+  - Seluruh informasi visual selaras dengan status pembatalan dan tidak menimbulkan kesalahpahaman pencatatan keuangan.
+
+---
+
+### SKENARIO 60: Proteksi Integritas Kuitansi & Pengiriman Tanda Terima WhatsApp (Receipt Integrity Guard)
+* **Tujuan**: Memastikan lembar kuitansi resmi dan pengiriman tautan kuitansi via WhatsApp dilarang dibuka untuk tagihan draf, tagihan dibatalkan (VOID), atau tagihan aktif yang belum memiliki riwayat pembayaran (`paidAmount === 0`).
+* **Kondisi Awal**: Tagihan berstatus Draf (`INV-202611-D01`), Batal, atau Belum Bayar terpilih di sistem.
+* **Langkah-langkah**:
+  1. Panggil fungsi `openReceiptModal()` atau `sendReceiptWhatsApp()` secara langsung.
+* **Hasil Diharapkan**:
+  - Sistem memeriksa integritas status dan riwayat pembayaran:
+    - Jika status `'batal'`: Menolak dengan Toast Warning *"Tagihan yang telah dibatalkan (VOID) tidak memiliki kuitansi pembayaran."*.
+    - Jika status `'draf'`: Menolak dengan Toast Warning *"Tagihan berstatus draf belum memiliki kuitansi pembayaran."*.
+    - Jika `paidAmount === 0` dan belum lunas: Menolak dengan Toast Warning *"Tagihan ini belum memiliki pembayaran tercatat untuk diterbitkan kuitansi."*.
+  - Lembar modal kuitansi dilarang terbuka dan tab browser WhatsApp tidak diluncurkan.
+
+---
+
+### SKENARIO 61: Proteksi Transisi Status pada Penerbitan Draf Satuan (Draft Verification State Enforcement)
+* **Tujuan**: Memastikan fungsi penerbitan draf tagihan satuan (`verifyAndPublishInvoice`) hanya dapat dijalankan pada faktur yang berstatus `'draf'`, serta menolak mutasi status pada faktur yang telah aktif, lunas, atau dibatalkan.
+* **Kondisi Awal**: Tagihan yang sudah berstatus Lunas (`INV-202610-02`) atau Batal terpilih di sistem.
+* **Langkah-langkah**:
+  1. Eksekusi fungsi `verifyAndPublishInvoice('INV-202610-02')`.
+* **Hasil Diharapkan**:
+  - Sistem mendeteksi `inv.status !== 'draf'`.
+  - Sistem menolak eksekusi mutasi.
+  - Toast Info muncul: *"Tagihan #INV-202610-02 (A-02) sudah aktif atau berstatus LUNAS. Tidak perlu diverifikasi lagi."*.
+  - Data buku besar tagihan tetap terlindungi tanpa mengalami regresi perubahan status menjadi 'tempo'.
 
 ---
 
@@ -967,4 +1138,17 @@ Berikut adalah 12 data fixture awal yang termuat dalam objek `invoicesData` pada
 | **SK-46** | Fallback Clipboard Non-Secure Context | `.catch()` Notification Fallback Toast | Browser Security & A11y Resilience | **PASSED (100%)** |
 | **SK-47** | Stop-Propagation Checkbox Kirim Kuitansi WA | `event.stopPropagation()` on Checkbox | UI Event Bubbling Bug Prevention | **PASSED (100%)** |
 | **SK-48** | Saldo Nol Catat Bayar Tagihan Lunas | `diff === 0 && prevDue === 0` State | F-05 Penanganan Tagihan Nihil | **PASSED (100%)** |
+| **SK-49** | Proteksi Double-Click & Idempotensi Tombol Transaksi | Form Action Buttons Locking & Debounce | Financial Integrity & Anti-Duplicate | **PASSED (100%)** |
+| **SK-50** | Validasi Defensif Nominal Pembayaran Rp 0 | `inputPayAmount <= 0` Guard Blocker | Bug Defense / Anti-Zero Auto Settle | **PASSED (100%)** |
+| **SK-51** | Pencegahan Penerbitan Tagihan Ganda Periode Sama | Room & Period Duplication Evaluator | F-04 Anti Double-Billing Protection | **PASSED (100%)** |
+| **SK-52** | Pencegahan Selisih Buku Besar akibat Diskon Berlebih| `computedTotal < inv.paidAmount` Guard | Accounting Ledger Consistency | **PASSED (100%)** |
+| **SK-53** | Proteksi Pembatalan (Void) pada Tagihan Berbayar | `inv.paidAmount > 0` Void Blocker | Audit Trail & Cash Reversal Protection | **PASSED (100%)** |
+| **SK-54** | Validasi Format Kontak Seluler Indonesia WA | `validateIndonesianPhone()` Regex | Zero Broken Links / WA Sanitization | **PASSED (100%)** |
+| **SK-55** | Penanganan Fallback Deep Link ID Tidak Ditemukan | URL Parameter Safe Lookup & Fallback | Zero Blank Screen / Deep Link Hygiene | **PASSED (100%)** |
+| **SK-56** | Proteksi Akumulasi Tunggakan Lalu saat Penyesuaian | `previousArrears` Preserved in Calc | Arrears Integrity & Anti Lost Debt | **PASSED (100%)** |
+| **SK-57** | Proteksi Pembagian Nol Progres Pelunasan (NaN) | `getPaymentPercentage()` Safe Math Guard | Zero Divide by Zero / NaN Glitch | **PASSED (100%)** |
+| **SK-58** | Proteksi Akses Catat Bayar Tagihan Draf & Batal | `inv.status === 'draf'/'batal'` Guard | State Transition Enforcement Gate | **PASSED (100%)** |
+| **SK-59** | Penanganan Kolom Progres Tagihan Dibatalkan (VOID) | `renderBillingTable` & Dossier Void Check | Visual Integrity / Anti-False Paid | **PASSED (100%)** |
+| **SK-60** | Proteksi Integritas Kuitansi & WA Draf/Batal/Nol | `openReceiptModal` & `sendReceiptWhatsApp` | Accounting Compliance & Proof Hygiene | **PASSED (100%)** |
+| **SK-61** | Proteksi Transisi Status Penerbitan Draf Satuan | `verifyAndPublishInvoice` State Check | State Machine Integrity / Anti-Regress | **PASSED (100%)** |
 

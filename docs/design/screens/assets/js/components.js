@@ -19,7 +19,7 @@
       { id: 'tiket', label: 'Tiket', href: 'WF-08-tiket.html' }
     ],
     staff: [
-      { id: 'dashboard', label: 'Dashboard Operasional', href: 'WF-02-dashboard.html?role=staf' },
+      { id: 'dashboard', label: 'Dashboard Operasional', href: 'WF-02-staf-dashboard.html' },
       { id: 'kamar', label: 'Kamar', href: 'WF-03-kamar.html?role=staf' },
       { id: 'penghuni', label: 'Penghuni', href: 'WF-04-penghuni.html?role=staf' },
       { id: 'tagihan', label: 'Tagihan & Catat Bayar', href: 'WF-05-tagihan.html?role=staf' },
@@ -64,14 +64,32 @@
 
     const role = explicitRole || getCurrentRole();
 
-    // Guardrail RBAC: Jika Penghuni membuka dasbor utama manajemen atau master kamar, redirect paksa ke portal penghuni (SK-20)
+    // Guardrail RBAC: Jika Penghuni membuka dasbor utama manajemen atau master kamar/penghuni, redirect paksa ke portal penghuni (SK-20)
     if (role === 'tenant' && (
       window.location.pathname.includes('WF-02-dashboard') ||
       window.location.pathname.includes('WF-03-kamar') ||
+      window.location.pathname.includes('WF-04-penghuni') ||
+      window.location.pathname.includes('WF-05-tagihan') ||
+      window.location.pathname.includes('WF-06-pembayaran') ||
+      window.location.pathname.includes('WF-07-laporan') ||
+      window.location.pathname.includes('WF-08-tiket') ||
+      window.location.pathname.includes('WF-09-pengaturan') ||
       activeId === 'dashboard' ||
-      activeId === 'kamar'
+      activeId === 'kamar' ||
+      activeId === 'penghuni' ||
+      activeId === 'tagihan' ||
+      activeId === 'pembayaran' ||
+      activeId === 'laporan' ||
+      activeId === 'tiket' ||
+      activeId === 'pengaturan'
     )) {
-      window.location.href = 'WF-10-portal-penghuni.html';
+      window.location.replace('WF-10-portal-penghuni.html');
+      return;
+    }
+
+    // Guardrail RBAC: Jika Staf membuka dasbor eksekutif pemilik, arahkan ke dasbor operasional staf
+    if (role === 'staff' && window.location.pathname.includes('WF-02-dashboard.html') && !window.location.pathname.includes('staf')) {
+      window.location.replace('WF-02-staf-dashboard.html');
       return;
     }
     const navItems = NAV_CONFIG[role] || NAV_CONFIG.owner;
@@ -115,7 +133,7 @@
                 Lapor Kerusakan Baru
               </a>
               <div class="dropdown-divider"></div>
-              <a href="WF-01-login.html" class="dropdown-menu-item danger">
+              <a href="WF-01-login.html" onclick="handleLogout(event)" class="dropdown-menu-item danger">
                 <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
                 Keluar Akun
               </a>
@@ -159,7 +177,7 @@
               Catat Bayar Penyewa
             </a>
             <div class="dropdown-divider"></div>
-            <a href="WF-01-login.html" class="dropdown-menu-item danger">
+            <a href="WF-01-login.html" onclick="handleLogout(event)" class="dropdown-menu-item danger">
               <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
               Keluar Akun
             </a>
@@ -201,7 +219,7 @@
 
             <div class="notif-list">
               <!-- Item 0: Tagihan Terlambat (Danger Overdue - Skenario 07) -->
-              <div class="notif-item unread" onclick="RumaUI.showToast('Membuka tagihan terlambat Kamar A-02...', 'info'); location.href='WF-05-tagihan.html';">
+              <div class="notif-item unread" onclick="RumaUI.showToast('Membuka tagihan terlambat Kamar A-02...', 'info'); location.href='WF-05-tagihan.html?id=INV-202610-02';">
                 <div class="notif-icon-circle" style="background:#FEE2E2; color:#DC2626;">
                   <i data-lucide="alert-circle" style="width: 17px; height: 17px;"></i>
                 </div>
@@ -285,7 +303,7 @@
             
             <div class="dropdown-divider"></div>
 
-            <a href="WF-01-login.html" class="dropdown-menu-item danger">
+            <a href="WF-01-login.html" onclick="handleLogout(event)" class="dropdown-menu-item danger">
               <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
               Keluar Akun
             </a>
@@ -401,6 +419,28 @@
     userWrap.classList.toggle('open');
   };
 
+  /**
+   * Safe Session Termination (Logout) & State Cleanup
+   */
+  window.handleLogout = function (e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    try {
+      sessionStorage.clear();
+      localStorage.removeItem('ruma_auth_token');
+      localStorage.removeItem('ruma_user_session');
+      localStorage.removeItem('ruma_user_role');
+    } catch (err) {}
+    if (window.RumaUI && window.RumaUI.showToast) {
+      window.RumaUI.showToast('Sesi telah diakhiri. Mengalihkan ke portal login...', 'info', 'Logout');
+    }
+    setTimeout(function () {
+      window.location.replace('WF-01-login.html');
+    }, 250);
+  };
+
   // Close dropdowns and slide search bar on click outside
   document.addEventListener('click', function (e) {
     // User Dropdown close
@@ -448,7 +488,7 @@
     /**
      * Show elegant non-blocking card-style toast (Sonner/Linear high-readability standard)
      * @param {string} message - Message text
-     * @param {string} type - 'info' | 'success' | 'error'
+     * @param {string} type - 'info' | 'success' | 'error' | 'danger'
      * @param {string} [customTitle] - Optional heading
      */
     showToast: function (message, type = 'info', customTitle) {
@@ -460,22 +500,30 @@
         document.body.appendChild(toast);
       }
 
-      const iconName = type === 'success' ? 'check-circle-2' : type === 'error' ? 'alert-triangle' : 'info';
-      const toastTitle = customTitle || (type === 'success' ? 'Berhasil' : type === 'error' ? 'Pemberitahuan' : 'Informasi');
+      const isError = type === 'error' || type === 'danger';
+      const iconName = type === 'success' ? 'check-circle-2' : isError ? 'alert-triangle' : 'info';
+      const toastTitle = customTitle || (type === 'success' ? 'Berhasil' : isError ? 'Pemberitahuan' : 'Informasi');
+      const iconBoxClass = isError ? 'ruma-toast-icon-box danger' : `ruma-toast-icon-box ${type}`;
 
       toast.className = 'ruma-toast';
       toast.innerHTML = `
-        <div class="ruma-toast-icon-box ${type}">
+        <div class="${iconBoxClass}">
           <i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i>
         </div>
         <div class="ruma-toast-body">
-          <div class="ruma-toast-title">${toastTitle}</div>
-          <div class="ruma-toast-message">${message}</div>
+          <div class="ruma-toast-title"></div>
+          <div class="ruma-toast-message"></div>
         </div>
         <button type="button" class="ruma-toast-close" onclick="document.getElementById('rumaToast').classList.remove('show')" title="Tutup">
           <i data-lucide="x" style="width: 14px; height: 14px;"></i>
         </button>
       `;
+
+      // Safe text node assignment to prevent DOM-based XSS injection
+      const titleElem = toast.querySelector('.ruma-toast-title');
+      const msgElem = toast.querySelector('.ruma-toast-message');
+      if (titleElem) titleElem.textContent = toastTitle;
+      if (msgElem) msgElem.textContent = message;
 
       if (window.lucide) {
         window.lucide.createIcons({ root: toast });
@@ -507,10 +555,10 @@
     }
   };
 
-  // Close modals on Escape key
+  // Close modals on Escape key - unless marked data-non-dismissible="true"
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-backdrop.open').forEach(modal => {
+      document.querySelectorAll('.modal-backdrop.open:not([data-non-dismissible="true"])').forEach(modal => {
         modal.classList.remove('open');
       });
     }

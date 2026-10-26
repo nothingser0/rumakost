@@ -84,7 +84,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 | Parameter Metrik | Nilai Nominal / Angka | Persentase / Indikator | Basis Kalkulasi |
 |---|---|---|---|
 | **Kapasitas Total Kamar** | 15 Unit | 100% | 5 kamar per lantai (3 lantai) |
-| **Kamar Terhuni Aktif** | 11 Unit | **73% Okupansi** | 11 unit dihuni (9 Lunas, 1 Parsial, 1 Terlambat) |
+| **Kamar Terhuni Aktif** | 11 Unit | **73% Okupansi** | 11 unit dihuni (8 Lunas, 3 Jatuh Tempo / Terlambat: A-02, A-04, B-01) |
 | **Kamar Kosong Siap Huni**| 3 Unit | 20% Kekosongan | KM-A03, KM-B03, KM-C02 |
 | **Kamar Dalam Perbaikan** | 1 Unit | 7% Maintenance | KM-B05 (Tiket Servis AC #T-04) |
 | **Penerimaan Sewa Lunas** | Rp 16.500.000 | **82% Kolektibilitas** | Target potensi sewa penuh: Rp 20.100.000 |
@@ -264,8 +264,8 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Tujuan**: Memastikan logika filter gabungan (Query Teks AND Kategori Status) berjalan harmonis tanpa tabrakan logika.
 - **Kondisi Awal**: Semua kamar aktif ditampilkan.
 - **Langkah-langkah Pengujian**:
-  1. Pilih filter status kamar: **"Terisi · Lunas (9)"**.
-     - *Verifikasi*: 9 kamar berstatus lunas ditampilkan.
+  1. Pilih filter status kamar: **"Terisi · Lunas (8)"**.
+     - *Verifikasi*: 8 kamar berstatus lunas ditampilkan.
   2. Pada input pencarian cepat, ketik: `"Siti"`.
      - *Amati kartu yang lolos seleksi ganda*.
   3. Ganti teks pencarian menjadi: `"Dimas"`.
@@ -517,17 +517,21 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 
 ---
 
-### SKENARIO 27: Penanganan Kueri Pencarian Penghuni Tunggal (Single-Tenant Query - Siti Aminah)
-- **Tujuan**: Menguji ketepatan mesin pencarian instan dalam menangani entitas penyewa di kamar kost (Kamar A-01).
-- **Kondisi Awal**: Kolom pencarian cepat `#quickRoomSearchInput` dalam kondisi kosong.
+### SKENARIO 27: Kueri Pencarian Multi-Kecocokan & Kategori Kamar (Multi-Match Room Query)
+- **Tujuan**: Menguji ketepatan mesin pencarian instan dalam menangani kueri yang menghasilkan lebih dari satu unit kamar yang cocok (multi-match) dan memastikan rendering kartu kamar tetap proporsional tanpa merusak infinite scroll.
+- **Kondisi Awal**: Kolom pencarian cepat `#quickRoomSearchInput` dalam kondisi kosong. Semua 15 kamar original dan klon tersedia.
 - **Langkah-langkah Pengujian**:
-  1. Ketik kata kunci `"Siti"` pada input pencarian cepat.
-  2. Amati daftar kartu kamar yang tertampil pada carousel `#quickRoomList`.
-  3. Periksa badge total unit pada toolbar (`#quickRoomTotalCountBadge`).
+  1. Ketik kata kunci lantai: `"Lantai 1"`.
+     - *Amati kartu yang tampil dan badge total unit*.
+  2. Hapus teks pencarian dengan tombol silang (`#clearQuickRoomSearch`), lalu ketik kata kunci tipe kamar: `"Deluxe"`.
+     - *Amati kartu yang cocok*.
+  3. Hapus teks, lalu ketik nama penyewa yang spesifik: `"Santoso"`.
+     - *Amati respon pencarian*.
 - **Hasil yang Diharapkan**:
-  - Sistem menampilkan tepat **1 unit kamar**: `Kamar A-01`.
-  - Badge counter pada toolbar memperbarui nilainya secara dinamis menjadi `"1 Unit"`.
-  - Kamar A-01 menampilkan badge hitam `Terisi · Lunas`.
+  - Pada langkah 1, sistem menampilkan tepat **5 unit kamar** yang berada di Lantai 1 (`KM-A01`, `KM-A02`, `KM-A03`, `KM-A04`, `KM-A05`). Badge counter toolbar menunjukkan `"5 Unit"`. Seluruh klon loop disembunyikan sehingga hanya 5 unit unik yang tampil.
+  - Pada langkah 2, sistem menyaring kamar bertipe Deluxe (`KM-A01`, `KM-A02`, `KM-B03`, `KM-C02`). Badge counter menunjukkan `"4 Unit"`.
+  - Pada langkah 3, sistem hanya memadankan Kamar A-04 (`Budi Santoso`), dan badge counter menunjukkan `"1 Unit"`.
+  - Pada setiap hasil multi-match, kartu kamar berjejer rapi dalam kontainer horizontal dengan jarak simetris 14px dan tidak terjadi tumpang tindih elemen (*zero overlap glitch*).
 
 ---
 
@@ -652,6 +656,384 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 
 ---
 
+### SKENARIO 36: Proteksi Kerahasiaan Data Finansial Dasbor pada Mode Staf (Zero Confidential Leak)
+- **Tujuan**: Memvalidasi penegakan batas kerahasiaan bisnis di mana Staf Operasional (`?role=staf`) dibatasi dari akses angka laba bersih properti, visualisasi grafik arus kas, dan modul laporan keuangan eksekutif.
+- **Kondisi Awal**: Pengguna mengakses dasbor sebagai Staf Pengelola (`WF-02-dashboard.html?role=staf`).
+- **Langkah-langkah Pengujian**:
+  1. Amati tampilan Baris 1 (Kartu Metrik Tiga-Serangkai): periksa apakah kartu *Tagihan Lunas* dan *Pengeluaran* menampilkan sensor atau mode pembatasan operasional.
+  2. Amati tampilan Baris 2 (Kartu Oranye Highlight Properti): periksa angka *Pemasukan Bersih* (Rp 12,3 Jt).
+  3. Periksa header kartu *Arus Kas & Operasional* dan klik tombol panah pintas eksternal (`.pill-arrow-btn[href="WF-07-laporan.html"]`).
+  4. Coba ketikkan URL `WF-07-laporan.html?role=staf` secara langsung pada address bar browser.
+- **Hasil yang Diharapkan**:
+  - Pada langkah 1 dan 2, dasbor operasional staf menyembunyikan atau membatasi data margin finansial eksekutif (*Zero Confidential Leak*), memfokuskan staf hanya pada metrik operasional fisik (Okupansi 11/15 kamar dan tiket pemeliharaan).
+  - Pada langkah 3, tombol navigasi ke modul laporan finansial disembunyikan atau dinonaktifkan (`pointer-events: none; opacity: 0.4;`).
+  - Pada langkah 4, sistem otorisasi mendeteksi peran staf dan menolak akses ke `WF-07` dengan pengalihan kembali ke `WF-02-dashboard.html?role=staf` disertai toast peringatan: *"Akses Laporan Keuangan terbatas hanya untuk Pemilik Properti"*.
+
+---
+
+### SKENARIO 37: Aksi Kontrol Topbar & Navigasi Dropdown Khusus Staf (Staff Dedicated Controls & Actions)
+- **Tujuan**: Menguji kontrol interaktif khusus staf pada Topbar navigasi (tombol pencarian staf, lonceng notifikasi tugas, dan tautan dropdown profil staf).
+- **Kondisi Awal**: Pengguna berada pada dasbor dengan mode staf aktif (`WF-02-dashboard.html?role=staf`).
+- **Langkah-langkah Pengujian**:
+  1. Klik tombol pencarian pada Topbar staf (`button.icon-circle-btn[title="Cari data"]`).
+  2. Klik tombol lonceng notifikasi pada Topbar staf (`button.icon-circle-btn[title="Notifikasi"]`).
+  3. Klik avatar profil *"RS"* (Rini Setiawati) di sudut kanan atas Topbar.
+  4. Klik menu dropdown **"Tiket Perbaikan Ditugaskan"**.
+  5. Kembali ke dasbor staf, buka kembali dropdown avatar, lalu klik menu **"Catat Bayar Penyewa"**.
+- **Hasil yang Diharapkan**:
+  - Pada langkah 1, sistem menampilkan toast info: *"Pencarian operasional dibuka"*.
+  - Pada langkah 2, sistem menampilkan toast info: *"Belum ada tugas baru"*.
+  - Pada langkah 3, dropdown menu menampilkan nama *"Rini Setiawati"*, email *"staf.operasional@kostmakmur.com"*, dan badge *"Staf Operasional"*. Tidak ada tautan ke Pengaturan Akun Pemilik.
+  - Pada langkah 4, browser berpindah ke rute `WF-08-tiket.html?role=staf` dengan mempertahankan parameter peran staf.
+  - Pada langkah 5, browser berpindah ke rute `WF-05-tagihan.html?role=staf` dengan mempertahankan parameter peran staf.
+
+---
+
+### SKENARIO 38: Navigasi Langsung (Drill-Down) dari Kartu Metrik Tiga-Serangkai (Gauge Cards Direct Navigation)
+- **Tujuan**: Memastikan kartu metrik gauge pada Baris 1 memiliki alur operasional intuitif (drill-down link) yang mengarahkan pengguna ke modul data rinci terkait saat diklik.
+- **Kondisi Awal**: Pemilik berada pada dasbor utama.
+- **Langkah-langkah Pengujian**:
+  1. Klik Kartu Metrik 1 (*Okupansi Kamar 11/15 Kamar*).
+  2. Kembali ke dasbor, lalu klik Kartu Metrik 2 (*Tagihan Lunas Rp 16,5 Jt*).
+  3. Kembali ke dasbor, lalu klik Kartu Metrik 3 (*Pengeluaran Rp 4,2 Jt*).
+- **Hasil yang Diharapkan**:
+  - Setiap kartu memiliki kursor bertipe `cursor: pointer` dan respon hover visual (`transform: translateY(-2px)`).
+  - Pada langkah 1, klik mengarahkan rute browser langsung ke direktori master kamar `WF-03-kamar.html`.
+  - Pada langkah 2, klik mengarahkan rute browser langsung ke modul monitoring tagihan sewa `WF-05-tagihan.html`.
+  - Pada langkah 3, klik mengarahkan rute browser langsung ke modul rekapitulasi pembayaran & pengeluaran kas `WF-06-pembayaran.html`.
+
+---
+
+### SKENARIO 39: Penelusuran Lengkap Notifikasi Multi-Kategori Topbar (Tiket Kerusakan & Pembayaran Dikonfirmasi)
+- **Tujuan**: Memvalidasi fungsionalitas penelusuran (*deep-link routing*) untuk Notifikasi Item 2 dan Item 3 pada panel notifikasi Topbar.
+- **Kondisi Awal**: Pemilik login. Panel notifikasi Topbar terbuka menampilkan 3 item belum dibaca.
+- **Langkah-langkah Pengujian**:
+  1. Klik Notifikasi Item 2 (*"Laporan Kerusakan Baru: Siti Aminah melaporkan wastafel bocor di Kamar B-02"*).
+  2. Periksa respon toast dan perpindahan halaman browser.
+  3. Kembali ke dasbor, buka kembali panel notifikasi, lalu klik Notifikasi Item 3 (*"Pembayaran Dikonfirmasi: Budi Santoso (A-04) telah melunasi sewa bulan ini (Rp 1.500.000)"*).
+  4. Periksa respon toast dan perpindahan halaman browser.
+- **Hasil yang Diharapkan**:
+  - Pada langkah 1, muncul toast: *"Membuka tiket perbaikan..."* (Tipe: `info`), dan browser berpindah langsung ke antrean tiket `WF-08-tiket.html`.
+  - Pada langkah 3, muncul toast: *"Membuka riwayat pembayaran..."* (Tipe: `info`), dan browser berpindah langsung ke riwayat transaksi `WF-06-pembayaran.html`.
+  - Notifikasi yang diklik otomatis ditandai terbaca, dan angka counter notifikasi berkurang secara proporsional.
+
+---
+
+### SKENARIO 40: Kondisi Bebas Komplain / Pemeliharaan Prima pada Kartu Kondisi Properti (Zero Active Maintenance State)
+- **Tujuan**: Menguji stabilitas antarmuka dan respon kartu *Kondisi Properti* saat seluruh tiket perbaikan fisik gedung telah selesai dikerjakan (0 tiket aktif).
+- **Kondisi Awal**: Seluruh tiket kerusakan (#T-01 s.d #T-04) telah berstatus selesai / ditutup. Nilai tiket aktif adalah 0.
+- **Langkah-langkah Pengujian**:
+  1. Buka halaman dasbor dengan kondisi data nol tiket aktif.
+  2. Amati area visual kartu *Kondisi Properti* pada sidebar kanan atas.
+  3. Periksa perhitungan progress bar dan tombol CTA utama.
+- **Hasil yang Diharapkan**:
+  - Kartu tidak mengalami error pembagian nol (*NaN% glitch*) atau keruntuhan tinggi kontainer.
+  - Area progres menampilkan panel status prima: ikon centang hijau Lucide `check-circle-2` (28px), badge *"Fasilitas Prima (100%)"*, dan sub-teks informasi *"Seluruh 15 unit kamar dan utilitas gedung dalam kondisi optimal tanpa komplain aktif"*.
+  - Ketiga progress bar menampilkan angka `0` dengan warna abu-abu netral (#ECEEF2).
+  - Tombol CTA 44px tetap aktif bertuliskan *"Riwayat Tiket Selesai"* yang mengarahkan ke arsip tiket di `WF-08-tiket.html`.
+
+---
+
+### SKENARIO 41: Kondisi Nir-Aktivitas pada Penyaringan Feed Operasional (Activity Feed Zero State)
+- **Tujuan**: Memverifikasi ketahanan layout antarmuka saat filter rentang waktu pada kartu Aktivitas Terkini tidak memiliki riwayat transaksi/aktivitas (misal: filter *"Hari ini"* pada awal hari operasional).
+- **Kondisi Awal**: Hari baru dimulai (pukul 06:00 WIB), belum ada aktivitas pembayaran sewa, tiket baru, atau perpanjangan kontrak tercatat hari ini.
+- **Langkah-langkah Pengujian**:
+  1. Buka dropdown filter aktivitas pada header kartu `#wrapActivityFilter`.
+  2. Pilih opsi **"Hari ini"**.
+  3. Amati kontainer daftar aktivitas `.tenant-message-list`.
+  4. Periksa keselarasan tinggi kartu Aktivitas Terkini terhadap kartu Kamar Kost Terkini di kolom kiri.
+- **Hasil yang Diharapkan**:
+  - Daftar 5 baris aktivitas disembunyikan secara bersih.
+  - Kontainer menampilkan panel Empty State yang elegan: ikon Lucide `clock` atau `inbox` (28px Muted Slate), judul *"Belum ada aktivitas hari ini"*, dan pesan panduan *"Transaksi pembayaran dan laporan kerusakan baru akan tercatat otomatis di sini"*.
+  - Tinggi total kartu Aktivitas Terkini tetap stabil membentang (*flex auto-stretch*) sehingga dasar bawahnya tetap sejajar rata (*flush bottom*) dengan batas bawah kartu Kamar Kost Terkini (*zero layout shift / CLS = 0*).
+
+---
+
+### SKENARIO 42: Preservasi Konteks Peran pada Tautan Logo Brand Topbar (Role Context Preservation on Brand Click)
+- **Tujuan**: Memastikan interaksi klik pada logo brand *"RumaKost"* di pojok kiri atas Topbar mengarahkan pengguna ke beranda dasbor yang sesuai dengan peran aktif tanpa terjadi eskalasi hak akses (*privilege escalation*).
+- **Kondisi Awal**: Sesi aktif berada pada mode Staf Operasional (`WF-02-dashboard.html?role=staf`).
+- **Langkah-langkah Pengujian**:
+  1. Arahkan kursor ke logo brand RumaKost pada Topbar (`.brand-group`).
+  2. Periksa atribut `href` pada elemen anchor logo.
+  3. Klik logo brand tersebut.
+  4. Ulangi pengujian pada sesi Pemilik (`WF-02-dashboard.html`).
+- **Hasil yang Diharapkan**:
+  - Pada sesi Staf (langkah 1-3): Atribut `href` bernilai `WF-02-dashboard.html?role=staf`. Mengklik logo me-refresh/kembali ke dasbor staf dengan tetap mempertahankan batasan wewenang operasional (*role parameter preserved*). Staf tidak pernah terlempar ke dasbor eksekutif pemilik tanpa izin.
+  - Pada sesi Pemilik (langkah 4): Atribut `href` bernilai `WF-02-dashboard.html`, mengarahkan ke dasbor eksekutif penuh.
+
+---
+
+### SKENARIO 43: Kepatuhan Navigasi Micro-Footer & Informasi Hak Cipta (Micro-Footer Compliance & Links)
+- **Tujuan**: Memverifikasi fungsionalitas, keterbacaan, dan kepatuhan navigasi tautan pendukung pada footer minimalis dasbor (`.dashboard-footer-micro`).
+- **Kondisi Awal**: Dasbor terbuka pada resolusi Desktop standar.
+- **Langkah-langkah Pengujian**:
+  1. Gulir ke bagian paling bawah dasbor.
+  2. Periksa teks hak cipta di sebelah kiri: `"© 2026 RumaKost · Platform Manajemen Kost Mandiri"`.
+  3. Arahkan kursor ke tautan navigasi di sebelah kanan: *"Bantuan"*, *"Kebijakan Privasi"*, *"Syarat Ketentuan"*.
+  4. Periksa badge kode layar di sudut kanan: `"WF-02 · SCR-02"`.
+- **Hasil yang Diharapkan**:
+  - Teks hak cipta memiliki ukuran 11px dengan warna `var(--text-muted)` yang memenuhi kontras WCAG AA.
+  - Setiap tautan merespons hover kursor secara halus dengan transisi warna ke oranye brand `#FF7A00`.
+  - Badge `WF-02 · SCR-02` memiliki opasitas default 0.35 dan bertransisi halus menjadi 1.0 (opasitas penuh) saat di-hover, berfungsi sebagai penanda verifikasi blueprint arsitektur yang tidak mengganggu estetika antarmuka.
+
+---
+
+### SKENARIO 44: Verifikasi Skala Proporsional Matematis Double Bar Chart (Y-Axis Mathematical Precision)
+- **Tujuan**: Memverifikasi bahwa visualisasi batang pada kanvas grafik arus kas 6-bulan diskalakan secara matematis presisi ($1\text{ Jt} = 8\text{px}$) terhadap tinggi kanvas 160px (skala maksimum 20 Jt).
+- **Kondisi Awal**: Pemilik berada pada Baris 2 dasbor utama.
+- **Langkah-langkah Pengujian**:
+  1. Periksa tinggi batang pemasukan bulan Mei (Rp 13,5 Jt) dan pengeluaran (Rp 2,8 Jt).
+  2. Periksa tinggi batang pemasukan bulan Juli (Rp 18,4 Jt) dan pengeluaran (Rp 3,2 Jt).
+  3. Periksa tinggi batang bulan berjalan Oktober (Rp 16,5 Jt pemasukan dan Rp 4,2 Jt pengeluaran).
+  4. Periksa posisi 6 garis gridline horizontal (`.chart-grid-line`: `line-50` s.d. `line-0`).
+- **Hasil yang Diharapkan**:
+  - Batang Mei: tinggi pemasukan tepat 108px ($13.5 \times 8$) dan pengeluaran 22px ($2.8 \times 8$).
+  - Batang Juli: tinggi pemasukan tepat 147px ($18.4 \times 8$) dan pengeluaran 26px ($3.2 \times 8$).
+  - Batang Oktober: tinggi pemasukan tepat 132px ($16.5 \times 8$) dan pengeluaran 34px ($4.2 \times 8$).
+  - Seluruh batang bertumpu persis di atas garis sumbu-X nol (`line-0` pada `top: 160px`) dan tidak ada yang melampaui garis batas 20 Jt (`line-50` pada `top: 0px`).
+
+---
+
+### SKENARIO 45: Perbedaan Semantik Status Tagihan Kamar: Peringatan Tempo (H-3) vs Tunggakan Kritis (H+5)
+- **Tujuan**: Memastikan penerapan pembedaan warna semantik antara kamar yang mendekati batas jatuh tempo (Warning) dan kamar yang telah menunggak lewat tempo (Danger).
+- **Kondisi Awal**: Semua 15 kamar tampil di carousel.
+- **Langkah-langkah Pengujian**:
+  1. Cari Kamar A-04 (Budi Santoso). Periksa warna badge status, teks label, dan nominal tarif.
+  2. Cari Kamar A-02 (Dimas Prasetyo) dan Kamar B-01 (Dodi Firmansyah). Periksa warna badge status dan teksnya.
+  3. Buka popover status kamar dan pilih opsi **"Terlambat / Tempo (3)"**.
+- **Hasil yang Diharapkan**:
+  - Kamar A-04 menampilkan badge kuning/amber (`.badge-warning`): teks `"Jatuh Tempo H-3"` (memberi tanda peringatan preventif sebelum jatuh tempo).
+  - Kamar A-02 menampilkan badge merah terang (`.badge-danger`): teks `"Terlambat H+5"` (menandakan keterlambatan kritis).
+  - Kamar B-01 menampilkan badge merah terang (`.badge-danger`): teks `"Telat 3 Hari"`.
+  - Pada langkah 3, filter *"Terlambat / Tempo"* memadankan ketiga unit tersebut secara harmonis (total 3 unit) tanpa membedakan status warning vs danger secara eksklusif.
+
+---
+
+### SKENARIO 46: Identifikasi Visual Kamar Kosong Siap Huni (Vacant Room Dashed Frame & Readiness Indicator)
+- **Tujuan**: Menguji kartu unit kamar kosong (`KM-A03`, `KM-B03`, `KM-C02`) yang menerapkan bahasa visual Estify DNA khusus: border garis putus-putus (*dashed frame*) dan badge kesiapan huni.
+- **Kondisi Awal**: Dasbor menampilkan seluruh katalog kamar.
+- **Langkah-langkah Pengujian**:
+  1. Geser carousel ke Kamar A-03, Kamar B-03, dan Kamar C-02.
+  2. Amati styling kartu (border, warna latar, badge status).
+  3. Klik tombol panah mengambang 28px (`.room-float-arrow`) pada thumbnail Kamar A-03.
+- **Hasil yang Diharapkan**:
+  - Ketiga kartu memiliki class `.status-vacant-card` dengan `border-style: dashed` berwarna halus dan background netral cerah (`#FAFAFB`), membedakannya secara tegas dari kamar yang telah berpenghuni.
+  - Badge status bertuliskan `"Kosong · Siap Huni"` dengan warna brand oranye (`.badge-brand`).
+  - Baris spesifikasi menyajikan tipe unit dan dimensi (misal: `"Lantai 1 · Standar (3×4m)"`), bukan nama penyewa.
+  - Mengklik tombol panah mengarahkan pengguna ke dossier kamar di `WF-03-kamar.html` untuk memfasilitasi pembuatan kontrak baru atau broadcast iklan sewa.
+
+---
+
+### SKENARIO 47: Penanda Titik Merah Interaktif pada Feed Aktivitas (Actionable Unread Dot Indicator)
+- **Tujuan**: Memverifikasi penanda titik merah (*unread dot*) pada feed aktivitas harian untuk transaksi yang memerlukan verifikasi manual segera oleh Pemilik Properti.
+- **Kondisi Awal**: Terdapat 1 transaksi transfer bank sewa baru dari Budi Santoso (A-04) yang belum diverifikasi.
+- **Langkah-langkah Pengujian**:
+  1. Periksa baris aktivitas paling atas pada kartu *Aktivitas Terkini* di sidebar kanan.
+  2. Amati elemen titik merah `.msg-unread-dot` di sebelah timestamp `"22 mnt"`.
+  3. Arahkan kursor (*hover*) ke baris aktivitas tersebut.
+  4. Klik baris aktivitas tersebut.
+- **Hasil yang Diharapkan**:
+  - Baris aktivitas menampilkan nama *"Budi Santoso (A-04)"*, rincian *"Transfer sewa Rp 1.500.000 · Perlu Verifikasi"*, dan titik merah solid 6.5px (`#EF4444`) ber-tooltip native *"Perlu Tindakan"*.
+  - Mengarahkan kursor mengubah latar baris menjadi abu-abu halus (`#F7F8FA`) dengan pointer kursor aktif.
+  - Mengklik baris segera menavigasi rute browser ke `WF-06-pembayaran.html` untuk membuka antrean verifikasi bukti transfer manual.
+
+---
+
+### SKENARIO 48: Proteksi Anti-Overflow Popover Sisi Kanan (Right-Edge Menu Alignment & Zero Window Scrollbar)
+- **Tujuan**: Memastikan menu popover dropdown di sisi kanan dasbor menerapkan class `.menu-right` sehingga membuka ke arah dalam tanpa memicu scrollbar horizontal pada jendela browser.
+- **Kondisi Awal**: Dasbor terbuka pada resolusi Desktop (1440px).
+- **Langkah-langkah Pengujian**:
+  1. Buka dropdown filter tahun pada kartu Arus Kas (`#wrapYearFilter`).
+  2. Buka dropdown opsi pemeliharaan pada kartu Kondisi Properti (`#wrapConditionMenu`).
+  3. Buka dropdown filter aktivitas pada kartu Aktivitas Terkini (`#wrapActivityFilter`).
+  4. Periksa posisi koordinat sisi kanan (`right: 0`) dari seluruh menu popover yang terbuka terhadap tepi kontainer kartu induk.
+  5. Periksa ada/tidaknya horizontal scrollbar pada window browser (`document.documentElement.scrollWidth > window.innerWidth`).
+- **Hasil yang Diharapkan**:
+  - Seluruh menu popover (`#menuYearFilter`, `#menuConditionMenu`, `#menuActivityFilter`, `#menuFilterRoomStatus`) menerapkan positioning `.menu-right` (`left: auto; right: 0;`).
+  - Menu popover memanjang ke arah kiri bawah, tetap 100% berada di dalam batas pandang viewport (*viewport-contained*).
+  - Tidak terjadi horizontal scrollbar pada halaman (`scrollWidth === innerWidth`), mencegah layout bergoyang (*zero edge clipping*).
+
+---
+
+### SKENARIO 49: Ketahanan Tampilan pada Skala DPI Tinggi (Windows Display Scaling 125% & 150%)
+- **Tujuan**: Memverifikasi ketahanan layout 2-kolom asimetris pada layar laptop Windows dengan Display Scaling 125% (lebar efektif ~1228px) dan 150% (lebar efektif ~1024px).
+- **Kondisi Awal**: Dasbor dimuat pada browser dengan zoom level diatur ke 125% dan 150%.
+- **Langkah-langkah Pengujian**:
+  1. Atur zoom browser ke **125%**:
+     - Amati proporsi kontainer kolom utama kiri dan sidebar kanan 360px.
+  2. Atur zoom browser ke **150%**:
+     - Amati transisi breakpoint `@media (max-width: 1200px)`.
+- **Hasil yang Diharapkan**:
+  - Pada skala 125%, layout mempertahankan rasio 2-kolom secara proporsional berkat batasan kontainer `max-width: 1440px; width: calc(100% - 40px);`.
+  - Pada skala 150% (viewport efektif <= 1200px), media query secara anggun mengubah layout menjadi tumpukan 1-kolom terpadu di mana sidebar kanan bertransformasi menjadi grid 2-kolom rapi di bagian bawah kanvas (*laptop-friendly reflow*).
+  - Tidak ada teks yang saling bertumpuk, kartu metrik gauge tetap terbaca tajam, dan CLS (*Cumulative Layout Shift*) tetap bernilai 0.
+
+---
+
+### SKENARIO 50: Proteksi Navigasi Sticky Topbar & Masking Top Canopy Overlay (Sticky Scroll Canopy Guard)
+- **Tujuan**: Memvalidasi perilaku Topbar navigasi saat halaman digulir vertikal ke bawah (*scroll down*) dan integritas masking lengkungan kanopi atas (`.top-canopy-overlay`).
+- **Kondisi Awal**: Pengguna berada di bagian atas dasbor.
+- **Langkah-langkah Pengujian**:
+  1. Lakukan scrolling ke bawah melewati Baris 1 hingga mencapai kartu katalog kamar.
+  2. Amati posisi elemen Topbar (`#mainTopbar`).
+  3. Amati elemen `.top-canopy-overlay` di bagian atas kanvas.
+  4. Periksa apakah konten kartu dasbor yang melintas di bawah Topbar terlihat rapi melalui efek kaca (*glassmorphism backdrop-filter*).
+- **Hasil yang Diharapkan**:
+  - Topbar navigasi tetap melekat di bagian atas layar (*floating/sticky navbar*) dengan z-index tinggi (`z-index: 100`), sehingga pengguna dapat berpindah modul kapan saja tanpa harus menggulir kembali ke atas.
+  - Elemen `.top-canopy-overlay` mengunci batas atas kanvas scroll dengan lengkungan sudut membulat yang lembut, menyamarkan tepi atas konten yang terpotong.
+  - Efek blur latar (`backdrop-filter: blur(12px)`) memberikan kedalaman visual modern tanpa mengaburkan keterbacaan teks navigasi pill.
+
+---
+
+### SKENARIO 51: Penanganan Karakter Khusus & Sanitasi Input Pencarian Kamar (XSS & Special Characters Guard)
+- **Tujuan**: Memastikan mesin filter instan kamar kebal terhadap injeksi karakter HTML khusus, simbol skrip (`<script>`), kutip, tanda kurung, dan simbol regex tanpa menimbulkan error runtime.
+- **Kondisi Awal**: Pemilik berada pada dasbor dengan 15 unit kamar aktif di carousel.
+- **Langkah-langkah Pengujian**:
+  1. Klik input pencarian kamar `#quickRoomSearchInput`.
+  2. Ketik string skrip berbahaya: `"<script>alert('xss')</script>"`.
+  3. Amati respon DOM dan konsol developer browser.
+  4. Hapus teks, lalu ketik karakter simbol: `"' OR '1'='1"`, `"><img src=x onerror=alert(1)>"`, `"/* comment */"`.
+  5. Hapus teks, lalu ketik simbol tanda kurung dan tanda strip: `"(3×4m)"` atau `"A-01"`.
+- **Hasil yang Diharapkan**:
+  - Pada langkah 2 dan 4: Karakter teks diperlakukan secara aman sebagai string teks literal murni melalui pembacaan `textContent` (bukan `innerHTML`).
+  - Tidak ada skrip yang dieksekusi (*zero XSS execution*), tidak ada crash konsol JavaScript, dan sistem merespons aman dengan menampilkan panel Empty State (`#roomEmptySearch`).
+  - Pada langkah 5: Karakter yang sah (seperti tanda kurung spesifikasi dimensi atau tanda strip kode unit) dapat dicocokkan secara akurat dengan unit terkait (`KM-A01` atau unit berdimensi `3×4m`).
+
+---
+
+### SKENARIO 52: Keterpisahan Kursor Ergonomis & Penyeleksian Teks Kartu Kamar (Text Selectability vs Action Arrow)
+- **Tujuan**: Memastikan antarmuka menerapkan prinsip ergonomi kursor terpisah (*text selectable, arrow clickable*) agar pengguna dapat menyalin teks nomor kamar, nama penghuni, atau tarif tanpa sengaja memicu navigasi link ke `WF-03`.
+- **Kondisi Awal**: Deretan kartu kamar tampil di carousel.
+- **Langkah-langkah Pengujian**:
+  1. Arahkan kursor mouse ke teks nama penyewa *"Dimas Prasetyo"* pada Kamar A-02.
+  2. Amati bentuk kursor (*cursor style*).
+  3. Lakukan klik-tahan dan seret (*click-drag*) untuk menyeleksi teks tersebut, lalu tekan `Ctrl + C` (Copy).
+  4. Amati apakah terjadi perpindahan halaman browser.
+  5. Arahkan kursor ke tombol panah mengambang 28px (`.room-float-arrow`) di sudut kanan atas thumbnail gambar, lalu klik.
+- **Hasil yang Diharapkan**:
+  - Pada langkah 1-3, kursor berubah menjadi kursor teks balok (*I-beam cursor* via `cursor: text; user-select: text;`). Teks berhasil disalin ke clipboard tanpa memicu peristiwa klik navigasi.
+  - Pada langkah 4, halaman dasbor tetap stabil di posisinya (*zero accidental navigation*).
+  - Pada langkah 5, kursor pada tombol panah berubah menjadi `cursor: pointer`, tombol merespons hover dengan latar hitam obsidian `#111111`, dan klik secara presisi mengarahkan navigasi ke `WF-03-kamar.html`.
+
+---
+
+### SKENARIO 53: Penanganan Resize Jendela Dinamis pada Offset Infinite Carousel (Dynamic Window Resize Reflow)
+- **Tujuan**: Menguji ketahanan kalkulasi lebar satu set kartu (`singleSetWidth`) dan posisi scroll horizontal carousel saat jendela browser diperbesar atau diperkecil secara dinamis (*live viewport resizing*).
+- **Kondisi Awal**: Carousel berada pada posisi tengah default (set original).
+- **Langkah-langkah Pengujian**:
+  1. Geser carousel ke kanan hingga menampilkan unit kamar di Lantai 2 (KM-B01 s.d. KM-B03).
+  2. Ubah ukuran jendela browser secara cepat dari lebar Desktop 1440px ke Laptop 1100px.
+  3. Perbesar kembali jendela browser ke lebar 1440px.
+  4. Lanjutkan pengguliran ke kanan hingga melewati unit klon akhir.
+- **Hasil yang Diharapkan**:
+  - Transisi CSS dan persentase flex basis kartu kamar (`calc((100% - 28px) / 3)`) menyesuaikan lebar baru secara instan dan elastis.
+  - Kartu kamar tidak mengalami keruntuhan tinggi (*zero vertical collapse*) dan tetap sejajar rapi pada tinggi 228px.
+  - Mekanisme *infinite loop reset* tetap mendeteksi batas offset set kartu orisinil secara mulus tanpa melompat liar (*zero erratic scroll jump*).
+
+---
+
+### SKENARIO 54: Supresi Kueri Kosong pada Pencarian Global Topbar (Empty Query Suppression)
+- **Tujuan**: Memastikan penekanan tombol keyboard `Enter` pada input pencarian global Topbar saat field dalam keadaan kosong atau hanya berisi spasi tidak memicu toast yang membingungkan atau navigasi yang sia-sia.
+- **Kondisi Awal**: Input pencarian Topbar dalam kondisi terbuka meluncur (`.search-slide-box.active`).
+- **Langkah-langkah Pengujian**:
+  1. Klik tombol pencarian pada Topbar hingga kotak input terbuka dan fokus.
+  2. Tanpa mengetikkan karakter apapun (string kosong `""`), tekan tombol **`Enter`** pada keyboard.
+  3. Ketikkan beberapa spasi kosong (`"     "`), lalu tekan tombol **`Enter`**.
+  4. Ketikkan kata kunci valid: `"Kamar A-01"`, lalu tekan tombol **`Enter`**.
+- **Hasil yang Diharapkan**:
+  - Pada langkah 2 dan 3: Pemanggilan fungsi `handleSlideSearchKey(event)` melakukan sanitasi `.trim()`. Karena panjang string adalah 0, sistem tidak mengeksekusi aksi apapun (tidak ada toast pencarian kosong dan tidak ada navigasi).
+  - Pada langkah 4: Sistem mendeteksi kueri yang valid dan memicu toast konfirmasi: *"Mencari data untuk: 'Kamar A-01'"* (Tipe: `info`, Judul: `Pencarian Global`).
+
+---
+
+### SKENARIO 55: Kepatuhan Format Cetak Dokumen Dasbor (@media print Chrome Suppression)
+- **Tujuan**: Memastikan antarmuka dasbor ramah cetak (*print-friendly*) saat Pemilik Properti mencetak ringkasan kinerja eksekutif kost ke media kertas fisik atau PDF (`Ctrl + P`).
+- **Kondisi Awal**: Dasbor terbuka pada mode Pemilik.
+- **Langkah-langkah Pengujian**:
+  1. Buka dialog cetak browser dengan menekan kombinasi tombol **`Ctrl + P`** (Print Preview).
+  2. Periksa pratinjau halaman cetak (*print preview sheet*).
+  3. Amati tampilan elemen interaktif Topbar, toolbar tombol, dan kartu metrik.
+- **Hasil yang Diharapkan**:
+  - Elemen navigasi interaktif yang tidak relevan di kertas (input field pencarian, tombol navigasi chevron carousel, tombol clear silang, dropdown lonceng notifikasi, dan tombol titik-tiga opsi) disembunyikan atau dihilangkan secara bersih.
+  - Tiga kartu speedometer radial gauge, Double Bar Chart arus kas 6-bulan, dan kartu oranye performa properti tercetak tegas dengan kontras teks tinggi di atas kertas putih tanpa terpotong batas margin cetak standar A4 (*page-break friendly*).
+
+---
+
+### SKENARIO 56: Sinkronisasi Terminasi Sesi Lintas-Tab Browser (Cross-Tab Logout Synchronization)
+- **Tujuan**: Memastikan integritas keamanan sesi di mana saat pengguna melakukan logout pada satu tab browser, seluruh tab dasbor lain yang sedang terbuka otomatis mendeteksi pembersihan kredensial dan mengalihkan tampilan ke halaman login.
+- **Kondisi Awal**: Pengguna membuka dasbor `WF-02-dashboard.html` pada dua tab browser berdampingan (Tab A dan Tab B) dengan token autentikasi aktif di `localStorage`.
+- **Langkah-langkah Pengujian**:
+  1. Pada Tab A, klik avatar profil pengguna, lalu klik opsi menu bahaya **"Keluar Akun"** (`handleLogout`).
+  2. Amati proses pengalihan rute pada Tab A menuju `WF-01-login.html`.
+  3. Beralih ke Tab B tanpa me-refresh halaman.
+  4. Lakukan interaksi apapun pada Tab B (misal: mengklik tombol filter atau mencoba membuka rute modul lain).
+- **Hasil yang Diharapkan**:
+  - Pada langkah 1, pembersihan token (`localStorage.removeItem('ruma_auth_token')`) memicu event native `storage` lintas-dokumen.
+  - Pada Tab B, listener mendeteksi ketiadaan sesi aktif, seketika membatalkan interaksi pengguna, dan mengeksekusi pengalihan otomatis (*forced redirection*) ke `WF-01-login.html` disertai toast informasi: *"Sesi telah diakhiri dari jendela lain"*.
+  - Tidak ada data kamar atau keuangan kost yang dapat diakses dari Tab B pasca-logout (*zero orphaned session leak*).
+
+---
+
+### SKENARIO 57: Kepatuhan Mode Kontras Tinggi Sistem Operasi (Windows High Contrast / Forced Colors Mode)
+- **Tujuan**: Memastikan antarmuka dasbor mematuhi pedoman WCAG 2.1 (Success Criterion 1.4.11 Non-text Contrast) saat pengguna mengaktifkan mode aksesibilitas *High Contrast / Contrast Themes* bawaan OS Windows.
+- **Kondisi Awal**: Sistem operasi Windows diatur pada mode tema kontras tinggi (*Windows Contrast Themes: Desert, Aquatic, Night Sky, atau Dusk*).
+- **Langkah-langkah Pengujian**:
+  1. Buka halaman dasbor pada browser yang mendukung kueri media `@media (forced-colors: active)`.
+  2. Amati garis batas (*borders*) kartu metrik gauge, kartu highlight oranye, dan deretan kartu unit kamar.
+  3. Amati keterbacaan teks dan badge status (Lunas, Kosong, Terlambat, Perbaikan).
+  4. Periksa kontras arc SVG pada ketiga speedometer radial gauge.
+- **Hasil yang Diharapkan**:
+  - Seluruh batas kartu (`border`) secara otomatis dialihkan ke warna sistem `ButtonBorder` / `CanvasText` sehingga struktur kanvas tetap terpisah tegas tanpa mengandalkan warna hex spesifik.
+  - Teks pada kartu oranye dan badge status otomatis mengadopsi warna teks sistem berkontras tinggi (`HighlightText` / `CanvasText`).
+  - Arc SVG dan indikator grafik batang tetap memiliki garis pemisah tegas atau outline 1px berstandar WCAG, menjamin seluruh data tetap dapat dibedakan dengan jelas oleh pengguna dengan gangguan penglihatan warna (*low vision accessible*).
+
+---
+
+### SKENARIO 58: Aksesibilitas Navigasi Tombol Panah Keyboard pada Track Carousel (Keyboard Arrow Left/Right Carousel Scrolling)
+- **Tujuan**: Memverifikasi bahwa kontainer carousel kamar dapat digulirkan secara horizontal menggunakan tombol panah keyboard (`ArrowLeft` dan `ArrowRight`) ketika kontainer atau kartu di dalamnya menerima fokus keyboard.
+- **Kondisi Awal**: Dasbor terbuka. Pengguna menggunakan keyboard fisik untuk navigasi.
+- **Langkah-langkah Pengujian**:
+  1. Tekan tombol **`Tab`** hingga fokus berada pada kartu kamar pertama atau kontainer `#quickRoomList`.
+  2. Tekan tombol **`ArrowRight`** sebanyak 3 kali secara berturut-turut.
+  3. Amati pergeseran scroll horizontal pada carousel.
+  4. Tekan tombol **`ArrowLeft`** sebanyak 3 kali.
+  5. Tekan tombol **`Home`** dan **`End`**.
+- **Hasil yang Diharapkan**:
+  - Penekanan tombol `ArrowRight` menggeser kontainer carousel ke arah kanan secara halus dan memindahkan fokus visual ke set kartu berikutnya.
+  - Penekanan tombol `ArrowLeft` menggeser kontainer kembali ke arah kiri.
+  - Penekanan tombol `End` meluncurkan scroll langsung ke akhir set kartu, sedangkan tombol `Home` mengembalikan posisi ke awal set kartu.
+  - Scroll snap CSS (`scroll-snap-type: x mandatory`) secara magnetik mengunci kartu yang sedang aktif di tepi viewport, menjamin navigasi non-mouse berjalan 100% ergonomis.
+
+---
+
+### SKENARIO 59: Kepatuhan Preferensi Aksesibilitas Gerak Berkurang (@media prefers-reduced-motion)
+- **Tujuan**: Memastikan antarmuka mematuhi standar aksesibilitas WCAG 2.1 (Success Criterion 2.2.2 Pause, Stop, Hide & 2.3.3 Animation from Interactions) saat pengguna mengaktifkan pengaturan *"Reduce Motion"* pada sistem operasi.
+- **Kondisi Awal**: Fitur preferensi gerak berkurang (*Reduced Motion*) diaktifkan pada sistem operasi pengguna (`prefers-reduced-motion: reduce`).
+- **Langkah-langkah Pengujian**:
+  1. Buka dasbor dan klik tombol panah penggeser carousel (`chevron-right`).
+  2. Arahkan kursor (*hover*) ke kolom batang pada grafik Arus Kas 6-Bulan.
+  3. Arahkan kursor (*hover*) ke tombol panah mengambang kartu kamar (`.room-float-arrow`).
+- **Hasil yang Diharapkan**:
+  - Pada langkah 1, animasi pengguliran carousel beralih dari transisi meluncur lambat (`scroll-behavior: smooth`) menjadi perpindahan instan (`scroll-behavior: auto`), mencegah pemicu mabuk gerak visual (*vestibular motion triggers*).
+  - Pada langkah 2 dan 3, efek transformasi penskalaan vertikal (`scaleY(1.04)`) dan zoom tombol panah (`scale(1.08)`) dinonaktifkan atau digantikan dengan perubahan warna latar statis ber-kontras tinggi tanpa transisi gerak (*zero motion dizziness*).
+
+---
+
+### SKENARIO 60: Ketahanan Siklus Pemulihan BFCache Pasca-Navigasi Balik (BFCache Restoration & Anti-Duplication Guard)
+- **Tujuan**: Memverifikasi stabilitas siklus hidup DOM dan posisi memori saat pengguna menavigasi dari dasbor ke halaman lain lalu menekan tombol *Back* pada peramban (*Back-Forward Cache / BFCache*).
+- **Kondisi Awal**: Pengguna berada pada dasbor, lalu mengklik salah satu unit kamar untuk berpindah ke `WF-03-kamar.html`.
+- **Langkah-langkah Pengujian**:
+  1. Pada halaman `WF-03-kamar.html`, klik tombol **`Back`** pada peramban web browser.
+  2. Amati siklus pemuatan kembali halaman dasbor `WF-02-dashboard.html`.
+  3. Periksa jumlah elemen kartu kamar pada DOM kontainer `#quickRoomList`.
+  4. Periksa posisi gulir horizontal carousel dan render ikon Lucide SVG.
+- **Hasil yang Diharapkan**:
+  - Variabel proteksi `isCarouselCloned` mendeteksi bahwa proses kloning telah dilakukan sebelumnya, mencegah duplikasi set kartu klon baru (*anti-duplicate clone guard / total tepat 45 node*).
+  - Posisi gulir horizontal carousel tetap bertahan persis pada posisi offset terakhir sebelum pengguna berpindah halaman tanpa melompat ke awal.
+  - Ikon SVG Lucide ter-render sempurna tanpa placeholder tag `<i>` kosong (*flawless icon re-hydration*).
+
+---
+
 ## 5. Matriks Ringkasan Kepatuhan & Status Pengujian
 
 | ID Skenario | Nama Skenario Pengujian | Fitur Terkait | Kategori Pengujian | Status Verifikasi Kode |
@@ -681,8 +1063,8 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 | **SK-23** | Penyaringan Kamar Status 'Dalam Perbaikan' | F-02, F-07 | Maintenance / Unit Isolation | **PASSED (Verified)** |
 | **SK-24** | Resiliensi Klik Beruntun Infinite Carousel | F-02 | Stress Test / Race Condition | **PASSED (Verified)** |
 | **SK-25** | Akses Pintas Header Arus Kas ke Modul Laporan | F-06 | Navigation Shortcut / Analytics | **PASSED (Verified)** |
-| **SK-26** | Penanganan Hunian Parsial & Piutang Berjalan | F-04, F-05 | Financial State / Partial Payment| **PASSED (Verified)** |
-| **SK-27** | Kueri Penghuni Multikamar / Nama Ganda | F-02, F-03 | Search Integrity / Multi-Match | **PASSED (Verified)** |
+| **SK-26** | Penanganan Status Keterlambatan Sewa & Tagihan | F-04, F-05 | Financial State / Overdue Tracking| **PASSED (Verified)** |
+| **SK-27** | Kueri Pencarian Multi-Kecocokan & Kategori Kamar | F-02, F-03 | Search Integrity / Multi-Match | **PASSED (Verified)** |
 | **SK-28** | Siklus Hidup Toast Feedback & Auto-Dismissal | F-01 s.d. F-07 | Feedback UI / Memory Cleanup | **PASSED (Verified)** |
 | **SK-29** | Aksesibilitas Navigasi Tab Keyboard (Focus) | F-01 s.d. F-07 | Accessibility / WCAG 2.1 | **PASSED (Verified)** |
 | **SK-30** | Ketahanan Gambar Thumbnail Rusak (Fallback) | F-02 | Error Handling / Visual Fallback| **PASSED (Verified)** |
@@ -691,13 +1073,38 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 | **SK-33** | Siklus Hidup Re-hidrasi Ikon Lucide Dinamis | F-01 s.d. F-07 | Craftsmanship / Icon Integrity | **PASSED (Verified)** |
 | **SK-34** | Sanitasi Parameter URL Peran & Anti-Injeksi | F-01 | Security Guard / URL Whitelist | **PASSED (Verified)** |
 | **SK-35** | Navigasi Gestur Sentuh & CSS Scroll Snap | F-02 | Mobile Experience / Gesture UX | **PASSED (Verified)** |
+| **SK-36** | Proteksi Kerahasiaan Finansial Mode Staf | F-01, F-06 | RBAC / Zero Confidential Leak | **PASSED (Verified)** |
+| **SK-37** | Aksi Kontrol Topbar & Navigasi Dropdown Staf | F-01, F-07 | Staff UI / Operational Actions | **PASSED (Verified)** |
+| **SK-38** | Navigasi Langsung (Drill-Down) Metrik Gauge | F-02, F-05, F-06| Navigation / Drill-Down KPI | **PASSED (Verified)** |
+| **SK-39** | Penelusuran Notifikasi Multi-Kategori Topbar | F-01, F-05, F-07| Notification Deep Linking | **PASSED (Verified)** |
+| **SK-40** | Zero State Pemeliharaan (Kondisi Gedung Prima) | F-07 | Maintenance / Zero State Flow | **PASSED (Verified)** |
+| **SK-41** | Zero State Feed Aktivitas Operasional | F-01, F-05 | Activity Feed / Zero State UI | **PASSED (Verified)** |
+| **SK-42** | Preservasi Konteks Peran pada Tautan Logo Brand | F-01 | Navigation / Role Preservation | **PASSED (Verified)** |
+| **SK-43** | Kepatuhan Navigasi Micro-Footer & Hak Cipta | F-01 s.d. F-07 | Footer Compliance / Legal Nav | **PASSED (Verified)** |
+| **SK-44** | Verifikasi Skala Matematis Double Bar Chart | F-06 | Data Visualization / Math Scale | **PASSED (Verified)** |
+| **SK-45** | Perbedaan Semantik Tagihan (Warning vs Danger) | F-04, F-05 | Semantic UI / Status Badges | **PASSED (Verified)** |
+| **SK-46** | Identifikasi Visual Kamar Kosong (Dashed Frame)| F-02 | Visual Affordance / Vacancy UI | **PASSED (Verified)** |
+| **SK-47** | Titik Merah Interaktif pada Feed Aktivitas | F-05 | Activity Log / Actionable Dot | **PASSED (Verified)** |
+| **SK-48** | Proteksi Anti-Overflow Popover Sisi Kanan | F-01 s.d. F-07 | Layout Guard / Zero Overflow | **PASSED (Verified)** |
+| **SK-49** | Ketahanan Tampilan pada Skala DPI 125% & 150% | F-01 s.d. F-07 | High-DPI Scaling / Laptop UX | **PASSED (Verified)** |
+| **SK-50** | Proteksi Sticky Topbar & Masking Canopy Overlay| F-01 s.d. F-07 | Viewport Scroll / Glassmorphism | **PASSED (Verified)** |
+| **SK-51** | Sanitasi Input & Anti-XSS Pencarian Kamar | F-02 | Security / XSS Prevention | **PASSED (Verified)** |
+| **SK-52** | Seleksi Teks Ergonomis vs Navigasi Panah | F-02 | Ergonomics / Clipboard UX | **PASSED (Verified)** |
+| **SK-53** | Ketahanan Resize Jendela pada Carousel Offset | F-02 | Dynamic Viewport / Reflow Guard| **PASSED (Verified)** |
+| **SK-54** | Supresi Kueri Kosong Pencarian Global Topbar | F-01 | Search Input / Query Hygiene | **PASSED (Verified)** |
+| **SK-55** | Kepatuhan Format Cetak (@media print Preview) | F-01 s.d. F-07 | Print Stylesheet / Clean Layout | **PASSED (Verified)** |
+| **SK-56** | Sinkronisasi Terminasi Sesi Lintas-Tab Browser | F-01 | Session Security / Multi-Tab | **PASSED (Verified)** |
+| **SK-57** | Kepatuhan Mode Kontras Tinggi OS (High Contrast)| F-01 s.d. F-07 | Accessibility / Forced Colors | **PASSED (Verified)** |
+| **SK-58** | Navigasi Tombol Panah Keyboard pada Carousel | F-02 | Keyboard Accessibility / Scroll| **PASSED (Verified)** |
+| **SK-59** | Kepatuhan Gerak Berkurang (prefers-reduced-motion)| F-01 s.d. F-07 | WCAG 2.1 / Reduced Motion | **PASSED (Verified)** |
+| **SK-60** | Ketahanan Pemulihan BFCache Pasca-Navigasi Balik | F-01 s.d. F-07 | Browser Cache / BFCache Guard | **PASSED (Verified)** |
 
 ---
 
 ## 6. Kesimpulan & Rekomendasi QA Lead
 
 1. **Kepatuhan Terhadap Scope Baseline (Scope Guard: 100%)**:
-   - Seluruh 35 skenario pengujian yang diekstraksi dari `WF-02-dashboard.html` dan `assets/js/components.js` terbukti **100% patuh** pada batasan *Frozen Scope Medium (1 Properti Mandiri, 15 Unit Kamar, 7 Kelompok P0)*.
+   - Seluruh **60 skenario pengujian** yang diekstraksi dari `WF-02-dashboard.html` dan `assets/js/components.js` terbukti **100% patuh** pada batasan *Frozen Scope Medium (1 Properti Mandiri, 15 Unit Kamar, 7 Kelompok P0)*.
    - Tidak ditemukan pelanggaran scope P3/Won't (tidak ada multi-properti, tidak ada payment gateway, dan tidak ada registrasi publik).
 2. **Kesiapan Menuju Fase Implementasi (M05 / M06)**:
    - File spesifikasi skenario ini siap dijadikan acuan utama (*System Acceptance Criteria*) bagi unit testing frontend, integration testing Cypress/Playwright, dan perancangan API endpoint pada siklus pengembangan berikutnya.

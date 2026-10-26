@@ -729,6 +729,293 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 
 ---
 
+### SKENARIO 33: Jurnal Reversal & Koreksi Mutasi Kas Keluar Salah Catat (Zero Data Loss Audit Guard)
+* **Tujuan**: Menguji alur pembatalan/koreksi entri mutasi pengeluaran kas yang salah catat tanpa menghapus data historis fisik (*Zero Data Loss Audit Guard*), sesuai mandat `SCOPE_STATEMENT.md` (F-06/F-05), dengan menerbitkan jurnal pembalik bertanda `[REVERSAL]` dan menghitung ulang saldo kas berjalan tepat satu kali.
+* **Kondisi Awal (Pre-condition)**: Pengguna login sebagai Pemilik Kost (`budi.santoso@rumakost.id`). Transaksi pengeluaran `TRX-202610-016` (Retribusi sampah & sabun Rp 400.000) terdapat di buku kas dengan posisi saldo akhir Rp 17.400.000.
+* **Langkah-langkah**:
+  1. Klik tombol trigger **"Dokumen"** (`.btn-doc-trigger`) pada baris `TRX-202610-016`.
+  2. Klik opsi khusus Pemilik: **"Koreksi / Reversal Mutasi"** (`.btn-doc-reversal`).
+  3. Pada modal konfirmasi reversal `#modalExpenseReversal`, masukkan alasan audit wajib: *"Koreksi salah input nominal retribusi sampah oleh staf operasional"*.
+  4. Klik tombol **"Konfirmasi Reversal Kas"** (`.btn-confirm-reversal`).
+* **Hasil Diharapkan**:
+  - Modal konfirmasi tertutup mulus dan muncul notifikasi Toast sukses: `Koreksi mutasi TRX-202610-016 berhasil dicatat sebagai jurnal reversal. Saldo kas diperbarui.`.
+  - Baris transaksi asli `TRX-202610-016` tetap tersimpan permanen di tabel dengan badge penanda abu-abu `Terkoreksi / Reversed` dan teks deskripsi tercoret (*strikethrough*).
+  - Entri baru pembalik otomatis diterbitkan pada baris teratas dengan nomor bukti `REV-202610-001`, tipe mutasi `Reversal (+Rp 400.000)`, kategori `Koreksi Pembukuan`, uraian mencantumkan alasan audit, dan nama pencatat `Budi (Pemilik)`.
+  - Saldo kas berjalan terhitung ulang secara akurat: Rp 17.400.000 + Rp 400.000 = `Rp 17.800.000`.
+  - Indikator status rekonsiliasi kas pada workbench tetap berstatus `Balance 100% (No Discrepancy)` dengan ikon perisai hijau terkunci.
+
+---
+
+### SKENARIO 34: Penegakan RBAC pada Ekspor Dokumen CSV & PDF: Masking Data Sensitif NOI untuk Staf
+* **Tujuan**: Memverifikasi kepatuhan aturan keamanan `SCOPE_STATEMENT.md` (F-10) dan `KANBAN.md` (RK-020) bahwa ketika Staf Operasional melakukan ekspor data (CSV atau PDF), data laba bersih operasional (NOI) dan margin keuntungan pemilik tidak bocor di dalam berkas hasil unduhan.
+* **Kondisi Awal**: Pengguna berada dalam simulasi peran Staf Operasional (`?role=staf`). Kartu KPI NOI pada UI telah berstatus terkunci (*lock badge*).
+* **Langkah-langkah**:
+  1. Klik tombol **"Ekspor CSV"** (`.btn-action-outline`) di bilah kontrol kanan.
+  2. Pada modal ekspor `#modalExport`, pastikan format terpilih adalah **"Spreadsheet (.CSV)"** dan klik **"Unduh Berkas Sekarang"**.
+  3. Buka dan periksa baris data pada berkas CSV yang diunduh.
+  4. Buka kembali modal ekspor, pilih format **"Dokumen Resmi (.PDF)"** dan klik **"Unduh Berkas Sekarang"**.
+  5. Buka dokumen PDF hasil unduhan.
+* **Hasil Diharapkan**:
+  - Pada berkas CSV:
+    - Baris ringkasan bawah tidak mencantumkan nilai surplus laba bersih Pemilik: baris `SURPLUS KAS BERSIH OPERASIONAL (NOI)` bernilai `"[PROTEKSI PEMILIK / TERSEMBUNYI]"`.
+    - Kolom margin profit pemilik tidak ditampilkan atau bertuliskan `[LOCKED]`.
+    - Header audit CSV tertulis: `Dicetak oleh: Rini (Staf Operasional) | Proteksi Finansial Sensitif: AKTIF`.
+    - Struktur kolom CSV tetap valid dan tidak merusak delimiter koma saat dibuka di Microsoft Excel.
+  - Pada berkas PDF:
+    - Kotak ringkasan eksekutif kartu 1 (Surplus Kas/NOI) digantikan dengan blok peringatan proteksi abu-abu: `[Akses Khusus Pemilik Properti]`.
+    - Lembar pengesahan tanda tangan hanya menampilkan kolom verifikasi fisik operasional Staf Lapangan, bebas dari data profitabilitas properti.
+
+---
+
+### SKENARIO 35: Pembatasan Akses Mutlak untuk Role Penghuni (Tenant Zero Access & 403 Redirect Guard)
+* **Tujuan**: Memvalidasi batas wewenang ketat (RBAC Guard) bahwa Penghuni Kost memiliki hak akses nol (*Zero Access*) ke seluruh sub-layar `WF-07` (`SCR-12` & `SCR-13`), mencegah akses tidak sah ke data pembukuan internal kost.
+* **Kondisi Awal**: Pengguna telah login dengan akun Penghuni Kost aktif (misal `lina.marlina@gmail.com`, Kamar A-01).
+* **Langkah-langkah**:
+  1. Pengguna mencoba membuka tautan langsung ke modul laporan pembukuan: `WF-07-laporan.html` atau mengakses URL dengan parameter `?role=penghuni`.
+  2. Amati respons sistem navigasi, eksekusi skrip, dan perutean layar.
+* **Hasil Diharapkan**:
+  - Script inisialisasi RBAC mendeteksi peran pengguna aktif adalah `penghuni`.
+  - Sistem membatalkan rendering tabel buku besar kas, laporan laba rugi, dan metrik okupansi properti (`abortController.abort()`).
+  - Pengguna secara instan dialihkan (*immediate client-side redirect*) ke beranda portal penghuni: `WF-04-portal-penghuni.html` disertai notifikasi Toast error merah: `Akses ditolak: Modul pembukuan dan audit finansial hanya dapat diakses oleh Pemilik & Staf.`.
+  - Jika navigasi diakses secara terisolasi tanpa redirect otomatis, sistem merender halaman proteksi standar `403 Forbidden` lengkap dengan deskripsi hak akses dan tombol CTA *"Kembali ke Portal Saya"*, menjamin kerahasiaan arus kas kost 100% terjaga.
+
+---
+
+### SKENARIO 36: Validasi Negatif Unggah Struk: Pembatasan Ukuran Maksimal (>5MB) & Format File Ilegal
+* **Tujuan**: Menguji ketahanan formulir pencatatan kas terhadap berkas lampiran bukti transaksi yang tidak valid, berbahaya, atau melebihi kapasitas penyimpanan wajar.
+* **Kondisi Awal**: Modal pencatatan mutasi kas `#modalExpense` sedang terbuka.
+* **Langkah-langkah**:
+  1. Klik area dropzone unggah nota bukti (`.file-upload-dropzone`) dan coba pilih berkas skrip terlarang: `script_exploit.exe` atau arsip `data_arsip.zip`.
+  2. Amati respons dropzone dan pesan validasi sistem.
+  3. Ganti berkas dengan foto format valid namun berukuran raksasa: `foto_kuitansi_ultra_raw.jpg` (ukuran 8.4 MB, melampaui ambang batas 5 MB).
+  4. Amati respons validasi ukuran file.
+* **Hasil Diharapkan**:
+  - Pada langkah 1: Dropzone menolak berkas dan sistem menampilkan Toast error: `Format berkas tidak didukung! Harap unggah foto bukti dalam format JPG, PNG, atau PDF.`. Input file otomatis di-reset bersih.
+  - Pada langkah 3: Fungsi `handleFileUploadPreview()` mendeteksi ukuran berkas (8.4 MB) dan menolaknya dengan Toast error: `Ukuran berkas melebihi batas maksimal 5 MB (Terdeteksi: 8.4 MB). Harap kompresi foto nota Anda.`.
+  - Dropzone tidak mengaktifkan kotak preview hijau `#attachedPhotoPreviewExpense`, dan status input tetap berstatus berkas kosong.
+
+---
+
+### SKENARIO 37: Pencegahan Klik Ganda & Idempotensi Formulir Pengeluaran Kas (Double-Submit Protection)
+* **Tujuan**: Mencegah terciptanya duplikasi mutasi pengeluaran kas dan pemotongan saldo kas berulang yang diakibatkan oleh penekanan tombol simpan secara berulang dan cepat (*rapid double-clicks*).
+* **Kondisi Awal**: Modal `#modalExpense` terbuka dan seluruh field wajib telah terisi lengkap (Nominal Rp 150.000, Uraian "Beli sapu & pembersih lantai").
+* **Langkah-langkah**:
+  1. Klik tombol **"Simpan Mutasi Kas"** (`.btn-modal-primary`) sebanyak 3 kali secara beruntun dan sangat cepat (*rapid successive clicks*).
+  2. Amati status visual dan atribut tombol simpan saat proses berjalan.
+  3. Periksa tabel Buku Kas Umum dan kalkulasi saldo berjalan setelah modal tertutup.
+* **Hasil Diharapkan**:
+  - Pada klik pertama, tombol simpan seketika beralih ke state `disabled`, atribut CSS `pointer-events: none` aktif, dan teks tombol berubah menjadi: `Menyimpan...` disertai spinner animasi Lucide `loader-2`.
+  - Klik kedua dan ketiga diabaikan secara total oleh fungsi `submitNewExpense()` melalui penguncian flag `isSubmitting = true` (*idempotency guard*).
+  - Tepat 1 baris transaksi baru yang dicatat ke dalam `ledgerData` (`TRX-202610-017`, Rp 150.000).
+  - Saldo kas berjalan hanya terpotong tepat satu kali (Rp 17.400.000 - Rp 150.000 = `Rp 17.250.000`), bukan terpotong tiga kali.
+
+---
+
+### SKENARIO 38: Penanganan & Visualisasi Status Defisit Arus Kas Operasional (Negative Net Operating Income)
+* **Tujuan**: Memverifikasi respons antarmuka dan ketahanan logika perhitungan matematika ketika total beban operasional (OPEX) melampaui total penerimaan kas sewa sehingga menghasilkan surplus negatif (Defisit Kas).
+* **Kondisi Awal**: Pengguna berada di layar utama `WF-07`. Data transaksi disimulasikan mengalami pengeluaran perbaikan darurat struktural gedung sebesar Rp 25.000.000 (Pemasukan Rp 21.650.000 vs Pengeluaran Rp 25.000.000 $\rightarrow$ Saldo Defisit -Rp 3.350.000).
+* **Langkah-langkah**:
+  1. Akses layar laporan dengan dataset pengeluaran darurat tersebut.
+  2. Amati Kartu 1 Estify KPI Gauges (Surplus Kas / NOI).
+  3. Amati Kartu 2 Estify KPI Gauges (Beban Operasional / OER).
+  4. Amati baris strip kesimpulan bawah pada Tab 1 (Buku Kas Umum) dan Tab 2 (Laba Rugi).
+* **Hasil Diharapkan**:
+  - Sistem tidak mengalami crash atau menampilkan nilai `NaN%`.
+  - Kartu 1 bertransisi visual ke tema merah peringatan (*danger alert theme*):
+    - Judul kartu berubah dinamis menjadi: *"Defisit Arus Kas"*.
+    - Nominal tercantum format kurung merah tebal: `(Rp 3,35 Jt)`.
+    - Delta badge menampilkan tren negatif merah: `-119.2% ↓`.
+    - Semi-circle radial gauge terwarnai merah tegas dengan nilai `0% Surplus`.
+  - Kartu 2 (OER) menampilkan rasio `115.5% Rasio` dengan badge merah tebal: `Beban Melebihi Omzet (>100%)`.
+  - Strip rekonsiliasi bawah memunculkan banner peringatan: `Defisit Kas Bersih: (Rp 3.350.000) · Perhatian Pengelola Diperlukan`.
+
+---
+
+### SKENARIO 39: Kinerja Kamar dengan Beban Servis Ekstrem Melebihi Omzet (Negative Unit Contribution Yield)
+* **Tujuan**: Menguji kalkulasi pada tab Kinerja Kamar (*Tab 3*) ketika suatu unit kamar aktif menyerap biaya pemeliharaan/perbaikan yang lebih besar daripada tarif sewa bulanannya.
+* **Kondisi Awal**: Pengguna berada di tab **"Kinerja Kamar (15)"** (`#panelUnitMatrix`). Kamar B-03 (Tarif sewa Rp 1.650.000) mengalami insiden perbaikan instalasi pipa air dengan total biaya servis tercatat `Rp 2.450.000`.
+* **Langkah-langkah**:
+  1. Amati baris Kamar B-03 pada kelompok Lantai 2 (Blok B).
+  2. Periksa kolom Realisasi Omzet, Beban Servis, Net Kontribusi, dan Persentase Yield.
+  3. Periksa strip agregasi total net kontribusi di bagian bawah tabel.
+* **Hasil Diharapkan**:
+  - Kolom Realisasi Omzet: `Rp 1.650.000`.
+  - Kolom Beban Servis: `(Rp 2.450.000)` dengan font merah tebal.
+  - Kolom Net Kontribusi Kamar: menampilkan nominal defisit unit `(Rp 800.000)` dengan kelas `.text-danger`.
+  - Kolom Yield Kinerja Kamar: menampilkan rasio `-48.5%` dengan badge soft red `.badge-yield-negative` dan ikon panah merah ke bawah `trending-down`.
+  - Tidak terjadi kesalahan pembagian nol (*division by zero*), dan baris ringkasan bawah tetap mengakumulasi Net Kontribusi seluruh 15 kamar secara matematis akurat (`Rp 20.150.000 - Rp 1.950.000 = Rp 18.200.000`).
+
+---
+
+### SKENARIO 40: Ekspor Berkas Dinamis Berdasarkan Parameter Filter Aktif (Filtered Dataset Export)
+* **Tujuan**: Memvalidasi fungsionalitas ekspor CSV/PDF yang adaptif terhadap filter yang sedang aktif di antarmuka (pencarian teks atau filter pos akun), sesuai klausul `SCOPE_STATEMENT.md` F-10.
+* **Kondisi Awal**: Pengguna berada di tab `Buku Kas Umum`, menerapkan filter pos akun *"Beban Utilitas"* sehingga hanya 3 baris transaksi utilitas yang tampil di layar.
+* **Langkah-langkah**:
+  1. Klik tombol **"Ekspor CSV"** (`.btn-action-outline`) di bilah kontrol kanan.
+  2. Pada modal ekspor `#modalExport`, perhatikan pilihan cakupan data: pilih opsi **"Tampilan Filter Aktif (3 Transaksi)"** (`#btnScopeFiltered`).
+  3. Periksa nama berkas pratinjau.
+  4. Klik tombol **"Unduh Berkas Sekarang"**.
+  5. Buka berkas CSV yang diunduh.
+* **Hasil Diharapkan**:
+  - Pratinjau nama berkas pada modal tertulis: `RumaKost_Buku_Kas_Okt2026_filtered_utilitas.csv`.
+  - Berkas CSV yang terunduh **hanya memuat 3 baris transaksi utilitas** (`TRX-202610-014` WiFi, `TRX-202610-013` PDAM, `TRX-202610-004` PLN Token), bukan seluruh 16 transaksi database.
+  - Baris ringkasan bawah pada CSV menyesuaikan total filter: `TOTAL PENGELUARAN UTILITAS: 2350000`.
+  - Pengelola dapat mengunduh subset data spesifik tanpa perlu membersihkan data secara manual di aplikasi spreadsheet eksternal.
+
+---
+
+### SKENARIO 41: Penyaringan Multi-Kriteria Simultan Lintas Dimensi (Multi-Dimensional Filter Intersection)
+* **Tujuan**: Menguji keandalan mesin filter ketika beberapa parameter filter diterapkan secara simultan (*Intersection Logic: Search Query AND Category Account AND Date Period*).
+* **Kondisi Awal**: Pengguna berada di tab `Buku Kas Umum` dengan 16 transaksi awal terpampang.
+* **Langkah-langkah**:
+  1. Pada popover Filter Pos Akun, pilih: **"Beban Utilitas (Listrik & Air)"**. (Tabel menyaring menyisakan 3 transaksi utilitas).
+  2. Pada kotak Smart Search Input (`#auditSearchInput`), ketik kata kunci: `"PLN"`.
+  3. Amati baris tabel yang tersisa dan counter badge.
+  4. Ganti kata kunci pencarian menjadi: `"WiFi"`.
+  5. Ganti kata kunci pencarian menjadi: `"Sampah"`.
+* **Hasil Diharapkan**:
+  - Pada langkah 2 ("PLN"): Tabel menyaring dengan presisi menyisakan 1 baris: `TRX-202610-004` (Beli Token Listrik PLN Prabayar, Rp 1.250.000). Counter badge header dan tab diperbarui menjadi `1 Transaksi Terverifikasi`.
+  - Pada langkah 4 ("WiFi"): Tabel menyaring menyisakan 1 baris: `TRX-202610-014` (Internet WiFi IndiHome Fiber, Rp 650.000).
+  - Pada langkah 5 ("Sampah"): Karena transaksi retribusi sampah berkategori "Operasional" (bukan "Utilitas"), tabel menghasilkan 0 baris cocok dan menampilkan kontainer Empty State terpusat (*zero state*).
+  - Sistem menerapkan operasi irisan logika `AND` murni tanpa benturan antar-filter (*zero filter collision*).
+
+---
+
+### SKENARIO 42: Integritas Agregasi Biaya Tiket Pemeliharaan & Pencegahan Duplikasi Angka (F-11 Anti-Double Counting)
+* **Tujuan**: Memastikan konsistensi penautan transaksi pengeluaran buku kas dengan tiket perbaikan kamar (`#TKT-xxx`) sesuai spesifikasi F-11, menjamin tidak terjadi penghitungan ganda biaya ketika tiket dibuka, ditinjau kuitansinya, atau diakses dari modul tiket `WF-08`.
+* **Kondisi Awal**: Transaksi pengeluaran `TRX-202610-015` (Rp 1.500.000) terhubung ke tiket `#TKT-003` (Cuci AC 3 unit di Kamar A-03, B-03, C-03).
+* **Langkah-langkah**:
+  1. Buka tab **"Laba Rugi (P&L)"**: catat total pos Beban Pemeliharaan (`Rp 1.500.000`).
+  2. Buka tab **"Kinerja Kamar"**: amati kolom Beban Servis pada Kamar A-03, B-03, dan C-03 (masing-masing teralokasi proporsional `Rp 500.000` $\rightarrow$ Total akumulasi `Rp 1.500.000`).
+  3. Klik badge tautan tiket `#TKT-003` pada tabel buku kas, buka pratinjau kuitansi via modal, lalu kembali ke tab Laba Rugi dan Kinerja Kamar.
+* **Hasil Diharapkan**:
+  - Total beban pemeliharaan pada Laporan Laba Rugi tetap stabil di angka `Rp 1.500.000`.
+  - Total pemotongan beban servis pada Tab 3 Kinerja Kamar tetap teralokasi akurat per unit kamar (`3 x Rp 500.000 = Rp 1.500.000`), selaras sempurna dengan transaksi riil di buku kas umum.
+  - Interaksi peninjauan tiket atau pembukaan dokumen bukti tidak pernah menciptakan catatan biaya bayangan (*ghost duplicate expenses*) ke dalam laporan finansial properti.
+
+---
+
+### SKENARIO 43: Cakupan Ekspor Khusus Laporan Laba Rugi (Scope Selection: Laba Rugi P&L)
+* **Tujuan**: Memvalidasi fungsi modal ekspor (`#modalExport`) saat pengguna memilih cakupan khusus Laba Rugi (P&L) tanpa menyertakan jurnal rinci buku kas harian.
+* **Kondisi Awal (Pre-condition)**: Pengguna berada di layar utama `WF-07`. Modal `#modalExport` sedang terbuka.
+* **Langkah-langkah**:
+  1. Pada pilihan cakupan modul, klik tombol pill **"Laba Rugi (P&L)"** (`#btnScopePL`).
+  2. Amati pembaruan badge cakupan, spesifikasi pra-unduh, dan pratinjau nama berkas.
+  3. Klik tombol **"Unduh Berkas Sekarang"** (`#btnSubmitExport`).
+* **Hasil Diharapkan**:
+  - Tombol `#btnScopePL` memperoleh kelas aktif `.active`, dan tombol cakupan lain dinonaktifkan.
+  - Badge cakupan data `#exportScopeBadge` berubah menjadi `Laporan P&L MoM`.
+  - Pratinjau nama berkas `#exportFilenamePreview` berubah menjadi `RumaKost_Buku_Kas_Okt2026_pl.csv` (atau `.pdf`).
+  - Berkas yang diunduh menyajikan struktur formal Laporan Laba Rugi: Pendapatan Operasional Sewa, Rincian Pos OPEX, Laba Operasi Bersih (NOI), dan Analisis Margin 80.4% MoM, tanpa membanjiri pengguna dengan baris transaksi kas per kasir.
+  - Toast notifikasi sukses muncul: `Berkas CSV Laporan Finansial RumaKost (pl) berhasil diunduh!`.
+
+---
+
+### SKENARIO 44: Pemilihan Rentang Tanggal Pembukuan Kustom (Custom Date Range Picker)
+* **Tujuan**: Menguji fleksibilitas pemilihan periode audit selain opsi bulanan standar (misal audit tengah bulan atau periode cut-off khusus).
+* **Kondisi Awal**: Pengguna berada di layar utama `WF-07` dengan popover periode `#periodPopoverMenu` terbuka.
+* **Langkah-langkah**:
+  1. Klik opsi **"Kustom Rentang Tanggal..."** pada menu popover periode.
+  2. Pada dialog kalender rentang tanggal ganda yang muncul, pilih tanggal mulai `01 Oktober 2026` dan tanggal akhir `15 Oktober 2026`.
+  3. Klik tombol **"Terapkan Rentang Audit"**.
+* **Hasil Diharapkan**:
+  - Menu popover tertutup mulus.
+  - Label trigger periode `#currentPeriodLabel` diperbarui menjadi *"01 Okt 2026 - 15 Okt 2026 (15 Hari)"*.
+  - Sistem menampilkan notifikasi Toast info: `Memuat data audit pembukuan: 01 Okt 2026 - 15 Okt 2026`.
+  - Seluruh 4 tab (Buku Kas, P&L, Kinerja Kamar, Umur Piutang) menyaring transaksi yang hanya terjadi dalam rentang 15 hari tersebut secara reaktif.
+
+---
+
+### SKENARIO 45: Perlakuan Kas Riil pada Pelunasan Sewa via Potong Deposit Escrow (Non-Cash Settlement Guard)
+* **Tujuan**: Memastikan kepatuhan prinsip *Cash-Basis Accounting* (`SCOPE_STATEMENT.md` F-05 & F-06): pelunasan invoice sewa menggunakan pemotongan saldo deposit (*Escrow Settlement*) tidak mencatat aliran kas masuk baru (*cash inflow*) pada Buku Kas Umum.
+* **Kondisi Awal**: Penghuni Kamar B-04 melunasi sewa bulan terakhir sebesar Rp 1.300.000 dengan memotong uang deposit jaminan awal di modul tagihan `WF-05`.
+* **Langkah-langkah**:
+  1. Periksa Buku Kas Umum pada Tab 1.
+  2. Cari entri pembayaran invoice Kamar B-04 terkait penyelesaian deposit.
+  3. Amati kolom Debit (Pemasukan) dan saldo kas riil bank.
+* **Hasil Diharapkan**:
+  - Transaksi kliring internal escrow tidak menambah nominal kas riil pada kolom Debit Buku Kas Umum karena tidak ada uang tunai/transfer baru yang masuk ke rekening operasional.
+  - Jika dicatat dalam riwayat pembukuan, transaksi ditandai dengan badge khusus `Non-Kas (Potong Deposit)` dengan nominal kas riil `Rp 0 (Clearing Transfer)`.
+  - Saldo kas fisik/bank berjalan tidak mengalami inflasi semu, menjamin rekonsiliasi kas riil tetap 100% klop dengan rekening koran bank.
+
+---
+
+### SKENARIO 46: Sanitasi Ekspor CSV terhadap Potensi Injeksi Formula Excel (CSV Formula Injection Guard)
+* **Tujuan**: Mencegah kerentanan keamanan *CSV / Formula Injection* (CWE-1236) ketika deskripsi pengeluaran kas mengandung karakter pemicu formula spreadsheet (`=`, `+`, `-`, `@`).
+* **Kondisi Awal**: Modal `#modalExpense` dibuka untuk mencatat pengeluaran kas.
+* **Langkah-langkah**:
+  1. Masukkan uraian transaksi yang memuat karakter formula: `"=SUM(A1:A100) - Biaya Cat Lorong Gedung"`.
+  2. Simpan transaksi kas tersebut.
+  3. Buka modal ekspor dan unduh berkas spreadsheet CSV (`downloadCsvReport()`).
+  4. Buka berkas `.csv` dengan teks editor mentah dan periksa baris transaksi tersebut.
+* **Hasil Diharapkan**:
+  - Fungsi sanitasi ekspor mendeteksi karakter terdepan yang berisiko dieksekusi sebagai formula oleh Microsoft Excel atau Google Sheets.
+  - Sistem otomatis menyisipkan karakter petik tunggal pelindung (`'`) di depan karakter berbahaya: `"'=SUM(A1:A100) - Biaya Cat Lorong Gedung"`.
+  - Nilai formula tidak dieksekusi sebagai perintah kalkulasi spreadsheet aktif, menjaga integritas keamanan dokumen audit.
+
+---
+
+### SKENARIO 47: Penyaringan Kombinasi Matriks Status Disiplin & Kluster Lantai pada Umur Piutang
+* **Tujuan**: Memvalidasi ketepatan algoritma penyaringan dua lapis (*Dual-Pill Filter Combination*) pada tab Umur Piutang (*Tab 4*) yang memadukan status disiplin bayar dengan nomor lantai.
+* **Kondisi Awal**: Pengguna berada di tab **"Umur Piutang (11)"** (`#panelAging`).
+* **Langkah-langkah**:
+  1. Klik tombol filter status: **"Masa Toleransi (2)"** (`#agingTabTenggang`).
+  2. Klik tombol filter lantai: **"Lt 3"** (`.aging-floor-pill`).
+  3. Amati daftar invoice yang tersaring.
+  4. Ganti filter lantai menjadi: **"Lt 2"**.
+* **Hasil Diharapkan**:
+  - Pada langkah 2 (Masa Toleransi + Lt 3):
+    - Tabel menyaring dan secara presisi menyisakan 1 baris: Hendrik Santoso (Kamar C-03, Lt 3, Jatuh tempo 05 Okt, bayar 08 Okt, deviasi `H+3`, Masa Toleransi).
+    - Counter badge header diperbarui menjadi `1 Unit Tagihan`.
+  - Pada langkah 4 (Masa Toleransi + Lt 2):
+    - Karena di Lantai 2 seluruh 5 penyewa membayar tepat waktu (*Zero Grace Period on Floor 2*), tabel menampilkan kotak *Empty State*: *"Tidak Ada Data Piutang yang Cocok"*.
+    - Counter badge header berubah menjadi `0 Unit Tagihan`.
+
+---
+
+### SKENARIO 48: Audit Traceability Lintas Modul: Penelusuran Tiket Kerusakan dari Laporan Laba Rugi (P&L to WF-08)
+* **Tujuan**: Memastikan keterlacakan audit (*audit traceability*) dari ringkasan beban Laporan Laba Rugi (*Tab 2*) langsung menuju rincian tiket perbaikan di modul tiket (`WF-08`).
+* **Kondisi Awal**: Pengguna berada di tab **"Laba Rugi (P&L)"** (`#panelPL`).
+* **Langkah-langkah**:
+  1. Amati Section 2 (Beban Operasional & Pemeliharaan Gedung).
+  2. Temukan pos beban: *"Pemeliharaan Cuci AC rutin 3 unit & isi freon (#TKT-003)"*.
+  3. Klik badge interaktif `#TKT-003` yang tertera pada pos beban tersebut.
+* **Hasil Diharapkan**:
+  - Badge `#TKT-003` memiliki styling interaktif (*clickable link*) dengan hover underline dan ikon tautan eksternal.
+  - Mengklik badge tersebut membuka tab/jendela baru atau mengarahkan pengelola langsung ke layar tiket pemeliharaan: `WF-08-tiket.html?highlight=TKT-003`.
+  - Layar tiket langsung membuka atau menyorot rincian tiket cuci AC kamar A-03, B-03, dan C-03 beserta lampiran foto pekerjaan teknisi, mewujudkan audit pengeluaran yang transparan dan dapat dipertanggungjawabkan.
+
+---
+
+### SKENARIO 49: Penegakan Cash-Basis: Proteksi Pembayaran Berstatus Pending (WF-06) Tidak Masuk ke Buku Kas Umum
+* **Tujuan**: Memvalidasi kepatuhan mutlak Pilar Arsitektural #1 (*Cash-Basis & Zero Self-Approval Sync*): menjamin bahwa slip transfer pembayaran sewa yang baru diajukan penghuni dan masih berstatus pending di modul Pembayaran (`WF-06`) **tidak boleh** masuk ke Buku Kas Umum dan tidak boleh menambah saldo kas riil sebelum diverifikasi resmi oleh Pemilik Kost.
+* **Kondisi Awal (Pre-condition)**: Pengguna login sebagai Pemilik Kost. Terdapat transaksi pembayaran sewa baru di modul `WF-06` sebesar Rp 1.650.000 dari calon penghuni yang masih berstatus *Menunggu Verifikasi (Pending Approval)*.
+* **Langkah-langkah**:
+  1. Buka modul Laporan & Pembukuan `WF-07-laporan.html` pada Tab 1 (Buku Kas Umum).
+  2. Periksa daftar transaksi penerimaan sewa terverifikasi dan posisi saldo kas berjalan (`Rp 17.400.000`).
+  3. Buka tab Umur Piutang (*Tab 4*) dan Laporan Laba Rugi (*Tab 2*).
+  4. Lakukan approval/verifikasi sah terhadap pembayaran tersebut di modul `WF-06`, lalu muat ulang layar `WF-07`.
+* **Hasil Diharapkan**:
+  - Pada langkah 2: Transaksi sewa berstatus pending tersebut sama sekali **tidak muncul** pada tabel jurnal Buku Kas Umum, dan saldo kas berjalan tetap utuh `Rp 17.400.000` (*Zero Pending Leakage*).
+  - Pada langkah 3: Di Tab Laba Rugi, Gross Revenue tetap `Rp 21.650.000` (tidak bertambah semu). Di Tab Umur Piutang, tagihan tersebut tetap berstatus belum terbayar lunas.
+  - Pada langkah 4: Segera setelah pembayaran disahkan oleh Pemilik di `WF-06`, transaksi masuk secara otomatis ke baris debit Buku Kas Umum dengan nomor bukti baru, saldo kas riil bertambah menjadi `Rp 19.050.000`, dan status rekonsiliasi kas tetap terbukti `Balance 100% (No Discrepancy)`.
+
+---
+
+### SKENARIO 50: Akumulasi Realisasi Omzet atas Tagihan dengan Penyesuaian Diskon Sewa (WF-05 Sync)
+* **Tujuan**: Memastikan konsistensi pencatatan akuntansi saat penghuni membayar invoice sewa yang telah disesuaikan dengan diskon atau potongan khusus dari modul Tagihan (`WF-05`).
+* **Kondisi Awal**: Tagihan sewa Kamar A-01 (Tarif dasar Rp 1.400.000) diberikan potongan diskon promo loyalitas sebesar Rp 150.000 pada modul `WF-05`, sehingga nilai tagihan bersih yang dilunasi penghuni adalah Rp 1.250.000.
+* **Langkah-langkah**:
+  1. Buka Tab 1 (Buku Kas Umum) dan amati baris penerimaan sewa Kamar A-01.
+  2. Buka Tab 3 (Kinerja Kamar) dan amati baris Kamar A-01 (Lantai 1 Blok A).
+  3. Periksa strip ringkasan bawah pada Tab 1 dan Tab 3.
+* **Hasil Diharapkan**:
+  - Pada Buku Kas Umum: Mutasi debit kas masuk dicatat sesuai uang riil yang diterima kasir/bank: `+Rp 1.250.000` (bukan nilai bruto sebelum diskon).
+  - Pada Tab Kinerja Kamar: Kolom Realisasi Omzet Kamar A-01 menampilkan `Rp 1.250.000` dengan Net Kontribusi `Rp 1.250.000` dan Yield terhitung proporsional terhadap tarif dasar (`89.3%`).
+  - Tidak terjadi selisih (*zero discrepancy*) antara total kas masuk pada Buku Kas Umum dengan realisasi penerimaan sewa di Laporan Kinerja Kamar dan rekening bank.
+
+---
+
 ## 4. Matriks Ringkasan Kepatuhan & Status Pengujian
 
 | ID Skenario | Nama Skenario Pengujian | Komponen & Fitur Terlibat | Batasan Scope | Status Verifikasi |
@@ -765,6 +1052,24 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 | **SK-30** | Dinamika Visual Pos Akun & 7 Kluster Badge | `getCategoryBadge()`, Icon Lucide Matrix | Category Mapping Engine | **PASSED (100%)** |
 | **SK-31** | Pratinjau Kuitansi Sewa Masuk (Income Proof) | `#modalProofView`, Income & Expense Dual | Document Viewer Versatility | **PASSED (100%)** |
 | **SK-32** | Ikon QRIS vs Transfer & Delta Hari Piutang | `renderAgingTable()`, Icon `qr-code` | Visual Payment Fidelity | **PASSED (100%)** |
+| **SK-33** | Jurnal Reversal Kas Salah Catat (Zero Data Loss) | Reversal Modal, Saldo Berjalan, Audit Reason | F-05, F-06 (P0) | **PASSED (100%)** |
+| **SK-34** | Proteksi Masking NOI pada Ekspor CSV/PDF Staf | `downloadCsvReport()`, Role Guard Export | F-01, F-10 (P1) | **PASSED (100%)** |
+| **SK-35** | Pembatasan Akses Mutlak Role Penghuni (403 Guard)| Role Guard, Redirect Portal Penghuni | F-01 (P0) / Zero Access | **PASSED (100%)** |
+| **SK-36** | Validasi Negatif Unggah Struk (>5MB & File Ilegal)| Dropzone Validation, File Type/Size Error | F-11 (P1) | **PASSED (100%)** |
+| **SK-37** | Pencegahan Klik Ganda & Idempotensi Form Kas | `#btnSubmitExpense`, Flag `isSubmitting` | UI Integrity Guard | **PASSED (100%)** |
+| **SK-38** | Penanganan Status Defisit Kas Operasional (NOI < 0)| `#kpiNoiValue`, Negative Styling, Alert Banner | Edge Financial State | **PASSED (100%)** |
+| **SK-39** | Kinerja Kamar dengan Beban Servis Melebihi Omzet | `#panelUnitMatrix`, Deficit Room Yield | F-02, F-06 (P0) | **PASSED (100%)** |
+| **SK-40** | Ekspor Berkas Dinamis Berdasarkan Filter Aktif | `#modalExport`, Active Filter Dataset CSV | F-10 (P1) | **PASSED (100%)** |
+| **SK-41** | Penyaringan Multi-Kriteria Simultan Lintas Dimensi| Filter Intersection (Search & Category & Date)| Filter Engine Guard | **PASSED (100%)** |
+| **SK-42** | Integritas Biaya Tiket Servis (Anti-Double Count)| `#TKT-003`, Cross-Module Aggregation | F-11 (P1) | **PASSED (100%)** |
+| **SK-43** | Cakupan Ekspor Khusus Laporan P&L (`btnScopePL`)| `#modalExport`, Scope Selector, P&L CSV/PDF | F-10 (P1) | **PASSED (100%)** |
+| **SK-44** | Pemilihan Rentang Tanggal Pembukuan Kustom | `#periodPopoverMenu`, Custom Date Filter | F-06 (P0) | **PASSED (100%)** |
+| **SK-45** | Perlakuan Kas Riil Settlement Deposit Escrow | `#panelLedger`, Non-Cash Clearing Badge | F-05, F-06 (P0) | **PASSED (100%)** |
+| **SK-46** | Sanitasi Ekspor CSV dari Injeksi Formula Excel | `downloadCsvReport()`, Formula Sanitization | Data Security Guard | **PASSED (100%)** |
+| **SK-47** | Filter Matriks Status & Lantai pada Umur Piutang | Dual-Pill Filter (`#panelAging`), Intersection | F-04, F-05 (P0) | **PASSED (100%)** |
+| **SK-48** | Audit Traceability Tiket dari Laba Rugi ke WF-08 | `#TKT-003`, Cross-Module Audit Navigation | F-07, F-11 (P0/P1) | **PASSED (100%)** |
+| **SK-49** | Penegakan Cash-Basis vs Pembayaran Pending WF-06| `WF-06` Sync, Zero Pending Leakage Guard | F-05, F-06 (P0) | **PASSED (100%)** |
+| **SK-50** | Realisasi Omzet atas Diskon Sewa dari WF-05 | `WF-05` Sync, Net Cash Revenue Accuracy | F-04, F-06 (P0) | **PASSED (100%)** |
 
 ---
 

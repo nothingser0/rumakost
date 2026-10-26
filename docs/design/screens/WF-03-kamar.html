@@ -2012,6 +2012,45 @@
         grid-template-columns: 1fr;
       }
     }
+    /* SK-50: Optimasi Cetak & Ekspor Brosur Kamar Kosong (@media print) */
+    @media print {
+      .top-canopy-overlay,
+      .topbar,
+      .metrics-row-3,
+      .controls-panel-card,
+      .col-side-dossier,
+      .modal-backdrop,
+      .btn-del-floor-sec,
+      .room-float-arrow {
+        display: none !important;
+      }
+      body {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+      }
+      .dashboard-wrapper {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .dashboard-2col-layout {
+        display: block !important;
+      }
+      .col-main-flow {
+        width: 100% !important;
+      }
+      .floor-box-section {
+        break-inside: avoid;
+        margin-bottom: 24px !important;
+        border: 1px solid #CBD5E1 !important;
+        box-shadow: none !important;
+      }
+      .room-unit-item {
+        border: 1px solid #CBD5E1 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2126,7 +2165,7 @@
             <!-- Search In-Page Input Capsule -->
             <div class="search-capsule-wide">
               <i data-lucide="search" style="width: 15px; height: 15px; color: #9CA3AF; flex-shrink: 0;"></i>
-              <input type="text" id="kamarSearchInput" placeholder="Cari kamar atau penyewa..." oninput="handleKamarFilter()">
+              <input type="text" id="kamarSearchInput" placeholder="Cari kamar atau penyewa...">
             </div>
 
             <!-- Custom Popover Dropdown: Filter Lantai -->
@@ -2774,6 +2813,11 @@
             <i data-lucide="share-2" style="width: 14px; height: 14px;"></i>
             <span>Iklankan / Siar WA Unit</span>
           </button>
+          <!-- SK-54: Pintasan Lapor Kerusakan Cepat Langsung ke WF-08 -->
+          <a href="WF-08-tiket.html" class="btn-drawer-outline-mini" id="btnDrawerReportRepair" style="display: none; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; font-size: 12px; font-weight: 500; color: #64748B; background: transparent; border: 1px solid #E2E8F0; border-radius: 8px; text-decoration: none; margin-top: 4px;">
+            <i data-lucide="wrench" style="width: 13px; height: 13px; color: #94A3B8;"></i>
+            <span>Laporkan Kendala / Servis Fisik</span>
+          </button>
         </div>
       </aside>
 
@@ -2815,7 +2859,7 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt" for="addNoKamar">Nomor / Kode Kamar *</label>
-              <input type="text" id="addNoKamar" class="form-input-field" placeholder="Contoh: A-06 atau D-01" oninput="this.value = this.value.toUpperCase()" required>
+              <input type="text" id="addNoKamar" class="form-input-field" maxlength="10" placeholder="Contoh: A-06 atau D-01" oninput="this.value = this.value.toUpperCase()" required>
             </div>
             <div class="form-group-item">
               <label class="form-label-txt">Lokasi Lantai & Blok *</label>
@@ -2922,7 +2966,7 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt" for="addHargaKamar">Tarif Sewa per Bulan (Rp) *</label>
-              <input type="text" id="addHargaKamar" class="form-input-field" value="1.250.000" placeholder="Contoh: 1.250.000" oninput="formatRupiahInput(this)" required>
+              <input type="text" id="addHargaKamar" class="form-input-field" value="1.250.000" maxlength="15" placeholder="Contoh: 1.250.000" oninput="formatRupiahInput(this)" required>
             </div>
             <div class="form-group-item">
               <label class="form-label-txt" for="addDepositKamar">Nominal Deposit Default (Rp) *</label>
@@ -2942,6 +2986,11 @@
               <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addKapasitasKamar', '2 Orang', this, 'wrapAddCapPills')">2 Orang</button>
               <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addKapasitasKamar', '3 Orang', this, 'wrapAddCapPills')">3 Orang</button>
               <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('addKapasitasKamar', '4+ Orang', this, 'wrapAddCapPills')">4+ Orang</button>
+            </div>
+            <div id="addCapSurchargeNotice" style="display: none; margin-top: 6px; font-size: 11.5px; color: #64748B; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 6px 10px; border-radius: 6px; line-height: 1.4;">
+              Tarif tercantum adalah tarif dasar kamar. Tambahan biaya penghuni ke-2 (surcharge) dikonfigurasi saat pembuatan kontrak di WF-04.
+            </div>
+
             </div>
           </div>
 
@@ -3099,7 +3148,7 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt" for="editNoKamar">Nomor / Kode Kamar *</label>
-              <input type="text" id="editNoKamar" class="form-input-field" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()" required>
+              <input type="text" id="editNoKamar" class="form-input-field" maxlength="10" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()" required>
             </div>
             <div class="form-group-item">
               <label class="form-label-txt">Lokasi Lantai & Blok *</label>
@@ -3206,11 +3255,16 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt" for="editHargaKamar">Tarif Sewa per Bulan (Rp) *</label>
-              <input type="text" id="editHargaKamar" class="form-input-field" oninput="formatRupiahInput(this)" required>
+              <input type="text" id="editHargaKamar" class="form-input-field" maxlength="15" oninput="formatRupiahInput(this)" required>
             </div>
             <div class="form-group-item">
               <label class="form-label-txt" for="editDepositKamar">Nominal Deposit Default (Rp) *</label>
-              <input type="text" id="editDepositKamar" class="form-input-field" value="500.000" oninput="formatRupiahInput(this)" required>
+              <input type="text" id="editDepositKamar" class="form-input-field" value="500.000" maxlength="15" oninput="formatRupiahInput(this)" required>
+            </div>
+            <!-- SK-46: Notifikasi Proteksi Tarif Kontrak Berjalan (Grandfathered Pricing) -->
+            <div id="editGrandfatheredNotice" style="display: none; grid-column: span 2; padding: 8px 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 11px; color: #475569; align-items: center; gap: 8px;">
+              <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #0284C7; flex-shrink: 0;"></i>
+              <span><strong>Grandfathered Rate:</strong> Perubahan tarif unit hanya berlaku untuk kontrak penyewa baru mendatang. Kontrak berjalan penyewa aktif saat ini tetap terkunci sesuai invoice awal.</span>
             </div>
           </div>
 
@@ -3226,6 +3280,11 @@
               <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editKapasitasKamar', '2 Orang', this, 'wrapEditCapPills')">2 Orang</button>
               <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editKapasitasKamar', '3 Orang', this, 'wrapEditCapPills')">3 Orang</button>
               <button type="button" class="duration-pill-opt" onclick="setRoomPillStatus('editKapasitasKamar', '4+ Orang', this, 'wrapEditCapPills')">4+ Orang</button>
+            </div>
+            <div id="editCapSurchargeNotice" style="display: none; margin-top: 6px; font-size: 11.5px; color: #64748B; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 6px 10px; border-radius: 6px; line-height: 1.4;">
+              Tarif tercantum adalah tarif dasar kamar. Tambahan biaya penghuni ke-2 (surcharge) dikonfigurasi saat pembuatan kontrak di WF-04.
+            </div>
+
             </div>
           </div>
 
@@ -3483,6 +3542,93 @@
   <script>
     // Inisialisasi Topbar dengan deteksi role otomatis (?role=staf) dan activeNav 'kamar'
     renderTopbar('kamar');
+
+    // ══════════════════════════════════════════════════════════════
+    // ARSITEKTUR KEAMANAN, KONKURENSI & RESILIENSI (SK-35 s/d SK-45)
+    // ══════════════════════════════════════════════════════════════
+
+    // 1. Sanitasi XSS Otomatis (Stored XSS Protection)
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // 2. Debounce Utility untuk Filter & Pencarian
+    function debounce(func, wait = 200) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    // 3. Status Guard: Dirty Form Tracking & Anti-Data Loss
+    let isAddFormDirty = false;
+    let isEditFormDirty = false;
+
+    // 4. Concurrency Guard: Anti-Double Submit Flags
+    let isAddSubmitting = false;
+    let isEditSubmitting = false;
+    let isDeleteRoomSubmitting = false;
+    let isDeleteFloorSubmitting = false;
+
+    // 5. Memory Leak Cleanup: Object URL Revocation
+    function cleanupPhotoUrls(target = 'all') {
+      if ((target === 'all' || target === 'add') && uploadedAddPhotoUrl && uploadedAddPhotoUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(uploadedAddPhotoUrl);
+        uploadedAddPhotoUrl = null;
+      }
+      if ((target === 'all' || target === 'edit') && uploadedEditPhotoUrl && uploadedEditPhotoUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(uploadedEditPhotoUrl);
+        uploadedEditPhotoUrl = null;
+      }
+    }
+
+    // 6. Network Resilience: Offline & Online State Handlers
+    window.addEventListener('offline', () => {
+      RumaUI.showToast('Koneksi internet terputus. Mode offline aktif.', 'danger', 'Mode Offline');
+    });
+
+    window.addEventListener('online', () => {
+      RumaUI.showToast('Koneksi internet kembali stabil.', 'success', 'Online');
+    });
+
+    // 7. Multi-Tab Session Synchronization
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'rumakost_active_session' && !e.newValue) {
+        RumaUI.showToast('Sesi kerja Anda telah berakhir dari tab lain. Mengarahkan ke halaman masuk...', 'warning', 'Sesi Berakhir');
+        setTimeout(() => {
+          window.location.href = 'WF-01-login.html?reason=session_expired';
+        }, 1000);
+      }
+    });
+
+    // 8. History API: Browser Back-Button Trapping untuk Penutupan Modal
+    window.addEventListener('popstate', (e) => {
+      const openModalEl = document.querySelector('.modal-backdrop.open');
+      if (openModalEl) {
+        const modalId = openModalEl.id;
+        RumaUI.closeModal(modalId);
+        if (modalId === 'modalTambahKamar') closeTambahKamarModal();
+        else if (modalId === 'modalEditKamar') closeEditKamarModal();
+        else if (modalId === 'modalIklanKamar') closeIklanKamarModal();
+        else if (modalId === 'modalKonfirmasiHapusKamar') closeKonfirmasiHapusModal();
+        else if (modalId === 'modalKonfirmasiHapusLantai') closeKonfirmasiHapusLantaiModal();
+      }
+    });
+
+    // 9. Anti-Accidental Navigation / Refresh Alert
+    window.addEventListener('beforeunload', (e) => {
+      if (isAddFormDirty || isEditFormDirty) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
     lucide.createIcons();
 
     // ══════════════════════════════════════════════════════════════
@@ -3683,7 +3829,14 @@
     let initialRoom = 'A-01';
     if (paramRoom) {
       const matchKey = Object.keys(ROOMS_DATA).find(k => k.toUpperCase() === paramRoom.toUpperCase());
-      if (matchKey) initialRoom = matchKey;
+      if (matchKey) {
+        initialRoom = matchKey;
+      } else {
+        // SK-52: Penanganan Tautan Masuk Kamar Fiktif
+        setTimeout(() => {
+          RumaUI.showToast(`Kamar "${paramRoom}" tidak ditemukan dalam katalog properti. Menampilkan unit default A-01.`, 'warning');
+        }, 400);
+      }
     } else if (paramStatus) {
       const matchByStatus = Object.keys(ROOMS_DATA).find(k => ROOMS_DATA[k].status === paramStatus);
       if (matchByStatus) initialRoom = matchByStatus;
@@ -3707,10 +3860,25 @@
       }, 300);
     }
 
+    // SK-44: Debounced Search Input Binding
+    const searchInputEl = document.getElementById('kamarSearchInput');
+    if (searchInputEl) {
+      searchInputEl.addEventListener('input', debounce(handleKamarFilter, 200));
+    }
+
     // SK-20: Terapkan Pembatasan Akses Role (RBAC)
     applyRoleAccessControl();
 
     function applyRoleAccessControl() {
+      const rawRole = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+        new URLSearchParams(window.location.search).get('role');
+      if (rawRole === 'penghuni') {
+        RumaUI.showToast('Akses Ditolak: Halaman katalog master kamar hanya untuk pengelola properti.', 'warning');
+        setTimeout(() => {
+          window.location.href = 'WF-10-portal-penghuni.html';
+        }, 500);
+        return;
+      }
       const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
         (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
       if (role === 'staff') {
@@ -3806,6 +3974,23 @@
       const primaryText = document.getElementById('btnPrimaryText');
       const waBtn = document.getElementById('linkDirectWa');
       const shareBtn = document.getElementById('btnSharePromoAction');
+      const repairReportBtn = document.getElementById('btnDrawerReportRepair');
+      if (repairReportBtn) {
+        if (data.status === 'kosong') {
+          repairReportBtn.style.display = 'flex';
+          repairReportBtn.onclick = function() {
+            window.location.href = 'WF-08-tiket.html?action=new&kamar=' + encodeURIComponent(data.no);
+          };
+        } else {
+          repairReportBtn.style.display = 'none';
+        }
+      }
+
+      // SK-47: Maintenance Lease Lockout Check
+      const actionParam = new URLSearchParams(window.location.search).get('action');
+      if (actionParam === 'new' && data.status === 'perbaikan') {
+        RumaUI.showToast('Kamar ' + data.no + ' sedang dalam pemeliharaan (Tiket #' + (data.repairTicket || 'T-04') + ') dan terkunci dari kontrak sewa baru.', 'warning');
+      }
 
       if (data.status === 'perbaikan') {
         // State 1: Perbaikan
@@ -3906,10 +4091,21 @@
         }
 
         if (waBtn) {
-          const cleanPhone = (data.phone || '081234567890').replace(/[^0-9]/g, '');
-          const waNum = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;
-          waBtn.href = 'https://wa.me/' + waNum;
-          waBtn.style.display = 'flex';
+          const cleanPhone = (data.phone || '').replace(/[^0-9]/g, '');
+          if (cleanPhone.length >= 9 && data.phone !== '—') {
+  
+  
+            const waNum = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;
+            waBtn.href = 'https://wa.me/' + waNum;
+            waBtn.style.display = 'flex';
+  
+          } else {
+            waBtn.style.display = 'none';
+          }
+
+
+
+
         }
 
         primaryBtn.href = 'WF-04-penghuni.html?id=' + encodeURIComponent(data.no);
@@ -3990,7 +4186,10 @@
 
     // Skenario 3: Auto-Formatting Titik Rupiah pada Input Angka
     function formatRupiahInput(input) {
-      let val = input.value.replace(/\D/g, '');
+      let val = input.value.trim();
+      // SK-53: Bersihkan desimal sen jika di-paste dari Excel/rekening bank (misal: "1.500.000,00" -> "1.500.000")
+      val = val.replace(/,[0-9]{1,2}$/, '');
+      val = val.replace(/\D/g, '');
       if (!val) {
         input.value = '';
         return;
@@ -4132,6 +4331,10 @@
     // ══════════════════════════════════════════════════════════════
     function openTambahKamarModal() {
       RumaUI.openModal('modalTambahKamar');
+      try { history.pushState({ modalOpen: true, modalId: 'modalTambahKamar' }, ''); } catch (err) {}
+      isAddFormDirty = false;
+      const addFormEl = document.getElementById('formTambahKamar');
+      if (addFormEl) addFormEl.oninput = () => { isAddFormDirty = true; };
       const form = document.getElementById('formTambahKamar');
       if (form) form.reset();
       setFormSelectValue('addLantaiKamar', '1', 'wrapAddLantai');
@@ -4141,6 +4344,8 @@
     }
 
     function closeTambahKamarModal() {
+      cleanupPhotoUrls('add');
+      isAddFormDirty = false;
       RumaUI.closeModal('modalTambahKamar');
       closeAllFormDropdowns();
       uploadedAddPhotoUrl = null;
@@ -4262,10 +4467,12 @@
       const sec = document.getElementById('floorSection' + floorId);
       const roomCards = sec ? sec.querySelectorAll('.room-unit-item') : [];
       const count = roomCards.length;
+      const dataCount = Object.values(ROOMS_DATA).filter(r => String(r.floor) === String(floorId)).length;
+      const actualCount = Math.max(count, dataCount);
 
       // Skenario Validasi Mutlak: Lantai HARUS KOSONG (0 Kamar) untuk bisa dihapus
-      if (count > 0) {
-        RumaUI.showToast(`Lantai "${floorName}" masih memiliki ${count} kamar! Lantai harus kosong jika ingin dihapus.`, 'warning');
+      if (actualCount > 0) {
+        RumaUI.showToast(`Lantai "${floorName}" masih memiliki ${actualCount} kamar! Lantai harus kosong jika ingin dihapus.`, 'warning');
         return;
       }
 
@@ -4275,6 +4482,7 @@
       const lbl = document.getElementById('delFloorConfirmLabel');
       if (lbl) lbl.textContent = floorName;
       RumaUI.openModal('modalKonfirmasiHapusLantai');
+      try { history.pushState({ modalOpen: true, modalId: 'modalKonfirmasiHapusLantai' }, ''); } catch (err) {}
       lucide.createIcons();
     }
 
@@ -4285,6 +4493,12 @@
     }
 
     function executeDeleteFloor() {
+      if (isDeleteFloorSubmitting) return;
+      if (!navigator.onLine) {
+        RumaUI.showToast('Tidak dapat menghapus partisi lantai dalam mode offline. Pastikan koneksi internet aktif.', 'danger');
+        return;
+      }
+      isDeleteFloorSubmitting = true;
       if (!pendingDeleteFloorId) return;
       const floorId = pendingDeleteFloorId;
       const floorName = pendingDeleteFloorName || ('Lantai ' + floorId);
@@ -4301,6 +4515,7 @@
       });
 
       closeKonfirmasiHapusLantaiModal();
+      isDeleteFloorSubmitting = false;
       refreshFloorStats();
       refreshGlobalMetrics();
       handleKamarFilter();
@@ -4309,6 +4524,12 @@
     }
 
     function handleTambahKamar(e) {
+      if (isAddSubmitting) return;
+      if (!navigator.onLine) {
+        RumaUI.showToast('Tidak dapat mendaftarkan unit baru dalam mode offline. Pastikan koneksi internet aktif.', 'danger');
+        return;
+      }
+      isAddSubmitting = true;
       e.preventDefault();
       const no = document.getElementById('addNoKamar').value.trim().toUpperCase();
       const floor = document.getElementById('addLantaiKamar').value;
@@ -4319,6 +4540,15 @@
 
       if (!no) {
         RumaUI.showToast('Nomor kamar wajib diisi!', 'warning');
+        isAddSubmitting = false;
+        return;
+      }
+
+      const ROOM_REGEX = /^[A-Z0-9\-\. ]+$/;
+      if (!ROOM_REGEX.test(no)) {
+        RumaUI.showToast('Format Nomor Kamar hanya boleh alfanumerik, spasi, titik, dan tanda hubung (-).', 'warning');
+        isAddSubmitting = false;
+        return;
         return;
       }
 
@@ -4326,6 +4556,7 @@
       const existingKey = Object.keys(ROOMS_DATA).find(k => k.toUpperCase() === no);
       if (existingKey) {
         RumaUI.showToast('Nomor Kamar "' + no + '" sudah terdaftar! Gunakan nomor kamar unik.', 'warning');
+        isAddSubmitting = false;
         return;
       }
 
@@ -4342,11 +4573,17 @@
       if (numPrice <= 0) {
         RumaUI.showToast('Tarif sewa bulanan harus berupa nominal positif lebih dari Rp 0!', 'warning');
         document.getElementById('addHargaKamar').focus();
+        isAddSubmitting = false;
         return;
       }
       const formattedPrice = numPrice.toLocaleString('id-ID');
       const numDeposit = parseInt(document.getElementById('addDepositKamar').value.replace(/[^\d]/g, '') || 0, 10);
       const formattedDeposit = numDeposit.toLocaleString('id-ID');
+      if (numPrice > 100000000 || numDeposit > 100000000) {
+        RumaUI.showToast('Nominal tarif atau deposit melebihi batas wajar sistem (maks Rp 100.000.000)!', 'warning');
+        isAddSubmitting = false;
+        return;
+      }
 
       // Simpan ke data fixture runtime
       ROOMS_DATA[no] = {
@@ -4429,7 +4666,7 @@
           cardEl.onclick = function() { selectRoomCardByNo(no); };
           cardEl.innerHTML = `
             <div class="room-thumb-area">
-              <img src="${ROOMS_DATA[no].img}" alt="Kamar ${no}">
+              <img src="${ROOMS_DATA[no].img}" alt="Kamar ${escapeHTML(no)}" onerror="this.onerror=null;this.src='assets/img/login-showcase.png';">
               <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
             </div>
             <div class="room-unit-body">
@@ -4450,6 +4687,8 @@
         }
       }
 
+      isAddSubmitting = false;
+      isAddFormDirty = false;
       closeTambahKamarModal();
       lucide.createIcons();
       refreshFloorStats();
@@ -4512,11 +4751,21 @@
       document.getElementById('chkEditPln').checked = editAmenities.some(a => a.toLowerCase().includes('token') || a.toLowerCase().includes('pln'));
 
       RumaUI.openModal('modalEditKamar');
+      const grandfatherNotice = document.getElementById('editGrandfatheredNotice');
+      if (grandfatherNotice) {
+        grandfatherNotice.style.display = (data.status === 'terisi' && data.tenant && data.tenant !== '—') ? 'flex' : 'none';
+      }
+      try { history.pushState({ modalOpen: true, modalId: 'modalEditKamar' }, ''); } catch (err) {}
+      isEditFormDirty = false;
+      const editFormEl = document.getElementById('formEditKamar');
+      if (editFormEl) editFormEl.oninput = () => { isEditFormDirty = true; };
       applyRoleAccessControl();
       lucide.createIcons();
     }
 
     function closeEditKamarModal() {
+      cleanupPhotoUrls('edit');
+      isEditFormDirty = false;
       RumaUI.closeModal('modalEditKamar');
       closeAllFormDropdowns();
       uploadedEditPhotoUrl = null;
@@ -4555,7 +4804,49 @@
     function refreshGlobalMetrics() {
       const roomKeys = Object.keys(ROOMS_DATA);
       const totalUnits = roomKeys.length;
-      if (totalUnits === 0) return;
+      if (totalUnits === 0) {
+        const elVacantBadge = document.getElementById('metricVacantBadge');
+        if (elVacantBadge) elVacantBadge.textContent = '0 Siap Huni';
+        const elVacantVal = document.getElementById('metricVacantVal');
+        if (elVacantVal) elVacantVal.innerHTML = '0 <span class="metric-sub-val">/ 0 Unit</span>';
+        const elVacantGauge = document.getElementById('metricVacantGauge');
+        if (elVacantGauge) elVacantGauge.setAttribute('stroke-dashoffset', '106.8');
+        const elVacantPct = document.getElementById('metricVacantPct');
+        if (elVacantPct) elVacantPct.textContent = '0%';
+
+        const elOccBadge = document.getElementById('metricOccupiedBadge');
+        if (elOccBadge) elOccBadge.textContent = '0% Okupansi';
+        const elOccSub = document.getElementById('metricOccupiedSub');
+        if (elOccSub) elOccSub.textContent = '0 Penyewa aktif · 0 Servis';
+        const elOccVal = document.getElementById('metricOccupiedVal');
+        if (elOccVal) elOccVal.innerHTML = '0 <span class="metric-sub-val">/ 0 Kamar</span>';
+        const elOccGauge = document.getElementById('metricOccupiedGauge');
+        if (elOccGauge) elOccGauge.setAttribute('stroke-dashoffset', '106.8');
+        const elOccPct = document.getElementById('metricOccupiedPct');
+        if (elOccPct) elOccPct.textContent = '0%';
+
+        const elIncBadge = document.getElementById('metricIncomeBadge');
+        if (elIncBadge) elIncBadge.textContent = 'Realisasi 0%';
+        const elIncSub = document.getElementById('metricIncomeSub');
+        if (elIncSub) elIncSub.textContent = 'Terkumpul Rp 0 Jt';
+        const elIncVal = document.getElementById('metricIncomeVal');
+        if (elIncVal) elIncVal.textContent = 'Rp 0 Jt';
+        const elIncGauge = document.getElementById('metricIncomeGauge');
+        if (elIncGauge) elIncGauge.setAttribute('stroke-dashoffset', '106.8');
+        const elIncPct = document.getElementById('metricIncomePct');
+        if (elIncPct) elIncPct.textContent = '0%';
+
+        const allFloorFilterItem = document.querySelector('#menuFilterLantai .popover-item:first-child');
+        if (allFloorFilterItem) allFloorFilterItem.textContent = 'Semua Lantai (0)';
+        const filterStatusItems = document.querySelectorAll('#menuFilterStatus .popover-item');
+        if (filterStatusItems.length >= 4) {
+          filterStatusItems[0].textContent = 'Semua Status (0)';
+          filterStatusItems[1].textContent = 'Hanya Terisi (0)';
+          filterStatusItems[2].textContent = 'Hanya Kosong (0)';
+          filterStatusItems[3].textContent = 'Dalam Perbaikan (0)';
+        }
+        return;
+      }
 
       let occupiedCount = 0;
       let vacantCount = 0;
@@ -4639,11 +4930,23 @@
     }
 
     function handleEditKamar(e) {
+      if (isEditSubmitting) return;
+      if (!navigator.onLine) {
+        RumaUI.showToast('Tidak dapat menyimpan perubahan kamar dalam mode offline. Pastikan koneksi internet aktif.', 'danger');
+        return;
+      }
+      isEditSubmitting = true;
       e.preventDefault();
       const data = ROOMS_DATA[activeRoomNo];
       if (!data) return;
 
       const updatedNo = document.getElementById('editNoKamar').value.trim().toUpperCase();
+      const ROOM_REGEX = /^[A-Z0-9\-\. ]+$/;
+      if (!ROOM_REGEX.test(updatedNo)) {
+        RumaUI.showToast('Format Nomor Kamar hanya boleh alfanumerik, spasi, titik, dan tanda hubung (-).', 'warning');
+        isEditSubmitting = false;
+        return;
+      }
       const updatedFloor = document.getElementById('editLantaiKamar').value;
       const updatedType = document.getElementById('editTipeKamar').value;
       const updatedSize = document.getElementById('editUkuranKamar').value.trim();
@@ -4652,6 +4955,13 @@
       if (numEditPrice <= 0) {
         RumaUI.showToast('Tarif sewa bulanan harus berupa nominal positif lebih dari Rp 0!', 'warning');
         document.getElementById('editHargaKamar').focus();
+        isEditSubmitting = false;
+        return;
+      }
+      const numEditDeposit = parseInt(document.getElementById('editDepositKamar').value.replace(/[^\d]/g, '') || 0, 10);
+      if (numEditPrice > 100000000 || numEditDeposit > 100000000) {
+        RumaUI.showToast('Nominal tarif atau deposit melebihi batas wajar sistem (maks Rp 100.000.000)!', 'warning');
+        isEditSubmitting = false;
         return;
       }
       const updatedStatus = document.getElementById('editStatusKamar').value;
@@ -4660,6 +4970,7 @@
       const existingKey = Object.keys(ROOMS_DATA).find(k => k.toUpperCase() === updatedNo && k.toUpperCase() !== activeRoomNo.toUpperCase());
       if (existingKey) {
         RumaUI.showToast('Nomor Kamar "' + updatedNo + '" sudah digunakan! Pilih nomor lain.', 'warning');
+        isEditSubmitting = false;
         return;
       }
 
@@ -4804,6 +5115,8 @@
       }
 
       closeEditKamarModal();
+      isEditSubmitting = false;
+      isEditFormDirty = false;
       selectRoomCardByNo(activeRoomNo);
       refreshFloorStats();
       refreshGlobalMetrics();
@@ -4833,6 +5146,7 @@
 
       document.getElementById('delRoomConfirmLabel').textContent = 'Kamar ' + data.no;
       RumaUI.openModal('modalKonfirmasiHapusKamar');
+      try { history.pushState({ modalOpen: true, modalId: 'modalKonfirmasiHapusKamar' }, ''); } catch (err) {}
       lucide.createIcons();
     }
 
@@ -4840,7 +5154,71 @@
       RumaUI.closeModal('modalKonfirmasiHapusKamar');
     }
 
+    let lastDeletedRoomData = null;
+    let undoToastTimeout = null;
+
+    function undoDeleteKamar() {
+      if (!lastDeletedRoomData) return;
+      const data = lastDeletedRoomData;
+      const roomNo = data.no;
+      ROOMS_DATA[roomNo] = data;
+
+      let floorSec = document.getElementById('floorSection' + data.floor);
+      if (floorSec) {
+        const grid = floorSec.querySelector('.rooms-grid-flow');
+        if (grid) {
+          const cardEl = document.createElement('div');
+          cardEl.className = 'room-unit-item' + (data.status === 'kosong' ? ' status-vacant-card' : '');
+          cardEl.id = 'card-' + roomNo;
+          cardEl.setAttribute('data-no', roomNo);
+          cardEl.setAttribute('data-floor', data.floor);
+          cardEl.setAttribute('data-status', data.status);
+          cardEl.onclick = function() { selectRoomCardByNo(roomNo); };
+          cardEl.innerHTML = `
+            <div class="room-thumb-area">
+              <img src="${data.img}" alt="Kamar ${escapeHTML(roomNo)}" onerror="this.onerror=null;this.src='assets/img/login-showcase.png';">
+              <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
+            </div>
+            <div class="room-unit-body">
+              <div class="room-header-row">
+                <span class="room-name-text">Kamar ${escapeHTML(roomNo)}</span>
+                <span class="status-badge ${data.status === 'kosong' ? 'badge-brand' : (data.status === 'perbaikan' ? 'badge-warning' : 'badge-dark')}">${data.status === 'kosong' ? 'Kosong · Siap Huni' : (data.status === 'perbaikan' ? 'Dalam Perbaikan' : 'Terisi · Lunas')}</span>
+              </div>
+              <div class="room-sub-specs">
+                <i data-lucide="${data.status === 'kosong' ? 'sparkles' : (data.status === 'perbaikan' ? 'wrench' : 'user')}" style="width: 12px; height: 12px; color: ${data.status === 'kosong' ? '#16A34A' : '#FF7A00'}; flex-shrink: 0;"></i>
+                <span>${data.status === 'kosong' ? ('Kosong · ' + escapeHTML(data.type) + ' (' + escapeHTML(data.size) + ')') : ('Penyewa Baru · ' + escapeHTML(data.type))}</span>
+              </div>
+              <div class="room-price-row">
+                <span class="room-price-val">${escapeHTML(data.price)} <span class="room-price-unit">/bln</span></span>
+              </div>
+            </div>
+          `;
+          grid.appendChild(cardEl);
+        }
+      }
+
+      lastDeletedRoomData = null;
+      const toast = document.getElementById('rumaToast');
+      if (toast) toast.classList.remove('show');
+      if (undoToastTimeout) clearTimeout(undoToastTimeout);
+
+      refreshFloorStats();
+      refreshGlobalMetrics();
+      lucide.createIcons();
+      selectRoomCardByNo(roomNo);
+      RumaUI.showToast('Kamar ' + roomNo + ' berhasil dipulihkan (Undo)!', 'success');
+    }
+
     function executeDeleteKamar() {
+      if (isDeleteRoomSubmitting) return;
+      if (!navigator.onLine) {
+        RumaUI.showToast('Tidak dapat menghapus unit dalam mode offline. Pastikan koneksi internet aktif.', 'danger');
+        return;
+      }
+      isDeleteRoomSubmitting = true;
+
+      const deletedNo = activeRoomNo;
+      lastDeletedRoomData = { ...ROOMS_DATA[deletedNo] };
       const cardEl = document.getElementById('card-' + activeRoomNo);
       if (cardEl) cardEl.remove();
 
@@ -4849,7 +5227,25 @@
       closeEditKamarModal();
       refreshFloorStats();
       refreshGlobalMetrics();
-      RumaUI.showToast('Kamar ' + activeRoomNo + ' berhasil dihapus dari daftar.', 'info');
+      RumaUI.showToast('Kamar ' + deletedNo + ' berhasil dihapus dari daftar.', 'info');
+      const toast = document.getElementById('rumaToast');
+      if (toast) {
+        const body = toast.querySelector('.ruma-toast-body');
+        if (body) {
+          const btnUndo = document.createElement('button');
+          btnUndo.type = 'button';
+          btnUndo.style.cssText = 'margin-top: 6px; padding: 3px 8px; font-size: 11px; font-weight: 600; color: #FF7A00; background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;';
+          btnUndo.innerHTML = 'Urungkan (Undo)';
+          btnUndo.onclick = undoDeleteKamar;
+          body.appendChild(btnUndo);
+        }
+      }
+      if (undoToastTimeout) clearTimeout(undoToastTimeout);
+      undoToastTimeout = setTimeout(() => {
+        lastDeletedRoomData = null;
+      }, 5000);
+
+      isDeleteRoomSubmitting = false;
 
       // Beralih ke kamar pertama yang ada atau tampilkan empty state jika 0 kamar tersisa
       const remainingRooms = Object.keys(ROOMS_DATA);
@@ -4914,6 +5310,7 @@
       document.getElementById('promoMsgInput').value = promoText;
       updatePromoPreview(promoText);
       RumaUI.openModal('modalIklanKamar');
+      try { history.pushState({ modalOpen: true, modalId: 'modalIklanKamar' }, ''); } catch (err) {}
       lucide.createIcons();
     }
 
@@ -4931,6 +5328,8 @@
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(txt).then(() => {
           RumaUI.showToast('Draf iklan WhatsApp berhasil disalin ke clipboard!', 'success');
+        }).catch(() => {
+          RumaUI.showToast('Gagal menyalin otomatis. Silakan salin teks langsung dari kolom.', 'warning');
         });
       } else {
         RumaUI.showToast('Teks iklan siap dibagikan!', 'info');
@@ -4993,7 +5392,34 @@
       }
     }
 
-    // Aksesibilitas Tombol Escape (ESC) Global
+    // Aksesibilitas Tombol Escape (ESC) Global & Keyboard Arrow Grid Traversal (SK-55)
+    document.addEventListener('keydown', function(e) {
+      if (['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(e.key)) {
+        const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || (e.target && e.target.isContentEditable)) return;
+        const openBackdrops = document.querySelectorAll('.modal-backdrop.open');
+        if (openBackdrops.length > 0) return;
+
+        const visibleCards = Array.from(document.querySelectorAll('.room-unit-item')).filter(c => c.style.display !== 'none');
+        if (visibleCards.length === 0) return;
+
+        const currentIndex = visibleCards.findIndex(c => c.getAttribute('data-no') === activeRoomNo);
+        let nextIndex = currentIndex;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          nextIndex = (currentIndex + 1) % visibleCards.length;
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          nextIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
+        }
+
+        if (nextIndex >= 0 && nextIndex < visibleCards.length) {
+          e.preventDefault();
+          const targetCard = visibleCards[nextIndex];
+          const targetNo = targetCard.getAttribute('data-no');
+          selectRoomCardByNo(targetNo);
+          targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        }
+      }
+    });
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' || e.key === 'Esc') {
         closeAllFormDropdowns();
@@ -5013,15 +5439,33 @@
       const hidden = document.getElementById(hiddenInputId);
       if (hidden) hidden.value = val;
       const wrap = document.getElementById(containerId);
+
       if (wrap) {
         wrap.querySelectorAll('.duration-pill-opt').forEach(b => b.classList.remove('active'));
         if (btnEl) btnEl.classList.add('active');
+        if (hiddenInputId === 'addKapasitasKamar') {
+          const notice = document.getElementById('addCapSurchargeNotice');
+          if (notice) notice.style.display = (val && !val.startsWith('1 ')) ? 'block' : 'none';
+        } else if (hiddenInputId === 'editKapasitasKamar') {
+          const notice = document.getElementById('editCapSurchargeNotice');
+          if (notice) notice.style.display = (val && !val.startsWith('1 ')) ? 'block' : 'none';
+        }
       }
     }
 
     function syncPillsUI(containerId, activeVal) {
+      if (containerId === 'wrapAddCapPills') {
+        const notice = document.getElementById('addCapSurchargeNotice');
+        if (notice) notice.style.display = (activeVal && !activeVal.startsWith('1 ')) ? 'block' : 'none';
+      } else if (containerId === 'wrapEditCapPills') {
+        const notice = document.getElementById('editCapSurchargeNotice');
+        if (notice) notice.style.display = (activeVal && !activeVal.startsWith('1 ')) ? 'block' : 'none';
+      }
       const wrap = document.getElementById(containerId);
+
       if (!wrap) return;
+
+
       wrap.querySelectorAll('.duration-pill-opt').forEach(b => {
         const txt = b.textContent.trim().toLowerCase();
         if (txt.includes(activeVal.toLowerCase()) || activeVal.toLowerCase().includes(txt)) {
@@ -5036,6 +5480,8 @@
       if (event) event.stopPropagation();
       const wrap = document.getElementById(wrapId);
       if (!wrap) return;
+
+
       const menu = wrap.querySelector('.form-select-menu');
       const trigger = wrap.querySelector('.btn-form-select-trigger');
       const isOpen = menu.classList.contains('is-open');
@@ -5104,6 +5550,8 @@
 
       const wrap = document.getElementById(wrapId);
       if (!wrap) return;
+
+
 
       const targetItem = wrap.querySelector(`.form-select-item[data-value="${value}"]`);
       if (targetItem) {

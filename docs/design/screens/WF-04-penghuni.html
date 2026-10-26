@@ -4388,7 +4388,7 @@
 
   <script src="assets/js/components.js"></script>
   <script>
-    renderTopbar('penghuni', 'owner');
+    renderTopbar('penghuni');
     lucide.createIcons();
 
     // ══════════════════════════════════════════════════════════════
@@ -4802,6 +4802,25 @@
     let currentFloorFilter = 'all'; // 'all', '1', '2', '3'
     let currentSearch = '';
 
+    // SANITIZATION & PHONE HELPERS
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function normalizePhoneForWa(phone) {
+      if (!phone) return '6281234567890';
+      let digits = String(phone).replace(/[^0-9]/g, '');
+      if (digits.startsWith('0')) return '62' + digits.substring(1);
+      if (digits.startsWith('62')) return digits;
+      return '62' + digits;
+    }
+
     // RENDER MASTER LIST
     function renderMasterList() {
       const container = document.getElementById('masterTenantList');
@@ -4857,12 +4876,12 @@
           <div class="tile-top-row">
             <div class="tile-avatar-cluster">
               <div class="tile-avatar-wrap">
-                <img src="${t.photo}" alt="${t.name}" class="tile-avatar-img">
+                <img src="${t.photo}" alt="${escapeHtml(t.name)}" class="tile-avatar-img">
                 <span class="tile-status-dot dot-${t.billStatus}"></span>
               </div>
               <div class="tile-name-meta">
-                <div class="tile-name-txt">${t.name}</div>
-                <div class="tile-role-txt">${t.role} &middot; ${t.company}</div>
+                <div class="tile-name-txt">${escapeHtml(t.name)}</div>
+                <div class="tile-role-txt">${escapeHtml(t.role)} &middot; ${escapeHtml(t.company)}</div>
               </div>
             </div>
             <span class="room-badge-micro" title="Kamar ${t.room} (Lantai ${t.floor})">
@@ -4911,8 +4930,8 @@
       document.getElementById('dRoomDesc').textContent = `Lantai ${t.floor} · ${t.roomType}`;
 
       // WhatsApp & Call links
-      const cleanPhone = t.phone.replace(/[^0-9]/g, '').substring(1);
-      document.getElementById('dBtnWa').href = `https://wa.me/62${cleanPhone}`;
+      const waNumber = normalizePhoneForWa(t.phone);
+      document.getElementById('dBtnWa').href = `https://wa.me/${waNumber}`;
       document.getElementById('dBtnCall').href = `tel:${t.phone}`;
 
       // 2. Update Alert Banner Strip
@@ -4999,9 +5018,6 @@
 
       const countBadge = document.getElementById('dOccupantsCount');
       if (countBadge) countBadge.textContent = `${t.occupants.length} Org`;
-
-      const headerCount = document.getElementById('dHeaderOccCount');
-      if (headerCount) headerCount.textContent = `${t.occupants.length} Org`;
 
       const quadCountBadge = document.getElementById('dOccupantsCountBadge');
       if (quadCountBadge) quadCountBadge.textContent = `${t.occupants.length} Penghuni Aktif`;
@@ -5759,7 +5775,11 @@
     function closeTambahPenghuniModal() {
       document.getElementById('modalTambahPenghuni').classList.remove('open');
     }
+    let isSavingTenant = false;
     function saveTambahPenghuni() {
+      if (isSavingTenant) return;
+      isSavingTenant = true;
+      setTimeout(() => { isSavingTenant = false; }, 800);
       const nama = document.getElementById('regNama') ? document.getElementById('regNama').value.trim() : '';
       const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value.trim() : '';
       const plate = document.getElementById('regVehicle') ? document.getElementById('regVehicle').value.trim() : '';
@@ -5990,7 +6010,9 @@
       if (popover) popover.classList.remove('open');
     }
 
+    let isSavingMove = false;
     function savePindahKamar() {
+      if (isSavingMove) return;
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t) return;
       const oldRoom = t.room;
@@ -6004,6 +6026,9 @@
         return;
       }
 
+      isSavingMove = true;
+      setTimeout(() => { isSavingMove = false; }, 800);
+
       const currPriceNum = parseInt((t.price || '1200000').replace(/\D/g, ''), 10) || 1200000;
       const newPriceNum = parseInt(targetRoom.price.replace(/\D/g, ''), 10) || 1500000;
       const diff = newPriceNum - currPriceNum;
@@ -6013,12 +6038,14 @@
       t.floor = targetRoom.floor;
       t.roomType = targetRoom.type;
       t.price = targetRoom.price;
+      t.id = targetRoom.room;
+      activeTenantId = targetRoom.room;
       t.contractNo = (t.contractNo || 'SPK-2025/RUMA/A-01') + '/ADD-MUTASI';
 
+      t.payHistory = t.payHistory || [];
       if (diff > 0) {
-        t.payHistory = t.payHistory || [];
         t.payHistory.unshift({
-          period: `Selisih Mutasi Kamar (${oldRoom} -> ${t.room})`,
+          period: `Selisih Mutasi Kamar Upgraded (${oldRoom} â†’ ${t.room})`,
           amount: 'Rp ' + diff.toLocaleString('id-ID'),
           date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
           method: 'Virtual Account BCA',
@@ -6026,6 +6053,22 @@
         });
         t.billStatus = 'tempo';
         t.billLabel = 'Selisih Kamar';
+      } else if (diff < 0) {
+        t.payHistory.unshift({
+          period: `Kredit Saldo Downgrade (${oldRoom} â†’ ${t.room})`,
+          amount: '-Rp ' + Math.abs(diff).toLocaleString('id-ID'),
+          date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+          method: 'Kredit Sewa Deposit',
+          status: 'Lunas'
+        });
+      } else {
+        t.payHistory.unshift({
+          period: `Mutasi Kamar Selevel (${oldRoom} â†’ ${t.room})`,
+          amount: 'Rp 0',
+          date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+          method: 'Mutasi Selevel',
+          status: 'Lunas'
+        });
       }
 
       // Update vacant rooms: remove target room, add old room back as vacant/ready to clean
@@ -6342,7 +6385,12 @@
     function closePerpanjangModal() {
       document.getElementById('modalPerpanjang').classList.remove('open');
     }
+    let isSavingPerpanjang = false;
     function savePerpanjang() {
+      if (isSavingPerpanjang) return;
+      isSavingPerpanjang = true;
+      setTimeout(() => { isSavingPerpanjang = false; }, 800);
+
       closePerpanjangModal();
       const t = tenantsData.find(item => item.id === activeTenantId);
       const name = t ? t.name : 'Penyewa';
@@ -6353,8 +6401,50 @@
         const deductVal = (currentReconcileMode === 'deduct' && inputEl) ? parseInt(inputEl.value.replace(/\D/g, '') || '0', 10) : 0;
         const netVal = Math.max(0, 1000000 - deductVal);
         const netTxt = 'Rp ' + netVal.toLocaleString('id-ID');
+
+        // Kembalikan unit kamar ke daftar kamar kosong
+        if (t) {
+          vacantRoomsData.push({
+            room: t.room,
+            floor: t.floor,
+            type: t.roomType,
+            price: t.price,
+            deposit: t.deposit ? t.deposit.replace(/Rp\s*/, '') : '1.000.000',
+            maxOcc: 2
+          });
+        }
+
+        // Hapus penghuni dari daftar aktif
+        const tIdx = tenantsData.findIndex(item => item.id === activeTenantId);
+        if (tIdx !== -1) tenantsData.splice(tIdx, 1);
+
+        renderMasterList();
+        if (tenantsData.length > 0) {
+          selectTenant(tenantsData[0].id);
+        }
+
         RumaUI.showToast(`Pengakhiran sewa Kamar ${room} (${name}) berhasil diproses! Unit dialihkan ke 'Kosong / Siap Bersih'. Refund deposit ${netTxt} diteruskan ke antrean pencairan.`, 'success');
       } else {
+        // Mode Perpanjang SPK
+        if (t) {
+          t.end = '15 Nov 2027';
+          t.countdown = `${currentRenewDuration} Bln Lagi`;
+          t.contractCategory = 'aman';
+          t.tagClass = 'tag-safe';
+          t.billStatus = 'lunas';
+          t.billLabel = 'Lunas';
+          t.payHistory = t.payHistory || [];
+          t.payHistory.unshift({
+            period: `Perpanjangan SPK (${currentRenewDuration} Bulan s.d. ${t.end})`,
+            amount: t.price,
+            date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+            method: 'BCA Transfer',
+            status: 'Lunas'
+          });
+          renderMasterList();
+          selectTenant(t.id);
+        }
+
         RumaUI.showToast(`Kontrak Kamar ${room} (${name}) berhasil diperpanjang ${currentRenewDuration} Bulan! Tagihan periode baru dijadwalkan otomatis.`, 'success');
       }
     }
@@ -6643,6 +6733,13 @@
         return;
       }
 
+      const startEl = document.getElementById('guestStartDate');
+      const endEl = document.getElementById('guestEndDate');
+      if (startEl && endEl && new Date(endEl.value) < new Date(startEl.value)) {
+        RumaUI.showToast('Tanggal selesai menginap tidak boleh lebih awal dari tanggal mulai', 'warning');
+        return;
+      }
+
       closeIzinTamuModal();
       RumaUI.showToast(`Izin menginap ${gName} (${gRel} · ${gNights}) untuk Kamar ${t.room} berhasil diterbitkan! Tercatat di log sekuriti dan biaya (${gTotal}) masuk invoice berjalan.`, 'success');
     }
@@ -6900,8 +6997,8 @@
       if (!t) return;
 
       const msg = document.getElementById('spMsgTextarea')?.value || '';
-      const cleanPhone = t.phone.replace(/[^0-9]/g, '').substring(1);
-      const waUrl = `https://wa.me/62${cleanPhone}?text=${encodeURIComponent(msg)}`;
+      const waNumber = normalizePhoneForWa(t.phone);
+      const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
 
       closeSuratPeringatanModal();
       window.open(waUrl, '_blank');
@@ -6948,7 +7045,11 @@
       if (btnAddRow) btnAddRow.style.display = 'flex';
     }
 
+    let isSavingTransfer = false;
     function confirmTransferOccupant() {
+      if (isSavingTransfer) return;
+      isSavingTransfer = true;
+      setTimeout(() => { isSavingTransfer = false; }, 800);
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t || !pendingTransferOccupantName) return;
 

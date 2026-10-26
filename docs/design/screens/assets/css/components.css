@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    GLOBAL SCROLLBAR HIDING (Native smooth scrolling without scrollbars)
    ========================================================================== */
 *,
@@ -2001,7 +2001,7 @@ button i,
 .btn-micro-brand:hover {
   background: var(--brand-primary-hover) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.38) !important;
+  box-shadow: none !important;
   color: #FFFFFF !important;
 }
 
@@ -2015,7 +2015,7 @@ button i,
   color: #FFFFFF !important;
   font-weight: 600;
   border: none;
-  box-shadow: 0 4px 14px rgba(17, 17, 17, 0.18);
+  box-shadow: none !important;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2029,7 +2029,7 @@ button i,
 .btn-maintenance-full:hover {
   background: #262626 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(17, 17, 17, 0.32) !important;
+  box-shadow: none !important;
   color: #FFFFFF !important;
 }
 
@@ -3169,4 +3169,68 @@ textarea.form-input-control {
   padding: 0 7px !important;
   font-size: 10.5px !important;
   border-radius: 6px !important;
+}
+
+/* ==========================================================================
+   GLOBAL INTERACTION RULES (DESIGN.md STANDARDS)
+   ========================================================================== */
+
+/* 1. Universal Zero Box-Shadow Rule on Buttons */
+button:hover,
+button:active,
+.btn:hover,
+.btn:active,
+[class*="btn-"]:hover,
+[class*="btn-"]:active,
+#btnSubmitMain:hover,
+#btnSubmitMain:active,
+.btn-maintenance-full:hover,
+.btn-maintenance-full:active,
+.pill-arrow-btn:hover,
+.pill-arrow-btn:active {
+  box-shadow: none !important;
+}
+
+/* 2. .pill-arrow-btn: Static position & zero shadow */
+.pill-arrow-btn:hover,
+.pill-arrow-btn:active,
+a.pill-arrow-btn:hover,
+a.pill-arrow-btn:active {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 3. .btn-maintenance-full: zero shadow */
+.btn-maintenance-full,
+.btn-maintenance-full:hover,
+.btn-maintenance-full:active {
+  box-shadow: none !important;
+}
+
+/* 4. #btnSubmitMain / .btn-submit-main: zero shadow */
+#btnSubmitMain,
+#btnSubmitMain:hover,
+#btnSubmitMain:active,
+.btn-submit-main,
+.btn-submit-main:hover,
+.btn-submit-main:active {
+  box-shadow: none !important;
+}
+
+/* 5. Consistent Input & Textarea Hover */
+.form-input-field:hover,
+.form-control-base:hover,
+.form-input-control:hover,
+textarea.form-input-field:hover,
+.btn-form-select-trigger:hover,
+.btn-custom-select-trigger:hover {
+  border-color: #CBD5E1 !important;
+  background: #FFFFFF !important;
+}
+
+/* 6. Visibility Lock for Hidden Elements */
+[style*="display: none"],
+[style*="display:none"],
+[hidden] {
+  display: none !important;
 }
