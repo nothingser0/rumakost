@@ -181,6 +181,9 @@ Seluruh prototipe layar interaktif saling terhubung dan dapat diuji langsung di 
 | `WF-07-laporan.html` | SCR-12 / 13 | Laporan Finansial & Okupansi (Owner-Only) | [SCENARIOS_WF07.md](SCENARIOS_WF07.md) |
 | `WF-08-tiket.html` | SCR-14 / 15 | Antrean & Triase Tiket Pemeliharaan Lapangan | [SCENARIOS_WF08.md](SCENARIOS_WF08.md) |
 | `WF-09-pengaturan.html` | SCR-16 / 17 | Konfigurasi Properti, Rekening Bank, & Akun Staf | [SCENARIOS_WF09.md](SCENARIOS_WF09.md) |
-| `WF-10-portal-penghuni.html` | SCR-P01 / P02 | Portal Mandiri Penghuni (Kamar A-04), Kontrak & Tagihan | [SCENARIOS_WF10.md](SCENARIOS_WF10.md) |
+| `WF-10-portal-penghuni.html` | SCR-P01 s.d P08 | Portal Layanan Mandiri Terpadu Penghuni (Timeline Sewa, Tagihan BCA, Kuitansi DOC-01, Sub-Meteran kWh, Deposit Escrow, Izin Tamu, WiFi & Panduan) | [SCENARIOS_WF10.md](SCENARIOS_WF10.md) |
+| `WF-10-portal-dashboard.html` | SCR-P01 | Beranda Kamar Mandiri Penghuni (Kamar A-04) & Fasilitas | [SCENARIOS_WF10.md](SCENARIOS_WF10.md) |
+| `WF-10-portal-tagihan.html` | SCR-P02 | Lembar Tagihan Saya, Konfirmasi Transfer Bank & Kuitansi | [SCENARIOS_WF10.md](SCENARIOS_WF10.md) |
+| `WF-10-portal-tiket.html` | SCR-P03 | Daftar Riwayat Komplain & Tiket Kerusakan Kamar Saya | [SCENARIOS_WF10.md](SCENARIOS_WF10.md) |
 | `WF-11-portal-tiket-baru.html` | SCR-P04 | Formulir Pengajuan Komplain Kerusakan Kamar (Wajib Foto/Video F-07) | [SCENARIOS_WF11.md](SCENARIOS_WF11.md) |
 | `WF-12-portal-tiket-detail.html` | SCR-P05 | Detail Tiket, Pelacak 5 Tahap Estify & Thread Chat Multi-Peran | [SCENARIOS_WF12.md](SCENARIOS_WF12.md) |

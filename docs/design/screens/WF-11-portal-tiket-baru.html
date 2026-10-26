@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Lapor Kerusakan Fasilitas (Kamar A-04)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    body {
+      background: var(--bg-canvas, #F7F8FA);
+      color: var(--text-main, #111111);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding-bottom: 80px;
+    }
+    button, input, select, textarea { font-family: inherit; }
+    .wf-badge-floating {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 1000;
+      background: #111111;
+      color: #FFFFFF;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+    }
+    .form-wrapper {
+      max-width: 900px;
+      width: calc(100% - 40px);
+      margin: 20px auto 40px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .portal-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
+      border: 1px solid #ECEEF2;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .category-chip {
+      background: #F7F8FA;
+      border: 1px solid #ECEEF2;
+      border-radius: 14px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4B5563;
+      transition: all 120ms ease;
+    }
+    .category-chip:hover {
+      background: #FFF7ED;
+      border-color: #FED7AA;
+      color: #C25E00;
+    }
+    .category-chip.active {
+      background: #FF7A00;
+      border-color: #FF7A00;
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+    }
+    .urgency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .urgency-card {
+      border: 1px solid #ECEEF2;
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      background: #F7F8FA;
+      transition: all 120ms ease;
+    }
+    .urgency-card.active {
+      background: #FFFBEB;
+      border-color: #F59E0B;
+    }
+    .dropzone-box {
+      border: 2px dashed #CBD5E1;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      background: #FAFAFB;
+      cursor: pointer;
+      transition: all 120ms ease;
+    }
+    .dropzone-box:hover {
+      border-color: #FF7A00;
+      background: #FFF7ED;
+    }
+    .media-preview-list {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .media-preview-item {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #ECEEF2;
+      background: #111111;
+    }
+    .media-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .btn-delete-media {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(220, 38, 38, 0.85);
+      color: #FFFFFF;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+    .btn-submit-ticket {
+      background: #FF7A00;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 9999px;
+      padding: 14px 28px;
+      font-size: 14.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(255, 122, 0, 0.4);
+      transition: all 120ms ease;
+    }
+    .btn-submit-ticket:hover {
+      background: #E56E00;
+      transform: translateY(-1px);
+    }
+    .mobile-bottom-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: #FFFFFF;
+      border-top: 1px solid #ECEEF2;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+      z-index: 20;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 10px;
+    }
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      color: #64748B;
+      font-size: 10.5px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+    .mobile-nav-item.active {
+      color: #FF7A00;
+      font-weight: 600;
+    }
+    .mobile-nav-fab {
+      background: #FF7A00;
+      color: #FFFFFF !important;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.4);
+      margin-top: -16px;
+    }
+    @media (max-width: 768px) {
+      .mobile-bottom-bar { display: flex; }
+      .form-wrapper { width: calc(100% - 24px); padding: 12px 0 70px; }
+      .portal-card { padding: 20px; }
+      .urgency-grid { grid-template-columns: 1fr; }
+      .wf-badge-floating { bottom: 74px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING SCREEN IDENTIFIER -->
+  <div class="wf-badge-floating">
+    <i data-lucide="camera" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+    <span>SCR-P04 · WF-11 (Form Lapor Kerusakan F-07)</span>
+  </div>
+
+  <!-- TOPBAR NAVIGATION -->
+  <header class="topbar" id="mainTopbar"></header>
+
+  <!-- FORM CONTAINER -->
+  <div class="form-wrapper">
+
+    <!-- BREADCRUMB & HEADER -->
+    <div>
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #64748B; margin-bottom: 6px;">
+        <a href="WF-10-portal-dashboard.html" style="color: inherit; text-decoration: none;">Beranda</a>
+        <span>&bull;</span>
+        <a href="WF-10-portal-tiket.html" style="color: inherit; text-decoration: none;">Tiket Kerusakan</a>
+        <span>&bull;</span>
+        <span style="color: #FF7A00; font-weight: 600;">Lapor Kerusakan Baru</span>
+      </div>
+      <h1 style="font-size: 24px; font-weight: 700; margin: 0; color: #111111;">Formulir Pelaporan Kerusakan Fasilitas</h1>
+      <p style="font-size: 13.5px; color: #64748B; margin: 4px 0 0 0;">
+        Kamar A-04 · Teknisi rekanan kost akan segera menindaklanjuti laporan Anda.
+      </p>
+    </div>
+
+    <!-- MAIN FORM CARD -->
+    <div class="portal-card">
+      
+      <!-- 1. IDENTITAS KAMAR & PENYEWA -->
+      <div style="background: #F7F8FA; border-radius: 14px; padding: 14px 18px; border: 1px solid #ECEEF2; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: #FF7A00; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700;">
+            A-04
+          </div>
+          <div>
+            <div style="font-size: 13.5px; font-weight: 600; color: #111111;">Budi Santoso (Kamar A-04 · Lantai 1)</div>
+            <div style="font-size: 11.5px; color: #64748B;">WhatsApp: 0812-9876-5432 &bull; Status: Penghuni Aktif</div>
+          </div>
+        </div>
+        <span class="badge-status badge-success" style="font-size: 11px;">Kamar Terdaftar</span>
+      </div>
+
+      <!-- 2. KATEGORI FASILITAS -->
+      <div style="margin-bottom: 24px;">
+        <label style="font-size: 13.5px; font-weight: 700; color: #111111; display: block; margin-bottom: 10px;">
+          1. Pilih Kategori Fasilitas yang Mengalami Kendala:
+        </label>
+        <div class="category-grid" id="categoryContainer">
+          <div class="category-chip active" onclick="selectCategory('pipa', this)">
+            <i data-lucide="droplet" style="width: 20px; height: 20px;"></i>
+            <span>Pipa & Sanitasi</span>
+          </div>
+          <div class="category-chip" onclick="selectCategory('ac', this)">
+            <i data-lucide="wind" style="width: 20px; height: 20px;"></i>
+            <span>AC & Pendingin</span>
+          </div>
+          <div class="category-chip" onclick="selectCategory('listrik', this)">
+            <i data-lucide="zap" style="width: 20px; height: 20px;"></i>
+            <span>Listrik & Lampu</span>
+          </div>
+          <div class="category-chip" onclick="selectCategory('pintu', this)">
+            <i data-lucide="door-closed" style="width: 20px; height: 20px;"></i>
+            <span>Pintu & Kunci</span>
+          </div>
+          <div class="category-chip" onclick="selectCategory('perabot', this)">
+            <i data-lucide="bed" style="width: 20px; height: 20px;"></i>
+            <span>Kasur & Perabot</span>
+          </div>
+          <div class="category-chip" onclick="selectCategory('lainnya', this)">
+            <i data-lucide="box" style="width: 20px; height: 20px;"></i>
+            <span>Lainnya</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. TINGKAT URGENSI -->
+      <div style="margin-bottom: 24px;">
+        <label style="font-size: 13.5px; font-weight: 700; color: #111111; display: block; margin-bottom: 10px;">
+          2. Tingkat Urgensi Penanganan:
+        </label>
+        <div class="urgency-grid" id="urgencyContainer">
+          <div class="urgency-card active" onclick="selectUrgency('normal', this)">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: #92400E;">Normal (Sedang)</strong>
+              <i data-lucide="check-circle-2" style="width: 16px; height: 16px; color: #F59E0B;"></i>
+            </div>
+            <div style="font-size: 11.5px; color: #64748B;">Respon maks. 1×24 jam (misal: wastafel rembes, AC kurang dingin).</div>
+          </div>
+
+          <div class="urgency-card" onclick="selectUrgency('mendesak', this)">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: #991B1B;">Mendesak (Darurat)</strong>
+              <i data-lucide="circle" style="width: 16px; height: 16px; color: #9CA3AF;"></i>
+            </div>
+            <div style="font-size: 11.5px; color: #64748B;">Respon &lt; 4 jam (misal: pipa jebol, korsleting listrik, kunci kamar macet).</div>
+          </div>
+
+          <div class="urgency-card" onclick="selectUrgency('rendah', this)">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <strong style="font-size: 13px; color: #166534;">Rendah (Ringan)</strong>
+              <i data-lucide="circle" style="width: 16px; height: 16px; color: #9CA3AF;"></i>
+            </div>
+            <div style="font-size: 11.5px; color: #64748B;">Respon 2–3 hari kerja (misal: bohlam cadangan, engsel lemari longgar).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. JUDUL & DESKRIPSI -->
+      <div style="margin-bottom: 24px;">
+        <label style="font-size: 13.5px; font-weight: 700; color: #111111; display: block; margin-bottom: 6px;">
+          3. Judul Keluhan Kerusakan:
+        </label>
+        <input type="text" id="inputJudulTiket" value="Pipa Wastafel Kamar Mandi Bocor & Menetes" placeholder="Contoh: Kran Air Wastafel Menetes Terus" style="width: 100%; height: 44px; border-radius: 12px; border: 1px solid #D1D5DB; padding: 0 16px; font-size: 13.5px; box-sizing: border-box; margin-bottom: 14px;">
+
+        <label style="font-size: 13.5px; font-weight: 700; color: #111111; display: block; margin-bottom: 6px;">
+          4. Deskripsi Kronologis Masalah:
+        </label>
+        <textarea id="inputDeskripsiTiket" rows="4" placeholder="Jelaskan detail kendala, sejak kapan terjadi, dan lokasi persisnya..." style="width: 100%; border-radius: 14px; border: 1px solid #D1D5DB; padding: 12px 16px; font-size: 13.5px; box-sizing: border-box; line-height: 1.5;">Air rembes di bagian sambungan pipa bawah wastafel setiap kran dinyalakan, air menggenang di lantai kamar mandi jika tidak dilap.</textarea>
+      </div>
+
+      <!-- 5. UNGGAH FOTO/VIDEO BUKTI FISIK (F-07 STRICT MANDATE) -->
+      <div style="margin-bottom: 28px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+          <label style="font-size: 13.5px; font-weight: 700; color: #111111; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="camera" style="width: 16px; height: 16px; color: #FF7A00;"></i>
+            5. Bukti Foto / Video Kerusakan (WAJIB F-07):
+          </label>
+          <span class="badge-status badge-brand" style="font-size: 11px;">Wajib Min. 1 Berkas</span>
+        </div>
+
+        <div class="dropzone-box" onclick="document.getElementById('fileUploadKerusakan').click();">
+          <i data-lucide="upload-cloud" style="width: 32px; height: 32px; color: #FF7A00; margin-bottom: 8px;"></i>
+          <div style="font-size: 13.5px; font-weight: 600; color: #111111;">Klik untuk ambil foto/video atau seret berkas ke sini</div>
+          <div style="font-size: 12px; color: #64748B; margin-top: 2px;">Foto maks. 4 MB, Video rekaman maks. 12 MB (Maks. 30 detik)</div>
+          <input type="file" id="fileUploadKerusakan" style="display: none;" accept="image/*,video/*" onchange="handleNewMedia(event)">
+        </div>
+
+        <!-- Media Attachment List -->
+        <div class="media-preview-list" id="mediaPreviewList">
+          <div class="media-preview-item" id="sampleMedia1">
+            <img src="assets/img/login-showcase.png" alt="Foto Kerusakan Wastafel">
+            <button type="button" class="btn-delete-media" onclick="deleteMedia('sampleMedia1')" title="Hapus Foto">
+              <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+            </button>
+          </div>
+        </div>
+        <div id="mediaCountHelp" style="font-size: 12px; color: #16A34A; margin-top: 6px; font-weight: 500;">
+          <i data-lucide="check" style="width: 13px; height: 13px; display: inline;"></i> 1 lampiran bukti visual terpasang (Memenuhi aturan F-07).
+        </div>
+      </div>
+
+      <!-- 6. WAKTU TEKNISI MASUK KAMAR -->
+      <div style="margin-bottom: 28px; background: #F7F8FA; border-radius: 14px; padding: 16px; border: 1px solid #ECEEF2;">
+        <label style="font-size: 13px; font-weight: 700; color: #111111; display: block; margin-bottom: 8px;">
+          Preferensi Kunjungan Teknisi:
+        </label>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #4B5563;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="radio" name="optVisit" value="anytime" checked>
+            Boleh masuk kapan saja didampingi Staf Operasional kost (Mbak Rini)
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="radio" name="optVisit" value="weekend">
+            Hanya saat saya berada di kamar (Sabtu / Minggu)
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="radio" name="optVisit" value="wa_first">
+            Hubungi via WhatsApp terlebih dahulu untuk janjian jam
+          </label>
+        </div>
+      </div>
+
+      <!-- CTA BUTTONS -->
+      <div style="display: flex; align-items: center; justify-content: flex-end; gap: 14px; border-top: 1px solid #ECEEF2; padding-top: 20px;">
+        <a href="WF-10-portal-tiket.html" style="font-size: 13.5px; font-weight: 600; color: #64748B; text-decoration: none;">
+          Batal
+        </a>
+        <button type="button" class="btn-submit-ticket" onclick="submitTicketForm()">
+          <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+          Kirim Laporan Kerusakan
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MOBILE BOTTOM BAR -->
+  <nav class="mobile-bottom-bar" aria-label="Navigasi Bawah Ponsel">
+    <a href="WF-10-portal-dashboard.html" class="mobile-nav-item">
+      <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+      <span>Kamar</span>
+    </a>
+    <a href="WF-10-portal-tagihan.html" class="mobile-nav-item">
+      <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
+      <span>Tagihan</span>
+    </a>
+    <a href="WF-11-portal-tiket-baru.html" class="mobile-nav-item mobile-nav-fab" title="Lapor Kerusakan">
+      <i data-lucide="plus" style="width: 22px; height: 22px;"></i>
+    </a>
+    <a href="WF-10-portal-tiket.html" class="mobile-nav-item active">
+      <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+      <span>Tiket</span>
+    </a>
+    <a href="WF-01-login.html" class="mobile-nav-item">
+      <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+      <span>Keluar</span>
+    </a>
+  </nav>
+
+  <!-- SHARED JS ASSETS & LOGIC -->
+  <script src="assets/js/components.js"></script>
+  <script>
+    let activeMediaCount = 1;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof window.renderTopbar === 'function') {
+        window.renderTopbar('tiket', 'tenant');
+      }
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+
+    function selectCategory(cat, el) {
+      document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function selectUrgency(urg, el) {
+      document.querySelectorAll('.urgency-card').forEach(c => {
+        c.classList.remove('active');
+        const icon = c.querySelector('i');
+        if (icon) {
+          icon.setAttribute('data-lucide', 'circle');
+          icon.style.color = '#9CA3AF';
+        }
+      });
+      el.classList.add('active');
+      const activeIcon = el.querySelector('i');
+      if (activeIcon) {
+        activeIcon.setAttribute('data-lucide', 'check-circle-2');
+        activeIcon.style.color = urg === 'mendesak' ? '#DC2626' : (urg === 'rendah' ? '#16A34A' : '#F59E0B');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function deleteMedia(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.remove();
+        activeMediaCount--;
+        updateMediaStatus();
+      }
+    }
+
+    function handleNewMedia(e) {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        const previewList = document.getElementById('mediaPreviewList');
+        const newId = 'media_' + Date.now();
+        const div = document.createElement('div');
+        div.className = 'media-preview-item';
+        div.id = newId;
+        div.innerHTML = `
+          <img src="assets/img/login-showcase.png" alt="${file.name}">
+          <button type="button" class="btn-delete-media" onclick="deleteMedia('${newId}')" title="Hapus Foto">
+            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+          </button>
+        `;
+        previewList.appendChild(div);
+        activeMediaCount++;
+        updateMediaStatus();
+        if (window.lucide) lucide.createIcons();
+        RumaUI.showToast(`Foto ${file.name} berhasil dilampirkan`, 'info');
+      }
+    }
+
+    function updateMediaStatus() {
+      const statusEl = document.getElementById('mediaCountHelp');
+      if (activeMediaCount > 0) {
+        statusEl.style.color = '#16A34A';
+        statusEl.innerHTML = `<i data-lucide="check" style="width:13px;height:13px;display:inline;"></i> ${activeMediaCount} lampiran bukti visual terpasang (Memenuhi aturan F-07).`;
+      } else {
+        statusEl.style.color = '#DC2626';
+        statusEl.innerHTML = `<i data-lucide="alert-circle" style="width:13px;height:13px;display:inline;"></i> Belum ada bukti foto! Lampiran minimal 1 foto/video bersifat WAJIB (F-07).`;
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function submitTicketForm() {
+      // VALIDASI STRICT F-07 (SKENARIO 02 SCENARIOS_WF11)
+      if (activeMediaCount <= 0) {
+        RumaUI.showToast('Gagal mengirim: Lampiran minimal 1 foto atau video kerusakan bersifat WAJIB (F-07).', 'destructive', 'Validasi Fungsional F-07');
+        return;
+      }
+
+      const judul = document.getElementById('inputJudulTiket').value.trim();
+      const desk = document.getElementById('inputDeskripsiTiket').value.trim();
+      if (!judul || !desk) {
+        RumaUI.showToast('Harap lengkapi judul dan deskripsi masalah!', 'warning');
+        return;
+      }
+
+      // SKENARIO 03: Berhasil diterbitkan
+      RumaUI.showToast('Laporan kerusakan #TKT-202610-008 berhasil diterbitkan!', 'success');
+      setTimeout(() => {
+        location.href = 'WF-12-portal-tiket-detail.html?id=TKT-202610-008&new=true';
+      }, 1400);
+    }
+  </script>
+</body>
+</html>

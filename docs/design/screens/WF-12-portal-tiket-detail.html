@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Detail Tiket Kerusakan #TK-2026-004</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* ==========================================================================
+       ESTIFY TICKET DETAIL & 5-STEP TRACKER (WF-12 · SCR-P05)
+       TANPA HEADER TOPBAR GLOBAL — FOCUSED DETAIL & TRACKING VIEW
+       ========================================================================== */
+    body {
+      background: var(--bg-canvas, #F7F8FA);
+      color: var(--text-main, #111111);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding-bottom: 80px;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+
+    /* FLOATING SCREEN IDENTIFIER BADGE */
+    .wf-badge-floating {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 1000;
+      background: #111111;
+      color: #FFFFFF;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    /* TOP UTILITY BAR (SUBSTITUTE FOR GLOBAL HEADER - DISTRACTION FREE) */
+    .top-utility-bar {
+      background: #FFFFFF;
+      border-bottom: 1px solid #ECEEF2;
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .btn-back-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #111111;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      background: #F7F8FA;
+      border: 1px solid #ECEEF2;
+      transition: all 120ms ease;
+    }
+
+    .btn-back-nav:hover {
+      background: #FFF7ED;
+      border-color: #FED7AA;
+      color: #FF7A00;
+      transform: translateX(-2px);
+    }
+
+    .top-utility-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tenant-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #F7F8FA;
+      border: 1px solid #ECEEF2;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4B5563;
+    }
+
+    /* MAIN CONTAINER */
+    .dashboard-wrapper {
+      max-width: 1320px;
+      width: calc(100% - 48px);
+      margin: 24px auto 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* 2 COLUMN LAYOUT */
+    .dashboard-2col-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 390px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .col-main-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+    }
+
+    .col-sidebar-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+    }
+
+    /* CARD STYLES */
+    .portal-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      border: 1px solid #ECEEF2;
+      position: relative;
+    }
+
+    /* ESTIFY 5-STEP TRACKER */
+    .tracker-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFC 100%);
+      border: 1.5px solid #FFEDD5;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 4px 24px rgba(255, 122, 0, 0.05);
+    }
+
+    .estify-stepper-5 {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+      margin: 18px 0 14px;
+    }
+
+    .estify-step-segment {
+      flex: 1;
+      height: 10px;
+      border-radius: 9999px;
+      background: #E2E8F0;
+      position: relative;
+      transition: all 250ms ease;
+    }
+
+    .estify-step-segment.completed {
+      background: #10B981;
+    }
+
+    .estify-step-segment.active {
+      background: #FF7A00;
+      box-shadow: 0 0 12px rgba(255, 122, 0, 0.55);
+      animation: pulseBar 1.8s infinite;
+    }
+
+    @keyframes pulseBar {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.75; transform: scaleY(1.25); }
+    }
+
+    .stepper-labels-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      text-align: center;
+      font-size: 11.5px;
+      line-height: 1.3;
+      gap: 4px;
+    }
+
+    .step-label-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: #94A3B8;
+      font-weight: 500;
+    }
+
+    .step-label-item.completed {
+      color: #10B981;
+      font-weight: 600;
+    }
+
+    .step-label-item.active {
+      color: #FF7A00;
+      font-weight: 700;
+    }
+
+    /* STEP SIMULATION TOOLBAR */
+    .step-sim-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #F1F5F9;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 11.5px;
+      color: #475569;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-sim-step {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      transition: all 120ms ease;
+    }
+
+    .btn-sim-step:hover {
+      background: #FF7A00;
+      border-color: #FF7A00;
+      color: #FFFFFF;
+    }
+
+    /* MEDIA EVIDENCE GALLERY (F-07) */
+    .media-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .media-card-item {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #ECEEF2;
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      background: #111111;
+      transition: all 140ms ease;
+    }
+
+    .media-card-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      border-color: #FF7A00;
+    }
+
+    .media-card-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 200ms ease;
+    }
+
+    .media-card-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .media-badge-tag {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      background: rgba(17, 17, 17, 0.78);
+      backdrop-filter: blur(4px);
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .media-zoom-overlay {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      color: #111111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 140ms ease;
+    }
+
+    .media-card-item:hover .media-zoom-overlay {
+      opacity: 1;
+    }
+
+    /* CHAT THREAD */
+    .chat-thread-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 440px;
+      overflow-y: auto;
+      padding-right: 6px;
+      margin-top: 14px;
+    }
+
+    .chat-bubble {
+      display: flex;
+      gap: 12px;
+      max-width: 84%;
+    }
+
+    .chat-bubble.me {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .chat-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .chat-bubble-body {
+      border-radius: 18px;
+      padding: 14px 18px;
+      font-size: 13px;
+      line-height: 1.55;
+      position: relative;
+    }
+
+    /* Tenant bubble (Me) */
+    .chat-bubble.me .chat-bubble-body {
+      background: #FFF7ED;
+      border: 1px solid #FED7AA;
+      color: #7C2D12;
+      border-top-right-radius: 4px;
+    }
+
+    /* Staff bubble (Mbak Rini) */
+    .chat-bubble.staff .chat-bubble-body {
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+      border-top-left-radius: 4px;
+    }
+
+    /* Technician bubble (Pak Joko) */
+    .chat-bubble.tech .chat-bubble-body {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+      border-top-left-radius: 4px;
+    }
+
+    .chat-author-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .chat-input-wrapper {
+      border-top: 1px solid #ECEEF2;
+      padding-top: 16px;
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .chat-textarea {
+      flex: 1;
+      border-radius: 14px;
+      border: 1px solid #D1D5DB;
+      padding: 10px 14px;
+      font-size: 13px;
+      box-sizing: border-box;
+      resize: none;
+      outline: none;
+      transition: border-color 120ms ease;
+    }
+
+    .chat-textarea:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .btn-send-chat {
+      background: #FF7A00;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 120ms ease;
+      height: 42px;
+    }
+
+    .btn-send-chat:hover {
+      background: #E56E00;
+      transform: translateY(-1px);
+    }
+
+    /* BUTTONS */
+    .btn-action-primary {
+      background: #FF7A00;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 13.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+      transition: all 120ms ease;
+    }
+
+    .btn-action-primary:hover {
+      background: #E56E00;
+      transform: translateY(-1px);
+    }
+
+    .btn-whatsapp-cta {
+      background: #25D366;
+      color: #FFFFFF;
+      border: 1px solid #25D366;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+      transition: all 120ms ease;
+    }
+
+    .btn-whatsapp-cta:hover {
+      background: #20BD5A;
+      transform: translateY(-1px);
+    }
+
+    /* LIGHTBOX MODAL */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .lightbox-modal.active {
+      display: flex;
+    }
+
+    .lightbox-content {
+      max-width: 860px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      background: #18181B;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .lightbox-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #FFFFFF;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .lightbox-body {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #09090B;
+    }
+
+    .lightbox-body img {
+      max-width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lightbox-close-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #FFFFFF;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .lightbox-close-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* RATING & COMPLETION MODAL */
+    .rating-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1500;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .rating-modal-overlay.active {
+      display: flex;
+    }
+
+    .rating-modal-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 480px;
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .star-rating-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 18px 0;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: #CBD5E1;
+      transition: all 120ms ease;
+    }
+
+    .star-btn.active, .star-btn:hover {
+      color: #F59E0B;
+      transform: scale(1.15);
+    }
+
+    /* MOBILE BOTTOM BAR */
+    .mobile-bottom-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: #FFFFFF;
+      border-top: 1px solid #ECEEF2;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+      z-index: 20;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 10px;
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      color: #64748B;
+      font-size: 10.5px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 12px;
+    }
+
+    .mobile-nav-item.active {
+      color: #FF7A00;
+      font-weight: 600;
+    }
+
+    @media (max-width: 992px) {
+      .dashboard-2col-layout {
+        grid-template-columns: 1fr;
+      }
+      .col-sidebar-flow {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-bottom-bar { display: flex; }
+      .dashboard-wrapper { width: calc(100% - 24px); padding-bottom: 70px; margin-top: 16px; }
+      .top-utility-bar { padding: 12px 16px; }
+      .wf-badge-floating { bottom: 74px; }
+      .stepper-labels-grid { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING SCREEN IDENTIFIER -->
+  <div class="wf-badge-floating">
+    <i data-lucide="check-square" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+    <span>SCR-P05 · WF-12 (Detail Tiket & Tracker 5-Tahap)</span>
+  </div>
+
+  <!-- TOP UTILITY BAR (DISTRACTION-FREE TASK VIEW, TANPA HEADER GLOBAL) -->
+  <header class="top-utility-bar">
+    <a href="WF-10-portal-penghuni.html" class="btn-back-nav" id="backNavBtn">
+      <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
+      <span id="backNavText">Kembali ke Portal Kamar</span>
+    </a>
+
+    <div class="top-utility-right">
+      <div class="tenant-badge-pill" id="userRolePill">
+        <i data-lucide="home" style="width: 14px; height: 14px; color: #FF7A00;"></i>
+        <span>Kamar A-04 · Budi Santoso</span>
+      </div>
+      <a href="WF-11-portal-tiket-baru.html" class="btn-back-nav" style="background: #FFF7ED; border-color: #FED7AA; color: #FF7A00;" title="Buat Laporan Baru">
+        <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
+        <span style="font-size: 12px;">Lapor Baru</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ALERT BANNER: NEW TICKET CREATED NOTIFICATION (JIKA NAVIGASI DARI WF-11) -->
+  <div id="newTicketAlert" style="display: none; max-width: 1320px; width: calc(100% - 48px); margin: 16px auto -8px;">
+    <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 14px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 10px; color: #065F46; font-size: 13px;">
+        <i data-lucide="check-circle-2" style="width: 20px; height: 20px; color: #10B981; flex-shrink: 0;"></i>
+        <div>
+          <strong>Laporan Kerusakan Berhasil Diterbitkan!</strong>
+          <span style="display: block; font-size: 12px; color: #047857; margin-top: 2px;">
+            Tiket <strong>#TK-2026-004</strong> telah masuk antrean triase staf. Teknisi rekanan ditargetkan merespons dalam 2 jam (SLA Normal).
+          </span>
+        </div>
+      </div>
+      <button type="button" onclick="document.getElementById('newTicketAlert').style.display='none'" style="background: none; border: none; color: #065F46; cursor: pointer; padding: 4px;">
+        <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD CONTAINER -->
+  <div class="dashboard-wrapper">
+
+    <!-- BREADCRUMB & HEADER TIKET -->
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #64748B; margin-bottom: 6px;">
+          <a href="WF-10-portal-penghuni.html" style="color: inherit; text-decoration: none;">Portal Penghuni</a>
+          <span>&bull;</span>
+          <span>Daftar Tiket</span>
+          <span>&bull;</span>
+          <span style="color: #FF7A00; font-weight: 600;" id="ticketIdLabel">#TK-2026-004</span>
+        </div>
+        <h1 style="font-size: 24px; font-weight: 700; margin: 0; color: #111111; line-height: 1.3;" id="ticketTitleText">
+          Pipa Wastafel Kamar Mandi Bocor & Menetes
+        </h1>
+        <p style="font-size: 13px; color: #64748B; margin: 6px 0 0 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span>Unit Kamar A-04 (Lantai 2)</span>
+          <span>&bull;</span>
+          <span id="ticketTimestamp">Dilaporkan 24 Okt 2026, 09:15 WIB (3 jam lalu)</span>
+          <span>&bull;</span>
+          <span style="color: #16A34A; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
+            <i data-lucide="door-open" style="width: 13px; height: 13px;"></i> Izin Masuk Kamar Disetujui
+          </span>
+        </p>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <span class="badge-status badge-info" style="font-size: 12px; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;">
+          <i data-lucide="droplet" style="width: 14px; height: 14px;"></i> Pipa & Sanitasi
+        </span>
+        <span class="badge-status badge-warning" style="font-size: 12px; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;">
+          <i data-lucide="clock" style="width: 14px; height: 14px;"></i> Urgensi: Normal (SLA 24 Jam)
+        </span>
+      </div>
+    </div>
+
+    <!-- MAIN 2-COLUMN GRID -->
+    <main class="dashboard-2col-layout">
+      
+      <!-- LEFT COLUMN: MAIN FLOW (TRACKER, DESKRIPSI, FOTO F-07, CHAT) -->
+      <div class="col-main-flow">
+        
+        <!-- 1. PELACAK TAHAPAN 5 SEGMEN ESTIFY (SKENARIO 01) -->
+        <div class="tracker-card" id="trackerCard">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="badge-status badge-brand" id="stepPillBadge" style="font-size: 11px; padding: 4px 10px;">Tahap 3 dari 5</span>
+              <strong style="font-size: 15px; color: #111111;" id="stepStatusTitle">Sedang Dikerjakan di Lapangan</strong>
+            </div>
+            <span style="font-size: 12.5px; color: #64748B;" id="stepTargetText">
+              Estimasi Selesai: <strong>Hari Ini, 14:00 WIB</strong>
+            </span>
+          </div>
+
+          <!-- 5 Segmented Bar -->
+          <div class="estify-stepper-5">
+            <div class="estify-step-segment completed" id="seg1" title="Tahap 1: Laporan Diterima"></div>
+            <div class="estify-step-segment completed" id="seg2" title="Tahap 2: Teknisi Ditugaskan"></div>
+            <div class="estify-step-segment active" id="seg3" title="Tahap 3: Pengerjaan Lapangan"></div>
+            <div class="estify-step-segment" id="seg4" title="Tahap 4: Pengecekan Bersama"></div>
+            <div class="estify-step-segment" id="seg5" title="Tahap 5: Masalah Selesai"></div>
+          </div>
+
+          <!-- Stepper Labels -->
+          <div class="stepper-labels-grid">
+            <div class="step-label-item completed" id="lbl1">
+              <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+              <span>1. Diterima</span>
+            </div>
+            <div class="step-label-item completed" id="lbl2">
+              <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
+              <span>2. Ditugaskan</span>
+            </div>
+            <div class="step-label-item active" id="lbl3">
+              <i data-lucide="wrench" style="width: 14px; height: 14px;"></i>
+              <span>3. Pengerjaan</span>
+            </div>
+            <div class="step-label-item" id="lbl4">
+              <i data-lucide="clipboard-check" style="width: 14px; height: 14px;"></i>
+              <span>4. Pengecekan</span>
+            </div>
+            <div class="step-label-item" id="lbl5">
+              <i data-lucide="star" style="width: 14px; height: 14px;"></i>
+              <span>5. Selesai</span>
+            </div>
+          </div>
+
+          <!-- SIMULATOR CONTROLS (UNTUK PENGUJIAN QA / DEMO) -->
+          <div class="step-sim-toolbar">
+            <i data-lucide="sliders" style="width: 13px; height: 13px; color: #64748B;"></i>
+            <span style="font-weight: 600;">Simulasi Progres Stepper:</span>
+            <button type="button" class="btn-sim-step" onclick="applyStepState(1)">Tahap 1</button>
+            <button type="button" class="btn-sim-step" onclick="applyStepState(2)">Tahap 2</button>
+            <button type="button" class="btn-sim-step" onclick="applyStepState(3)">Tahap 3 (Active)</button>
+            <button type="button" class="btn-sim-step" onclick="applyStepState(4)">Tahap 4 (Cek)</button>
+            <button type="button" class="btn-sim-step" onclick="applyStepState(5)">Tahap 5 (Lunas/Tutup)</button>
+          </div>
+        </div>
+
+        <!-- 2. KRONOLOGI KELUHAN & BUKTI MEDIA AWAL (F-07 GUARDRAIL) -->
+        <div class="portal-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <h3 style="font-size: 15.5px; font-weight: 700; margin: 0; color: #111111; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="file-text" style="width: 18px; height: 18px; color: #FF7A00;"></i>
+              Deskripsi & Kronologi Kerusakan (Pengaju: Budi S.)
+            </h3>
+            <span class="badge-status badge-success" style="font-size: 11px;">
+              <i data-lucide="shield-check" style="width: 12px; height: 12px;"></i> Validasi Bukti F-07 Terpenuhi
+            </span>
+          </div>
+
+          <p style="font-size: 13.5px; color: #374151; line-height: 1.6; margin: 0 0 16px 0; background: #F8FAFC; border-left: 3px solid #FF7A00; padding: 12px 16px; border-radius: 0 12px 12px 0;">
+            "Air rembes dan menetes cukup deras di bagian sambungan pipa pembuangan bawah wastafel kamar mandi setiap kali kran dinyalakan. Akibatnya air menggenang di lantai kamar mandi jika tidak segera dilap. Sudah coba saya tahan pakai kain lap namun tetap tembus. Mohon teknisi pipa rekanan memeriksa seal pipa. Terima kasih."
+          </p>
+
+          <!-- GALERI BUKTI VISUAL F-07 -->
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <span style="font-size: 12.5px; font-weight: 600; color: #111111; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="camera" style="width: 15px; height: 15px; color: #FF7A00;"></i>
+                Dokumentasi Bukti Kerusakan & Progres Lapangan (3 Media):
+              </span>
+              <span style="font-size: 11.5px; color: #64748B;">Klik foto untuk memperbesar</span>
+            </div>
+
+            <div class="media-gallery-grid">
+              <!-- Foto 1: Penghuni Sebelum Servis -->
+              <div class="media-card-item" onclick="openLightbox('assets/img/login-showcase.png', 'Foto Pipa Pembuangan Rembes (Diunggah oleh Budi S. saat pelaporan)', '24 Okt 2026, 09:12 WIB')">
+                <img src="assets/img/login-showcase.png" alt="Foto Wastafel Bocor">
+                <span class="media-badge-tag"><i data-lucide="image" style="width: 10px; height: 10px;"></i> Pipa_Bocor.jpg</span>
+                <div class="media-zoom-overlay"><i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i></div>
+              </div>
+
+              <!-- Foto 2: Genangan Lantai -->
+              <div class="media-card-item" onclick="openLightbox('assets/img/login-showcase.png', 'Genangan Air di Lantai Kamar Mandi (Diunggah oleh Budi S.)', '24 Okt 2026, 09:13 WIB')">
+                <img src="assets/img/login-showcase.png" alt="Genangan Lantai">
+                <span class="media-badge-tag"><i data-lucide="image" style="width: 10px; height: 10px;"></i> Lantai_Basah.jpg</span>
+                <div class="media-zoom-overlay"><i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i></div>
+              </div>
+
+              <!-- Foto 3: Teknisi Bukti Suku Cadang Terpasang (After) -->
+              <div class="media-card-item" style="border: 1.5px solid #93C5FD;" onclick="openLightbox('assets/img/login-showcase.png', 'Pipa PVC & Seal Silikon Baru Terpasang (Diunggah Teknisi Pak Joko)', 'Hari Ini, 10:45 WIB')">
+                <img src="assets/img/login-showcase.png" alt="Pipa Baru Terpasang">
+                <span class="media-badge-tag" style="background: rgba(30, 64, 175, 0.85); color: #FFFFFF;"><i data-lucide="check" style="width: 10px; height: 10px;"></i> Teknisi: Pipa_Baru.jpg</span>
+                <div class="media-zoom-overlay"><i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. RUANG DISKUSI & LOG TINDAK LANJUT MULTI-PERAN (SKENARIO 02) -->
+        <div class="portal-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <div>
+              <h3 style="font-size: 15.5px; font-weight: 700; margin: 0; color: #111111; display: flex; align-items: center; gap: 8px;">
+                <i data-lucide="message-square" style="width: 18px; height: 18px; color: #FF7A00;"></i>
+                Ruang Diskusi & Log Komunikasi Multi-Peran
+              </h3>
+              <p style="font-size: 12px; color: #64748B; margin: 3px 0 0 0;">
+                Penghuni, staf operasional kost, dan teknisi terhubung dalam satu percakapan transparan.
+              </p>
+            </div>
+            <span class="badge-status badge-neutral" id="msgCountBadge" style="font-size: 11px;">3 Pesan Tersimpan</span>
+          </div>
+
+          <!-- Chat List Container -->
+          <div class="chat-thread-container" id="chatThreadContainer">
+            
+            <!-- Pesan 1: Budi Santoso (Penghuni - Right) -->
+            <div class="chat-bubble me">
+              <div class="chat-avatar" style="background: #111111; color: #FFFFFF;">BS</div>
+              <div class="chat-bubble-body">
+                <div class="chat-author-line">
+                  <span style="color: #9A3412;">Budi Santoso (Penghuni Kamar A-04)</span>
+                  <span style="color: #9CA3AF; font-weight: 400;">24 Okt, 09:15 WIB</span>
+                </div>
+                <div>Selamat pagi pengelola RumaKost, pipa pembuangan wastafel saya rembes menetes cukup deras saat kran menyala. Foto bukti sudah saya lampirkan. Saya izinkan teknisi masuk jika saya sedang di kantor. Terima kasih!</div>
+              </div>
+            </div>
+
+            <!-- Pesan 2: Mbak Rini (Staf Operasional - Left Amber) -->
+            <div class="chat-bubble staff">
+              <div class="chat-avatar" style="background: #F59E0B; color: #FFFFFF;">RS</div>
+              <div class="chat-bubble-body">
+                <div class="chat-author-line">
+                  <span style="color: #B45309;">Mbak Rini (Staf Operasional Kost)</span>
+                  <span style="color: #9CA3AF; font-weight: 400;">24 Okt, 09:30 WIB</span>
+                </div>
+                <div>Halo Mas Budi, laporan sudah diterima & diverifikasi. Saya sudah menugaskan teknisi pipa rekanan kost (Pak Joko) untuk melakukan penggantian seal karet hari ini pukul 10:00 WIB. Saya akan mendampingi di lokasi.</div>
+              </div>
+            </div>
+
+            <!-- Pesan 3: Pak Joko (Teknisi Rekanan Pipa - Left Blue) -->
+            <div class="chat-bubble tech">
+              <div class="chat-avatar" style="background: #3B82F6; color: #FFFFFF;">JK</div>
+              <div class="chat-bubble-body">
+                <div class="chat-author-line">
+                  <span style="color: #1D4ED8;">Pak Joko (Teknisi Rekanan Pipa)</span>
+                  <span style="color: #9CA3AF; font-weight: 400;">Hari Ini, 10:15 WIB</span>
+                </div>
+                <div>Selamat siang Mas Budi & Mbak Rini. Saya sudah di kamar A-04 bersama Mbak Rini. Seal karet lama sudah retak dan getas karena usia pakai. Sedang kami ganti satu set dengan seal silikon tahan bocor dan pipa sambungan fleksibel baru. Estimasi 20 menit lagi beres.</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- INPUT FORM BALAS CHAT -->
+          <div class="chat-input-wrapper">
+            <textarea id="replyMessageInput" class="chat-textarea" rows="2" placeholder="Ketik pesan konfirmasi, pertanyaan atau instruksi tambahan ke teknisi & staf..."></textarea>
+            <button type="button" class="btn-send-chat" onclick="sendReplyMessage()" id="btnSendReply">
+              <i data-lucide="send" style="width: 15px; height: 15px;"></i>
+              <span>Kirim</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: SIDEBAR (TEKNISI, TRANSPARANSI BIAYA, AKSI KONFIRMASI) -->
+      <div class="col-sidebar-flow">
+        
+        <!-- CARD 1: TEKNISI PENANGGUNG JAWAB & WHATSAPP (SKENARIO 03) -->
+        <div class="portal-card" style="border: 2px solid #EFF6FF; background: #F8FAFC;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+            <span style="font-size: 13px; font-weight: 700; color: #1E40AF; display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="user-check" style="width: 16px; height: 16px;"></i> Teknisi Penanggung Jawab
+            </span>
+            <span class="badge-status badge-success" style="font-size: 10.5px; display: inline-flex; align-items: center; gap: 4px;">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #16A34A; display: inline-block;"></span> Sedang di Lokasi
+            </span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+            <div style="width: 48px; height: 48px; border-radius: 14px; background: #3B82F6; color: #FFFFFF; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 17px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">
+              JK
+            </div>
+            <div>
+              <div style="font-size: 14.5px; font-weight: 700; color: #111111;">Pak Joko Santoso</div>
+              <div style="font-size: 12px; color: #64748B;">Spesialis Pipa & Sanitasi Air</div>
+              <div style="font-size: 11.5px; color: #D97706; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                <i data-lucide="star" style="width: 12px; height: 12px; fill: #D97706;"></i> 4.9 &bull; Rekanan Resmi Kost
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: #475569; background: #FFFFFF; border: 1px solid #E2E8F0; padding: 10px 12px; border-radius: 10px; margin-bottom: 14px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <span>Staf Pendamping:</span>
+              <strong style="color: #111111;">Mbak Rini (Operasional)</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>Estimasi Kunjungan:</span>
+              <strong style="color: #111111;">10:00 - 11:30 WIB</strong>
+            </div>
+          </div>
+
+          <!-- DIRECT WHATSAPP BUTTON (SKENARIO 03) -->
+          <a href="https://wa.me/6281234567890?text=Halo%20Pak%20Joko,%20saya%20Budi%20Santoso%20penghuni%20Kamar%20A-04%20mengenai%20tiket%20pipa%20wastafel%20bocor%20%23TK-2026-004" target="_blank" class="btn-whatsapp-cta">
+            <i data-lucide="message-circle" style="width: 17px; height: 17px;"></i>
+            <span>Hubungi Teknisi via WhatsApp</span>
+          </a>
+        </div>
+
+        <!-- CARD 2: RINCIAN BIAYA & SUKU CADANG (TRANSPARANSI BIAYA RP 0) -->
+        <div class="portal-card">
+          <h4 style="font-size: 14px; font-weight: 700; margin: 0 0 14px 0; color: #111111; display: flex; align-items: center; gap: 8px;">
+            <i data-lucide="receipt" style="width: 16px; height: 16px; color: #16A34A;"></i>
+            Rincian Biaya & Suku Cadang
+          </h4>
+          
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12.5px;">
+            <div style="display: flex; justify-content: space-between; color: #4B5563;">
+              <span>Seal Karet Silikon Fleksibel 1.5":</span>
+              <span style="font-weight: 600; color: #111111;">Rp 25.000</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: #4B5563;">
+              <span>Pipa Sambungan PVC Drainase:</span>
+              <span style="font-weight: 600; color: #111111;">Rp 35.000</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: #4B5563;">
+              <span>Jasa Servis Teknisi Rekanan:</span>
+              <span style="font-weight: 600; color: #111111;">Rp 50.000</span>
+            </div>
+            
+            <div style="border-top: 1px dashed #CBD5E1; padding-top: 10px; margin-top: 2px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #111111; font-size: 13px;">Beban Biaya Penghuni:</strong>
+                <span style="display: block; font-size: 11px; color: #16A34A; font-weight: 500;">(Ditanggung 100% Pengelola Kost)</span>
+              </div>
+              <strong style="color: #16A34A; font-size: 16px; font-weight: 700;">Rp 0</strong>
+            </div>
+          </div>
+
+          <div style="margin-top: 12px; font-size: 11.5px; color: #64748B; line-height: 1.45; background: #F8FAFC; padding: 8px 12px; border-radius: 8px; border: 1px solid #ECEEF2;">
+            <i data-lucide="info" style="width: 12px; height: 12px; color: #FF7A00; display: inline-block; vertical-align: middle; margin-right: 4px;"></i>
+            Kerusakan akibat aus wajar operasional harian kamar ditanggung penuh oleh manajemen RumaKost tanpa pungutan tambahan.
+          </div>
+        </div>
+
+        <!-- CARD 3: AKSI KONFIRMASI PENYELESAIAN TIKET -->
+        <div class="portal-card" id="actionConfirmationCard" style="background: #FAFAFC; border: 1.5px dashed #CBD5E1;">
+          <h4 style="font-size: 13.5px; font-weight: 700; margin: 0 0 6px 0; color: #111111;" id="actionCardTitle">
+            Pengecekan Hasil Servis
+          </h4>
+          <p style="font-size: 12px; color: #64748B; margin: 0 0 14px 0; line-height: 1.45;" id="actionCardDesc">
+            Setelah teknisi selesai dan Anda memeriksa hasil perbaikan wastafel bersama, silakan konfirmasi bahwa kendala telah tuntas.
+          </p>
+
+          <button type="button" class="btn-action-primary" id="btnConfirmDone" onclick="openRatingModal()">
+            <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>
+            <span>Konfirmasi Masalah Selesai</span>
+          </button>
+        </div>
+
+        <!-- CARD 4: TIMELINE AUDIT & SLA -->
+        <div class="portal-card" style="padding: 18px;">
+          <div style="font-size: 12px; font-weight: 700; color: #111111; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="history" style="width: 14px; height: 14px; color: #64748B;"></i>
+            Jejak Waktu Penanganan (Audit Trail)
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11.5px; color: #4B5563;">
+            <div style="display: flex; justify-content: space-between;">
+              <span>09:15 WIB</span>
+              <span style="font-weight: 500;">Laporan diajukan penghuni</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>09:30 WIB</span>
+              <span style="font-weight: 500;">Triase staf & penugasan Pak Joko</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span>10:10 WIB</span>
+              <span style="font-weight: 500;">Teknisi tiba di lokasi kamar A-04</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: #FF7A00; font-weight: 600;">
+              <span>10:15 WIB</span>
+              <span>Proses penggantian seal & pipa</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- LIGHTBOX MODAL: FULL RESOLUTION IMAGE VIEWER (F-07) -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightboxOnBackdrop(event)">
+    <div class="lightbox-content">
+      <div class="lightbox-header">
+        <div>
+          <strong id="lightboxTitle" style="font-size: 14px; font-weight: 600;">Foto Dokumentasi Kerusakan</strong>
+          <div id="lightboxSub" style="font-size: 11.5px; color: #A1A1AA; margin-top: 2px;">24 Okt 2026, 09:12 WIB</div>
+        </div>
+        <button type="button" class="lightbox-close-btn" onclick="closeLightbox()">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div class="lightbox-body">
+        <img id="lightboxImg" src="assets/img/login-showcase.png" alt="Detail Foto Bukti">
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: KONFIRMASI SELESAI & ULASAN KEPUASAN (SCR-P05B) -->
+  <div class="rating-modal-overlay" id="ratingModalOverlay">
+    <div class="rating-modal-card">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: #ECFDF5; color: #10B981; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;">
+        <i data-lucide="check" style="width: 28px; height: 28px;"></i>
+      </div>
+
+      <h3 style="font-size: 18px; font-weight: 700; margin: 0 0 6px 0; color: #111111;">
+        Konfirmasi Perbaikan Selesai
+      </h3>
+      <p style="font-size: 13px; color: #64748B; margin: 0 0 16px 0; line-height: 1.45;">
+        Apakah wastafel kamar Anda telah berfungsi normal dan tidak ada kebocoran air lagi?
+      </p>
+
+      <div style="background: #F8FAFC; border: 1px solid #ECEEF2; border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+        <span style="font-size: 12px; font-weight: 600; color: #475569;">Beri Penilaian Layanan Teknisi (Pak Joko):</span>
+        <div class="star-rating-row" id="starRatingRow">
+          <button type="button" class="star-btn active" onclick="setRating(1)"><i data-lucide="star" style="width: 26px; height: 26px; fill: currentColor;"></i></button>
+          <button type="button" class="star-btn active" onclick="setRating(2)"><i data-lucide="star" style="width: 26px; height: 26px; fill: currentColor;"></i></button>
+          <button type="button" class="star-btn active" onclick="setRating(3)"><i data-lucide="star" style="width: 26px; height: 26px; fill: currentColor;"></i></button>
+          <button type="button" class="star-btn active" onclick="setRating(4)"><i data-lucide="star" style="width: 26px; height: 26px; fill: currentColor;"></i></button>
+          <button type="button" class="star-btn active" onclick="setRating(5)"><i data-lucide="star" style="width: 26px; height: 26px; fill: currentColor;"></i></button>
+        </div>
+        <span style="font-size: 12px; font-weight: 600; color: #D97706;" id="ratingLabel">Sangat Puas (5 Bintang)</span>
+      </div>
+
+      <textarea id="reviewCommentInput" class="chat-textarea" rows="2" placeholder="Tulis testimoni atau catatan perbaikan (opsional)..." style="width: 100%; margin-bottom: 16px;"></textarea>
+
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="btn-back-nav" style="flex: 1; justify-content: center;" onclick="closeRatingModal()">
+          Batal
+        </button>
+        <button type="button" class="btn-action-primary" style="flex: 2;" onclick="submitRatingAndCloseTicket()">
+          <i data-lucide="send" style="width: 15px; height: 15px;"></i>
+          <span>Kirim & Tutup Tiket</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM BAR -->
+  <nav class="mobile-bottom-bar" aria-label="Navigasi Bawah Ponsel">
+    <a href="WF-10-portal-penghuni.html" class="mobile-nav-item">
+      <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+      <span>Kamar</span>
+    </a>
+    <a href="WF-11-portal-tiket-baru.html" class="mobile-nav-item">
+      <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+      <span>Lapor Baru</span>
+    </a>
+    <a href="WF-12-portal-tiket-detail.html" class="mobile-nav-item active">
+      <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+      <span>Detail Tiket</span>
+    </a>
+    <a href="WF-01-login.html" class="mobile-nav-item">
+      <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+      <span>Keluar</span>
+    </a>
+  </nav>
+
+  <!-- SHARED JS ASSETS & INTERACTIVE LOGIC -->
+  <script src="assets/js/components.js"></script>
+  <script>
+    let currentStep = 3;
+    let selectedRating = 5;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+
+      // 1. Parsing Query Parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      // Jika baru dibuat dari WF-11 (?new=true)
+      if (urlParams.get('new') === 'true') {
+        const alertEl = document.getElementById('newTicketAlert');
+        if (alertEl) alertEl.style.display = 'block';
+      }
+
+      // Role Staf adaptif (?role=staf)
+      if (urlParams.get('role') === 'staf' || urlParams.get('from') === 'staf') {
+        const backBtn = document.getElementById('backNavBtn');
+        const backText = document.getElementById('backNavText');
+        const rolePill = document.getElementById('userRolePill');
+        
+        if (backBtn) backBtn.href = 'WF-08-tiket.html?role=staf';
+        if (backText) backText.textContent = 'Kembali ke Antrean Tiket';
+        if (rolePill) {
+          rolePill.innerHTML = '<i data-lucide="user-cog" style="width:14px;height:14px;color:#F59E0B;"></i><span>Staf Operasional: Mbak Rini</span>';
+          if (window.lucide) lucide.createIcons();
+        }
+      }
+
+      // Step Simulator via Query Parameter (?step=1 s.d 5)
+      const stepParam = parseInt(urlParams.get('step'), 10);
+      if (stepParam >= 1 && stepParam <= 5) {
+        applyStepState(stepParam);
+      }
+    });
+
+    // =========================================================================
+    // SKENARIO 01: STEPPER 5-SEGMEN CONTROLLER
+    // =========================================================================
+    function applyStepState(stepNumber) {
+      currentStep = stepNumber;
+      
+      const stepBadge = document.getElementById('stepPillBadge');
+      const stepTitle = document.getElementById('stepStatusTitle');
+      const stepTarget = document.getElementById('stepTargetText');
+      const actionTitle = document.getElementById('actionCardTitle');
+      const actionDesc = document.getElementById('actionCardDesc');
+      const btnConfirm = document.getElementById('btnConfirmDone');
+
+      const titles = [
+        "",
+        "Laporan Diterima (Menunggu Triase Staf)",
+        "Teknisi Rekanan Ditugaskan (Pak Joko)",
+        "Sedang Dikerjakan di Lapangan",
+        "Pengecekan Bersama di Lokasi",
+        "Tiket Selesai & Ditutup"
+      ];
+
+      if (stepBadge) stepBadge.textContent = `Tahap ${stepNumber} dari 5`;
+      if (stepTitle) stepTitle.textContent = titles[stepNumber];
+
+      for (let i = 1; i <= 5; i++) {
+        const seg = document.getElementById(`seg${i}`);
+        const lbl = document.getElementById(`lbl${i}`);
+        if (!seg || !lbl) continue;
+
+        seg.className = 'estify-step-segment';
+        lbl.className = 'step-label-item';
+
+        if (i < stepNumber) {
+          seg.classList.add('completed');
+          lbl.classList.add('completed');
+        } else if (i === stepNumber) {
+          if (stepNumber === 5) {
+            seg.classList.add('completed');
+            lbl.classList.add('completed');
+          } else {
+            seg.classList.add('active');
+            lbl.classList.add('active');
+          }
+        }
+      }
+
+      // Update Action Card state
+      if (stepNumber === 5) {
+        if (actionTitle) actionTitle.textContent = "Tiket Selesai & Ditutup";
+        if (actionDesc) actionDesc.textContent = "Perbaikan wastafel telah diverifikasi tuntas pada 24 Okt 2026. Terima kasih atas kerja samanya.";
+        if (btnConfirm) {
+          btnConfirm.className = 'btn-action-pill';
+          btnConfirm.style.background = '#ECFDF5';
+          btnConfirm.style.borderColor = '#A7F3D0';
+          btnConfirm.style.color = '#065F46';
+          btnConfirm.innerHTML = '<i data-lucide="check-check" style="width: 15px; height: 15px;"></i><span>Masalah Telah Tuntas Terverifikasi</span>';
+          btnConfirm.onclick = null;
+        }
+      } else if (stepNumber === 4) {
+        if (actionTitle) actionTitle.textContent = "Teknisi Selesai: Silakan Cek Bersama";
+        if (actionDesc) actionDesc.textContent = "Pak Joko telah menyelesaikan instalasi. Silakan periksa aliran kran wastafel dan konfirmasi penutupan tiket.";
+        if (btnConfirm) {
+          btnConfirm.className = 'btn-action-primary';
+          btnConfirm.style.background = '#FF7A00';
+          btnConfirm.innerHTML = '<i data-lucide="check-circle" style="width: 16px; height: 16px;"></i><span>Konfirmasi Masalah Selesai & Beri Ulasan</span>';
+          btnConfirm.onclick = openRatingModal;
+        }
+      }
+
+      if (window.lucide) lucide.createIcons();
+      RumaUI.showToast(`Beralih ke Tahap ${stepNumber}: ${titles[stepNumber]}`, 'info');
+    }
+
+    // =========================================================================
+    // SKENARIO 02: MULTI-ROLE DISCUSSION CHAT CONTROLLER
+    // =========================================================================
+    function sendReplyMessage() {
+      const input = document.getElementById('replyMessageInput');
+      const text = input.value.trim();
+      if (!text) {
+        RumaUI.showToast('Harap tuliskan pesan balasan terlebih dahulu!', 'warning');
+        return;
+      }
+
+      const container = document.getElementById('chatThreadContainer');
+      const countBadge = document.getElementById('msgCountBadge');
+      const now = new Date();
+      const timeStr = `Hari Ini, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} WIB`;
+
+      const newBubble = document.createElement('div');
+      newBubble.className = 'chat-bubble me';
+      newBubble.innerHTML = `
+        <div class="chat-avatar" style="background: #111111; color: #FFFFFF;">BS</div>
+        <div class="chat-bubble-body">
+          <div class="chat-author-line">
+            <span style="color: #9A3412;">Budi Santoso (Penghuni Kamar A-04)</span>
+            <span style="color: #9CA3AF; font-weight: 400;">${timeStr}</span>
+          </div>
+          <div>${escapeHtml(text)}</div>
+        </div>
+      `;
+
+      container.appendChild(newBubble);
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
+
+      // Update counter
+      const totalMessages = container.querySelectorAll('.chat-bubble').length;
+      if (countBadge) countBadge.textContent = `${totalMessages} Pesan Tersimpan`;
+
+      RumaUI.showToast('Pesan balasan berhasil dikirim ke teknisi dan staf', 'success');
+
+      // Simulasi balasan teknisi setelah 2.5 detik jika berkaitan dengan tes pipa
+      if (text.toLowerCase().includes('tes') || text.toLowerCase().includes('cek') || text.toLowerCase().includes('selesai')) {
+        setTimeout(() => {
+          const autoBubble = document.createElement('div');
+          autoBubble.className = 'chat-bubble tech';
+          autoBubble.innerHTML = `
+            <div class="chat-avatar" style="background: #3B82F6; color: #FFFFFF;">JK</div>
+            <div class="chat-bubble-body">
+              <div class="chat-author-line">
+                <span style="color: #1D4ED8;">Pak Joko (Teknisi Rekanan Pipa)</span>
+                <span style="color: #9CA3AF; font-weight: 400;">Baru saja</span>
+              </div>
+              <div>Siap Mas Budi, instalasi seal silikon sudah kering dan kami tes kran deras selama 5 menit. Tidak ada rembesan sama sekali, kondisi pipa aman dan kering sempurna.</div>
+            </div>
+          `;
+          container.appendChild(autoBubble);
+          container.scrollTop = container.scrollHeight;
+          const updatedTotal = container.querySelectorAll('.chat-bubble').length;
+          if (countBadge) countBadge.textContent = `${updatedTotal} Pesan Tersimpan`;
+          RumaUI.showToast('Pesan baru diterima dari Pak Joko (Teknisi)', 'info');
+        }, 2500);
+      }
+    }
+
+    // =========================================================================
+    // LIGHTBOX CONTROLLER (F-07 PHOTO EVIDENCE VIEWER)
+    // =========================================================================
+    function openLightbox(imgSrc, title, timeStr) {
+      const modal = document.getElementById('lightboxModal');
+      const img = document.getElementById('lightboxImg');
+      const titleEl = document.getElementById('lightboxTitle');
+      const subEl = document.getElementById('lightboxSub');
+
+      if (img) img.src = imgSrc;
+      if (titleEl) titleEl.textContent = title;
+      if (subEl) subEl.textContent = timeStr;
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function closeLightboxOnBackdrop(e) {
+      if (e.target.id === 'lightboxModal') {
+        closeLightbox();
+      }
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeLightbox();
+        closeRatingModal();
+      }
+    });
+
+    // =========================================================================
+    // RATING & CLOSING TICKET MODAL (SCR-P05B)
+    // =========================================================================
+    function openRatingModal() {
+      const modal = document.getElementById('ratingModalOverlay');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeRatingModal() {
+      const modal = document.getElementById('ratingModalOverlay');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function setRating(val) {
+      selectedRating = val;
+      const stars = document.querySelectorAll('.star-btn');
+      const label = document.getElementById('ratingLabel');
+      
+      const labels = [
+        "",
+        "Sangat Kecewa (1 Bintang)",
+        "Kurang Puas (2 Bintang)",
+        "Cukup Puas (3 Bintang)",
+        "Puas (4 Bintang)",
+        "Sangat Puas (5 Bintang)"
+      ];
+
+      stars.forEach((btn, idx) => {
+        if (idx < val) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      if (label) label.textContent = labels[val];
+    }
+
+    function submitRatingAndCloseTicket() {
+      closeRatingModal();
+      applyStepState(5);
+      RumaUI.showToast(`Terima kasih! Tiket #TK-2026-004 telah ditutup dengan rating ${selectedRating} bintang.`, 'success');
+    }
+
+    // Helper sanitasi input
+    function escapeHtml(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          "'": '&#39;',
+          '"': '&quot;'
+        }[tag] || tag)
+      );
+    }
+  </script>
+</body>
+</html>

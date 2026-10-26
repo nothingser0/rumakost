@@ -26,9 +26,9 @@
       { id: 'tiket', label: 'Tiket Perbaikan', href: 'WF-08-tiket.html?role=staf' }
     ],
     tenant: [
-      { id: 'beranda', label: 'Beranda Kamar', href: 'WF-10-portal-penghuni.html' },
-      { id: 'tagihan-saya', label: 'Tagihan Saya', href: 'WF-10-portal-penghuni.html#tagihan-section' },
-      { id: 'lapor-kerusakan', label: 'Lapor Kerusakan', href: 'WF-11-portal-tiket-baru.html' }
+      { id: 'beranda', label: 'Beranda Kamar', href: 'WF-10-portal-dashboard.html' },
+      { id: 'tagihan', label: 'Tagihan Saya', href: 'WF-10-portal-tagihan.html' },
+      { id: 'tiket', label: 'Tiket Kerusakan', href: 'WF-10-portal-tiket.html' }
     ]
   };
 
@@ -65,7 +65,7 @@
     const role = explicitRole || getCurrentRole();
 
     // Guardrail RBAC: Jika Penghuni membuka dasbor utama manajemen atau master kamar/penghuni, redirect paksa ke portal penghuni (SK-20)
-    if (role === 'tenant' && (
+    const isManagementScreen = (
       window.location.pathname.includes('WF-02-dashboard') ||
       window.location.pathname.includes('WF-03-kamar') ||
       window.location.pathname.includes('WF-04-penghuni') ||
@@ -73,17 +73,10 @@
       window.location.pathname.includes('WF-06-pembayaran') ||
       window.location.pathname.includes('WF-07-laporan') ||
       window.location.pathname.includes('WF-08-tiket') ||
-      window.location.pathname.includes('WF-09-pengaturan') ||
-      activeId === 'dashboard' ||
-      activeId === 'kamar' ||
-      activeId === 'penghuni' ||
-      activeId === 'tagihan' ||
-      activeId === 'pembayaran' ||
-      activeId === 'laporan' ||
-      activeId === 'tiket' ||
-      activeId === 'pengaturan'
-    )) {
-      window.location.replace('WF-10-portal-penghuni.html');
+      window.location.pathname.includes('WF-09-pengaturan')
+    );
+    if (role === 'tenant' && isManagementScreen) {
+      window.location.replace('WF-10-portal-dashboard.html');
       return;
     }
 
@@ -103,7 +96,7 @@
     let brandTarget = 'WF-02-dashboard.html';
 
     if (role === 'tenant') {
-      brandTarget = 'WF-10-portal-penghuni.html';
+      brandTarget = 'WF-10-portal-dashboard.html';
       rightSectionHtml = `
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="badge-status badge-brand" style="font-size: 11px;">
@@ -124,13 +117,17 @@
                   <span class="badge-status badge-brand" style="font-size: 10px; padding: 2px 8px;">Penghuni Aktif</span>
                 </div>
               </div>
-              <a href="WF-10-portal-penghuni.html" class="dropdown-menu-item">
+              <a href="WF-10-portal-dashboard.html" class="dropdown-menu-item">
                 <i data-lucide="home" style="width: 15px; height: 15px;"></i>
-                Portal Kamar Saya
+                Beranda Kamar
               </a>
-              <a href="WF-11-portal-tiket-baru.html" class="dropdown-menu-item">
+              <a href="WF-10-portal-tagihan.html" class="dropdown-menu-item">
+                <i data-lucide="receipt" style="width: 15px; height: 15px;"></i>
+                Tagihan Saya
+              </a>
+              <a href="WF-10-portal-tiket.html" class="dropdown-menu-item">
                 <i data-lucide="wrench" style="width: 15px; height: 15px;"></i>
-                Lapor Kerusakan Baru
+                Tiket Kerusakan
               </a>
               <div class="dropdown-divider"></div>
               <a href="WF-01-login.html" onclick="handleLogout(event)" class="dropdown-menu-item danger">
