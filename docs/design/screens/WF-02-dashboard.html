@@ -73,9 +73,9 @@
     .metric-card-estify {
       cursor: pointer;
       background: var(--bg-card);
-      border-radius: 20px;
-      padding: 22px 24px 20px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      border-radius: var(--radius-xl);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-card);
       border: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
@@ -85,11 +85,19 @@
       box-sizing: border-box;
       gap: 16px;
       min-width: 0;
+      outline: none;
     }
 
     .metric-card-estify:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      border-color: #E2E8F0;
+    }
+
+    .metric-card-estify:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.25);
+      border-color: var(--brand-primary);
     }
 
     /* TOP ROW: ICON + TITLE (LEFT) & STATUS BADGE (RIGHT) */
@@ -108,7 +116,7 @@
     .metric-icon-sq {
       width: 38px;
       height: 38px;
-      border-radius: 11px;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -118,16 +126,16 @@
 
     /* Design Token --brand-light (#FFF7ED) untuk kontainer ikon */
     .metric-icon-sq.is-brand {
-      background: #FFF7ED;
-      color: #FF7A00;
-      border: 1px solid #FFEDD5;
+      background: var(--brand-primary-light, #FFF7ED);
+      color: var(--brand-primary, #FF7A00);
+      border: 1px solid var(--brand-primary-border, #FFEDD5);
     }
 
     /* Design Token --dark-pill (#111111) soft variant */
     .metric-icon-sq.is-dark {
       background: #F1F5F9;
-      color: #111111;
-      border: 1px solid #E2E8F0;
+      color: var(--dark-text, #111111);
+      border: 1px solid var(--border-control, #E2E8F0);
     }
 
     /* Design Token Red/Danger variant untuk pengeluaran operasional */
@@ -171,21 +179,21 @@
     }
 
     .pill-orange-soft {
-      background: #FFF7ED;
-      color: #FF7A00;
-      border: 1px solid #FFEDD5;
+      background: var(--brand-primary-light, #FFF7ED);
+      color: var(--brand-primary, #FF7A00);
+      border: 1px solid var(--brand-primary-border, #FFEDD5);
     }
 
     .pill-green-soft {
-      background: #DCFCE7;
-      color: #16A34A;
+      background: var(--status-success-bg, #DCFCE7);
+      color: var(--status-success-text, #16A34A);
       border: 1px solid #BBF7D0;
     }
 
     .pill-dark-soft {
       background: #F1F5F9;
-      color: #111111;
-      border: 1px solid #E2E8F0;
+      color: var(--dark-text, #111111);
+      border: 1px solid var(--border-control, #E2E8F0);
     }
 
     /* BOTTOM ROW: VALUE + SUBTEXT (LEFT) & ESTIFY RADIAL GAUGE (RIGHT) */
@@ -254,7 +262,7 @@
 
     /* ═══════════════════════════════════════
        2. MIDDLE ROW: DOUBLE BAR CHART + HIGHLIGHT CARD (SIDE-BY-SIDE!)
-    ═══════════════════════════════════════ */
+     ═══════════════════════════════════════ */
     .chart-highlight-row {
       display: grid;
       grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
@@ -265,7 +273,7 @@
       background: var(--bg-card);
       border-radius: var(--radius-xl);
       padding: 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      box-shadow: var(--shadow-card);
       border: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
@@ -283,6 +291,7 @@
       font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
+      letter-spacing: -0.2px;
     }
 
     .header-ctrl-group {
@@ -300,13 +309,13 @@
     .btn-popover-trigger {
       background: #FFFFFF !important;
       border: 1.5px solid var(--border-control, #E2E8F0) !important;
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       height: 40px !important;
       padding: 0 14px !important;
       box-sizing: border-box;
       font-size: 12px !important;
       font-weight: 500;
-      color: #374151;
+      color: var(--text-secondary);
       font-family: inherit;
       cursor: pointer;
       display: inline-flex;
@@ -321,14 +330,14 @@
     .btn-popover-trigger:hover {
       background: #F8FAFC !important;
       border-color: #CBD5E1 !important;
-      color: #111111;
+      color: var(--text-main);
     }
 
     .btn-popover-trigger.is-open {
       background: #FFFFFF !important;
       border-color: var(--brand-primary) !important;
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
-      color: #111111;
+      color: var(--text-main);
     }
 
     .popover-dropdown-menu {
@@ -338,7 +347,7 @@
       width: max-content;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
-      border-radius: 16px;
+      border-radius: var(--radius-lg);
       padding: 6px;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
       display: none;
@@ -359,10 +368,10 @@
 
     .popover-item {
       padding: 8px 12px;
-      border-radius: 10px;
+      border-radius: var(--radius-sm);
       font-size: 12px;
       font-weight: 500;
-      color: #374151;
+      color: var(--text-secondary);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -371,21 +380,23 @@
       transition: background-color var(--transition-fast, 150ms ease), color var(--transition-fast, 150ms ease);
       white-space: nowrap;
       box-sizing: border-box;
+      outline: none;
     }
 
-    .popover-item:hover {
+    .popover-item:hover,
+    .popover-item:focus-visible {
       background: var(--bg-hover, #F3F4F6);
-      color: var(--text-main, #111827);
+      color: var(--text-main);
     }
 
     .popover-item.selected {
-      background: #111111;
+      background: var(--dark-pill, #111111);
       color: #FFFFFF;
       font-weight: 600;
     }
 
     .popover-item.selected:hover {
-      background: #111111;
+      background: var(--dark-pill, #111111);
       color: #FFFFFF;
     }
 
@@ -410,12 +421,19 @@
       transition: all var(--transition-fast);
       box-sizing: border-box;
       user-select: none;
+      outline: none;
     }
 
     .pill-dropdown-trigger:hover,
     .pill-dropdown-trigger.is-open {
       background: #FFFFFF;
       border-color: #D1D5DB;
+      color: var(--text-main);
+    }
+
+    .pill-dropdown-trigger:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
+      border-color: var(--brand-primary);
     }
 
     /* Floating Arrow Navigation Link (Arus Kas & Operasional -> WF-07 Laporan) */
@@ -433,6 +451,7 @@
       transition: all var(--transition-fast);
       box-sizing: border-box;
       flex-shrink: 0;
+      outline: none;
     }
 
     .pill-arrow-btn:hover,
@@ -440,8 +459,13 @@
       background: var(--dark-pill) !important;
       color: #FFFFFF !important;
       border-color: var(--dark-pill) !important;
-      transform: scale(1.08) !important;
-      box-shadow: 0 4px 12px rgba(17, 17, 17, 0.25) !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .pill-arrow-btn:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.25) !important;
+      border-color: var(--brand-primary) !important;
     }
 
     /* 3-Dot More Options Dropdown Trigger (Matches Hari ini v .pill-dropdown-trigger) */
@@ -467,9 +491,14 @@
     .btn-more-options.is-open {
       background: #FFFFFF !important;
       border-color: #D1D5DB !important;
-      color: var(--text-main, #111827) !important;
+      color: var(--text-main) !important;
       transform: none !important;
       box-shadow: none !important;
+    }
+
+    .btn-more-options:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15) !important;
+      border-color: var(--brand-primary) !important;
     }
 
     /* DOUBLE BAR CHART CANVAS (Estify Property Type Pattern) */
@@ -516,7 +545,7 @@
       position: absolute;
       left: 0;
       right: 0;
-      border-top: 1px dashed #ECEEF2;
+      border-top: 1px dashed var(--border-subtle, #ECEEF2);
       pointer-events: none;
       z-index: 2;
     }
@@ -528,7 +557,7 @@
     .chart-grid-line.line-10 { top: 128px; }
     .chart-grid-line.line-0  {
       top: 160px;
-      border-top: 1.5px solid #E5E7EB;
+      border-top: 1.5px solid var(--border-control, #E2E8F0);
     }
 
     .bars-pair-column {
@@ -578,11 +607,11 @@
 
     /* INACTIVE BARS: Soft Muted Pale Tone (Estify DNA) */
     .bar-fill-solid.is-pengeluaran {
-      background: #E2E8F0;
+      background: var(--border-control, #E2E8F0);
     }
 
     .bar-fill-solid.is-pemasukan {
-      background: #FED7AA;
+      background: var(--brand-peach-light, #FED7AA);
     }
 
     /* ACTIVE MONTH (OKT - BULAN BERJALAN): VIBRANT BRAND ORANGE & DARK */
@@ -593,7 +622,7 @@
 
     .bar-fill-solid.is-dark-active,
     .bar-fill-solid.is-peach-active {
-      background: #111111 !important;
+      background: var(--dark-pill, #111111) !important;
       box-shadow: 0 2px 10px rgba(17, 17, 17, 0.4);
     }
 
@@ -607,7 +636,7 @@
     .bars-pair-column:hover .bar-fill-solid.is-pengeluaran,
     .bars-pair-column:hover .bar-fill-solid.is-peach-active,
     .bars-pair-column:hover .bar-fill-solid.is-dark-active {
-      background: #111111 !important;
+      background: var(--dark-pill, #111111) !important;
       box-shadow: 0 3px 10px rgba(17, 17, 17, 0.35) !important;
     }
 
@@ -640,7 +669,7 @@
       transform: translateX(-50%) translateY(4px);
       background: #FFFFFF;
       padding: 7px 11px;
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
       border: 1px solid var(--border-subtle);
       font-size: 11px;
@@ -661,9 +690,9 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .tooltip-dot-orange { width: 6px; height: 6px; border-radius: 50%; background: #FF7A00; display: inline-block; }
+    .tooltip-dot-orange { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-primary); display: inline-block; }
     .tooltip-dot-dark,
-    .tooltip-dot-peach  { width: 6px; height: 6px; border-radius: 50%; background: #111111; display: inline-block; }
+    .tooltip-dot-peach  { width: 6px; height: 6px; border-radius: 50%; background: var(--dark-pill); display: inline-block; }
 
     /* VIBRANT ORANGE HIGHLIGHT CARD (Clean Estify Pattern · No Neon, No Leak) */
     .orange-highlight-card {
@@ -680,8 +709,20 @@
       flex-direction: column;
       justify-content: flex-start;
       gap: 18px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      box-shadow: var(--shadow-card);
       border: none;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .orange-highlight-card:hover {
+      transform: none;
+      box-shadow: var(--shadow-card);
+    }
+
+    .orange-highlight-card:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px #FFFFFF, 0 0 0 6px var(--brand-primary);
     }
 
     /* Geometric Dot Grid Motif (0.4 Opacity) */
@@ -738,11 +779,18 @@
       color: #FFFFFF;
       text-decoration: none;
       transition: all var(--transition-fast);
+      outline: none;
     }
 
     .highlight-arrow-round:hover {
       background: #FFFFFF;
       color: var(--brand-primary);
+    }
+
+    .highlight-arrow-round:focus-visible {
+      background: #FFFFFF;
+      color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6);
     }
 
     .highlight-main-body {
@@ -763,7 +811,7 @@
 
     .highlight-sub-meta {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.82);
+      color: rgba(255, 255, 255, 0.9);
       font-weight: 500;
       letter-spacing: 0.2px;
       line-height: 1.2;
@@ -775,7 +823,7 @@
       line-height: 1.2;
       letter-spacing: -0.4px;
       margin: 0;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
     }
 
     /* Murni Emphasis Pemasukan Bersih (Bold, Bersih, Tanpa Redundansi) */
@@ -787,7 +835,7 @@
 
     .emphasis-lbl {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.88);
+      color: rgba(255, 255, 255, 0.9);
       font-weight: 500;
       letter-spacing: 0.2px;
     }
@@ -824,7 +872,7 @@
 
     .emphasis-sub-txt {
       font-size: 11px;
-      color: rgba(255, 255, 255, 0.78);
+      color: rgba(255, 255, 255, 0.85);
       font-weight: 500;
     }
 
@@ -835,7 +883,7 @@
       bottom: 0px;
       height: calc(100% - 74px);
       width: clamp(135px, 35%, 170px);
-      border-radius: 20px 0 0 0;
+      border-radius: var(--radius-xl) 0 0 0;
       object-fit: cover;
       object-position: center bottom;
       box-shadow: none;
@@ -849,11 +897,10 @@
     .properties-section-card {
       background: var(--bg-card);
       border-radius: var(--radius-xl);
-      padding: 15px 24px 13px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      padding: 20px 24px 18px;
+      box-shadow: var(--shadow-card);
       border: 1px solid var(--border-subtle);
-      min-height: 306px;
-      height: 306px;
+      min-height: 310px;
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
@@ -863,14 +910,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .properties-title-main {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text-main);
-      letter-spacing: -0.3px;
+      letter-spacing: -0.2px;
       margin: 0;
     }
 
@@ -891,7 +938,7 @@
       border-radius: var(--radius-full);
       padding: 0 14px;
       height: 40px !important;
-      width: 230px;
+      width: 250px;
       transition: all var(--transition-fast);
       box-sizing: border-box;
     }
@@ -924,8 +971,32 @@
 
     .capsule-search-box input::placeholder,
     .search-capsule-wide input::placeholder {
-      color: #94A3B8;
+      color: var(--text-subtle, #9CA3AF);
       font-weight: 400;
+    }
+
+    /* Minimalist Pill Clear Button (Only visible when input has text) */
+    .btn-clear-search {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: #64748B;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      flex-shrink: 0;
+      outline: none;
+      transition: all var(--transition-fast, 0.15s ease);
+    }
+
+    .btn-clear-search:hover {
+      background: #CBD5E1;
+      color: var(--text-main, #111111);
     }
 
     /* Estify Round Circle Filter Button (36px Action Circle Standard) */
@@ -953,7 +1024,7 @@
     .btn-circle-filter.is-open {
       background: #FFFFFF !important;
       border-color: #D1D5DB !important;
-      color: var(--text-main, #111827) !important;
+      color: var(--text-main) !important;
       transform: none !important;
       box-shadow: none !important;
     }
@@ -961,13 +1032,13 @@
     .btn-circle-filter:focus,
     .btn-circle-filter:focus-visible {
       outline: none !important;
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12) !important;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15) !important;
       border-color: var(--brand-primary);
     }
 
     .btn-circle-filter:active {
       transform: scale(0.95);
-      background: #E2E8F0;
+      background: var(--border-control, #E2E8F0);
     }
 
     /* Estify Horizontal Room Carousel (15 Unit · Tampil Awal 3 · Infinite Looping · Hidden Scrollbar) */
@@ -976,7 +1047,7 @@
       gap: 14px;
       overflow-x: auto;
       overflow-y: hidden;
-      scroll-snap-type: x mandatory;
+      scroll-snap-type: x proximity;
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
       padding: 4px 2px 8px;
@@ -986,12 +1057,23 @@
       flex: 1;
       width: 100%;
       box-sizing: border-box;
-      /* Sembunyikan scrollbar sepenuhnya di Firefox, Edge, IE */
       scrollbar-width: none;
       -ms-overflow-style: none;
+      cursor: grab;
     }
 
-    /* Sembunyikan scrollbar sepenuhnya di WebKit (Chrome, Safari, Opera) */
+    .room-cards-3col.is-dragging {
+      cursor: grabbing !important;
+      user-select: none !important;
+      scroll-snap-type: none !important;
+      scroll-behavior: auto !important;
+    }
+
+    .room-cards-3col.is-wheeling {
+      scroll-snap-type: none !important;
+      scroll-behavior: auto !important;
+    }
+
     .room-cards-3col::-webkit-scrollbar {
       display: none;
       width: 0;
@@ -1037,60 +1119,106 @@
     /* Estify Card with elegant padded frame surrounding thumbnail */
     .room-unit-item {
       background: #FFFFFF;
-      border-radius: 16px;
+      border-radius: var(--radius-lg);
       border: 1.5px solid var(--border-subtle, #ECEEF2);
       padding: 7px;
       display: flex;
       flex-direction: column;
       gap: 7px;
       transition: all var(--transition-fast);
-      cursor: default;
+      cursor: pointer;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
       box-sizing: border-box;
       position: relative;
+      outline: none;
     }
 
-    /* Hover dinonaktifkan sementara (rollback ready) */
-    .room-unit-item.hover-disabled {
+    /* 1. TERISI · LUNAS (Default & Hover: Orange Solid) */
+    .room-unit-item[data-status="terisi"] {
+      border: 1.5px solid var(--border-subtle, #ECEEF2);
+      background: #FFFFFF;
+    }
+
+    .room-unit-item[data-status="terisi"]:hover,
+    .room-unit-item[data-status="terisi"]:focus-visible {
+      border-color: var(--brand-primary, #FF7A00);
+      background: #FFFFFF;
       transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
-      border-color: #FF7A00;
+      box-shadow: 0 8px 22px rgba(255, 122, 0, 0.12);
+    }
+
+    /* 2. KOSONG · SIAP HUNI (Default & Hover: Orange Dashed) */
+    .room-unit-item.status-vacant-card,
+    .room-unit-item[data-status="kosong"] {
+      border: 1.5px dashed #CBD5E1;
+      background: #FAFAFB;
+    }
+
+    .room-unit-item.status-vacant-card:hover,
+    .room-unit-item.status-vacant-card:focus-visible,
+    .room-unit-item[data-status="kosong"]:hover,
+    .room-unit-item[data-status="kosong"]:focus-visible {
+      border-color: var(--brand-primary, #FF7A00);
+      border-style: dashed;
+      background: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(255, 122, 0, 0.1);
+    }
+
+    /* 3. DALAM PERBAIKAN (Default & Hover: Amber/Kuning Solid) */
+    .room-unit-item.status-repair-card,
+    .room-unit-item[data-status="perbaikan"] {
+      border: 1.5px solid #FCD34D;
+      background: #FFFFFF;
+    }
+
+    .room-unit-item.status-repair-card:hover,
+    .room-unit-item.status-repair-card:focus-visible,
+    .room-unit-item[data-status="perbaikan"]:hover,
+    .room-unit-item[data-status="perbaikan"]:focus-visible {
+      border-color: var(--status-warning-text, #D97706);
+      border-style: solid;
+      background: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.15);
+    }
+
+    /* 4. JATUH TEMPO H-3 (Default & Hover: Amber/Kuning Solid) */
+    .room-unit-item.status-tempo-card {
+      border: 1.5px solid #FDE68A;
+      background: #FFFFFF;
+    }
+
+    .room-unit-item.status-tempo-card:hover,
+    .room-unit-item.status-tempo-card:focus-visible {
+      border-color: var(--status-warning-text, #D97706);
+      border-style: solid;
+      background: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.15);
+    }
+
+    /* 5. TERLAMBAT / MENUNGGAK (Default & Hover: Merah Solid) */
+    .room-unit-item.status-overdue-card,
+    .room-unit-item[data-status="terlambat"]:not(.status-tempo-card) {
+      border: 1.5px solid #FECACA;
+      background: #FFFFFF;
+    }
+
+    .room-unit-item.status-overdue-card:hover,
+    .room-unit-item.status-overdue-card:focus-visible,
+    .room-unit-item[data-status="terlambat"]:not(.status-tempo-card):hover,
+    .room-unit-item[data-status="terlambat"]:not(.status-tempo-card):focus-visible {
+      border-color: var(--status-danger-text, #EF4444);
+      border-style: solid;
+      background: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(239, 68, 68, 0.15);
     }
 
     .room-unit-item.active-room {
-      border-color: #FF7A00;
+      border-color: var(--brand-primary);
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18);
-    }
-
-    .room-unit-item.status-repair-card {
-      border-color: #FCD34D;
-      background: #FFFBEB;
-    }
-
-    .btn-clear-search {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #E2E8F0;
-      color: #64748B;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      transition: all var(--transition-fast);
-      margin-left: 4px;
-      flex-shrink: 0;
-    }
-    .btn-clear-search:hover {
-      background: #CBD5E1;
-      color: #0F172A;
-    }
-
-    .room-unit-item.status-vacant-card {
-      border-style: dashed;
-      background: #FAFAFB;
     }
 
     /* Image Thumbnail Container (Smooth 12px Rounded Corners on All Sides) */
@@ -1098,7 +1226,7 @@
       height: 114px;
       width: 100%;
       position: relative;
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       overflow: hidden;
       background: #F1F5F9;
     }
@@ -1111,8 +1239,8 @@
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .room-unit-item.hover-disabled .room-thumb-area img {
-      transform: scale(1.05);
+    .room-unit-item:hover .room-thumb-area img {
+      transform: scale(1.04);
     }
 
     /* Estify Floating Top-Right Circle Arrow (Matches Arus Kas & Operasional .pill-arrow-btn) */
@@ -1137,13 +1265,22 @@
       cursor: pointer;
       z-index: 2;
       box-sizing: border-box;
+      outline: none;
     }
 
-    .room-float-arrow:hover {
+    .room-unit-item:hover .room-float-arrow,
+    .room-unit-item:focus-visible .room-float-arrow,
+    .room-float-arrow:hover,
+    .room-float-arrow:focus-visible {
       background: var(--dark-pill) !important;
       color: #FFFFFF !important;
       border-color: var(--dark-pill) !important;
-      transform: scale(1.08);
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .room-float-arrow:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.3);
     }
 
     /* Card Details below image */
@@ -1188,32 +1325,6 @@
       color: var(--brand-primary);
     }
 
-    /* Ergonomic Cursor Differentiation (Dashboard Cards: text is selectable, only arrow triggers navigation) */
-    .room-cards-3col .room-unit-item {
-      cursor: default;
-    }
-
-    .room-cards-3col .room-thumb-area {
-      cursor: default;
-    }
-
-    .room-cards-3col .room-name-text,
-    .room-cards-3col .room-sub-specs,
-    .room-cards-3col .room-price-val,
-    .room-cards-3col .room-price-unit {
-      cursor: text;
-      user-select: text;
-    }
-
-    .room-cards-3col .status-badge {
-      cursor: default;
-      user-select: none;
-    }
-
-    .room-cards-3col .room-float-arrow {
-      cursor: pointer;
-    }
-
     .room-price-unit {
       font-size: 11px;
       font-weight: 500;
@@ -1227,7 +1338,7 @@
       background: var(--bg-card);
       border-radius: var(--radius-xl);
       padding: 22px 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      box-shadow: var(--shadow-card);
       border: 1px solid var(--border-subtle);
       min-width: 0;
       width: 100%;
@@ -1311,10 +1422,15 @@
       text-decoration: none;
       transition: all var(--transition-fast);
       box-sizing: border-box;
+      outline: none;
     }
 
     .btn-maintenance-full:hover {
       background: var(--dark-pill-hover);
+    }
+
+    .btn-maintenance-full:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.3);
     }
 
     /* TENANT MESSAGES LIST */
@@ -1336,10 +1452,16 @@
       min-width: 0;
       width: 100%;
       box-sizing: border-box;
+      outline: none;
     }
 
     .tenant-message-row:hover {
       background: #F7F8FA;
+    }
+
+    .tenant-message-row:focus-visible {
+      background: #F7F8FA;
+      box-shadow: 0 0 0 2px var(--brand-primary);
     }
 
     .tenant-avatar-circle {
@@ -1417,6 +1539,7 @@
       color: var(--text-secondary);
       text-decoration: none;
       transition: color var(--transition-fast, 150ms ease);
+      outline: none;
     }
 
     .activity-view-all-link i {
@@ -1424,12 +1547,16 @@
     }
 
     .activity-view-all-link:hover {
-      color: var(--text-main, #111827) !important;
+      color: var(--text-main) !important;
       text-decoration: none;
     }
 
     .activity-view-all-link:hover i {
       transform: translateX(3px);
+    }
+
+    .activity-view-all-link:focus-visible {
+      color: var(--brand-primary) !important;
     }
 
     /* MICRO-FOOTER MINIMALIS */
@@ -1455,21 +1582,22 @@
       font-weight: 500;
       transition: color var(--transition-fast);
       text-decoration: none;
+      outline: none;
     }
 
-    .footer-micro-links a:hover {
+    .footer-micro-links a:hover,
+    .footer-micro-links a:focus-visible {
       color: var(--brand-primary);
     }
 
     .wf-badge {
-      opacity: 0.35;
+      opacity: 0.45;
       transition: opacity var(--transition-fast);
     }
 
     .wf-badge:hover {
       opacity: 1;
     }
-
 
     /* ==========================================================================
        RESPONSIVE ADAPTATIONS (Desktop, Laptop, Tablet, Mobile)
@@ -1480,18 +1608,18 @@
         padding: 20px 0;
       }
 
-      /* Stack master columns cleanly on laptops & medium screens (e.g. 1110px / 1024px) */
       .dashboard-2col-layout {
         grid-template-columns: 1fr;
         gap: 20px;
       }
 
-      /* Sidebar cards sit side-by-side in a 2-column grid below */
       .col-sidebar-flow {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 20px;
         height: auto;
+        width: 100%;
+        max-width: 100%;
       }
 
       .card-activity {
@@ -1591,7 +1719,13 @@
         <div class="metrics-row-3">
           
           <!-- Card 1: Okupansi Kamar (Estify Active Properties Pattern) -->
-          <div class="metric-card-estify" onclick="location.href='WF-03-kamar.html'" style="cursor: pointer;" title="Buka Direktori Master Kamar (11/15 Terisi)">
+          <div class="metric-card-estify" 
+               tabindex="0" 
+               role="link" 
+               aria-label="Okupansi Kamar 11 dari 15 Unit, 73% Terisi. Buka Direktori Master Kamar" 
+               onclick="location.href='WF-03-kamar.html'" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}" 
+               title="Buka Direktori Master Kamar (11/15 Terisi)">
             <div class="metric-card-top">
               <div class="metric-title-group">
                 <div class="metric-icon-sq is-brand">
@@ -1613,14 +1747,20 @@
                 <svg class="gauge-meter-svg" viewBox="0 0 100 58">
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#FF7A00" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="29"/>
-                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">73%</text>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">73%</text>
                 </svg>
               </div>
             </div>
           </div>
 
           <!-- Card 2: Tagihan Lunas (Estify New Leads Pattern) -->
-          <div class="metric-card-estify" onclick="location.href='WF-05-tagihan.html'" style="cursor: pointer;" title="Buka Monitoring Tagihan Sewa (Rp 16,5 Jt Terkumpul)">
+          <div class="metric-card-estify" 
+               tabindex="0" 
+               role="link" 
+               aria-label="Tagihan Lunas Rp 16,5 Jt, Kolektibilitas 82%. Buka Monitoring Tagihan Sewa" 
+               onclick="location.href='WF-05-tagihan.html'" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-05-tagihan.html';}" 
+               title="Buka Monitoring Tagihan Sewa (Rp 16,5 Jt Terkumpul)">
             <div class="metric-card-top">
               <div class="metric-title-group">
                 <div class="metric-icon-sq is-dark">
@@ -1642,14 +1782,20 @@
                 <svg class="gauge-meter-svg" viewBox="0 0 100 58">
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="19"/>
-                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">82%</text>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">82%</text>
                 </svg>
               </div>
             </div>
           </div>
 
           <!-- Card 3: Pengeluaran Operasional (Estify Total Sales Pattern) -->
-          <div class="metric-card-estify" onclick="location.href='WF-06-pembayaran.html'" style="cursor: pointer;" title="Buka Rekapitulasi Pembayaran & Pengeluaran Kas (Rp 4,2 Jt)">
+          <div class="metric-card-estify" 
+               tabindex="0" 
+               role="link" 
+               aria-label="Pengeluaran Operasional Rp 4,2 Jt, 84% Realisasi Anggaran. Buka Rekapitulasi Pembayaran dan Pengeluaran" 
+               onclick="location.href='WF-06-pembayaran.html'" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-06-pembayaran.html';}" 
+               title="Buka Rekapitulasi Pembayaran & Pengeluaran Kas (Rp 4,2 Jt)">
             <div class="metric-card-top">
               <div class="metric-title-group">
                 <div class="metric-icon-sq is-danger">
@@ -1671,7 +1817,7 @@
                 <svg class="gauge-meter-svg" viewBox="0 0 100 58">
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#EF4444" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="17"/>
-                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">84%</text>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">84%</text>
                 </svg>
               </div>
             </div>
@@ -1689,26 +1835,31 @@
                 <h2 class="card-title-text" style="margin: 0;">Arus Kas & Operasional</h2>
                 <div style="display: flex; align-items: center; gap: 12px; font-size: 11px;">
                   <span style="display: inline-flex; align-items: center; gap: 5px; color: var(--text-secondary); font-weight: 500;">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #FF7A00; display: inline-block;"></span> Pemasukan
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--brand-primary); display: inline-block;"></span> Pemasukan
                   </span>
                   <span style="display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); font-weight: 500;">
-                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #111111; display: inline-block;"></span> Pengeluaran
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--dark-pill); display: inline-block;"></span> Pengeluaran
                   </span>
                 </div>
               </div>
               <div class="header-ctrl-group">
                 <div class="custom-popover-wrap" id="wrapYearFilter">
-                  <div class="pill-dropdown-trigger" onclick="toggleCustomDropdown('wrapYearFilter', event)" title="Pilih Periode Tahun">
+                  <button type="button" 
+                          class="pill-dropdown-trigger" 
+                          onclick="toggleCustomDropdown('wrapYearFilter', event)" 
+                          aria-haspopup="listbox" 
+                          aria-expanded="false" 
+                          title="Pilih Periode Tahun">
                     <span id="selectedYearLabel">Tahun 2026</span>
                     <i data-lucide="chevron-down" style="width: 14px; height: 14px;"></i>
-                  </div>
-                  <div class="popover-dropdown-menu menu-right" id="menuYearFilter">
-                    <div class="popover-item selected" onclick="selectYearFilter('2026', this, event)">Tahun 2026 (Berjalan)</div>
-                    <div class="popover-item" onclick="selectYearFilter('2025', this, event)">Tahun 2025 (Arsip)</div>
-                    <div class="popover-item" onclick="selectYearFilter('2024', this, event)">Tahun 2024 (Arsip)</div>
+                  </button>
+                  <div class="popover-dropdown-menu menu-right" id="menuYearFilter" role="listbox">
+                    <div class="popover-item selected" role="option" aria-selected="true" tabindex="0" onclick="selectYearFilter('2026', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') selectYearFilter('2026', this, event)">Tahun 2026 (Berjalan)</div>
+                    <div class="popover-item" role="option" aria-selected="false" tabindex="0" onclick="selectYearFilter('2025', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') selectYearFilter('2025', this, event)">Tahun 2025 (Arsip)</div>
+                    <div class="popover-item" role="option" aria-selected="false" tabindex="0" onclick="selectYearFilter('2024', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') selectYearFilter('2024', this, event)">Tahun 2024 (Arsip)</div>
                   </div>
                 </div>
-                <a href="WF-07-laporan.html" class="pill-arrow-btn" title="Lihat Laporan Lengkap">
+                <a href="WF-07-laporan.html" class="pill-arrow-btn" title="Lihat Laporan Lengkap" aria-label="Buka Laporan Keuangan Lengkap">
                   <i data-lucide="arrow-up-right" style="width: 15px; height: 15px;"></i>
                 </a>
               </div>
@@ -1737,12 +1888,12 @@
                 <!-- Mei: Pemasukan 13,5 Jt (108px) · Pengeluaran 2,8 Jt (22px) — Periode Hemat -->
                 <div class="bars-pair-column">
                   <div class="bar-hover-tooltip" style="bottom: 118px;">
-                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Mei 2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 13,5 Jt</strong>
+                    <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Mei 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: var(--text-main);">Rp 13,5 Jt</strong>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 2,8 Jt</strong>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: var(--text-main);">Rp 2,8 Jt</strong>
                     </div>
                   </div>
                   <div class="bars-duo">
@@ -1759,12 +1910,12 @@
                 <!-- Jun: Pemasukan 15,8 Jt (126px) · Pengeluaran 6,8 Jt (54px) — Perawatan & Servis AC -->
                 <div class="bars-pair-column">
                   <div class="bar-hover-tooltip" style="bottom: 136px;">
-                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Jun 2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 15,8 Jt</strong>
+                    <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Jun 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: var(--text-main);">Rp 15,8 Jt</strong>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 6,8 Jt</strong>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: var(--text-main);">Rp 6,8 Jt</strong>
                     </div>
                   </div>
                   <div class="bars-duo">
@@ -1781,12 +1932,12 @@
                 <!-- Jul: Pemasukan 18,4 Jt (147px) · Pengeluaran 3,2 Jt (26px) — Peak Sewa Ajaran Baru -->
                 <div class="bars-pair-column">
                   <div class="bar-hover-tooltip" style="bottom: 157px;">
-                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Jul 2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 18,4 Jt</strong>
+                    <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Jul 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: var(--text-main);">Rp 18,4 Jt</strong>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 3,2 Jt</strong>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: var(--text-main);">Rp 3,2 Jt</strong>
                     </div>
                   </div>
                   <div class="bars-duo">
@@ -1803,12 +1954,12 @@
                 <!-- Agu: Pemasukan 17,2 Jt (138px) · Pengeluaran 5,4 Jt (43px) — Pajak & Utilitas -->
                 <div class="bars-pair-column">
                   <div class="bar-hover-tooltip" style="bottom: 148px;">
-                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Agu 2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 17,2 Jt</strong>
+                    <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Agu 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: var(--text-main);">Rp 17,2 Jt</strong>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 5,4 Jt</strong>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: var(--text-main);">Rp 5,4 Jt</strong>
                     </div>
                   </div>
                   <div class="bars-duo">
@@ -1825,12 +1976,12 @@
                 <!-- Sep: Pemasukan 14,2 Jt (114px) · Pengeluaran 3,6 Jt (29px) — Checkout Akhir Kontrak -->
                 <div class="bars-pair-column">
                   <div class="bar-hover-tooltip" style="bottom: 124px;">
-                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Sep 2026</div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 14,2 Jt</strong>
+                    <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Sep 2026</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: var(--text-main);">Rp 14,2 Jt</strong>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 3,6 Jt</strong>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: var(--text-main);">Rp 3,6 Jt</strong>
                     </div>
                   </div>
                   <div class="bars-duo">
@@ -1848,12 +1999,12 @@
                 <div class="bars-pair-column is-selected-day">
                   <!-- Floating Tooltip -->
                   <div class="bar-hover-tooltip" style="bottom: 142px;">
-                    <div style="font-weight: 700; color: #111111; margin-bottom: 2px;">Okt 2026 (Bulan Ini)</div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: #111111;">Rp 16,5 Jt</strong>
+                    <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Okt 2026 (Bulan Ini)</div>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: var(--text-main);">Rp 16,5 Jt</strong>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 5px; color: #4B5563;">
-                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: #111111;">Rp 4,2 Jt</strong>
+                    <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: var(--text-main);">Rp 4,2 Jt</strong>
                     </div>
                   </div>
 
@@ -1872,7 +2023,13 @@
           </div>
 
           <!-- RIGHT: ORANGE HIGHLIGHT CARD -->
-          <div class="orange-highlight-card">
+          <div class="orange-highlight-card" 
+               tabindex="0" 
+               role="link" 
+               aria-label="Kost Budi Makmur, Jl. Flamboyan No. 12, Pemasukan Bersih Rp 12,3 Jt. Buka Katalog Kamar" 
+               onclick="location.href='WF-03-kamar.html'" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}" 
+               title="Lihat Detail Properti & Kamar">
             <!-- Architectural Contour Wave Pattern Motif (Subtle Luxury) -->
             <svg class="highlight-pattern-svg" viewBox="0 0 400 300" fill="none" preserveAspectRatio="none">
               <path d="M-40 220 C 60 140, 160 280, 280 180 C 340 130, 420 200, 480 160" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round"/>
@@ -1884,7 +2041,7 @@
 
             <div class="highlight-top-row">
               <span class="highlight-tag-pill">Properti Utama</span>
-              <a href="WF-03-kamar.html" class="highlight-arrow-round" title="Lihat Kamar">
+              <a href="WF-03-kamar.html" class="highlight-arrow-round" title="Lihat Kamar" onclick="event.stopPropagation();" aria-label="Buka Katalog Kamar Kost Budi Makmur">
                 <i data-lucide="arrow-up-right" style="width: 15px; height: 15px;"></i>
               </a>
             </div>
@@ -1928,36 +2085,42 @@
             
             <div class="properties-controls-right">
               <div class="search-capsule-wide capsule-search-box">
-                <i data-lucide="search" style="width: 16px; height: 16px; color: #111111; flex-shrink: 0;"></i>
-                <input type="text" id="quickRoomSearchInput" placeholder="Cari kamar (A-01, B-03, dll)..." oninput="filterQuickRooms(this.value)">
-                <button type="button" id="clearQuickRoomSearch" class="btn-clear-search" onclick="clearQuickSearch()" title="Hapus pencarian">
+                <i data-lucide="search" style="width: 16px; height: 16px; color: var(--text-main); flex-shrink: 0;"></i>
+                <input type="text" id="quickRoomSearchInput" placeholder="Cari kamar (A-01, B-03, dll)..." oninput="filterQuickRooms(this.value)" aria-label="Cari unit kamar kost">
+                <button type="button" id="clearQuickRoomSearch" class="btn-clear-search" onclick="clearQuickSearch()" title="Hapus pencarian" aria-label="Hapus kata kunci pencarian" style="display: none;">
                   <i data-lucide="x" style="width: 12px; height: 12px;"></i>
                 </button>
               </div>
 
               <!-- Custom Popover Dropdown Filter Unit -->
               <div class="custom-popover-wrap" id="wrapFilterRoomStatus">
-                <button type="button" class="btn-circle-filter" onclick="toggleCustomDropdown('wrapFilterRoomStatus', event)" title="Filter Status Unit">
+                <button type="button" 
+                        class="btn-circle-filter" 
+                        onclick="toggleCustomDropdown('wrapFilterRoomStatus', event)" 
+                        aria-haspopup="listbox" 
+                        aria-expanded="false" 
+                        title="Filter Status Unit" 
+                        aria-label="Filter status kamar">
                   <i data-lucide="sliders-horizontal" style="width: 16px; height: 16px;"></i>
                 </button>
-                <div class="popover-dropdown-menu menu-right" id="menuFilterRoomStatus">
-                  <div class="popover-item selected" onclick="applyDashboardRoomFilter('all', this, event)">
+                <div class="popover-dropdown-menu menu-right" id="menuFilterRoomStatus" role="listbox">
+                  <div class="popover-item selected" role="option" aria-selected="true" tabindex="0" onclick="applyDashboardRoomFilter('all', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') applyDashboardRoomFilter('all', this, event)">
                     <span>Semua Unit</span>
                     <span class="status-badge badge-dark">15</span>
                   </div>
-                  <div class="popover-item" onclick="applyDashboardRoomFilter('terisi', this, event)">
+                  <div class="popover-item" role="option" aria-selected="false" tabindex="0" onclick="applyDashboardRoomFilter('terisi', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') applyDashboardRoomFilter('terisi', this, event)">
                     <span>Terisi · Lunas</span>
                     <span class="status-badge badge-success">8</span>
                   </div>
-                  <div class="popover-item" onclick="applyDashboardRoomFilter('kosong', this, event)">
+                  <div class="popover-item" role="option" aria-selected="false" tabindex="0" onclick="applyDashboardRoomFilter('kosong', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') applyDashboardRoomFilter('kosong', this, event)">
                     <span>Kosong · Siap Huni</span>
                     <span class="status-badge badge-brand">3</span>
                   </div>
-                  <div class="popover-item" onclick="applyDashboardRoomFilter('terlambat', this, event)">
+                  <div class="popover-item" role="option" aria-selected="false" tabindex="0" onclick="applyDashboardRoomFilter('terlambat', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') applyDashboardRoomFilter('terlambat', this, event)">
                     <span>Terlambat / Tempo</span>
                     <span class="status-badge badge-danger">3</span>
                   </div>
-                  <div class="popover-item" onclick="applyDashboardRoomFilter('perbaikan', this, event)">
+                  <div class="popover-item" role="option" aria-selected="false" tabindex="0" onclick="applyDashboardRoomFilter('perbaikan', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') applyDashboardRoomFilter('perbaikan', this, event)">
                     <span>Dalam Perbaikan</span>
                     <span class="status-badge badge-warning">1</span>
                   </div>
@@ -1966,10 +2129,10 @@
 
               <!-- Carousel Navigation Buttons -->
               <div style="display: flex; align-items: center; gap: 6px;">
-                <button type="button" class="btn-circle-filter" onclick="scrollRoomCarousel(-1); this.blur();" title="Geser Kiri (Shift + Scroll)">
+                <button type="button" class="btn-circle-filter" onclick="scrollRoomCarousel(-1); this.blur();" title="Geser Kiri (Shift + Scroll)" aria-label="Geser katalog ke kiri">
                   <i data-lucide="chevron-left" style="width: 15px; height: 15px;"></i>
                 </button>
-                <button type="button" class="btn-circle-filter" onclick="scrollRoomCarousel(1); this.blur();" title="Geser Kanan (Shift + Scroll)">
+                <button type="button" class="btn-circle-filter" onclick="scrollRoomCarousel(1); this.blur();" title="Geser Kanan (Shift + Scroll)" aria-label="Geser katalog ke kanan">
                   <i data-lucide="chevron-right" style="width: 15px; height: 15px;"></i>
                 </button>
               </div>
@@ -1980,15 +2143,15 @@
           <div class="room-cards-3col" id="quickRoomList">
             
             <!-- Unit 1: Kamar A-01 (Terisi - Lunas) -->
-            <div class="room-unit-item" data-status="terisi">
+            <div class="room-unit-item" data-status="terisi" tabindex="0" role="link" aria-label="Kamar A-01, Terisi Lunas, Lantai 1, Siti Aminah, Rp 1.200.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-01">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar A-01"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-01</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-success">Terisi · Lunas</span>
                 </div>
                 <div class="room-sub-specs">Lantai 1 · Siti Aminah</div>
                 <div class="room-price-row">
@@ -1999,10 +2162,10 @@
             </div>
 
             <!-- Unit 2: Kamar A-02 (Terlambat H+5 - Skenario 07) -->
-            <div class="room-unit-item" data-status="terlambat">
+            <div class="room-unit-item status-overdue-card" data-status="terlambat" tabindex="0" role="link" aria-label="Kamar A-02, Terlambat H+5, Lantai 1, Dimas Prasetyo, Rp 1.200.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar A-02">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar A-02"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -2018,10 +2181,10 @@
             </div>
 
             <!-- Unit 3: Kamar A-03 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card" data-status="kosong">
+            <div class="room-unit-item status-vacant-card" data-status="kosong" tabindex="0" role="link" aria-label="Kamar A-03, Kosong Siap Huni, Lantai 1, Standar 3x4m, Rp 1.100.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar A-03">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar A-03"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -2037,10 +2200,10 @@
             </div>
 
             <!-- Unit 4: Kamar A-04 (Jatuh Tempo H-3) -->
-            <div class="room-unit-item" data-status="terlambat">
+            <div class="room-unit-item status-tempo-card" data-status="terlambat" tabindex="0" role="link" aria-label="Kamar A-04, Jatuh Tempo H-3, Lantai 1, Budi Santoso, Rp 1.500.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=700&q=80" alt="Kamar A-04">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar A-04"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -2056,15 +2219,15 @@
             </div>
 
             <!-- Unit 5: Kamar A-05 (Terisi - Lunas) -->
-            <div class="room-unit-item" data-status="terisi">
+            <div class="room-unit-item" data-status="terisi" tabindex="0" role="link" aria-label="Kamar A-05, Terisi Lunas, Lantai 1, Sri Wahyuni, Rp 1.100.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80" alt="Kamar A-05">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar A-05"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar A-05</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-success">Terisi · Lunas</span>
                 </div>
                 <div class="room-sub-specs">Lantai 1 · Sri Wahyuni</div>
                 <div class="room-price-row">
@@ -2074,16 +2237,16 @@
               </div>
             </div>
 
-            <!-- Unit 6: Kamar B-01 (Terlambat 3 Hari) -->
-            <div class="room-unit-item" data-status="terlambat">
+            <!-- Unit 6: Kamar B-01 (Terlambat H+3) -->
+            <div class="room-unit-item status-overdue-card" data-status="terlambat" tabindex="0" role="link" aria-label="Kamar B-01, Terlambat H+3, Lantai 2, Dodi Firmansyah, Rp 1.300.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=700&q=80" alt="Kamar B-01">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar B-01"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-01</span>
-                  <span class="status-badge badge-danger">Telat 3 Hari</span>
+                  <span class="status-badge badge-danger">Terlambat H+3</span>
                 </div>
                 <div class="room-sub-specs">Lantai 2 · Dodi Firmansyah</div>
                 <div class="room-price-row">
@@ -2094,15 +2257,15 @@
             </div>
 
             <!-- Unit 7: Kamar B-02 (Terisi - Lunas) -->
-            <div class="room-unit-item" data-status="terisi">
+            <div class="room-unit-item" data-status="terisi" tabindex="0" role="link" aria-label="Kamar B-02, Terisi Lunas, Lantai 2, Rini Marlina, Rp 1.300.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar B-02">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar B-02"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-02</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-success">Terisi · Lunas</span>
                 </div>
                 <div class="room-sub-specs">Lantai 2 · Rini Marlina</div>
                 <div class="room-price-row">
@@ -2113,10 +2276,10 @@
             </div>
 
             <!-- Unit 8: Kamar B-03 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card" data-status="kosong">
+            <div class="room-unit-item status-vacant-card" data-status="kosong" tabindex="0" role="link" aria-label="Kamar B-03, Kosong Siap Huni, Lantai 2, Deluxe 4x5m, Rp 1.800.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar B-03">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar B-03"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -2132,15 +2295,15 @@
             </div>
 
             <!-- Unit 9: Kamar B-04 (Terisi - Lunas) -->
-            <div class="room-unit-item" data-status="terisi">
+            <div class="room-unit-item" data-status="terisi" tabindex="0" role="link" aria-label="Kamar B-04, Terisi Lunas, Lantai 2, Eko Prasetyo, Rp 1.300.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=700&q=80" alt="Kamar B-04">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar B-04"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar B-04</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-success">Terisi · Lunas</span>
                 </div>
                 <div class="room-sub-specs">Lantai 2 · Eko Prasetyo</div>
                 <div class="room-price-row">
@@ -2151,10 +2314,10 @@
             </div>
 
             <!-- Unit 10: Kamar B-05 (Dalam Perbaikan) -->
-            <div class="room-unit-item status-repair-card" data-status="perbaikan">
+            <div class="room-unit-item status-repair-card" data-status="perbaikan" tabindex="0" role="link" aria-label="Kamar B-05, Dalam Perbaikan, Lantai 2, Servis AC Tiket T-04" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
-                <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=700&q=80" alt="Kamar B-05">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=700&q=80" alt="Kamar B-05">
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar B-05"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -2170,15 +2333,15 @@
             </div>
 
             <!-- Unit 11: Kamar C-01 (Terisi - Lunas) -->
-            <div class="room-unit-item" data-status="terisi">
+            <div class="room-unit-item" data-status="terisi" tabindex="0" role="link" aria-label="Kamar C-01, Terisi Lunas, Lantai 3, Hendra Wijaya, Rp 1.400.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" alt="Kamar C-01">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar C-01"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar C-01</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-success">Terisi · Lunas</span>
                 </div>
                 <div class="room-sub-specs">Lantai 3 · Hendra Wijaya</div>
                 <div class="room-price-row">
@@ -2189,10 +2352,10 @@
             </div>
 
             <!-- Unit 12: Kamar C-02 (Kosong · Siap Huni) -->
-            <div class="room-unit-item status-vacant-card" data-status="kosong">
+            <div class="room-unit-item status-vacant-card" data-status="kosong" tabindex="0" role="link" aria-label="Kamar C-02, Kosong Siap Huni, Lantai 3, Deluxe Corner 4.5x5m, Rp 1.900.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=700&q=80" alt="Kamar C-02">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar C-02"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
@@ -2208,15 +2371,15 @@
             </div>
 
             <!-- Unit 13: Kamar C-03 (Terisi - Lunas) -->
-            <div class="room-unit-item" data-status="terisi">
+            <div class="room-unit-item" data-status="terisi" tabindex="0" role="link" aria-label="Kamar C-03, Terisi Lunas, Lantai 3, Rian Hidayat, Rp 1.350.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=700&q=80" alt="Kamar C-03">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar C-03"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar C-03</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-success">Terisi · Lunas</span>
                 </div>
                 <div class="room-sub-specs">Lantai 3 · Rian Hidayat</div>
                 <div class="room-price-row">
@@ -2227,15 +2390,15 @@
             </div>
 
             <!-- Unit 14: Kamar C-04 (Terisi - Lunas) -->
-            <div class="room-unit-item" data-status="terisi">
+            <div class="room-unit-item" data-status="terisi" tabindex="0" role="link" aria-label="Kamar C-04, Terisi Lunas, Lantai 3, Mega Lestari, Rp 1.350.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=700&q=80" alt="Kamar C-04">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar C-04"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar C-04</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-success">Terisi · Lunas</span>
                 </div>
                 <div class="room-sub-specs">Lantai 3 · Mega Lestari</div>
                 <div class="room-price-row">
@@ -2246,15 +2409,15 @@
             </div>
 
             <!-- Unit 15: Kamar C-05 (Terisi - Lunas) -->
-            <div class="room-unit-item" data-status="terisi">
+            <div class="room-unit-item" data-status="terisi" tabindex="0" role="link" aria-label="Kamar C-05, Terisi Lunas, Lantai 3, Aditya Pratama, Rp 1.350.000 per bulan" onclick="location.href='WF-03-kamar.html'" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=80" alt="Kamar C-05">
-                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
+                <a href="WF-03-kamar.html" class="room-float-arrow" title="Buka detail kamar" onclick="event.stopPropagation();" aria-label="Buka detail Kamar C-05"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></a>
               </div>
               <div class="room-unit-body">
                 <div class="room-header-row">
                   <span class="room-name-text">Kamar C-05</span>
-                  <span class="status-badge badge-dark">Terisi · Lunas</span>
+                  <span class="status-badge badge-success">Terisi · Lunas</span>
                 </div>
                 <div class="room-sub-specs">Lantai 3 · Aditya Pratama</div>
                 <div class="room-price-row">
@@ -2266,7 +2429,7 @@
 
             <!-- Empty State when filter/search returns no matches (Keeps Card Height 100% Stable) -->
             <div class="room-empty-search" id="roomEmptySearch">
-              <i data-lucide="search-x" style="width: 32px; height: 32px; color: #94A3B8; stroke-width: 1.5;"></i>
+              <i data-lucide="search-x" style="width: 32px; height: 32px; color: var(--text-subtle); stroke-width: 1.5;"></i>
               <p>Tidak ada unit kamar yang cocok</p>
               <span>Coba nomor kamar lain (misal: A-01, B-03, C-05) atau nama penyewa</span>
             </div>
@@ -2284,14 +2447,14 @@
           <div class="card-top-header" style="margin-bottom: 18px;">
             <h2 class="card-title-text">Kondisi Properti</h2>
             <div class="custom-popover-wrap" id="wrapConditionMenu">
-              <button type="button" class="btn-more-options" onclick="toggleCustomDropdown('wrapConditionMenu', event)" title="Opsi Pemeliharaan">
+              <button type="button" class="btn-more-options" onclick="toggleCustomDropdown('wrapConditionMenu', event)" title="Opsi Pemeliharaan" aria-label="Opsi menu pemeliharaan">
                 <i data-lucide="more-vertical" style="width: 15px; height: 15px;"></i>
               </button>
-              <div class="popover-dropdown-menu menu-right" id="menuConditionMenu">
-                <div class="popover-item" onclick="handleConditionAction('sync', event)">
+              <div class="popover-dropdown-menu menu-right" id="menuConditionMenu" role="menu">
+                <div class="popover-item" role="menuitem" tabindex="0" onclick="handleConditionAction('sync', event)" onkeydown="if(event.key==='Enter'||event.key===' ') handleConditionAction('sync', event)">
                   <span style="display: inline-flex; align-items: center; gap: 6px;"><i data-lucide="refresh-cw" style="width: 13px; height: 13px;"></i> Sinkron Status</span>
                 </div>
-                <div class="popover-item" onclick="handleConditionAction('ticket', event)">
+                <div class="popover-item" role="menuitem" tabindex="0" onclick="handleConditionAction('ticket', event)" onkeydown="if(event.key==='Enter'||event.key===' ') handleConditionAction('ticket', event)">
                   <span style="display: inline-flex; align-items: center; gap: 6px;"><i data-lucide="plus-circle" style="width: 13px; height: 13px;"></i> Buat Tiket Baru</span>
                 </div>
               </div>
@@ -2335,7 +2498,7 @@
 
           </div>
 
-          <a href="WF-08-tiket.html" class="btn-maintenance-full">
+          <a href="WF-08-tiket.html" class="btn-maintenance-full" aria-label="Buka Rincian Tiket Kerusakan">
             <span>Detail Tiket Kerusakan</span>
             <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
           </a>
@@ -2346,14 +2509,20 @@
           <div class="card-top-header" style="margin-bottom: 14px;">
             <h2 class="card-title-text">Aktivitas Terkini</h2>
             <div class="custom-popover-wrap" id="wrapActivityFilter">
-              <div class="pill-dropdown-trigger" onclick="toggleCustomDropdown('wrapActivityFilter', event)" title="Filter periode aktivitas">
+              <button type="button" 
+                      class="pill-dropdown-trigger" 
+                      onclick="toggleCustomDropdown('wrapActivityFilter', event)" 
+                      aria-haspopup="listbox" 
+                      aria-expanded="false" 
+                      title="Filter periode aktivitas" 
+                      aria-label="Filter periode aktivitas harian">
                 <span id="selectedActivityLabel">Hari ini</span>
                 <i data-lucide="chevron-down" style="width: 12px; height: 12px;"></i>
-              </div>
-              <div class="popover-dropdown-menu menu-right" id="menuActivityFilter">
-                <div class="popover-item selected" onclick="selectActivityFilter('Hari ini', this, event)">Hari ini</div>
-                <div class="popover-item" onclick="selectActivityFilter('7 Hari Terakhir', this, event)">7 Hari Terakhir</div>
-                <div class="popover-item" onclick="selectActivityFilter('Bulan Ini', this, event)">Bulan Ini</div>
+              </button>
+              <div class="popover-dropdown-menu menu-right" id="menuActivityFilter" role="listbox">
+                <div class="popover-item selected" role="option" aria-selected="true" tabindex="0" onclick="selectActivityFilter('Hari ini', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') selectActivityFilter('Hari ini', this, event)">Hari ini</div>
+                <div class="popover-item" role="option" aria-selected="false" tabindex="0" onclick="selectActivityFilter('7 Hari Terakhir', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') selectActivityFilter('7 Hari Terakhir', this, event)">7 Hari Terakhir</div>
+                <div class="popover-item" role="option" aria-selected="false" tabindex="0" onclick="selectActivityFilter('Bulan Ini', this, event)" onkeydown="if(event.key==='Enter'||event.key===' ') selectActivityFilter('Bulan Ini', this, event)">Bulan Ini</div>
               </div>
             </div>
           </div>
@@ -2361,7 +2530,13 @@
           <div class="tenant-message-list">
             
             <!-- Activity 1: Pembayaran Masuk (Perlu Verifikasi) -->
-            <div class="tenant-message-row" onclick="window.location.href='WF-06-pembayaran.html'" title="Verifikasi Pembayaran">
+            <div class="tenant-message-row" 
+                 tabindex="0" 
+                 role="link" 
+                 aria-label="Budi Santoso Kamar A-04, transfer sewa Rp 1.500.000 perlu verifikasi, 22 menit lalu" 
+                 onclick="window.location.href='WF-06-pembayaran.html'" 
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='WF-06-pembayaran.html';}" 
+                 title="Verifikasi Pembayaran">
               <div class="tenant-avatar-circle">
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Budi Santoso">
               </div>
@@ -2376,7 +2551,13 @@
             </div>
 
             <!-- Activity 2: Tiket Kerusakan Baru -->
-            <div class="tenant-message-row" onclick="window.location.href='WF-08-tiket.html'" title="Lihat Tiket">
+            <div class="tenant-message-row" 
+                 tabindex="0" 
+                 role="link" 
+                 aria-label="Rini Marlina Kamar B-02, tiket baru pipa wastafel bocor, 1 jam lalu" 
+                 onclick="window.location.href='WF-08-tiket.html'" 
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='WF-08-tiket.html';}" 
+                 title="Lihat Tiket">
               <div class="tenant-avatar-circle">
                 <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" alt="Rini Marlina">
               </div>
@@ -2390,7 +2571,13 @@
             </div>
 
             <!-- Activity 3: Catat Pengeluaran Operasional Staf -->
-            <div class="tenant-message-row" onclick="window.location.href='WF-06-pembayaran.html'" title="Lihat Pengeluaran">
+            <div class="tenant-message-row" 
+                 tabindex="0" 
+                 role="link" 
+                 aria-label="Rini Setiawati Staf, catat belanja token pompa air Rp 150.000, 3 jam lalu" 
+                 onclick="window.location.href='WF-06-pembayaran.html'" 
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='WF-06-pembayaran.html';}" 
+                 title="Lihat Pengeluaran">
               <div class="tenant-avatar-circle">
                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="Rini Setiawati">
               </div>
@@ -2404,7 +2591,13 @@
             </div>
 
             <!-- Activity 4: Perpanjangan Kontrak Sewa Disetujui -->
-            <div class="tenant-message-row" onclick="window.location.href='WF-04-penghuni.html?id=A-01&tab=contract'" title="Lihat Lembar Kontrak">
+            <div class="tenant-message-row" 
+                 tabindex="0" 
+                 role="link" 
+                 aria-label="Siti Aminah Kamar A-01, kontrak diperpanjang 12 bulan SPK aktif, 5 jam lalu" 
+                 onclick="window.location.href='WF-04-penghuni.html?id=A-01&tab=contract'" 
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='WF-04-penghuni.html?id=A-01&tab=contract';}" 
+                 title="Lihat Lembar Kontrak">
               <div class="tenant-avatar-circle">
                 <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80" alt="Siti Aminah">
               </div>
@@ -2418,7 +2611,13 @@
             </div>
 
             <!-- Activity 5: Jatuh Tempo Tagihan Sewa -->
-            <div class="tenant-message-row" onclick="window.location.href='WF-05-tagihan.html'" title="Lihat Tagihan">
+            <div class="tenant-message-row" 
+                 tabindex="0" 
+                 role="link" 
+                 aria-label="Dimas Prasetyo Kamar A-02, tagihan sewa jatuh tempo dalam 3 hari, kemarin" 
+                 onclick="window.location.href='WF-05-tagihan.html'" 
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='WF-05-tagihan.html';}" 
+                 title="Lihat Tagihan">
               <div class="tenant-avatar-circle">
                 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Dimas Prasetyo">
               </div>
@@ -2432,7 +2631,7 @@
             </div>
           </div>
 
-          <a href="WF-04-penghuni.html" class="activity-view-all-link">
+          <a href="WF-04-penghuni.html" class="activity-view-all-link" aria-label="Lihat Semua Log Aktivitas Penghuni">
             <span>Lihat Semua Aktivitas</span>
             <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
           </a>
@@ -2470,6 +2669,8 @@
         const clone = card.cloneNode(true);
         clone.classList.add('carousel-clone');
         clone.removeAttribute('data-original');
+        clone.setAttribute('tabindex', '-1');
+        clone.setAttribute('aria-hidden', 'true');
         if (emptyEl) {
           roomCarousel.insertBefore(clone, emptyEl);
         } else {
@@ -2482,6 +2683,8 @@
         const clone = card.cloneNode(true);
         clone.classList.add('carousel-clone');
         clone.removeAttribute('data-original');
+        clone.setAttribute('tabindex', '-1');
+        clone.setAttribute('aria-hidden', 'true');
         roomCarousel.insertBefore(clone, roomCarousel.firstChild);
       });
 
@@ -2510,7 +2713,7 @@
     }
 
     if (roomCarousel) {
-      // Seamless wrap-around listener
+      // Seamless wrap-around listener (Proximity-based snap preserves momentum)
       roomCarousel.addEventListener('scroll', () => {
         if (isLoopingReset || singleSetWidth <= 0) return;
         const currentScroll = roomCarousel.scrollLeft;
@@ -2523,7 +2726,7 @@
           roomCarousel.scrollLeft = currentScroll - singleSetWidth;
           requestAnimationFrame(() => {
             roomCarousel.style.scrollBehavior = 'smooth';
-            roomCarousel.style.scrollSnapType = 'x mandatory';
+            roomCarousel.style.scrollSnapType = 'x proximity';
             isLoopingReset = false;
           });
         }
@@ -2535,19 +2738,112 @@
           roomCarousel.scrollLeft = currentScroll + singleSetWidth;
           requestAnimationFrame(() => {
             roomCarousel.style.scrollBehavior = 'smooth';
-            roomCarousel.style.scrollSnapType = 'x mandatory';
+            roomCarousel.style.scrollSnapType = 'x proximity';
             isLoopingReset = false;
           });
         }
       });
 
-      // Wheel scroll horizontally on carousel
+      // Buttery-smooth wheel scrolling with physics momentum & snap arbitration
+      let wheelTimeout = null;
+      let wheelVelocity = 0;
+      let wheelRaf = null;
+
+      function stepWheelMomentum() {
+        if (Math.abs(wheelVelocity) > 0.5) {
+          roomCarousel.scrollLeft += wheelVelocity;
+          wheelVelocity *= 0.88; // Silky fluid damping
+          wheelRaf = requestAnimationFrame(stepWheelMomentum);
+        } else {
+          wheelVelocity = 0;
+          wheelRaf = null;
+          roomCarousel.classList.remove('is-wheeling');
+          roomCarousel.style.scrollBehavior = 'smooth';
+          roomCarousel.style.scrollSnapType = 'x proximity';
+        }
+      }
+
       roomCarousel.addEventListener('wheel', (e) => {
+        // If native trackpad horizontal swipe (deltaX dominates), let browser handle it natively
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+          return;
+        }
+
         if (e.deltaY !== 0) {
           e.preventDefault();
-          roomCarousel.scrollBy({ left: e.deltaY * 1.2, behavior: 'auto' });
+
+          if (!roomCarousel.classList.contains('is-wheeling')) {
+            roomCarousel.classList.add('is-wheeling');
+            roomCarousel.style.scrollBehavior = 'auto';
+            roomCarousel.style.scrollSnapType = 'none';
+          }
+
+          // Normalize wheel ticks (lines vs pixels)
+          const delta = e.deltaMode === 1 ? e.deltaY * 28 : e.deltaY;
+          wheelVelocity += delta * 0.45;
+          // Clamp maximum speed to avoid uncontrolled spin
+          if (wheelVelocity > 70) wheelVelocity = 70;
+          if (wheelVelocity < -70) wheelVelocity = -70;
+
+          if (!wheelRaf) {
+            wheelRaf = requestAnimationFrame(stepWheelMomentum);
+          }
+
+          clearTimeout(wheelTimeout);
+          wheelTimeout = setTimeout(() => {
+            if (Math.abs(wheelVelocity) < 1.5) {
+              wheelVelocity = 0;
+              if (wheelRaf) cancelAnimationFrame(wheelRaf);
+              wheelRaf = null;
+              roomCarousel.classList.remove('is-wheeling');
+              roomCarousel.style.scrollBehavior = 'smooth';
+              roomCarousel.style.scrollSnapType = 'x proximity';
+            }
+          }, 140);
         }
       }, { passive: false });
+
+      // Tactile Drag-to-Scroll (Mouse click & grab like native canvas)
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragScrollStart = 0;
+      let draggedDistance = 0;
+
+      roomCarousel.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        if (e.target.closest('a, button, input, select, .custom-popover-menu')) return;
+
+        isDragging = true;
+        dragStartX = e.pageX - roomCarousel.offsetLeft;
+        dragScrollStart = roomCarousel.scrollLeft;
+        draggedDistance = 0;
+        roomCarousel.classList.add('is-dragging');
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - roomCarousel.offsetLeft;
+        const walk = (x - dragStartX) * 1.25;
+        draggedDistance += Math.abs(walk);
+        roomCarousel.scrollLeft = dragScrollStart - walk;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          roomCarousel.classList.remove('is-dragging');
+        }
+      });
+
+      // Prevent card link navigation if user was dragging
+      roomCarousel.addEventListener('click', (e) => {
+        if (draggedDistance > 8) {
+          e.preventDefault();
+          e.stopPropagation();
+          draggedDistance = 0;
+        }
+      }, true);
     }
 
     function scrollRoomCarousel(direction) {
@@ -2644,14 +2940,20 @@
 
       if (!isOpen && menu) {
         menu.classList.add('active');
-        if (trigger) trigger.classList.add('is-open');
+        if (trigger) {
+          trigger.classList.add('is-open');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
         lucide.createIcons();
       }
     }
 
     function closeAllCustomPopovers() {
       document.querySelectorAll('.popover-dropdown-menu.active').forEach(m => m.classList.remove('active'));
-      document.querySelectorAll('.btn-popover-trigger.is-open, .pill-dropdown-trigger.is-open, .btn-circle-filter.is-open, .pill-arrow-btn.is-open, .btn-more-options.is-open').forEach(b => b.classList.remove('is-open'));
+      document.querySelectorAll('.btn-popover-trigger.is-open, .pill-dropdown-trigger.is-open, .btn-circle-filter.is-open, .pill-arrow-btn.is-open, .btn-more-options.is-open').forEach(b => {
+        b.classList.remove('is-open');
+        b.setAttribute('aria-expanded', 'false');
+      });
     }
 
     function applyDashboardRoomFilter(status, el, event) {
@@ -2659,9 +2961,15 @@
       currentRoomStatusFilter = status;
       const menu = document.getElementById('menuFilterRoomStatus');
       if (menu) {
-        menu.querySelectorAll('.popover-item').forEach(item => item.classList.remove('selected'));
+        menu.querySelectorAll('.popover-item').forEach(item => {
+          item.classList.remove('selected');
+          item.setAttribute('aria-selected', 'false');
+        });
       }
-      if (el) el.classList.add('selected');
+      if (el) {
+        el.classList.add('selected');
+        el.setAttribute('aria-selected', 'true');
+      }
       closeAllCustomPopovers();
       runRoomCombinedFilter();
       const label = el ? el.querySelector('span')?.textContent || status : status;
@@ -2676,9 +2984,15 @@
       if (label) label.textContent = `Tahun ${year}`;
       const menu = document.getElementById('menuYearFilter');
       if (menu) {
-        menu.querySelectorAll('.popover-item').forEach(item => item.classList.remove('selected'));
+        menu.querySelectorAll('.popover-item').forEach(item => {
+          item.classList.remove('selected');
+          item.setAttribute('aria-selected', 'false');
+        });
       }
-      if (el) el.classList.add('selected');
+      if (el) {
+        el.classList.add('selected');
+        el.setAttribute('aria-selected', 'true');
+      }
       closeAllCustomPopovers();
       if (window.RumaUI && window.RumaUI.showToast) {
         window.RumaUI.showToast(`Memuat data keuangan Arus Kas tahun ${year}...`, 'info', 'Filter Periode');
@@ -2691,9 +3005,15 @@
       if (label) label.textContent = period;
       const menu = document.getElementById('menuActivityFilter');
       if (menu) {
-        menu.querySelectorAll('.popover-item').forEach(item => item.classList.remove('selected'));
+        menu.querySelectorAll('.popover-item').forEach(item => {
+          item.classList.remove('selected');
+          item.setAttribute('aria-selected', 'false');
+        });
       }
-      if (el) el.classList.add('selected');
+      if (el) {
+        el.classList.add('selected');
+        el.setAttribute('aria-selected', 'true');
+      }
       closeAllCustomPopovers();
       if (window.RumaUI && window.RumaUI.showToast) {
         window.RumaUI.showToast(`Aktivitas disaring ke: ${period}`, 'info', 'Aktivitas Terkini');
@@ -2733,7 +3053,6 @@
 
     // Initialize infinite carousel on DOM ready
     window.addEventListener('DOMContentLoaded', initInfiniteCarousel);
-    // Fallback if DOMContentLoaded has already fired
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
       setTimeout(initInfiniteCarousel, 50);
     }

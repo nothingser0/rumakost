@@ -1,5 +1,5 @@
 ---
-version: 1.0.0
+version: 1.1.0
 name: RumaKost (Sistem Manajemen Kost Mandiri)
 description: Single Source of Truth acuan desain sistem, token CSS, dan rekayasa visual untuk RumaKost, diadaptasi dari visual benchmark Estify Real Estate Dashboard.
 sources:
@@ -13,6 +13,7 @@ sources:
 notes:
   - Diobservasi dan diekstrak pada 2026-10-22 dari visual benchmark Estify (Behance) yang disepakati oleh pemilik kost.
   - Skala proyek Medium (1 properti, 7 P0 fitur). Seluruh 12 prototipe interaktif WF-01 s.d. WF-12 di docs/design/screens/ telah mengadopsi spesifikasi desain ini.
+  - Pemutakhiran v1.1.0 (2026-10-27): Menambahkan spesifikasi kartu kamar 5-state semantic hover, zero badge-background clash defense, flat circle arrow affordance, dan static hero card policy.
 ---
 
 # Design System Specification & CSS Tokens (DESIGN.md)
@@ -41,6 +42,8 @@ notes:
 | 10 | Dark Mode Color Tokens | Inference | Derivasi token mode gelap dengan pembalikan kontras aman pada kanvas `#09090B` dan permukaan `#18181B` | 🔶 |
 | 11 | Tabular Numbers Rule (`tnum`) | Direct | Keharusan perataan angka tetap untuk nominal mata uang Rupiah, tabel sewa, dan tanggal jatuh tempo | ✅ |
 | 12 | Z-Index Layering Scale (`--z-canvas` s.d. `--z-toast`) | Inference | Standar tumpukan z-index bertingkat untuk mencegah tabrakan modal, popover dropdown, dan toast notifikasi | 🔶 |
+| 13 | Semantic Room Card Border Hover | Inference | Penerapan 5 border state semantik (solid oranye, dashed oranye, solid amber, solid merah) pada kartu kamar dengan background putih stabil `#FFFFFF` | 🔶 |
+| 14 | Restrained Arrow Hover | Inference | Penegakan hover statis tanpa translate dan tanpa shadow pada seluruh tombol panah lingkaran | 🔶 |
 
 **Legenda Tipe Sumber**:
 - **Direct**: Diobservasi langsung dari lembar visual benchmark (`01-dashboard-flat.png`, `04-typography-sheet.png`, dll).
@@ -59,7 +62,7 @@ notes:
 ### 1.1 Light Mode Color Tokens (Base Surface: `#FFFFFF` / Canvas: `#F7F8FA`)
 
 | Token Name | HEX Value | Peran UI | Latar Diuji | Contrast Ratio | Standar Kepatuhan |
-| :--- | :---: | :--- | :---: | :---: | :---: |
+| :--- | :---: | :--- | :--- | :---: | :---: |
 | `--background` | `#F7F8FA` | Latar utama kanvas aplikasi | - | - | Base Canvas |
 | `--surface` / `--card` | `#FFFFFF` | Latar kartu, panel modal, drawer | `#F7F8FA` | 1.05 : 1 | Base Container |
 | `--foreground` | `#111111` | Judul utama, teks heading, angka metrik | `#FFFFFF` | **18.72 : 1** | PASS (WCAG AAA) |
@@ -75,7 +78,7 @@ notes:
 ### 1.2 Dark Mode Color Tokens (Base Surface: `#18181B` / Canvas: `#09090B`)
 
 | Token Name | HEX Value | Peran UI | Latar Diuji | Contrast Ratio | Standar Kepatuhan |
-| :--- | :---: | :--- | :---: | :---: | :---: |
+| :--- | :---: | :--- | :--- | :---: | :---: |
 | `--background` | `#09090B` | Latar kanvas gelap | - | - | Dark Canvas |
 | `--surface` / `--card` | `#18181B` | Latar kartu elevasi gelap | `#09090B` | 1.15 : 1 | Elevated Surface |
 | `--foreground` | `#F4F4F5` | Teks judul utama & body copy terang | `#09090B` | **18.10 : 1** | PASS (WCAG AAA) |
@@ -93,14 +96,15 @@ notes:
 
 | Status Semantik | Token Teks (`--[name]`) | Token Border (`--[name]-border`) | Token Background (`--[name]-bg`) | Kontras Terang | Token Teks Gelap | Token Border Gelap | Token Background Gelap | Kontras Gelap |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Success** (Lunas, Terisi, Aktif) | `#065F46` | `#A7F3D0` | `#ECFDF5` | **6.78 : 1** (AA) | `#86EFAC` | `#065F46` | `#052E16` | **10.62 : 1** (AAA) |
-| **Warning** (Jatuh Tempo, Menunggu) | `#92400E` | `#FDE68A` | `#FFFBEB` | **6.37 : 1** (AA) | `#FDE047` | `#854D0E` | `#422006` | **11.06 : 1** (AAA) |
-| **Destructive** (Terlambat, Dibatalkan, Rusak) | `#991B1B` | `#FECACA` | `#FEF2F2` | **6.80 : 1** (AA) | `#FCA5A5` | `#991B1B` | `#450A0A` | **8.51 : 1** (AAA) |
+| **Success** (Lunas, Terisi, Aktif) | `#065F46` / `#16A34A` | `#A7F3D0` / `#BBF7D0` | `#ECFDF5` / `#DCFCE7` | **6.78 : 1** (AA) | `#86EFAC` | `#065F46` | `#052E16` | **10.62 : 1** (AAA) |
+| **Warning** (Jatuh Tempo, Menunggu) | `#92400E` / `#D97706` | `#FDE68A` | `#FFFBEB` / `#FEF3C7` | **6.37 : 1** (AA) | `#FDE047` | `#854D0E` | `#422006` | **11.06 : 1** (AAA) |
+| **Destructive** (Terlambat, Dibatalkan, Rusak) | `#991B1B` / `#EF4444` | `#FECACA` | `#FEF2F2` / `#FEE2E2` | **6.80 : 1** (AA) | `#FCA5A5` | `#991B1B` | `#450A0A` | **8.51 : 1** (AAA) |
 | **Info** (Draft, Log, Pemeliharaan) | `#1E40AF` | `#BFDBFE` | `#EFF6FF` | **7.10 : 1** (AAA) | `#93C5FD` | `#1E40AF` | `#172554` | **9.25 : 1** (AAA) |
 
 > ⚠️ **ATURAN PENGGUNAAN STATUS SEMANTIK**:
-> 1. Transaksi operasional rutin (misalnya pengeluaran listrik, pembelian token air, biaya kebersihan) menggunakan badge netral dengan tanda aritmatika (`-Rp 150.000`), **DILARANG menggunakan `--destructive`**.
-> 2. Token `--destructive` DILARANG digunakan untuk arus kas biasa; hanya dikhususkan bagi kondisi kritis/ireversibel: tagihan menunggak lewat batas toleransi, pemutusan kontrak sepihak, pembatalan sewa, atau kerusakan darurat fasilitas.
+> 1. Status **Terisi · Lunas** pada kartu kamar, tabel tagihan, dan rekap keuangan **WAJIB MENGGUNAKAN `--success` (`.badge-success`)**. Dilarang menggunakan `.badge-dark` (#111111) karena warna gelap mengaburkan arti pelunasan positif.
+> 2. Transaksi operasional rutin (misalnya pengeluaran listrik, pembelian token air, biaya kebersihan) menggunakan badge netral dengan tanda aritmatika (`-Rp 150.000`), **DILARANG menggunakan `--destructive`**.
+> 3. Token `--destructive` DILARANG digunakan untuk arus kas biasa; hanya dikhususkan bagi kondisi kritis/ireversibel: tagihan menunggak lewat batas toleransi, pemutusan kontrak sepihak, pembatalan sewa, atau kerusakan darurat fasilitas.
 
 ---
 
@@ -115,7 +119,7 @@ Sesuai spesifikasi resmi Estify (`docs/design/inspiration/04-typography-sheet.pn
 | **Display / Hero** | `36px – 48px` | Bold (700) | `1.15` | Hero banner sambutan, angka total revenue besar |
 | **H1 Page Title** | `28px – 32px` | Bold (700) | `1.25` | Judul utama halaman autentikasi & overview dasbor |
 | **H2 Section Header** | `22px – 24px` | SemiBold (600) | `1.30` | Judul section properti, daftar kamar, rekap bulanan |
-| **H3 Card Title** | `18px – 20px` | SemiBold (600) | `1.35` | Judul kartu ringkasan, kartu highlight, modal title |
+| **H3 Card Title** | `16px – 18px` | SemiBold (600) / Bold (700) | `1.35` | Judul kartu ringkasan, kartu highlight, modal title |
 | **H4 Subtitle / Form Title**| `15px – 16px` | Medium (500) | `1.40` | Subtitle section, header form grup input |
 | **Body Primary** | `14px – 16px` | Regular (400) | `1.50` | Deskripsi umum, isi artikel panduan, konten tiket |
 | **Small / Helper Text** | `12px – 13px` | Medium (500) | `1.45` | Keterangan kolom tabel, helper text formulir, timestamp |
@@ -201,6 +205,11 @@ Ritme modular kelipatan 4px menjaga seluruh layout dan kartu bebas dari nilai ar
    - Pada viewport `< 640px`, seluruh tabel data (Daftar Kamar, Tagihan, Riwayat Pembayaran) WAJIB berubah susunan (reflow) menjadi kartu tumpuk vertikal (key-value cards) alih-alih scrolling horizontal tak terbatas yang memotong tombol aksi.
 7. **Form Debounce & Double-Click Guard**:
    - Seluruh tombol aksi mutasi (Simpan Pembayaran, Buat Kontrak, Catat Pengeluaran) wajib menerapkan state loading interaktif (`disabled={isSubmitting}` + spinner + teks berubah) untuk mencegah duplikasi catatan transaksi pada jaringan lambat.
+8. **Zero Badge-Background Clash Defense**:
+   - Seluruh kartu data yang memuat status pill (`.room-unit-item`, `.card-box`) **WAJIB mempertahankan warna kanvas netral (`#FFFFFF`) pada kondisi default maupun saat di-hover**.
+   - DILARANG KERAS mengubah warna latar belakang kartu menjadi warna yang sama dengan pill status (misal latar kuning di belakang badge warning atau latar merah di belakang badge danger). Diferensiasi visual pada kartu murni diwujudkan melalui **warna border semantik** dan *soft glow* halus di batas luar kartu.
+9. **Restrained Navigation Circle Affordance (Zero Float / Zero Drift)**:
+   - Seluruh tombol aksi panah navigasi lingkaran berdiameter 28px s.d. 36px (`.pill-arrow-btn`, `.room-float-arrow`, `.highlight-arrow-round`) **WAJIB bersifat statis tanpa perpindahan posisi (`transform: none !important;`) dan tanpa penambahan elevasi bayangan berlebih (`box-shadow: none !important;`)** saat state `:hover` maupun `:active`.
 
 ---
 
@@ -255,19 +264,19 @@ Berikut adalah token CSS lengkap yang siap disuntikkan ke dalam file stylesheet 
      Complete Triad Status Tokens (Light Mode)
      ========================================================================== */
   /* Success: Lunas, Kamar Terisi, Aktif */
-  --success:                #065F46;
-  --success-border:         #A7F3D0;
-  --success-bg:             #ECFDF5;
+  --success:                #16A34A;
+  --success-border:         #BBF7D0;
+  --success-bg:             #DCFCE7;
 
   /* Warning: Jatuh Tempo, Menunggu Teknisi */
-  --warning:                #92400E;
+  --warning:                #D97706;
   --warning-border:         #FDE68A;
-  --warning-bg:             #FFFBEB;
+  --warning-bg:             #FEF3C7;
 
   /* Destructive: Terlambat Bayar, Rusak Darurat */
-  --destructive:            #991B1B;
+  --destructive:            #EF4444;
   --destructive-border:     #FECACA;
-  --destructive-bg:         #FEF2F2;
+  --destructive-bg:         #FEE2E2;
 
   /* Info: Draft, Log Sistem, Pemeliharaan */
   --info:                   #1E40AF;
@@ -294,9 +303,9 @@ Berikut adalah token CSS lengkap yang siap disuntikkan ke dalam file stylesheet 
      ========================================================================== */
   --radius-sm:              8px;
   --radius-md:              12px;      /* Tombol form & input */
-  --radius-lg:              16px;      /* Dropdown popover */
+  --radius-lg:              16px;      /* Dropdown popover & kartu kamar */
   --radius-xl:              20px;      /* Kartu metrik & kartu tabel */
-  --radius-2xl:             24px;      /* Kartu sorotan oranye */
+  --radius-2xl:             24px;      /* Kartu sorotan oranye & topbar */
   --radius-full:            9999px;    /* Pil navigasi & pill badge */
 
   /* ==========================================================================
@@ -390,6 +399,7 @@ Berikut adalah token CSS lengkap yang siap disuntikkan ke dalam file stylesheet 
 | **`.btn-sm`** | **`34px`** | `14px` | `12px` Medium/SemiBold | `9999px` / `10px` | Tombol Sub-Header, Tab Pill, `Buka Detail`, `Perpanjang Sewa` |
 | **`.btn-xs`** | **`28px`** | `10px` | `11px` SemiBold | `9999px` / `8px` | Aksi Baris Tabel (`Kuitansi`, `Unduh PDF`, `Terminasi`, `Tindak Lanjut`) |
 | **`.btn-circle`** | **`36px × 36px`** | Center Square | Ikon 16px (18px Topbar) | `50%` (Circle) | Tombol Search, Notifikasi Bell, Close Modal (`X`), Panah Diagonal (`↗`) |
+| **`.btn-clear-search`** | **`18px × 18px`** | Center Square | Ikon 11px–12px (`x`) | `50%` (Circle) | Tombol reset pencarian kapsul (`display: none` statis, muncul hanya saat ada input) |
 
 #### Varian Visual Tombol Baku:
 - **Dark Pill (`.btn-dark` / `.btn-black-solid`)**: `background: #111111; color: #FFFFFF;` (Elemen khas Estify).
@@ -408,6 +418,7 @@ Semua komponen input formulir satu baris dikunci memiliki **tinggi seragam 42px*
 | Elemen Form | Tinggi Baku | Font Size | Border Radius | Padding & Focus Directive |
 | :--- | :---: | :---: | :---: | :--- |
 | **Text / Tel / Number Input** | **`42px !important`** | `16px` (Mobile) / `13px` (Desktop) | `12px` | Padding `0 14px`, Border `#ECEEF2`, Focus ring `#FF7A00` |
+| **Capsule Search Input** | **`40px !important`** | `12px` Medium | `9999px` (Pill) | Padding `0 14px`, border `#ECEEF2`, tombol clear dinamis (`.btn-clear-search`) |
 | **Custom Select Trigger** | **`42px !important`** | `16px` (Mobile) / `13px` (Desktop) | `12px` | Padding `0 14px`, Ikon chevron sejajar kanan |
 | **Datepicker Trigger** | **`42px !important`** | `16px` (Mobile) / `13px` (Desktop) | `12px` | Padding `0 14px`, Ikon kalender di kiri |
 | **Textarea Multi-line** | Min-height **`84px`** | `16px` (Mobile) / `13px` (Desktop) | `12px` | Padding `10px 14px`, Resize vertikal terbatas |
@@ -426,10 +437,80 @@ Semua komponen input formulir satu baris dikunci memiliki **tinggi seragam 42px*
 
 ### 7.4 Skala Status Badge & Pill
 
-| Tipe Badge | Tinggi | Padding | Font Size | Border Radius |
-| :--- | :---: | :---: | :---: | :---: |
-| **Badge Regular / Status Kamar** | `24px` | `4px 10px` | `11px` SemiBold | `9999px` (Pill) |
-| **Badge Micro / Baris Tabel** | `20px` | `2px 8px` | `10px – 10.5px` SemiBold | `6px` / `9999px` |
+| Tipe Badge | Tinggi | Padding | Font Size | Border Radius | Semantik Warna Baku |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Badge Regular / Status Kamar** | `24px` | `4px 10px` | `11px` SemiBold | `9999px` (Pill) | Success (`#16A34A` / `#DCFCE7`), Warning (`#D97706` / `#FEF3C7`), Danger (`#EF4444` / `#FEE2E2`) |
+| **Badge Micro / Baris Tabel** | `20px` | `2px 8px` | `10px – 10.5px` SemiBold | `6px` / `9999px` | Sesuai token triad |
+
+---
+
+### 7.5 Spesifikasi Kartu Katalog Kamar & Aturan Hover Semantik (Room Card Semantic States)
+
+Komponen kartu katalog kamar (`.room-unit-item`) mengadopsi prinsip **Full Semantic State Hover** untuk memberikan respon visual instan bagi pemilik properti tanpa mengaburkan keterbacaan badge status:
+
+| Kondisi Kamar | Class Penanda / Selector | Border Default | Border & Glow Saat Hover | Latar Belakang Kartu | Pill Status Badge |
+| :--- | :--- | :--- | :--- | :---: | :--- |
+| **Terisi · Lunas** | `[data-status="terisi"]` | `1.5px solid #ECEEF2` | `1.5px solid #FF7A00` + glow oranye `rgba(255,122,0,0.12)` | `#FFFFFF` | `.badge-success` (Hijau) |
+| **Kosong · Siap Huni** | `.status-vacant-card` / `[data-status="kosong"]` | `1.5px dashed #CBD5E1` | `1.5px dashed #FF7A00` + glow oranye `rgba(255,122,0,0.10)` | `#FAFAFB` → `#FFFFFF` | `.badge-brand` (Oranye) |
+| **Dalam Perbaikan** | `.status-repair-card` / `[data-status="perbaikan"]` | `1.5px solid #FCD34D` | `1.5px solid #D97706` + glow amber `rgba(217,119,6,0.15)` | `#FFFFFF` | `.badge-warning` (Amber) |
+| **Jatuh Tempo (H-3)** | `.status-tempo-card` | `1.5px solid #FDE68A` | `1.5px solid #D97706` + glow amber `rgba(217,119,6,0.15)` | `#FFFFFF` | `.badge-warning` (Amber) |
+| **Terlambat / Menunggak** | `.status-overdue-card` / `[data-status="terlambat"]` | `1.5px solid #FECACA` | `1.5px solid #EF4444` + glow merah `rgba(239,68,68,0.15)` | `#FFFFFF` | `.badge-danger` (Merah) |
+
+#### Sinkronisasi Navigasi Tombol Panah Mengambang (`.room-float-arrow`):
+- Tombol panah 28px di sudut kanan atas thumbnail berstatus terhubung (*linked affordance*):
+- Saat kartu kamar induk di-hover (`.room-unit-item:hover`) atau menerima fokus keyboard (`.room-unit-item:focus-visible`), tombol panah **otomatis ikut aktif** berubah menjadi **Dark Pill pekat (`#111111`) dengan ikon putih (`#FFFFFF`)**.
+- Tombol panah bersifat flat statis tanpa pergeseran posisi (`transform: none; box-shadow: none;`).
+
+---
+
+### 7.6 Spesifikasi Kartu Sorotan Properti Utama (Hero Highlight Card)
+
+Komponen kartu sorotan utama oranye (`.orange-highlight-card`):
+- **Visual DNA**: Menggunakan latar belakang solid brand oranye `#FF7A00` dengan motif kontur garis arsitektural dan dot-grid geometris ber-opacity 0.4.
+- **Kebijakan Hover Statis**: Kartu **WAJIB mempertahankan posisi datar stabil (`transform: none; box-shadow: var(--shadow-card);`)** saat di-hover, selaras secara visual dengan modul grafik *Arus Kas & Operasional* di sampingnya.
+- **Affordance Navigasi**: Seluruh kartu dapat diklik (`cursor: pointer`), dilengkapi tombol panah tembus pandang 32px (`.highlight-arrow-round`) yang berubah putih solid saat disorot.
+
+---
+
+### 7.7 Spesifikasi Tombol Panah Lingkaran Navigasi (`.pill-arrow-btn`)
+
+Komponen tombol panah navigasi 32px (`.pill-arrow-btn`):
+- Digunakan pada header modul *Arus Kas & Operasional* menuju modul laporan detail (`WF-07`).
+- **Kebijakan Hover**: `background: var(--dark-pill); color: #FFFFFF; border-color: var(--dark-pill); transform: none !important; box-shadow: none !important;`.
+- Mencegah distorsi visual atau getaran layout (*zero visual jump*).
+
+---
+
+### 7.8 Standar Carousel & Scroll Interaktif Kartu (`.room-cards-3col`)
+
+Untuk mencegah fenomena scroll patah-patah (*stuttering*) saat kursor berada di atas kartu kamar:
+- **Kebijakan Snap Proximity**: Wajib menggunakan `scroll-snap-type: x proximity` alih-alih `mandatory`, sehingga kontainer dapat bergerak bebas saat aktif digeser dan berlabuh lembut (*soft dock*) saat berhenti dekat tepi kartu.
+- **Arbitrase Wheel Momentum**: Saat mouse wheel diputar secara vertikal di atas kartu, delta gerakan dikonversi menjadi momentum horizontal teredam (*damped momentum* dengan faktor 0.88) menggunakan `requestAnimationFrame`, dengan penonaktifan sementara snap-point selama pergerakan aktif.
+- **Dukungan Touchpad Asli**: Jika terdeteksi gesekan touchpad horizontal (`deltaX > deltaY`), sistem dilarang memotong `preventDefault()`, membiarkan akselerasi native browser berjalan 120fps.
+- **Dukungan Drag-to-Scroll**: Pengguna desktop dapat langsung mengklik dan menggeser (*grab-to-scroll*) area kartu secara taktil.
+
+---
+
+### 7.9 Spesifikasi Dasbor Operasional Staf & Matriks Multi-Kondisi Kamar (`WF-02-STAF`)
+
+Dasbor operasional staf mengadopsi prinsip efisiensi lapangan dan paritas visual 1:1 dengan Dasbor Pemilik (`WF-02-DASHBOARD`):
+- **Paritas Arsitektur 1:1 & Zero Box-in-a-Box Clutter**:
+  - Baris 1: 3 kartu metrik pengukur radial (*Okupansi Kamar 73%*, *Tiket Kerusakan 3 Aktif*, *Setoran Lapangan Rp 2,8 Jt*). Bebas dari laundry list micro-clutter.
+  - Baris 2: Modul operasional berdampingan (1.35fr : 1fr) — *Antrean Perbaikan Lapangan* di sebelah kiri dan *Agenda Kunjungan Teknisi Hari Ini* di sebelah kanan (menggantikan kartu oranye branding owner dengan timeline kerja teknisi yang sangat fungsional bagi staf).
+  - Baris 3: Galeri *Kamar Kost Terkini* horizontal carousel 15 unit lengkap dengan visual foto kamar, status semantik, filter status popover, pencarian instan, dan tombol aksi cepat.
+- **Peta Matriks 15 Kamar (Grid 5x3 Presisi, Flat, & Semantik)**:
+  - Ditempatkan di sidebar 360px di bawah indikator progres kapasitas okupansi.
+  - Setiap ubin putih murni berborder halus dengan dot indikator semantik 6px dan respon hover semantik tanpa pergeseran posisi (`transform: none !important;`):
+    1. *Terisi · Lunas*: Dot `#16A34A` (8 kamar). Saat hover: border menyala `#16A34A` dan latar `#F0FDF4`.
+    2. *Terlambat / Menunggak*: Dot `#EF4444` & border merah muda `#FECACA` (A-02, B-01). Saat hover: border menyala `#EF4444` dan latar `#FEF2F2`.
+    3. *Jatuh Tempo H-3*: Dot `#D97706` & border kuning `#FDE68A` (A-04). Saat hover: border menyala `#D97706`.
+    4. *Dalam Perbaikan*: Dot `#F59E0B` & border putus-putus `#FCD34D` (B-05). Saat hover: border dashed `#D97706`.
+    5. *Kosong · Siap Huni*: Dot `#FF7A00` & border putus-putus `#FED7AA` (A-03, B-03, C-02). Saat hover: border dashed `#FF7A00`.
+  - Dilengkapi legenda 1-baris minimalis di bagian bawah ubin.
+- **Modal Dialog Catat Setoran Lapangan (Zero Self-Approval Policy)**:
+  - Input transaksi setoran lapangan tidak ditumpuk mentah di kanvas dasbor, melainkan diakses melalui modal dialog elegan (`#modalStaffPayment`) berbasis token `.modal-backdrop` dan `.modal-card`.
+  - Dilengkapi banner integritas keuangan: seluruh pencarian sewa oleh staf otomatis berstatus *PENDING* menunggu verifikasi rekening oleh pemilik kost.
+  - Seluruh pemilihan kamar dan metode pembayaran menggunakan Custom Popover Select (Rule 4 Anti-Slop, tinggi 42px).
 
 ---
 
@@ -444,3 +525,6 @@ Semua komponen input formulir satu baris dikunci memiliki **tinggi seragam 42px*
 - [x] **5. Skala Z-Index Terpadu**: Hierarki z-index tersusun rapi dari canvas (`0`), sticky topbar (`10`), modal backdrop (`40`), modal dialog (`50`), popover (`55`), hingga toast (`60`).
 - [x] **6. Kepatuhan Angka Tabular**: Seluruh tabel keuangan, counter metrik, dan nominal tagihan Rupiah menerapkan `font-variant-numeric: tabular-nums`.
 - [x] **7. Pertahanan Anti-Slop Mutlak**: Nol emoji Unicode, nol efek glassmorphism, elevasi bayangan maksimal 4px, dan nol penggunaan dropdown browser bawaan yang kaku.
+- [x] **8. Pertahanan Kontras Pill Badge**: Latar kartu kamar selalu putih murni `#FFFFFF` agar kontras warna badge semantik tidak tertelan saat hover.
+- [x] **9. Standar Flat Arrow Action**: Tombol panah navigasi lingkaran bebas dari animasi translate atau shadow melayang.
+- [x] **10. Kepatuhan Zero Native Select**: Seluruh formulir menggunakan custom popover dropdown terdesain pengganti tag `<select>` mentah.
