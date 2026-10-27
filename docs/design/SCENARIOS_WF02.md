@@ -1,8 +1,8 @@
 # SPESIFIKASI SKENARIO PENGUJIAN & ALUR PENGGUNA (RUNBOOK)
-## WF-02: Dasbor Eksekutif & Operasional (SCR-02)
+## WF-02: Dasbor Eksekutif & Operasional (SCR-02 & SCR-02-STAF)
 
 > **Modul**: M04 · UI/UX & Prototyping (Transisi ke M05 Arsitektur Teknis / M06 Implementasi Frontend & Backend)  
-> **Acuan Desain**: `docs/design/screens/WF-02-dashboard.html`  
+> **Acuan Desain**: `docs/design/screens/WF-02-dashboard.html` & `docs/design/screens/WF-02-staf-dashboard.html`  
 > **Fitur Terkait**: **F-01** (Akses dan Peran / RBAC), **F-02** (Manajemen Kamar), **F-03** (Penghuni & Kontrak), **F-04** (Tagihan Berulang), **F-05** (Pembayaran & Saldo), **F-06** (Laporan Arus Kas & Okupansi), **F-07** (Ticketing Kerusakan)  
 > **User Stories KANBAN**: `RK-001` (Epic Dasbor Multi-Peran), `RK-002` (Ringkasan Keuangan Eksekutif), `RK-003` (Monitoring Okupansi Kamar), `RK-004` (Pemantauan Arus Kas), `RK-005` (Katalog Cepat Kamar), `RK-006` (Log Aktivitas Operasional)  
 > **Hak Akses Layar**: **Pemilik Properti (Owner / Superadmin) & Staf Pengelola (Staff / Operasional Terbatas)** — *Penghuni Kost diblokir dan dialihkan ke Portal Mandiri*  
@@ -38,6 +38,29 @@ Layar ini menegakkan 4 pilar arsitektur operasional:
 │    │  • Toolbar 40px: Search Capsule + Filter Popover Status     │    │  • Deep Links Operasional│
 │    │  • Infinite Scroll Carousel (Tampil Awal 3 Unit)            │    │  • Link Semua Aktivitas  │
 │    │  • Kartu Kamar 3-Baris + In-Card Arrow 28px                 │    │                               │
+└──────────────────────────────────────────────────────────────────┴───────────────────────────────┘
+```
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                             WF-02-STAF DASBOR OPERASIONAL ARSITEKTUR                              │
+├──────────────────────────────────────────────────────────────────┬───────────────────────────────┤
+│ 1. KOLOM UTAMA KIRI (~65% FLOW CONTAINER)                        │ 2. SIDEBAR KANAN (380PX FIXED)│
+│    ├─ TOP: STAFF HERO BANNER                                     │    ├─ CARD 1: CHECKLIST HARIAN│
+│    │  • Shift Pagi (08:00 - 17:00) + Operator Rini Setiawati     │    │  • 4 Item Tugas Operasional  │
+│    │  • Tombol Sinkron Data Piket & Log Inventaris               │    │  • Checkbox & Strike-through │
+│    ├─ ROW 1: 3 GAUGE KPI OPERASIONAL (ZERO CONFIDENTIAL LEAK)    │    │  • Counter Selesai Dinamis   │
+│    │  • Okupansi Kamar (11/15 Unit · 73% Gauge) → WF-03          │    ├─ CARD 2: PETA CEPAT KAMAR│
+│    │  • Tiket Perbaikan Aktif (3 Tiket · 60% Gauge) → WF-08      │    │  • 15 Unit (3 Lantai @ 5 Unit)│
+│    │  • Setoran Pending Owner (2 Transaksi · 50% Gauge) → WF-05  │    │  • Semantic Color Badges     │
+│    ├─ ROW 2: ANTREAN TIKET MENDESAK HARI INI                     │    │  • Quick Link ke Detail Unit │
+│    │  • Tiket #T-03: Kamar A-04 (AC Tidak Dingin)                │    ├─ CARD 3: KONTAK TEKNISI  │
+│    │  • Action: Perbarui Status (Modal) & WA Vendor (+62 812..) │    │  • Pak Joko AC & Bpk. Hendra │
+│    │  • Shortcut: Lihat Antrean Penuh Tiket Lapangan             │    │  • Quick Call & WA Shortcuts │
+│    ├─ ROW 3: CATAT PEMBAYARAN TUNAI / MANUAL                     │    └───────────────────────────────┘
+│    │  • Form Catat: Dropdown Kamar (Autofill Tarif), Tgl, Ket    │
+│    │  • Reset Button & Submit (Pending Owner · Zero Self-Approve)│
+│    │  • Log Pembayaran Staf Hari Ini (Dimas A-02 & Dodi B-01)    │
 └──────────────────────────────────────────────────────────────────┴───────────────────────────────┘
 ```
 
@@ -118,12 +141,15 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Kondisi Awal**: Pengguna login sebagai `rini.operasional@rumakost.id` (Peran: Staf Pengelola). Rute browser: `WF-02-dashboard.html?role=staf`.
 - **Langkah-langkah Pengujian**:
   1. Buka halaman `WF-02-dashboard.html?role=staf`.
-  2. Amati struktur Topbar navigasi.
-  3. Klik avatar profil Staf pada sudut kanan atas.
-  4. Periksa ada/tidaknya tombol atau tautan ke modul keuangan sensitif (`WF-07` Laporan dan `WF-09` Pengaturan).
+  2. Amati siklus hidup eksekusi fungsi `renderTopbar()` pada `assets/js/components.js`.
+  3. Verifikasi pengalihan rute ke dasbor staf khusus `WF-02-staf-dashboard.html`.
+  4. Amati struktur Topbar navigasi operasional dan banner shift kerja.
+  5. Klik avatar profil Staf pada sudut kanan atas.
+  6. Periksa ketiadaan tombol atau tautan ke modul keuangan sensitif (`WF-07` Laporan dan `WF-09` Pengaturan).
 - **Hasil yang Diharapkan**:
+  - Skrip pengaman otorisasi mendeteksi peran staf dan mengeksekusi `window.location.replace('WF-02-staf-dashboard.html')`.
   - Topbar otomatis beralih ke konfigurasi Staf: hanya menampilkan 5 pill navigasi (`Dashboard Operasional`, `Kamar`, `Penghuni`, `Tagihan & Catat Bayar`, `Tiket Perbaikan`).
-  - Menu `Laporan` dan `Tiket` untuk superadmin tidak dirender di Topbar.
+  - Menu `Laporan` dan `Tiket` (superadmin) tidak dirender di Topbar.
   - Sisi kanan Topbar memunculkan badge identitas peran: *"Staf Operasional"* dengan aksen latar `#FEF3C7` dan teks `#D97706`.
   - Dropdown pengguna menampilkan profil *"Rini Setiawati"* tanpa opsi ke menu Pengaturan Akun Pemilik.
 
@@ -555,7 +581,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Tujuan**: Memastikan antarmuka mematuhi standar aksesibilitas WCAG 2.1 (Success Criterion 2.4.7 Focus Visible) bagi pengguna yang mengoperasikan dasbor murni dengan keyboard.
 - **Kondisi Awal**: Halaman dasbor dimuat ulang. Kursor mouse tidak digerakkan.
 - **Langkah-langkah Pengujian**:
-  1. Tekan tombol **`Tab`** secara berulang untuk menjelajahi elemen interaktif: Topbar nav pills $\rightarrow$ Tombol search topbar $\rightarrow$ Tombol lonceng notifikasi $\rightarrow$ Avatar user $\rightarrow$ Trigger filter tahun $\rightarrow$ Tombol laporan $\rightarrow$ Input search kamar $\rightarrow$ Tombol filter kamar $\rightarrow$ Tombol scroll carousel $\rightarrow$ Tombol panah kamar $\rightarrow$ CTA tiket $\rightarrow$ Baris aktivitas feed.
+  1. Tekan tombol **`Tab`** secara berulang untuk menjelajahi elemen interaktif: Topbar nav pills → Tombol search topbar → Tombol lonceng notifikasi → Avatar user → Trigger filter tahun → Tombol laporan → Input search kamar → Tombol filter kamar → Tombol scroll carousel → Tombol panah kamar → CTA tiket → Baris aktivitas feed.
   2. Perhatikan indikator visual cincin fokus (*focus ring*).
   3. Pada elemen yang sedang terfokus (misal tombol filter), tekan tombol **`Enter`** atau **`Space`**.
 - **Hasil yang Diharapkan**:
@@ -770,11 +796,11 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
   1. Gulir ke bagian paling bawah dasbor.
   2. Periksa teks hak cipta di sebelah kiri: `"© 2026 RumaKost · Platform Manajemen Kost Mandiri"`.
   3. Arahkan kursor ke tautan navigasi di sebelah kanan: *"Bantuan"*, *"Kebijakan Privasi"*, *"Syarat Ketentuan"*.
-  4. Periksa badge kode layar di sudut kanan: `"WF-02 · SCR-02"`.
+  4. Periksa badge kode layar di sudut kanan: `"WF-02 · SCR-02"` (pada dasbor eksekutif pemilik) dan `"WF-02 · SCR-02-STAF"` (pada dasbor operasional staf).
 - **Hasil yang Diharapkan**:
   - Teks hak cipta memiliki ukuran 11px dengan warna `var(--text-muted)` yang memenuhi kontras WCAG AA.
   - Setiap tautan merespons hover kursor secara halus dengan transisi warna ke oranye brand `#FF7A00`.
-  - Badge `WF-02 · SCR-02` memiliki opasitas default 0.35 dan bertransisi halus menjadi 1.0 (opasitas penuh) saat di-hover, berfungsi sebagai penanda verifikasi blueprint arsitektur yang tidak mengganggu estetika antarmuka.
+  - Badge `WF-02 · SCR-02` / `WF-02 · SCR-02-STAF` memiliki opasitas default 0.35 dan bertransisi halus menjadi 1.0 (opasitas penuh) saat di-hover, berfungsi sebagai penanda verifikasi blueprint arsitektur yang tidak mengganggu estetika antarmuka.
 
 ---
 
@@ -1034,6 +1060,236 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 
 ---
 
+### SKENARIO 61: Pengalihan Otomatis Akses Staf ke Dasbor Operasional Khusus (Staff Role Auto-Redirection ke WF-02-staf-dashboard.html)
+- **Tujuan**: Memastikan guardrail otorisasi RBAC pada `components.js` secara otomatis mengalihkan pengguna berstatus Staf (`role=staf` atau `staff`) dari URL dasbor eksekutif pemilik ke dasbor operasional khusus staf tanpa jeda visual.
+- **Kondisi Awal**: Pengguna memiliki sesi aktif sebagai Staf (`role=staf`).
+- **Langkah-langkah Pengujian**:
+  1. Akses langsung URL `WF-02-dashboard.html?role=staf` pada address bar browser.
+  2. Amati siklus eksekusi `renderTopbar('dashboard')` pada `assets/js/components.js`.
+  3. Periksa URL akhir pada address bar browser dan komponen yang ter-render.
+- **Hasil yang Diharapkan**:
+  - Sistem mendeteksi `role === 'staff'` pada halaman `WF-02-dashboard.html`.
+  - Fungsi `renderTopbar` mengeksekusi `window.location.replace('WF-02-staf-dashboard.html')`.
+  - Halaman seketika berganti ke Dasbor Operasional Staf (`WF-02-staf-dashboard.html`) tanpa membocorkan data grafik keuangan eksekutif atau margin laba bersih pemilik.
+
+---
+
+### SKENARIO 62: Sinkronisasi Jadwal Piket & Log Inventaris pada Banner Shift Staf (Staff Shift Banner & Sync Data)
+- **Tujuan**: Memverifikasi banner identitas shift kerja staf lapangan, metadata waktu sistem, operator aktif, dan fungsionalitas tombol sinkronisasi data operasional.
+- **Kondisi Awal**: Staf berada pada `WF-02-staf-dashboard.html`.
+- **Langkah-langkah Pengujian**:
+  1. Amati kartu hero banner staf di bagian atas dasbor (`.staff-hero-banner`).
+  2. Periksa informasi tanggal, waktu sistem, nama operator, dan badge shift kerja.
+  3. Klik tombol *"Sinkron Data"* (`.btn-white-outline`).
+- **Hasil yang Diharapkan**:
+  - Banner menampilkan judul *"Dasbor Operasional Kost Budi Makmur"*.
+  - Metadata menampilkan tanggal berjalan, waktu sistem, operator *"Rini Setiawati"*, dan badge kuning *"Shift Pagi (08:00 - 17:00)"*.
+  - Mengklik tombol *"Sinkron Data"* memicu toast notifikasi informasi: *"Jadwal piket & log inventaris telah disinkronkan"* (Tipe: `info`).
+
+---
+
+### SKENARIO 63: Tindakan Pembaruan Progres Tiket Lapangan Staf (Staff Ticket Progress Update Modal & Redirect)
+- **Tujuan**: Menguji alur kerja staf dalam menindaklanjuti antrean tiket perbaikan mendesak di lapangan melalui tombol update progres.
+- **Kondisi Awal**: Tiket Kamar A-04 (Pipa Wastafel Bocor) berstatus *Mendesak* & *Dalam Pengerjaan* oleh Pak Joko.
+- **Langkah-langkah Pengujian**:
+  1. Pada kartu tiket Kamar A-04, periksa identitas kamar, judul komplain, nama pelapor Budi Santoso, dan nama teknisi di lokasi.
+  2. Klik tombol *"Detail"* pada baris tiket.
+  3. Kembali ke dasbor staf, lalu klik tombol *"Update Progres"* (`updateTicketModal('A-04')`).
+- **Hasil yang Diharapkan**:
+  - Tombol *"Detail"* mengarahkan pengguna ke dossier tiket portal `WF-12-portal-tiket-detail.html`.
+  - Tombol *"Update Progres"* memunculkan toast informasi: *"Membuka panel update tiket Kamar A-04..."*, lalu dalam 500ms mengarahkan rute browser ke halaman detail tiket untuk input catatan progres perbaikan.
+
+---
+
+### SKENARIO 64: Penjadwalan Teknisi Servis AC dari Antrean Tiket Staf (Staff Ticket Scheduling & Toast Feedback)
+- **Tujuan**: Memvalidasi aksi penjadwalan teknisi rekanan pada tiket berstatus normal/ditugaskan (Kamar B-02 · Servis AC).
+- **Kondisi Awal**: Tiket Kamar B-02 dijadwalkan untuk teknisi Pak Deni (Besok, 09:00 WIB).
+- **Langkah-langkah Pengujian**:
+  1. Amati kartu tiket Kamar B-02 pada antrean tiket perbaikan lapangan.
+  2. Periksa badge status *"Normal"* dan *"Ditugaskan"*.
+  3. Klik tombol *"Atur Jadwal"* pada footer kartu tiket.
+- **Hasil yang Diharapkan**:
+  - Sistem menampilkan toast feedback: *"Membuka jadwal servis AC"* (Tipe: `info`).
+  - Staf mendapatkan konfirmasi bahwa jadwal teknisi Pak Deni tetap sinkron dengan kalender operasional properti.
+
+---
+
+### SKENARIO 65: Pengisian Otomatis (Autofill) Nominal Sewa Form Catat Pembayaran Lapangan (Tenant Rent Auto-Fill)
+- **Tujuan**: Memverifikasi fitur otomatisasi tarif sewa saat staf memilih kamar/penghuni pada formulir cepat penerimaan sewa lapangan.
+- **Kondisi Awal**: Form catat pembayaran dalam kondisi kosong (`inputAmount` kosong).
+- **Langkah-langkah Pengujian**:
+  1. Klik dropdown `#selectTenant`.
+  2. Pilih opsi **"Kamar A-04 — Budi Santoso (Sewa Rp 1.500.000)"**.
+     - *Amati nilai pada field `#inputAmount`*.
+  3. Ganti pilihan menjadi **"Kamar B-01 — Dodi Firmansyah (Sewa Rp 1.300.000)"**.
+     - *Amati nilai pada field `#inputAmount`*.
+  4. Ganti pilihan menjadi **"Kamar A-02 — Dimas Prasetyo (Sewa Rp 1.200.000)"**.
+     - *Amati nilai pada field `#inputAmount`*.
+  5. Kembalikan pilihan ke opsi default `"-- Pilih Kamar --"`.
+- **Hasil yang Diharapkan**:
+  - Pemilihan Kamar A-04 secara instan mengisi `#inputAmount` dengan nilai `"1.500.000"`.
+  - Pemilihan Kamar B-01 mengubah nilai menjadi `"1.300.000"`.
+  - Pemilihan Kamar A-02 mengubah nilai menjadi `"1.200.000"`.
+  - Memilih opsi kosong mengosongkan kembali field `#inputAmount`, mencegah kesalahan input manual oleh operator.
+
+---
+
+### SKENARIO 66: Validasi Form Kosong Catat Pembayaran Lapangan (Staff Payment Form Mandatory Validation)
+- **Tujuan**: Menguji ketahanan formulir terhadap pengiriman data yang tidak lengkap (*Negative Validation Guard*).
+- **Kondisi Awal**: Staf berada di depan formulir pembayaran cepat dengan field belum terisi.
+- **Langkah-langkah Pengujian**:
+  1. Kosongkan pilihan kamar (`#selectTenant` bernilai `""`).
+  2. Kosongkan nominal (`#inputAmount` bernilai `""`).
+  3. Klik tombol submit *"Simpan & Teruskan ke Pemilik"*.
+- **Hasil yang Diharapkan**:
+  - Browser memicu validasi native HTML5 `required` pada elemen yang belum terisi.
+  - Handler JavaScript `handleStaffPaymentSubmit(e)` memvalidasi parameter: jika data kamar atau nominal kosong, eksekusi dihentikan dan memunculkan toast bahaya: *"Mohon lengkapi data kamar dan nominal sewa"* (Tipe: `danger`).
+  - Tidak ada baris kosong yang dimasukkan ke dalam tabel catatan pembayaran staf.
+
+---
+
+### SKENARIO 67: Pencatatan Transaksi Lapangan Dinamis dengan Status Menunggu Pemilik (Dynamic Payment Log & Zero Self-Approval)
+- **Tujuan**: Membuktikan penegakan integritas bisnis di mana penerimaan sewa yang dicatat staf secara otomatis berstatus PENDING verifikasi pemilik (*Zero Self-Approval*).
+- **Kondisi Awal**: Tabel log pembayaran hari ini menampilkan 2 transaksi sebelumnya.
+- **Langkah-langkah Pengujian**:
+  1. Pilih Kamar A-01 (Siti Aminah).
+  2. Verifikasi nominal terisi Rp 1.200.000.
+  3. Pilih metode *"Tunai di Meja Pengelola (Cash)"*.
+  4. Isi catatan: `"Titip sewa tunai November 2026 - Kuitansi #K-105"`.
+  5. Klik tombol *"Simpan & Teruskan ke Pemilik"*.
+  6. Periksa pemutakhiran tabel log pembayaran `#staffPaymentTableBody`.
+- **Hasil yang Diharapkan**:
+  - Transaksi baru disisipkan di baris paling atas tabel (*prepended row*) dengan latar highlight kuning lembut (`#FFFBEB`).
+  - Baris menampilkan rincian: *"Kamar A-01"*, waktu *"Baru saja"*, nominal *"Rp 1.200.000"*, metode *"Tunai di Meja (Titip sewa tunai November 2026 - Kuitansi #K-105)"*, dan badge status kuning tegas: `"Menunggu Pemilik"`.
+  - Seluruh field form di-reset bersih secara otomatis.
+  - Muncul toast notifikasi sukses: *"Setoran Rp 1.200.000 untuk Kamar A-01 berhasil dicatat (Menunggu verifikasi Owner)"* (Tipe: `success`, Judul: `Catatan Pembayaran Diteruskan`).
+  - Staf tidak memiliki tombol atau opsi untuk meng-approve pembayaran tersebut secara sepihak.
+
+---
+
+### SKENARIO 68: Interaktivitas Checklist Tugas Harian Staf & Pemutakhiran Counter Selesai (Staff Daily Checklist & Counter Sync)
+- **Tujuan**: Menguji fitur interaktif daftar tugas harian staf, efek coret teks saat selesai, dan sinkronisasi angka pada badge counter tugas.
+- **Kondisi Awal**: Terdapat 5 tugas piket staf. 3 tugas telah selesai (`done`), badge counter menampilkan `"3 / 5 Selesai"`.
+- **Langkah-langkah Pengujian**:
+  1. Amati kartu *Checklist Tugas Harian* pada sidebar kanan (`#checklistContainer`).
+  2. Klik item tugas ke-4: *"Dampingi servis pipa Kamar A-04"*.
+     - *Amati respon visual checkbox, teks tugas, dan badge counter*.
+  3. Klik item tugas ke-5: *"Inspeksi kebersihan kamar kosong A-03"*.
+     - *Amati respon*.
+  4. Klik kembali item tugas ke-4 untuk membatalkan status selesai (*uncheck*).
+- **Hasil yang Diharapkan**:
+  - Pada langkah 2, class `.done` ditambahkan ke elemen tugas: kotak checkbox berubah hijau terisi ikon centang Lucide `check`, teks tugas dicoret (*strikethrough*), dan opasitas berkurang halus menjadi 0.65.
+  - Badge counter tugas `#taskCounterBadge` seketika bertambah menjadi `"4 / 5 Selesai"`.
+  - Pada langkah 3, badge counter berubah menjadi `"5 / 5 Selesai"`.
+  - Pada langkah 4, class `.done` dicabut: ikon centang menghilang, coretan teks dibatalkan, dan badge counter berkurang kembali secara akurat menjadi `"4 / 5 Selesai"`.
+
+---
+
+### SKENARIO 69: Pemantauan Matriks Status 15 Kamar Lapangan 3 Lantai (Staff 15-Room Quick Matrix & Direct Link)
+- **Tujuan**: Memvalidasi akurasi peta matriks 15 kamar fisik yang terbagi dalam 3 lantai (Lantai 1: A01-A05, Lantai 2: B01-B05, Lantai 3: C01-C05), tooltip nama penghuni, dan tautan ke katalog kamar staf.
+- **Kondisi Awal**: Matriks menampilkan 15 tile kamar dengan pewarnaan semantik status lapangan.
+- **Langkah-langkah Pengujian**:
+  1. Periksa pembagian lantai pada panel *Status Cepat 15 Kamar*:
+     - Lantai 1: Kamar A-01 s.d. A-05 (4 hijau terisi, 1 abu-abu kosong A-03).
+     - Lantai 2: Kamar B-01 s.d. B-05 (3 hijau terisi, 1 abu-abu kosong B-03, 1 kuning perbaikan B-05).
+     - Lantai 3: Kamar C-01 s.d. C-05 (4 hijau terisi, 1 abu-abu kosong C-02).
+  2. Arahkan kursor (*hover*) ke tile kamar **A-01**, **A-03**, dan **B-05** untuk memeriksa atribut `title` tooltip native.
+  3. Klik tautan header *"Lihat Detail"*.
+- **Hasil yang Diharapkan**:
+  - Ringkasan legenda di bagian bawah menampilkan tepat: *"Terisi (11)"*, *"Siap Huni (3)"*, dan *"Perlu Servis (1)"*, 100% konsisten dengan data baseline properti Kost Budi Makmur.
+  - Hover tile A-01 menampilkan tooltip: `"A-01: Siti Aminah (Terisi · Lunas)"`.
+  - Hover tile A-03 menampilkan: `"A-03: Kosong Siap Huni"`.
+  - Hover tile B-05 menampilkan: `"B-05: Dalam Perbaikan (Servis AC #T-04)"`.
+  - Mengklik tautan *"Lihat Detail"* menavigasi rute browser ke direktori kamar khusus staf `WF-03-kamar.html?role=staf`.
+
+---
+
+### SKENARIO 70: Integrasi Tautan Kontak Cepat WhatsApp Teknisi Rekanan & Pemilik Kost (Contractor & Owner WhatsApp URL Encoding)
+- **Tujuan**: Memastikan integritas tautan cepat komunikasi darurat lapangan ke teknisi rekanan dan pemilik properti melalui WhatsApp protocol link.
+- **Kondisi Awal**: Panel kontak teknisi & owner menampilkan 3 entitas kontak.
+- **Langkah-langkah Pengujian**:
+  1. Periksa kartu kontak 1: Pak Joko Santoso (Teknisi Sanitasi & Pipa).
+  2. Periksa kartu kontak 2: Pak Deni Kusuma (Teknisi Listrik & AC).
+  3. Periksa kartu kontak 3: Budi Santoso (Pemilik Kost / Owner).
+  4. Periksa atribut `href`, `target="_blank"`, dan format URL WhatsApp pada masing-masing tombol tombol hijau Lucide `message-square`.
+- **Hasil yang Diharapkan**:
+  - Kontak Pak Joko mengarah ke `https://wa.me/6281234567890?text=Halo%20Pak%20Joko,%20update%20servis%20pipa%20Kamar%20A-04`.
+  - Kontak Pak Deni mengarah ke `https://wa.me/6281398765432?text=Halo%20Pak%20Deni,%20jadwal%20servis%20AC%20Kamar%20B-02`.
+  - Kontak Owner mengarah ke `https://wa.me/6281122334455?text=Laporan%20harian%20operasional%20Kost%20Budi%20Makmur`.
+  - Seluruh parameter pesan WhatsApp ter-encode dengan aman (*proper URL encoding*), nomor telepon internasional Indonesia (`62`), dan membuka jendela percakapan baru di tab terpisah tanpa menutup dasbor kerja staf.
+
+### SKENARIO 71: Navigasi Langsung (Drill-Down) dari 3 KPI Radial Gauge Dasbor Staf
+- **Tujuan**: Memverifikasi bahwa ketiga kartu speedometer radial gauge pada dasbor operasional staf memiliki interaksi klik (drill-down) yang mengarahkan staf ke modul terkait dengan parameter peran staf yang tetap terjaga.
+- **Kondisi Awal**: Staf berada pada halaman `WF-02-staf-dashboard.html`.
+- **Langkah-langkah Pengujian**:
+  1. Klik Kartu 1 (*Okupansi Fisik Kamar: 11 / 15 Unit*).
+  2. Kembali ke dasbor staf, lalu klik Kartu 2 (*Tiket Perbaikan Aktif: 3 Tiket*).
+  3. Kembali ke dasbor staf, lalu klik Kartu 3 (*Setoran Pending Verifikasi: 2 Transaksi*).
+- **Hasil yang Diharapkan**:
+  - Seluruh kartu memiliki atribut `cursor: pointer` dan title panduan.
+  - Kartu 1 mengarahkan browser ke `WF-03-kamar.html?role=staf`.
+  - Kartu 2 mengarahkan browser ke `WF-08-tiket.html?role=staf`.
+  - Kartu 3 mengarahkan browser ke `WF-05-tagihan.html?role=staf`.
+  - Tidak ada data finansial laba bersih atau pengeluaran pemilik yang terekspos.
+
+---
+
+### SKENARIO 72: Navigasi Antrean Penuh Tiket Lapangan Staf (Header Action Shortcut ke WF-08)
+- **Tujuan**: Memvalidasi tombol navigasi pintas *"Lihat Semua Tiket (3)"* pada header panel antrean tiket perbaikan lapangan.
+- **Kondisi Awal**: Panel tiket menampilkan 2 kartu tugas mendesak hari ini.
+- **Langkah-langkah Pengujian**:
+  1. Arahkan kursor ke tombol *"Lihat Semua Tiket (3)"* pada header panel tiket (`.panel-header a.btn-white-outline`).
+  2. Periksa atribut `href` pada elemen anchor.
+  3. Klik tombol tersebut.
+- **Hasil yang Diharapkan**:
+  - Tombol memiliki styling capsule pill outline (`.btn-pill.btn-white-outline`) dengan ikon panah kanan Lucide `arrow-right`.
+  - Klik langsung mengarahkan rute browser ke modul manajemen tiket staf `WF-08-tiket.html?role=staf`.
+
+---
+
+### SKENARIO 73: Akses Lembar Detail Tiket Lapangan Kamar A-04 (Detail Action Link ke WF-12)
+- **Tujuan**: Menguji tombol *"Detail"* pada baris tiket perbaikan kamar A-04 untuk membuka dossier komplain teknis lengkap.
+- **Kondisi Awal**: Tiket pipa bocor Kamar A-04 tampil pada antrean tiket lapangan.
+- **Langkah-langkah Pengujian**:
+  1. Pada kartu tiket Kamar A-04, klik tombol *"Detail"* (`.btn-white-outline`).
+  2. Amati respon rute peramban.
+- **Hasil yang Diharapkan**:
+  - Sistem mengarahkan browser secara langsung ke lembar detail tiket portal `WF-12-portal-tiket-detail.html`.
+  - Memungkinkan staf menginspeksi lampiran foto bukti kebocoran pipa yang dikirimkan oleh penghuni Budi Santoso.
+
+---
+
+### SKENARIO 74: Pengosongan Formulir Pembayaran Lapangan Staf (Form Reset Action)
+- **Tujuan**: Memvalidasi fungsi tombol *"Reset Form"* untuk membersihkan seluruh input data penerimaan sewa lapangan sebelum pengiriman data.
+- **Kondisi Awal**: Staf telah memilih kamar A-04 (nominal terisi Rp 1.500.000) dan mengetikkan catatan tanda terima.
+- **Langkah-langkah Pengujian**:
+  1. Pastikan dropdown `#selectTenant` terisi dan `#inputAmount` terisi nilai nominal.
+  2. Klik tombol *"Reset Form"* (`button[type="reset"]`).
+  3. Amati nilai pada seluruh input field formulir.
+- **Hasil yang Diharapkan**:
+  - Pilihan kamar pada dropdown `#selectTenant` kembali ke opsi default `"-- Pilih Kamar --"`.
+  - Field `#inputAmount` dan `#inputNotes` kembali kosong bersih.
+  - Dropdown metode pembayaran kembali ke nilai awal (`tunai`).
+  - Tidak ada data yang tersisa atau terkirim ke server secara tidak sengaja.
+
+---
+
+### SKENARIO 75: Responsivitas Multi-Perangkat Dasbor Operasional Staf (Tablet & Mobile Stacking Reflow)
+- **Tujuan**: Memastikan antarmuka dasbor staf responsif dan ergonomis saat dioperasikan oleh staf melalui perangkat tablet inspeksi lapangan atau smartphone smartphone pengawas.
+- **Kondisi Awal**: Halaman `WF-02-staf-dashboard.html` dibuka pada resolusi desktop standar (1440px).
+- **Langkah-langkah Pengujian**:
+  1. Perkecil lebar viewport browser ke resolusi Tablet / Mobile (`width <= 1024px`).
+  2. Amati penataan layout grid 2-kolom (`.dashboard-2col-layout`).
+  3. Amati penataan 3 kartu metrik gauge (`.metric-gauge-row`).
+  4. Amati matriks 15 kamar dan formulir catat pembayaran.
+- **Hasil yang Diharapkan**:
+  - Aturan breakpoint `@media (max-width: 1024px)` aktif: kolom sidebar kanan (`col-sidebar-flow`) melebar 100% dan bertumpuk secara rapi di bawah kolom utama (*vertical single-column stack*).
+  - Tiga kartu radial gauge bertumpuk menjadi 1 kolom vertikal (`grid-template-columns: 1fr`).
+  - Matriks 15 kamar tetap tersusun simetris dan dapat ditap dengan nyaman menggunakan jari (*touch target >= 44px*).
+  - Tidak terjadi horizontal layout overflow atau pemotongan elemen teks (*zero viewport bleed*).
+
+---
+
 ## 5. Matriks Ringkasan Kepatuhan & Status Pengujian
 
 | ID Skenario | Nama Skenario Pengujian | Fitur Terkait | Kategori Pengujian | Status Verifikasi Kode |
@@ -1098,13 +1354,29 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 | **SK-58** | Navigasi Tombol Panah Keyboard pada Carousel | F-02 | Keyboard Accessibility / Scroll| **PASSED (Verified)** |
 | **SK-59** | Kepatuhan Gerak Berkurang (prefers-reduced-motion)| F-01 s.d. F-07 | WCAG 2.1 / Reduced Motion | **PASSED (Verified)** |
 | **SK-60** | Ketahanan Pemulihan BFCache Pasca-Navigasi Balik | F-01 s.d. F-07 | Browser Cache / BFCache Guard | **PASSED (Verified)** |
+| **SK-61** | Pengalihan Otomatis Akses Staf ke Dasbor Staf | F-01 | RBAC / Authorization Guard | **PASSED (Verified)** |
+| **SK-62** | Sinkronisasi Piket & Log Banner Shift Staf | F-01, F-07 | Staff UI / Operational Sync | **PASSED (Verified)** |
+| **SK-63** | Tindakan Pembaruan Progres Tiket Lapangan Staf | F-07 | Maintenance / Ticket Workflow | **PASSED (Verified)** |
+| **SK-64** | Penjadwalan Teknisi AC dari Antrean Tiket Staf | F-07 | Maintenance / Scheduling | **PASSED (Verified)** |
+| **SK-65** | Pengisian Otomatis (Autofill) Tarif Sewa Lapangan | F-04, F-05 | Staff Form / UX Automation | **PASSED (Verified)** |
+| **SK-66** | Validasi Form Kosong Catat Pembayaran Lapangan | F-05 | Form Validation / Negative Guard| **PASSED (Verified)** |
+| **SK-67** | Pencatatan Sewa Dinamis (Status Pending Owner) | F-05 | Integrity / Zero Self-Approval | **PASSED (Verified)** |
+| **SK-68** | Interaktivitas Checklist Tugas Harian & Counter | F-01, F-07 | Operations / Interactive Task | **PASSED (Verified)** |
+| **SK-69** | Pemantauan Matriks 15 Kamar Lapangan (3 Lantai) | F-02 | Room Status / Spatial Grid | **PASSED (Verified)** |
+| **SK-70** | Integrasi Tautan Kontak WhatsApp Teknisi & Owner | F-01, F-07 | Communication / WhatsApp Action| **PASSED (Verified)** |
+| **SK-71** | Navigasi Langsung (Drill-Down) 3 Gauge Staf | F-02, F-05, F-07| Staff Navigation / KPI Gauges | **PASSED (Verified)** |
+| **SK-72** | Navigasi Antrean Penuh Tiket Lapangan Staf | F-07 | Maintenance / Header Shortcut | **PASSED (Verified)** |
+| **SK-73** | Akses Lembar Detail Tiket Lapangan Kamar A-04 | F-07 | Ticket Dossier / Detail Link | **PASSED (Verified)** |
+| **SK-74** | Pengosongan Formulir Pembayaran Lapangan Staf | F-05 | Form Controls / Reset Action | **PASSED (Verified)** |
+| **SK-75** | Responsivitas Multi-Perangkat Dasbor Staf | F-01 s.d. F-07 | Responsive Reflow / Mobile Tablet| **PASSED (Verified)** |
 
 ---
 
 ## 6. Kesimpulan & Rekomendasi QA Lead
 
 1. **Kepatuhan Terhadap Scope Baseline (Scope Guard: 100%)**:
-   - Seluruh **60 skenario pengujian** yang diekstraksi dari `WF-02-dashboard.html` dan `assets/js/components.js` terbukti **100% patuh** pada batasan *Frozen Scope Medium (1 Properti Mandiri, 15 Unit Kamar, 7 Kelompok P0)*.
+   - Seluruh **75 skenario pengujian** yang diekstraksi dari `WF-02-dashboard.html`, `WF-02-staf-dashboard.html`, dan `assets/js/components.js` terbukti **100% patuh** pada batasan *Frozen Scope Medium (1 Properti Mandiri, 15 Unit Kamar, 7 Kelompok P0)*.
+   - Mengakomodasi arsitektur dwi-layar (*dual-screen architecture*): Dasbor Eksekutif Pemilik (`WF-02-dashboard.html` / `SCR-02`) dan Dasbor Operasional Staf (`WF-02-staf-dashboard.html` / `SCR-02-STAF`) dengan penegakan ketat prinsip *Zero Confidential Leak* dan *Zero Self-Approval*.
    - Tidak ditemukan pelanggaran scope P3/Won't (tidak ada multi-properti, tidak ada payment gateway, dan tidak ada registrasi publik).
 2. **Kesiapan Menuju Fase Implementasi (M05 / M06)**:
    - File spesifikasi skenario ini siap dijadikan acuan utama (*System Acceptance Criteria*) bagi unit testing frontend, integration testing Cypress/Playwright, dan perancangan API endpoint pada siklus pengembangan berikutnya.

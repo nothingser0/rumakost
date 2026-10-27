@@ -509,6 +509,44 @@
       transform: scale(1.1);
     }
 
+    /* MICRO-FOOTER MINIMALIS */
+    .dashboard-footer-micro {
+      margin-top: 24px;
+      padding: 16px 4px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-micro-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-micro-links a {
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: color var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .footer-micro-links a:hover {
+      color: var(--brand-primary);
+    }
+
+    .wf-badge {
+      opacity: 0.35;
+      transition: opacity var(--transition-fast);
+    }
+
+    .wf-badge:hover {
+      opacity: 1;
+    }
+
     /* Responsive */
     @media (max-width: 1024px) {
       .dashboard-2col-layout {
@@ -723,8 +761,8 @@
                   <option value="">-- Pilih Kamar --</option>
                   <option value="A-04">Kamar A-04 — Budi Santoso (Sewa Rp 1.500.000)</option>
                   <option value="A-02">Kamar A-02 — Dimas Prasetyo (Sewa Rp 1.200.000)</option>
-                  <option value="B-03">Kamar B-03 — Andi Wijaya (Sewa Rp 1.200.000)</option>
-                  <option value="B-01">Kamar B-01 — Siti Rahma (Sewa Rp 1.500.000)</option>
+                  <option value="B-01">Kamar B-01 — Dodi Firmansyah (Sewa Rp 1.300.000)</option>
+                  <option value="A-01">Kamar A-01 — Siti Aminah (Sewa Rp 1.200.000)</option>
                 </select>
               </div>
 
@@ -791,9 +829,9 @@
                   </td>
                 </tr>
                 <tr style="border-bottom: 1px solid var(--border-divider);">
-                  <td style="padding: 12px 8px; font-weight: 600;">Kamar B-03 · Andi Wijaya</td>
+                  <td style="padding: 12px 8px; font-weight: 600;">Kamar B-01 · Dodi Firmansyah</td>
                   <td style="padding: 12px 8px; color: var(--text-muted);">09:45 WIB</td>
-                  <td style="padding: 12px 8px; font-weight: 700; color: #111111;">Rp 1.200.000</td>
+                  <td style="padding: 12px 8px; font-weight: 700; color: #111111;">Rp 1.300.000</td>
                   <td style="padding: 12px 8px;">Slip Transfer BCA</td>
                   <td style="padding: 12px 8px;">
                     <span class="badge-status badge-warning" style="font-size: 10px;">Menunggu Pemilik</span>
@@ -876,31 +914,35 @@
 
           <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;">Lantai 1</div>
           <div class="room-matrix-grid">
-            <div class="room-tile occupied" title="A-01: Budi Gunawan (Terisi)">A-01</div>
-            <div class="room-tile occupied" title="A-02: Dimas Prasetyo (Terisi)">A-02</div>
+            <div class="room-tile occupied" title="A-01: Siti Aminah (Terisi · Lunas)">A-01</div>
+            <div class="room-tile occupied" title="A-02: Dimas Prasetyo (Terlambat H+5)">A-02</div>
             <div class="room-tile vacant" title="A-03: Kosong Siap Huni">A-03</div>
-            <div class="room-tile maintenance" title="A-04: Budi Santoso (Pipa Bocor)">A-04</div>
-            <div class="room-tile occupied" title="A-05: Hendra (Terisi)">A-05</div>
-            <div class="room-tile occupied" title="A-06: Farhan (Terisi)">A-06</div>
-            <div class="room-tile occupied" title="A-07: Rizki (Terisi)">A-07</div>
-            <div class="room-tile vacant" title="A-08: Kosong Siap Huni">A-08</div>
+            <div class="room-tile occupied" title="A-04: Budi Santoso (Jatuh Tempo / Servis Pipa)">A-04</div>
+            <div class="room-tile occupied" title="A-05: Sri Wahyuni (Terisi · Lunas)">A-05</div>
           </div>
 
           <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); margin: 8px 0 4px 0;">Lantai 2</div>
           <div class="room-matrix-grid">
-            <div class="room-tile occupied" title="B-01: Siti Rahma (Terisi)">B-01</div>
-            <div class="room-tile maintenance" title="B-02: Rini Marlina (AC Kurang Dingin)">B-02</div>
-            <div class="room-tile occupied" title="B-03: Andi Wijaya (Terisi)">B-03</div>
-            <div class="room-tile vacant" title="B-04: Kosong Siap Huni">B-04</div>
-            <div class="room-tile occupied" title="B-05: Doni (Terisi)">B-05</div>
-            <div class="room-tile occupied" title="B-06: Kevin (Terisi)">B-06</div>
-            <div class="room-tile vacant" title="B-07: Kosong Siap Huni">B-07</div>
+            <div class="room-tile occupied" title="B-01: Dodi Firmansyah (Telat 3 Hari)">B-01</div>
+            <div class="room-tile occupied" title="B-02: Rini Marlina (Terisi · Lunas / Servis AC)">B-02</div>
+            <div class="room-tile vacant" title="B-03: Kosong Siap Huni">B-03</div>
+            <div class="room-tile occupied" title="B-04: Eko Prasetyo (Terisi · Lunas)">B-04</div>
+            <div class="room-tile maintenance" title="B-05: Dalam Perbaikan (Servis AC #T-04)">B-05</div>
           </div>
 
-          <div style="display: flex; gap: 8px; font-size: 10px; margin-top: 8px; color: var(--text-secondary);">
+          <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); margin: 8px 0 4px 0;">Lantai 3</div>
+          <div class="room-matrix-grid">
+            <div class="room-tile occupied" title="C-01: Hendra Wijaya (Terisi · Lunas)">C-01</div>
+            <div class="room-tile vacant" title="C-02: Kosong Siap Huni">C-02</div>
+            <div class="room-tile occupied" title="C-03: Rian Hidayat (Terisi · Lunas)">C-03</div>
+            <div class="room-tile occupied" title="C-04: Mega Lestari (Terisi · Lunas)">C-04</div>
+            <div class="room-tile occupied" title="C-05: Aditya Pratama (Terisi · Lunas)">C-05</div>
+          </div>
+
+          <div style="display: flex; gap: 8px; font-size: 10px; margin-top: 8px; color: var(--text-secondary); flex-wrap: wrap;">
             <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #16A34A;"></span> Terisi (11)</span>
-            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #64748B;"></span> Siap Huni (4)</span>
-            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #D97706;"></span> Perlu Servis (2)</span>
+            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #64748B;"></span> Siap Huni (3)</span>
+            <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #D97706;"></span> Perlu Servis (1)</span>
           </div>
         </div>
 
@@ -950,6 +992,17 @@
 
     </div>
 
+    <!-- MICRO-FOOTER MINIMALIS -->
+    <footer class="dashboard-footer-micro">
+      <div>© 2026 RumaKost · Platform Manajemen Kost Mandiri</div>
+      <div class="footer-micro-links">
+        <a href="#bantuan" onclick="event.preventDefault(); RumaUI.showToast('Pusat Bantuan & Panduan Pengguna sedang disiapkan', 'info')">Bantuan</a>
+        <a href="#kebijakan" onclick="event.preventDefault(); RumaUI.showToast('Dokumen Kebijakan Privasi RumaKost', 'info')">Kebijakan Privasi</a>
+        <a href="#syarat" onclick="event.preventDefault(); RumaUI.showToast('Syarat & Ketentuan Penggunaan Layanan', 'info')">Syarat Ketentuan</a>
+        <span class="wf-badge" style="margin-left: 8px; font-weight: 600; font-size: 10px; color: var(--text-muted); cursor: default;">WF-02 · SCR-02-STAF</span>
+      </div>
+    </footer>
+
   </div>
 
   <!-- SCRIPTS -->
@@ -962,9 +1015,11 @@
     // Auto-fill amount based on selected tenant
     function autoFillPaymentAmount(room) {
       const input = document.getElementById('inputAmount');
-      if (room === 'A-04' || room === 'B-01') {
+      if (room === 'A-04') {
         input.value = '1.500.000';
-      } else if (room === 'A-02' || room === 'B-03') {
+      } else if (room === 'B-01') {
+        input.value = '1.300.000';
+      } else if (room === 'A-02' || room === 'A-01') {
         input.value = '1.200.000';
       } else {
         input.value = '';

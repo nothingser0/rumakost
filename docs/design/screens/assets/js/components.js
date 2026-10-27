@@ -139,7 +139,7 @@
         </div>
       `;
     } else if (role === 'staff') {
-      brandTarget = 'WF-02-dashboard.html?role=staf';
+      brandTarget = 'WF-02-staf-dashboard.html';
       rightSectionHtml = `
         <span class="badge-status badge-warning" style="font-size: 11px;">
           <i data-lucide="user" style="width: 12px; height: 12px;"></i>

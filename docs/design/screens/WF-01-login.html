@@ -1070,6 +1070,15 @@
             </div>
           </div>
           <div class="form-group-item is-compact">
+            <!-- Smooth Animated Expand Slot for Modal (SK-26 & SK-57) -->
+            <div class="caps-lock-slot" id="modalCapsLockSlot">
+              <div class="caps-lock-slot-inner">
+                <div class="caps-lock-badge" id="modalCapsLockBadge" role="status" aria-live="polite">
+                  <i data-lucide="arrow-up-circle"></i>
+                  <span>Caps Lock Aktif</span>
+                </div>
+              </div>
+            </div>
             <label class="field-label" for="inputConfirmPassword">Konfirmasi Kata Sandi Baru</label>
             <div class="input-wrapper">
               <span class="input-icon-left">
@@ -1108,6 +1117,159 @@
     </div>
   </div>
 
+  <!-- MODAL: LUPA KATA SANDI (SK-10 & SK-63) -->
+  <div class="modal-backdrop" id="modalForgotPassword" onclick="handleForgotPasswordBackdropClick(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalForgotTitle">
+      <div class="modal-header-pinned">
+        <div>
+          <h3 class="modal-title-pinned" id="modalForgotTitle">
+            <i data-lucide="key-round" class="modal-title-icon"></i>
+            <span>Pemulihan Kata Sandi</span>
+          </h3>
+          <p class="modal-subtitle">
+            Masukkan email terdaftar untuk menerima kode verifikasi OTP.
+          </p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeForgotPasswordModal()" title="Batal & Tutup" aria-label="Batal dan tutup modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleForgotSubmit(event)" class="modal-form" action="#" method="POST">
+        <input type="hidden" name="_csrf" value="rumakost_csrf_token_fixture_2026">
+        <div class="modal-body-scrollable">
+          <div id="forgotStep1">
+            <div class="form-group-item">
+              <label class="field-label" for="inputForgotEmail">Alamat Email Terdaftar</label>
+              <div class="input-wrapper">
+                <span class="input-icon-left">
+                  <i data-lucide="mail"></i>
+                </span>
+                <input 
+                  type="email" 
+                  class="form-input-field input-field-main" 
+                  id="inputForgotEmail" 
+                  required 
+                  placeholder="nama@domain.com"
+                  autocomplete="username"
+                >
+              </div>
+            </div>
+            <p style="font-size: 11.5px; color: var(--text-muted, #6B7280); line-height: 1.4; margin: 8px 0 0;">
+              Sistem akan mengirimkan 6-digit kode OTP ke nomor WhatsApp / Email terdaftar untuk verifikasi kepemilikan akun.
+            </p>
+          </div>
+
+          <div id="forgotStep2" style="display: none;">
+            <div class="form-group-item">
+              <label class="field-label" for="inputForgotOtp">Kode Verifikasi OTP (Kode Fixture Demo: 123456)</label>
+              <div class="input-wrapper">
+                <span class="input-icon-left">
+                  <i data-lucide="shield-check"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="form-input-field input-field-main" 
+                  id="inputForgotOtp" 
+                  maxlength="6"
+                  placeholder="123456"
+                  style="letter-spacing: 3px; font-weight: 700; text-align: center;"
+                >
+              </div>
+            </div>
+            <div class="form-group-item is-compact">
+              <label class="field-label" for="inputForgotNewPass">Kata Sandi Baru</label>
+              <div class="input-wrapper">
+                <span class="input-icon-left">
+                  <i data-lucide="lock"></i>
+                </span>
+                <input 
+                  type="password" 
+                  class="form-input-field input-field-main" 
+                  id="inputForgotNewPass" 
+                  minlength="8"
+                  placeholder="Minimal 8 karakter kombinasi"
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-pinned">
+          <div class="modal-btn-group">
+            <button type="button" class="btn-modal-cancel" onclick="closeForgotPasswordModal()">
+              <span>Batal</span>
+            </button>
+            <button type="submit" class="btn-modal-primary" id="btnForgotSubmit">
+              <span id="btnForgotSubmitText">Kirim Kode OTP</span>
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: 2FA / WHATSAPP OTP VERIFICATION (SK-62) -->
+  <div class="modal-backdrop" id="modalTwoFactorAuth" data-non-dismissible="true" onclick="handleTwoFactorBackdropClick(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal2FATitle">
+      <div class="modal-header-pinned">
+        <div>
+          <h3 class="modal-title-pinned" id="modal2FATitle">
+            <i data-lucide="shield-check" class="modal-title-icon"></i>
+            <span>Verifikasi 2 Langkah (2FA)</span>
+          </h3>
+          <p class="modal-subtitle">
+            Kode keamanan telah dikirim via WhatsApp ke nomor Pemilik terdaftar.
+          </p>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="cancelTwoFactorAuth()" title="Batal & Tutup" aria-label="Batal dan tutup modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleTwoFactorSubmit(event)" class="modal-form" action="#" method="POST">
+        <input type="hidden" name="_csrf" value="rumakost_csrf_token_fixture_2026">
+        <div class="modal-body-scrollable">
+          <div class="form-group-item">
+            <label class="field-label" for="input2FAOtp">Kode OTP 6-Digit (Kode Demo: 123456)</label>
+            <div class="input-wrapper">
+              <span class="input-icon-left">
+                <i data-lucide="key"></i>
+              </span>
+              <input 
+                type="text" 
+                class="form-input-field input-field-main" 
+                id="input2FAOtp" 
+                required 
+                maxlength="6" 
+                placeholder="123456" 
+                autocomplete="one-time-code"
+                inputmode="numeric"
+                style="letter-spacing: 4px; font-size: 16px; font-weight: 700; text-align: center;"
+              >
+            </div>
+          </div>
+          <p style="font-size: 11.5px; color: var(--text-muted, #6B7280); line-height: 1.4; margin: 0;">
+            Demi perlindungan data finansial dan rekening bank properti, verifikasi dua langkah diaktifkan untuk akun Pemilik.
+          </p>
+        </div>
+
+        <div class="modal-footer-pinned">
+          <div class="modal-btn-group">
+            <button type="button" class="btn-modal-cancel" onclick="cancelTwoFactorAuth()">
+              <span>Batal</span>
+            </button>
+            <button type="submit" class="btn-modal-primary" id="btn2FASubmit">
+              <span id="btn2FASubmitText">Verifikasi & Masuk</span>
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="assets/js/components.js"></script>
   <script>
     // ==========================================================================
@@ -1120,6 +1282,7 @@
         role: 'owner',
         name: 'Budi Santoso',
         dest: 'WF-02-dashboard.html',
+        two_factor: true,
         status: 'active'
       },
       // USR-02: Staf Pengelola Operasional
@@ -1159,7 +1322,7 @@
         password: 'RumaKost#2026!',
         role: 'staff',
         name: 'Ahmad Zaelani',
-        dest: 'WF-02-dashboard.html?role=staf',
+        dest: 'WF-02-staf-dashboard.html',
         status: 'must_change_password'
       },
       // USR-07: Penghuni Multi-Kamar dalam 1 Properti (SK-34)
@@ -1169,6 +1332,14 @@
         name: 'Hendra Kusuma',
         dest: 'WF-10-portal-penghuni.html?kamar=A-04&multi=true',
         status: 'active'
+      },
+      // USR-09: Penghuni Menunggak Kritis / Akses Dibatasi (SK-64)
+      'deni.tunggakan@rumakost.id': {
+        password: 'password123',
+        role: 'tenant',
+        name: 'Deni Pratama (Kamar B-03)',
+        dest: 'WF-10-portal-penghuni.html?status=suspended',
+        status: 'suspended'
       },
       // USR-08: Calon Penghuni Pra-Hunian (Pending Move-In - SK-36)
       'reza.calon@rumakost.id': {
@@ -1184,12 +1355,13 @@
       owner: {
         email: 'budi.santoso@rumakost.id',
         dest: 'WF-02-dashboard.html',
+        two_factor: true,
         title: 'Peran Pemilik',
         toast: 'Kredensial akun Pemilik disiapkan untuk dasbor eksekutif.'
       },
       staff: {
         email: 'rini.operasional@rumakost.id',
-        dest: 'WF-02-dashboard.html?role=staf',
+        dest: 'WF-02-staf-dashboard.html',
         title: 'Peran Staf Pengelola',
         toast: 'Kredensial akun Staf disiapkan untuk operasional harian.'
       },
@@ -1219,6 +1391,54 @@
     let failedAttempts = parseInt(SafeStorage.getItem('rumakost_failed_attempts') || '0', 10);
     let isLockedOut = false;
     let lockoutIntervalTimer = null;
+    let pendingForcePasswordUser = null;
+    let pendingTwoFactorAuth = null;
+    let forgotCurrentStep = 1;
+
+    // Dispatcher Audit Log Keamanan Klien (SK-20)
+    function dispatchSecurityAuditLog(eventType, details = {}) {
+      const logEntry = {
+        event_type: eventType,
+        details: details,
+        user_agent: navigator.userAgent,
+        timestamp: new Date().toISOString()
+      };
+      try {
+        const existing = JSON.parse(SafeStorage.getItem('rumakost_audit_logs') || '[]');
+        existing.push(logEntry);
+        if (existing.length > 50) existing.shift();
+        SafeStorage.setItem('rumakost_audit_logs', JSON.stringify(existing));
+      } catch (e) {}
+      console.info('%c[RUMAKOST SECURITY AUDIT]', 'color: #FF7A00; font-weight: bold;', logEntry);
+    }
+
+    // Broadcast Channel untuk Terminasi Sesi Lintas Tab / Jendela (SK-28A)
+    const sessionChannel = (typeof BroadcastChannel !== 'undefined') ? new BroadcastChannel('rumakost_session_channel') : null;
+    if (sessionChannel) {
+      sessionChannel.onmessage = (msg) => {
+        if (msg.data && msg.data.type === 'NEW_LOGIN' && msg.data.email) {
+          const currentSession = SafeStorage.getItem('ruma_user_session');
+          if (currentSession) {
+            try {
+              const parsed = JSON.parse(currentSession);
+              if (parsed.email === msg.data.email) {
+                SafeStorage.removeItem('ruma_auth_token');
+                SafeStorage.removeItem('ruma_user_session');
+                SafeStorage.removeItem('ruma_user_role');
+                RumaUI.showToast('Sesi Anda telah beralih ke perangkat/tab lain demi keamanan.', 'danger', 'Sesi Berakhir (Concurrent)');
+                const banner = document.getElementById('sessionExpiredBanner');
+                if (banner) {
+                  const sp = banner.querySelector('span');
+                  if (sp) sp.textContent = 'Sesi Anda telah beralih ke perangkat atau jendela lain demi keamanan.';
+                  banner.classList.add('show');
+                }
+                dispatchSecurityAuditLog('SESSION_EVICTED_CONCURRENT', { email: msg.data.email });
+              }
+            } catch(e) {}
+          }
+        }
+      };
+    }
 
     function checkLockoutStatus() {
       const lockoutUntil = parseInt(SafeStorage.getItem('rumakost_lockout_until') || '0', 10);
@@ -1284,7 +1504,11 @@
       } else if (SafeStorage.getItem('ruma_auth_token')) {
         // SK-17 & SK-52: Pengguna aktif membuka form login langsung -> redirect otomatis
         const savedRole = SafeStorage.getItem('ruma_user_role') || 'owner';
-        const target = savedRole === 'tenant' ? 'WF-10-portal-penghuni.html' : (savedRole === 'staff' ? 'WF-02-dashboard.html?role=staf' : 'WF-02-dashboard.html');
+        var redirectParam = urlParams.get('redirect');
+        let target = savedRole === 'tenant' ? 'WF-10-portal-penghuni.html' : (savedRole === 'staff' ? 'WF-02-staf-dashboard.html' : 'WF-02-dashboard.html');
+        if (redirectParam && redirectParam.startsWith('/') && !redirectParam.startsWith('//') && !redirectParam.startsWith('/\\') && !redirectParam.includes(':')) {
+          target = redirectParam;
+        }
         RumaUI.showToast('Sesi aktif terdeteksi. Mengarahkan ke dasbor...', 'info', 'Sesi Aktif');
         setTimeout(() => {
           window.location.replace(target);
@@ -1301,6 +1525,7 @@
         document.getElementById('inputEmail').value = savedEmail;
         document.getElementById('checkboxRememberMe').checked = true;
         isEmailDirty = true;
+        detectAndSyncRoleFromEmail(savedEmail);
       }
 
       // Deteksi dirty state pada email input (SK-35)
@@ -1310,7 +1535,15 @@
         const defaultPreset = ROLE_CONFIG[activeRole].email.toLowerCase();
         isEmailDirty = (currentVal !== '' && currentVal !== defaultPreset);
         emailInput.classList.remove('input-error');
+        detectAndSyncRoleFromEmail(currentVal);
       });
+
+      emailInput.addEventListener('change', () => {
+        detectAndSyncRoleFromEmail(emailInput.value);
+      });
+      setTimeout(() => {
+        if (emailInput.value) detectAndSyncRoleFromEmail(emailInput.value);
+      }, 500);
 
       // Caps Lock Listener pada Password Field (SK-26 & Smooth Expand Slide)
       const passwordInput = document.getElementById('inputPassword');
@@ -1337,13 +1570,30 @@
         passwordInput.classList.remove('input-error');
       });
 
-      // Listener Pembersihan Error Real-time pada Modal Aktivasi Sandi (SK-53)
+      // Listener Caps Lock & Pembersihan Error Real-time pada Modal Aktivasi Sandi (SK-26 & SK-53)
+      const modalCapsSlot = document.getElementById('modalCapsLockSlot');
+      const checkModalCapsLock = (e) => {
+        if (!modalCapsSlot) return;
+        if (e.getModifierState && e.getModifierState('CapsLock')) {
+          modalCapsSlot.classList.add('active');
+        } else {
+          modalCapsSlot.classList.remove('active');
+        }
+      };
       const newPassInput = document.getElementById('inputNewPassword');
       const confirmPassInput = document.getElementById('inputConfirmPassword');
       if (newPassInput) {
+        newPassInput.addEventListener('keydown', checkModalCapsLock);
+        newPassInput.addEventListener('keyup', checkModalCapsLock);
+        newPassInput.addEventListener('focus', checkModalCapsLock);
+        newPassInput.addEventListener('blur', () => modalCapsSlot && modalCapsSlot.classList.remove('active'));
         newPassInput.addEventListener('input', () => newPassInput.classList.remove('input-error'));
       }
       if (confirmPassInput) {
+        confirmPassInput.addEventListener('keydown', checkModalCapsLock);
+        confirmPassInput.addEventListener('keyup', checkModalCapsLock);
+        confirmPassInput.addEventListener('focus', checkModalCapsLock);
+        confirmPassInput.addEventListener('blur', () => modalCapsSlot && modalCapsSlot.classList.remove('active'));
         confirmPassInput.addEventListener('input', () => confirmPassInput.classList.remove('input-error'));
       }
 
@@ -1446,8 +1696,19 @@
     // 3. INTERACTIVE ACTIONS & HANDLERS
     // ==========================================================================
 
+    // Sinkronisasi Peran Otomatis dari Email / Autofill Password Manager (SK-27)
+    function detectAndSyncRoleFromEmail(emailVal) {
+      if (!emailVal) return;
+      const clean = emailVal.replace(/[\u200B-\u200D\uFEFF\u00A0]/g, '').trim().toLowerCase();
+      if (!clean) return;
+      const user = MOCK_USERS[clean];
+      if (user && user.role && user.role !== activeRole) {
+        selectRole(user.role, true);
+      }
+    }
+
     // Pemilihan Peran & Form Dirty State Protection (SK-04, SK-35 & SK-45)
-    function selectRole(role) {
+    function selectRole(role, preserveEmail = false) {
       activeRole = role;
       document.querySelectorAll('.role-selector-bar .nav-pill').forEach(btn => {
         btn.classList.remove('active');
@@ -1469,7 +1730,7 @@
       const config = ROLE_CONFIG[role];
       const emailInput = document.getElementById('inputEmail');
 
-      if (isEmailDirty) {
+      if (isEmailDirty || preserveEmail) {
         RumaUI.showToast(`Peran dialihkan ke ${config.title}. Alamat email Anda dipertahankan.`, 'info', 'Peran Diperbarui');
       } else {
         emailInput.value = config.email;
@@ -1503,7 +1764,181 @@
     }
 
     // Lupa Kata Sandi Handler (SK-10)
+    // Lupa Kata Sandi Interactive Modal Handlers (SK-10 & SK-63)
     function handleForgotPassword(e) {
+      e.preventDefault();
+      const emailInput = document.getElementById('inputEmail');
+      const forgotEmailInput = document.getElementById('inputForgotEmail');
+      const val = emailInput ? emailInput.value.trim() : '';
+      if (forgotEmailInput) {
+        forgotEmailInput.value = val;
+      }
+      resetForgotModal();
+      RumaUI.openModal('modalForgotPassword');
+      if (forgotEmailInput) {
+        setTimeout(() => forgotEmailInput.focus(), 150);
+      }
+      lucide.createIcons();
+      dispatchSecurityAuditLog('PASSWORD_RESET_MODAL_OPENED', { email: val });
+    }
+
+    function resetForgotModal() {
+      const step1 = document.getElementById('forgotStep1');
+      const step2 = document.getElementById('forgotStep2');
+      const btnText = document.getElementById('btnForgotSubmitText');
+      const otpInput = document.getElementById('inputForgotOtp');
+      const newPass = document.getElementById('inputForgotNewPass');
+      if (step1) step1.style.display = 'block';
+      if (step2) step2.style.display = 'none';
+      if (btnText) btnText.textContent = 'Kirim Kode OTP';
+      if (otpInput) { otpInput.value = ''; otpInput.classList.remove('input-error'); }
+      if (newPass) { newPass.value = ''; newPass.classList.remove('input-error'); }
+      forgotCurrentStep = 1;
+    }
+
+    function closeForgotPasswordModal() {
+      RumaUI.closeModal('modalForgotPassword');
+      resetForgotModal();
+    }
+
+    function handleForgotPasswordBackdropClick(e) {
+      if (e.target.id === 'modalForgotPassword') {
+        closeForgotPasswordModal();
+      }
+    }
+
+    function handleForgotSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('inputForgotEmail').value.trim().toLowerCase();
+      const btn = document.getElementById('btnForgotSubmit');
+      const btnText = document.getElementById('btnForgotSubmitText');
+
+      if (forgotCurrentStep === 1) {
+        if (!email) {
+          RumaUI.showToast('Harap masukkan alamat email Anda.', 'danger', 'Validasi Gagal');
+          return;
+        }
+        btn.disabled = true;
+        btnText.textContent = 'Mengirim...';
+        setTimeout(() => {
+          btn.disabled = false;
+          forgotCurrentStep = 2;
+          document.getElementById('forgotStep1').style.display = 'none';
+          document.getElementById('forgotStep2').style.display = 'block';
+          btnText.textContent = 'Simpan Kata Sandi Baru';
+          const otpIn = document.getElementById('inputForgotOtp');
+          if (otpIn) otpIn.focus();
+          RumaUI.showToast('Kode OTP verifikasi telah dikirim ke WhatsApp/Email terdaftar.', 'info', 'OTP Terkirim (Demo: 123456)');
+          dispatchSecurityAuditLog('OTP_REQUESTED', { email });
+        }, 600);
+      } else {
+        const otp = document.getElementById('inputForgotOtp').value.trim();
+        const newPass = document.getElementById('inputForgotNewPass').value;
+
+        if (otp !== '123456') {
+          RumaUI.showToast('Kode OTP salah. Gunakan kode fixture demo: 123456.', 'danger', 'Verifikasi Gagal');
+          document.getElementById('inputForgotOtp').classList.add('input-error');
+          return;
+        }
+
+        if (newPass.length < 8) {
+          RumaUI.showToast('Kata sandi baru minimal 8 karakter.', 'danger', 'Validasi Gagal');
+          document.getElementById('inputForgotNewPass').classList.add('input-error');
+          return;
+        }
+
+        btn.disabled = true;
+        btnText.textContent = 'Memproses...';
+
+        setTimeout(() => {
+          if (MOCK_USERS[email]) {
+            MOCK_USERS[email].password = newPass;
+          }
+          btn.disabled = false;
+          closeForgotPasswordModal();
+          const mainPass = document.getElementById('inputPassword');
+          if (mainPass) mainPass.value = newPass;
+          RumaUI.showToast('Kata sandi berhasil diperbarui! Silakan tekan tombol Masuk ke Akun.', 'success', 'Sandi Baru Aktif');
+          dispatchSecurityAuditLog('PASSWORD_RESET_SUCCESS', { email });
+        }, 600);
+      }
+    }
+
+    // 2FA WhatsApp OTP Handlers (SK-62)
+    function handleTwoFactorBackdropClick(e) {
+      if (e.target.id === 'modalTwoFactorAuth') {
+        cancelTwoFactorAuth();
+      }
+    }
+
+    function cancelTwoFactorAuth() {
+      RumaUI.closeModal('modalTwoFactorAuth');
+      pendingTwoFactorAuth = null;
+      resetButtonState();
+      const otpInput = document.getElementById('input2FAOtp');
+      if (otpInput) { otpInput.value = ''; otpInput.classList.remove('input-error'); }
+      RumaUI.showToast('Verifikasi dua langkah dibatalkan.', 'info', '2FA Dibatalkan');
+      dispatchSecurityAuditLog('2FA_CANCELLED', {});
+    }
+
+    function handleTwoFactorSubmit(e) {
+      e.preventDefault();
+      const otpInput = document.getElementById('input2FAOtp');
+      const otpVal = otpInput ? otpInput.value.trim() : '';
+      const btn = document.getElementById('btn2FASubmit');
+      const btnText = document.getElementById('btn2FASubmitText');
+
+      if (otpVal !== '123456') {
+        RumaUI.showToast('Kode OTP verifikasi salah. Gunakan kode demo: 123456.', 'danger', '2FA Gagal');
+        if (otpInput) {
+          otpInput.classList.add('input-error');
+          otpInput.focus();
+        }
+        dispatchSecurityAuditLog('2FA_FAILED', { enteredOtp: otpVal });
+        return;
+      }
+
+      btn.disabled = true;
+      if (btnText) btnText.textContent = 'Memverifikasi...';
+
+      setTimeout(() => {
+        if (!pendingTwoFactorAuth) return;
+        const { user, cleanEmail, targetDest, rememberMe } = pendingTwoFactorAuth;
+
+        if (rememberMe) {
+          SafeStorage.setItem('rumakost_remember_email', cleanEmail);
+        } else {
+          SafeStorage.removeItem('rumakost_remember_email');
+        }
+
+        SafeStorage.setItem('ruma_auth_token', 'mock_jwt_token_rumakost_' + Date.now());
+        SafeStorage.setItem('ruma_user_session', JSON.stringify({ email: cleanEmail, role: user.role, name: user.name }));
+        SafeStorage.setItem('ruma_user_role', user.role);
+        SafeStorage.setItem('rumakost_active_session', Date.now());
+
+        if (sessionChannel) {
+          sessionChannel.postMessage({ type: 'NEW_LOGIN', email: cleanEmail, time: Date.now() });
+        }
+        dispatchSecurityAuditLog('LOGIN_SUCCESS', { email: cleanEmail, role: user.role, dest: targetDest });
+
+        if (sessionChannel) {
+          sessionChannel.postMessage({ type: 'NEW_LOGIN', email: cleanEmail, time: Date.now() });
+        }
+
+        dispatchSecurityAuditLog('2FA_SUCCESS', { email: cleanEmail, role: user.role });
+        dispatchSecurityAuditLog('LOGIN_SUCCESS', { email: cleanEmail, role: user.role, dest: targetDest });
+
+        RumaUI.showToast('Verifikasi 2FA berhasil! Mengarahkan ke sistem...', 'success', 'Masuk Berhasil');
+        RumaUI.closeModal('modalTwoFactorAuth');
+
+        setTimeout(() => {
+          window.location.replace(targetDest);
+        }, 700);
+      }, 600);
+    }
+
+    // Deprecated static handler
+    function _deprecatedHandleForgot(e) {
       e.preventDefault();
       const emailInput = document.getElementById('inputEmail');
       const val = emailInput ? emailInput.value.trim() : '';
@@ -1560,8 +1995,23 @@
       }
       const p1 = document.getElementById('inputNewPassword');
       const p2 = document.getElementById('inputConfirmPassword');
-      if (p1) { p1.value = ''; p1.classList.remove('input-error'); }
-      if (p2) { p2.value = ''; p2.classList.remove('input-error'); }
+      if (p1) {
+        p1.value = '';
+        p1.type = 'password';
+        p1.classList.remove('input-error');
+      }
+      if (p2) {
+        p2.value = '';
+        p2.type = 'password';
+        p2.classList.remove('input-error');
+      }
+      const modalEye1 = document.getElementById('modalEyeIcon1');
+      const modalEye2 = document.getElementById('modalEyeIcon2');
+      if (modalEye1) modalEye1.setAttribute('data-lucide', 'eye');
+      if (modalEye2) modalEye2.setAttribute('data-lucide', 'eye');
+      const modalCaps = document.getElementById('modalCapsLockSlot');
+      if (modalCaps) modalCaps.classList.remove('active');
+      lucide.createIcons();
       const btnModal = document.getElementById('btnModalSubmit');
       const btnModalText = document.getElementById('btnModalSubmitText');
       if (btnModal) {
@@ -1715,17 +2165,55 @@
         // Penolakan Akun Nonaktif / Ditangguhkan (SK-08)
         if (user.status === 'disabled') {
           resetButtonState();
+          dispatchSecurityAuditLog('LOGIN_BLOCKED_DISABLED', { email: cleanEmail, role: user.role });
           RumaUI.showToast('Akun Anda sedang dinonaktifkan oleh Pemilik properti. Hubungi pengelola kost untuk mengaktifkan kembali akses Anda.', 'danger', 'Akses Ditolak (403)');
+          return;
+        }
+
+        // Penolakan Akun Menunggak Kritis / Akses Dibatasi (SK-64)
+        if (user.status === 'suspended') {
+          resetButtonState();
+          dispatchSecurityAuditLog('LOGIN_BLOCKED_SUSPENDED', { email: cleanEmail, role: user.role });
+          RumaUI.showToast('Akun Anda ditangguhkan sementara karena memiliki tunggakan sewa > 30 hari. Silakan hubungi Pemilik Kost via WhatsApp.', 'danger', 'Akses Ditangguhkan (403)');
           return;
         }
 
         // Intersepsi Akun Baru Pertama Kali Wajib Ganti Sandi (SK-22 & SK-43)
         if (user.status === 'must_change_password') {
+          pendingForcePasswordUser = { ...user, email: cleanEmail };
           resetButtonState();
           RumaUI.openModal('modalForceChangePassword');
           const p1 = document.getElementById('inputNewPassword');
           if (p1) setTimeout(() => p1.focus(), 150);
           lucide.createIcons();
+          return;
+        }
+
+        // Penanganan Deep Linking URL Redirect Parameter & Sanitasi Open Redirect Lanjutan (SK-13 & SK-41)
+        var urlParams = new URLSearchParams(window.location.search);
+        var targetDest = user.dest;
+        var redirectParam = urlParams.get('redirect');
+        if (redirectParam && 
+            redirectParam.startsWith('/') && 
+            !redirectParam.startsWith('//') && 
+            !redirectParam.startsWith('/\\') && 
+            !redirectParam.includes(':')) {
+          targetDest = redirectParam;
+        }
+
+        // Intersepsi Verifikasi 2FA WhatsApp Pemilik (SK-62)
+        if (user.two_factor) {
+          resetButtonState();
+          pendingTwoFactorAuth = { user, cleanEmail, targetDest, rememberMe: document.getElementById('checkboxRememberMe').checked };
+          RumaUI.openModal('modalTwoFactorAuth');
+          const otpInput = document.getElementById('input2FAOtp');
+          if (otpInput) {
+            otpInput.value = '';
+            otpInput.classList.remove('input-error');
+            setTimeout(() => otpInput.focus(), 150);
+          }
+          lucide.createIcons();
+          dispatchSecurityAuditLog('2FA_PROMPTED', { email: cleanEmail });
           return;
         }
 
@@ -1743,10 +2231,15 @@
         SafeStorage.setItem('ruma_user_role', user.role);
         SafeStorage.setItem('rumakost_active_session', Date.now());
 
+        if (sessionChannel) {
+          sessionChannel.postMessage({ type: 'NEW_LOGIN', email: cleanEmail, time: Date.now() });
+        }
+        dispatchSecurityAuditLog('LOGIN_SUCCESS', { email: cleanEmail, role: user.role, dest: targetDest });
+
         // Penanganan Deep Linking URL Redirect Parameter & Sanitasi Open Redirect Lanjutan (SK-13 & SK-41)
-        const urlParams = new URLSearchParams(window.location.search);
-        let targetDest = user.dest;
-        const redirectParam = urlParams.get('redirect');
+        var urlParams = new URLSearchParams(window.location.search);
+        var targetDest = user.dest;
+        var redirectParam = urlParams.get('redirect');
         if (redirectParam && 
             redirectParam.startsWith('/') && 
             !redirectParam.startsWith('//') && 
@@ -1820,15 +2313,30 @@
       }
 
       setTimeout(() => {
-        // Set sesi staf aktif (SK-52)
+        const targetUser = pendingForcePasswordUser || { email: 'ahmad.staf@rumakost.id', role: 'staff', name: 'Ahmad Zaelani', dest: 'WF-02-staf-dashboard.html' };
+
+        // Simpan Remember Me jika aktif (SK-09)
+        const rememberMe = document.getElementById('checkboxRememberMe').checked;
+        if (rememberMe) {
+          SafeStorage.setItem('rumakost_remember_email', targetUser.email);
+        }
+
+        // Set sesi pengguna aktif (SK-52)
         SafeStorage.setItem('ruma_auth_token', 'mock_jwt_token_rumakost_' + Date.now());
-        SafeStorage.setItem('ruma_user_session', JSON.stringify({ email: 'ahmad.staf@rumakost.id', role: 'staff', name: 'Ahmad Zaelani' }));
-        SafeStorage.setItem('ruma_user_role', 'staff');
+        SafeStorage.setItem('ruma_user_session', JSON.stringify({ email: targetUser.email, role: targetUser.role, name: targetUser.name }));
+        SafeStorage.setItem('ruma_user_role', targetUser.role);
+        var cleanEmail = targetUser.email, user = targetUser, targetDest = targetUser.dest;
+        dispatchSecurityAuditLog('FORCE_PASSWORD_CHANGED', { email: targetUser.email, role: targetUser.role });
         SafeStorage.setItem('rumakost_active_session', Date.now());
+
+        if (sessionChannel) {
+          sessionChannel.postMessage({ type: 'NEW_LOGIN', email: cleanEmail, time: Date.now() });
+        }
+        dispatchSecurityAuditLog('LOGIN_SUCCESS', { email: cleanEmail, role: user.role, dest: targetDest });
 
         RumaUI.showToast('Kata sandi baru berhasil diaktifkan! Mengarahkan Anda ke dasbor...', 'success', 'Aktivasi Berhasil');
         setTimeout(() => {
-          window.location.replace('WF-02-dashboard.html?role=staf');
+          window.location.replace(targetUser.dest || 'WF-02-staf-dashboard.html');
         }, 700);
       }, 600);
     }

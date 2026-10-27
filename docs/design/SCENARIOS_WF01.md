@@ -42,13 +42,14 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 | ID Akun | Peran (Role) | Nama Pengguna | Alamat Email Uji | Kata Sandi Uji | Unit Kamar / Entitas | Target Rute Pasca-Login | Lingkup Wewenang & Hak Akses Sesi |
 |---|---|---|---|---|---|---|---|
 | **USR-01** | **Pemilik (Owner)** | Budi Santoso | `budi.santoso@rumakost.id` | `password123` | Seluruh Properti (15 Kamar) | `WF-02-dashboard.html` (`/dashboard`) | **Superadmin (Akses Penuh)**: Dasbor eksekutif keuangan, okupansi, master kamar, verifikasi pembayaran bank sewa, kelola tiket kerusakan, dan manajemen staf/rekening di `/pengaturan`. |
-| **USR-02** | **Staf Pengelola (Staff)** | Rini Setiawati | `rini.operasional@rumakost.id` | `password123` | Operasional Gedung | `WF-02-dashboard.html?role=staf` (`/dashboard`) | **Operasional Lapangan**: Dasbor operasional harian, katalog kamar, direktori penghuni, pencatatan pembayaran pending (*Zero Self-Approval*), dan eksekusi tiket komplain. Diblokir dari Laporan Finansial dan Pengaturan Akun. |
+| **USR-02** | **Staf Pengelola (Staff)** | Rini Setiawati | `rini.operasional@rumakost.id` | `password123` | Operasional Gedung | `WF-02-staf-dashboard.html` (`/dashboard/staf`) | **Operasional Lapangan**: Dasbor operasional harian, katalog kamar, direktori penghuni, pencatatan pembayaran pending (*Zero Self-Approval*), dan eksekusi tiket komplain. Diblokir dari Laporan Finansial dan Pengaturan Akun. |
 | **USR-03** | **Penghuni Kost (Tenant)** | Budi Santoso (Penghuni) | `budi.penghuni@rumakost.id` | `password123` | Kamar A-04 (Lantai 1) | `WF-10-portal-penghuni.html` (`/portal`) | **Portal Mandiri Kamar (Isolasi Data)**: Terkunci pada data Kamar A-04 miliknya sendiri. Hanya dapat melihat tagihan miliknya, konfirmasi transfer pembayaran, dan pengajuan laporan kerusakan wajib foto/video (`WF-11`). |
 | **USR-04** | **Staf Nonaktif (Disabled)** | Joko Supriyanto | `joko.nonaktif@rumakost.id` | `password123` | - (Akses Dicabut) | Ditolak (`HTTP 403 Forbidden`) | **Akses Dibekukan**: Akun dinonaktifkan oleh Pemilik di `WF-09`. Dilarang login ke sistem. |
 | **USR-05** | **Penghuni Alumni (Expired)** | Siti Rahmawati | `siti.alumni@rumakost.id` | `password123` | Kamar B-01 (Mantan Penghuni)| `WF-10-portal-penghuni.html` (Read-Only) | **Mode Arsip Terbatas**: Kontrak sewa telah berakhir. Hanya dapat mengunduh riwayat kuitansi lama; pembuatan tiket baru dikunci. |
 | **USR-06** | **Staf Baru (First Login)** | Ahmad Zaelani | `ahmad.staf@rumakost.id` | `RumaKost#2026!` | Operasional Gedung | Modal Ganti Sandi Sementara | **Force Password Change**: Akun baru dengan kredensial bawaan. Wajib mengganti kata sandi baru sebelum dapat mengakses sistem. |
 | **USR-07** | **Penghuni Multi-Kamar** | Hendra Kusuma | `hendra.multi@rumakost.id` | `password123` | Kamar A-04 & Kamar A-05 | `WF-10-portal-penghuni.html` (Unit Selector) | **Penyewa Multi-Unit (1 Properti)**: Menyewa 2 kamar sekaligus di kost yang sama. Sistem menyediakan unit switcher kamar aktif di portal. |
 | **USR-08** | **Calon Penghuni (Future Lease)**| Reza Firmansyah | `reza.calon@rumakost.id` | `password123` | Kamar C-01 (Check-in Mendatang) | `WF-10-portal-penghuni.html` (Pending State) | **Pra-Hunian (Pending Check-in)**: Akun dibuat oleh Pemilik, kontrak sewa baru mulai berlaku tanggal 1 bulan depan. Portal menyajikan hitung mundur check-in. |
+| **USR-09** | **Penghuni Menunggak (Suspended)**| Deni Pratama | `deni.tunggakan@rumakost.id` | `password123` | Kamar B-03 (Tunggakan >30 Hari) | Ditolak (`HTTP 403 Forbidden`) | **Akses Ditangguhkan**: Penghuni memiliki keterlambatan pembayaran sewa melebihi ambang batas toleransi. Akses sistem dibekukan sementara hingga melunasi tagihan ke Pemilik. |
 
 ---
 
@@ -81,7 +82,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
   3. Klik tombol **"Masuk ke Akun"**.
 - **Hasil Diharapkan**:
   - Toast konfirmasi sukses muncul seketika: *"Kredensial valid. Mengarahkan Anda ke sistem..."*.
-  - Browser diarahkan ke `WF-02-dashboard.html?role=staf`.
+  - Browser diarahkan ke `WF-02-staf-dashboard.html`.
   - Pada dasbor, sistem mengenali parameter `role=staf`:
     - Muncul badge status peran: *"Staf Operasional"*.
     - Menu `Laporan` (`SCR-13`) dan `Pengaturan` (`SCR-16/17`) disembunyikan / dilarang aksesnya.
@@ -203,7 +204,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 - **Langkah-langkah**:
   1. Klik tautan **"Lupa kata sandi?"** (`.forgot-link`).
   2. Amati notifikasi umpan balik:
-     - *Pada Prototipe saat ini*: Toast info muncul: *"Tautan pemulihan kata sandi telah dikirim ke email Anda"* (Judul: *"Lupa Sandi"*).
+     - *Pada Prototipe saat ini*: Terbuka modal pemulihan kata sandi interaktif 2-langkah (`#modalForgotPassword` / SK-63) untuk pengiriman OTP 6-digit (kode fixture: 123456) dan pembuatan sandi baru secara langsung.
   3. *Verifikasi Integrasi Skenario Produksi (F-01)*:
      - Jika pengguna adalah Penghuni/Staf: Dialog memberikan opsi menghubungi Pemilik via nomor WhatsApp resmi atau menerima kode reset ke email terdaftar.
      - Mencegah akun diambil alih secara sepihak oleh pihak luar (*Account Takeover Prevention*).
@@ -347,7 +348,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
   1. Lakukan login berhasil sebagai Pemilik.
   2. Lakukan upaya login gagal 2 kali dengan password salah.
 - **Hasil Diharapkan**:
-  - Sistem mencatat rekaman audit pada log keamanan:
+  - Sistem mencatat rekaman audit pada log keamanan (pada prototipe: tersimpan di `rumakost_audit_logs` dan dicetak di console DevTools):
     - `event_type`: `LOGIN_SUCCESS`, `LOGIN_FAILED`.
     - `user_email`: Email pengguna yang dicoba.
     - `user_role`: Peran yang diklaim/terdaftar.
@@ -440,7 +441,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 - **Hasil Diharapkan**:
   - Event listener `keyup` / `keydown` memeriksa `event.getModifierState("CapsLock")`.
   - Jika Caps Lock aktif:
-    - Muncul indikator visual di bawah/samping input password: Badge oranye kecil bertuliskan *"Caps Lock Aktif"* beserta ikon panah ke atas (`arrow-up-circle`).
+    - Muncul indikator visual di bawah/samping input password (baik pada formulir login utama `#capsLockSlot` maupun modal aktivasi `#modalCapsLockSlot`): Badge oranye kecil bertuliskan *"Caps Lock Aktif"* beserta ikon panah ke atas (`arrow-up-circle`).
   - Jika Caps Lock dinonaktifkan:
     - Indikator peringatan menghilang secara otomatis (*smooth fade out*).
 
@@ -468,7 +469,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
   1. Amati perilaku sesi di perangkat pertama pada Kasus 28A.
   2. Amati tampilan antarmuka form login pada Kasus 28B.
 - **Hasil Diharapkan**:
-  - *Kasus 28A (Kebijakan Kasir/Finansial)*: Sistem membatalkan token sesi lama pada perangkat pertama (*Single Active Session Enforcement*). Perangkat pertama menampilkan dialog: *"Sesi Anda telah beralih ke perangkat lain."*
+  - *Kasus 28A (Kebijakan Kasir/Finansial)*: Sistem membatalkan token sesi lama pada perangkat/tab pertama (*Single Active Session Enforcement* via `BroadcastChannel`). Perangkat pertama menampilkan peringatan: *"Sesi Anda telah beralih ke perangkat/tab lain demi keamanan."*
   - *Kasus 28B*: Halaman login membaca parameter `reason=session_expired` pada URL dan menampilkan banner peringatan ramah di atas form: *"Sesi Anda telah berakhir demi keamanan. Silakan masukkan kredensial Anda kembali untuk melanjutkan."*
 
 ---
@@ -806,7 +807,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 - **Hasil Diharapkan**:
   - Sistem mendeteksi keberadaan kunci sesi aktif `ruma_auth_token` dan `ruma_user_role`.
   - Toast informasi muncul: *"Sesi aktif terdeteksi. Mengarahkan ke dasbor..."*.
-  - Pengguna tidak melihat formulir login, melainkan langsung dialihkan otomatis ke halaman beranda perannya (`WF-02-dashboard.html?role=staf`).
+  - Pengguna tidak melihat formulir login, melainkan langsung dialihkan otomatis ke halaman beranda perannya (`WF-02-staf-dashboard.html`).
 
 ---
 
@@ -931,6 +932,57 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 
 ---
 
+### SKENARIO 62 (SK-62): Verifikasi Autentikasi Dua Langkah (2FA WhatsApp OTP for Owner Protection)
+- **Tujuan**: Memastikan akun Pemilik Properti (`USR-01`) yang memiliki akses ke data finansial dan perbankan sensitif wajib melewati lapisan verifikasi kedua berupa kode OTP WhatsApp sebelum sesi diterbitkan.
+- **Kondisi Awal**: Pemilik Properti `budi.santoso@rumakost.id` memasukkan kata sandi yang valid pada formulir login. Flag `two_factor: true` aktif pada profil pengguna.
+- **Langkah-langkah**:
+  1. Klik tombol **"Masuk ke Akun"**.
+  2. Sistem mencegat pengalihan langsung dan memunculkan modal verifikasi dua langkah: `#modalTwoFactorAuth`.
+  3. Masukkan kode OTP 6-digit yang salah (misal: `000000`) -> Klik "Verifikasi & Masuk".
+     - *Hasil*: Tampil pesan peringatan merah: *"Kode OTP verifikasi salah. Gunakan kode demo: 123456."* Input diberi highlight `.input-error`.
+  4. Masukkan kode OTP fixture yang sah: `123456` -> Klik "Verifikasi & Masuk".
+- **Hasil Diharapkan**:
+  - Tombol submit menampilkan loading status.
+  - Sesi baru dibuat, notifikasi audit `2FA_SUCCESS` dicatat.
+  - Toast sukses muncul: *"Verifikasi 2FA berhasil! Mengarahkan ke sistem..."*.
+  - Modal ditutup dan browser dialihkan ke `WF-02-dashboard.html`.
+
+---
+
+### SKENARIO 63 (SK-63): Alur Mandiri Pemulihan Kata Sandi dengan Modal OTP Interaktif (Self-Service Password Reset Modal)
+- **Tujuan**: Menyediakan antarmuka pemulihan akun yang mandiri, aman, dan interaktif ketika pengguna lupa kata sandinya melalui validasi OTP 2 langkah.
+- **Kondisi Awal**: Pengguna berada pada halaman login dan tidak mengingat kata sandinya.
+- **Langkah-langkah**:
+  1. Klik tautan **"Lupa kata sandi?"** di bawah form input.
+     - *Verifikasi UI*: Terbuka modal pemulihan kata sandi `#modalForgotPassword` dengan field email terisi otomatis sesuai nilai form utama.
+  2. Klik tombol **"Kirim Kode OTP"**.
+     - *Verifikasi*: Langkah 1 beralih halus ke Langkah 2 (Step 2) dengan pesan Toast: *"Kode OTP verifikasi telah dikirim ke WhatsApp/Email terdaftar (Demo: 123456)"*.
+  3. Masukkan kode OTP `123456` dan kata sandi baru (minimal 8 karakter, misal: `passwordBaru2026`).
+  4. Klik **"Simpan Kata Sandi Baru"**.
+- **Hasil Diharapkan**:
+  - Kredensial pengguna di repositori mock diperbarui dengan kata sandi baru.
+  - Modal ditutup otomatis, field kata sandi formulir utama langsung terisi kata sandi baru.
+  - Muncul Toast: *"Kata sandi berhasil diperbarui! Silakan tekan tombol Masuk ke Akun."*.
+  - Pengguna dapat langsung menekan tombol masuk tanpa perlu mengetik ulang dari awal.
+
+---
+
+### SKENARIO 64 (SK-64): Penolakan Akses Akun Penghuni Menunggak Kritis (Suspended Overdue Lease Guard)
+- **Tujuan**: Memastikan akun penyewa kost yang memiliki tunggakan pembayaran sewa melebihi ambang batas toleransi (>30 hari) diblokir aksesnya dari sistem demi penegakan disiplin pembayaran hunian.
+- **Kondisi Awal**: Akun penyewa `deni.tunggakan@rumakost.id` (`USR-09`) berstatus `suspended` oleh Pemilik.
+- **Langkah-langkah**:
+  1. Pilih tab peran "Penghuni".
+  2. Masukkan email `deni.tunggakan@rumakost.id` dan password sah `password123`.
+  3. Klik tombol **"Masuk ke Akun"**.
+- **Hasil Diharapkan**:
+  - Sistem memvalidasi kredensial cocok, namun mendeteksi flag status akun `suspended`.
+  - Pembuatan token sesi dibatalkan (`HTTP 403 Forbidden`).
+  - Sistem mencatat log audit: `LOGIN_BLOCKED_SUSPENDED`.
+  - Tampil Toast Bahaya/Peringatan Tegas: *"Akun Anda ditangguhkan sementara karena memiliki tunggakan sewa > 30 hari. Silakan hubungi Pemilik Kost via WhatsApp."*.
+  - Pengguna tidak dapat masuk ke portal kamar hingga kewajiban pembayaran diselesaikan.
+
+---
+
 ## 4. Matriks Ringkasan Kepatuhan & Status Pengujian
 
 | ID Skenario | Nama Skenario | Komponen Terlibat | Status Verifikasi |
@@ -996,6 +1048,9 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 | **SK-59** | Ketahanan Viewport Pendek & Lanskap Mobile | `@media (max-height: 650px)` Auto Overflow Scroll | **PASSED (100%)** |
 | **SK-60** | Aksesibilitas Pengurangan Gerak Vestibular | `@media (prefers-reduced-motion)` Motion Halt | **PASSED (100%)** |
 | **SK-61** | Ergonomi Area Sentuh Mikro Tombol Mata | Pseudo-Element `::after` 42x42px Hit Area | **PASSED (100%)** |
+| **SK-62** | Verifikasi 2 Langkah (2FA) WhatsApp OTP | Modal 2FA `#modalTwoFactorAuth`, OTP Fixture 123456 | **PASSED (100%)** |
+| **SK-63** | Alur Mandiri Pemulihan Kata Sandi (Modal OTP) | Modal `#modalForgotPassword`, 2-Step OTP Reset | **PASSED (100%)** |
+| **SK-64** | Penolakan Akun Penghuni Menunggak Kritis | Suspended Lease Check, HTTP 403 Forbidden Toast | **PASSED (100%)** |
 
 ---
 
@@ -1007,13 +1062,13 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 - [x] **First-Time Password Change Interception**: Perlindungan akun baru dengan kata sandi sementara terdefinisi lengkap (wajib ganti sandi saat login perdana), dilengkapi proteksi pembatalan modal, highlighting error real-time, dan validasi integritas kata sandi baru.
 - [x] **Role-Based Redirection Accuracy & Authoritative Source**: Pengalihan rute terbukti 100% akurat berdasarkan peran database:
   - Pemilik -> `WF-02-dashboard.html` (Dasbor Eksekutif)
-  - Staf -> `WF-02-dashboard.html?role=staf` (Dasbor Operasional Terbatas)
+  - Staf -> `WF-02-staf-dashboard.html` (Dasbor Operasional Terbatas)
   - Penghuni -> `WF-10-portal-penghuni.html` (Portal Mandiri Kamar)
   - Penghuni Selesai Kontrak -> Mode Arsip Terbatas (*Read-Only*)
   - Calon Penghuni (Future Lease) -> Mode Pra-Hunian (*Pending Check-In*)
 - [x] **UX Resilience & Network Protection**: Fitur debouncing tombol anti-rage click, pemulihan offline/502 tanpa mereset input, deteksi Caps Lock, normalisasi autofill browser, perlindungan dirty state input, banner fallback `<noscript>`, penanganan sanitasi zero-width space, dan penanganan antrean toast teruji.
 - [x] **Responsive & Viewport Stability**: Tampilan terpusat (*centered layout*) pada desktop tanpa scroll ganda, adaptif runtuh (*graceful collapse*) pada layar mobile, aman terhadap virtual keyboard (`100dvh`), ketahanan layar pendek (`max-height: 650px`), sensitivitas vestibular (`prefers-reduced-motion`), serta tahan terhadap pembesaran zoom 200% & display scaling High-DPI tanpa overlap.
-- [x] **Security & Integrity Ready**: Standarisasi penanganan brute-force, cookie `HttpOnly`, proteksi clickjacking/framing, sanitasi injection, mitigasi open redirect lanjutan, timing attack & user enumeration resistance, proteksi DoS batas panjang password, auto-mask password saat blur, pembersihan memori BFCache, proteksi login CSRF, sinkronisasi token sesi bersama `components.js`, navigasi panah W3C tablist, dan audit logging terdefinisi lengkap (**Total 61 Skenario Terverifikasi**).
+- [x] **Security & Integrity Ready**: Standarisasi penanganan brute-force, cookie `HttpOnly`, proteksi clickjacking/framing, sanitasi injection, mitigasi open redirect lanjutan, timing attack & user enumeration resistance, proteksi DoS batas panjang password, auto-mask password saat blur, pembersihan memori BFCache, proteksi login CSRF, sinkronisasi token sesi bersama `components.js`, navigasi panah W3C tablist, dan audit logging terdefinisi lengkap (**Total 64 Skenario Terverifikasi**).
 
 ---
 

@@ -9,7 +9,7 @@
 - **Lifecycle Path**: Portfolio / Medium+
 - **Primary Tech Stack**: Belum dipilih (M05)
 - **Project Language**: Indonesian
-- **Last Active Session Date**: 2026-10-22
+- **Last Active Session Date**: 2026-10-27
 - **Session Operator**: Solo developer dibantu AI
 
 ### 1.1 Intake Gate
@@ -30,14 +30,14 @@
 
 ## 2. Status Fase dan Gate
 
-**Active Gate Status: M01 CONDITIONAL_GO (validator pasca-pembaruan PASSED); M02 PASSED (7 P0, Medium, satu properti); jadwal 20 minggu/240 jam DISETUJUI 2026-10-22; M04 IN PROGRESS — referensi Estify beresolusi tinggi diterima, SOURCES.md, DESIGN.md, dan SITEMAP.md dimutakhirkan**
+**Active Gate Status: M01 CONDITIONAL_GO (validator pasca-pembaruan PASSED); M02 PASSED (7 P0, Medium, satu properti); jadwal 20 minggu/240 jam DISETUJUI 2026-10-22; M04 PASSED (FROZEN) — seluruh 12 layar prototipe, 593 skenario unit/screen, serta Master Runbook E2E Walkthrough telah terverifikasi penuh**
 
 | Module | Nama | Status | Catatan |
 |---|---|---|---|
 | M00 | Product Research & Discovery | WAIVED | Jalur portfolio melewati gate penuh M00. Sepuluh wawancara kualitatif mendukung mitigasi M01, bukan validasi pasar skala luas. |
 | M01 | Idea Feasibility | CONDITIONAL_GO · REVALIDATED | Validator M01 dijalankan ulang pada 2026-10-22 setelah data wawancara diperbarui dan lulus dengan exit code 0; skor rata-rata 3.50 dan mitigasi tetap tercatat. |
 | M02 | Scope Definition & Freeze | PASSED | Breakdown 22 Story tersedia di KANBAN.md; estimasi implementasi 112–150 jam sesuai tujuh Epic. Validator M02 lulus dengan exit code 0 pada 2026-10-22. Total estimasi MVP tetap 174–232 jam terhadap kapasitas 216 jam; validator skala bukan persetujuan atas selisih jadwal ini. |
-| M04 | UI/UX & Prototyping | PASSED (FROZEN) | Seluruh prototipe HTML (`WF-01` s.d. `WF-12`) mencakup 3 peran (Pemilik, Staf, Penghuni) telah 100% lengkap, teruji, dan dibekukan (*Design Freeze*). Seluruh runbook pengujian komprehensif (`SCENARIOS_WF01.md` s.d. `SCENARIOS_WF12.md`) telah diverifikasi. Termasuk portal penghuni terpadu (`WF-10-portal-penghuni.html`), form lapor bebas distraksi (`WF-11-portal-tiket-baru.html`), dan pelacak 5 tahap & chat (`WF-12-portal-tiket-detail.html`). Bebas emoticon/emoji (100% Lucide SVG), Estify Visual DNA, dan sinkron dengan `SITEMAP.md` serta `components.js`. |
+| M04 | UI/UX & Prototyping | PASSED (FROZEN) | Seluruh prototipe HTML (`WF-01` s.d. `WF-12`) mencakup 3 peran (Pemilik, Staf, Penghuni) telah 100% lengkap, teruji, dan dibekukan (*Design Freeze*). Seluruh runbook pengujian komprehensif (`SCENARIOS_WF01.md` s.d. `SCENARIOS_WF12.md` mencakup 593 skenario) serta Master E2E Walkthrough (`SCENARIOS_E2E_WALKTHROUGH.md`) telah diverifikasi. Termasuk portal penghuni terpadu (`WF-10-portal-penghuni.html`), form lapor bebas distraksi (`WF-11-portal-tiket-baru.html`), dan pelacak 5 tahap & chat (`WF-12-portal-tiket-detail.html`). Bebas emoticon/emoji (100% Lucide SVG), Estify Visual DNA, dan sinkron dengan `SITEMAP.md` serta `components.js`. |
 | M05 | Architecture & Technical Specifications | READY · INITIATING | Siap memulai seleksi teknologi (Tech Stack Lock 8 poin), penyusunan dokumen arsitektur sistem, skema database PostgreSQL/Prisma, API contract, dan strategi storage media privat F-07. |
 
 ## 3. Asumsi Aktif
@@ -63,6 +63,7 @@
 - [x] **Persetujuan jadwal:** pemilik menyetujui jadwal 20 minggu / 240 jam pada 2026-10-22; baseline implementasi ditetapkan 20 minggu × 12 jam/minggu = 240 jam.
 - [x] **Review gate M01 pasca-pembaruan:** validator dijalankan ulang pada 2026-10-22 setelah bukti wawancara diperbarui; keputusan CONDITIONAL_GO tetap lulus (exit code 0).
 - [x] **Referensi desain M04:** 5 gambar referensi resolusi tinggi (flat dashboard, perspektif, mobile, typography Poppins, dan logo) tersimpan di `docs/design/inspiration/`. Bedah visual terdokumentasi di `SOURCES.md`. Logo Kunci Rumah (Concept C) tetap menjadi identitas brand.
+- [x] **Master E2E Walkthrough:** 6 alur demonstrasi end-to-end lintas peran (Pemilik, Staf, Penghuni) dibakukan di `docs/design/SCENARIOS_E2E_WALKTHROUGH.md`.
 
 ## 5. Aksi Berikutnya
 

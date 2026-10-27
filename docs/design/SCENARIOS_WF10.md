@@ -83,9 +83,9 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ## 4. Daftar Lengkap 26 Skenario Pengujian (End-to-End & Edge Cases)
 
-### KELOMPOK A: ALUR UTAMA RUNBOOK NOMINAL (SK-01 s.d SK-10)
+---
 
-#### SKENARIO 01: Verifikasi Tampilan Beranda Kamar & Identitas Kontrak
+### SKENARIO 01: Verifikasi Tampilan Beranda Kamar & Identitas Kontrak
 - **Tujuan**: Memastikan data nomor kamar, tipe kamar, tarif sewa, fasilitas, dan tanggal jatuh tempo dirender secara presisi.
 - **Kondisi Awal**: URL `WF-10-portal-penghuni.html` dibuka secara langsung.
 - **Langkah Pengujian**:
@@ -97,7 +97,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 02: Peninjauan Rincian Invoice Tagihan Berjalan & Unduh PDF
+### SKENARIO 02: Peninjauan Rincian Invoice Tagihan Berjalan & Unduh PDF
 - **Tujuan**: Memvalidasi akurasi perhitungan nominal tagihan sewa kamar berjalan dan simulasi pengunduhan invoice.
 - **Langkah Pengujian**:
   1. Periksa rincian item pada kartu tagihan: Sewa Pokok (Rp 1.500.000) + Sampah (Rp 50.000) + Listrik Sub-Meteran (Rp 0).
@@ -107,7 +107,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 03: Alur Konfirmasi Pembayaran Transfer Bank Mandiri (F-05)
+### SKENARIO 03: Alur Konfirmasi Pembayaran Transfer Bank Mandiri (F-05)
 - **Tujuan**: Memvalidasi alur modal bayar, tombol salin rekening BCA, dropzone struk transfer, dan transisi status tagihan.
 - **Langkah Pengujian**:
   1. Klik tombol **"Konfirmasi Pembayaran Transfer"**.
@@ -122,7 +122,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 04: Pelacakan Status Tiket Kerusakan Aktif (Estify 5-Segment Stepper)
+### SKENARIO 04: Pelacakan Status Tiket Kerusakan Aktif (Estify 5-Segment Stepper)
 - **Tujuan**: Memverifikasi antarmuka pemantauan status perbaikan fasilitas kamar dengan stepper 5 segmen Estify.
 - **Langkah Pengujian**:
   1. Amati kartu tiket aktif `#TK-2026-004` (AC Kamar Bocor).
@@ -133,7 +133,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 05: Interaktivitas Kredensial WiFi & Pengumuman Kost
+### SKENARIO 05: Interaktivitas Kredensial WiFi & Pengumuman Kost
 - **Tujuan**: Memastikan fungsionalitas salin sandi WiFi kamar dan keterbacaan pengumuman operasional.
 - **Langkah Pengujian**:
   1. Klik tombol **"Salin"** pada baris SSID `RumaKost_Lt2_5G`.
@@ -143,14 +143,14 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 06: Koordinasi Cepat via WhatsApp Pengelola Kost
+### SKENARIO 06: Koordinasi Cepat via WhatsApp Pengelola Kost
 - **Tujuan**: Memvalidasi integrasi tautan kontak darurat dan koordinasi pengelola via WhatsApp.
 - **Langkah Pengujian**: Klik tombol **"WhatsApp"** pada kontak Budi Santoso (Pemilik) atau Rini Setiawati (Staf).
 - **Hasil yang Diharapkan**: Membuka URL resmi `https://wa.me/` pada tab baru dengan pesan permulaan terformat otomatis.
 
 ---
 
-#### SKENARIO 07: Pengajuan Lapor Tamu Menginap (Modal SCR-P08)
+### SKENARIO 07: Pengajuan Lapor Tamu Menginap (Modal SCR-P08)
 - **Tujuan**: Memverifikasi formulir izin tamu menginap sementara guna kepatuhan tata tertib kost.
 - **Langkah Pengujian**:
   1. Klik tombol **"Ajukan Izin Tamu"**.
@@ -160,7 +160,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 08: Peninjauan Riwayat Pembayaran & Kwitansi Digital Lunas
+### SKENARIO 08: Peninjauan Riwayat Pembayaran & Kwitansi Digital Lunas
 - **Tujuan**: Memastikan riwayat sewa masa lalu tersaji lengkap dengan akses kwitansi resmi.
 - **Langkah Pengujian**:
   1. Periksa 3 baris histori sewa sebelumnya (Oktober, September, Agustus 2026 berstatus Lunas).
@@ -169,100 +169,98 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 09: Uji Ergonomi Seluler (Mobile Responsive & Bottom Navigation)
+### SKENARIO 09: Uji Ergonomi Seluler (Mobile Responsive & Bottom Navigation)
 - **Tujuan**: Memastikan antarmuka portal dapat dioperasikan secara ergonomis pada perangkat ponsel pintar (*viewport < 768px*).
 - **Langkah Pengujian**: Perkecil browser ke lebar 375px dan uji tap target pada *Fixed Bottom Bar* serta FAB tengah `+`.
 - **Hasil yang Diharapkan**: Layout reflow vertikal mulus, bottom bar fixed di bawah, dan FAB tengah membuka formulir komplain `WF-11`.
 
 ---
 
-#### SKENARIO 10: Uji Guardrail Keamanan & RBAC Isolasi Data
+### SKENARIO 10: Uji Guardrail Keamanan & RBAC Isolasi Data
 - **Tujuan**: Menjamin bahwa peran Penghuni dicegat saat mencoba membuka rute sensitif milik Pemilik Kost.
 - **Langkah Pengujian**: Ketik `WF-02-dashboard.html` atau `WF-07-laporan.html` di address bar browser.
 - **Hasil yang Diharapkan**: Script pengaman di `components.js` mencegat akses dan meredirect kembali ke `WF-10-portal-penghuni.html`.
 
 ---
 
-### KELOMPOK B: SKENARIO KONDISI TEPI SIKLUS HIDUP & DOMAIN KOST (SK-11 s.d SK-26)
-
-#### SKENARIO 11: Status Pra-Hunian / Menunggu Check-In (`?status=pending_checkin`)
+### SKENARIO 11: Status Pra-Hunian / Menunggu Check-In (`?status=pending_checkin`)
 - **Tujuan**: Menguji tampilan portal bagi calon penyewa baru yang telah membayar sewa awal namun belum menempati kamar fisik.
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?status=pending_checkin`.
 - **Hasil yang Diharapkan**: Banner menampilkan *"Simulasi Pra-Hunian"*, hitung mundur check-in H-5, jadwal serah terima kunci, serta status DP/Sewa Awal Lunas tanpa penagihan ulang.
 
 ---
 
-#### SKENARIO 12: Status Alumni Kost / Kontrak Berakhir — Mode Read-Only (`?mode=archive`)
+### SKENARIO 12: Status Alumni Kost / Kontrak Berakhir — Mode Read-Only (`?mode=archive`)
 - **Tujuan**: Memastikan akun penyewa yang telah check-out dikunci ke dalam status arsip baca-saja (*read-only*).
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?mode=archive`.
 - **Hasil yang Diharapkan**: Status sewa beralih ke arsip alumni, tombol bayar ditutup, tombol tiket dinonaktifkan, namun seluruh histori kwitansi masa lalu tetap dapat diakses.
 
 ---
 
-#### SKENARIO 13: Status Tagihan Terlambat Lewat Jatuh Tempo (`?status=overdue`)
+### SKENARIO 13: Status Tagihan Terlambat Lewat Jatuh Tempo (`?status=overdue`)
 - **Tujuan**: Memvalidasi penegakan visual jika pembayaran sewa melewati tanggal jatuh tempo (H+3).
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?status=overdue`.
 - **Hasil yang Diharapkan**: Border kartu berwarna merah, badge status *Destructive Triad* *"Terlambat 3 Hari"*, dan penegasan batas toleransi keterlambatan.
 
 ---
 
-#### SKENARIO 14: Status Pembayaran Parsial / Cicilan Bertahap (`?status=partial`)
+### SKENARIO 14: Status Pembayaran Parsial / Cicilan Bertahap (`?status=partial`)
 - **Tujuan**: Menguji penanganan fitur inti F-05 untuk pembayaran sebagian sewa kamar.
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?status=partial`.
 - **Hasil yang Diharapkan**: Menampilkan rincian cicilan masuk Rp 1.000.000 dan sisa kekurangan Rp 550.000 yang otomatis ditarik ke dalam modal transfer.
 
 ---
 
-#### SKENARIO 15: Penghuni Pemegang Unit Ganda / Multi-Unit Switcher (`?multi=true`)
+### SKENARIO 15: Penghuni Pemegang Unit Ganda / Multi-Unit Switcher (`?multi=true`)
 - **Tujuan**: Memastikan penghuni yang menyewa lebih dari satu kamar (misal: A-04 & A-05) dapat berpindah unit tanpa salah alur.
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?multi=true`.
 - **Hasil yang Diharapkan**: Header menyajikan dropdown pemilih unit (*Kamar A-04 ⇄ Kamar A-05*) dan memperbarui konteks data saat dipindahkan.
 
 ---
 
-#### SKENARIO 16: Pembaruan Profil Mandiri & Pendaftaran Plat Kendaraan (`SCR-P06`)
+### SKENARIO 16: Pembaruan Profil Mandiri & Pendaftaran Plat Kendaraan (`SCR-P06`)
 - **Tujuan**: Memverifikasi kemampuan penghuni memperbarui kontak darurat keluarga dan nomor plat motor/mobil untuk akses parkir kost.
 - **Hasil yang Diharapkan**: Formulir modal menyimpan data nomor kontak darurat dan plat kendaraan dengan feedback toast sukses.
 
 ---
 
-#### SKENARIO 17: Akses Buku Saku Panduan & Tata Tertib Kost (`SCR-P07`)
+### SKENARIO 17: Akses Buku Saku Panduan & Tata Tertib Kost (`SCR-P07`)
 - **Tujuan**: Memastikan penghuni dapat membaca tata tertib kost secara digital kapan saja.
 - **Hasil yang Diharapkan**: Modal menyajikan jam malam gerbang (23:00 WIB), aturan bertamu di ruang tamu umum, dan jadwal buang sampah.
 
 ---
 
-#### SKENARIO 18: Pengajuan Rencana Check-Out / Notice to Vacate 30 Hari
+### SKENARIO 18: Pengajuan Rencana Check-Out / Notice to Vacate 30 Hari
 - **Tujuan**: Memfasilitasi penghuni yang tidak berencana memperpanjang sewa untuk memberikan pemberitahuan resmi kepada pengelola.
 - **Hasil yang Diharapkan**: Form merekam tanggal check-out, nomor rekening pengembalian deposit, alasan, dan mengirim notifikasi ke pengelola kost.
 
 ---
 
-#### SKENARIO 19: Transparansi Status Saldo Deposit Jaminan (Escrow Tracking)
+### SKENARIO 19: Transparansi Status Saldo Deposit Jaminan (Escrow Tracking)
 - **Tujuan**: Menjamin ketenangan penyewa terkait kejelasan uang jaminan kamar yang dipegang pengelola.
 - **Hasil yang Diharapkan**: Kartu escrow samping menampilkan saldo Rp 500.000 aman tersimpan beserta syarat pengembalian 100%.
 
 ---
 
-#### SKENARIO 20: Transparansi Sub-Meteran Listrik kWh & Audit Pemakaian (`SCR-09M`)
+### SKENARIO 20: Transparansi Sub-Meteran Listrik kWh & Audit Pemakaian (`SCR-09M`)
 - **Tujuan**: Mencegah sengketa penagihan listrik dengan menyediakan transparansi angka meteran awal, angka akhir, dan batas kuota gratis.
 - **Hasil yang Diharapkan**: Modal perbandingan meteran menampilkan angka awal (1.240 kWh) vs akhir (1.315 kWh) dengan status pemakaian 75 kWh di bawah kuota gratis 100 kWh.
 
 ---
 
-#### SKENARIO 21: Pratinjau Kuitansi Digital Lunas Bebas Navbar (`DOC-01`)
+### SKENARIO 21: Pratinjau Kuitansi Digital Lunas Bebas Navbar (`DOC-01`)
 - **Tujuan**: Memfasilitasi penghuni melihat bukti pembayaran resmi berstempel LUNAS, ber-QR code otentikasi, serta tombol cetak dan bagikan ke WhatsApp.
 - **Hasil yang Diharapkan**: Tampilan kwitansi formal standar `DOC-01` dengan stempel tanda air hijau dan tombol cetak dokumen.
 
 ---
 
-#### SKENARIO 22: Transparansi Jejak Audit Koreksi Pembayaran / Reversal (`?status=reversed`)
+### SKENARIO 22: Transparansi Jejak Audit Koreksi Pembayaran / Reversal (`?status=reversed`)
 - **Tujuan**: Memverifikasi penegakan aturan F-05 bahwa salah catat pembayaran ditandai secara transparan sebagai jurnal reversal.
 - **Hasil yang Diharapkan**: Baris transaksi salah catat tampil tercoret dengan status *"Dibatalkan (Salah Nominal)"* tanpa penghapusan data sepihak.
 
 ---
 
-#### SKENARIO 23: Penolakan Klaim Transfer oleh Pemilik Kost (`?status=rejected`)
+### SKENARIO 23: Penolakan Klaim Transfer oleh Pemilik Kost (`?status=rejected`)
 - **Tujuan**: Menguji alur ketika struk transfer yang dikirim penghuni tidak valid atau mutasi bank belum masuk saat diperiksa Pemilik Kost.
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?status=rejected`.
 - **Langkah Pengujian**:
@@ -274,7 +272,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 24: Kondisi Kamar Bebas Keluhan / Nihil Tiket Aktif (`?ticket=empty`)
+### SKENARIO 24: Kondisi Kamar Bebas Keluhan / Nihil Tiket Aktif (`?ticket=empty`)
 - **Tujuan**: Memastikan antarmuka menyajikan status positif (*Empty State*) saat tidak ada laporan kerusakan aktif di kamar penyewa.
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?ticket=empty`.
 - **Langkah Pengujian**:
@@ -286,7 +284,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 25: Konfirmasi Rencana Perpanjang Sewa Mandiri (Lease Renewal Intent)
+### SKENARIO 25: Konfirmasi Rencana Perpanjang Sewa Mandiri (Lease Renewal Intent)
 - **Tujuan**: Memfasilitasi penghuni yang ingin mengonfirmasi kelanjutan sewa untuk bulan berikutnya tanpa menunggu ditagih.
 - **Kondisi Awal**: Masa sewa mendekati akhir periode berjalan (H-15).
 - **Langkah Pengujian**:
@@ -298,7 +296,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-#### SKENARIO 26: Validasi Batasan Ukuran & Format Berkas Struk Transfer
+### SKENARIO 26: Validasi Batasan Ukuran & Format Berkas Struk Transfer
 - **Tujuan**: Memastikan dropzone mengamankan sistem dari pengunggahan berkas yang tidak sesuai ketentuan (F-05 & F-17).
 - **Kondisi Awal**: Buka modal konfirmasi pembayaran transfer.
 - **Langkah Pengujian**:
