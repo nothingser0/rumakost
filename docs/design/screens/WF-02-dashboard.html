@@ -1696,6 +1696,335 @@
         width: auto;
       }
     }
+
+    /* ══════════════════════════════════════════════════════════════
+       ROLE-ADAPTIVE OVERLAY STYLES (SCR-02-STAF)
+       ══════════════════════════════════════════════════════════════ */
+    .staff-ticket-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
+    }
+
+    .staff-ticket-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 10px;
+      border-radius: var(--radius-md, 12px);
+      transition: background-color var(--transition-fast, 0.15s ease);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 1px solid var(--border-subtle, #ECEEF2);
+    }
+
+    .staff-ticket-row:last-child {
+      border-bottom: none;
+    }
+
+    .staff-ticket-row:hover {
+      background: #F7F8FA;
+    }
+
+    .ticket-left-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .ticket-icon-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md, 12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ticket-texts {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .ticket-heading-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ticket-room-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      background: #111111;
+      color: #FFFFFF;
+      border-radius: var(--radius-full);
+      line-height: 1.2;
+    }
+
+    .ticket-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ticket-subtext {
+      font-size: 11.5px;
+      color: var(--text-secondary, #4B5563);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ticket-right-action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .ticket-list-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle, #ECEEF2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+
+    /* 15-Room Matrix Grid in Sidebar */
+    .room-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .room-tile {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-control, #E2E8F0);
+      border-radius: var(--radius-md, 12px);
+      padding: 8px 4px 6px;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-fast, 0.15s ease);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-decoration: none;
+      outline: none;
+      user-select: none;
+      color: var(--text-main, #111111);
+    }
+
+    .room-tile:hover {
+      transform: none !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .room-tile.occupied:hover {
+      border-color: #16A34A !important;
+      background: #F0FDF4;
+    }
+
+    .room-tile.overdue:hover {
+      border-color: #EF4444 !important;
+      background: #FEF2F2;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+    }
+
+    .room-tile.due-soon:hover {
+      border-color: #D97706 !important;
+      background: #FFFBEB;
+    }
+
+    .room-tile.maintenance:hover {
+      border-color: #D97706 !important;
+      border-style: dashed;
+      background: #FFFBEB;
+    }
+
+    .room-tile.vacant:hover {
+      border-color: #FF7A00 !important;
+      border-style: dashed;
+      background: #FFF7ED;
+    }
+
+    .room-tile:focus-visible {
+      box-shadow: 0 0 0 2px var(--brand-primary, #FF7A00);
+    }
+
+    .tile-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .room-tile.occupied .tile-status-dot { background: #16A34A; }
+    .room-tile.overdue {
+      border-color: #FECACA;
+      background: #FFFBFB;
+    }
+    .room-tile.overdue .tile-status-dot { background: #EF4444; }
+    .room-tile.due-soon {
+      border-color: #FDE68A;
+      background: #FFFDF7;
+    }
+    .room-tile.due-soon .tile-status-dot { background: #D97706; }
+    .room-tile.maintenance {
+      border-color: #FCD34D;
+      border-style: dashed;
+      background: #FFFDF7;
+    }
+    .room-tile.maintenance .tile-status-dot { background: #F59E0B; }
+    .room-tile.vacant {
+      border-color: #FED7AA;
+      border-style: dashed;
+      background: #FFFBF8;
+    }
+    .room-tile.vacant .tile-status-dot { background: #FF7A00; }
+
+    /* Floating Role Switcher Pill (Fixed Bottom-Right) */
+    .floating-role-switcher {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius-full);
+      animation: floatSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes floatSlideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .btn-role-switch {
+      background: #111111;
+      color: #FFFFFF;
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-full);
+      padding: 6px 14px 6px 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      outline: none;
+      font-family: inherit;
+      transition: all var(--transition-fast, 0.15s ease);
+    }
+
+    .btn-role-switch:hover {
+      background: #222222;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .role-icon-bubble {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--brand-primary, #FF7A00);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .role-text-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1px;
+    }
+
+    .role-lbl-small {
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: #94A3B8;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .role-name-bold {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.1;
+    }
+
+    .role-switch-tag {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.14);
+      color: #F8FAFC;
+      margin-left: 4px;
+    }
+
+    /* Modal Form for Staff Cash Intake */
+    .modal-notice-banner {
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      border-radius: var(--radius-md, 12px);
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      color: #9A3412;
+      line-height: 1.4;
+    }
+
+    .form-group-modal {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-label-modal {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary, #4B5563);
+    }
+
+    .form-input-modal {
+      height: 42px;
+      border-radius: var(--radius-md, 12px);
+      border: 1px solid var(--border-control, #CBD5E1);
+      padding: 0 14px;
+      font-size: 13px;
+      outline: none;
+      transition: all var(--transition-fast, 0.15s ease);
+      font-family: inherit;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .form-input-modal:focus {
+      border-color: var(--brand-primary, #FF7A00);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
+    }
   </style>
 </head>
 <body>
@@ -1753,80 +2082,144 @@
             </div>
           </div>
 
-          <!-- Card 2: Tagihan Lunas (Estify New Leads Pattern) -->
+          <!-- Card 2: Tagihan Lunas (Owner) / Tiket Kerusakan (Staff) -->
           <div class="metric-card-estify" 
+               id="metricCard2"
                tabindex="0" 
                role="link" 
-               aria-label="Tagihan Lunas Rp 16,5 Jt, Kolektibilitas 82%. Buka Monitoring Tagihan Sewa" 
-               onclick="location.href='WF-05-tagihan.html'" 
-               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-05-tagihan.html';}" 
-               title="Buka Monitoring Tagihan Sewa (Rp 16,5 Jt Terkumpul)">
-            <div class="metric-card-top">
-              <div class="metric-title-group">
-                <div class="metric-icon-sq is-dark">
-                  <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
-                </div>
-                <span class="metric-lbl-title">Tagihan Lunas</span>
-              </div>
-              <span class="metric-badge-pill pill-dark-soft">+8% <i data-lucide="arrow-up" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i></span>
-            </div>
+               aria-label="Metrik Kartu 2" 
+               onclick="handleMetricCard2Click()" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleMetricCard2Click();}">
             
-            <div class="metric-card-bottom">
-              <div class="metric-val-col">
-                <span class="metric-lbl-sub">Bulan ini</span>
-                <div class="metric-value-huge">Rp 16,5 Jt</div>
+            <!-- Owner Body Card 2 -->
+            <div id="card2OwnerBody" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; gap: 16px;">
+              <div class="metric-card-top">
+                <div class="metric-title-group">
+                  <div class="metric-icon-sq is-dark">
+                    <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
+                  </div>
+                  <span class="metric-lbl-title">Tagihan Lunas</span>
+                </div>
+                <span class="metric-badge-pill pill-dark-soft">+8% <i data-lucide="arrow-up" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i></span>
               </div>
+              
+              <div class="metric-card-bottom">
+                <div class="metric-val-col">
+                  <span class="metric-lbl-sub">Bulan ini</span>
+                  <div class="metric-value-huge">Rp 16,5 Jt</div>
+                </div>
 
-              <!-- Estify Smooth Semi-Circle Radial Progress Gauge -->
-              <div class="gauge-meter-wrap" title="Kolektibilitas Tagihan 82% (Rp 16,5 Jt dari Rp 20,1 Jt)">
-                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
-                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
-                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="19"/>
-                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">82%</text>
-                </svg>
+                <div class="gauge-meter-wrap" title="Kolektibilitas Tagihan 82% (Rp 16,5 Jt dari Rp 20,1 Jt)">
+                  <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                    <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                    <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="19"/>
+                    <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">82%</text>
+                  </svg>
+                </div>
               </div>
             </div>
+
+            <!-- Staff Body Card 2 (F-07 Tiket Kerusakan) -->
+            <div id="card2StaffBody" style="display: none; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; gap: 16px;">
+              <div class="metric-card-top">
+                <div class="metric-title-group">
+                  <div class="metric-icon-sq is-danger">
+                    <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+                  </div>
+                  <span class="metric-lbl-title">Tiket Kerusakan</span>
+                </div>
+                <span class="status-badge badge-danger" style="font-size: 11px;">1 Mendesak</span>
+              </div>
+              
+              <div class="metric-card-bottom">
+                <div class="metric-val-col">
+                  <span class="metric-lbl-sub">Antrean Tiket Lapangan</span>
+                  <div class="metric-value-huge">3 <span style="font-size: 15px; font-weight: 500; color: var(--text-muted, #71717A);">Tiket</span></div>
+                </div>
+
+                <div class="gauge-meter-wrap" title="3 Tiket Aktif Lapangan (60% Beban)">
+                  <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                    <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                    <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#EF4444" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="42"/>
+                    <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">60%</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <!-- Card 3: Pengeluaran Operasional (Estify Total Sales Pattern) -->
+          <!-- Card 3: Pengeluaran (Owner) / Setoran Lapangan (Staff) -->
           <div class="metric-card-estify" 
+               id="metricCard3"
                tabindex="0" 
                role="link" 
-               aria-label="Pengeluaran Operasional Rp 4,2 Jt, 84% Realisasi Anggaran. Buka Rekapitulasi Pembayaran dan Pengeluaran" 
-               onclick="location.href='WF-06-pembayaran.html'" 
-               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-06-pembayaran.html';}" 
-               title="Buka Rekapitulasi Pembayaran & Pengeluaran Kas (Rp 4,2 Jt)">
-            <div class="metric-card-top">
-              <div class="metric-title-group">
-                <div class="metric-icon-sq is-danger">
-                  <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
-                </div>
-                <span class="metric-lbl-title">Pengeluaran</span>
-              </div>
-              <span class="metric-badge-pill pill-red-soft">-4% <i data-lucide="arrow-down" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i></span>
-            </div>
+               aria-label="Metrik Kartu 3" 
+               onclick="handleMetricCard3Click()" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();handleMetricCard3Click();}">
             
-            <div class="metric-card-bottom">
-              <div class="metric-val-col">
-                <span class="metric-lbl-sub">Bulan ini</span>
-                <div class="metric-value-huge">Rp 4,2 Jt</div>
+            <!-- Owner Body Card 3 -->
+            <div id="card3OwnerBody" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; gap: 16px;">
+              <div class="metric-card-top">
+                <div class="metric-title-group">
+                  <div class="metric-icon-sq is-danger">
+                    <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
+                  </div>
+                  <span class="metric-lbl-title">Pengeluaran</span>
+                </div>
+                <span class="metric-badge-pill pill-red-soft">-4% <i data-lucide="arrow-down" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i></span>
               </div>
+              
+              <div class="metric-card-bottom">
+                <div class="metric-val-col">
+                  <span class="metric-lbl-sub">Bulan ini</span>
+                  <div class="metric-value-huge">Rp 4,2 Jt</div>
+                </div>
 
-              <!-- Estify Smooth Semi-Circle Radial Progress Gauge -->
-              <div class="gauge-meter-wrap" title="Pengeluaran Rp 4,2 Jt (Sisa Budget Rp 800rb dari Rp 5 Jt)">
-                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
-                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
-                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#EF4444" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="17"/>
-                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">84%</text>
-                </svg>
+                <div class="gauge-meter-wrap" title="Pengeluaran Rp 4,2 Jt (Sisa Budget Rp 800rb dari Rp 5 Jt)">
+                  <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                    <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                    <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#EF4444" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="17"/>
+                    <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">84%</text>
+                  </svg>
+                </div>
               </div>
             </div>
+
+            <!-- Staff Body Card 3 (F-05 Setoran Lapangan Pending) -->
+            <div id="card3StaffBody" style="display: none; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; gap: 16px;">
+              <div class="metric-card-top">
+                <div class="metric-title-group">
+                  <div class="metric-icon-sq is-dark">
+                    <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
+                  </div>
+                  <span class="metric-lbl-title">Setoran Lapangan</span>
+                </div>
+                <span class="status-badge badge-warning" style="font-size: 11px;">2 Pending</span>
+              </div>
+              
+              <div class="metric-card-bottom">
+                <div class="metric-val-col">
+                  <span class="metric-lbl-sub">Tercatat di Meja</span>
+                  <div class="metric-value-huge">Rp 2,8 <span style="font-size: 15px; font-weight: 500; color: var(--text-muted, #71717A);">Jt</span></div>
+                </div>
+
+                <div class="gauge-meter-wrap" title="2 Transaksi Menunggu Verifikasi Owner">
+                  <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                    <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                    <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="53"/>
+                    <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">50%</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
 
-        <!-- 2. MIDDLE ROW: DOUBLE BAR CHART + ORANGE HIGHLIGHT CARD (SIDE-BY-SIDE!) -->
-        <div class="chart-highlight-row">
+        <!-- 2. MIDDLE ROW: OWNER (ARUS KAS + HIGHLIGHT) vs STAFF (TIKET F-07 + KAS LAPANGAN F-05) -->
+        <div class="chart-highlight-row" id="row2OwnerView">
           
           <!-- LEFT: DOUBLE BAR CHART -->
           <div class="chart-card-box">
@@ -2075,6 +2468,141 @@
 
         </div>
 
+        <!-- 2. MIDDLE ROW (STAFF VIEW): TIKET KERUSAKAN (F-07) & KAS LAPANGAN (F-05) -->
+        <div class="chart-highlight-row" id="row2StaffView" style="display: none;">
+          
+          <!-- LEFT: ANTREAN TIKET KERUSAKAN PENGHUNI (F-07) -->
+          <div class="chart-card-box">
+            <div class="card-top-header">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <h2 class="card-title-text">
+                  Antrean Tiket Kerusakan
+                </h2>
+                <span class="status-badge badge-danger" style="font-size: 11px;">1 Mendesak</span>
+                <span class="status-badge badge-dark" style="font-size: 11px;">3 Aktif</span>
+              </div>
+              
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <a href="WF-08-tiket.html?role=staf" class="btn-pill btn-white-outline" style="font-size: 12px; padding: 0 14px; height: 36px; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+                  Kelola Tiket
+                  <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Clean Ticket Rows -->
+            <div class="staff-ticket-list">
+              <!-- Ticket 1: Wastafel Bocor A-04 -->
+              <div class="staff-ticket-row" onclick="location.href='WF-08-tiket.html?role=staf'" role="link" tabindex="0">
+                <div class="ticket-left-info">
+                  <div class="ticket-icon-avatar" style="background: #FEE2E2; color: #EF4444;">
+                    <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+                  </div>
+                  <div class="ticket-texts">
+                    <div class="ticket-heading-line">
+                      <span class="ticket-room-badge">Kamar A-04</span>
+                      <span class="ticket-name">Pipa Wastafel Bocor</span>
+                      <span class="status-badge badge-danger" style="font-size: 10px;">Mendesak</span>
+                      <span class="status-badge badge-brand" style="font-size: 10px;">Dikerjakan</span>
+                    </div>
+                    <span class="ticket-subtext">Pelapor: Budi Santoso · Air merembes ke lantai koridor</span>
+                  </div>
+                </div>
+                <div class="ticket-right-action">
+                  <span style="font-size: 11px; color: var(--text-muted, #71717A);">1 jam lalu</span>
+                </div>
+              </div>
+
+              <!-- Ticket 2: Servis AC B-02 -->
+              <div class="staff-ticket-row" onclick="location.href='WF-08-tiket.html?role=staf'" role="link" tabindex="0">
+                <div class="ticket-left-info">
+                  <div class="ticket-icon-avatar" style="background: #FFF7ED; color: #FF7A00;">
+                    <i data-lucide="wind" style="width: 18px; height: 18px;"></i>
+                  </div>
+                  <div class="ticket-texts">
+                    <div class="ticket-heading-line">
+                      <span class="ticket-room-badge">Kamar B-02</span>
+                      <span class="ticket-name">AC Kurang Dingin</span>
+                      <span class="status-badge badge-dark" style="font-size: 10px;">Ditugaskan</span>
+                    </div>
+                    <span class="ticket-subtext">Pelapor: Rini Marlina · Hembusan angin lemah & filter kotor</span>
+                  </div>
+                </div>
+                <div class="ticket-right-action">
+                  <span style="font-size: 11px; color: var(--text-muted, #71717A);">3 jam lalu</span>
+                </div>
+              </div>
+
+              <!-- Ticket 3: Toren Selesai -->
+              <div class="staff-ticket-row" onclick="location.href='WF-08-tiket.html?role=staf'" role="link" tabindex="0" style="border-bottom: none;">
+                <div class="ticket-left-info">
+                  <div class="ticket-icon-avatar" style="background: #DCFCE7; color: #16A34A;">
+                    <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+                  </div>
+                  <div class="ticket-texts">
+                    <div class="ticket-heading-line">
+                      <span class="ticket-room-badge" style="background: #475569;">Fasilitas</span>
+                      <span class="ticket-name">Pengecekan Pompa Air Utama</span>
+                      <span class="status-badge badge-success" style="font-size: 10px;">Selesai 09:15</span>
+                    </div>
+                    <span class="ticket-subtext">Tekanan air normal, debit toren atas terisi penuh</span>
+                  </div>
+                </div>
+                <div class="ticket-right-action">
+                  <span style="font-size: 11px; color: #16A34A; font-weight: 600;">Terselesaikan</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="ticket-list-footer">
+              <span style="color: var(--text-muted, #71717A);">Laporkan progres langsung ke penghuni</span>
+              <a href="WF-08-tiket.html?role=staf" style="color: var(--brand-primary, #FF7A00); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                Buka Antrean Tiket Lengkap
+                <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- RIGHT: KAS LAPANGAN & TITIPAN SEWA (F-05 ZERO SELF-APPROVAL) -->
+          <div class="chart-card-box">
+            <div class="card-top-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h2 class="card-title-text">
+                  Setoran Kas Lapangan
+                </h2>
+                <span class="status-badge badge-warning" style="font-size: 10px;">Pending Owner</span>
+              </div>
+              <span style="font-size: 11px; color: var(--text-muted, #71717A);">Hari ini</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; margin: auto 0;">
+              <div>
+                <span style="font-size: 11px; font-weight: 600; color: var(--text-muted, #71717A); text-transform: uppercase; letter-spacing: 0.3px;">Uang Kas Fisik di Tangan Staf</span>
+                <div style="font-size: 26px; font-weight: 800; color: var(--text-main, #111111); letter-spacing: -0.4px; margin-top: 2px;">
+                  Rp 2.800.000
+                </div>
+                <span style="font-size: 11.5px; color: var(--text-secondary, #4B5563);">2 transaksi sewa diterima hari ini (A-04 & B-01)</span>
+              </div>
+
+              <!-- Zero Self-Approval Micro Callout -->
+              <div class="modal-notice-banner" style="margin-bottom: 0;">
+                <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #EA580C; flex-shrink: 0; margin-top: 1px;"></i>
+                <div style="font-size: 11.5px;">
+                  <strong>Zero Self-Approval:</strong> Staf dilarang menyetujui transaksi sendiri. Setoran otomatis berstatus pending hingga diverifikasi mutasi bank oleh Owner.
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-subtle, #ECEEF2); display: flex; justify-content: flex-end;">
+              <button type="button" class="btn-pill btn-primary" onclick="openStaffPaymentModal()" style="font-size: 12px; height: 38px; padding: 0 16px; display: inline-flex; align-items: center; gap: 6px; width: 100%; justify-content: center;">
+                <i data-lucide="plus-circle" style="width: 15px; height: 15px;"></i>
+                <span>Catat Pembayaran Masuk Baru</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
         <!-- 3. BOTTOM ROW: MY PROPERTIES (Carousel 15 Kamar Kost · Tampil Awal 3 · Geser Shift + Scroll) -->
         <div class="properties-section-card">
           <div class="properties-top-bar">
@@ -2084,6 +2612,17 @@
             </div>
             
             <div class="properties-controls-right">
+              <!-- Staff Action Button (Visible in Staff Mode) -->
+              <button type="button" 
+                      class="btn-pill btn-primary" 
+                      id="btnStaffRecordPayment" 
+                      onclick="openStaffPaymentModal()" 
+                      style="display: none; font-size: 12px; height: 38px; padding: 0 16px; align-items: center; gap: 6px;"
+                      title="Catat Pembayaran Masuk Penyewa (Zero Self-Approval)">
+                <i data-lucide="plus-circle" style="width: 15px; height: 15px;"></i>
+                <span>Catat Setoran</span>
+              </button>
+
               <div class="search-capsule-wide capsule-search-box">
                 <i data-lucide="search" style="width: 16px; height: 16px; color: var(--text-main); flex-shrink: 0;"></i>
                 <input type="text" id="quickRoomSearchInput" placeholder="Cari kamar (A-01, B-03, dll)..." oninput="filterQuickRooms(this.value)" aria-label="Cari unit kamar kost">
@@ -2461,47 +3000,145 @@
             </div>
           </div>
 
-          <div class="condition-progress-group">
-            
-            <!-- Item 1: Sedang Dikerjakan -->
-            <div class="condition-progress-item">
-              <div class="condition-meta-row">
-                <span class="condition-label">Dalam Pengerjaan</span>
-                <span class="condition-count">2</span>
+          <!-- Owner Body: Kondisi Properti -->
+          <div id="sidebarCard1Owner">
+            <div class="condition-progress-group">
+              
+              <!-- Item 1: Sedang Dikerjakan -->
+              <div class="condition-progress-item">
+                <div class="condition-meta-row">
+                  <span class="condition-label">Dalam Pengerjaan</span>
+                  <span class="condition-count">2</span>
+                </div>
+                <div class="progress-bar-thick">
+                  <div class="progress-fill-orange" style="width: 50%;"></div>
+                </div>
               </div>
-              <div class="progress-bar-thick">
-                <div class="progress-fill-orange" style="width: 50%;"></div>
+
+              <!-- Item 2: Menunggu Penugasan -->
+              <div class="condition-progress-item">
+                <div class="condition-meta-row">
+                  <span class="condition-label">Menunggu Penugasan</span>
+                  <span class="condition-count">1</span>
+                </div>
+                <div class="progress-bar-thick">
+                  <div class="progress-fill-orange" style="width: 25%;"></div>
+                </div>
               </div>
+
+              <!-- Item 3: Laporan Baru Masuk -->
+              <div class="condition-progress-item">
+                <div class="condition-meta-row">
+                  <span class="condition-label">Laporan Baru Masuk</span>
+                  <span class="condition-count">1</span>
+                </div>
+                <div class="progress-bar-thick">
+                  <div class="progress-fill-orange" style="width: 25%;"></div>
+                </div>
+              </div>
+
             </div>
 
-            <!-- Item 2: Menunggu Penugasan -->
-            <div class="condition-progress-item">
-              <div class="condition-meta-row">
-                <span class="condition-label">Menunggu Penugasan</span>
-                <span class="condition-count">1</span>
-              </div>
-              <div class="progress-bar-thick">
-                <div class="progress-fill-orange" style="width: 25%;"></div>
-              </div>
-            </div>
-
-            <!-- Item 3: Laporan Baru Masuk -->
-            <div class="condition-progress-item">
-              <div class="condition-meta-row">
-                <span class="condition-label">Laporan Baru Masuk</span>
-                <span class="condition-count">1</span>
-              </div>
-              <div class="progress-bar-thick">
-                <div class="progress-fill-orange" style="width: 25%;"></div>
-              </div>
-            </div>
-
+            <a href="WF-08-tiket.html" class="btn-maintenance-full" aria-label="Buka Rincian Tiket Kerusakan">
+              <span>Detail Tiket Kerusakan</span>
+              <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </a>
           </div>
 
-          <a href="WF-08-tiket.html" class="btn-maintenance-full" aria-label="Buka Rincian Tiket Kerusakan">
-            <span>Detail Tiket Kerusakan</span>
-            <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-          </a>
+          <!-- Staff Body: Status Cepat 15 Kamar (F-02 Grid 5x3) -->
+          <div id="sidebarCard1Staff" style="display: none;">
+            <div class="condition-progress-group" style="margin-bottom: 12px;">
+              <div>
+                <div class="condition-meta-row" style="font-size: 11.5px; margin-bottom: 6px;">
+                  <span style="font-weight: 600; color: var(--text-main, #111111);">Kapasitas Terisi</span>
+                  <span style="font-weight: 700; color: var(--brand-primary, #FF7A00);">73% (11/15)</span>
+                </div>
+                <div class="progress-bar-thick">
+                  <div class="progress-fill-orange" style="width: 73%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Clean 5x3 Room Matrix -->
+            <div class="room-matrix-grid">
+              <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-01: Siti Aminah (Lunas)">
+                <span>A-01</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile overdue" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-02: Dimas Prasetyo (Telat H+5)">
+                <span>A-02</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile vacant" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-03: Kosong Siap Huni">
+                <span>A-03</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile due-soon" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-04: Budi Santoso (Jatuh Tempo)">
+                <span>A-04</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-05: Sri Wahyuni (Lunas)">
+                <span>A-05</span>
+                <span class="tile-status-dot"></span>
+              </div>
+
+              <div class="room-tile overdue" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-01: Dodi Firmansyah (Telat H+3)">
+                <span>B-01</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-02: Rini Marlina (Lunas)">
+                <span>B-02</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile vacant" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-03: Kosong Siap Huni">
+                <span>B-03</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-04: Eko Prasetyo (Lunas)">
+                <span>B-04</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile maintenance" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-05: Dalam Perbaikan AC">
+                <span>B-05</span>
+                <span class="tile-status-dot"></span>
+              </div>
+
+              <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-01: Hendra Wijaya (Lunas)">
+                <span>C-01</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile vacant" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-02: Kosong Siap Huni">
+                <span>C-02</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-03: Rian Hidayat (Lunas)">
+                <span>C-03</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-04: Mega Lestari (Lunas)">
+                <span>C-04</span>
+                <span class="tile-status-dot"></span>
+              </div>
+              <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-05: Aditya Pratama (Lunas)">
+                <span>C-05</span>
+                <span class="tile-status-dot"></span>
+              </div>
+            </div>
+
+            <!-- Single-Line Semantic Legend -->
+            <div style="display: flex; gap: 8px 10px; font-size: 10px; color: var(--text-secondary, #4B5563); flex-wrap: wrap; padding-top: 8px; border-top: 1px dashed var(--border-subtle, #ECEEF2); margin-bottom: 12px;">
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #16A34A;"></span> 8 Lunas</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #EF4444;"></span> 2 Telat</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #D97706;"></span> 1 Tempo</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #F59E0B;"></span> 1 Perbaikan</span>
+              <span style="display: inline-flex; align-items: center; gap: 4px;"><span style="width: 6px; height: 6px; border-radius: 50%; background: #FF7A00;"></span> 3 Kosong</span>
+            </div>
+
+            <a href="WF-03-kamar.html?role=staf" class="btn-maintenance-full" style="height: 38px; font-size: 12px;" aria-label="Buka Katalog Kamar Staf">
+              <span>Buka Katalog Kamar (15 Unit)</span>
+              <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </a>
+          </div>
         </div>
 
         <!-- CARD 2: RECENT OPERATIONAL ACTIVITIES (Estify Activity Log Pattern · 100% In-Scope MVP) -->
