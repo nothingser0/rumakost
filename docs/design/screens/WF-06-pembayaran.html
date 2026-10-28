@@ -133,14 +133,15 @@
     .metric-card-estify {
       background: var(--bg-card);
       border-radius: 20px;
-      padding: 22px 24px 20px;
+      padding: 22px 24px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
       border: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       transition: all var(--transition-fast);
-      min-height: 138px;
+      min-height: 157.6px;
+      height: 157.6px;
       box-sizing: border-box;
       gap: 16px;
       min-width: 0;
@@ -148,7 +149,7 @@
 
     .metric-card-estify:hover {
       transform: translateY(-2px);
-      box-shadow: none !important;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
     }
 
     /* TOP ROW: ICON + TITLE (LEFT) & STATUS BADGE (RIGHT) */
@@ -356,7 +357,7 @@
       background: #FFFFFF;
       border-color: #CBD5E1;
       transform: translateY(-1px);
-      box-shadow: none !important;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
     }
 
     .sidebar-channel-item.active {
@@ -471,7 +472,7 @@
     .sidebar-pending-card:hover {
       background: #FFFFFF;
       border-color: #CBD5E1;
-      box-shadow: none !important;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
     }
 
     .pending-header-row {
@@ -504,7 +505,7 @@
     .sidebar-pending-card:hover .pending-float-arrow {
       background: #111111;
       color: #FFFFFF;
-      box-shadow: none !important;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
       transform: scale(1.1) translate(1px, -1px);
     }
 
@@ -560,7 +561,7 @@
       background: var(--dark-pill-hover, #222222);
       border-color: var(--dark-pill-hover, #222222);
       transform: translateY(-1px);
-      box-shadow: none !important;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
     }
 
     .btn-quick-tolak-pembayaran {
@@ -607,8 +608,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      height: 40px;
-      padding: 0 12px;
+
+      height: 40px !important;
+      padding: 0 14px;
+      background: #F4F5F7;
+      border: 1.5px solid #ECEEF2;
       background: #F8FAFC;
       border: 1px solid #E2E8F0;
       border-radius: var(--radius-full);
@@ -617,6 +621,12 @@
       min-width: 140px;
       transition: all var(--transition-fast);
       box-sizing: border-box;
+    }
+
+    .search-capsule-box:hover {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
 
     .search-capsule-box:focus-within {
@@ -640,6 +650,27 @@
     }
 
     .btn-clear-search {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: var(--text-muted, #64748B);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      transition: all var(--transition-fast, 150ms ease);
+    }
+
+    .btn-clear-search:hover {
+      background: #CBD5E1;
+      color: var(--text-main, #111111);
+    }
+
+    .old-btn-clear-del {
       background: none;
       border: none;
       color: #94A3B8;
@@ -691,7 +722,34 @@
     }
 
     .btn-export-action {
-      height: 40px;
+      height: 40px !important;
+      padding: 0 16px !important;
+      border-radius: var(--radius-full);
+      border: 1.5px solid #E2E8F0 !important;
+      background: #FFFFFF !important;
+      color: #374151 !important;
+      font-size: 12.5px !important;
+      font-weight: 600 !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      box-shadow: none !important;
+    }
+
+    .btn-export-action:hover {
+      background: #F8FAFC !important;
+      border-color: #CBD5E1 !important;
+      color: #111111 !important;
+      transform: translateY(-1px);
+    }
+
+    .old-btn-export-action {
+
       padding: 0 14px;
       border-radius: var(--radius-full);
       border: 1px solid var(--border-subtle);
@@ -716,6 +774,50 @@
     }
 
     .btn-action-catat {
+      background: var(--btn-primary-bg, #FF7A00) !important;
+      color: #FFFFFF !important;
+      border: 1.5px solid var(--btn-primary-border, #EB6E00) !important;
+      border-radius: 9999px;
+      height: 40px !important;
+      padding: 0 18px !important;
+      box-sizing: border-box;
+      font-size: 13px !important;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      outline: none;
+      box-shadow: none !important;
+      flex-shrink: 0;
+    }
+
+    .btn-action-catat i {
+      color: #FFFFFF;
+      transition: transform var(--transition-fast);
+    }
+
+    .btn-action-catat:hover {
+      background: var(--btn-primary-hover-bg, #E06300) !important;
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px);
+      box-shadow: none !important;
+    }
+
+    .btn-action-catat:active {
+      background: var(--btn-primary-active-bg, #D45A00) !important;
+      border-color: var(--btn-primary-active-border, #A34400) !important;
+      transform: translateY(0);
+      box-shadow: none !important;
+    }
+
+    .old-btn-action-catat {
       height: 44px;
       padding: 0 16px;
       background: var(--brand-primary);
@@ -801,7 +903,7 @@
 
     .feed-tx-card:hover {
       border-color: #CBD5E1;
-      box-shadow: none !important;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
     }
 
     .feed-tx-card.is-pending {
@@ -835,7 +937,7 @@
 
     .tenant-avatar-circle {
       width: 40px;
-      height: 40px;
+
       border-radius: 12px;
       background: var(--dark-pill);
       color: #FFFFFF;
@@ -1061,7 +1163,7 @@
 
     .accordion-slip-card:hover {
       border-color: var(--brand-primary);
-      box-shadow: none !important;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
     }
 
     .slip-head-meta {
@@ -1081,7 +1183,13 @@
 
     .slip-nominal-txt {
       font-size: 17px;
-      font-weight: 800;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .old-slip-nominal-txt {
+      font-size: 17px;
+      font-weight: 700;
       color: var(--text-main);
     }
 
@@ -1285,7 +1393,215 @@
     /* ══════════════════════════════════════════════════════════════
        MODAL DIALOGS (RK-030 s.d. RK-033)
        ══════════════════════════════════════════════════════════════ */
+    .modal-backdrop,
     .modal-overlay {
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(15, 23, 42, 0.45) !important;
+      backdrop-filter: blur(5px) !important;
+      -webkit-backdrop-filter: blur(5px) !important;
+      z-index: 1000 !important;
+      display: none !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 20px !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: opacity 0.2s ease !important;
+      box-sizing: border-box !important;
+    }
+
+    .modal-backdrop.open,
+    .modal-overlay.open {
+      display: flex !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+
+    .modal-card {
+      background: #FFFFFF !important;
+      border-radius: 20px !important;
+      width: 100% !important;
+      max-width: 580px !important;
+      max-height: calc(100vh - 48px) !important;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.16) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+      margin: 0 auto !important;
+      transform: scale(0.98);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-backdrop.open .modal-card,
+    .modal-overlay.open .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-header-pinned {
+      padding: 16px 24px !important;
+      border-bottom: 1px solid var(--border-subtle) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+    }
+
+    .modal-title {
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      color: var(--text-main) !important;
+      margin: 0 !important;
+      line-height: 1.25 !important;
+    }
+
+    .modal-subtitle {
+      font-size: 12px !important;
+      font-weight: 500 !important;
+      color: var(--text-secondary, #4B5563) !important;
+      margin: 2px 0 0 0 !important;
+    }
+
+    .btn-modal-close {
+      background: #F1F5F9 !important;
+      border: none !important;
+      border-radius: 50% !important;
+      width: 36px !important;
+      height: 36px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      color: var(--text-secondary, #4B5563) !important;
+      transition: all var(--transition-fast) !important;
+      flex-shrink: 0 !important;
+    }
+
+    .btn-modal-close:hover {
+      background: var(--border-control, #E2E8F0) !important;
+      color: var(--text-main, #111827) !important;
+    }
+
+    .modal-body-scrollable {
+      padding: 16px 24px 20px !important;
+      overflow-y: auto !important;
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      box-sizing: border-box !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    .modal-body-scrollable::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .modal-footer-pinned {
+      padding: 14px 24px !important;
+      border-top: 1px solid var(--border-subtle) !important;
+      background: #FFFFFF !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: 10px !important;
+      flex-shrink: 0 !important;
+      z-index: 10 !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Modal Button Hierarchy (Identik WF-03 Kamar) */
+    .btn-modal-cancel {
+      height: 40px !important;
+      padding: 0 18px !important;
+      border-radius: var(--radius-full) !important;
+      background: #F8FAFC !important;
+      border: 1.5px solid #CBD5E1 !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: #475569 !important;
+      cursor: pointer !important;
+      transition: all var(--transition-fast) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      box-sizing: border-box !important;
+      text-decoration: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    .btn-modal-cancel:hover {
+      background: #F1F5F9 !important;
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .btn-modal-primary {
+      height: 40px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      background: var(--btn-primary-bg, #FF7A00) !important;
+      color: #FFFFFF !important;
+      border: 1.5px solid var(--btn-primary-border, #EB6E00) !important;
+      border-radius: var(--radius-full) !important;
+      padding: 0 22px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      box-shadow: none !important;
+      transition: all var(--transition-fast) !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      text-decoration: none !important;
+      outline: none !important;
+    }
+
+    .btn-modal-primary:hover {
+      background: var(--btn-primary-hover-bg, #E06300) !important;
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .btn-modal-danger {
+      height: 40px !important;
+      padding: 0 18px !important;
+      border-radius: var(--radius-full) !important;
+      background: #FEF2F2 !important;
+      border: 1.5px solid #FECACA !important;
+      color: #EF4444 !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      transition: all var(--transition-fast) !important;
+      box-sizing: border-box !important;
+      box-shadow: none !important;
+      outline: none !important;
+    }
+
+    .btn-modal-danger:hover {
+      background: #FEE2E2 !important;
+      border-color: #F87171 !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .old-modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(17, 24, 39, 0.45);
@@ -1663,7 +1979,23 @@
       left: 50%;
       transform: translate(-50%, -50%) rotate(-25deg);
       font-size: 56px;
-      font-weight: 900;
+      font-weight: 700;
+      color: rgba(22, 163, 74, 0.07);
+      border: 6px solid rgba(22, 163, 74, 0.09);
+      padding: 8px 30px;
+      border-radius: 16px;
+      letter-spacing: 0.15em;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .old-receipt-watermark-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-25deg);
+      font-size: 56px;
+      font-weight: 700;
       color: rgba(22, 163, 74, 0.07);
       border: 6px solid rgba(22, 163, 74, 0.09);
       padding: 8px 30px;
@@ -1719,11 +2051,11 @@
   <!-- MAIN DASHBOARD CONTENT -->
   <div class="dashboard-wrapper">
 
-    <!-- ESTIFY 2-COLUMN MASTER DASHBOARD GRID (SINKRON DENGAN WF-02 & WF-03) -->
-    <main class="dashboard-2col-layout">
+    <!-- 1. TOP ROW: 3 GAUGE METRIC CARDS (100% IDENTIK WF-02 & WF-05 · EXACT 157.6PX) -->
+
 
       <!-- LEFT / MAIN FLOW (CONTENT AREA · ~1.020PX) -->
-      <div class="col-main-flow">
+
 
         <!-- 1. TOP ROW: 3 GAUGE METRIC CARDS (100% IDENTIK WF-02 DASHBOARD · COMPUTED 156PX) -->
         <div class="metrics-row-3">
@@ -1816,6 +2148,12 @@
           </div>
 
         </div>
+
+    <!-- 2. ESTIFY 2-COLUMN MASTER DASHBOARD GRID (SINKRON DENGAN WF-02 & WF-05) -->
+    <main class="dashboard-2col-layout">
+
+      <!-- LEFT / MAIN FLOW (CONTENT AREA) -->
+      <div class="col-main-flow">
 
         <!-- 2. CONTROLS STRIP: SEARCH & STATUS PILL SEGMENTS (SINGLE LINE TOOLBAR) -->
         <div class="controls-strip-card">
@@ -2029,20 +2367,39 @@
   <!-- ========================================================
        MODAL 1: CATAT PEMBAYARAN MASUK (STORY RK-030)
        ======================================================== -->
-  <div class="modal-overlay" id="modalCatatBayar">
+  <div class="modal-backdrop modal-overlay" id="modalCatatBayar">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Catat Penerimaan Pembayaran</h2>
+            <p class="modal-subtitle">Rekam transaksi pembayaran tunai, transfer, atau klaim uang deposit</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalCatatBayar')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body-scrollable">
+      <div style="display: none;">
     <div class="modal-card">
-      <div class="modal-card-header">
-        <h3 class="modal-card-title">
+
+
           <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
           <span>Catat Penerimaan Pembayaran</span>
         </h3>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalCatatBayar')">
-          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+</div></div><div style="display: none;"><!-- old-header-cut -->
+<!-- modal icon cleanup -->
         </button>
       </div>
 
       <div class="modal-card-body">
         
+</div><!-- close hidden old header -->
         <!-- Peringatan Staf jika dalam mode staf -->
         <div id="modalStaffAlert" style="display: none; background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #C2410C;">
           <i data-lucide="info" style="width: 13px; height: 13px; vertical-align: middle; margin-right: 4px;"></i>
@@ -2213,9 +2570,9 @@
 
       </div>
 
-      <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; height: 42px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalCatatBayar')">Batal</button>
-        <button type="button" class="btn-action-catat" style="height: 42px; padding: 0 22px; font-size: 13px; font-weight: 600;" onclick="submitPaymentRecord()">
+      <div class="modal-footer-pinned">
+      </div><div class="modal-footer-pinned"><button type="button" class="btn-modal-cancel" onclick="closeModal('modalCatatBayar')">Batal</button>
+        <button type="button" class="btn-modal-primary" onclick="submitPaymentRecord()">
           <i data-lucide="save" style="width: 15px; height: 15px;"></i>
           <span>Simpan Catatan Pembayaran</span>
         </button>
@@ -2226,19 +2583,35 @@
   <!-- ========================================================
        MODAL 2: PRATINJAU BUKTI ZOOM-IN (STORY RK-031)
        ======================================================== -->
-  <div class="modal-overlay" id="modalProofZoom">
+  <div class="modal-backdrop modal-overlay" id="modalProofZoom">
     <div class="modal-card" style="max-width: 480px;">
-      <div class="modal-card-header">
-        <h3 class="modal-card-title">
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #EFF6FF; color: #2563EB; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Inspeksi Bukti Transfer Asli</h2>
+            <p class="modal-subtitle">Verifikasi keabsahan slip mutasi perbankan sebelum pengesahan</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalProofZoom')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+      <div style="display: none;">
+    <div class="modal-card" style="max-width: 480px;">
+
+
           <i data-lucide="file-text" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
           <span>Inspeksi Bukti Transfer Asli</span>
         </h3>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalProofZoom')">
-          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+</div><div class="modal-body-scrollable" style="align-items: center; text-align: center; background: #F8FAFC;"><!-- proof-body -->
+<!-- modal icon cleanup -->
         </button>
       </div>
 
-      <div class="modal-card-body" style="align-items: center; text-align: center; background: #F8FAFC;">
+
         
         <div class="digital-receipt-sheet" style="width: 100%; box-sizing: border-box; text-align: left;">
           <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding-bottom: 12px;">
@@ -2251,7 +2624,7 @@
 
           <div style="text-align: center; padding: 10px 0;">
             <div style="font-size: 11px; color: #64748B;">Nominal Ditransfer</div>
-            <div style="font-size: 24px; font-weight: 800; color: #111827; letter-spacing: -0.02em;" id="zoomSlipAmount">Rp 1.500.000</div>
+            <div style="font-size: 24px; font-weight: 700; color: #111827; letter-spacing: -0.02em;" id="zoomSlipAmount">Rp 1.500.000</div>
           </div>
 
           <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; border-top: 1px dashed #CBD5E1; padding-top: 10px;">
@@ -2276,9 +2649,9 @@
 
       </div>
 
-      <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; height: 40px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalProofZoom')">Tutup</button>
-        <button type="button" class="btn-exec-approve" style="width: auto; height: 40px; padding: 0 20px; font-size: 13px;" id="btnZoomApprove" onclick="approveSelectedFromModal();">
+      <div class="modal-footer-pinned">
+      </div><div class="modal-footer-pinned"><button type="button" class="btn-modal-cancel" onclick="closeModal('modalProofZoom')">Tutup</button>
+        <button type="button" class="btn-modal-primary" id="btnZoomApprove" onclick="approveSelectedFromModal();">
           <i data-lucide="check" style="width: 15px; height: 15px;"></i>
           <span>Sahkan Transaksi Ini</span>
         </button>
@@ -2289,20 +2662,36 @@
   <!-- ========================================================
        MODAL 3: TOLAK PEMBAYARAN DENGAN ALASAN (STORY RK-031)
        ======================================================== -->
-  <div class="modal-overlay" id="modalReject">
+  <div class="modal-backdrop modal-overlay" id="modalReject">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FEF2F2; color: #EF4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="alert-triangle" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Tolak Verifikasi Pembayaran</h2>
+            <p class="modal-subtitle">Penolakan mutasi wajib menyertakan alasan jelas</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReject')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+      <div style="display: none;">
     <div class="modal-card" style="max-width: 460px;">
-      <div class="modal-card-header">
-        <h3 class="modal-card-title">
+
+
           <i data-lucide="alert-triangle" style="width: 18px; height: 18px; color: #EF4444;"></i>
           <span>Tolak Verifikasi Pembayaran</span>
         </h3>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalReject')">
-          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+</div><div class="modal-body-scrollable"><!-- reject-body -->
+<!-- modal icon cleanup -->
         </button>
       </div>
 
       <div class="modal-card-body">
-        <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.4;">
+</div><p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.4;">
           Sesuai standar operasional, penolakan pembayaran wajib menyertakan alasan jelas agar dapat ditindaklanjuti oleh staf atau penghuni kost.
         </p>
 
@@ -2312,9 +2701,9 @@
         </div>
       </div>
 
-      <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; height: 40px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalReject')">Batal</button>
-        <button type="button" class="btn-exec-reject" style="width: auto; height: 40px; padding: 0 20px; font-size: 13px;" onclick="confirmRejectPayment()">
+      <div class="modal-footer-pinned">
+      </div><div class="modal-footer-pinned"><button type="button" class="btn-modal-cancel" onclick="closeModal('modalReject')">Batal</button>
+        <button type="button" class="btn-modal-danger" onclick="confirmRejectPayment()">
           <i data-lucide="x-circle" style="width: 15px; height: 15px;"></i>
           <span>Konfirmasi Tolak Bukti</span>
         </button>
@@ -2325,20 +2714,49 @@
   <!-- ========================================================
        MODAL 4: JURNAL REVERSAL / KOREKSI SALDO (STORY RK-033)
        ======================================================== -->
-  <div class="modal-overlay" id="modalReversal">
+  <div class="modal-backdrop modal-overlay" id="modalReversal">
     <div class="modal-card" style="max-width: 480px;">
-      <div class="modal-card-header">
-        <h3 class="modal-card-title">
-          <i data-lucide="rotate-ccw" style="width: 18px; height: 18px; color: #DC2626;"></i>
-          <span>Koreksi Pembayaran via Jurnal Reversal</span>
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FEF2F2; color: #DC2626; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="rotate-ccw" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Jurnal Reversal Koreksi Saldo</h2>
+            <p class="modal-subtitle">Entri pembalik non-destructive untuk audit finansial</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReversal')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body-scrollable">
+<!-- OLD_REVERSAL_GARBAGE_START
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReversal')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+      <div style="display: none;">
+    <div class="modal-card" style="max-width: 480px;">
+
+
+
+      <div class="modal-body-scrollable">
         </h3>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalReversal')">
-          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+
+<!-- modal icon cleanup -->
         </button>
       </div>
 
       <div class="modal-card-body">
-        <div style="background: #FEE2E2; border: 1px solid #FECDD3; border-radius: 12px; padding: 12px 14px; font-size: 12px; color: #991B1B; line-height: 1.4;">
+      <div class="modal-body-scrollable">
+        <div style="background: #FEE2E2; border: 1px solid #FECDD3; border-radius: 12px; padding: 12px 14px; font-size: 12px; color: #991B1B; line-height: 1.4; margin-bottom: 14px;">
+          <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
+OLD_REVERSAL_GARBAGE_END -->
+        <div style="background: #FEE2E2; border: 1px solid #FECDD3; border-radius: 12px; padding: 12px 14px; font-size: 12px; color: #991B1B; line-height: 1.4; margin-bottom: 14px;">
           <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
           <strong>Prinsip Jejak Audit:</strong> Transaksi asli tidak akan dihapus fisik. Sistem akan membuat entri pembalik (reversal negatif) dan mengembalikan saldo tagihan kamar ke status belum terbayar.
         </div>
@@ -2364,9 +2782,9 @@
         </div>
       </div>
 
-      <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalReversal')">Batal</button>
-        <button type="button" class="btn-exec-reversal" style="width: auto; padding: 0 18px; border-style: solid;" onclick="confirmReversalExecution()">
+      <div class="modal-footer-pinned">
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalReversal')">Batal</button>
+        <button type="button" class="btn-modal-danger" onclick="confirmReversalExecution()">
           <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
           <span>Eksekusi Jurnal Reversal</span>
         </button>
@@ -2377,19 +2795,43 @@
   <!-- ========================================================
        MODAL 5: KUITANSI DIGITAL RESMI RUMAKOST
        ======================================================== -->
-  <div class="modal-overlay" id="modalReceipt">
+  <div class="modal-backdrop modal-overlay" id="modalReceipt">
     <div class="modal-card" style="max-width: 500px;">
-      <div class="modal-card-header">
-        <h3 class="modal-card-title">
-          <i data-lucide="printer" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
-          <span>Kuitansi Digital Pembayaran</span>
+      <div class="modal-header-pinned">
+<!-- DUPLICATE_HEAD_REC_START
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header-pinned">
+
+      <div class="modal-header-pinned">
+
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+DUPLICATE_HEAD_REC_END -->
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="printer" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Kuitansi Digital Pembayaran</h2>
+            <p class="modal-subtitle">Bukti tanda terima pembayaran resmi RumaKost</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReceipt')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+      <!-- HAPUS_RECEIPT_REST
+          </div>
         </h3>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalReceipt')">
-          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReceipt')" title="Tutup Modal">
+<!-- modal icon cleanup -->
         </button>
       </div>
 
-      <div class="modal-card-body" style="background: #F8FAFC;">
+HAPUS_RECEIPT_REST -->
+      <div class="modal-body-scrollable" style="background: #F8FAFC;">
         
         <div class="digital-receipt-sheet" id="printableReceiptArea">
           <!-- Watermark Lunas / Parsial -->
@@ -2398,7 +2840,7 @@
           <!-- Header Kuitansi -->
           <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111111; padding-bottom: 12px;">
             <div>
-              <div style="font-size: 15px; font-weight: 800; color: #111111;">KOST BUDI MAKMUR</div>
+              <div style="font-size: 15px; font-weight: 700; color: #111111;">KOST BUDI MAKMUR</div>
               <div style="font-size: 11px; color: #64748B;">Jl. Babakan Jeruk I No. 12, Bandung</div>
               <div style="font-size: 11px; color: #64748B;">Telp / WA: 0812-3456-7890</div>
             </div>
@@ -2431,7 +2873,7 @@
           <!-- Kotak Nominal Besar -->
           <div style="background: #FAFAFA; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px; text-align: center;">
             <span style="font-size: 11px; color: #64748B; text-transform: uppercase; font-weight: 600;">Jumlah yang Diterima</span>
-            <div style="font-size: 22px; font-weight: 800; color: #111111;" id="receiptTotalAmount">Rp 1.800.000</div>
+            <div style="font-size: 22px; font-weight: 700; color: #111111;" id="receiptTotalAmount">Rp 1.800.000</div>
           </div>
 
           <!-- Tanda Tangan Digital Pengelola -->
@@ -2448,9 +2890,9 @@
 
       </div>
 
-      <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; height: 40px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalReceipt')">Tutup</button>
-        <button type="button" class="btn-action-catat" style="height: 40px; padding: 0 20px; font-size: 13px; font-weight: 600;" onclick="printReceiptDocument()">
+      <div class="modal-footer-pinned">
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalReceipt')">Tutup</button>
+        <button type="button" class="btn-modal-primary" onclick="printReceiptDocument()">
           <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
           <span>Cetak Dokumen</span>
         </button>
@@ -2461,20 +2903,37 @@
   <!-- ========================================================
        MODAL 6: REFUND KELEBIHAN BAYAR KE MUTASI KAS KELUAR
        ======================================================== -->
-  <div class="modal-overlay" id="modalRefundSurplus">
+  <div class="modal-backdrop modal-overlay" id="modalRefundSurplus">
     <div class="modal-card" style="max-width: 480px;">
-      <div class="modal-card-header">
-        <h3 class="modal-card-title">
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; color: #EA580C; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="arrow-down-left" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h2 class="modal-title">Pengembalian Dana (Refund Kas)</h2>
+            <p class="modal-subtitle">Pencatatan kas keluar pengembalian dana sewa ke penghuni</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalRefundSurplus')" title="Tutup Modal">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+      <div style="display: none;">
+    <div class="modal-card" style="max-width: 480px;">
+
+
           <i data-lucide="arrow-down-left" style="width: 18px; height: 18px; color: #EA580C;"></i>
           <span>Pengembalian Dana (Refund Kas Keluar)</span>
         </h3>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalRefundSurplus')">
-          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+</div><div class="modal-body-scrollable"><!-- refund-body -->
+<!-- modal icon cleanup -->
         </button>
       </div>
 
       <div class="modal-card-body">
         
+</div><!-- close hidden old header -->
         <!-- Callout Info Standar Pembukuan -->
         <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 11px 14px; font-size: 12px; color: #9A3412; display: flex; align-items: flex-start; gap: 8px;">
           <i data-lucide="info" style="width: 15px; height: 15px; color: #EA580C; flex-shrink: 0; margin-top: 2px;"></i>
@@ -2531,9 +2990,9 @@
 
       </div>
 
-      <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; height: 40px; padding: 0 18px; font-size: 13px;" onclick="closeModal('modalRefundSurplus')">Batal</button>
-        <button type="button" class="btn-action-catat" style="height: 42px; padding: 0 22px; font-size: 13px; font-weight: 600; background: #EA580C; border-color: #EA580C;" onclick="submitRefundSurplus()">
+      <div class="modal-footer-pinned">
+      </div><div class="modal-footer-pinned"><button type="button" class="btn-modal-cancel" onclick="closeModal('modalRefundSurplus')">Batal</button>
+        <button type="button" class="btn-modal-primary" style="background: #EA580C !important; border-color: #C2410C !important;" onclick="submitRefundSurplus()">
           <i data-lucide="check" style="width: 15px; height: 15px;"></i>
           <span>Konfirmasi &amp; Catat Kas Keluar</span>
         </button>
@@ -3416,6 +3875,22 @@
     function closeModal(modalId) {
       const modal = document.getElementById(modalId);
       if (modal) modal.classList.remove('open');
+    }
+
+    // Global ESC & backdrop click to close any open modal
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        document.querySelectorAll('.modal-overlay.open, .modal-backdrop.open').forEach(m => m.classList.remove('open'));
+        const panel = document.getElementById('invoiceSearchResultsPanel');
+        if (panel) panel.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('modal-overlay') || e.target.classList.contains('modal-backdrop')) {
+        e.target.classList.remove('open');
+      }
+    });
     }
 
     // Active Invoices Data for Search Bar

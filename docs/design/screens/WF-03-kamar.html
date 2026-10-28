@@ -433,11 +433,13 @@
       color: #FFFFFF;
     }
 
-    /* LEVEL 1 PRIMARY HERO CTA - TOMBOL TAMBAH KAMAR (.BTN-MD 40PX STANDAR DESIGN.MD) */
+    /* TOMBOL TAMBAH KAMAR (4-LEVEL STEPPED ORANGE PALETTE - ZERO BOX-SHADOW) */
     .btn-brand-add {
-      background: #FF7A00 !important;
+      /* Level 1: Background Default */
+      background: var(--btn-primary-bg, #FF7A00) !important;
       color: #FFFFFF !important;
-      border: none;
+      /* Level 2: Border Default (Lebih kontras & berkarakter dibanding background) */
+      border: 1.5px solid var(--btn-primary-border, #EB6E00) !important;
       border-radius: 9999px;
       height: 40px !important;
       padding: 0 18px !important;
@@ -448,16 +450,41 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
       transition: all var(--transition-fast);
       white-space: nowrap;
+      outline: none;
+      box-shadow: none !important;
+    }
+
+    .btn-brand-add i {
+      color: #FFFFFF;
+      transition: transform var(--transition-fast);
     }
 
     .btn-brand-add:hover {
-      background: #E66E00 !important;
+      /* Level 3: Background Hover (Lebih gelap dari Level 1 & Level 2) */
+      background: var(--btn-primary-hover-bg, #E06300) !important;
+      /* Level 4: Border Hover (Paling pekat & tegas, beda dari Level 3) */
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      color: #FFFFFF !important;
       transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.38);
+      box-shadow: none !important;
+    }
+
+    .btn-brand-add:active {
+      background: var(--btn-primary-active-bg, #D45A00) !important;
+      border-color: var(--btn-primary-active-border, #A34400) !important;
+      transform: translateY(0);
+      box-shadow: none !important;
+    }
+
+    .btn-brand-add:focus-visible {
+      outline: none;
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      box-shadow: none !important;
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -1530,27 +1557,40 @@
       width: 100%;
       height: 38px !important;
       border-radius: 9999px;
-      background: #FF7A00;
-      color: #FFFFFF;
+      /* Level 1: Background Default */
+      background: var(--btn-primary-bg, #FF7A00) !important;
+      color: #FFFFFF !important;
+      /* Level 2: Border Default (1-tingkat lebih gelap) */
+      border: 1.5px solid var(--btn-primary-border, #EB6E00) !important;
       font-size: 13px !important;
       font-weight: 600;
-      border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
       text-decoration: none;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.24);
+      box-shadow: none !important;
       transition: all var(--transition-fast);
       box-sizing: border-box;
       outline: none;
     }
 
     .btn-drawer-primary:hover {
-      background: #E66E00;
+      /* Level 3: Background Hover */
+      background: var(--btn-primary-hover-bg, #E06300) !important;
+      /* Level 4: Border Hover */
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      color: #FFFFFF !important;
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(255, 122, 0, 0.35);
+      box-shadow: none !important;
+    }
+
+    .btn-drawer-primary:active {
+      background: var(--btn-primary-active-bg, #D45A00) !important;
+      border-color: var(--btn-primary-active-border, #A34400) !important;
+      transform: translateY(0);
+      box-shadow: none !important;
     }
 
     /* LEVEL 2: Secondary Action (Iklankan Kamar / Reset Filter - Standard 38PX) */
@@ -1558,11 +1598,13 @@
       width: 100%;
       height: 38px !important;
       border-radius: 9999px;
-      background: #FFFFFF;
-      color: var(--text-main);
+      /* Level 1: Background Default */
+      background: #FFFFFF !important;
+      color: var(--text-main) !important;
       font-size: 13px !important;
       font-weight: 500;
-      border: 1px solid var(--border-subtle);
+      /* Level 2: Border Default */
+      border: 1.5px solid #E2E8F0 !important;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1572,6 +1614,7 @@
       transition: all var(--transition-fast);
       box-sizing: border-box;
       outline: none;
+      box-shadow: none !important;
     }
 
     .btn-drawer-secondary i {
@@ -1580,22 +1623,34 @@
     }
 
     .btn-drawer-secondary:hover {
-      background: var(--brand-light);
-      border-color: var(--brand-primary);
-      color: var(--brand-primary);
+      /* Level 3: Background Hover */
+      background: var(--brand-primary-light, #FFF7ED) !important;
+      /* Level 4: Border Hover */
+      border-color: var(--brand-primary, #FF7A00) !important;
+      color: var(--brand-primary, #FF7A00) !important;
       transform: translateY(-1px);
+      box-shadow: none !important;
     }
 
-    /* LEVEL 2: Secondary Action (Chat WhatsApp - Standard 38PX) */
+    .btn-drawer-secondary:active {
+      background: #FFEDD5 !important;
+      border-color: #EB6E00 !important;
+      transform: translateY(0);
+      box-shadow: none !important;
+    }
+
+    /* LEVEL 2: Secondary Action (Chat WhatsApp - Standard 38PX - Soft Emerald 4-Level Stepped) */
     .btn-drawer-wa {
       width: 100%;
       height: 38px !important;
       border-radius: 9999px;
-      background: #ECFDF5;
-      color: #059669;
+      /* Level 1: Background Default (Soft Emerald 50) */
+      background: var(--btn-wa-bg, #ECFDF5) !important;
+      color: var(--btn-wa-text, #065F46) !important;
+      /* Level 2: Border Default (Emerald 200 - 1-tingkat lebih tegas dibanding background) */
+      border: 1.5px solid var(--btn-wa-border, #A7F3D0) !important;
       font-size: 13px !important;
       font-weight: 600;
-      border: 1.5px solid #A7F3D0;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1605,14 +1660,33 @@
       transition: all var(--transition-fast);
       box-sizing: border-box;
       outline: none;
+      box-shadow: none !important;
+    }
+
+    .btn-drawer-wa i {
+      color: var(--btn-wa-text, #065F46) !important;
+      transition: color var(--transition-fast);
     }
 
     .btn-drawer-wa:hover {
-      background: #D1FAE5;
-      border-color: #6EE7B7;
-      color: #047857;
+      /* Level 3: Background Hover (Emerald 100 - lebih pekat) */
+      background: var(--btn-wa-hover-bg, #D1FAE5) !important;
+      /* Level 4: Border Hover (Emerald 300 - paling pekat & tegas) */
+      border-color: var(--btn-wa-hover-border, #6EE7B7) !important;
+      color: var(--btn-wa-hover-text, #047857) !important;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+      box-shadow: none !important;
+    }
+
+    .btn-drawer-wa:hover i {
+      color: var(--btn-wa-hover-text, #047857) !important;
+    }
+
+    .btn-drawer-wa:active {
+      background: var(--btn-wa-active-bg, #A7F3D0) !important;
+      border-color: var(--btn-wa-active-border, #34D399) !important;
+      transform: translateY(0);
+      box-shadow: none !important;
     }
 
     .btn-drawer-outline-mini {
@@ -1626,18 +1700,33 @@
       padding: 0 16px;
       font-size: 12.5px !important;
       font-weight: 500;
-      color: #475569;
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
+      color: #475569 !important;
+      /* Level 1: Background Default */
+      background: #F8FAFC !important;
+      /* Level 2: Border Default */
+      border: 1.5px solid #E2E8F0 !important;
       text-decoration: none;
       transition: all var(--transition-fast);
       box-sizing: border-box;
+      box-shadow: none !important;
+      outline: none;
     }
 
     .btn-drawer-outline-mini:hover {
-      background: #F1F5F9;
-      border-color: #CBD5E1;
-      color: #0F172A;
+      /* Level 3: Background Hover */
+      background: #F1F5F9 !important;
+      /* Level 4: Border Hover */
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
+      transform: translateY(-1px);
+      box-shadow: none !important;
+    }
+
+    .btn-drawer-outline-mini:active {
+      background: #E2E8F0 !important;
+      border-color: #64748B !important;
+      transform: translateY(0);
+      box-shadow: none !important;
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -1810,13 +1899,15 @@
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
     }
 
-    /* HIERARKI TOMBOL MODAL ESTIFY (Seragam Tinggi 40px & Font 13px) */
+    /* HIERARKI TOMBOL MODAL ESTIFY (4-Level Stepped Depth - Seragam Tinggi 40px & Font 13px) */
     .btn-modal-cancel {
       height: 40px !important;
       padding: 0 18px !important;
       border-radius: var(--radius-full) !important;
+      /* Level 1: Background Default */
       background: #F8FAFC !important;
-      border: 1px solid #CBD5E1 !important;
+      /* Level 2: Border Default */
+      border: 1.5px solid #CBD5E1 !important;
       font-size: 13px !important;
       font-weight: 600 !important;
       color: #475569 !important;
@@ -1828,12 +1919,25 @@
       gap: 6px !important;
       box-sizing: border-box !important;
       text-decoration: none !important;
+      box-shadow: none !important;
+      outline: none !important;
     }
 
     .btn-modal-cancel:hover {
+      /* Level 3: Background Hover */
       background: #F1F5F9 !important;
+      /* Level 4: Border Hover */
       border-color: #94A3B8 !important;
       color: #0F172A !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-cancel:active {
+      background: #E2E8F0 !important;
+      border-color: #64748B !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary {
@@ -1842,33 +1946,49 @@
       align-items: center !important;
       justify-content: center !important;
       gap: 7px !important;
-      background: var(--brand-primary) !important;
+      /* Level 1: Background Default */
+      background: var(--btn-primary-bg, #FF7A00) !important;
       color: #FFFFFF !important;
-      border: none !important;
+      /* Level 2: Border Default */
+      border: 1.5px solid var(--btn-primary-border, #EB6E00) !important;
       border-radius: var(--radius-full) !important;
       padding: 0 22px !important;
       font-size: 13px !important;
       font-weight: 600 !important;
       cursor: pointer !important;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28) !important;
+      box-shadow: none !important;
       transition: all var(--transition-fast) !important;
       white-space: nowrap !important;
       box-sizing: border-box !important;
       text-decoration: none !important;
+      outline: none !important;
     }
 
     .btn-modal-primary:hover {
-      background: var(--brand-primary-hover) !important;
+      /* Level 3: Background Hover */
+      background: var(--btn-primary-hover-bg, #E06300) !important;
+      /* Level 4: Border Hover */
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      color: #FFFFFF !important;
       transform: translateY(-1px) !important;
-      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.38) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-primary:active {
+      background: var(--btn-primary-active-bg, #D45A00) !important;
+      border-color: var(--btn-primary-active-border, #A34400) !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-danger {
       height: 40px !important;
       padding: 0 18px !important;
       border-radius: var(--radius-full) !important;
+      /* Level 1: Background Default */
       background: #FEF2F2 !important;
-      border: 1px solid #FECACA !important;
+      /* Level 2: Border Default */
+      border: 1.5px solid #FECACA !important;
       color: #EF4444 !important;
       font-size: 13px !important;
       font-weight: 600 !important;
@@ -1879,20 +1999,35 @@
       gap: 5px !important;
       transition: all var(--transition-fast) !important;
       box-sizing: border-box !important;
+      box-shadow: none !important;
+      outline: none !important;
     }
 
     .btn-modal-danger:hover {
+      /* Level 3: Background Hover */
       background: #FEE2E2 !important;
-      border-color: #FCA5A5 !important;
+      /* Level 4: Border Hover */
+      border-color: #F87171 !important;
       color: #DC2626 !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-danger:active {
+      background: #FECACA !important;
+      border-color: #EF4444 !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-danger-solid {
       height: 40px !important;
       padding: 0 18px !important;
       border-radius: var(--radius-full) !important;
-      background: #EF4444 !important;
-      border: 1px solid #EF4444 !important;
+      /* Level 1: Background Default */
+      background: var(--btn-danger-bg, #EF4444) !important;
+      /* Level 2: Border Default */
+      border: 1.5px solid var(--btn-danger-border, #DC2626) !important;
       color: #FFFFFF !important;
       font-size: 13px !important;
       font-weight: 600 !important;
@@ -1901,26 +2036,53 @@
       align-items: center !important;
       justify-content: center !important;
       gap: 6px !important;
-      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25) !important;
+      box-shadow: none !important;
       transition: all var(--transition-fast) !important;
       box-sizing: border-box !important;
+      outline: none !important;
     }
 
     .btn-modal-danger-solid:hover {
-      background: #DC2626 !important;
-      border-color: #DC2626 !important;
-      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35) !important;
+      /* Level 3: Background Hover */
+      background: var(--btn-danger-hover-bg, #DC2626) !important;
+      /* Level 4: Border Hover */
+      border-color: var(--btn-danger-hover-border, #B91C1C) !important;
+      color: #FFFFFF !important;
+      box-shadow: none !important;
       transform: translateY(-1px) !important;
     }
 
+    .btn-modal-danger-solid:active {
+      background: var(--btn-danger-active-bg, #B91C1C) !important;
+      border-color: var(--btn-danger-active-border, #991B1B) !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
+    }
+
     .btn-modal-primary.is-whatsapp {
-      background: #16A34A !important;
-      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.28) !important;
+      /* Level 1: Background Default */
+      background: var(--btn-wa-bg, #16A34A) !important;
+      /* Level 2: Border Default */
+      border: 1.5px solid var(--btn-wa-border, #15803D) !important;
+      color: #FFFFFF !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary.is-whatsapp:hover {
-      background: #15803D !important;
-      box-shadow: 0 6px 18px rgba(21, 128, 61, 0.38) !important;
+      /* Level 3: Background Hover */
+      background: var(--btn-wa-hover-bg, #15803D) !important;
+      /* Level 4: Border Hover */
+      border-color: var(--btn-wa-hover-border, #166534) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-primary.is-whatsapp:active {
+      background: var(--btn-wa-active-bg, #166534) !important;
+      border-color: var(--btn-wa-active-border, #14532D) !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
     }
 
     .modal-section-divider {

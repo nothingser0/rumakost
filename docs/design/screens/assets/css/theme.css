@@ -21,6 +21,32 @@
   --brand-peach: #FDBA74;
   --brand-peach-light: #FED7AA;
 
+  /* Primary Button Stepped Hierarchy (4-Level Depth Standards) */
+  --btn-primary-bg: #FF7A00;           /* Level 1: Default Background */
+  --btn-primary-border: #EB6E00;       /* Level 2: Default Border (1-tingkat lebih gelap) */
+  --btn-primary-hover-bg: #E06300;     /* Level 3: Hover Background (darker fill) */
+  --btn-primary-hover-border: #B84E00; /* Level 4: Hover Border (deepest burnt orange edge) */
+  --btn-primary-active-bg: #D45A00;    /* Active State Fill */
+  --btn-primary-active-border: #A34400;/* Active State Border */
+
+  /* WhatsApp Stepped Hierarchy (Soft Emerald Theme) */
+  --btn-wa-bg: #ECFDF5;                /* Level 1: Default Soft Emerald BG */
+  --btn-wa-border: #A7F3D0;            /* Level 2: Default Soft Emerald Border */
+  --btn-wa-text: #065F46;              /* High-contrast crisp emerald text */
+  --btn-wa-hover-bg: #D1FAE5;          /* Level 3: Hover Soft Emerald BG */
+  --btn-wa-hover-border: #6EE7B7;      /* Level 4: Hover Soft Emerald Border */
+  --btn-wa-hover-text: #047857;        /* Hover Text */
+  --btn-wa-active-bg: #A7F3D0;         /* Active State Fill */
+  --btn-wa-active-border: #34D399;     /* Active State Border */
+
+  /* Danger Red Stepped Hierarchy */
+  --btn-danger-bg: #EF4444;            /* Level 1: Default Danger BG */
+  --btn-danger-border: #DC2626;        /* Level 2: Default Danger Border */
+  --btn-danger-hover-bg: #DC2626;      /* Level 3: Hover Danger BG */
+  --btn-danger-hover-border: #B91C1C;  /* Level 4: Hover Danger Border */
+  --btn-danger-active-bg: #B91C1C;     /* Active State Fill */
+  --btn-danger-active-border: #991B1B; /* Active State Border */
+
   /* Dark Elements (Nav Pill, Buttons, Text) */
   --dark-pill: #111111;
   --dark-pill-hover: #222222;

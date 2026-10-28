@@ -54,6 +54,7 @@
     }
 
     .ruma-datepicker-trigger {
+      width: 100%;
       height: 42px;
       padding: 0 14px;
       background: #FFFFFF;
@@ -64,21 +65,38 @@
       cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
       transition: all var(--transition-fast);
       box-sizing: border-box;
       outline: none;
     }
 
+    #sectionKeluarkanRekan .ruma-datepicker-trigger,
+    #sectionBalikNama .ruma-datepicker-trigger,
+    #sectionTambahRekan .ruma-datepicker-trigger {
+      height: 38px;
+      border-radius: 10px;
+      padding: 0 12px;
+    }
+
     .ruma-datepicker-trigger:hover {
-      border-color: #CBD5E1;
-      background: #F8FAFC;
+      border-color: #94A3B8 !important;
+      background: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .ruma-datepicker-trigger:active {
+      transform: translateY(0) !important;
     }
 
     .ruma-datepicker-trigger:focus-visible,
-    .ruma-datepicker-trigger.active {
-      border-color: var(--brand-primary);
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    .ruma-datepicker-trigger.active,
+    .ruma-datepicker-wrap.open .ruma-datepicker-trigger {
+      border-color: var(--brand-primary) !important;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12) !important;
+      transform: none !important;
     }
 
     .ruma-datepicker-trigger-icon {
@@ -91,6 +109,29 @@
       font-size: 12px;
       font-weight: 600;
       color: var(--text-main);
+      white-space: nowrap !important;
+    }
+
+    .ruma-datepicker-trigger-content {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap !important;
+      min-width: 0;
+    }
+
+    #guestVehPlat::placeholder {
+      text-transform: none !important;
+    }
+
+    #dOccupantsListContainer::-webkit-scrollbar,
+    #dGuestsListContainer::-webkit-scrollbar {
+      width: 4px;
+    }
+    #dOccupantsListContainer::-webkit-scrollbar-thumb,
+    #dGuestsListContainer::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
     }
 
     .ruma-datepicker-wrap.drop-up .ruma-datepicker-popover {
@@ -215,19 +256,53 @@
     }
 
     .btn-micro-outline:hover {
-      border-color: var(--brand-primary);
-      color: var(--brand-primary);
-      background: var(--brand-light);
-      transform: translateY(-1px);
+      border-color: var(--brand-primary) !important;
+      color: var(--brand-primary) !important;
+      background: #FFF7ED !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .btn-micro-outline:hover i {
+      color: var(--brand-primary) !important;
     }
 
     .btn-micro-outline:active {
-      transform: translateY(0);
+      transform: translateY(0) !important;
     }
 
     .btn-micro-outline:focus-visible {
       outline: 2px solid var(--brand-primary);
       outline-offset: 1px;
+    }
+
+    .btn-micro-danger {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 600;
+      background: #FFF1F2;
+      border: 1px solid #FECDD3;
+      color: #E11D48;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .btn-micro-danger:hover {
+      background: #FFE4E6 !important;
+      border-color: #FDA4AF !important;
+      color: #BE123C !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .btn-micro-danger:active {
+      transform: translateY(0) !important;
     }
 
     .btn-micro-brand {
@@ -816,9 +891,9 @@
     }
 
     .btn-wa-direct {
-      background: #16A34A;
-      color: #FFFFFF;
-      border: 1px solid #16A34A;
+      background: var(--btn-wa-bg, #ECFDF5) !important;
+      color: var(--btn-wa-text, #065F46) !important;
+      border: 1.5px solid var(--btn-wa-border, #A7F3D0) !important;
       border-radius: var(--radius-full);
       padding: 0 14px;
       height: 34px;
@@ -833,22 +908,31 @@
       box-sizing: border-box;
       white-space: nowrap;
       outline: none;
-      box-shadow: none;
+      box-shadow: none !important;
       transform: none;
     }
 
+    .btn-wa-direct i {
+      color: var(--btn-wa-text, #065F46) !important;
+      transition: color 140ms ease;
+    }
+
     .btn-wa-direct:hover {
-      background: #15803D !important;
-      border-color: #15803D !important;
-      color: #FFFFFF !important;
-      transform: none !important;
+      background: var(--btn-wa-hover-bg, #D1FAE5) !important;
+      border-color: var(--btn-wa-hover-border, #6EE7B7) !important;
+      color: var(--btn-wa-hover-text, #047857) !important;
+      transform: translateY(-1px) !important;
       box-shadow: none !important;
     }
 
+    .btn-wa-direct:hover i {
+      color: var(--btn-wa-hover-text, #047857) !important;
+    }
+
     .btn-wa-direct:active {
-      transform: scale(0.98) !important;
-      background: #166534 !important;
-      border-color: #166534 !important;
+      transform: translateY(0) !important;
+      background: var(--btn-wa-active-bg, #A7F3D0) !important;
+      border-color: var(--btn-wa-active-border, #34D399) !important;
     }
 
     .btn-wa-direct:focus-visible {
@@ -882,12 +966,12 @@
       background: #F8FAFC !important;
       border-color: #94A3B8 !important;
       color: #0F172A !important;
-      transform: none !important;
+      transform: translateY(-1px) !important;
       box-shadow: none !important;
     }
 
     .btn-call-direct:active {
-      transform: scale(0.98) !important;
+      transform: translateY(0) !important;
       background: #F1F5F9 !important;
       border-color: #64748B !important;
     }
@@ -923,12 +1007,12 @@
       background: #FFE4E6 !important;
       border-color: #FDA4AF !important;
       color: #BE123C !important;
-      transform: none !important;
+      transform: translateY(-1px) !important;
       box-shadow: none !important;
     }
 
     .btn-checkout-direct:active {
-      transform: scale(0.98) !important;
+      transform: translateY(0) !important;
       background: #FECDD3 !important;
       border-color: #FB7185 !important;
     }
@@ -1316,8 +1400,8 @@
       border-bottom: 1px solid var(--border-subtle);
       padding-bottom: 14px;
       margin-bottom: 14px;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 16px;
+      flex-wrap: nowrap;
     }
 
     .contract-meta-strip {
@@ -2141,7 +2225,7 @@
       font-size: 13px !important;
       font-weight: 600 !important;
       cursor: pointer !important;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28) !important;
+      box-shadow: none !important;
       transition: all var(--transition-fast) !important;
       white-space: nowrap !important;
       box-sizing: border-box !important;
@@ -2152,11 +2236,11 @@
     .btn-modal-primary:hover {
       background: var(--brand-primary-hover) !important;
       transform: translateY(-1px) !important;
-      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.38) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary:active {
-      transform: translateY(0);
+      transform: translateY(0) !important;
     }
 
     .btn-modal-primary:focus-visible {
@@ -2165,51 +2249,61 @@
     }
 
     .btn-modal-primary.is-whatsapp {
-      background: #25D366 !important;
-      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3) !important;
+      background: #16A34A !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary.is-whatsapp:hover {
-      background: #1EBE5D !important;
+      background: #15803D !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary.is-whatsapp:active {
-      background: #16A34A !important;
-      transform: translateY(0);
+      background: #166534 !important;
+      transform: translateY(0) !important;
     }
 
-    .btn-modal-danger {
+    .btn-modal-danger,
+    .btn-modal-danger-solid {
       height: 40px !important;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
       background: #DC2626 !important;
       color: #FFFFFF !important;
-      border: none;
+      border: 1px solid #DC2626 !important;
       border-radius: var(--radius-full) !important;
-      padding: 0 20px !important;
+      padding: 0 22px !important;
       font-size: 13px !important;
       font-weight: 600 !important;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.28) !important;
-      transition: all var(--transition-fast);
-      white-space: nowrap;
-      box-sizing: border-box;
-      outline: none;
+      cursor: pointer !important;
+      box-shadow: none !important;
+      transition: all var(--transition-fast) !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      outline: none !important;
     }
 
-    .btn-modal-danger:hover {
+    .btn-modal-danger:hover,
+    .btn-modal-danger-solid:hover {
       background: #B91C1C !important;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(220, 38, 38, 0.38) !important;
+      border-color: #B91C1C !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+      color: #FFFFFF !important;
     }
 
-    .btn-modal-danger:active {
-      transform: translateY(0);
+    .btn-modal-danger:active,
+    .btn-modal-danger-solid:active {
+      background: #991B1B !important;
+      border-color: #991B1B !important;
+      transform: translateY(0) !important;
     }
 
-    .btn-modal-danger:focus-visible {
+    .btn-modal-danger:focus-visible,
+    .btn-modal-danger-solid:focus-visible {
       outline: none;
       box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.28) !important;
     }
@@ -2969,7 +3063,7 @@
             <div class="action-btn-cluster">
               <button type="button" class="btn-checkout-direct" onclick="openPerpanjangModal('checkout')" title="Pengakhiran Sewa / Check-Out Penghuni (SOP Resmi)">
                 <i data-lucide="user-x" style="width: 13px; height: 13px;"></i>
-                <span>Selesai Kontrak (Check-Out)</span>
+                <span>Akhiri Sewa</span>
               </button>
             </div>
           </div>
@@ -3034,14 +3128,14 @@
                 <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i>
                 <span>Perpanjang Sewa</span>
               </button>
-              <button type="button" class="btn-micro-outline" onclick="openPindahKamarModal()" style="height: 32px; font-size: 11px; color: var(--text-main); background: #FFFFFF;" title="Mutasi Unit Kamar Baru">
-                <i data-lucide="arrow-left-right" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
+              <button type="button" class="btn-micro-outline" onclick="openPindahKamarModal()" style="height: 32px; font-size: 11px;" title="Mutasi Unit Kamar Baru">
+                <i data-lucide="arrow-left-right" style="width: 12px; height: 12px;"></i>
                 <span>Pindah Kamar</span>
               </button>
             </div>
             <div style="display: flex; gap: 8px; margin-top: 6px;">
-              <button type="button" class="btn-micro-outline" onclick="openCutiSewaModal()" style="width: 100%; height: 30px; font-size: 11px; color: #64748B; background: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 6px;" title="Pengajuan Cuti Sewa / Tahan Kamar (Libur Semester / Tugas Luar Kota)">
-                <i data-lucide="calendar-off" style="width: 12px; height: 12px; color: #EA580C;"></i>
+              <button type="button" class="btn-micro-outline" onclick="openCutiSewaModal()" style="width: 100%; height: 30px; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 6px;" title="Pengajuan Cuti Sewa / Tahan Kamar (Libur Semester / Tugas Luar Kota)">
+                <i data-lucide="calendar-off" style="width: 12px; height: 12px;"></i>
                 <span>Cuti Sewa (Tahan Kamar)</span>
               </button>
             </div>
@@ -3137,7 +3231,7 @@
                   <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Penghuni Terdaftar di Kamar:</span>
                   <span id="dOccupantSummaryBadge" class="status-badge badge-dark" style="font-size: 10px;">1 Orang (Sendiri)</span>
                 </div>
-                <div id="dOccupantsListContainer" style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px;">
+                <div id="dOccupantsListContainer" style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; max-height: 96px; overflow-y: auto; padding-right: 2px;">
                   <!-- Rendered dynamically -->
                 </div>
                 <div style="display: flex; gap: 6px;">
@@ -3149,6 +3243,20 @@
                     <i data-lucide="user-plus" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
                     <span>+ Izin Tamu</span>
                   </button>
+                </div>
+
+                <!-- Sub-bagian: Tamu Menginap Sementara (Tersimpan & Ditampilkan di Sini) -->
+                <div id="dGuestsSection" style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed #CBD5E1; display: none;">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="font-size: 10.5px; font-weight: 700; color: #EA580C; text-transform: uppercase; letter-spacing: 0.3px; display: flex; align-items: center; gap: 4px;">
+                      <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
+                      Tamu Menginap Sementara:
+                    </span>
+                    <span id="dGuestBadgeCount" class="status-badge badge-brand" style="font-size: 9.5px; padding: 1px 6px;">1 Tamu Aktif</span>
+                  </div>
+                  <div id="dGuestsListContainer" style="display: flex; flex-direction: column; gap: 5px; max-height: 68px; overflow-y: auto; padding-right: 2px;">
+                    <!-- Rendered dynamically -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -3355,25 +3463,25 @@
           <div class="dossier-tab-pane" id="paneTabContract">
             <div class="contract-sheet-wrap">
               <div class="contract-sheet-header">
-                <div>
-                  <div style="font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;" id="dContractTitleWrap">
-                    <span id="dContractTitle">Surat Perjanjian Sewa Kamar Kost (SPK-Kost)</span>
-                    <span class="status-badge badge-success" style="font-size: 11px; padding: 2px 8px;">
+                <div style="min-width: 0; flex: 1;">
+                  <div style="font-size: 13.5px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; min-width: 0;" id="dContractTitleWrap">
+                    <span id="dContractTitle" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Surat Perjanjian Sewa Kamar Kost (SPK-Kost)</span>
+                    <span class="status-badge badge-success" style="font-size: 10.5px; padding: 2px 7px; flex-shrink: 0; white-space: nowrap;">
                       <i data-lucide="check-check" style="width: 11px; height: 11px;"></i> Terverifikasi Sah
                     </span>
                   </div>
-                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;" id="dContractMeta">No. SPK-2025/RUMA/A-01 &middot; Periode 1 Mar 2025 s.d. 28 Feb 2027 &middot; Tanda Tangan Digital Sah</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="dContractMeta">No. SPK-2025/RUMA/A-01 &middot; Periode 1 Mar 2025 s.d. 28 Feb 2027 &middot; Tanda Tangan Digital Sah</div>
                 </div>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                  <button type="button" class="btn-micro-outline" onclick="openPerpanjangModal('checkout')" style="color: #E11D48; border-color: #FECDD3; background: #FFF1F2;">
+                <div style="display: flex; gap: 6px; align-items: center; flex-shrink: 0;">
+                  <button type="button" class="btn-micro-outline" onclick="openPerpanjangModal('checkout')" style="color: #E11D48; border-color: #FECDD3; background: #FFF1F2; height: 30px; padding: 0 10px; font-size: 11px; white-space: nowrap;" title="Akhiri / Check-out Masa Sewa">
                     <i data-lucide="user-x" style="width: 12px; height: 12px;"></i>
                     <span>Selesai Kontrak (Check-Out)</span>
                   </button>
-                  <button type="button" class="btn-micro-outline" onclick="RumaUI.showToast('Mengunduh Salinan Dokumen SPK Kontrak PDF...', 'info')">
+                  <button type="button" class="btn-micro-outline" onclick="RumaUI.showToast('Mengunduh Salinan Dokumen SPK Kontrak PDF...', 'info')" style="height: 30px; padding: 0 10px; font-size: 11px; white-space: nowrap;" title="Unduh Salinan Dokumen SPK PDF">
                     <i data-lucide="download" style="width: 12px; height: 12px;"></i>
                     <span>Unduh PDF</span>
                   </button>
-                  <button type="button" class="btn-micro-brand" onclick="openPerpanjangModal('renew')">
+                  <button type="button" class="btn-micro-brand" onclick="openPerpanjangModal('renew')" style="height: 30px; padding: 0 12px; font-size: 11px; white-space: nowrap;" title="Perpanjang Kontrak Sewa Unit Ini">
                     <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i>
                     <span>Perpanjang Kontrak</span>
                   </button>
@@ -4096,7 +4204,7 @@
           </button>
           <button type="button" class="perpanjang-mode-btn" id="btnModeCheckout" onclick="setPerpanjangMode('checkout')">
             <i data-lucide="user-x" style="width: 13px; height: 13px;"></i>
-            <span>Selesai Kontrak (Check-Out)</span>
+            <span>Akhiri Sewa / Check-Out</span>
           </button>
         </div>
 
@@ -4112,7 +4220,7 @@
           <div class="form-group-item">
             <label class="form-label-txt">Pilihan Siklus Perpanjangan *</label>
             <div class="duration-pills-row">
-              <button type="button" class="duration-pill-opt active" onclick="selectRenewDuration(this, '12')">1 Tahun (12 Bln)</button>
+              <button type="button" class="duration-pill-opt active" onclick="selectRenewDuration(this, '12')">1 Tahun</button>
               <button type="button" class="duration-pill-opt" onclick="selectRenewDuration(this, '6')">6 Bulan</button>
               <button type="button" class="duration-pill-opt" onclick="selectRenewDuration(this, '3')">3 Bulan</button>
               <button type="button" class="duration-pill-opt" onclick="selectRenewDuration(this, '1')">1 Bulan</button>
@@ -4120,14 +4228,20 @@
           </div>
 
           <!-- Periode Baru & Tarif Sewa -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start;">
             <div class="form-group-item">
-              <label class="form-label-txt">Tanggal Mulai Periode Baru *</label>
-              <input type="text" id="renewStartDate" class="form-input-field" value="01/03/2027" readonly style="background: #F8FAFC; color: #64748B;">
+              <label class="form-label-txt">Tanggal Mulai Periode Baru</label>
+              <div style="position: relative;">
+                <input type="text" id="renewStartDate" class="form-input-field" value="01/03/2027" readonly style="background: #F8FAFC; border-color: #E2E8F0; color: #475569; font-weight: 600; cursor: default; pointer-events: none; padding-left: 36px;">
+                <i data-lucide="calendar" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: #94A3B8; pointer-events: none;"></i>
+              </div>
             </div>
             <div class="form-group-item">
-              <label class="form-label-txt">Tanggal Berakhir Baru (Auto) *</label>
-              <input type="text" id="renewEndDate" class="form-input-field" value="28/02/2028" readonly style="background: #FFF7ED; border-color: #FED7AA; font-weight: 700; color: #FF7A00;">
+              <label class="form-label-txt">Tanggal Berakhir Baru (Otomatis)</label>
+              <div style="position: relative;">
+                <input type="text" id="renewEndDate" class="form-input-field" value="28/02/2028" readonly style="background: #FFF7ED; border-color: #FED7AA; font-weight: 700; color: #EA580C; cursor: default; pointer-events: none; padding-left: 36px;">
+                <i data-lucide="calendar-check" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: #FF7A00; pointer-events: none;"></i>
+              </div>
             </div>
           </div>
 
@@ -4198,6 +4312,13 @@
                   <span class="ruma-datepicker-val-txt">28 Februari 2027</span>
                 </div>
                 <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted);"></i>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 5px;">
+              <span style="font-size: 11px; color: var(--text-muted);">Pilihan cepat tanggal:</span>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <button type="button" class="preset-chip-btn" id="btnPresetCheckoutToday" onclick="setCheckoutDatePreset('today')" title="Setel tanggal ke hari ini">Hari Ini</button>
+                <button type="button" class="preset-chip-btn active" id="btnPresetCheckoutEnd" onclick="setCheckoutDatePreset('contract_end')" title="Setel ke tanggal akhir kontrak SPK aktif">Sesuai Akhir Kontrak</button>
               </div>
             </div>
           </div>
@@ -4307,9 +4428,20 @@
       </div>
 
       <div class="modal-body-scrollable">
-        <!-- Info Unit Saat Ini -->
-        <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px;">Unit Kamar Saat Ini:</div>
+        <!-- BAGIAN 1: ALOKASI UNIT KAMAR (MUTASI INTERNAL) -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="bed-double" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>1. Unit Kamar Asal &amp; Alokasi Kamar Tujuan</span>
+          </div>
+        </div>
+
+        <!-- Kartu Komparasi Unit Kamar Asal -->
+        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 12px 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.3px;">Unit Kamar Saat Ini (Asal)</span>
+            <span class="status-badge badge-green" style="font-size: 10px; padding: 1px 7px;">SPK Aktif</span>
+          </div>
           <div style="display: flex; align-items: center; justify-content: space-between;">
             <div>
               <span id="moveCurrentRoomTitle" style="font-size: 14px; font-weight: 700; color: var(--text-main);">Kamar A-01</span>
@@ -4319,16 +4451,16 @@
           </div>
         </div>
 
-        <!-- Pilih Kamar Kosong Tujuan Baru -->
+        <!-- Search Bar: Pilih Kamar Kosong Tujuan Baru -->
         <div class="form-group-item">
           <div style="display: flex; align-items: center; justify-content: space-between;">
             <label class="form-label-txt">Pilih Kamar Kosong Tujuan Baru *</label>
-            <span id="moveSelectedBadge" class="status-badge badge-success" style="font-size: 11px;">Kamar B-02 (Tersedia)</span>
+            <span id="moveSelectedBadge" class="status-badge badge-brand" style="font-size: 11px; padding: 2px 8px;">Kamar B-02 (Tersedia)</span>
           </div>
           <div class="custom-room-select-wrap" id="wrapMoveRoomSelect">
             <div style="position: relative;">
               <i data-lucide="search" style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: #94A3B8; pointer-events: none;"></i>
-              <input type="text" id="moveRoomSearchInput" class="form-input-field" value="Kamar B-02 · Lt 2 · Deluxe (Rp 1.500.000/bln)" placeholder="Cari kamar kosong..." autocomplete="off" style="padding-left: 36px; padding-right: 14px; font-weight: 600;" onfocus="openMoveRoomDropdown()" oninput="filterMoveRoomOptions(this.value)">
+              <input type="text" id="moveRoomSearchInput" class="form-input-field" value="Kamar B-02 · Lt 2 · Deluxe (Rp 1.500.000/bln)" placeholder="Ketik nomor kamar, lantai, atau tipe..." autocomplete="off" style="padding-left: 36px; padding-right: 14px; font-weight: 600;" onfocus="openMoveRoomDropdown()" oninput="filterMoveRoomOptions(this.value)">
             </div>
             <div class="custom-room-dropdown-popover" id="moveRoomDropdownPopover">
               <div class="room-options-scroll" id="moveRoomOptionsList">
@@ -4338,10 +4470,11 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-          <div class="form-group-item">
+        <!-- Grid 2 Kolom: Tanggal Efektif Pindah & Status Kamar Lama -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 6px;">
+          <div class="form-group-item" style="margin-bottom: 0;">
             <label class="form-label-txt">Tanggal Efektif Pindah *</label>
-            <div class="ruma-datepicker-wrap" id="wrapMoveDate">
+            <div class="ruma-datepicker-wrap drop-up" id="wrapMoveDate">
               <input type="hidden" id="moveEffectiveDate" value="2026-11-01">
               <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapMoveDate', 'moveEffectiveDate')">
                 <div class="ruma-datepicker-trigger-content">
@@ -4352,37 +4485,80 @@
               </div>
             </div>
           </div>
-          <div class="form-group-item">
-            <label class="form-label-txt">Status Kamar Lama Pasca Pindah</label>
-            <input type="text" class="form-input-field" value="Otomatis dialihkan ke 'Kosong / Siap Bersih'" readonly style="background: #F8FAFC; color: #64748B; font-size: 11px;">
-          </div>
-        </div>
-
-        <!-- Rekonsiliasi Deposit & Selisih Biaya -->
-        <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 12px 14px;">
-          <div style="font-size: 12px; font-weight: 700; color: #C2410C; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-            <i data-lucide="calculator" style="width: 14px; height: 14px;"></i>
-            <span>Rekonsiliasi Deposit &amp; Penyesuaian Tarif</span>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: var(--text-secondary);">Transfer Saldo Deposit Lama:</span>
-              <span id="moveDepositTransferTxt" style="font-weight: 600; color: #16A34A;">Rp 1.000.000 (100% dialihkan ke kamar baru)</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: var(--text-secondary);">Selisih Tarif Sewa Bulanan:</span>
-              <span id="moveRentDiffTxt" style="font-weight: 700; color: #EA580C;">+Rp 300.000 / bln (Upgrade Deluxe)</span>
-            </div>
-            <div style="border-top: 1px dashed #FDBA74; padding-top: 6px; margin-top: 2px; display: flex; justify-content: space-between; font-weight: 700;">
-              <span style="color: #9A3412;">Penagihan Selisih Bulan Berjalan:</span>
-              <span id="moveProrataDiffTxt" style="color: #C2410C;">Rp 300.000 (Otomatis masuk invoice)</span>
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-label-txt">Status Kamar Asal Pasca Pindah</label>
+            <div style="position: relative;">
+              <i data-lucide="sparkles" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: #64748B; pointer-events: none;"></i>
+              <input type="text" class="form-input-field" value="Kosong / Siap Bersih (Housekeeping)" readonly style="background: #F8FAFC; color: #475569; font-size: 11px; font-weight: 600; padding-left: 34px; cursor: default;">
             </div>
           </div>
         </div>
 
-        <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4; display: inline-flex; align-items: center; gap: 5px;">
-          <i data-lucide="info" style="width: 13px; height: 13px; flex-shrink: 0; color: var(--brand-primary);"></i>
-          <em>Catatan: Kontrak SPK akan diperbarui nomor addendum-nya dan kunci kamar baru siap diserahterimakan.</em>
+        <!-- BAGIAN 2: REKONSILIASI DEPOSIT & FINANSIAL -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="receipt" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+            <span>2. Rekonsiliasi Deposit &amp; Penyesuaian Tagihan (WF-05)</span>
+          </div>
+        </div>
+
+        <!-- Card Kalkulasi Rekonsiliasi Seragam modal Registrasi Penghuni Baru -->
+        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px;" id="moveCalcCard">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <div style="font-size: 12.5px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="calculator" style="width: 15px; height: 15px; color: var(--brand-primary);"></i>
+              <span>Kalkulasi Otomatis Rekonsiliasi</span>
+            </div>
+            <span id="moveStatusBadge" class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 8px;">Upgrade Unit</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 7px; font-size: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary);">
+              <span>Transfer Saldo Uang Jaminan Deposit (Escrow):</span>
+              <span id="moveDepositTransferTxt" style="font-weight: 600; color: #16A34A; white-space: nowrap;">Rp 1.000.000 (100% dialihkan ke kamar baru)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary);">
+              <span>Penyesuaian Tarif Sewa Bulanan:</span>
+              <span id="moveRentDiffTxt" style="font-weight: 700; color: var(--brand-primary); white-space: nowrap;">+Rp 300.000 / bln (Upgrade Deluxe)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary);">
+              <span>Selisih Tagihan Bulan Berjalan:</span>
+              <span id="moveProrataDiffTxt" style="font-weight: 600; color: var(--text-main); white-space: nowrap;">Rp 300.000 (Otomatis masuk invoice)</span>
+            </div>
+
+            <!-- Total Bar: Rapi, Tegas, Anti-Wrap -->
+            <div style="border-top: 1.5px solid #E2E8F0; padding-top: 10px; margin-top: 4px; display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 13px; font-weight: 700; color: var(--text-main);">Total Selisih yang Harus Dibayar:</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.35;" id="moveSummaryDesc">Selisih sewa bulan berjalan pasca pindah unit.</div>
+              </div>
+              <div style="flex-shrink: 0; text-align: right;">
+                <span id="moveTotalAdjustmentVal" style="font-size: 18px; font-weight: 700; color: var(--brand-primary); letter-spacing: -0.3px; white-space: nowrap !important; display: block;">Rp 300.000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Opsi Pembayaran Selisih (Serupa modal Registrasi) -->
+          <div id="cardMoveInitialPayment" style="background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; margin-top: 10px; transition: all 0.2s ease;">
+            <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none; margin: 0;">
+              <input type="checkbox" id="moveInitialPaidCheckbox" onchange="toggleMovePaidStatus(this.checked)" style="width: 16px; height: 16px; margin-top: 2px; accent-color: #16A34A; cursor: pointer; border-radius: 4px; flex-shrink: 0;">
+              <div style="flex: 1; min-width: 0;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                  <span style="font-size: 12px; font-weight: 700; color: var(--text-main);" id="lblMovePaidTitle">Terima Pembayaran Tunai Selisih di Tempat</span>
+                  <span id="badgeMovePaidStatus" class="status-badge badge-green" style="display: none; font-size: 9.5px; padding: 1px 7px;">Lunas Terverifikasi</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); margin: 3px 0 0; line-height: 1.4;" id="subMovePaidDesc">Centang jika penghuni langsung membayar tunai selisih tarif ke staf. Jika transfer, biarkan tidak dicentang agar diverifikasi via Buku Tagihan (WF-05).</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Catatan Legalitas & SOP Kamar -->
+        <div style="font-size: 11px; color: #0284C7; background: #F0F9FF; border: 1px solid #BAE6FD; padding: 10px 14px; border-radius: 12px; display: flex; align-items: flex-start; gap: 8px;">
+          <i data-lucide="info" style="width: 15px; height: 15px; flex-shrink: 0; color: #0284C7; margin-top: 1px;"></i>
+          <div style="line-height: 1.45;">
+            <em><strong>SOP Kontrak &amp; Kunci:</strong> Nomor addendum SPK otomatis diterbitkan melanjutkan sisa masa kontrak. Kunci kamar lama diserahkan ke staf dan kunci unit baru siap diserahkan.</em>
+          </div>
         </div>
       </div>
 
@@ -4431,8 +4607,16 @@
 
         <!-- Daftar Penghuni Terdaftar di Kamar -->
         <div>
-          <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
-            Daftar Penghuni di Kamar Saat Ini:
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px;">
+              Daftar Penghuni di Kamar Saat Ini:
+            </span>
+            <div id="wrapBtnAddOccupantRow" style="display: flex;">
+              <button type="button" class="btn-micro-brand" onclick="showAddOccupantForm()" style="height: 28px; padding: 0 10px; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;" title="Tambah Rekan Sekamar Baru">
+                <i data-lucide="user-plus" style="width: 12px; height: 12px;"></i>
+                <span>+ Tambah Rekan</span>
+              </button>
+            </div>
           </div>
           <div id="manageOccupantsListContainer" style="display: flex; flex-direction: column; gap: 8px;">
             <!-- Rendered dynamically -->
@@ -4462,10 +4646,26 @@
             </div>
             <div class="form-group-item" style="margin-bottom: 0;">
               <label class="form-label-txt">Penyesuaian Tarif Bulanan Kamar *</label>
-              <select id="removeOccupantTarifAdjust" class="form-input-field" style="height: 38px; font-size: 12px; font-weight: 600;">
-                <option value="deduct">Potong Biaya Rekan (-Rp 250.000/bln)</option>
-                <option value="keep">Tarif Kamar Tetap Sama (Flat)</option>
-              </select>
+              <div class="custom-select-wrap" id="wrapRemoveOccupantTarif">
+                <input type="hidden" id="removeOccupantTarifAdjust" value="deduct">
+                <div class="custom-select-trigger" id="btnRemoveOccupantTarifTrigger" onclick="toggleRemoveTarifDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
+                  <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                    <i data-lucide="scissors" style="width: 14px; height: 14px; color: #DC2626; flex-shrink: 0;"></i>
+                    <span id="removeOccupantTarifTxt" style="font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Potong Biaya Rekan (-Rp 250.000/bln)</span>
+                  </div>
+                  <i data-lucide="chevron-down" id="chevronRemoveTarif" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
+                </div>
+                <div class="custom-select-popover" id="popoverRemoveTarif" style="top: calc(100% + 4px);">
+                  <div class="custom-select-option-item selected" onclick="selectRemoveTarifOption('deduct', 'Potong Biaya Rekan (-Rp 250.000/bln)', 'scissors', '#DC2626')">
+                    <i data-lucide="scissors" style="width: 14px; height: 14px; color: #DC2626;"></i>
+                    <span>Potong Biaya Rekan (-Rp 250.000/bln)</span>
+                  </div>
+                  <div class="custom-select-option-item" onclick="selectRemoveTarifOption('keep', 'Tarif Kamar Tetap Sama (Flat)', 'check-circle-2', '#16A34A')">
+                    <i data-lucide="check-circle-2" style="width: 14px; height: 14px; color: #16A34A;"></i>
+                    <span>Tarif Kamar Tetap Sama (Flat)</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -4478,20 +4678,23 @@
             </div>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 10px; border-top: 1px dashed #FECACA;">
-            <button type="button" class="btn-modal-cancel" onclick="cancelRemoveOccupant()" style="height: 34px; padding: 0 16px;">Batal</button>
-            <button type="button" class="btn-modal-danger" onclick="confirmRemoveOccupant()" style="height: 34px; padding: 0 16px; font-size: 12px;">
-              <i data-lucide="check" style="width: 14px; height: 14px;"></i>
-              <span>Konfirmasi Keluarkan Rekan Ini</span>
+          <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px dashed #FECACA;">
+            <button type="button" class="btn-modal-cancel" onclick="cancelRemoveOccupant()" style="height: 32px !important; padding: 0 14px !important; font-size: 11.5px !important;">Batal</button>
+            <button type="button" class="btn-modal-danger" onclick="confirmRemoveOccupant()" style="height: 32px !important; padding: 0 16px !important; font-size: 11.5px !important;">
+              <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+              <span>Konfirmasi Keluarkan</span>
             </button>
           </div>
         </div>
 
         <!-- Sub-Form: Tambah Rekan Sekamar Baru -->
-        <div id="sectionTambahRekan" style="display: none; background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px;">
-          <div style="font-size: 13px; font-weight: 700; color: #166534; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-            <i data-lucide="user-plus" style="width: 15px; height: 15px;"></i>
-            <span>Pendaftaran Rekan Sekamar Baru</span>
+        <div id="sectionTambahRekan" style="display: none; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="user-plus" style="width: 15px; height: 15px; color: var(--brand-primary);"></i>
+              <span>Pendaftaran Rekan Sekamar Baru</span>
+            </div>
+            <span class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 7px;">Penghuni Tambahan</span>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
@@ -4521,28 +4724,50 @@
             </div>
             <div class="form-group-item" style="margin-bottom: 0;">
               <label class="form-label-txt">Tambahan Biaya Sekamar (Surcharge)</label>
-              <select id="newRoommateSurcharge" class="form-input-field" style="height: 38px; font-size: 12px; font-weight: 600;">
-                <option value="250000">+Rp 250.000 / bulan</option>
-                <option value="300000">+Rp 300.000 / bulan</option>
-                <option value="0">Rp 0 (Tarif Kamar Flat)</option>
-              </select>
+              <div class="custom-select-wrap" id="wrapNewRoommateSurcharge">
+                <input type="hidden" id="newRoommateSurcharge" value="250000">
+                <div class="custom-select-trigger" id="btnNewRoommateSurchargeTrigger" onclick="toggleSurchargeDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
+                  <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                    <i data-lucide="tag" style="width: 14px; height: 14px; color: var(--brand-primary); flex-shrink: 0;"></i>
+                    <span id="newRoommateSurchargeTxt" style="font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">+Rp 250.000 / bulan</span>
+                  </div>
+                  <i data-lucide="chevron-down" id="chevronSurcharge" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
+                </div>
+                <div class="custom-select-popover" id="popoverSurcharge" style="top: calc(100% + 4px);">
+                  <div class="custom-select-option-item selected" onclick="selectSurchargeOption('250000', '+Rp 250.000 / bulan')">
+                    <i data-lucide="tag" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
+                    <span>+Rp 250.000 / bulan</span>
+                  </div>
+                  <div class="custom-select-option-item" onclick="selectSurchargeOption('300000', '+Rp 300.000 / bulan')">
+                    <i data-lucide="tag" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
+                    <span>+Rp 300.000 / bulan</span>
+                  </div>
+                  <div class="custom-select-option-item" onclick="selectSurchargeOption('0', 'Rp 0 (Tarif Kamar Flat)')">
+                    <i data-lucide="minus-circle" style="width: 14px; height: 14px; color: #64748B;"></i>
+                    <span>Rp 0 (Tarif Kamar Flat)</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 14px; padding-top: 10px; border-top: 1px dashed #BBF7D0;">
-            <button type="button" class="btn-modal-cancel" onclick="cancelAddOccupant()" style="height: 34px; padding: 0 16px;">Batal</button>
-            <button type="button" class="btn-modal-primary" onclick="confirmAddOccupant()" style="height: 34px; padding: 0 18px; font-size: 12px;">
-              <i data-lucide="check" style="width: 14px; height: 14px;"></i>
-              <span>Simpan &amp; Daftarkan Rekan Baru</span>
+          <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border-subtle);">
+            <button type="button" class="btn-modal-cancel" onclick="cancelAddOccupant()" style="height: 32px !important; padding: 0 14px !important; font-size: 11.5px !important;">Batal</button>
+            <button type="button" class="btn-modal-primary" onclick="confirmAddOccupant()" style="height: 32px !important; padding: 0 16px !important; font-size: 11.5px !important;">
+              <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+              <span>Simpan Rekan Baru</span>
             </button>
           </div>
         </div>
 
         <!-- Sub-Form: Balik Nama Penyewa Utama (Alih Kontrak) -->
-        <div id="sectionBalikNama" style="display: none; background: #EEF2FF; border: 1.5px solid #C7D2FE; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px;">
-          <div style="font-size: 13px; font-weight: 700; color: #4338CA; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-            <i data-lucide="user-check" style="width: 15px; height: 15px;"></i>
-            <span>Alih Kontrak &amp; Balik Nama: <strong id="transferTargetNameTxt" style="text-decoration: underline;">Rina Anggraini</strong></span>
+        <div id="sectionBalikNama" style="display: none; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="arrow-left-right" style="width: 15px; height: 15px; color: var(--brand-primary);"></i>
+              <span>Prosedur Balik Nama PIC: <strong id="transferTargetNameTxt" style="color: var(--brand-primary);">Rina Anggraini</strong></span>
+            </div>
+            <span class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 7px;">Alih Kontrak</span>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; align-items: end;">
@@ -4561,34 +4786,26 @@
             </div>
             <div class="form-group-item" style="margin-bottom: 0;">
               <label class="form-label-txt">Pengalihan Saldo Deposit (Escrow)</label>
-              <input type="text" class="form-input-field" value="Rp 1.000.000 (100% Tanggung Jawab Beralih)" readonly style="background: #FFFFFF; font-size: 11.5px; font-weight: 600; color: #16A34A;">
+              <input type="text" class="form-input-field" value="Rp 1.000.000 (100% Tanggung Jawab Beralih)" readonly style="background: #FFFFFF; font-size: 11.5px; font-weight: 600; color: #16A34A; cursor: default;">
             </div>
           </div>
 
-          <div style="font-size: 11px; color: #3730A3; background: #FFFFFF; border: 1px solid #A5B4FC; border-radius: 8px; padding: 9px 12px; margin-bottom: 12px; line-height: 1.4;">
+          <div style="font-size: 11px; color: #0284C7; background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; line-height: 1.45;">
             <div style="display: flex; align-items: flex-start; gap: 6px;">
-              <i data-lucide="info" style="width: 14px; height: 14px; color: #4F46E5; flex-shrink: 0; margin-top: 1px;"></i>
+              <i data-lucide="info" style="width: 14px; height: 14px; color: #0284C7; flex-shrink: 0; margin-top: 1px;"></i>
               <div>
-                Addendum SPK resmi akan diterbitkan atas nama rekan baru sebagai Penanggung Jawab Utama, kredensial portal primer dialihkan, dan tagihan invoice beralih ke penyewa baru.
+                Addendum SPK resmi akan otomatis diterbitkan atas nama rekan baru sebagai Penanggung Jawab Utama. Kredensial akun portal utama (WF-10) dan penagihan invoice dialihkan ke penyewa baru.
               </div>
             </div>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding-top: 10px; border-top: 1px dashed #C7D2FE;">
-            <button type="button" class="btn-modal-cancel" onclick="cancelTransferOccupant()" style="height: 34px; padding: 0 16px;">Batal</button>
-            <button type="button" class="btn-modal-primary" onclick="confirmTransferOccupant()" style="height: 34px; padding: 0 18px; font-size: 12px;">
-              <i data-lucide="check" style="width: 14px; height: 14px;"></i>
-              <span>Konfirmasi Balik Nama Kontrak</span>
+          <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding-top: 10px; border-top: 1.5px solid #E2E8F0;">
+            <button type="button" class="btn-modal-cancel" onclick="cancelTransferOccupant()" style="height: 32px !important; padding: 0 14px !important; font-size: 11.5px !important;">Batal</button>
+            <button type="button" class="btn-modal-primary" onclick="confirmTransferOccupant()" style="height: 32px !important; padding: 0 16px !important; font-size: 11.5px !important;">
+              <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+              <span>Konfirmasi Balik Nama</span>
             </button>
           </div>
-        </div>
-
-        <!-- Tombol Tambah Rekan Baru -->
-        <div id="wrapBtnAddOccupantRow" style="display: flex; justify-content: flex-start; margin-top: 6px;">
-          <button type="button" class="btn-micro-brand" onclick="showAddOccupantForm()" style="height: 34px; padding: 0 14px; font-size: 11.5px;">
-            <i data-lucide="user-plus" style="width: 13px; height: 13px;"></i>
-            <span>+ Tambahkan Rekan Sekamar Baru</span>
-          </button>
         </div>
       </div>
 
@@ -4696,51 +4913,115 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div class="form-group-item" style="margin-bottom: 0;">
-            <label class="form-label-txt">Nama Lengkap Tamu *</label>
-            <input type="text" id="guestNameInput" class="form-input-field" placeholder="Nama tamu sesuai KTP" style="height: 38px; font-size: 12px;">
+        <!-- Jumlah Tamu Menginap -->
+        <div class="form-group-item">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+            <label class="form-label-txt" style="margin-bottom: 0;">Jumlah Tamu Menginap *</label>
+            <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Maks. 3 Orang Tamu / Kunjungan</span>
           </div>
-          <div class="form-group-item" style="margin-bottom: 0;">
-            <label class="form-label-txt">Hubungan / Relasi *</label>
-            <div class="custom-select-wrap" id="wrapGuestRelation">
-              <input type="hidden" id="guestRelationSelect" value="Orang Tua">
-              <div class="custom-select-trigger" id="btnGuestRelationTrigger" onclick="toggleGuestRelationDropdown(event)">
-                <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
-                  <i data-lucide="heart" id="guestRelationIcon" style="width: 14px; height: 14px; color: #EA580C; flex-shrink: 0;"></i>
-                  <span id="guestRelationTxt" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Orang Tua (Ayah / Ibu)</span>
+          <div class="duration-pills-row" id="wrapGuestCountPills">
+            <button type="button" class="duration-pill-opt active" id="btnGuestCount1" onclick="setGuestCount(1)">1 Orang Tamu</button>
+            <button type="button" class="duration-pill-opt" id="btnGuestCount2" onclick="setGuestCount(2)">2 Orang Tamu</button>
+            <button type="button" class="duration-pill-opt" id="btnGuestCount3" onclick="setGuestCount(3)">3 Orang Tamu</button>
+          </div>
+        </div>
+
+        <!-- Data Tamu 1 (Tamu Utama) -->
+        <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px;">
+          <div style="font-size: 11.5px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="user" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
+              <span>Data Tamu 1 (Penanggung Jawab / Tamu Utama)</span>
+            </div>
+            <span class="status-badge badge-brand" style="font-size: 9.5px; padding: 1px 6px;">Tamu Utama</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
+            <div class="form-group-item" style="margin-bottom: 0;">
+              <label class="form-label-txt">Nama Lengkap Tamu 1 *</label>
+              <input type="text" id="guestNameInput" class="form-input-field" placeholder="Nama tamu sesuai KTP" style="height: 38px; font-size: 12px; background: #FFFFFF;">
+            </div>
+            <div class="form-group-item" style="margin-bottom: 0;">
+              <label class="form-label-txt">Hubungan / Relasi *</label>
+              <div class="custom-select-wrap" id="wrapGuestRelation">
+                <input type="hidden" id="guestRelationSelect" value="Orang Tua">
+                <div class="custom-select-trigger" id="btnGuestRelationTrigger" onclick="toggleGuestRelationDropdown(event)" style="height: 38px !important; background: #FFFFFF;">
+                  <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                    <i data-lucide="heart" id="guestRelationIcon" style="width: 14px; height: 14px; color: #EA580C; flex-shrink: 0;"></i>
+                    <span id="guestRelationTxt" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Orang Tua (Ayah / Ibu)</span>
+                  </div>
+                  <i data-lucide="chevron-down" id="guestRelationChevron" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
                 </div>
-                <i data-lucide="chevron-down" id="guestRelationChevron" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
-              </div>
-              <div class="custom-select-popover" id="popoverGuestRelation">
-                <div class="custom-select-option-item selected" onclick="selectGuestRelationOption('Orang Tua', 'Orang Tua (Ayah / Ibu)', 'heart', '#EA580C')">
-                  <i data-lucide="heart" style="width: 14px; height: 14px; color: #EA580C;"></i>
-                  <span>Orang Tua (Ayah / Ibu)</span>
-                </div>
-                <div class="custom-select-option-item" onclick="selectGuestRelationOption('Saudara Kandung', 'Saudara Kandung (Kakak / Adik)', 'users', '#2563EB')">
-                  <i data-lucide="users" style="width: 14px; height: 14px; color: #2563EB;"></i>
-                  <span>Saudara Kandung (Kakak / Adik)</span>
-                </div>
-                <div class="custom-select-option-item" onclick="selectGuestRelationOption('Teman / Rekan Kerja', 'Teman / Rekan Kerja', 'briefcase', '#16A34A')">
-                  <i data-lucide="briefcase" style="width: 14px; height: 14px; color: #16A34A;"></i>
-                  <span>Teman / Rekan Kerja</span>
-                </div>
-                <div class="custom-select-option-item" onclick="selectGuestRelationOption('Pasangan Sah', 'Pasangan Sah (Suami / Istri)', 'shield-check', '#7C3AED')">
-                  <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #7C3AED;"></i>
-                  <span>Pasangan Sah (Suami / Istri)</span>
-                </div>
-                <div class="custom-select-option-item" onclick="selectGuestRelationOption('Keluarga Lainnya', 'Keluarga Lainnya', 'home', '#64748B')">
-                  <i data-lucide="home" style="width: 14px; height: 14px; color: #64748B;"></i>
-                  <span>Keluarga Lainnya</span>
+                <div class="custom-select-popover" id="popoverGuestRelation">
+                  <div class="custom-select-option-item selected" onclick="selectGuestRelationOption('Orang Tua', 'Orang Tua (Ayah / Ibu)', 'heart', '#EA580C')">
+                    <i data-lucide="heart" style="width: 14px; height: 14px; color: #EA580C;"></i>
+                    <span>Orang Tua (Ayah / Ibu)</span>
+                  </div>
+                  <div class="custom-select-option-item" onclick="selectGuestRelationOption('Saudara Kandung', 'Saudara Kandung (Kakak / Adik)', 'users', '#2563EB')">
+                    <i data-lucide="users" style="width: 14px; height: 14px; color: #2563EB;"></i>
+                    <span>Saudara Kandung (Kakak / Adik)</span>
+                  </div>
+                  <div class="custom-select-option-item" onclick="selectGuestRelationOption('Teman / Rekan Kerja', 'Teman / Rekan Kerja', 'briefcase', '#16A34A')">
+                    <i data-lucide="briefcase" style="width: 14px; height: 14px; color: #16A34A;"></i>
+                    <span>Teman / Rekan Kerja</span>
+                  </div>
+                  <div class="custom-select-option-item" onclick="selectGuestRelationOption('Pasangan Sah', 'Pasangan Sah (Suami / Istri)', 'shield-check', '#7C3AED')">
+                    <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #7C3AED;"></i>
+                    <span>Pasangan Sah (Suami / Istri)</span>
+                  </div>
+                  <div class="custom-select-option-item" onclick="selectGuestRelationOption('Keluarga Lainnya', 'Keluarga Lainnya', 'home', '#64748B')">
+                    <i data-lucide="home" style="width: 14px; height: 14px; color: #64748B;"></i>
+                    <span>Keluarga Lainnya</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-label-txt">Nomor WhatsApp / HP Tamu 1</label>
+            <input type="tel" id="guestPhoneInput" class="form-input-field" placeholder="08xx-xxxx-xxxx" style="height: 38px; font-size: 12px; background: #FFFFFF;">
+          </div>
         </div>
 
-        <div class="form-group-item">
-          <label class="form-label-txt">Nomor WhatsApp / HP Tamu</label>
-          <input type="tel" id="guestPhoneInput" class="form-input-field" placeholder="08xx-xxxx-xxxx" style="height: 38px; font-size: 12px;">
+        <!-- Data Tamu 2 (Muncul saat >= 2 Orang) -->
+        <div id="guestField2" style="display: none; background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px;">
+          <div style="font-size: 11.5px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="user-plus" style="width: 13px; height: 13px; color: #2563EB;"></i>
+              <span>Data Tamu 2 (Tambahan)</span>
+            </div>
+            <span class="status-badge badge-blue" style="font-size: 9.5px; padding: 1px 6px;">Tamu 2</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group-item" style="margin-bottom: 0;">
+              <label class="form-label-txt">Nama Lengkap Tamu 2 *</label>
+              <input type="text" id="guestNameInput2" class="form-input-field" placeholder="Nama tamu 2 sesuai KTP" style="height: 38px; font-size: 12px; background: #FFFFFF;">
+            </div>
+            <div class="form-group-item" style="margin-bottom: 0;">
+              <label class="form-label-txt">Hubungan / Relasi Tamu 2</label>
+              <input type="text" id="guestRelInput2" class="form-input-field" placeholder="Contoh: Rekan / Teman" style="height: 38px; font-size: 12px; background: #FFFFFF;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Tamu 3 (Muncul saat 3 Orang) -->
+        <div id="guestField3" style="display: none; background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px;">
+          <div style="font-size: 11.5px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="user-plus" style="width: 13px; height: 13px; color: #2563EB;"></i>
+              <span>Data Tamu 3 (Tambahan)</span>
+            </div>
+            <span class="status-badge badge-blue" style="font-size: 9.5px; padding: 1px 6px;">Tamu 3</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group-item" style="margin-bottom: 0;">
+              <label class="form-label-txt">Nama Lengkap Tamu 3 *</label>
+              <input type="text" id="guestNameInput3" class="form-input-field" placeholder="Nama tamu 3 sesuai KTP" style="height: 38px; font-size: 12px; background: #FFFFFF;">
+            </div>
+            <div class="form-group-item" style="margin-bottom: 0;">
+              <label class="form-label-txt">Hubungan / Relasi Tamu 3</label>
+              <input type="text" id="guestRelInput3" class="form-input-field" placeholder="Contoh: Rekan / Teman" style="height: 38px; font-size: 12px; background: #FFFFFF;">
+            </div>
+          </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: end;">
@@ -4760,11 +5041,11 @@
           <div class="form-group-item" style="margin-bottom: 0;">
             <label class="form-label-txt">Tanggal Selesai Menginap *</label>
             <div class="ruma-datepicker-wrap" id="wrapGuestEndDate">
-              <input type="hidden" id="guestEndDate" value="2026-11-04">
+              <input type="hidden" id="guestEndDate" value="2026-11-05">
               <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapGuestEndDate', 'guestEndDate')">
                 <div class="ruma-datepicker-trigger-content">
                   <i data-lucide="calendar" class="ruma-datepicker-trigger-icon"></i>
-                  <span class="ruma-datepicker-val-txt">4 November 2026</span>
+                  <span class="ruma-datepicker-val-txt">5 November 2026</span>
                 </div>
                 <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
               </div>
@@ -4772,33 +5053,120 @@
           </div>
         </div>
 
+        <!-- Skema Biaya Kompensasi Inap (Anti-overflow card selector) -->
         <div class="form-group-item">
           <label class="form-label-txt">Skema Biaya Kompensasi Inap *</label>
-          <div class="duration-pills-row" style="height: 40px; box-sizing: border-box; align-items: center;">
-            <button type="button" class="duration-pill-opt active" id="optGuestPaid" onclick="setGuestBillingOpt('paid')" style="flex: 1; height: 34px; font-size: 11px;">Berbayar (Rp 50.000 / Malam)</button>
-            <button type="button" class="duration-pill-opt" id="optGuestFree" onclick="setGuestBillingOpt('free')" style="flex: 1; height: 34px; font-size: 11px;">Bebas Biaya (Maks 2 Hari)</button>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div id="optGuestPaid" onclick="setGuestBillingOpt('paid')" style="cursor: pointer; padding: 10px 12px; border-radius: 12px; border: 1.5px solid var(--brand-primary); background: #FFF7ED; transition: all 0.2s; user-select: none;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+                <span style="font-size: 12px; font-weight: 700; color: var(--text-main);">Standar SOP</span>
+                <i data-lucide="check-circle-2" id="iconGuestPaid" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
+              </div>
+              <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.3;">2 Hari Gratis + Rp 50rb/Malam</div>
+            </div>
+            <div id="optGuestFree" onclick="setGuestBillingOpt('free')" style="cursor: pointer; padding: 10px 12px; border-radius: 12px; border: 1.5px solid #E2E8F0; background: #FFFFFF; transition: all 0.2s; user-select: none;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+                <span style="font-size: 12px; font-weight: 700; color: var(--text-main);">Bebas Biaya</span>
+                <i data-lucide="circle" id="iconGuestFree" style="width: 14px; height: 14px; color: #CBD5E1;"></i>
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); line-height: 1.3;">Dispensasi Khusus (Rp 0)</div>
+            </div>
           </div>
         </div>
 
-        <!-- Perhitungan Biaya Tamu -->
-        <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px;">
-          <div style="display: flex; justify-content: space-between; font-size: 12px;">
-            <span style="color: var(--text-secondary);">Durasi Menginap:</span>
-            <span style="font-weight: 700; color: #C2410C;" id="guestNightsTxt">3 Malam</span>
+        <!-- Opsi Operasional Tambahan: Parkir & Keperluan Kunjungan -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: end;">
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-label-txt">Parkir Kendaraan Tamu</label>
+            <div class="custom-select-wrap" id="wrapGuestVehType">
+              <input type="hidden" id="guestVehType" value="none">
+              <div class="custom-select-trigger" id="btnGuestVehTrigger" onclick="toggleGuestVehDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
+                <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                  <i data-lucide="ban" id="guestVehIcon" style="width: 14px; height: 14px; color: #64748B; flex-shrink: 0;"></i>
+                  <span id="guestVehTxt" style="font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tanpa Kendaraan</span>
+                </div>
+                <i data-lucide="chevron-down" id="chevronGuestVeh" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
+              </div>
+              <div class="custom-select-popover" id="popoverGuestVeh" style="top: calc(100% + 4px);">
+                <div class="custom-select-option-item selected" onclick="selectGuestVehOption('none', 'Tanpa Kendaraan', 'ban', '#64748B')">
+                  <i data-lucide="ban" style="width: 14px; height: 14px; color: #64748B;"></i>
+                  <span>Tanpa Kendaraan</span>
+                </div>
+                <div class="custom-select-option-item" onclick="selectGuestVehOption('motor', 'Bawa Sepeda Motor', 'bike', '#EA580C')">
+                  <i data-lucide="bike" style="width: 14px; height: 14px; color: #EA580C;"></i>
+                  <span>Bawa Sepeda Motor</span>
+                </div>
+                <div class="custom-select-option-item" onclick="selectGuestVehOption('mobil', 'Bawa Mobil', 'car', '#2563EB')">
+                  <i data-lucide="car" style="width: 14px; height: 14px; color: #2563EB;"></i>
+                  <span>Bawa Mobil</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div style="display: flex; justify-content: space-between; font-size: 12px;">
-            <span style="color: var(--text-secondary);">Tarif Kompensasi Utilitas:</span>
-            <span style="font-weight: 600; color: var(--text-main);" id="guestRateTxt">Rp 50.000 / malam</span>
-          </div>
-          <div style="border-top: 1px dashed #FDBA74; padding-top: 6px; display: flex; justify-content: space-between; font-size: 13px; font-weight: 700;">
-            <span style="color: #9A3412;">Total Biaya Inap:</span>
-            <span style="color: #EA580C;" id="guestTotalCostTxt">Rp 150.000</span>
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-label-txt">Plat Kendaraan Tamu</label>
+            <input type="text" id="guestVehPlat" class="form-input-field" placeholder="Plat nomor tamu (mis: B 1234 XYZ)" style="height: 38px; font-size: 11.5px;" oninput="this.value = this.value.toUpperCase()" disabled>
           </div>
         </div>
 
-        <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4; display: flex; align-items: flex-start; gap: 6px;">
-          <i data-lucide="info" style="width: 13px; height: 13px; color: var(--brand-primary); flex-shrink: 0; margin-top: 2px;"></i>
-          <span>Biaya tamu menginap otomatis diterbitkan ke invoice berjalan penyewa utama dan kartu tamu resmi tercatat di sistem keamanan.</span>
+        <div class="form-group-item" style="margin-bottom: 12px;">
+          <label class="form-label-txt">Keperluan Kunjungan (Opsional)</label>
+          <input type="text" id="guestPurposeInput" class="form-input-field" placeholder="Contoh: Menjenguk keluarga / kunjungan dinas luar kota" style="height: 38px; font-size: 12px;">
+        </div>
+
+        <!-- Metode Penagihan Biaya Inap -->
+        <div class="form-group-item" style="margin-bottom: 12px;">
+          <label class="form-label-txt">Metode Pembayaran Biaya Inap *</label>
+          <div class="duration-pills-row" style="gap: 8px;">
+            <button type="button" class="duration-pill-opt active" id="optGuestPayInvoice" onclick="setGuestPayMethod('invoice')" style="flex: 1; height: 34px; font-size: 11px;">
+              <i data-lucide="receipt" style="width: 12px; height: 12px;"></i>
+              <span>Masuk Tagihan Bulanan (WF-05)</span>
+            </button>
+            <button type="button" class="duration-pill-opt" id="optGuestPayCash" onclick="setGuestPayMethod('cash')" style="flex: 1; height: 34px; font-size: 11px;">
+              <i data-lucide="banknote" style="width: 12px; height: 12px;"></i>
+              <span>Bayar Tunai di Resepsionis</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Perhitungan Biaya Tamu (Super Rapi, Anti-Wrap) -->
+        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+            <div style="font-size: 12.5px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="calculator" style="width: 15px; height: 15px; color: var(--brand-primary);"></i>
+              <span>Kalkulasi Biaya Menginap</span>
+            </div>
+            <span class="status-badge badge-brand" id="guestQuotaBadge" style="font-size: 10.5px; padding: 2px 8px;">2 Malam Berbayar</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-secondary);">
+            <span style="white-space: nowrap;">Durasi Kunjungan:</span>
+            <span style="font-weight: 700; color: var(--text-main); text-align: right; white-space: nowrap;" id="guestNightsTxt">4 Malam (1 - 5 Nov 2026)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-secondary);">
+            <span style="white-space: nowrap;">Kuota Bebas SOP (2 Hari):</span>
+            <span style="font-weight: 600; color: #16A34A; text-align: right; white-space: nowrap;" id="guestFreeQuotaTxt">2 Malam Gratis (Rp 0)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-secondary);">
+            <span style="white-space: nowrap;">Malam Tambahan Utilitas:</span>
+            <span style="font-weight: 700; color: var(--brand-primary); text-align: right; white-space: nowrap;" id="guestPaidNightsTxt">2 Malam x Rp 50.000</span>
+          </div>
+
+          <div style="border-top: 1.5px solid #E2E8F0; padding-top: 10px; margin-top: 2px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+            <div style="min-width: 0; flex: 1;">
+              <div style="font-size: 13px; font-weight: 700; color: var(--text-main);">Total Biaya Menginap:</div>
+              <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 1px;" id="lblGuestPaySub">Otomatis dibebankan ke invoice penyewa (WF-05)</div>
+            </div>
+            <span style="font-size: 18px; font-weight: 700; color: var(--brand-primary); letter-spacing: -0.3px; white-space: nowrap; flex-shrink: 0;" id="guestTotalCostTxt">Rp 100.000</span>
+          </div>
+        </div>
+
+        <!-- Checklist SOP Keamanan -->
+        <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px 12px; margin-top: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 11.5px; cursor: pointer; margin: 0; color: var(--text-main); font-weight: 600;">
+            <input type="checkbox" checked id="guestIdVerifiedCheck" style="accent-color: #FF7A00; width: 14px; height: 14px;">
+            <span>Identitas Tamu (KTP/SIM) telah dicatat dan diverifikasi sesuai SOP keamanan kos</span>
+          </label>
         </div>
       </div>
 
@@ -4812,7 +5180,7 @@
     </div>
   </div>
 
-  <!-- MODAL 7: REGISTRASI KENDARAAN & SLOT PARKIR -->
+  <!-- MODAL 7: REGISTRASI KENDARAAN & SLOT PARKIR (MULTI-VEHICLE SUPPORT) -->
   <div class="modal-backdrop" id="modalKelolaKendaraan">
     <div class="modal-card">
       <div class="modal-header-pinned">
@@ -4822,7 +5190,7 @@
           </div>
           <div>
             <h2 class="modal-title">Registrasi Kendaraan &amp; Slot Parkir</h2>
-            <p class="modal-subtitle">Alokasi stiker parkir resmi, akses gerbang RFID, dan biaya sewa slot</p>
+            <p class="modal-subtitle">Kelola kendaraan terdaftar, stiker resmi, akses gerbang RFID &amp; biaya slot</p>
           </div>
         </div>
         <button type="button" class="btn-modal-close" onclick="closeKelolaKendaraanModal()" title="Tutup Modal">
@@ -4831,43 +5199,57 @@
       </div>
 
       <div class="modal-body-scrollable">
-        <div class="form-group-item">
-          <label class="form-label-txt">Jenis Kendaraan Penghuni *</label>
-          <div class="duration-pills-row" style="height: 40px; box-sizing: border-box; align-items: center;">
-            <button type="button" class="duration-pill-opt active" id="optVehMotor" onclick="setVehicleType('motor')" style="flex: 1; height: 34px; font-size: 11px;">Motor (1 Unit Gratis)</button>
-            <button type="button" class="duration-pill-opt" id="optVehMobil" onclick="setVehicleType('mobil')" style="flex: 1; height: 34px; font-size: 11px;">Mobil (+Rp 150rb/bln)</button>
-            <button type="button" class="duration-pill-opt" id="optVehNone" onclick="setVehicleType('none')" style="flex: 1; height: 34px; font-size: 11px;">Tanpa Kendaraan</button>
+        <!-- Info Unit & Status Parkir -->
+        <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <span id="vehRoomTitle" style="font-size: 14px; font-weight: 700; color: var(--text-main);">Kamar A-01</span>
+              <span id="vehTenantTitle" style="font-size: 12px; color: var(--text-secondary); margin-left: 6px;">(Penghuni: Siti Aminah)</span>
+            </div>
+            <span id="vehSummaryBadge" class="status-badge badge-brand" style="font-size: 11px;">1 Kendaraan Terdaftar</span>
           </div>
         </div>
 
-        <div id="vehFieldsWrap">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-            <div class="form-group-item" style="margin-bottom: 0;">
-              <label class="form-label-txt">Merk &amp; Model Kendaraan *</label>
-              <input type="text" id="vehModelInput" class="form-input-field" placeholder="Contoh: Honda Vario 160 CC" value="Honda Vario 160 CC" style="height: 38px; font-size: 12px;">
-            </div>
-            <div class="form-group-item" style="margin-bottom: 0;">
-              <label class="form-label-txt">Nomor Plat Polisi *</label>
-              <input type="text" id="vehPlatInput" class="form-input-field" placeholder="Contoh: B 3456 SAA" value="B 3456 SAA" style="height: 38px; font-size: 12px; font-weight: 700; text-transform: uppercase;">
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-            <div class="form-group-item" style="margin-bottom: 0;">
-              <label class="form-label-txt">Nomor Stiker Parkir</label>
-              <input type="text" id="vehStickerInput" class="form-input-field" value="STK-A01-01" readonly style="height: 38px; font-size: 12px; background: #F8FAFC; color: #64748B;">
-            </div>
-            <div class="form-group-item" style="margin-bottom: 0;">
-              <label class="form-label-txt">Biaya Parkir Bulanan Tambahan</label>
-              <input type="text" id="vehSurchargeInput" class="form-input-field" value="Rp 0 (Termasuk Fasilitas Standar)" readonly style="height: 38px; font-size: 12px; background: #F8FAFC; font-weight: 600; color: #16A34A;">
+        <!-- Section Header: Daftar Kendaraan + Tombol Tambah -->
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px;">
+              Daftar Kendaraan di Kamar Ini:
+            </span>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn-micro-brand" onclick="addNewVehicleRow()" style="height: 28px; padding: 0 10px; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;" title="Tambah Kendaraan Baru">
+                <i data-lucide="plus" style="width: 12px; height: 12px;"></i>
+                <span>+ Tambah Kendaraan</span>
+              </button>
+              <button type="button" class="btn-micro-outline" id="btnToggleNoVeh" onclick="toggleNoVehicles()" style="height: 28px; padding: 0 9px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" title="Set Tanpa Kendaraan">
+                <i data-lucide="ban" style="width: 12px; height: 12px; color: #94A3B8;"></i>
+                <span>Tanpa Kendaraan</span>
+              </button>
             </div>
           </div>
 
-          <div style="background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px 12px; margin-bottom: 6px;">
-            <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; margin: 0; color: var(--text-main); font-weight: 600;">
-              <input type="checkbox" checked id="vehAccessRfidCheck" style="accent-color: #FF7A00; width: 15px; height: 15px;">
-              <span>Aktifkan Izin Kartu RFID Gerbang Otomatis untuk Kendaraan Ini</span>
-            </label>
+          <!-- Dynamic Vehicle Rows Container -->
+          <div id="manageVehiclesListContainer" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Kalkulasi Total Biaya Sewa Slot Parkir Bulanan -->
+        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 4px;">
+          <div>
+            <div style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">Total Tambahan Biaya Parkir:</div>
+            <div style="font-size: 10.5px; color: var(--text-muted); margin-top: 1px;">Otomatis masuk invoice tagihan bulanan (WF-05)</div>
+          </div>
+          <div style="text-align: right; flex-shrink: 0;">
+            <span id="vehTotalSurchargeTxt" style="font-size: 16px; font-weight: 700; color: var(--brand-primary); letter-spacing: -0.3px; white-space: nowrap;">Rp 0 / bln</span>
+          </div>
+        </div>
+
+        <!-- Ketentuan SOP Parkir -->
+        <div style="font-size: 11px; color: #0284C7; background: #F0F9FF; border: 1px solid #BAE6FD; padding: 10px 12px; border-radius: 10px; line-height: 1.45; display: flex; align-items: flex-start; gap: 6px;">
+          <i data-lucide="info" style="width: 14px; height: 14px; color: #0284C7; flex-shrink: 0; margin-top: 1px;"></i>
+          <div>
+            <strong>Ketentuan Parkir Kos:</strong> 1 unit motor pertama gratis. Motor ke-2 dikenakan +Rp 50.000/bln. Slot mobil dikenakan +Rp 150.000/bln. Setiap kendaraan mendapatkan 1 stiker barcode fisik &amp; akses RFID gate resmi.
           </div>
         </div>
       </div>
@@ -5174,6 +5556,23 @@
         progressPct: 33,
         occupants: [
           { name: 'Siti Aminah', role: 'Penyewa Utama', phone: '0812-3456-7890', isPrimary: true, since: '1 Mar 2025' }
+        ],
+        guests: [
+          {
+            id: 'GST-001',
+            names: ['Rudi Hartono'],
+            count: 1,
+            relation: 'Keluarga (Paman)',
+            phone: '0812-9988-7766',
+            startDate: '2026-10-28',
+            endDate: '2026-10-30',
+            period: '2 Malam (28 - 30 Okt 2026)',
+            cost: 'Rp 0 (SOP Kuota Bebas Biaya)',
+            status: 'Aktif'
+          }
+        ],
+        vehicles: [
+          { type: 'motor', model: 'Honda Vario 160 CC', plat: 'B 4821 KLO', sticker: 'STK-A01-01', fee: 0, rfid: true }
         ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.200.000', date: '01 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
@@ -5830,7 +6229,7 @@
         occListContainer.innerHTML = t.occupants.map(o => `
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed #F1F5F9; font-size: 11px;">
             <div style="display: flex; align-items: center; gap: 6px; min-width: 0;">
-              <i data-lucide="${o.isPrimary ? 'user-check' : 'user'}" style="width: 12px; height: 12px; color: ${o.isPrimary ? 'var(--brand-primary)' : '#64748B'}; flex-shrink: 0;"></i>
+              <i data-lucide="${o.isPrimary ? 'user-check' : 'user'}" style="width: 12px; height: 12px; color: var(--brand-primary); flex-shrink: 0;"></i>
               <span style="font-weight: ${o.isPrimary ? '700' : '500'}; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${o.name}</span>
               <span style="color: #94A3B8; font-size: 10px;">(${o.phone})</span>
             </div>
@@ -5839,22 +6238,80 @@
         `).join('');
       }
 
+      // Render Tamu Menginap Sementara di bawah Penghuni Terdaftar
+      const guestsSection = document.getElementById('dGuestsSection');
+      const guestsContainer = document.getElementById('dGuestsListContainer');
+      const guestBadgeCount = document.getElementById('dGuestBadgeCount');
+
+      if (guestsSection && guestsContainer) {
+        const activeGuests = (t.guests || []).filter(g => g.status !== 'Selesai');
+        if (activeGuests.length > 0) {
+          guestsSection.style.display = 'block';
+          if (guestBadgeCount) {
+            const totalPeople = activeGuests.reduce((acc, g) => acc + (g.count || 1), 0);
+            guestBadgeCount.textContent = `${totalPeople} Tamu Menginap`;
+          }
+          guestsContainer.innerHTML = activeGuests.map(g => `
+            <div style="background: #FFFFFF; border: 1px solid #FED7AA; border-radius: 8px; padding: 7px 9px; display: flex; align-items: center; justify-content: space-between; font-size: 11px;">
+              <div style="min-width: 0; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                  <span style="font-weight: 700; color: var(--text-main);">${g.names ? g.names.join(', ') : g.name}</span>
+                  <span class="status-badge badge-brand" style="font-size: 9px; padding: 1px 5px;">${g.relation}</span>
+                  <span style="font-size: 9.5px; color: #94A3B8;">(${g.count || 1} Org)</span>
+                </div>
+                <div style="font-size: 10px; color: var(--text-secondary); margin-top: 3px; display: flex; align-items: center; gap: 6px;">
+                  <span style="display: inline-flex; align-items: center; gap: 3px;">
+                    <i data-lucide="calendar" style="width: 10px; height: 10px; color: #94A3B8;"></i>
+                    ${g.period || (g.startDate + ' s/d ' + g.endDate)}
+                  </span>
+                  <span style="font-weight: 600; color: ${g.cost === 'Rp 0' || (g.cost && g.cost.includes('Rp 0')) ? '#16A34A' : 'var(--brand-primary)'};">${g.cost}</span>
+                </div>
+              </div>
+              <button type="button" class="btn-micro-outline" onclick="endGuestStay('${g.id}')" title="Selesaikan Izin Menginap Tamu" style="height: 24px; padding: 0 6px; font-size: 10px; color: #DC2626; border-color: #FECACA; background: #FFF5F5; flex-shrink: 0; margin-left: 6px;">
+                Akhiri
+              </button>
+            </div>
+          `).join('');
+        } else {
+          guestsSection.style.display = 'none';
+        }
+      }
+
       // 6. Update Quad 4: Fasilitas & Unit
       document.getElementById('dInventoryRoom').textContent = 'Kamar ' + t.room;
       document.getElementById('dMeterTokenVal').textContent = t.meterToken;
 
       const dVehTxt = document.getElementById('dVehicleTxt');
       if (dVehTxt) {
-        if (!t.vehicle) {
-          t.vehicle = { type: 'motor', model: 'Honda Vario 160 CC', plat: 'B 4821 KLO', sticker: '#042', fee: 'Rp 0' };
-        }
+        let vehList = [];
         if (t.vehicles && t.vehicles.length > 0) {
-          dVehTxt.textContent = t.vehicles.map(v => `${v.type} (${v.plate || '-'})`).join(', ');
-        } else if (t.vehicle.type === 'none') {
+          vehList = t.vehicles.filter(v => v.type && v.type !== 'none');
+        } else if (t.vehicle && t.vehicle.type && t.vehicle.type !== 'none') {
+          vehList = [t.vehicle];
+        }
+
+        if (vehList.length === 0) {
           dVehTxt.textContent = 'Tanpa Kendaraan';
+          dVehTxt.removeAttribute('title');
         } else {
-          const typeLabel = t.vehicle.type === 'mobil' ? '1 Mobil' : (t.vehicle.type === 'sepeda' ? '1 Sepeda' : '1 Motor');
-          dVehTxt.textContent = `${typeLabel} (${t.vehicle.plat || '-'}) · Stiker ${t.vehicle.sticker || '-'}`;
+          let motorCount = 0;
+          let mobilCount = 0;
+          let sepedaCount = 0;
+          vehList.forEach(v => {
+            const type = (v.type || '').toLowerCase();
+            if (type === 'motor') motorCount++;
+            else if (type === 'mobil') mobilCount++;
+            else if (type === 'sepeda') sepedaCount++;
+          });
+
+          const summaryParts = [];
+          if (motorCount > 0) summaryParts.push(`${motorCount} Motor`);
+          if (mobilCount > 0) summaryParts.push(`${mobilCount} Mobil`);
+          if (sepedaCount > 0) summaryParts.push(`${sepedaCount} Sepeda`);
+
+          dVehTxt.textContent = summaryParts.length > 0 ? summaryParts.join(', ') : 'Tanpa Kendaraan';
+          // Tooltip informatif saat hover untuk detail nomor plat tanpa membuat baris sesak
+          dVehTxt.title = vehList.map(v => `${v.type === 'mobil' ? 'Mobil' : (v.type === 'sepeda' ? 'Sepeda' : 'Motor')} (${v.plat || v.plate || '-'})`).join(', ');
         }
       }
 
@@ -7338,6 +7795,24 @@
       updateMoveRoomCalc();
     }
 
+    function toggleMovePaidStatus(checked) {
+      const badge = document.getElementById('badgeMovePaidStatus');
+      const card = document.getElementById('cardMoveInitialPayment');
+      if (checked) {
+        if (badge) badge.style.display = 'inline-block';
+        if (card) {
+          card.style.background = '#F0FDF4';
+          card.style.borderColor = '#86EFAC';
+        }
+      } else {
+        if (badge) badge.style.display = 'none';
+        if (card) {
+          card.style.background = '#FFFFFF';
+          card.style.borderColor = '#E2E8F0';
+        }
+      }
+    }
+
     function updateMoveRoomCalc() {
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t) return;
@@ -7349,6 +7824,9 @@
       const diffEl = document.getElementById('moveRentDiffTxt');
       const billEl = document.getElementById('moveProrataDiffTxt');
       const depositEl = document.getElementById('moveDepositTransferTxt');
+      const totalEl = document.getElementById('moveTotalAdjustmentVal');
+      const statusBadge = document.getElementById('moveStatusBadge');
+      const descEl = document.getElementById('moveSummaryDesc');
 
       if (depositEl) {
         depositEl.textContent = `${t.deposit || 'Rp 1.000.000'} (100% dialihkan ke kamar baru)`;
@@ -7356,13 +7834,31 @@
 
       if (diff > 0) {
         if (diffEl) diffEl.textContent = `+Rp ${diff.toLocaleString('id-ID')} / bln (Upgrade ${targetRoom ? targetRoom.type.split(' ')[0] : 'Deluxe'})`;
-        if (billEl) billEl.textContent = `Rp ${diff.toLocaleString('id-ID')} (Otomatis masuk invoice)`;
+        if (billEl) billEl.textContent = `Rp ${diff.toLocaleString('id-ID')} (Otomatis masuk invoice WF-05)`;
+        if (totalEl) totalEl.textContent = `Rp ${diff.toLocaleString('id-ID')}`;
+        if (statusBadge) {
+          statusBadge.className = 'status-badge badge-brand';
+          statusBadge.textContent = 'Upgrade Unit';
+        }
+        if (descEl) descEl.textContent = 'Selisih tarif upgrade sewa pasca pindah unit kamar baru.';
       } else if (diff < 0) {
         if (diffEl) diffEl.textContent = `-Rp ${Math.abs(diff).toLocaleString('id-ID')} / bln (Downgrade)`;
         if (billEl) billEl.textContent = `Kredit saldo sewa bulan berikutnya`;
+        if (totalEl) totalEl.textContent = `Rp 0 (Kredit Rp ${Math.abs(diff).toLocaleString('id-ID')})`;
+        if (statusBadge) {
+          statusBadge.className = 'status-badge badge-warning';
+          statusBadge.textContent = 'Downgrade Unit';
+        }
+        if (descEl) descEl.textContent = 'Kelebihan pembayaran dialihkan sebagai kredit sewa periode berikutnya.';
       } else {
         if (diffEl) diffEl.textContent = `Rp 0 / bln (Tarif Selevel)`;
         if (billEl) billEl.textContent = `Rp 0 (Tidak ada selisih tagihan)`;
+        if (totalEl) totalEl.textContent = `Rp 0`;
+        if (statusBadge) {
+          statusBadge.className = 'status-badge badge-dark';
+          statusBadge.textContent = 'Tarif Selevel';
+        }
+        if (descEl) descEl.textContent = 'Tarif kamar sama, tidak ada penyesuaian nominal sewa.';
       }
     }
 
@@ -7373,6 +7869,10 @@
       document.getElementById('moveCurrentRoomTitle').textContent = 'Kamar ' + t.room;
       document.getElementById('moveCurrentRoomDesc').textContent = `(Lantai ${t.floor} · ${t.roomType})`;
       document.getElementById('moveCurrentRentRate').textContent = `${t.price} / bln`;
+
+      const payCheckbox = document.getElementById('moveInitialPaidCheckbox');
+      if (payCheckbox) payCheckbox.checked = false;
+      toggleMovePaidStatus(false);
 
       const avail = vacantRoomsData.filter(r => r.room !== t.room);
       if (avail.length > 0) {
@@ -7427,17 +7927,20 @@
       activeTenantId = targetRoom.room;
       t.contractNo = (t.contractNo || 'SPK-2025/RUMA/A-01') + '/ADD-MUTASI';
 
+      const isPaidNow = document.getElementById('moveInitialPaidCheckbox')?.checked;
       t.payHistory = t.payHistory || [];
       if (diff > 0) {
         t.payHistory.unshift({
           period: `Selisih Mutasi Kamar Upgraded (${oldRoom} → ${t.room})`,
           amount: 'Rp ' + diff.toLocaleString('id-ID'),
           date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
-          method: 'Virtual Account BCA',
-          status: 'Belum Bayar'
+          method: isPaidNow ? 'Kas Tunai Staf' : 'Virtual Account BCA',
+          status: isPaidNow ? 'Lunas' : 'Belum Bayar'
         });
-        t.billStatus = 'tempo';
-        t.billLabel = 'Selisih Kamar';
+        if (!isPaidNow) {
+          t.billStatus = 'tempo';
+          t.billLabel = 'Selisih Kamar';
+        }
       } else if (diff < 0) {
         t.payHistory.unshift({
           period: `Kredit Saldo Downgrade (${oldRoom} → ${t.room})`,
@@ -7534,24 +8037,26 @@
           `;
         } else {
           return `
-            <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between;">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 32px; height: 32px; border-radius: 8px; background: #F1F5F9; color: #475569; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
-                  <i data-lucide="user" style="width: 16px; height: 16px;"></i>
+            <div class="occupant-card-item" data-occupant-name="${escapeHtml(o.name)}" style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 32px; height: 32px; border-radius: 8px; background: #FFF7ED; color: var(--brand-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
+                    <i data-lucide="user" style="width: 16px; height: 16px;"></i>
+                  </div>
+                  <div>
+                    <div style="font-size: 13px; font-weight: 700; color: var(--text-main);">${o.name}</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">${o.phone} &middot; Bergabung ${o.since || 'Masa Sewa'}</div>
+                  </div>
                 </div>
-                <div>
-                  <div style="font-size: 13px; font-weight: 700; color: var(--text-main);">${o.name}</div>
-                  <div style="font-size: 11px; color: var(--text-muted);">${o.phone} &middot; Bergabung ${o.since || 'Masa Sewa'}</div>
-                </div>
+                <span class="status-badge badge-dark" style="font-size: 10.5px; padding: 2px 7px;">Teman Sekamar</span>
               </div>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <span class="status-badge badge-dark" style="font-size: 11px; padding: 2px 7px;">Teman Sekamar</span>
-                <button type="button" class="btn-micro-edit" onclick="initTransferOccupant('${o.name}')" title="Alihkan kontrak ke rekan ini (Balik Nama)">
-                  <i data-lucide="arrow-left-right" style="width: 11px; height: 11px;"></i>
+              <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding-top: 8px; border-top: 1px dashed var(--border-subtle);">
+                <button type="button" class="btn-micro-outline" onclick="initTransferOccupant('${escapeHtml(o.name)}', this)" style="height: 28px; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;" title="Alihkan kontrak ke rekan ini (Balik Nama PIC)">
+                  <i data-lucide="arrow-left-right" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
                   <span>Balik Nama PIC</span>
                 </button>
-                <button type="button" class="btn-micro-emergency" onclick="initRemoveOccupant('${o.name}')" title="Keluarkan rekan ini dari kamar">
-                  <i data-lucide="user-minus" style="width: 11px; height: 11px;"></i>
+                <button type="button" class="btn-micro-danger" onclick="initRemoveOccupant('${escapeHtml(o.name)}', this)" style="height: 28px; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;" title="Keluarkan rekan ini dari kamar">
+                  <i data-lucide="user-minus" style="width: 12px; height: 12px;"></i>
                   <span>Keluarkan Rekan</span>
                 </button>
               </div>
@@ -7562,18 +8067,28 @@
       lucide.createIcons();
     }
 
-    function initRemoveOccupant(name) {
+    function initRemoveOccupant(name, btnEl) {
       pendingRemoveOccupantName = name;
       const sec = document.getElementById('sectionKeluarkanRekan');
       const nameTxt = document.getElementById('removeOccupantNameTxt');
       if (nameTxt) nameTxt.textContent = name;
-      if (sec) sec.style.display = 'block';
+      
       const addSec = document.getElementById('sectionTambahRekan');
       if (addSec) addSec.style.display = 'none';
       const balikSec = document.getElementById('sectionBalikNama');
       if (balikSec) balikSec.style.display = 'none';
       const btnAddRow = document.getElementById('wrapBtnAddOccupantRow');
       if (btnAddRow) btnAddRow.style.display = 'none';
+
+      // Reposisi form konfirmasi pengeluaran tepat di bawah kartu rekan yang dipilih
+      const card = btnEl ? btnEl.closest('.occupant-card-item') : document.querySelector(`.occupant-card-item[data-occupant-name="${CSS.escape(name)}"]`);
+      if (sec) {
+        if (card && card.parentNode) {
+          card.parentNode.insertBefore(sec, card.nextSibling);
+        }
+        sec.style.display = 'block';
+      }
+
       if (window.RumaDatePicker) {
         RumaDatePicker.init('wrapRemoveOccupantDate', 'removeOccupantDate', '2026-10-31');
       }
@@ -7625,6 +8140,88 @@
       openKelolaPenghuniModal();
 
       RumaUI.showToast(`Rekan sekamar ${removedName} berhasil dikeluarkan dari Kamar ${t.room}! Akses portal dinonaktifkan. Kapasitas kamar kini ${t.occupants.length} Orang. ${priceNote}.`, 'success');
+    }
+
+    function toggleSurchargeDropdown(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('popoverSurcharge');
+      const trigger = document.getElementById('btnNewRoommateSurchargeTrigger');
+      const chevron = document.getElementById('chevronSurcharge');
+      const isOpen = popover && popover.classList.contains('open');
+
+      document.querySelectorAll('.custom-select-popover.open').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.custom-select-trigger.active').forEach(t => t.classList.remove('active'));
+
+      if (!isOpen && popover && trigger) {
+        popover.classList.add('open');
+        trigger.classList.add('active');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      } else if (chevron) {
+        chevron.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function selectSurchargeOption(val, label) {
+      const input = document.getElementById('newRoommateSurcharge');
+      if (input) input.value = val;
+      const txt = document.getElementById('newRoommateSurchargeTxt');
+      if (txt) txt.textContent = label;
+
+      document.querySelectorAll('#popoverSurcharge .custom-select-option-item').forEach(item => {
+        if (item.textContent.trim().includes(label)) {
+          item.classList.add('selected');
+        } else {
+          item.classList.remove('selected');
+        }
+      });
+
+      const popover = document.getElementById('popoverSurcharge');
+      if (popover) popover.classList.remove('open');
+      const trigger = document.getElementById('btnNewRoommateSurchargeTrigger');
+      if (trigger) trigger.classList.remove('active');
+      const chevron = document.getElementById('chevronSurcharge');
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
+
+    function toggleRemoveTarifDropdown(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('popoverRemoveTarif');
+      const trigger = document.getElementById('btnRemoveOccupantTarifTrigger');
+      const chevron = document.getElementById('chevronRemoveTarif');
+      const isOpen = popover && popover.classList.contains('open');
+
+      document.querySelectorAll('.custom-select-popover.open').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.custom-select-trigger.active').forEach(t => t.classList.remove('active'));
+
+      if (!isOpen && popover && trigger) {
+        popover.classList.add('open');
+        trigger.classList.add('active');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      } else if (chevron) {
+        chevron.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function selectRemoveTarifOption(val, label, iconName, iconColor) {
+      const input = document.getElementById('removeOccupantTarifAdjust');
+      if (input) input.value = val;
+      const txt = document.getElementById('removeOccupantTarifTxt');
+      if (txt) txt.textContent = label;
+
+      document.querySelectorAll('#popoverRemoveTarif .custom-select-option-item').forEach(item => {
+        if (item.textContent.trim().includes(label)) {
+          item.classList.add('selected');
+        } else {
+          item.classList.remove('selected');
+        }
+      });
+
+      const popover = document.getElementById('popoverRemoveTarif');
+      if (popover) popover.classList.remove('open');
+      const trigger = document.getElementById('btnRemoveOccupantTarifTrigger');
+      if (trigger) trigger.classList.remove('active');
+      const chevron = document.getElementById('chevronRemoveTarif');
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
     }
 
     function showAddOccupantForm() {
@@ -7875,7 +8472,17 @@
         // 5. Inisialisasi DatePicker Check-Out
         if (window.RumaDatePicker) {
           const isoEndDate = parseIndoDateToIso(t.end);
+          const hiddenInput = document.getElementById('checkoutDate');
+          if (hiddenInput) hiddenInput.value = isoEndDate;
           RumaDatePicker.init('wrapCheckoutDate', 'checkoutDate', isoEndDate);
+          const displaySpan = document.querySelector('#wrapCheckoutDate .ruma-datepicker-val-txt');
+          if (displaySpan) {
+            displaySpan.textContent = formatIndoDateDisplay(parseIndoDate(t.end));
+          }
+          const btnToday = document.getElementById('btnPresetCheckoutToday');
+          const btnEnd = document.getElementById('btnPresetCheckoutEnd');
+          if (btnToday) btnToday.classList.remove('active');
+          if (btnEnd) btnEnd.classList.add('active');
         }
       }
       document.getElementById('modalPerpanjang').classList.add('open');
@@ -8023,8 +8630,8 @@
         btnCheckout.classList.add('active');
         secRenew.style.display = 'none';
         secCheckout.style.display = 'flex';
-        btnSubmit.innerHTML = '<i data-lucide="log-out" style="width: 14px; height: 14px;"></i><span>Konfirmasi Check-Out & Refund Deposit</span>';
-        btnSubmit.className = 'btn-modal-danger';
+        btnSubmit.innerHTML = '<i data-lucide="log-out" style="width: 14px; height: 14px;"></i><span>Konfirmasi Check-Out</span>';
+        btnSubmit.className = 'btn-modal-danger-solid';
         const titleEl = document.getElementById('modalPerpanjangHeaderTitle');
         const subtitleEl = document.getElementById('modalPerpanjangSubtitle');
         const iconBox = document.getElementById('modalPerpanjangIconBox');
@@ -8038,6 +8645,45 @@
         }
       }
       lucide.createIcons();
+    }
+
+    function setCheckoutDatePreset(preset) {
+      const t = tenantsData.find(item => item.id === activeTenantId);
+      let targetDate;
+      const btnToday = document.getElementById('btnPresetCheckoutToday');
+      const btnEnd = document.getElementById('btnPresetCheckoutEnd');
+
+      if (preset === 'today') {
+        targetDate = new Date();
+        if (btnToday) btnToday.classList.add('active');
+        if (btnEnd) btnEnd.classList.remove('active');
+      } else {
+        targetDate = t ? parseIndoDate(t.end) : new Date();
+        if (btnToday) btnToday.classList.remove('active');
+        if (btnEnd) btnEnd.classList.add('active');
+      }
+      const y = targetDate.getFullYear();
+      const m = String(targetDate.getMonth() + 1).padStart(2, '0');
+      const d = String(targetDate.getDate()).padStart(2, '0');
+      const isoStr = `${y}-${m}-${d}`;
+
+      const hiddenInput = document.getElementById('checkoutDate');
+      if (hiddenInput) {
+        hiddenInput.value = isoStr;
+      }
+
+      if (window.RumaDatePicker) {
+        RumaDatePicker.init('wrapCheckoutDate', 'checkoutDate', isoStr);
+      }
+
+      const displaySpan = document.querySelector('#wrapCheckoutDate .ruma-datepicker-val-txt');
+      if (displaySpan) {
+        displaySpan.textContent = formatIndoDateDisplay(targetDate);
+      }
+
+      if (window.RumaUI) {
+        RumaUI.showToast(`Tanggal check-out diatur: ${formatIndoDateDisplay(targetDate)}`, 'info');
+      }
     }
 
     function selectRenewDuration(el, months) {
@@ -8179,6 +8825,26 @@
       lucide.createIcons();
     }
 
+    let currentGuestCount = 1;
+
+    function setGuestCount(n) {
+      currentGuestCount = n;
+      [1, 2, 3].forEach(num => {
+        const btn = document.getElementById('btnGuestCount' + num);
+        if (btn) {
+          if (num === n) btn.classList.add('active');
+          else btn.classList.remove('active');
+        }
+      });
+
+      const field2 = document.getElementById('guestField2');
+      const field3 = document.getElementById('guestField3');
+      if (field2) field2.style.display = n >= 2 ? 'block' : 'none';
+      if (field3) field3.style.display = n >= 3 ? 'block' : 'none';
+
+      calcGuestFee();
+    }
+
     function openIzinTamuModal() {
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t) return;
@@ -8188,16 +8854,45 @@
       if (guestHostName) guestHostName.textContent = `(Penghuni: ${t.name})`;
 
       document.getElementById('guestNameInput').value = '';
+      const g2 = document.getElementById('guestNameInput2');
+      if (g2) g2.value = '';
+      const r2 = document.getElementById('guestRelInput2');
+      if (r2) r2.value = '';
+      const g3 = document.getElementById('guestNameInput3');
+      if (g3) g3.value = '';
+      const r3 = document.getElementById('guestRelInput3');
+      if (r3) r3.value = '';
       document.getElementById('guestPhoneInput').value = '';
-      selectedGuestBillingOpt = 'paid';
-      document.getElementById('optGuestPaid').classList.add('active');
-      document.getElementById('optGuestFree').classList.remove('active');
+
+      setGuestCount(1);
+      setGuestBillingOpt('paid');
       selectGuestRelationOption('Orang Tua', 'Orang Tua (Ayah / Ibu)', 'heart', '#EA580C');
       
       if (window.RumaDatePicker) {
         RumaDatePicker.init('wrapGuestStartDate', 'guestStartDate', '2026-11-01');
-        RumaDatePicker.init('wrapGuestEndDate', 'guestEndDate', '2026-11-04');
+        RumaDatePicker.init('wrapGuestEndDate', 'guestEndDate', '2026-11-05');
+        const startSpan = document.querySelector('#wrapGuestStartDate .ruma-datepicker-val-txt');
+        if (startSpan) startSpan.textContent = '1 November 2026';
+        const endSpan = document.querySelector('#wrapGuestEndDate .ruma-datepicker-val-txt');
+        if (endSpan) endSpan.textContent = '5 November 2026';
       }
+
+      const startInput = document.getElementById('guestStartDate');
+      const endInput = document.getElementById('guestEndDate');
+      if (startInput && !startInput._hasGuestListener) {
+        startInput.addEventListener('change', calcGuestFee);
+        startInput._hasGuestListener = true;
+      }
+      if (endInput && !endInput._hasGuestListener) {
+        endInput.addEventListener('change', calcGuestFee);
+        endInput._hasGuestListener = true;
+      }
+
+      setGuestPayMethod('invoice');
+      selectGuestVehOption('none', 'Tanpa Kendaraan', 'ban', '#64748B');
+      const purposeEl = document.getElementById('guestPurposeInput');
+      if (purposeEl) purposeEl.value = '';
+
       calcGuestFee();
       document.getElementById('modalIzinTamu').classList.add('open');
       lucide.createIcons();
@@ -8205,25 +8900,149 @@
 
     function closeIzinTamuModal() {
       document.getElementById('modalIzinTamu').classList.remove('open');
+      const popover = document.getElementById('popoverGuestVeh');
+      if (popover) popover.classList.remove('open');
+      const chevron = document.getElementById('chevronGuestVeh');
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
+
+    function toggleGuestVehDropdown(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('popoverGuestVeh');
+      const trigger = document.getElementById('btnGuestVehTrigger');
+      const chevron = document.getElementById('chevronGuestVeh');
+      if (!popover) return;
+      const isOpen = popover.classList.contains('open');
+
+      document.querySelectorAll('.custom-select-popover.open').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.custom-select-trigger.active').forEach(t => t.classList.remove('active'));
+
+      if (isOpen) {
+        popover.classList.remove('open');
+        if (trigger) trigger.classList.remove('active');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+      } else {
+        popover.classList.add('open');
+        if (trigger) trigger.classList.add('active');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    function selectGuestVehOption(val, label, icon, iconColor) {
+      const input = document.getElementById('guestVehType');
+      const txt = document.getElementById('guestVehTxt');
+      const iconEl = document.getElementById('guestVehIcon');
+      const popover = document.getElementById('popoverGuestVeh');
+      const trigger = document.getElementById('btnGuestVehTrigger');
+      const chevron = document.getElementById('chevronGuestVeh');
+
+      if (input) input.value = val;
+      if (txt) txt.textContent = label;
+      if (iconEl) {
+        iconEl.setAttribute('data-lucide', icon);
+        iconEl.style.color = iconColor;
+      }
+      if (popover) {
+        popover.classList.remove('open');
+        popover.querySelectorAll('.custom-select-option-item').forEach(el => {
+          if (el.textContent.includes(label)) {
+            el.classList.add('selected');
+          } else {
+            el.classList.remove('selected');
+          }
+        });
+      }
+      if (trigger) trigger.classList.remove('active');
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
+
+      toggleGuestVehPlat(val);
+      lucide.createIcons();
+    }
+
+    let selectedGuestPayMethod = 'invoice';
+
+    function setGuestPayMethod(method) {
+      selectedGuestPayMethod = method;
+      const btnInv = document.getElementById('optGuestPayInvoice');
+      const btnCash = document.getElementById('optGuestPayCash');
+      const note = document.getElementById('lblGuestPaySub');
+      if (method === 'invoice') {
+        if (btnInv) btnInv.classList.add('active');
+        if (btnCash) btnCash.classList.remove('active');
+        if (note) note.textContent = 'Otomatis dibebankan ke invoice penyewa (WF-05)';
+      } else {
+        if (btnCash) btnCash.classList.add('active');
+        if (btnInv) btnInv.classList.remove('active');
+        if (note) note.textContent = 'Lunas langsung di resepsionis (Kuitansi siap diunduh)';
+      }
+    }
+
+    function toggleGuestVehPlat(type) {
+      const input = document.getElementById('guestVehPlat');
+      if (input) {
+        if (type === 'none') {
+          input.value = '';
+          input.disabled = true;
+          input.placeholder = 'Tanpa Kendaraan';
+        } else {
+          input.disabled = false;
+          input.placeholder = type === 'mobil' ? 'Plat Mobil (mis: B 1234 XYZ)' : 'Plat Motor (mis: B 5678 SAA)';
+          input.focus();
+        }
+      }
     }
 
     function setGuestBillingOpt(opt) {
       selectedGuestBillingOpt = opt;
+      const cardPaid = document.getElementById('optGuestPaid');
+      const cardFree = document.getElementById('optGuestFree');
+      const iconPaid = document.getElementById('iconGuestPaid');
+      const iconFree = document.getElementById('iconGuestFree');
+
       if (opt === 'paid') {
-        document.getElementById('optGuestPaid').classList.add('active');
-        document.getElementById('optGuestFree').classList.remove('active');
+        if (cardPaid) {
+          cardPaid.style.borderColor = 'var(--brand-primary)';
+          cardPaid.style.background = '#FFF7ED';
+        }
+        if (iconPaid) {
+          iconPaid.setAttribute('data-lucide', 'check-circle-2');
+          iconPaid.style.color = 'var(--brand-primary)';
+        }
+        if (cardFree) {
+          cardFree.style.borderColor = '#E2E8F0';
+          cardFree.style.background = '#FFFFFF';
+        }
+        if (iconFree) {
+          iconFree.setAttribute('data-lucide', 'circle');
+          iconFree.style.color = '#CBD5E1';
+        }
       } else {
-        document.getElementById('optGuestFree').classList.add('active');
-        document.getElementById('optGuestPaid').classList.remove('active');
+        if (cardFree) {
+          cardFree.style.borderColor = 'var(--brand-primary)';
+          cardFree.style.background = '#FFF7ED';
+        }
+        if (iconFree) {
+          iconFree.setAttribute('data-lucide', 'check-circle-2');
+          iconFree.style.color = 'var(--brand-primary)';
+        }
+        if (cardPaid) {
+          cardPaid.style.borderColor = '#E2E8F0';
+          cardPaid.style.background = '#FFFFFF';
+        }
+        if (iconPaid) {
+          iconPaid.setAttribute('data-lucide', 'circle');
+          iconPaid.style.color = '#CBD5E1';
+        }
       }
       calcGuestFee();
+      lucide.createIcons();
     }
 
     function calcGuestFee() {
       const startEl = document.getElementById('guestStartDate');
       const endEl = document.getElementById('guestEndDate');
       const startVal = startEl ? startEl.value : '2026-11-01';
-      const endVal = endEl ? endEl.value : '2026-11-04';
+      const endVal = endEl ? endEl.value : '2026-11-05';
       
       const dStart = new Date(startVal);
       const dEnd = new Date(endVal);
@@ -8231,61 +9050,175 @@
       const diffDays = Math.max(1, Math.round(diffTime / (1000 * 60 * 60 * 24)));
 
       const nightsEl = document.getElementById('guestNightsTxt');
-      const rateEl = document.getElementById('guestRateTxt');
       const totalEl = document.getElementById('guestTotalCostTxt');
+      const freeQuotaEl = document.getElementById('guestFreeQuotaTxt');
+      const paidNightsEl = document.getElementById('guestPaidNightsTxt');
+      const quotaBadge = document.getElementById('guestQuotaBadge');
 
-      if (nightsEl) nightsEl.textContent = `${diffDays} Malam`;
+      const freeNights = Math.min(diffDays, 2);
+      const paidNights = Math.max(0, diffDays - 2);
+      const guestCount = currentGuestCount || 1;
 
-      let total = 0;
+      if (nightsEl) {
+        const monthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        nightsEl.textContent = `${diffDays} Malam (${dStart.getDate()} - ${dEnd.getDate()} ${monthShort[dEnd.getMonth()]} ${dEnd.getFullYear()})`;
+      }
+      if (freeQuotaEl) {
+        freeQuotaEl.textContent = `${freeNights} Malam Gratis (Rp 0)`;
+      }
+
       if (selectedGuestBillingOpt === 'free') {
-        if (rateEl) rateEl.textContent = 'Gratis (Kebijakan Bebas Biaya)';
-        if (totalEl) totalEl.textContent = 'Rp 0 (Free Quota)';
+        if (paidNightsEl) {
+          paidNightsEl.textContent = 'Rp 0 (Dispensasi Bebas Biaya)';
+          paidNightsEl.style.color = '#16A34A';
+        }
+        if (totalEl) totalEl.textContent = 'Rp 0';
+        if (quotaBadge) {
+          quotaBadge.className = 'status-badge badge-success';
+          quotaBadge.textContent = 'Bebas Biaya';
+        }
       } else {
-        total = diffDays * 50000;
-        if (rateEl) rateEl.textContent = 'Rp 50.000 / malam';
-        if (totalEl) totalEl.textContent = 'Rp ' + total.toLocaleString('id-ID');
+        const total = paidNights * 50000 * guestCount;
+        if (paidNightsEl) {
+          paidNightsEl.style.color = paidNights > 0 ? 'var(--brand-primary)' : '#16A34A';
+          if (paidNights > 0) {
+            paidNightsEl.textContent = guestCount > 1 
+              ? `${paidNights} Malam x ${guestCount} Tamu x Rp 50.000`
+              : `${paidNights} Malam x Rp 50.000`;
+          } else {
+            paidNightsEl.textContent = 'Rp 0 (Dalam Kuota SOP)';
+          }
+        }
+        if (totalEl) {
+          totalEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+        if (quotaBadge) {
+          if (paidNights > 0) {
+            quotaBadge.className = 'status-badge badge-brand';
+            quotaBadge.textContent = `${paidNights} Malam Berbayar`;
+          } else {
+            quotaBadge.className = 'status-badge badge-success';
+            quotaBadge.textContent = 'Kuota Gratis';
+          }
+        }
       }
     }
 
     function confirmIzinTamu() {
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t) return;
-      const gName = document.getElementById('guestNameInput')?.value.trim();
+      const gName1 = document.getElementById('guestNameInput')?.value.trim();
       const gRel = document.getElementById('guestRelationSelect')?.value || 'Teman / Rekan Kerja';
-      const gNights = document.getElementById('guestNightsTxt')?.textContent || '3 Malam';
+      const gPhone = document.getElementById('guestPhoneInput')?.value.trim() || '-';
+      const startEl = document.getElementById('guestStartDate');
+      const endEl = document.getElementById('guestEndDate');
+      const startVal = startEl ? startEl.value : '2026-11-01';
+      const endVal = endEl ? endEl.value : '2026-11-05';
+      const gNights = document.getElementById('guestNightsTxt')?.textContent || '4 Malam';
       const gTotal = document.getElementById('guestTotalCostTxt')?.textContent || 'Rp 0';
 
-      if (!gName) {
-        RumaUI.showToast('Silakan masukkan Nama Lengkap Tamu Menginap', 'warning');
+      if (!gName1) {
+        RumaUI.showToast('Silakan masukkan Nama Lengkap Tamu Utama', 'warning');
         return;
       }
 
-      const startEl = document.getElementById('guestStartDate');
-      const endEl = document.getElementById('guestEndDate');
-      if (startEl && endEl && new Date(endEl.value) < new Date(startEl.value)) {
+      if (startEl && endEl && new Date(endVal) < new Date(startVal)) {
         RumaUI.showToast('Tanggal selesai menginap tidak boleh lebih awal dari tanggal mulai', 'warning');
         return;
       }
 
+      const names = [gName1];
+      const count = currentGuestCount || 1;
+      if (count >= 2) {
+        const gName2 = document.getElementById('guestNameInput2')?.value.trim();
+        if (!gName2) {
+          RumaUI.showToast('Silakan masukkan Nama Lengkap Tamu 2', 'warning');
+          return;
+        }
+        names.push(gName2);
+      }
+      if (count >= 3) {
+        const gName3 = document.getElementById('guestNameInput3')?.value.trim();
+        if (!gName3) {
+          RumaUI.showToast('Silakan masukkan Nama Lengkap Tamu 3', 'warning');
+          return;
+        }
+        names.push(gName3);
+      }
+
+      const vehType = document.getElementById('guestVehType')?.value || 'none';
+      const vehPlat = document.getElementById('guestVehPlat')?.value.trim().toUpperCase() || '';
+      const purpose = document.getElementById('guestPurposeInput')?.value.trim() || 'Kunjungan Singkat';
+
+      if (!t.guests) t.guests = [];
+      const newGuest = {
+        id: 'GST-' + Date.now(),
+        names: names,
+        count: count,
+        relation: gRel,
+        phone: gPhone,
+        startDate: startVal,
+        endDate: endVal,
+        period: `${gNights}`,
+        cost: gTotal,
+        payMethod: selectedGuestPayMethod,
+        vehicle: vehType !== 'none' ? `${vehType === 'mobil' ? 'Mobil' : 'Motor'} (${vehPlat || 'Terdaftar'})` : 'Tanpa Kendaraan',
+        purpose: purpose,
+        status: 'Aktif'
+      };
+      t.guests.unshift(newGuest);
+
       closeIzinTamuModal();
-      RumaUI.showToast(`Izin menginap ${gName} (${gRel} · ${gNights}) untuk Kamar ${t.room} berhasil diterbitkan! Tercatat di log sekuriti dan biaya (${gTotal}) masuk invoice berjalan.`, 'success');
+      selectTenant(t.id);
+      lucide.createIcons();
+      RumaUI.showToast(`Izin menginap ${names.join(', ')} (${count} Tamu · ${gRel} · ${gNights}) untuk Kamar ${t.room} berhasil diterbitkan! Tercatat di log sekuriti dan biaya (${gTotal}) ${selectedGuestPayMethod === 'cash' ? 'diterima tunai di resepsionis' : 'masuk invoice berjalan'}.`, 'success');
+    }
+
+    function endGuestStay(guestId) {
+      const t = tenantsData.find(item => item.id === activeTenantId);
+      if (!t || !t.guests) return;
+      const gIndex = t.guests.findIndex(g => g.id === guestId);
+      if (gIndex !== -1) {
+        const removed = t.guests.splice(gIndex, 1)[0];
+        selectTenant(t.id);
+        lucide.createIcons();
+        RumaUI.showToast(`Izin menginap tamu (${removed.names ? removed.names.join(', ') : removed.name}) telah diakhiri. Kunci/akses keamanan dikembalikan.`, 'info');
+      }
     }
 
     // ══════════════════════════════════════════════════════════════
-    // SKENARIO 2: REGISTRASI KENDARAAN & STIKER PARKIR
+    // SKENARIO 2: REGISTRASI KENDARAAN & STIKER PARKIR (MULTI-VEHICLE)
     // ══════════════════════════════════════════════════════════════
-    let currentVehicleType = 'motor';
+    let currentTenantVehicles = [];
 
     function openKelolaKendaraanModal() {
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t) return;
-      
-      const v = t.vehicle || { type: 'motor', model: 'Honda Vario 160 CC', plat: 'B 3456 SAA', sticker: 'STK-' + t.room + '-01', fee: 'Rp 0' };
-      setVehicleType(v.type);
-      document.getElementById('vehModelInput').value = v.model || '';
-      document.getElementById('vehPlatInput').value = v.plat || '';
-      document.getElementById('vehStickerInput').value = v.sticker || ('STK-' + t.room + '-01');
-      
+
+      const roomTitle = document.getElementById('vehRoomTitle');
+      if (roomTitle) roomTitle.textContent = 'Kamar ' + t.room;
+      const tenantTitle = document.getElementById('vehTenantTitle');
+      if (tenantTitle) tenantTitle.textContent = `(Penghuni: ${t.name})`;
+
+      // Deep clone existing vehicles or fallback from t.vehicle
+      if (t.vehicles && t.vehicles.length > 0) {
+        currentTenantVehicles = JSON.parse(JSON.stringify(t.vehicles));
+      } else if (t.vehicle && t.vehicle.type !== 'none') {
+        currentTenantVehicles = [
+          {
+            type: t.vehicle.type || 'motor',
+            model: t.vehicle.model || '',
+            plat: t.vehicle.plat || t.vehicle.plate || '',
+            sticker: t.vehicle.sticker || ('STK-' + t.room + '-01'),
+            fee: 0,
+            rfid: true
+          }
+        ];
+      } else {
+        currentTenantVehicles = [];
+      }
+
+      renderManageVehiclesList();
       document.getElementById('modalKelolaKendaraan').classList.add('open');
       lucide.createIcons();
     }
@@ -8294,33 +9227,152 @@
       document.getElementById('modalKelolaKendaraan').classList.remove('open');
     }
 
-    function setVehicleType(type) {
-      currentVehicleType = type;
-      ['optVehMotor', 'optVehMobil', 'optVehNone'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.remove('active');
+    function renderManageVehiclesList() {
+      const container = document.getElementById('manageVehiclesListContainer');
+      const summaryBadge = document.getElementById('vehSummaryBadge');
+      const surchargeTxt = document.getElementById('vehTotalSurchargeTxt');
+      const btnToggleNoVeh = document.getElementById('btnToggleNoVeh');
+
+      if (!container) return;
+
+      if (currentTenantVehicles.length === 0) {
+        if (btnToggleNoVeh) {
+          btnToggleNoVeh.className = 'btn-micro-brand';
+          btnToggleNoVeh.innerHTML = `<i data-lucide="check" style="width: 12px; height: 12px;"></i><span>Tanpa Kendaraan (Aktif)</span>`;
+        }
+        if (summaryBadge) {
+          summaryBadge.className = 'status-badge badge-dark';
+          summaryBadge.textContent = 'Tanpa Kendaraan';
+        }
+        if (surchargeTxt) surchargeTxt.textContent = 'Rp 0 / bln';
+
+        container.innerHTML = `
+          <div style="background: #F8FAFC; border: 1.5px dashed #CBD5E1; border-radius: 12px; padding: 22px 16px; text-align: center; color: var(--text-muted); font-size: 12px;">
+            <i data-lucide="ban" style="width: 24px; height: 24px; color: #94A3B8; margin-bottom: 6px;"></i>
+            <div style="font-weight: 700; color: var(--text-main);">Penghuni Tidak Membawa Kendaraan</div>
+            <div style="font-size: 11px; margin-top: 2px;">Klik "+ Tambah Kendaraan" di atas jika penghuni mendaftarkan motor, mobil, atau sepeda.</div>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      if (btnToggleNoVeh) {
+        btnToggleNoVeh.className = 'btn-micro-outline';
+        btnToggleNoVeh.innerHTML = `<i data-lucide="ban" style="width: 12px; height: 12px; color: #94A3B8;"></i><span>Tanpa Kendaraan</span>`;
+      }
+
+      let motorCount = 0;
+      let totalSurcharge = 0;
+
+      currentTenantVehicles.forEach((v) => {
+        const type = (v.type || 'motor').toLowerCase();
+        if (type === 'motor') {
+          motorCount++;
+          v.fee = motorCount > 1 ? 50000 : 0;
+        } else if (type === 'mobil') {
+          v.fee = 150000;
+        } else {
+          v.fee = 0;
+        }
+        totalSurcharge += v.fee;
       });
 
-      const fieldsWrap = document.getElementById('vehFieldsWrap');
-      const surchargeInput = document.getElementById('vehSurchargeInput');
+      if (summaryBadge) {
+        summaryBadge.className = 'status-badge badge-brand';
+        summaryBadge.textContent = `${currentTenantVehicles.length} Kendaraan Terdaftar`;
+      }
+      if (surchargeTxt) {
+        surchargeTxt.textContent = totalSurcharge > 0 ? `+Rp ${totalSurcharge.toLocaleString('id-ID')} / bln` : 'Rp 0 / bln (Fasilitas Standar)';
+      }
 
-      if (type === 'motor') {
-        document.getElementById('optVehMotor')?.classList.add('active');
-        if (fieldsWrap) fieldsWrap.style.display = 'block';
-        if (surchargeInput) {
-          surchargeInput.value = 'Rp 0 (Termasuk Fasilitas Standar)';
-          surchargeInput.style.color = '#16A34A';
-        }
-      } else if (type === 'mobil') {
-        document.getElementById('optVehMobil')?.classList.add('active');
-        if (fieldsWrap) fieldsWrap.style.display = 'block';
-        if (surchargeInput) {
-          surchargeInput.value = '+Rp 150.000 / bln (Sewa Slot Parkir Mobil)';
-          surchargeInput.style.color = '#EA580C';
-        }
-      } else {
-        document.getElementById('optVehNone')?.classList.add('active');
-        if (fieldsWrap) fieldsWrap.style.display = 'none';
+      const t = tenantsData.find(item => item.id === activeTenantId);
+      const roomNo = t ? t.room : 'A-01';
+
+      container.innerHTML = currentTenantVehicles.map((v, idx) => {
+        const type = (v.type || 'motor').toLowerCase();
+        const feeText = v.fee > 0 ? `+Rp ${v.fee.toLocaleString('id-ID')}/bln` : (type === 'sepeda' ? 'Gratis' : 'Gratis (Standar)');
+        const feeColor = v.fee > 0 ? '#EA580C' : '#16A34A';
+        const stickerNo = v.sticker || `STK-${roomNo}-0${idx + 1}`;
+
+        return `
+          <div style="background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Kendaraan #${idx + 1}</span>
+                <span class="status-badge" style="font-size: 9.5px; padding: 1px 7px; background: ${v.fee > 0 ? '#FFF7ED' : '#F0FDF4'}; color: ${feeColor}; border: 1px solid ${v.fee > 0 ? '#FED7AA' : '#BBF7D0'}; font-weight: 700;">${feeText}</span>
+              </div>
+              <button type="button" onclick="removeVehicleItem(${idx})" title="Hapus Kendaraan #${idx + 1}" style="width: 26px; height: 26px; border-radius: 6px; border: 1px solid #FECACA; background: #FEF2F2; color: #DC2626; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s;">
+                <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i>
+              </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 140px 1fr; gap: 10px; align-items: center;">
+              <select class="form-input-field" style="height: 38px; font-size: 12px; font-weight: 600;" onchange="updateVehicleItemType(${idx}, this.value)">
+                <option value="motor" ${type === 'motor' ? 'selected' : ''}>Sepeda Motor</option>
+                <option value="mobil" ${type === 'mobil' ? 'selected' : ''}>Mobil</option>
+                <option value="sepeda" ${type === 'sepeda' ? 'selected' : ''}>Sepeda Gowes</option>
+              </select>
+              <input type="text" class="form-input-field" value="${v.model || ''}" placeholder="Merk & Model (mis: Honda Vario 160)" style="height: 38px; font-size: 12px;" oninput="updateVehicleItemModel(${idx}, this.value)">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label class="form-label-txt" style="font-size: 10.5px; margin-bottom: 2px;">Nomor Plat Polisi *</label>
+                <input type="text" class="form-input-field" value="${v.plat || v.plate || ''}" placeholder="Contoh: B 3456 SAA" style="height: 36px; font-size: 11.5px; font-weight: 700; text-transform: uppercase;" oninput="updateVehicleItemPlate(${idx}, this.value)">
+              </div>
+              <div>
+                <label class="form-label-txt" style="font-size: 10.5px; margin-bottom: 2px;">Stiker &amp; RFID Pass</label>
+                <input type="text" class="form-input-field" value="${stickerNo} · RFID Aktif" readonly style="height: 36px; font-size: 11px; background: #F8FAFC; color: #64748B;">
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function addNewVehicleRow() {
+      const t = tenantsData.find(item => item.id === activeTenantId);
+      const roomNo = t ? t.room : 'A-01';
+      currentTenantVehicles.push({
+        type: 'motor',
+        model: '',
+        plat: '',
+        sticker: `STK-${roomNo}-0${currentTenantVehicles.length + 1}`,
+        fee: currentTenantVehicles.length > 0 ? 50000 : 0,
+        rfid: true
+      });
+      renderManageVehiclesList();
+    }
+
+    function removeVehicleItem(idx) {
+      currentTenantVehicles.splice(idx, 1);
+      renderManageVehiclesList();
+    }
+
+    function toggleNoVehicles() {
+      currentTenantVehicles = [];
+      renderManageVehiclesList();
+    }
+
+    function updateVehicleItemType(idx, val) {
+      if (currentTenantVehicles[idx]) {
+        currentTenantVehicles[idx].type = val;
+        renderManageVehiclesList();
+      }
+    }
+
+    function updateVehicleItemModel(idx, val) {
+      if (currentTenantVehicles[idx]) {
+        currentTenantVehicles[idx].model = val;
+      }
+    }
+
+    function updateVehicleItemPlate(idx, val) {
+      if (currentTenantVehicles[idx]) {
+        currentTenantVehicles[idx].plat = val.toUpperCase();
       }
     }
 
@@ -8328,35 +9380,21 @@
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t) return;
 
-      const model = document.getElementById('vehModelInput')?.value.trim();
-      const plat = document.getElementById('vehPlatInput')?.value.trim().toUpperCase();
-      const sticker = document.getElementById('vehStickerInput')?.value.trim();
-
-      if (currentVehicleType !== 'none' && !plat) {
-        RumaUI.showToast('Silakan masukkan nomor plat polisi kendaraan', 'warning');
-        return;
-      }
-
-      t.vehicle = {
-        type: currentVehicleType,
-        model: model,
-        plat: plat,
-        sticker: sticker,
-        rfidAccess: document.getElementById('vehAccessRfidCheck')?.checked ?? true
-      };
-
-      const vehDisplay = document.getElementById('dVehicleTxt');
-      if (vehDisplay) {
-        if (currentVehicleType === 'none') {
-          vehDisplay.textContent = 'Tanpa Kendaraan';
-        } else {
-          const typeLabel = currentVehicleType === 'mobil' ? '1 Mobil' : '1 Motor';
-          vehDisplay.textContent = `${typeLabel} (${plat}) · Stiker ${sticker}`;
+      for (let i = 0; i < currentTenantVehicles.length; i++) {
+        const v = currentTenantVehicles[i];
+        if (v.type !== 'sepeda' && (!v.plat || v.plat.trim() === '')) {
+          RumaUI.showToast(`Silakan isi nomor plat polisi untuk Kendaraan #${i + 1}`, 'warning');
+          return;
         }
       }
 
+      t.vehicles = JSON.parse(JSON.stringify(currentTenantVehicles));
+      t.vehicle = t.vehicles.length > 0 ? t.vehicles[0] : { type: 'none' };
+
       closeKelolaKendaraanModal();
-      RumaUI.showToast(`Data kendaraan Kamar ${t.room} (${currentVehicleType === 'none' ? 'Tanpa Kendaraan' : plat}) berhasil diperbarui! Akses RFID gerbang tersinkronisasi.`, 'success');
+      selectTenant(t.id);
+      lucide.createIcons();
+      RumaUI.showToast(`Data kendaraan Kamar ${t.room} (${t.vehicles.length > 0 ? t.vehicles.length + ' Kendaraan' : 'Tanpa Kendaraan'}) berhasil diperbarui! Akses RFID gerbang tersinkronisasi.`, 'success');
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -8537,16 +9575,13 @@
     // ══════════════════════════════════════════════════════════════
     let pendingTransferOccupantName = '';
 
-    function initTransferOccupant(targetName) {
+    function initTransferOccupant(targetName, btnEl) {
       pendingTransferOccupantName = targetName;
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t) return;
 
       const targetTxt = document.getElementById('transferTargetNameTxt');
       if (targetTxt) targetTxt.textContent = targetName;
-
-      const secBalikNama = document.getElementById('sectionBalikNama');
-      if (secBalikNama) secBalikNama.style.display = 'block';
 
       const secKeluarkan = document.getElementById('sectionKeluarkanRekan');
       if (secKeluarkan) secKeluarkan.style.display = 'none';
@@ -8556,6 +9591,15 @@
 
       const btnAddRow = document.getElementById('wrapBtnAddOccupantRow');
       if (btnAddRow) btnAddRow.style.display = 'none';
+
+      const secBalikNama = document.getElementById('sectionBalikNama');
+      const card = btnEl ? btnEl.closest('.occupant-card-item') : document.querySelector(`.occupant-card-item[data-occupant-name="${CSS.escape(targetName)}"]`);
+      if (secBalikNama) {
+        if (card && card.parentNode) {
+          card.parentNode.insertBefore(secBalikNama, card.nextSibling);
+        }
+        secBalikNama.style.display = 'block';
+      }
 
       if (window.RumaDatePicker) {
         RumaDatePicker.init('wrapTransferDate', 'transferDate', '2026-11-01');
@@ -8702,8 +9746,10 @@
       if (!e.target.closest('.custom-select-wrap')) {
         document.querySelectorAll('.custom-select-popover.open').forEach(p => p.classList.remove('open'));
         document.querySelectorAll('.custom-select-trigger.active').forEach(t => t.classList.remove('active'));
-        const chevron = document.getElementById('guestRelationChevron');
-        if (chevron) chevron.style.transform = 'rotate(0deg)';
+        ['guestRelationChevron', 'chevronSurcharge', 'chevronRemoveTarif', 'chevronGuestVeh'].forEach(id => {
+          const ch = document.getElementById(id);
+          if (ch) ch.style.transform = 'rotate(0deg)';
+        });
       }
 
       if (!e.target.closest('.custom-veh-select-wrap')) {

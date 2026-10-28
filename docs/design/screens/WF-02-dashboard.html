@@ -1486,11 +1486,13 @@
       width: 100%;
       height: 44px;
       border-radius: var(--radius-full);
-      background: var(--dark-pill);
-      color: #FFFFFF;
+      /* Level 1: Background Default */
+      background: var(--btn-primary-bg, #FF7A00) !important;
+      color: #FFFFFF !important;
+      /* Level 2: Border Default (1-tingkat lebih gelap) */
+      border: 1.5px solid var(--btn-primary-border, #EB6E00) !important;
       font-size: 13px;
       font-weight: 600;
-      border: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -1500,15 +1502,30 @@
       transition: all var(--transition-fast);
       box-sizing: border-box;
       outline: none;
+      box-shadow: none !important;
     }
 
     .btn-maintenance-full:hover {
-      background: var(--dark-pill-hover);
+      /* Level 3: Background Hover */
+      background: var(--btn-primary-hover-bg, #E06300) !important;
+      /* Level 4: Border Hover */
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px);
+      box-shadow: none !important;
+    }
+
+    .btn-maintenance-full:active {
+      background: var(--btn-primary-active-bg, #D45A00) !important;
+      border-color: var(--btn-primary-active-border, #A34400) !important;
+      transform: translateY(0);
+      box-shadow: none !important;
     }
 
     .btn-maintenance-full:focus-visible {
       box-shadow: none !important;
       outline: none;
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
     }
 
     /* TENANT MESSAGES LIST */

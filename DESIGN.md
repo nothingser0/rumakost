@@ -233,9 +233,17 @@ Berikut adalah token CSS lengkap yang siap disuntikkan ke dalam file stylesheet 
      Brand Primary & Accent (Estify Curated Orange)
      ========================================================================== */
   --color-primary:          #FF7A00;   /* Oranye khas Estify */
-  --color-primary-hover:    #E66E00;   /* Hover state */
+  --color-primary-hover:    #E06300;   /* Hover state */
   --color-primary-soft:     #FFF7ED;   /* Latar lembut badge/ikon */
   --color-secondary-bar:    #FDBA74;   /* Batang peach chart */
+
+  /* 4-Level Stepped Primary Button Hierarchy (Zero Box-Shadow Standard) */
+  --btn-primary-bg:           #FF7A00; /* Level 1: Normal Background */
+  --btn-primary-border:       #EB6E00; /* Level 2: Normal Border (1-tingkat lebih gelap) */
+  --btn-primary-hover-bg:     #E06300; /* Level 3: Hover Background */
+  --btn-primary-hover-border: #B84E00; /* Level 4: Hover Border (pekat & tegas) */
+  --btn-primary-active-bg:    #D45A00; /* Active Background */
+  --btn-primary-active-border:#A34400; /* Active Border */
 
   /* ==========================================================================
      Contrast & Interactive Navigation
@@ -403,11 +411,29 @@ Berikut adalah token CSS lengkap yang siap disuntikkan ke dalam file stylesheet 
 
 #### Varian Visual Tombol Baku:
 - **Dark Pill (`.btn-dark` / `.btn-black-solid`)**: `background: #111111; color: #FFFFFF;` (Elemen khas Estify).
-- **Brand Primary (`.btn-primary` / `.btn-brand`)**: `background: #FF7A00; color: #FFFFFF; box-shadow: 0 4px 14px rgba(255,122,0,0.25);`.
+- **Brand Primary (`.btn-primary` / `.btn-brand` / `.btn-brand-add`)**:
+  - Menerapkan arsitektur 4-level warna oranye bertingkat (*stepped depth hierarchy*) dengan kebijakan mutlak bebas bayangan (*zero box-shadow*):
+    - **Level 1 (Default BG)**: `background: var(--btn-primary-bg, #FF7A00);`
+    - **Level 2 (Default Border)**: `border: 1.5px solid var(--btn-primary-border, #EB6E00);` (Tegas 1-tingkat lebih gelap dari background default).
+    - **Level 3 (Hover BG)**: `background: var(--btn-primary-hover-bg, #E06300);`
+    - **Level 4 (Hover Border)**: `border-color: var(--btn-primary-hover-border, #B84E00);` (Paling pekat & pejal).
+    - **Active State**: `background: var(--btn-primary-active-bg, #D45A00); border-color: var(--btn-primary-active-border, #A34400); transform: translateY(0);`
+    - **Shadow Policy**: `box-shadow: none !important;` pada seluruh status (`default`, `:hover`, `:focus`, `:active`).
 - **White Outline (`.btn-outline` / `.btn-white-outline`)**: `background: #FFFFFF; border: 1.5px solid #ECEEF2; color: #374151;` (Hover: border & text `#111111`).
 - **Subtle Ghost (`.btn-subtle`)**: `background: #F1F5F9; color: #475569;` (Hover: `#E2E8F0`).
-- **Danger Pill (`.btn-danger-pill`)**: `background: #FFF1F2; border: 1px solid #FECDD3; color: #E11D48;` (Hover: `#E11D48`, text `#FFFFFF`).
-- **WhatsApp Action (`.btn-wa-pill`)**: `background: #16A34A; color: #FFFFFF;` (Hover: `#15803D`).
+- **Danger Pill / Destructive (`.btn-danger-pill` / `.btn-modal-danger-solid`)**:
+  - Menerapkan 4-level gradasi bahaya/hapus dengan `box-shadow: none !important;`:
+    - **Level 1 (Default BG)**: `var(--btn-danger-bg, #EF4444)`
+    - **Level 2 (Default Border)**: `var(--btn-danger-border, #DC2626)`
+    - **Level 3 (Hover BG)**: `var(--btn-danger-hover-bg, #DC2626)`
+    - **Level 4 (Hover Border)**: `var(--btn-danger-hover-border, #B91C1C)`
+- **WhatsApp Action (`.btn-wa-pill` / `.btn-drawer-wa`)**:
+  - Menerapkan 4-level gradasi **Hijau Lembut Emerald (*Soft Emerald*)** dengan `box-shadow: none !important;`:
+    - **Level 1 (Default BG)**: `var(--btn-wa-bg, #ECFDF5)` (Emerald 50 lembut)
+    - **Level 2 (Default Border)**: `var(--btn-wa-border, #A7F3D0)` (Emerald 200 tegas 1-tingkat di atas BG)
+    - **Level 3 (Hover BG)**: `var(--btn-wa-hover-bg, #D1FAE5)` (Emerald 100 lebih pekat)
+    - **Level 4 (Hover Border)**: `var(--btn-wa-hover-border, #6EE7B7)` (Emerald 300 paling tegas)
+    - **Teks & Ikon**: `var(--btn-wa-text, #065F46)` (Hover: `#047857`, kontras tinggi & nyaman dibaca)
 
 ---
 

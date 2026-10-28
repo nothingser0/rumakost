@@ -248,6 +248,8 @@
 
     .role-selector-bar .nav-pill.active {
       background: var(--dark-pill, #111111);
+
+
       color: #FFFFFF;
       border-color: var(--dark-pill, #111111);
       box-shadow: 0 2px 8px rgba(17, 17, 17, 0.15);
@@ -484,12 +486,16 @@
       height: 44px;
       border-radius: var(--radius-full, 9999px);
       background: var(--dark-pill, #111111);
+
+
       color: #FFFFFF;
       font-size: 14px;
       font-weight: 600;
       font-family: inherit;
       letter-spacing: 0.2px;
-      border: 1px solid var(--dark-pill, #111111);
+      background: var(--btn-primary-bg, #FF7A00) !important;
+      border: 1.5px solid var(--btn-primary-border, #EB6E00) !important;
+      box-shadow: none !important;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -508,7 +514,9 @@
 
     .btn-submit-main:hover:not(:disabled) {
       background: var(--dark-pill-hover, #222222);
-      border-color: #000000;
+      background: var(--btn-primary-hover-bg, #E06300) !important;
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      box-shadow: none !important;
       transform: translateY(-1px);
     }
 
@@ -518,7 +526,9 @@
 
     .btn-submit-main:active:not(:disabled) {
       transform: translateY(0);
-      background: #000000;
+      background: var(--btn-primary-active-bg, #D45A00) !important;
+      border-color: var(--btn-primary-active-border, #A34400) !important;
+      box-shadow: none !important;
     }
 
     .btn-submit-main:disabled {

@@ -711,13 +711,21 @@
   transform: scale(0.98);
 }
 
+.btn-primary:active {
+  background: var(--btn-primary-active-bg, #D45A00);
+  border-color: var(--btn-primary-active-border, #A34400);
+  transform: translateY(0);
+}
+
 .btn-primary {
+  border: 1.5px solid var(--btn-primary-border, #EB6E00);
   background: var(--brand-primary);
   color: #FFFFFF;
   box-shadow: none;
 }
 
 .btn-primary:hover {
+  border-color: var(--btn-primary-hover-border, #B84E00);
   background: var(--brand-primary-hover);
   transform: translateY(-1px);
 }
@@ -2036,6 +2044,7 @@ button i,
 /* Secondary / Ghost / Outline Buttons */
 .btn-secondary,
 .btn-white-outline,
+
 .btn-modal-cancel,
 .btn-drawer-secondary,
 .btn-drawer-edit,
@@ -2053,6 +2062,7 @@ button i,
 .btn-secondary:hover,
 .btn-white-outline:hover,
 .btn-modal-cancel:hover,
+
 .btn-drawer-secondary:hover,
 .btn-drawer-edit:hover,
 .btn-micro-outline:hover {
@@ -2724,9 +2734,11 @@ label *,
 .btn-form-select-trigger,
 .btn-drawer-edit,
 .btn-drawer-primary,
+.btn-modal-cancel,
 .btn-drawer-secondary,
 .btn-drawer-close,
 .btn-modal-cancel,
+
 .btn-modal-primary,
 .btn-modal-submit,
 .btn-modal-danger,
