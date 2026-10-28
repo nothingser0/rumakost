@@ -98,7 +98,9 @@
       position: relative;
     }
 
-    .btn-audit-period {
+    /* Audit Filter Buttons (Period & Account) - 100% Identik & Konsisten */
+    .btn-audit-period,
+    .btn-account-filter {
       height: 38px;
       padding: 0 14px;
       background: #FFFFFF;
@@ -114,16 +116,21 @@
       transition: all var(--transition-fast);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
       white-space: nowrap;
+      outline: none;
+      box-sizing: border-box;
     }
 
-    .btn-audit-period:hover {
-      border-color: var(--brand-primary);
-      background: #FFFDFB;
+    .btn-audit-period:hover,
+    .btn-account-filter:hover {
+      background: #F8FAFC;
+      border-color: #94A3B8;
+      color: var(--text-main);
       transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
     }
 
-    .btn-audit-period:active {
+    .btn-audit-period:active,
+    .btn-account-filter:active {
       transform: translateY(0);
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
@@ -176,29 +183,7 @@
       font-weight: 600;
     }
 
-    /* Account / Category Popover */
-    .btn-account-filter {
-      height: 38px;
-      padding: 0 14px;
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      white-space: nowrap;
-    }
-
-    .btn-account-filter:hover {
-      background: #FFFFFF;
-      border-color: #94A3B8;
-      color: var(--text-main);
-    }
+    /* Account / Category Popover - Inherits Unified Filter Styles */
 
     /* Search Input Capsule */
     .search-capsule-audit {
@@ -214,6 +199,13 @@
       flex: 1;
       max-width: 360px;
       transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .search-capsule-audit:hover {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
     .search-capsule-audit:focus-within {
@@ -232,7 +224,7 @@
       font-family: inherit;
     }
 
-    /* Action Buttons */
+    /* Action Buttons with High-Fidelity Hover Feedback */
     .btn-action-outline {
       height: 38px;
       padding: 0 14px;
@@ -249,12 +241,20 @@
       transition: all var(--transition-fast);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
       white-space: nowrap;
+      outline: none;
     }
 
     .btn-action-outline:hover {
       background: #F8FAFC;
       color: var(--text-main);
       border-color: #94A3B8;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-action-outline:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
     .btn-action-primary {
@@ -262,7 +262,7 @@
       padding: 0 16px;
       background: var(--brand-primary);
       color: #FFFFFF;
-      border: none;
+      border: 1.5px solid var(--btn-primary-border, #EB6E00);
       border-radius: var(--radius-full);
       font-size: 12px;
       font-weight: 600;
@@ -273,11 +273,20 @@
       transition: all var(--transition-fast);
       box-shadow: 0 2px 8px rgba(255, 122, 0, 0.25);
       white-space: nowrap;
+      outline: none;
     }
 
     .btn-action-primary:hover {
-      background: var(--brand-primary-hover);
+      background: var(--brand-primary-hover, #E06300);
+      border-color: #B84E00;
       transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.35);
+    }
+
+    .btn-action-primary:active {
+      background: #D45A00;
+      transform: translateY(0);
+      box-shadow: 0 1px 4px rgba(255, 122, 0, 0.2);
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -880,7 +889,7 @@
       padding-right: 4px;
       margin-top: 0;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
       align-items: center;
       justify-items: center;
@@ -1811,23 +1820,39 @@
       border-color: var(--btn-primary-hover-border, #B84E00) !important;
       color: #FFFFFF !important;
       transform: translateY(-1px) !important;
-      box-shadow: none !important;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.32) !important;
     }
 
     .btn-modal-primary:active {
       background: var(--btn-primary-active-bg, #D45A00) !important;
       border-color: var(--btn-primary-active-border, #A34400) !important;
       transform: translateY(0) !important;
+      box-shadow: 0 1px 3px rgba(255, 122, 0, 0.2) !important;
+    }
+
+    .btn-modal-cancel:hover {
+      background: #F1F5F9 !important;
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .btn-modal-cancel:active {
+      background: #E2E8F0 !important;
+      border-color: #64748B !important;
+      transform: translateY(0) !important;
       box-shadow: none !important;
     }
+
     /* Modal Form Sub-Sections & Layout Elements (100% Identik Standar Estify WF-03) */
     .modal-section-divider {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding-top: 10px;
+      padding-top: 8px;
       margin-top: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 0px;
       border-top: 1px dashed #E2E8F0;
     }
 
@@ -1840,34 +1865,134 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 0;
     }
 
-    /* Red Asterisk for Required Form Fields */
+    .modal-section-divider .modal-section-title {
+      margin-bottom: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Black Asterisk for Required Form Fields (100% Satu Warna dengan Label) */
     .req-star {
-      color: #EF4444;
+      color: var(--text-main, #111111);
       font-weight: 600;
       margin-left: 2px;
       font-size: 12px;
     }
 
-    /* Payment Method Segmented Pills */
-    .payment-method-pills {
+    /* Payment Method Grid (Identik WF-06 Catat Pembayaran / Mutasi Kas) */
+    .method-selector-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       width: 100%;
     }
 
-    .method-pill-opt {
-      height: 40px;
+    .method-radio-box {
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 8px;
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      background: #FFFFFF;
+      position: relative;
+      user-select: none;
+      text-align: center;
+    }
+
+    .method-radio-box:hover {
+      border-color: #CBD5E1;
+      background: #F8FAFC;
+      transform: translateY(-1px);
+    }
+
+    .method-radio-box.selected {
+      border-color: #FF7A00;
+      background: #FFF7ED;
+      box-shadow: 0 0 0 1px #FF7A00, 0 4px 12px rgba(255, 122, 0, 0.12);
+    }
+
+    .method-radio-box .method-icon-wrap {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748B;
+      transition: all 0.2s;
+    }
+
+    .method-radio-box.selected .method-icon-wrap {
+      background: #FFEDD5;
+      color: #FF7A00;
+    }
+
+    .method-radio-box .method-name {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #334155;
+      line-height: 1.2;
+    }
+
+    .method-radio-box.selected .method-name {
+      color: #C2410C;
+    }
+
+    .method-radio-box .method-sub {
+      font-size: 10px;
+      color: #94A3B8;
+      line-height: 1.1;
+    }
+
+    .method-radio-box.selected .method-sub {
+      color: #EA580C;
+      font-weight: 500;
+    }
+
+    .method-radio-box .method-check-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #FF7A00;
+      color: #FFFFFF;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+    }
+
+    .method-radio-box.selected .method-check-badge {
+      display: flex;
+    }
+
+    /* Payment Method Segmented Pills (Sleek Estify Standard WF-03) */
+    .payment-method-pills {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .method-pill-opt {
+      flex: 1;
+      height: 38px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       border: 1.5px solid var(--border-control, #E2E8F0);
       background: #F8FAFC;
-      border-radius: 10px;
+      border-radius: var(--radius-full);
       font-size: 12px;
       font-weight: 600;
       color: #475569;
@@ -1881,6 +2006,13 @@
       border-color: #94A3B8;
       background: #F1F5F9;
       color: #0F172A;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .method-pill-opt:active {
+      transform: translateY(0);
+      box-shadow: none;
     }
 
     .method-pill-opt.active {
@@ -1888,6 +2020,7 @@
       background: #FFF7ED;
       color: var(--brand-primary, #FF7A00);
       font-weight: 600;
+      box-shadow: 0 1px 3px rgba(255, 122, 0, 0.15);
     }
 
     .form-group-item {
@@ -3614,7 +3747,7 @@
                 <input type="hidden" id="expenseCatName" value="Listrik PLN (Token Fasum &amp; Pompa)">
                 <button type="button" class="btn-form-select-trigger" onclick="toggleFormDropdown('wrapExpenseCat', event)">
                   <div class="select-label-cluster">
-                    <div class="type-icon-mini"><i data-lucide="zap" style="width: 13px; height: 13px; color: #1D4ED8;"></i></div>
+                    <div class="type-icon-mini"><i data-lucide="zap" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                     <span class="selected-text">Listrik PLN (Token Fasum &amp; Pompa)</span>
                   </div>
                   <i data-lucide="chevron-down" class="chevron-icon" style="width: 14px; height: 14px;"></i>
@@ -3622,42 +3755,42 @@
                 <div class="form-select-menu" id="menuExpenseCat">
                   <div class="form-select-item selected" data-value="utility" onclick="selectExpenseCatOption('utility', 'Listrik PLN (Token Fasum &amp; Pompa)', this, event)">
                     <div class="item-label-content">
-                      <div class="type-icon-mini"><i data-lucide="zap" style="width: 13px; height: 13px; color: #1D4ED8;"></i></div>
+                      <div class="type-icon-mini"><i data-lucide="zap" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                       <span>Listrik PLN (Token Fasum &amp; Pompa)</span>
                     </div>
                     <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                   </div>
                   <div class="form-select-item" data-value="water" onclick="selectExpenseCatOption('water', 'Air Bersih PDAM Tirta Moedal', this, event)">
                     <div class="item-label-content">
-                      <div class="type-icon-mini"><i data-lucide="droplet" style="width: 13px; height: 13px; color: #0891B2;"></i></div>
+                      <div class="type-icon-mini"><i data-lucide="droplet" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                       <span>Air Bersih PDAM Tirta Moedal</span>
                     </div>
                     <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                   </div>
                   <div class="form-select-item" data-value="wifi" onclick="selectExpenseCatOption('wifi', 'Internet WiFi IndiHome Fiber', this, event)">
                     <div class="item-label-content">
-                      <div class="type-icon-mini"><i data-lucide="wifi" style="width: 13px; height: 13px; color: #DB2777;"></i></div>
+                      <div class="type-icon-mini"><i data-lucide="wifi" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                       <span>Internet WiFi IndiHome Fiber</span>
                     </div>
                     <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                   </div>
                   <div class="form-select-item" data-value="maintenance" onclick="selectExpenseCatOption('maintenance', 'Pemeliharaan &amp; Servis Gedung', this, event)">
                     <div class="item-label-content">
-                      <div class="type-icon-mini"><i data-lucide="wrench" style="width: 13px; height: 13px; color: #EA580C;"></i></div>
+                      <div class="type-icon-mini"><i data-lucide="wrench" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                       <span>Pemeliharaan &amp; Servis Gedung</span>
                     </div>
                     <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                   </div>
                   <div class="form-select-item" data-value="cleaning" onclick="selectExpenseCatOption('cleaning', 'Retribusi Kebersihan &amp; Sampah', this, event)">
                     <div class="item-label-content">
-                      <div class="type-icon-mini"><i data-lucide="sparkles" style="width: 13px; height: 13px; color: #059669;"></i></div>
+                      <div class="type-icon-mini"><i data-lucide="sparkles" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                       <span>Retribusi Kebersihan &amp; Sampah</span>
                     </div>
                     <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
                   </div>
                   <div class="form-select-item" data-value="other" onclick="selectExpenseCatOption('other', 'Lain-lain / Beban Operasional Umum', this, event)">
                     <div class="item-label-content">
-                      <div class="type-icon-mini" style="background: #F8FAFC; color: #475569; border-color: #E2E8F0;"><i data-lucide="more-horizontal" style="width: 13px; height: 13px;"></i></div>
+                      <div class="type-icon-mini"><i data-lucide="more-horizontal" style="width: 13px; height: 13px; color: #FF7A00;"></i></div>
                       <span>Lain-lain / Beban Operasional Umum</span>
                     </div>
                     <i data-lucide="check" class="check-indicator" style="width: 14px; height: 14px;"></i>
@@ -3692,19 +3825,32 @@
             </div>
           </div>
 
-                    <!-- Kanal / Metode Pembayaran Kas -->
+          <!-- Kanal / Metode Pembayaran Kas (3 Kanal Operasional: Transfer Bank, Kas Tunai, QRIS/E-Wallet) -->
           <div class="form-group-item">
             <label class="form-label-txt">Metode / Kanal Pembayaran Kas <span class="req-star">*</span></label>
-            <div class="payment-method-pills" id="wrapExpenseMethod">
-              <input type="hidden" id="expenseMethod" value="transfer">
-              <button type="button" class="method-pill-opt active" id="btnMethodTransfer" onclick="selectExpenseMethod('transfer', this)">
-                <i data-lucide="credit-card" style="width: 14px; height: 14px;"></i>
-                <span>Transfer Bank (BCA Operasional)</span>
-              </button>
-              <button type="button" class="method-pill-opt" id="btnMethodCash" onclick="selectExpenseMethod('cash', this)">
-                <i data-lucide="wallet" style="width: 14px; height: 14px;"></i>
-                <span>Kas Tunai / Petty Cash</span>
-              </button>
+            <div class="method-selector-grid" id="wrapExpenseMethod">
+              <input type="hidden" id="expenseMethod" value="bank">
+              <div class="method-radio-box selected" id="btnMethodBank" onclick="selectExpenseMethod('bank', this)">
+                <div class="method-icon-wrap">
+                  <i data-lucide="landmark" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div class="method-name">Transfer Bank</div>
+                <div class="method-sub">BCA / Bank Kost</div>
+              </div>
+              <div class="method-radio-box" id="btnMethodCash" onclick="selectExpenseMethod('cash', this)">
+                <div class="method-icon-wrap">
+                  <i data-lucide="wallet" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div class="method-name">Kas Tunai</div>
+                <div class="method-sub">Petty Cash / Fisik</div>
+              </div>
+              <div class="method-radio-box" id="btnMethodEwallet" onclick="selectExpenseMethod('ewallet', this)">
+                <div class="method-icon-wrap">
+                  <i data-lucide="smartphone" style="width: 16px; height: 16px;"></i>
+                </div>
+                <div class="method-name">QRIS / E-Wallet</div>
+                <div class="method-sub">Dana / OVO / GoPay</div>
+              </div>
             </div>
           </div>
 
@@ -3721,7 +3867,7 @@
             </div>
           </div>
 
-          <div class="form-group-item">
+          <div class="form-group-item" style="margin-top: 10px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <label class="form-label-txt">Tautkan Tiket Maintenance (Opsional)</label>
               <span style="font-size: 11px; color: #94A3B8;">Standar SCR-12 &amp; F-11</span>
@@ -3770,9 +3916,9 @@
 
                 <div class="direct-ticket-item" data-value="TKT-004" data-search="tkt-004 saklar lampu koridor lt 1 listrik konslet padam stopkontak" onclick="selectDirectTicket('TKT-004', '#TKT-004 • Saklar Lampu Koridor Lt 1')">
                   <div class="item-label-content">
-                    <div class="type-icon-mini" style="background: #EFF6FF; color: #2563EB; border-color: #DBEAFE;"><i data-lucide="zap" style="width: 13px; height: 13px;"></i></div>
+                    <div class="type-icon-mini" style="background: #FFF7ED; color: #FF7A00; border-color: #FFEDD5;"><i data-lucide="zap" style="width: 13px; height: 13px;"></i></div>
                     <div>
-                      <div style="font-size: 12px; font-weight: 600; color: #0F172A;"><strong style="color: #2563EB; font-family: monospace;">#TKT-004</strong> &bull; Saklar Lampu Koridor Lt 1</div>
+                      <div style="font-size: 12px; font-weight: 600; color: #0F172A;"><strong style="color: #FF7A00; font-family: monospace;">#TKT-004</strong> &bull; Saklar Lampu Koridor Lt 1</div>
                       <div style="font-size: 11px; color: #64748B;">Fasilitas Umum &bull; Ganti fitting &amp; MCB Konslet</div>
                     </div>
                   </div>
@@ -3780,9 +3926,9 @@
 
                 <div class="direct-ticket-item" data-value="TKT-001" data-search="tkt-001 keran wastafel bocor kamar b-02 lt 2 pipa air pdam plumbing saluran" onclick="selectDirectTicket('TKT-001', '#TKT-001 • Keran Wastafel Kamar B-02')">
                   <div class="item-label-content">
-                    <div class="type-icon-mini" style="background: #ECFEFF; color: #0891B2; border-color: #CFFAFE;"><i data-lucide="droplet" style="width: 13px; height: 13px;"></i></div>
+                    <div class="type-icon-mini" style="background: #FFF7ED; color: #FF7A00; border-color: #FFEDD5;"><i data-lucide="droplet" style="width: 13px; height: 13px;"></i></div>
                     <div>
-                      <div style="font-size: 12px; font-weight: 600; color: #0F172A;"><strong style="color: #0891B2; font-family: monospace;">#TKT-001</strong> &bull; Keran Wastafel Kamar B-02</div>
+                      <div style="font-size: 12px; font-weight: 600; color: #0F172A;"><strong style="color: #FF7A00; font-family: monospace;">#TKT-001</strong> &bull; Keran Wastafel Kamar B-02</div>
                       <div style="font-size: 11px; color: #64748B;">Kamar B-02 &bull; Lt 2 &bull; Ganti Seal Pipa Wastafel</div>
                     </div>
                   </div>
@@ -3790,9 +3936,9 @@
 
                 <div class="direct-ticket-item" data-value="TKT-002" data-search="tkt-002 ganti engsel pintu kamar c-03 lt 3 kunci gagang pintu macet" onclick="selectDirectTicket('TKT-002', '#TKT-002 • Ganti Engsel Pintu Kamar C-03')">
                   <div class="item-label-content">
-                    <div class="type-icon-mini" style="background: #FDF2F8; color: #DB2777; border-color: #FCE7F3;"><i data-lucide="wrench" style="width: 13px; height: 13px;"></i></div>
+                    <div class="type-icon-mini" style="background: #FFF7ED; color: #FF7A00; border-color: #FFEDD5;"><i data-lucide="wrench" style="width: 13px; height: 13px;"></i></div>
                     <div>
-                      <div style="font-size: 12px; font-weight: 600; color: #0F172A;"><strong style="color: #DB2777; font-family: monospace;">#TKT-002</strong> &bull; Ganti Engsel Pintu Kamar C-03</div>
+                      <div style="font-size: 12px; font-weight: 600; color: #0F172A;"><strong style="color: #FF7A00; font-family: monospace;">#TKT-002</strong> &bull; Ganti Engsel Pintu Kamar C-03</div>
                       <div style="font-size: 11px; color: #64748B;">Kamar C-03 &bull; Lt 3 &bull; Ganti Set Engsel Stainless</div>
                     </div>
                   </div>
@@ -4781,12 +4927,33 @@
       const textEl = document.getElementById('dropzoneTextExpense');
       if (textEl) textEl.textContent = 'Unggah Foto Nota / Kuitansi';
       setFormSelectValue('expenseCatKey', 'utility', 'wrapExpenseCat');
+      const bankBtn = document.getElementById('btnMethodBank') || document.getElementById('btnMethodBca');
+      if (bankBtn) selectExpenseMethod('bank', bankBtn);
       clearDirectTicketSelection();
       closeDirectTicketResults();
       if (window.RumaDatePicker) {
         RumaDatePicker.init('wrapExpenseDate', 'inputExpenseDate', '2026-10-24');
       }
       openModal('modalExpense');
+      const modalBody = document.querySelector('#modalExpense .modal-body-scrollable');
+      if (modalBody) modalBody.scrollTop = 0;
+    }
+
+    function selectExpenseMethod(method, btnEl) {
+      const hiddenInput = document.getElementById('expenseMethod');
+      if (hiddenInput) hiddenInput.value = method;
+
+      const container = document.getElementById('wrapExpenseMethod');
+      if (container) {
+        container.querySelectorAll('.method-radio-box, .method-pill-opt').forEach(btn => {
+          btn.classList.remove('selected');
+          btn.classList.remove('active');
+        });
+      }
+      if (btnEl) {
+        btnEl.classList.add('selected');
+        btnEl.classList.add('active');
+      }
     }
 
     function closeExpenseModal() {
@@ -4922,14 +5089,17 @@
       if (ticketInput) ticketInput.value = '';
       if (searchInput) {
         searchInput.value = '';
-        searchInput.focus();
+        if (e) searchInput.focus();
       }
       if (clearBtn) clearBtn.style.display = 'none';
 
-      handleDirectTicketSearch('');
       document.querySelectorAll('#directTicketResults .direct-ticket-item').forEach(it => {
         it.classList.remove('is-selected');
+        it.style.display = 'flex';
       });
+      const noMatchMsg = document.getElementById('noDirectTicketMatchMsg');
+      if (noMatchMsg) noMatchMsg.style.display = 'none';
+      closeDirectTicketResults();
     }
 
     function setFormSelectValue(hiddenInputId, value, wrapId) {
@@ -5336,6 +5506,10 @@
 
     // Close popovers and custom selects on click outside
     document.addEventListener('click', (e) => {
+      if (e.target && e.target.classList && e.target.classList.contains('modal-backdrop') && e.target.classList.contains('open')) {
+        closeModal(e.target.id);
+        return;
+      }
       const periodMenu = document.getElementById('periodPopoverMenu');
       if (periodMenu && !e.target.closest('.period-dropdown-wrap')) periodMenu.classList.remove('open');
       const accMenu = document.getElementById('accountFilterPopover');

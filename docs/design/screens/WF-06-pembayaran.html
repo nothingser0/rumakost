@@ -1517,6 +1517,99 @@
       box-sizing: border-box !important;
     }
 
+    .modal-section-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 8px;
+      margin-top: 4px;
+      border-top: 1px dashed #E2E8F0;
+    }
+
+    .modal-section-title {
+      font-size: 13px;
+      box-sizing: border-box;
+      font-weight: 600;
+      color: var(--text-main);
+      text-transform: none;
+      letter-spacing: -0.1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .file-upload-dropzone {
+      border: 1.5px dashed #CBD5E1;
+      border-radius: 12px;
+      background: #F8FAFC;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .file-upload-dropzone:hover {
+      border-color: var(--brand-primary);
+      background: #FFF7ED;
+    }
+
+    .file-dropzone-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .file-dropzone-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-primary);
+      flex-shrink: 0;
+    }
+
+    .file-dropzone-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .file-dropzone-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .file-dropzone-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .btn-choose-file {
+      height: 30px !important;
+      padding: 0 12px !important;
+      border-radius: var(--radius-full);
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      font-size: 12px;
+      box-sizing: border-box;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
     /* Modal Button Hierarchy (Identik WF-03 Kamar) */
     .btn-modal-cancel {
       height: 40px !important;
@@ -1601,7 +1694,50 @@
       transform: translateY(-1px) !important;
     }
 
-    .old-modal-overlay {
+    /* Form Fields Standardized to 42px Height (Identik WF-03 Kamar) */
+    .form-group-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label-txt {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: default !important;
+      user-select: text;
+    }
+
+    .form-input-field {
+      height: 42px !important;
+      border: 1px solid var(--border-control, #E2E8F0);
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      color: var(--text-main, #111827);
+      background: #FFFFFF;
+      outline: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .form-input-field::placeholder {
+      text-transform: none !important;
+      font-weight: 400 !important;
+      color: var(--text-muted, #94A3B8) !important;
+    }
+
+    .form-input-field:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    /* OBSOLETE_MODAL_CSS_START
+    .old-modal-overlay-obsolete {
       position: fixed;
       inset: 0;
       background: rgba(17, 24, 39, 0.45);
@@ -1691,9 +1827,14 @@
       align-items: center;
       justify-content: flex-end;
       gap: 10px;
-      background: #ffffffff;
+      background: #ffffff;
+    } */
+    /* obsolete end extra braces:
     }
 
+    }
+
+    */
     .form-group-custom {
       display: flex;
       flex-direction: column;
@@ -2051,23 +2192,34 @@
   <!-- MAIN DASHBOARD CONTENT -->
   <div class="dashboard-wrapper">
 
-    <!-- 1. TOP ROW: 3 GAUGE METRIC CARDS (HORIZONTAL FULL-WIDTH 157.6PX · KONSISTEN WF-05) -->
-    <div class="metrics-row-3">
-
+    <!-- 2-COLUMN MASTER DASHBOARD GRID (SINKRON WF-02 & WF-06) -->
     <main class="dashboard-2col-layout">
 
-
+      <!-- LEFT / MAIN FLOW (CONTENT AREA · ~1.020PX) -->
       <div class="col-main-flow">
 
-
-
-
-
-
-
-
+        <!-- 1. TOP ROW: 3 GAUGE METRIC CARDS (COMPUTED 157.6PX) -->
         <div class="metrics-row-3">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           
+
 
           <!-- Card 1: Kas Masuk Realisasi (Identik Dashboard WF-02) -->
           <div class="metric-card-estify">
@@ -2151,12 +2303,13 @@
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
                   <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="91.8"/>
                   <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111827">14%</text>
+<!-- CLEAN_TAIL_START
                 </svg>
               </div>
             </div>
           </div>
         </div>
-        <!-- DUPLICATE_MAIN_CLEANUP_START
+
                 </svg>
               </div>
             </div>
@@ -2165,18 +2318,27 @@
         </div>
 
 
-    <main class="dashboard-2col-layout">
 
 
-      <div class="col-main-flow">
 
-DUPLICATE_MAIN_CLEANUP_END -->
 
-    <!-- 2. ESTIFY 2-COLUMN MASTER DASHBOARD GRID (SINKRON WF-05) -->
-    <main class="dashboard-2col-layout">
 
-      <!-- LEFT / MAIN FLOW (CONTENT AREA) -->
-      <div class="col-main-flow">
+
+
+
+
+
+
+
+
+
+CLEAN_TAIL_END -->
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 2. CONTROLS STRIP: SEARCH & STATUS PILL SEGMENTS (SINGLE LINE TOOLBAR) -->
         <div class="controls-strip-card">
           <div class="search-capsule-box">
@@ -2414,14 +2576,14 @@ DUPLICATE_MAIN_CLEANUP_END -->
           <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
           <span>Catat Penerimaan Pembayaran</span>
         </h3>
-</div></div><div style="display: none;"><!-- old-header-cut -->
+
 <!-- modal icon cleanup -->
         </button>
       </div>
 
       <div class="modal-card-body">
         
-</div><!-- close hidden old header -->
+
         <!-- Peringatan Staf jika dalam mode staf -->
         <div id="modalStaffAlert" style="display: none; background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #C2410C;">
           <i data-lucide="info" style="width: 13px; height: 13px; vertical-align: middle; margin-right: 4px;"></i>
@@ -2955,7 +3117,7 @@ HAPUS_RECEIPT_REST -->
 
       <div class="modal-card-body">
         
-</div><!-- close hidden old header -->
+
         <!-- Callout Info Standar Pembukuan -->
         <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 11px 14px; font-size: 12px; color: #9A3412; display: flex; align-items: flex-start; gap: 8px;">
           <i data-lucide="info" style="width: 15px; height: 15px; color: #EA580C; flex-shrink: 0; margin-top: 2px;"></i>
