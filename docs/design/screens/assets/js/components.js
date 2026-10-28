@@ -19,7 +19,7 @@
       { id: 'tiket', label: 'Tiket', href: 'WF-08-tiket.html' }
     ],
     staff: [
-      { id: 'dashboard', label: 'Dashboard Operasional', href: 'WF-02-staf-dashboard.html' },
+      { id: 'dashboard', label: 'Dashboard', href: 'WF-02-staf-dashboard.html' },
       { id: 'kamar', label: 'Kamar', href: 'WF-03-kamar.html?role=staf' },
       { id: 'penghuni', label: 'Penghuni', href: 'WF-04-penghuni.html?role=staf' },
       { id: 'tagihan', label: 'Tagihan & Catat Bayar', href: 'WF-05-tagihan.html?role=staf' },
@@ -103,6 +103,7 @@
             <i data-lucide="door-closed" style="width: 12px; height: 12px;"></i>
             Kamar A-04
           </span>
+  
           <div class="user-dropdown-wrap" id="userDropdownWrap">
             <button type="button" class="user-profile-btn" onclick="toggleUserDropdown(event)" title="Menu Penghuni">
               <div class="user-avatar" style="background: #111111; color: #FFFFFF;">BS</div>
@@ -112,7 +113,8 @@
             <div class="user-dropdown-menu" id="userDropdownMenu">
               <div class="dropdown-user-header">
                 <div class="dropdown-user-name">Budi Santoso</div>
-                <div class="dropdown-user-email">Kamar A-04 (Lantai 1)</div>
+                <div class="dropdown-user-email">Kamar A-04
+ (Lantai 1)</div>
                 <div style="margin-top: 4px;">
                   <span class="badge-status badge-brand" style="font-size: 10px; padding: 2px 8px;">Penghuni Aktif</span>
                 </div>
@@ -141,10 +143,10 @@
     } else if (role === 'staff') {
       brandTarget = 'WF-02-staf-dashboard.html';
       rightSectionHtml = `
-        <span class="badge-status badge-warning" style="font-size: 11px;">
-          <i data-lucide="user" style="width: 12px; height: 12px;"></i>
-          Staf Operasional
-        </span>
+
+
+
+
         <button class="icon-circle-btn" title="Cari data" onclick="RumaUI.showToast('Pencarian operasional dibuka')">
           <i data-lucide="search" style="width: 16px; height: 16px;"></i>
         </button>

@@ -43,24 +43,21 @@ Layar ini menegakkan 4 pilar arsitektur operasional:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                             WF-02-STAF DASBOR OPERASIONAL ARSITEKTUR                              │
+│                             WF-02-STAF DASBOR OPERASIONAL ARSITEKTUR                             │
 ├──────────────────────────────────────────────────────────────────┬───────────────────────────────┤
-│ 1. KOLOM UTAMA KIRI (~65% FLOW CONTAINER)                        │ 2. SIDEBAR KANAN (380PX FIXED)│
-│    ├─ TOP: STAFF HERO BANNER                                     │    ├─ CARD 1: CHECKLIST HARIAN│
-│    │  • Shift Pagi (08:00 - 17:00) + Operator Rini Setiawati     │    │  • 4 Item Tugas Operasional  │
-│    │  • Tombol Sinkron Data Piket & Log Inventaris               │    │  • Checkbox & Strike-through │
-│    ├─ ROW 1: 3 GAUGE KPI OPERASIONAL (ZERO CONFIDENTIAL LEAK)    │    │  • Counter Selesai Dinamis   │
-│    │  • Okupansi Kamar (11/15 Unit · 73% Gauge) → WF-03          │    ├─ CARD 2: PETA CEPAT KAMAR│
-│    │  • Tiket Perbaikan Aktif (3 Tiket · 60% Gauge) → WF-08      │    │  • 15 Unit (3 Lantai @ 5 Unit)│
-│    │  • Setoran Pending Owner (2 Transaksi · 50% Gauge) → WF-05  │    │  • Semantic Color Badges     │
-│    ├─ ROW 2: ANTREAN TIKET MENDESAK HARI INI                     │    │  • Quick Link ke Detail Unit │
-│    │  • Tiket #T-03: Kamar A-04 (AC Tidak Dingin)                │    ├─ CARD 3: KONTAK TEKNISI  │
-│    │  • Action: Perbarui Status (Modal) & WA Vendor (+62 812..) │    │  • Pak Joko AC & Bpk. Hendra │
-│    │  • Shortcut: Lihat Antrean Penuh Tiket Lapangan             │    │  • Quick Call & WA Shortcuts │
-│    ├─ ROW 3: CATAT PEMBAYARAN TUNAI / MANUAL                     │    └───────────────────────────────┘
-│    │  • Form Catat: Dropdown Kamar (Autofill Tarif), Tgl, Ket    │
-│    │  • Reset Button & Submit (Pending Owner · Zero Self-Approve)│
-│    │  • Log Pembayaran Staf Hari Ini (Dimas A-02 & Dodi B-01)    │
+│ 1. KOLOM UTAMA KIRI (~68% FLOW CONTAINER)                        │ 2. SIDEBAR KANAN (360PX FIXED)│
+│    ├─ ROW 1: 3 GAUGE KPI OPERASIONAL (ZERO CONFIDENTIAL LEAK)    │    ├─ CARD 1: AKSI CEPAT STAF │
+│    │  • Okupansi Kamar (11/15 Unit · 73% Gauge) → WF-03          │    │  • Catat Bayar Lapangan  │
+│    │  • Tiket Kerusakan Aktif (3 Tiket · 60% Gauge) → WF-08      │    │  • Inspeksi Kebersihan   │
+│    │  • Setoran Pending Owner (2 Transaksi · 50% Gauge) → WF-05  │    │  • Buat Tiket Perbaikan  │
+│    ├─ ROW 2: ANTREAN TIKET MENDESAK HARI INI (F-07)              │    ├─ CARD 2: PETA CEPAT KAMAR│
+│    │  • Tiket #TK-2026-004: Kamar A-04 (Pipa Wastafel Bocor)     │    │  • 15 Unit (3 Lantai @ 5)│
+│    │  • Tiket #TK-2026-003: Kamar B-02 (AC Kurang Dingin)        │    │  • Semantic Color Badges │
+│    │  • Aksi: Link ke Detail Tiket & Kelola Antrean Lengkap      │    │  • Shortcut ke Katalog   │
+│    ├─ ROW 3: PENCATATAN KAS LAPANGAN TERAKHIR (F-05)             │    ├─ CARD 3: TURNOVER UNIT   │
+│    │  • Micro Callout Banner (Zero Self-Approval Shield Alert)   │    │  • 2 Unit Butuh Aksi     │
+│    │  • Mini Table: Log 10 Setoran Staf Terkini                  │    │  • Aksi: Tandai Siap Huni│
+│    │  • CTA: + Catat Pembayaran Masuk Baru (Modal F-05)          │    └──────────────────────────┘
 └──────────────────────────────────────────────────────────────────┴───────────────────────────────┘
 ```
 
@@ -143,7 +140,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
   1. Buka halaman `WF-02-dashboard.html?role=staf`.
   2. Amati siklus hidup eksekusi fungsi `renderTopbar()` pada `assets/js/components.js`.
   3. Verifikasi pengalihan rute ke dasbor staf khusus `WF-02-staf-dashboard.html`.
-  4. Amati struktur Topbar navigasi operasional dan banner shift kerja.
+  4. Amati struktur Topbar navigasi operasional staf dan tata letak bersih tanpa hero banner (langsung fokus ke 3 kartu radial gauge operasional).
   5. Klik avatar profil Staf pada sudut kanan atas.
   6. Periksa ketiadaan tombol atau tautan ke modul keuangan sensitif (`WF-07` Laporan dan `WF-09` Pengaturan).
 - **Hasil yang Diharapkan**:
@@ -151,6 +148,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
   - Topbar otomatis beralih ke konfigurasi Staf: hanya menampilkan 5 pill navigasi (`Dashboard Operasional`, `Kamar`, `Penghuni`, `Tagihan & Catat Bayar`, `Tiket Perbaikan`).
   - Menu `Laporan` dan `Tiket` (superadmin) tidak dirender di Topbar.
   - Sisi kanan Topbar memunculkan badge identitas peran: *"Staf Operasional"* dengan aksen latar `#FEF3C7` dan teks `#D97706`.
+  - Dasbor staf langsung menampilkan 3 Radial Gauge Operasional murni (Okupansi 11/15 [73%], Tiket Kerusakan Aktif 3 [60%], Setoran Lapangan Pending 2 [50%]) tanpa banner atau to-do list generik di luar scope.
   - Dropdown pengguna menampilkan profil *"Rini Setiawati"* tanpa opsi ke menu Pengaturan Akun Pemilik.
 
 ---
@@ -1074,17 +1072,19 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 
 ---
 
-### SKENARIO 62: Sinkronisasi Jadwal Piket & Log Inventaris pada Banner Shift Staf (Staff Shift Banner & Sync Data)
-- **Tujuan**: Memverifikasi banner identitas shift kerja staf lapangan, metadata waktu sistem, operator aktif, dan fungsionalitas tombol sinkronisasi data operasional.
+### SKENARIO 62: Tampilan Bersih Bebas Hero Banner & Inisialisasi 3 Speedometer Radial Gauge Staf (Staff Zero-Banner Clean Header & 3-Gauge KPI Init)
+- **Tujuan**: Memverifikasi ketiadaan hero banner pada dasbor staf guna menghemat ruang vertikal layar, serta inisialisasi 3 kartu radial gauge operasional murni (Okupansi 11/15 [73%], Tiket Kerusakan Aktif 3 [60%], Setoran Lapangan Pending Rp 2,8 Jt [50%]).
 - **Kondisi Awal**: Staf berada pada `WF-02-staf-dashboard.html`.
 - **Langkah-langkah Pengujian**:
-  1. Amati kartu hero banner staf di bagian atas dasbor (`.staff-hero-banner`).
-  2. Periksa informasi tanggal, waktu sistem, nama operator, dan badge shift kerja.
-  3. Klik tombol *"Sinkron Data"* (`.btn-white-outline`).
+  1. Amati area di bawah Topbar navigasi: pastikan tidak ada banner besar / spanduk shift yang membuang ruang lipatan atas (*above-the-fold*).
+  2. Periksa 3 kartu Radial Gauge Operasional:
+     - Kartu 1: *Okupansi Kamar* (11 / 15 Kamar · 73% Gauge oranye).
+     - Kartu 2: *Tiket Kerusakan* (3 Tiket Aktif · 60% Gauge merah · badge 1 Mendesak).
+     - Kartu 3: *Setoran Lapangan* (Rp 2,8 Jt · 50% Gauge hitam · badge 2 Pending).
+  3. Verifikasi ketiadaan metrik margin finansial, omzet total, atau laba bersih pemilik (*Zero Confidential Leak*).
 - **Hasil yang Diharapkan**:
-  - Banner menampilkan judul *"Dasbor Operasional Kost Budi Makmur"*.
-  - Metadata menampilkan tanggal berjalan, waktu sistem, operator *"Rini Setiawati"*, dan badge kuning *"Shift Pagi (08:00 - 17:00)"*.
-  - Mengklik tombol *"Sinkron Data"* memicu toast notifikasi informasi: *"Jadwal piket & log inventaris telah disinkronkan"* (Tipe: `info`).
+  - Halaman langsung dimulai dengan 3 Radial Gauge Operasional murni, menjaga konsistensi visual 100% dengan pola dasbor Owner tanpa pemborosan hero banner.
+  - Seluruh data rahasia laba bersih tetap terlindungi secara aman (*Zero Confidential Leak*).
 
 ---
 
@@ -1101,16 +1101,15 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 
 ---
 
-### SKENARIO 64: Penjadwalan Teknisi Servis AC dari Antrean Tiket Staf (Staff Ticket Scheduling & Toast Feedback)
-- **Tujuan**: Memvalidasi aksi penjadwalan teknisi rekanan pada tiket berstatus normal/ditugaskan (Kamar B-02 · Servis AC).
-- **Kondisi Awal**: Tiket Kamar B-02 dijadwalkan untuk teknisi Pak Deni (Besok, 09:00 WIB).
+### SKENARIO 64: Akses Cepat Inspeksi Kebersihan Kamar & Turnover (SCR-03 Direct Shortcut)
+- **Tujuan**: Memvalidasi aksi cepat staf dalam mengakses modul katalog kamar dengan filter kamar butuh sanitasi/pembersihan (`SCR-03` / `F-02`).
+- **Kondisi Awal**: Staf berada pada `WF-02-staf-dashboard.html`.
 - **Langkah-langkah Pengujian**:
-  1. Amati kartu tiket Kamar B-02 pada antrean tiket perbaikan lapangan.
-  2. Periksa badge status *"Normal"* dan *"Ditugaskan"*.
-  3. Klik tombol *"Atur Jadwal"* pada footer kartu tiket.
+  1. Amati kartu *Aksi Cepat Staf* pada sidebar kanan.
+  2. Klik tombol aksi *"Inspeksi Kebersihan Kamar"*.
 - **Hasil yang Diharapkan**:
-  - Sistem menampilkan toast feedback: *"Membuka jadwal servis AC"* (Tipe: `info`).
-  - Staf mendapatkan konfirmasi bahwa jadwal teknisi Pak Deni tetap sinkron dengan kalender operasional properti.
+  - Browser mengarahkan staf secara instan ke `WF-03-kamar.html?status=cleaning&role=staf`.
+  - Halaman tujuan terbuka dengan parameter peran staf dan memfilter unit yang sedang dalam siklus turnover atau sanitasi kebersihan.
 
 ---
 
@@ -1167,21 +1166,17 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 
 ---
 
-### SKENARIO 68: Interaktivitas Checklist Tugas Harian Staf & Pemutakhiran Counter Selesai (Staff Daily Checklist & Counter Sync)
-- **Tujuan**: Menguji fitur interaktif daftar tugas harian staf, efek coret teks saat selesai, dan sinkronisasi angka pada badge counter tugas.
-- **Kondisi Awal**: Terdapat 5 tugas piket staf. 3 tugas telah selesai (`done`), badge counter menampilkan `"3 / 5 Selesai"`.
+### SKENARIO 68: Aksi Turnover Kamar Pasca Check-Out & Pembaruan Status Siap Huni (F-02 Room Turnover & Readiness Verification)
+- **Tujuan**: Menguji fungsionalitas turnover unit kamar yang baru selesai dibersihkan staf (Kamar B-02), tombol aksi *"Tandai Siap Huni"*, dan pemutakhiran real-time status kamar pada peta matriks.
+- **Kondisi Awal**: Kamar B-02 berstatus *Selesai Dibersihkan* (kuning) pasca penghuni lama check-out. Panel *Turnover & Kebersihan Unit* menampilkan 1 unit kamar butuh inspeksi.
 - **Langkah-langkah Pengujian**:
-  1. Amati kartu *Checklist Tugas Harian* pada sidebar kanan (`#checklistContainer`).
-  2. Klik item tugas ke-4: *"Dampingi servis pipa Kamar A-04"*.
-     - *Amati respon visual checkbox, teks tugas, dan badge counter*.
-  3. Klik item tugas ke-5: *"Inspeksi kebersihan kamar kosong A-03"*.
-     - *Amati respon*.
-  4. Klik kembali item tugas ke-4 untuk membatalkan status selesai (*uncheck*).
+  1. Amati kartu *Turnover & Kebersihan Unit* pada sidebar kanan (`#cardTurnover`).
+  2. Periksa rincian Kamar B-02 (Lantai 2) dengan badge *"Selesai Dibersihkan"*.
+  3. Klik tombol aksi *"Tandai Siap Huni"* (`markRoomReady('B-02')`).
 - **Hasil yang Diharapkan**:
-  - Pada langkah 2, class `.done` ditambahkan ke elemen tugas: kotak checkbox berubah hijau terisi ikon centang Lucide `check`, teks tugas dicoret (*strikethrough*), dan opasitas berkurang halus menjadi 0.65.
-  - Badge counter tugas `#taskCounterBadge` seketika bertambah menjadi `"4 / 5 Selesai"`.
-  - Pada langkah 3, badge counter berubah menjadi `"5 / 5 Selesai"`.
-  - Pada langkah 4, class `.done` dicabut: ikon centang menghilang, coretan teks dibatalkan, dan badge counter berkurang kembali secara akurat menjadi `"4 / 5 Selesai"`.
+  - Item turnover Kamar B-02 berganti dengan tampilan empty state: *"Semua unit telah diinspeksi. Tidak ada kamar kotor."*.
+  - Tile Kamar B-02 pada peta matriks 15 kamar seketika bertransformasi dari kuning (`.cleaning`) menjadi oranye siap huni (`.vacant`), dengan title terbarui: *"B-02: Kosong Siap Huni"*.
+  - Muncul toast notifikasi sukses: *"Kamar B-02 telah diinspeksi dan kini berstatus Siap Huni"* (Tipe: `success`).
 
 ---
 
@@ -1355,13 +1350,13 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 | **SK-59** | Kepatuhan Gerak Berkurang (prefers-reduced-motion)| F-01 s.d. F-07 | WCAG 2.1 / Reduced Motion | **PASSED (Verified)** |
 | **SK-60** | Ketahanan Pemulihan BFCache Pasca-Navigasi Balik | F-01 s.d. F-07 | Browser Cache / BFCache Guard | **PASSED (Verified)** |
 | **SK-61** | Pengalihan Otomatis Akses Staf ke Dasbor Staf | F-01 | RBAC / Authorization Guard | **PASSED (Verified)** |
-| **SK-62** | Sinkronisasi Piket & Log Banner Shift Staf | F-01, F-07 | Staff UI / Operational Sync | **PASSED (Verified)** |
+| **SK-62** | Tampilan Bersih Bebas Banner & 3-Gauge Staf | F-01, F-07 | Staff UI / Operational Sync | **PASSED (Verified)** |
 | **SK-63** | Tindakan Pembaruan Progres Tiket Lapangan Staf | F-07 | Maintenance / Ticket Workflow | **PASSED (Verified)** |
-| **SK-64** | Penjadwalan Teknisi AC dari Antrean Tiket Staf | F-07 | Maintenance / Scheduling | **PASSED (Verified)** |
+| **SK-64** | Akses Cepat Inspeksi Kebersihan Kamar | F-02 | Room Turnover / Inspection | **PASSED (Verified)** |
 | **SK-65** | Pengisian Otomatis (Autofill) Tarif Sewa Lapangan | F-04, F-05 | Staff Form / UX Automation | **PASSED (Verified)** |
 | **SK-66** | Validasi Form Kosong Catat Pembayaran Lapangan | F-05 | Form Validation / Negative Guard| **PASSED (Verified)** |
 | **SK-67** | Pencatatan Sewa Dinamis (Status Pending Owner) | F-05 | Integrity / Zero Self-Approval | **PASSED (Verified)** |
-| **SK-68** | Interaktivitas Checklist Tugas Harian & Counter | F-01, F-07 | Operations / Interactive Task | **PASSED (Verified)** |
+| **SK-68** | Aksi Turnover Kamar & Status Siap Huni | F-02 | Room Turnover / Inspection | **PASSED (Verified)** |
 | **SK-69** | Pemantauan Matriks 15 Kamar Lapangan (3 Lantai) | F-02 | Room Status / Spatial Grid | **PASSED (Verified)** |
 | **SK-70** | Integrasi Tautan Kontak WhatsApp Teknisi & Owner | F-01, F-07 | Communication / WhatsApp Action| **PASSED (Verified)** |
 | **SK-71** | Navigasi Langsung (Drill-Down) 3 Gauge Staf | F-02, F-05, F-07| Staff Navigation / KPI Gauges | **PASSED (Verified)** |

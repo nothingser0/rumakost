@@ -2067,7 +2067,7 @@
             
             <div class="metric-card-bottom">
               <div class="metric-val-col">
-                <span class="metric-lbl-sub">Bulan ini</span>
+                <span class="metric-lbl-sub">Hunian Saat Ini</span>
                 <div class="metric-value-huge">11 <span class="metric-sub-val">/ 15 Kamar</span></div>
               </div>
 
@@ -3687,6 +3687,27 @@
         }
       }
     });
+
+    // Sync Operating Expense Budget from Settings (WF-09)
+    function syncOperatingBudgetGauge() {
+      const savedBudget = localStorage.getItem('rumakost_operating_budget');
+      if (savedBudget) {
+        const budget = Number(savedBudget);
+        const expense = 4200000;
+        const pct = Math.min(100, Math.round((expense / budget) * 100));
+        const arcWrap = document.querySelector('#card3OwnerBody .gauge-meter-wrap');
+        const arcPath = document.querySelector('#card3OwnerBody .gauge-meter-svg path:nth-child(2)');
+        const arcText = document.querySelector('#card3OwnerBody .gauge-meter-svg text');
+        if (arcWrap) arcWrap.title = `Pengeluaran Rp 4,2 Jt (Pagu Rp ${(budget/1000000).toFixed(1)} Jt · Sisa Rp ${((budget - expense)/1000).toLocaleString('id-ID')}rb)`;
+        if (arcText) arcText.textContent = `${pct}%`;
+        if (arcPath) {
+          const circumference = 106.8;
+          const offset = circumference - (circumference * pct / 100);
+          arcPath.style.strokeDashoffset = offset;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', syncOperatingBudgetGauge);
 
     // Initialize infinite carousel on DOM ready
     window.addEventListener('DOMContentLoaded', initInfiniteCarousel);

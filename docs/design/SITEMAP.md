@@ -173,7 +173,7 @@ Seluruh prototipe layar interaktif saling terhubung dan dapat diuji langsung di 
 |---|---|---|---|
 | `WF-01-login.html` | SCR-01 | Hub Masuk 3 Peran (Pemilik, Staf, Penghuni) | [SCENARIOS_WF01.md](SCENARIOS_WF01.md) |
 | `WF-02-dashboard.html` | SCR-02 | Dasbor Eksekutif Finansial & Okupansi (Pemilik) | [SCENARIOS_WF02.md](SCENARIOS_WF02.md) |
-| `WF-02-staf-dashboard.html` | SCR-02-STAF | Dasbor Operasional Lapangan, Checklist & Catat Bayar (Staf) | [SCENARIOS_WF02.md](SCENARIOS_WF02.md#skenario-02-akses-dasbor-operasional-staf--pembatasan-hak-akses-staff-restricted-mode) |
+| `WF-02-staf-dashboard.html` | SCR-02-STAF | Dasbor Operasional Lapangan, Turnover Kamar & Catat Bayar (Staf) | [SCENARIOS_WF02.md](SCENARIOS_WF02.md#skenario-02-akses-dasbor-operasional-staf--pembatasan-hak-akses-staff-restricted-mode) |
 | `WF-03-kamar.html` | SCR-03 / 04 | Katalog 15 Unit Kamar Kost & Drawer Tambah Kamar | [SCENARIOS_WF03.md](SCENARIOS_WF03.md) |
 | `WF-04-penghuni.html` | SCR-05 / 06 | Direktori Penyewa Kost & Modal Tambah Penghuni | [SCENARIOS_WF04.md](SCENARIOS_WF04.md) |
 | `WF-05-tagihan.html` | SCR-09 / 10 | Matriks Penagihan Bulanan & Invoice Digital | [SCENARIOS_WF05.md](SCENARIOS_WF05.md) |

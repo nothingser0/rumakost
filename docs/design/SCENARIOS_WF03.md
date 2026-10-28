@@ -19,9 +19,9 @@ Layar **WF-03 (`SCR-03`)** adalah pusat operasional tata kelola unit properti Ru
 ├─────────────────────────────────────────────────────────────────────────────────────────────────┤
 │ 1. TOPBAR FLOATING (70px): Brand Logo + Dark Nav Pill (Role-Adaptive) + User Avatar / Role      │
 ├─────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ 2. MACRO METRICS STRIP: 3 Kartu Radial Speedometer Gauge (Kosong, Okupansi, Potensi Sewa)       │
+│ 2. MACRO METRICS STRIP: 3 Kartu Radial Speedometer Gauge (Okupansi, Rata-rata Tarif, Potensi Sewa)   │
 ├─────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ 3. CONTROLS TOOLBAR (40px Row): Kapsul Cari + Popover Filter Lantai + Filter Status + CTA (44px)│
+│ 3. CONTROLS TOOLBAR (40px Row): Kapsul Cari + Popover Filter Lantai + Filter Status + CTA (40px)│
 ├────────────────────────────────────────────────────────┬────────────────────────────────────────┤
 │ 4. MASTER 2-COLUMN FLOW (~68% GRID CANVAS)             │ 5. FOCUSED DOSSIER DRAWER (360PX FIXED)│
 │    • Kluster Lantai 1 (Blok A) — 5 Unit Kamar          │    • Foto Hero Kamar (Aspect 16:10)    │
@@ -288,7 +288,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
   - Ditampilkan kartu `#kamarEmptyState` dengan ikon `search-x`:  
     *"Tidak ada kamar yang cocok dengan filter atau kata kunci pencarian Anda."*
   - Tampil tombol Level 2: `"Reset Filter"`.
-  - Drawer kanan beralih ke state kosong (`setDrawerEmptyState()`).
+  - Drawer kanan beralih ke state kosong (`setDrawerEmptyState()`), menampilkan ikon `layout-grid` atau `search-x`, teks penunjuk informatif (*"Belum Ada Kamar Dipilih - Pilih salah satu kamar di daftar sebelah kiri untuk melihat rincian spesifikasi, penghuni, atau status unit."* atau pesan filter), border putus-putus (*dashed*), serta ketinggian batas bawahnya diselaraskan (*flush aligned*) dengan batas bawah kotak kamar di sisi kiri.
 * **Uji Kasus B: Absolute Zero State (Katalog Bersih 0 Unit di Sistem)**:
   2. Jika seluruh data kamar dihapus dari properti (`ROOMS_DATA = {}`):
   - Ditampilkan pesan sambutan kosong berikon `door-open`:  

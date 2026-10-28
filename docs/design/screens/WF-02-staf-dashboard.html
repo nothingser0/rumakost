@@ -2,15 +2,2020 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=WF-02-dashboard.html?role=staf">
-  <title>Mengarahkan ke Dasbor Staf...</title>
-  <script>
-    // Canonical Role-Adaptive Redirect: Dasbor Staf kini terintegrasi 100% di WF-02-dashboard.html?role=staf
-    window.location.replace('WF-02-dashboard.html?role=staf');
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost · Dasbor Operasional Staf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* ==========================================================================
+       ESTIFY OPERATIONAL 2-COLUMN DASHBOARD (STAF OPERASIONAL · F-01 S/D F-07)
+       Selaras 100% dengan token dan layout WF-02-dashboard.html
+       ========================================================================== */
+    body {
+      background: var(--bg-canvas, #F7F8FA);
+      color: var(--text-main, #111111);
+      margin: 0;
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+
+    /* Konsistensi Layout & Spacing dengan WF-02-dashboard.html */
+    .dashboard-wrapper {
+      max-width: 1440px;
+      width: calc(100% - 40px);
+      margin: 0 auto;
+      padding: 20px 0;
+      box-sizing: border-box;
+    }
+
+    .dashboard-2col-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 20px;
+      align-items: stretch;
+      width: 100%;
+      max-width: 1440px;
+    }
+
+    .col-main-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .col-sidebar-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+      width: 360px;
+      max-width: 360px;
+      box-sizing: border-box;
+      height: 100%;
+    }
+
+    /* ═══════════════════════════════════════
+       1. TOP ROW: 3 GAUGE METRIC CARDS
+       Tinggi dan dimensi identik dengan WF-02-dashboard.html
+    ═══════════════════════════════════════ */
+    .metrics-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .metric-card-estify {
+      cursor: pointer;
+      background: var(--bg-card, #FFFFFF);
+      border-radius: var(--radius-xl, 20px);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-card, 0 2px 8px rgba(0, 0, 0, 0.04));
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all var(--transition-fast, 0.2s ease);
+      min-height: 138px;
+      box-sizing: border-box;
+      gap: 16px;
+      min-width: 0;
+      outline: none;
+    }
+
+    .metric-card-estify:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      border-color: #E2E8F0;
+    }
+
+    .metric-card-estify:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.25);
+      border-color: var(--brand-primary, #FF7A00);
+    }
+
+    .metric-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .metric-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .metric-icon-sq {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md, 12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast, 0.2s ease);
+    }
+
+    .metric-card-estify:hover .metric-icon-sq {
+      transform: scale(1.05);
+    }
+
+    .metric-icon-sq.is-brand {
+      background: var(--brand-primary-light, #FFF7ED);
+      color: var(--brand-primary, #FF7A00);
+      border: 1px solid var(--brand-primary-border, #FFEDD5);
+    }
+
+    .metric-icon-sq.is-danger {
+      background: var(--status-danger-bg, #FEE2E2);
+      color: var(--status-danger-text, #EF4444);
+      border: 1px solid #FECACA;
+    }
+
+    .metric-icon-sq.is-dark {
+      background: #F1F5F9;
+      color: var(--dark-text, #111111);
+      border: 1px solid var(--border-control, #E2E8F0);
+    }
+
+    .metric-lbl-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+    }
+
+    /* Badge Pills Sesuai WF-02-dashboard.html */
+    .metric-badge-pill {
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full, 999px);
+      line-height: 1.2;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pill-orange-soft {
+      background: var(--brand-primary-light, #FFF7ED);
+      color: var(--brand-primary, #FF7A00);
+      border: 1px solid var(--brand-primary-border, #FFEDD5);
+    }
+
+    .pill-dark-soft {
+      background: #F1F5F9;
+      color: var(--dark-text, #111111);
+      border: 1px solid var(--border-control, #E2E8F0);
+    }
+
+    .metric-card-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    .metric-val-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .metric-lbl-sub {
+      font-size: 12px;
+      color: var(--text-muted, #71717A);
+      font-weight: 500;
+    }
+
+    .metric-value-huge {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-sub-val {
+      font-size: 14px;
+      color: var(--text-muted, #71717A);
+      font-weight: 500;
+    }
+
+    .gauge-meter-wrap {
+      width: 104px;
+      height: 58px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      overflow: visible;
+    }
+
+    .gauge-meter-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* ═══════════════════════════════════════
+       2. CARDS & FLOW PANELS
+    ═══════════════════════════════════════ */
+    .card-box-estify {
+      background: var(--bg-card, #FFFFFF);
+      border-radius: var(--radius-xl, 20px);
+      padding: 24px;
+      box-shadow: var(--shadow-card, 0 2px 8px rgba(0, 0, 0, 0.04));
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .card-top-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-title-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      margin: 0;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ═══════════════════════════════════════
+       3. TICKET FEED & ROWS (F-07)
+    ═══════════════════════════════════════ */
+    .staff-ticket-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .staff-ticket-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: var(--radius-lg, 16px);
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      background: #FAFAFB;
+      transition: all var(--transition-fast, 0.2s ease);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .staff-ticket-row:hover {
+      background: #FFFFFF;
+      border-color: #D1D5DB;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      transform: translateY(-1px);
+    }
+
+    .ticket-left-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .ticket-icon-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ticket-texts {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .ticket-heading-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ticket-room-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: #111111;
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .room-code-badge {
+      font-family: var(--font-heading, 'Poppins'), monospace, sans-serif;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+      background: #F4F5F7;
+      border: 1px solid #E2E8F0;
+      padding: 2px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.2px;
+      display: inline-block;
+    }
+
+    .ticket-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+    }
+
+    .ticket-subtext {
+      font-size: 12px;
+      color: var(--text-secondary, #4B5563);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 440px;
+    }
+
+    .ticket-right-action {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════
+       4. RECENT PAYMENTS LOG (F-05)
+    ═══════════════════════════════════════ */
+    .payment-log-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12.5px;
+    }
+
+    .payment-log-table th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted, #71717A);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border-bottom: 1px solid var(--border-subtle, #ECEEF2);
+      background: #FAFAFB;
+    }
+
+    .payment-log-table th:first-child {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+
+    .payment-log-table th:last-child {
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      text-align: right;
+    }
+
+    .payment-log-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle, #ECEEF2);
+      color: var(--text-main, #111111);
+    }
+
+    .payment-log-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .payment-log-table td:last-child {
+      text-align: right;
+    }
+
+    /* ═══════════════════════════════════════
+       5. SIDEBAR QUICK ACTIONS & ROOM MATRIX
+    ═══════════════════════════════════════ */
+    .quick-actions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-quick-action {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-lg, 16px);
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      background: #FAFAFB;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main, #111111);
+      cursor: pointer;
+      transition: all var(--transition-fast, 0.2s ease);
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+
+    .btn-quick-action:not(.is-dark):hover {
+      background: #F4F5F7;
+      border-color: #E2E8F0;
+      color: #111111;
+      transform: translateY(-1px);
+    }
+
+    .btn-quick-action.is-dark {
+      background: #111111;
+      color: #FFFFFF;
+      border-color: #111111;
+    }
+
+    .btn-quick-action.is-dark:hover {
+      background: #27272A;
+      border-color: #27272A;
+      color: #FFFFFF;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .quick-action-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.05);
+      flex-shrink: 0;
+    }
+
+    .btn-quick-action.is-dark .quick-action-icon {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+
+    .quick-action-subtext {
+      font-size: 11px;
+      color: var(--text-muted, #71717A);
+      font-weight: 400;
+    }
+
+    .btn-quick-action.is-dark .quick-action-subtext {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* 5x3 Room Matrix Grid (F-02) */
+    .floor-row-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .floor-label-meta {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-muted, #71717A);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .room-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .room-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 7px 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle, #ECEEF2);
+      background: #FAFAFB;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      cursor: pointer;
+      transition: all var(--transition-fast, 0.2s ease);
+      position: relative;
+    }
+
+    .room-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .room-tile .tile-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    /* 6 Status Semantik Baku Sesuai DESIGN.md */
+    .room-tile.occupied {
+      border-color: #DCFCE7;
+      background: #F0FDF4;
+      color: #166534;
+    }
+    .room-tile.occupied .tile-status-dot { background: #16A34A; }
+
+    .room-tile.overdue {
+      border-color: #FCA5A5;
+      background: #FFF1F2;
+      color: #9F1239;
+    }
+    .room-tile.overdue .tile-status-dot { background: #EF4444; }
+
+    .room-tile.due-soon {
+      border-color: #FDE68A;
+      background: #FFFBEB;
+      color: #92400E;
+    }
+    .room-tile.due-soon .tile-status-dot { background: #D97706; }
+
+    .room-tile.vacant {
+      border-color: #FFEDD5;
+      background: #FFF7ED;
+      color: #9A3412;
+    }
+    .room-tile.vacant .tile-status-dot { background: #FF7A00; }
+
+    .room-tile.cleaning {
+      border-color: #FEF08A;
+      background: #FEFCE8;
+      color: #854D0E;
+    }
+    .room-tile.cleaning .tile-status-dot { background: #EAB308; }
+
+    .room-tile.maintenance {
+      border-color: #FECDD3;
+      background: #FFF1F2;
+      color: #9F1239;
+    }
+    .room-tile.maintenance .tile-status-dot { background: #F43F5E; }
+
+    /* Modal Catat Bayar Staf (Identik dengan Modal Catat Penerimaan WF-05 & WF-06) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+      box-sizing: border-box;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-backdrop.open,
+    .modal-backdrop.active {
+      display: flex !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 580px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
+      border: 1px solid #ECEEF2;
+      overflow: hidden;
+      animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-card-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid #ECEEF2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .modal-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main, #111111);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-modal-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #F3F4F6;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748B;
+      cursor: pointer;
+      transition: all var(--transition-fast, 0.2s ease);
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .btn-modal-close:hover {
+      background: #E5E7EB;
+      color: #111111;
+    }
+
+    .modal-card-body {
+      padding: 18px 22px;
+      flex: 1 1 auto;
+      min-height: 0;
+      max-height: calc(88vh - 130px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-sizing: border-box;
+    }
+
+    .modal-card-footer {
+      padding: 14px 22px;
+      border-top: 1px solid #ECEEF2;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    .form-group-custom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label-custom {
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-input-custom {
+      height: 42px !important;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 13px;
+      color: #111111;
+      font-family: inherit;
+      outline: none;
+      background: #FFFFFF;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .form-input-custom:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .form-textarea-custom {
+      width: 100%;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #111111;
+      font-family: inherit;
+      outline: none;
+      background: #FFFFFF;
+      box-sizing: border-box;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-textarea-custom:focus {
+      border-color: #FF7A00;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .method-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    @media (max-width: 480px) {
+      .method-selector-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .method-radio-box {
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      color: #4B5563;
+      transition: all 0.2s ease;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 52px;
+      box-sizing: border-box;
+    }
+
+    .method-radio-box:hover {
+      border-color: #FF7A00;
+      color: #FF7A00;
+      background: #FFFDF9;
+    }
+
+    .method-radio-box.active {
+      border-color: #FF7A00;
+      background: #FFF7ED;
+      color: #EA580C;
+      box-shadow: 0 0 0 1px #FF7A00;
+    }
+
+    .upload-dropzone {
+      border: 2px dashed #CBD5E1;
+      border-radius: 14px;
+      padding: 14px 16px;
+      text-align: center;
+      cursor: pointer;
+      background: #F8FAFC;
+      transition: all 0.2s ease;
+    }
+
+    .upload-dropzone:hover {
+      border-color: #FF7A00;
+      background: #FFFDF9;
+    }
+
+    .upload-icon-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #FFF7ED;
+      color: #FF7A00;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+
+    .search-invoice-opt:hover {
+      background: #F8FAFC !important;
+    }
+
+    .turnover-scroll-body::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .turnover-scroll-body::-webkit-scrollbar-thumb {
+      background: #E2E8F0;
+      border-radius: 4px;
+    }
+
+    .calculation-callout {
+      background: #F8FAFC;
+      border: 1px solid #ECEEF2;
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #64748B;
+    }
+
+    .calc-row.highlight {
+      padding-top: 6px;
+      border-top: 1px dashed #E2E8F0;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-2col-layout {
+        grid-template-columns: 1fr;
+      }
+      .col-sidebar-flow {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+      }
+      .metrics-row-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-<body style="font-family: sans-serif; text-align: center; padding: 40px; color: #64748B;">
-  <p>Mengarahkan ke dasbor terpadu RumaKost...</p>
-  <p><a href="WF-02-dashboard.html?role=staf" style="color: #FF7A00; font-weight: bold;">Klik di sini jika tidak dialihkan secara otomatis</a></p>
+<body>
+
+  <!-- Top Canopy Masking -->
+  <div class="top-canopy-overlay" aria-hidden="true"></div>
+
+  <!-- Global Topbar (Class topbar baku sesuai components.css) -->
+  <header class="topbar" id="mainTopbar"></header>
+
+  <!-- Main Dashboard Container (Batas Atas dan Bawah Selaras) -->
+  <div class="dashboard-wrapper">
+    <main class="dashboard-2col-layout">
+      
+      <!-- LEFT MAIN COLUMN (~68%) -->
+      <div class="col-main-flow">
+        
+        <!-- 1. TOP ROW: 3 OPERATIONAL RADIAL GAUGE METRIC CARDS (ZERO CONFIDENTIAL LEAK) -->
+        <div class="metrics-row-3">
+          
+          <!-- Card 1: Okupansi Kamar (F-02) -->
+          <div class="metric-card-estify" 
+               tabindex="0" 
+               role="link" 
+               aria-label="Okupansi Kamar 11 dari 15 Unit, 73% Terisi. Buka Direktori Master Kamar" 
+               onclick="location.href='WF-03-kamar.html?role=staf'" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html?role=staf';}" 
+               title="Buka Direktori Kamar Staf">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-brand">
+                  <i data-lucide="building-2" style="width: 18px; height: 18px;"></i>
+                </div>
+                <span class="metric-lbl-title">Okupansi Kamar</span>
+              </div>
+              <span class="metric-badge-pill pill-orange-soft">+1 Unit <i data-lucide="arrow-up" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i></span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Hunian Saat Ini</span>
+                <div class="metric-value-huge">11 <span class="metric-sub-val">/ 15 Kamar</span></div>
+              </div>
+
+              <!-- Estify Radial Arc Gauge 73% (104px x 58px) -->
+              <div class="gauge-meter-wrap" title="Tingkat Okupansi 73% (11 dari 15 kamar)">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#FF7A00" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="29"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">73%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Tiket Kerusakan Aktif (F-07) -->
+          <div class="metric-card-estify" 
+               tabindex="0" 
+               role="link" 
+               aria-label="Tiket Kerusakan Aktif: 3 tiket menunggu tindakan. Buka Modul Tiket" 
+               onclick="location.href='WF-08-tiket.html?role=staf'" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-08-tiket.html?role=staf';}" 
+               title="Buka Antrean Tiket Lapangan">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-danger">
+                  <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+                </div>
+                <span class="metric-lbl-title">Tiket Kerusakan</span>
+              </div>
+              <span class="status-badge badge-danger" style="font-size: 11px;">1 Mendesak</span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Antrean Servis Lapangan</span>
+                <div class="metric-value-huge">3 <span class="metric-sub-val">Tiket</span></div>
+              </div>
+
+              <!-- Estify Radial Arc Gauge 60% (104px x 58px) -->
+              <div class="gauge-meter-wrap" title="3 Tiket Aktif Lapangan (60% Beban Servis)">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#EF4444" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="42"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">60%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Setoran Kas Lapangan Pending (F-05 Zero Self-Approval) -->
+          <div class="metric-card-estify" 
+               tabindex="0" 
+               role="link" 
+               aria-label="Setoran Kas Pending: 2 transaksi menunggu verifikasi Owner. Buka Tagihan" 
+               onclick="location.href='WF-05-tagihan.html?role=staf'" 
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-05-tagihan.html?role=staf';}" 
+               title="Buka Daftar Setoran Kas Staf">
+            <div class="metric-card-top">
+              <div class="metric-title-group">
+                <div class="metric-icon-sq is-dark">
+                  <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
+                </div>
+                <span class="metric-lbl-title">Setoran Lapangan</span>
+              </div>
+              <!-- Pill Abu-abu Senada dengan Background Icon -->
+              <span class="metric-badge-pill pill-dark-soft">2 Pending</span>
+            </div>
+            
+            <div class="metric-card-bottom">
+              <div class="metric-val-col">
+                <span class="metric-lbl-sub">Uang Kas di Tangan Staf</span>
+                <div class="metric-value-huge">Rp 2,8 <span class="metric-sub-val">Jt</span></div>
+              </div>
+
+              <!-- Estify Radial Arc Gauge 50% (104px x 58px) -->
+              <div class="gauge-meter-wrap" title="2 Transaksi Menunggu Validasi Pemilik">
+                <svg class="gauge-meter-svg" viewBox="0 0 100 58">
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
+                  <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="53"/>
+                  <text x="50" y="49" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="12" font-weight="700" fill="#111111">50%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2. ANTREAN TIKET MENDESAK HARI INI (F-07 · Batas Tampil: Maksimal 3 Tiket) -->
+        <div class="card-box-estify">
+          <div class="card-top-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h2 class="card-title-text">
+                <i data-lucide="wrench" style="width: 18px; height: 18px; color: #EF4444;"></i>
+                Antrean Tiket Kerusakan Hari Ini
+              </h2>
+              <span class="status-badge badge-danger" style="font-size: 11px;">1 Mendesak</span>
+              <span class="status-badge badge-dark" style="font-size: 11px;">3 Aktif</span>
+            </div>
+            
+            <!-- Satu Tombol Aksi Tunggal (Bebas Redundansi) -->
+            <a href="WF-08-tiket.html?role=staf" class="btn-pill btn-white-outline" style="font-size: 12px; padding: 0 14px; height: 36px; display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+              <span>Kelola Tiket</span>
+              <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
+            </a>
+          </div>
+
+          <div class="staff-ticket-list">
+            <!-- Item 1 dari 3: Wastafel Bocor A-04 (Mendesak) -->
+            <a href="WF-12-portal-tiket-detail.html?role=staf" class="staff-ticket-row" role="link" title="Buka Detail Tiket A-04">
+              <div class="ticket-left-info">
+                <div class="ticket-icon-avatar" style="background: #FEE2E2; color: #EF4444;">
+                  <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div class="ticket-texts">
+                  <div class="ticket-heading-line">
+                    <span class="ticket-room-badge">Kamar A-04</span>
+                    <span class="ticket-name">Pipa Wastafel Bocor & Menetes</span>
+                    <span class="status-badge badge-danger" style="font-size: 10px;">Mendesak</span>
+                    <span class="status-badge badge-brand" style="font-size: 10px;">Dalam Pengerjaan</span>
+                  </div>
+                  <span class="ticket-subtext">Pelapor: Budi Santoso · Air merembes ke lantai kamar mandi (Ada 2 Foto Bukti)</span>
+                </div>
+              </div>
+              <div class="ticket-right-action">
+                <span style="font-size: 11px; color: var(--text-muted, #71717A); font-weight: 500;">1 jam lalu</span>
+                <span style="font-size: 11px; color: #FF7A00; font-weight: 600;">Teknisi di Lokasi</span>
+              </div>
+            </a>
+
+            <!-- Item 2 dari 3: AC B-02 -->
+            <a href="WF-08-tiket.html?role=staf" class="staff-ticket-row" role="link" title="Buka Detail Tiket B-02">
+              <div class="ticket-left-info">
+                <div class="ticket-icon-avatar" style="background: #FFF7ED; color: #FF7A00;">
+                  <i data-lucide="wind" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div class="ticket-texts">
+                  <div class="ticket-heading-line">
+                    <span class="ticket-room-badge">Kamar B-02</span>
+                    <span class="ticket-name">AC Kurang Dingin & Hembusan Lemah</span>
+                    <span class="status-badge badge-warning" style="font-size: 10px;">Normal</span>
+                    <span class="status-badge badge-dark" style="font-size: 10px;">Ditugaskan</span>
+                  </div>
+                  <span class="ticket-subtext">Pelapor: Rini Marlina · Butuh cuci filter indoor unit</span>
+                </div>
+              </div>
+              <div class="ticket-right-action">
+                <span style="font-size: 11px; color: var(--text-muted, #71717A); font-weight: 500;">3 jam lalu</span>
+                <span style="font-size: 11px; color: var(--text-secondary, #4B5563);">Teknisi Pak Joko</span>
+              </div>
+            </a>
+
+            <!-- Item 3 dari 3: Pompa Air Selesai -->
+            <a href="WF-08-tiket.html?role=staf" class="staff-ticket-row" role="link" title="Buka Detail Tiket Fasilitas">
+              <div class="ticket-left-info">
+                <div class="ticket-icon-avatar" style="background: #DCFCE7; color: #16A34A;">
+                  <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div class="ticket-texts">
+                  <div class="ticket-heading-line">
+                    <span class="ticket-room-badge" style="background: #475569;">Fasilitas</span>
+                    <span class="ticket-name">Pengecekan Otomatis Pompa Air Toren</span>
+                    <span class="status-badge badge-success" style="font-size: 10px;">Selesai 09:15</span>
+                  </div>
+                  <span class="ticket-subtext">Tekanan air normal kembali, debit penampungan terisi penuh</span>
+                </div>
+              </div>
+              <div class="ticket-right-action">
+                <span style="font-size: 11px; color: #16A34A; font-weight: 600;">Terselesaikan</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Footer Bersih Informatif Tanpa Link Duplikat -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border-subtle, #ECEEF2); font-size: 11.5px; color: var(--text-muted, #71717A);">
+            <span>Menampilkan 3 tiket teratas · Prioritas tindakan lapangan hari ini</span>
+            <span>Seluruh pengerjaan wajib verifikasi fisik</span>
+          </div>
+        </div>
+
+        <!-- 3. KAS LAPANGAN & CATAT PEMBAYARAN MASUK (F-05 · Batas Tampil: Maksimal 3 Transaksi Terkini) -->
+        <div class="card-box-estify">
+          <div class="card-top-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h2 class="card-title-text">
+                <i data-lucide="receipt" style="width: 18px; height: 18px; color: #111111;"></i>
+                Pencatatan Kas Lapangan Terkini
+              </h2>
+              <span class="status-badge badge-warning" style="font-size: 11px;">Zero Self-Approval</span>
+            </div>
+            
+            <button type="button" class="btn-pill btn-primary" onclick="openStaffPaymentModal()" style="font-size: 12px; height: 36px; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px;">
+              <i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i>
+              <span>Catat Uang Masuk</span>
+            </button>
+          </div>
+
+          <!-- Micro Callout Banner Zero Self-Approval -->
+          <div style="background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 12px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;">
+            <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #EA580C; flex-shrink: 0; margin-top: 1px;"></i>
+            <div style="font-size: 11.5px; color: #9A3412; line-height: 1.5;">
+              <strong>Aturan Zero Self-Approval:</strong> Staf dilarang mengesahkan pembayaran sendiri. Setiap penerimaan kas tunai atau konfirmasi transfer yang dicatat di lapangan akan berstatus <strong>Pending</strong> hingga diverifikasi oleh Pemilik Kost.
+            </div>
+          </div>
+
+          <!-- Mini Table: Log 10 Transaksi Staf Terkini (F-05) -->
+          <div style="overflow-x: auto;">
+            <table class="payment-log-table">
+              <thead>
+                <tr>
+                  <th>No. Kwitansi Draf</th>
+                  <th>Kamar</th>
+                  <th>Nama Penyewa</th>
+                  <th>Kanal Bayar</th>
+                  <th>Nominal</th>
+                  <th>Status Otorisasi</th>
+                </tr>
+              </thead>
+              <tbody id="staffPaymentTableBody">
+                <!-- Baris 1 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-10</td>
+                  <td><span class="room-code-badge">A-02</span></td>
+                  <td><strong>Dimas Prasetyo</strong></td>
+                  <td>Tunai (Kasir Kost)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.400.000</td>
+                  <td><span class="status-badge badge-warning" style="font-size: 10px;">Pending Verifikasi</span></td>
+                </tr>
+                <!-- Baris 2 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-09</td>
+                  <td><span class="room-code-badge">B-01</span></td>
+                  <td><strong>Dodi Firmansyah</strong></td>
+                  <td>Tunai (Titip di Meja)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.400.000</td>
+                  <td><span class="status-badge badge-warning" style="font-size: 10px;">Pending Verifikasi</span></td>
+                </tr>
+                <!-- Baris 3 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-08</td>
+                  <td><span class="room-code-badge">C-03</span></td>
+                  <td><strong>Rian Hidayat</strong></td>
+                  <td>Klaim Transfer (Slip BCA)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.350.000</td>
+                  <td><span class="status-badge badge-warning" style="font-size: 10px;">Pending Verifikasi</span></td>
+                </tr>
+                <!-- Baris 4 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-07</td>
+                  <td><span class="room-code-badge">A-04</span></td>
+                  <td><strong>Budi Santoso</strong></td>
+                  <td>Tunai (Cicilan Ke-1)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.000.000</td>
+                  <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
+                </tr>
+                <!-- Baris 5 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-06</td>
+                  <td><span class="room-code-badge">C-04</span></td>
+                  <td><strong>Mega Lestari</strong></td>
+                  <td>Transfer (Mutasi BCA)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.350.000</td>
+                  <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
+                </tr>
+                <!-- Baris 6 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-05</td>
+                  <td><span class="room-code-badge">B-04</span></td>
+                  <td><strong>Eko Prasetyo</strong></td>
+                  <td>QRIS Statis Kost</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.500.000</td>
+                  <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
+                </tr>
+                <!-- Baris 7 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-04</td>
+                  <td><span class="room-code-badge">A-05</span></td>
+                  <td><strong>Sri Wahyuni</strong></td>
+                  <td>Tunai (Kasir Kost)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.500.000</td>
+                  <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
+                </tr>
+                <!-- Baris 8 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-03</td>
+                  <td><span class="room-code-badge">C-01</span></td>
+                  <td><strong>Hendra Wijaya</strong></td>
+                  <td>Transfer (Mutasi BCA)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.400.000</td>
+                  <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
+                </tr>
+                <!-- Baris 9 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-02</td>
+                  <td><span class="room-code-badge">C-05</span></td>
+                  <td><strong>Aditya Pratama</strong></td>
+                  <td>Tunai (Kasir Kost)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.350.000</td>
+                  <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
+                </tr>
+                <!-- Baris 10 -->
+                <tr>
+                  <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-01</td>
+                  <td><span class="room-code-badge">A-01</span></td>
+                  <td><strong>Siti Aminah</strong></td>
+                  <td>Transfer (Mutasi BCA)</td>
+                  <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.400.000</td>
+                  <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; color: var(--text-muted, #71717A); padding-top: 8px; border-top: 1px solid var(--border-subtle, #ECEEF2);">
+            <span>Menampilkan 10 catatan setoran terakhir · Total kas tercatat: <strong style="color: var(--text-main, #111111);">Rp 13.650.000</strong></span>
+            <a href="WF-05-tagihan.html?role=staf" style="color: var(--brand-primary, #FF7A00); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+              Buka Matriks Tagihan
+              <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDEBAR COLUMN (360px Fixed · Tinggi Selaras) -->
+      <div class="col-sidebar-flow">
+        
+        <!-- CARD 1: AKSI CEPAT STAF (QUICK ACTIONS) -->
+        <div class="card-box-estify">
+          <div class="card-top-header">
+            <h2 class="card-title-text">
+              <i data-lucide="zap" style="width: 16px; height: 16px; color: #FF7A00;"></i>
+              Aksi Cepat Staf
+            </h2>
+          </div>
+
+          <div class="quick-actions-grid">
+            <!-- Tombol Utama Hitam Solid dengan Hover Gelap Berwibawa -->
+            <button type="button" class="btn-quick-action is-dark" onclick="openStaffPaymentModal()">
+              <div class="quick-action-icon">
+                <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div style="display: flex; flex-direction: column; text-align: left;">
+                <span>Catat Uang Tunai / Bayar</span>
+                <span class="quick-action-subtext">Setoran titipan penghuni (Pending)</span>
+              </div>
+            </button>
+
+            <!-- Tombol Aksi Sekunder 1 -->
+            <a href="WF-03-kamar.html?status=cleaning&role=staf" class="btn-quick-action">
+              <div class="quick-action-icon" style="color: #F59E0B;">
+                <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div style="display: flex; flex-direction: column; text-align: left;">
+                <span>Inspeksi Kebersihan Kamar</span>
+                <span class="quick-action-subtext">Cek turnover & sanitasi unit</span>
+              </div>
+            </a>
+
+            <!-- Tombol Aksi Sekunder 2 -->
+            <a href="WF-08-tiket.html?action=new&role=staf" class="btn-quick-action">
+              <div class="quick-action-icon" style="color: #EF4444;">
+                <i data-lucide="wrench" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div style="display: flex; flex-direction: column; text-align: left;">
+                <span>Buat Tiket Perbaikan Unit</span>
+                <span class="quick-action-subtext">Laporan temuan di lapangan</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- CARD 2: PETA STATUS 15 KAMAR (SEMUA KONDISI LENGKAP 3 LANTAI) -->
+        <div class="card-box-estify">
+          <div class="card-top-header">
+            <div>
+              <h2 class="card-title-text">
+                <i data-lucide="building-2" style="width: 16px; height: 16px; color: #FF7A00;"></i>
+                Peta Status 15 Kamar
+              </h2>
+              <span style="font-size: 11px; color: var(--text-muted, #71717A);">Kondisi Hunian & Kesiapan Unit Lapangan</span>
+            </div>
+            <span class="status-badge badge-brand" style="font-size: 11px;">73% Terisi</span>
+          </div>
+
+          <!-- Progress Bar Okupansi -->
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary, #4B5563);">
+              <span>Unit Terisi</span>
+              <strong>11 dari 15 Unit</strong>
+            </div>
+            <div style="width: 100%; height: 8px; background: #F1F5F9; border-radius: 999px; overflow: hidden;">
+              <div style="width: 73%; height: 100%; background: #FF7A00; border-radius: 999px;"></div>
+            </div>
+          </div>
+
+          <!-- Matrix Grid Terbagi Rapi Per Lantai -->
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            
+            <!-- Lantai 1 -->
+            <div class="floor-row-group">
+              <span class="floor-label-meta">Lantai 1</span>
+              <div class="room-matrix-grid">
+                <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-01: Siti Aminah (Terisi · Lunas)">
+                  <span>A-01</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile overdue" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-02: Dimas Prasetyo (Terisi · Telat H+5)">
+                  <span>A-02</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile vacant" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-03: Kosong · Siap Huni">
+                  <span>A-03</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile due-soon" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-04: Budi Santoso (Terisi · Jatuh Tempo H-2)">
+                  <span>A-04</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-05: Sri Wahyuni (Terisi · Lunas)">
+                  <span>A-05</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lantai 2 -->
+            <div class="floor-row-group">
+              <span class="floor-label-meta">Lantai 2</span>
+              <div class="room-matrix-grid">
+                <div class="room-tile overdue" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-01: Dodi Firmansyah (Terisi · Telat H+3)">
+                  <span>B-01</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile cleaning" id="tileB02" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-02: Turnover (Selesai Dibersihkan)">
+                  <span>B-02</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile vacant" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-03: Kosong · Siap Huni">
+                  <span>B-03</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-04: Eko Prasetyo (Terisi · Lunas)">
+                  <span>B-04</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile maintenance" onclick="location.href='WF-03-kamar.html?role=staf'" title="B-05: Perbaikan AC (Teknisi)">
+                  <span>B-05</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lantai 3 -->
+            <div class="floor-row-group">
+              <span class="floor-label-meta">Lantai 3</span>
+              <div class="room-matrix-grid">
+                <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-01: Hendra Wijaya (Terisi · Lunas)">
+                  <span>C-01</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile vacant" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-02: Kosong · Siap Huni">
+                  <span>C-02</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-03: Rian Hidayat (Terisi · Lunas)">
+                  <span>C-03</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-04: Mega Lestari (Terisi · Lunas)">
+                  <span>C-04</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+                <div class="room-tile occupied" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-05: Aditya Pratama (Terisi · Lunas)">
+                  <span>C-05</span>
+                  <span class="tile-status-dot"></span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Legend Lengkap Seluruh Kondisi Kamar (Total 15 Unit) -->
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 12px; font-size: 10.5px; color: var(--text-secondary, #4B5563); padding-top: 8px; border-top: 1px dashed var(--border-subtle, #ECEEF2);">
+            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #16A34A; flex-shrink: 0;"></span> 8 Lunas</span>
+            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #EF4444; flex-shrink: 0;"></span> 2 Telat Bayar</span>
+            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #D97706; flex-shrink: 0;"></span> 1 Jatuh Tempo</span>
+            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #FF7A00; flex-shrink: 0;"></span> 3 Siap Huni</span>
+            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #EAB308; flex-shrink: 0;"></span> 1 Dibersihkan</span>
+            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #F43F5E; flex-shrink: 0;"></span> 1 Perbaikan</span>
+          </div>
+
+          <a href="WF-03-kamar.html?role=staf" class="btn-pill btn-white-outline" style="font-size: 12px; height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;">
+            <span>Buka Katalog Kamar (15 Unit)</span>
+            <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
+          </a>
+        </div>
+
+        <!-- CARD 3: TURNOVER & KEBERSIHAN UNIT (F-02 · Pola Header-Body Scroll-Footer Tetap ala WF-03) -->
+        <div class="card-box-estify" id="cardTurnover" style="display: flex; flex-direction: column;">
+          <!-- Top Bar (Sticky Header) -->
+          <div class="card-top-header" style="flex-shrink: 0; margin-bottom: 10px;">
+            <h2 class="card-title-text" style="font-size: 14px;">
+              <i data-lucide="sparkles" style="width: 16px; height: 16px; color: #F59E0B;"></i>
+              Turnover & Kebersihan Unit
+            </h2>
+            <span class="status-badge badge-warning" style="font-size: 10px;">2 Butuh Aksi</span>
+          </div>
+
+          <!-- Scrollable Body (Max-height dengan Overflow-Y Auto Sesuai Pola WF-03) -->
+          <div class="turnover-scroll-body" style="display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; flex: 1 1 auto; min-height: 0;">
+            <!-- Unit 1 dari 2: Kamar B-02 (Perlu Aksi Staf) -->
+            <div id="turnoverItemB02" style="background: #FAFAFB; border: 1px solid var(--border-subtle, #ECEEF2); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-main, #111111);">Kamar B-02 (Lantai 2)</span>
+                <span class="status-badge badge-warning" style="font-size: 10px;">Selesai Dibersihkan</span>
+              </div>
+              <span style="font-size: 11.5px; color: var(--text-secondary, #4B5563);">Sanitasi kamar mandi & sprei telah rampung. Siap diverifikasi operasional.</span>
+              
+              <button type="button" class="btn-pill btn-white-outline" onclick="markRoomReady('B-02')" style="font-size: 11.5px; height: 32px; padding: 0 12px; align-self: flex-start; gap: 4px; border-color: #16A34A; color: #16A34A;">
+                <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+                <span>Tandai Siap Huni</span>
+              </button>
+            </div>
+
+            <!-- Unit 2 dari 2: Kamar C-02 (Sedang Disanitasi) -->
+            <div id="turnoverItemC02" style="background: #FAFAFB; border: 1px solid var(--border-subtle, #ECEEF2); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-main, #111111);">Kamar C-02 (Lantai 3)</span>
+                <span class="status-badge badge-warning" style="font-size: 10px;">Pembersihan Rutin</span>
+              </div>
+              <span style="font-size: 11.5px; color: var(--text-secondary, #4B5563);">Ganti gorden & cuci exhaust kamar mandi selesai. Tunggu pengecekan.</span>
+              
+              <button type="button" class="btn-pill btn-white-outline" onclick="markRoomReady('C-02')" style="font-size: 11.5px; height: 32px; padding: 0 12px; align-self: flex-start; gap: 4px; border-color: #16A34A; color: #16A34A;">
+                <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+                <span>Tandai Siap Huni</span>
+              </button>
+            </div>
+
+            <div id="turnoverEmpty" style="display: none; text-align: center; padding: 12px 0; color: var(--text-muted, #71717A); font-size: 12px;">
+              <i data-lucide="check" style="width: 24px; height: 24px; color: #16A34A; margin-bottom: 4px;"></i>
+              <div>Seluruh unit telah diinspeksi. Tidak ada kamar kotor tersisa.</div>
+            </div>
+          </div>
+
+          <!-- Sticky Footer Pintasan Status Unit (Tetap di Bawah Sesuai Pola WF-03) -->
+          <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 10px; border-top: 1px dashed var(--border-subtle, #ECEEF2); margin-top: 10px; flex-shrink: 0;">
+            <div style="font-size: 11px; font-weight: 600; color: var(--text-muted, #71717A); text-transform: uppercase; letter-spacing: 0.3px;">
+              Pintasan Status Unit
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <a href="WF-03-kamar.html?status=perbaikan&role=staf" class="btn-pill btn-white-outline" style="font-size: 11.5px; height: 32px; padding: 0 10px; display: inline-flex; align-items: center; gap: 5px; color: #EF4444; border-color: #FECACA; text-decoration: none; flex: 1; justify-content: center;">
+                <i data-lucide="wrench" style="width: 13px; height: 13px;"></i>
+                <span>1 Perbaikan (B-05)</span>
+              </a>
+              <a href="WF-03-kamar.html?status=kosong&role=staf" class="btn-pill btn-white-outline" style="font-size: 11.5px; height: 32px; padding: 0 10px; display: inline-flex; align-items: center; gap: 5px; color: #FF7A00; border-color: #FFEDD5; text-decoration: none; flex: 1; justify-content: center;">
+                <i data-lucide="building-2" style="width: 13px; height: 13px;"></i>
+                <span>3 Kamar Kosong</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========================================================
+       MODAL: CATAT PENERIMAAN PEMBAYARAN (SAMA SEPERTI DI PAGE TAGIHAN WF-05 & PEMBAYARAN WF-06)
+       F-05 ZERO SELF-APPROVAL: STATUS PENDING VERIFIKASI OWNER
+       ======================================================== -->
+  <div class="modal-backdrop" id="modalStaffPayment" role="dialog" aria-modal="true" aria-labelledby="modalPaymentTitle">
+    <div class="modal-card">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title" id="modalPaymentTitle">
+          <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: #FF7A00;"></i>
+          <span>Catat Penerimaan Pembayaran</span>
+        </h3>
+        <button type="button" class="btn-modal-close" onclick="closeStaffPaymentModal()" aria-label="Tutup Modal">
+          <i data-lucide="x" style="width: 15px; height: 15px;"></i>
+        </button>
+      </div>
+
+      <form id="formStaffPayment" onsubmit="handleStaffPaymentSubmit(event)" style="margin: 0; display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0;">
+        <div class="modal-card-body">
+          
+          <!-- Peringatan Staf Zero Self-Approval -->
+          <div style="background: #FFF7ED; border: 1.5px solid #FFEDD5; border-radius: 12px; padding: 12px 14px; font-size: 11.5px; color: #9A3412; display: flex; align-items: flex-start; gap: 10px;">
+            <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #EA580C; flex-shrink: 0; margin-top: 1px;"></i>
+            <div>
+              <strong>Mode Staf Lapangan (Zero Self-Approval):</strong> Catatan ini otomatis berstatus <strong>Pending Verifikasi</strong> dan tidak langsung mengubah kas resmi sampai divalidasi oleh Pemilik Kost.
+            </div>
+          </div>
+
+          <!-- Cari & Pilih Tagihan / Kamar Penghuni (Custom Searchbar Sesuai WF-06) -->
+          <div class="form-group-custom">
+            <label class="form-label-custom">
+              <span>Pilih Tagihan &amp; Kamar Penghuni *</span>
+              <span id="invoiceSelectedBadge" style="font-size: 11px; font-weight: 600; color: #16A34A; background: #DCFCE7; padding: 2px 8px; border-radius: 6px;">Kamar A-02 Terpilih</span>
+            </label>
+            <div class="search-invoice-wrap" style="position: relative; width: 100%;">
+              <div style="position: relative; display: flex; align-items: center;">
+                <i data-lucide="search" style="position: absolute; left: 13px; width: 15px; height: 15px; color: #94A3B8; pointer-events: none;"></i>
+                <input type="text" 
+                       id="searchInvoiceInput" 
+                       class="form-input-custom" 
+                       style="width: 100%; padding-left: 38px; padding-right: 32px; font-size: 13px; font-weight: 500; height: 42px; font-family: 'Poppins', sans-serif;" 
+                       placeholder="Ketik nama penghuni, nomor kamar (contoh: A-02), atau invoice..." 
+                       value="Kamar A-02 · Dimas Prasetyo (#INV-202610-02)"
+                       onfocus="openInvoiceSearchResults()"
+                       oninput="filterInvoiceSearchResults(this.value)">
+                <button type="button" 
+                        id="btnClearInvoiceSearch" 
+                        onclick="clearInvoiceSearch()" 
+                        style="position: absolute; right: 10px; background: transparent; border: none; cursor: pointer; color: #94A3B8; display: flex; align-items: center; padding: 2px;"
+                        title="Hapus / ganti pilihan tagihan">
+                  <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+                </button>
+              </div>
+
+              <!-- Floating Search Results Panel -->
+              <div class="invoice-search-results-panel" id="invoiceSearchResultsPanel" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 14px; box-shadow: 0 16px 36px rgba(0,0,0,0.12); z-index: 150; max-height: 220px; overflow-y: auto; padding: 6px; box-sizing: border-box;">
+                <!-- Populated dynamically by JavaScript -->
+              </div>
+            </div>
+
+            <!-- Pod Kamar Terpilih Preview -->
+            <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 11px 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 34px; height: 34px; border-radius: 8px; background: #FF7A00; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; font-family: 'Poppins', sans-serif;" id="payModalRoomBadge">
+                  A-02
+                </div>
+                <div>
+                  <div style="font-size: 13px; font-weight: 700; color: #0F172A; font-family: 'Poppins', sans-serif;" id="payModalTenantName">Dimas Prasetyo</div>
+                  <div style="font-size: 11px; color: #64748B; font-family: 'Poppins', sans-serif;" id="payModalUnitDesc">Lantai 1 · Standar (3×4m)</div>
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 11px; color: #64748B; text-transform: uppercase; font-weight: 600;">Nomor Tagihan:</div>
+                <strong style="font-size: 12px; color: #FF7A00; font-family: 'Poppins', sans-serif; font-variant-numeric: tabular-nums;" id="payModalInvId">#INV-202610-02</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pilih Metode / Kanal Pembayaran Lapangan (Opsi A: 2 Kanal Lapangan Murni) -->
+          <div class="form-group-custom">
+            <label class="form-label-custom">Metode / Kanal Pembayaran Lapangan *</label>
+            <div class="method-selector-grid" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div class="method-radio-box active" onclick="selectStaffPaymentMethod(this, 'Tunai (Kasir Kost)')" style="padding: 10px 12px; flex-direction: row; justify-content: center; gap: 8px;">
+                <i data-lucide="banknote" style="width: 16px; height: 16px;"></i>
+                <span style="font-size: 12px;">Uang Tunai (Cash di Meja)</span>
+              </div>
+              <div class="method-radio-box" onclick="selectStaffPaymentMethod(this, 'Klaim Transfer (Struk)')" style="padding: 10px 12px; flex-direction: row; justify-content: center; gap: 8px;">
+                <i data-lucide="receipt" style="width: 16px; height: 16px;"></i>
+                <span style="font-size: 12px;">Titip Bukti Transfer (Slip)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nominal Diterima & Tanggal Bayar (Menggunakan CMP-20 RumaDatePicker Calendar) -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group-custom">
+              <label class="form-label-custom" for="inputPayAmount">Nominal Diterima (Rp) *</label>
+              <input type="text" class="form-input-custom" id="inputPayAmount" value="1.400.000" oninput="formatStaffNominalInput(this)" placeholder="Contoh: 1.400.000" required style="font-weight: 500; font-family: 'Poppins', sans-serif; font-variant-numeric: tabular-nums;">
+            </div>
+            <div class="form-group-custom">
+              <label class="form-label-custom">Tanggal Bayar *</label>
+              <div class="ruma-datepicker-wrap align-right" id="wrapPayDate" style="width: 100%;">
+                <input type="hidden" id="inputPayDate" value="2026-10-27">
+                <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapPayDate', 'inputPayDate')" style="height: 42px !important; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input, #E2E8F0); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
+                  <div class="ruma-datepicker-trigger-content" style="display: flex; align-items: center; gap: 8px;">
+                    <i data-lucide="calendar" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary, #FF7A00);"></i>
+                    <span class="ruma-datepicker-val-txt" id="inputPayDateDisplay" style="font-size: 12.5px; font-weight: 600; color: var(--text-main, #111111); font-family: 'Poppins', sans-serif;">27 Oktober 2026</span>
+                  </div>
+                  <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Atas Nama Pengirim & Nomor Referensi -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group-custom">
+              <label class="form-label-custom" for="inputPaySender">Atas Nama Pengirim *</label>
+              <input type="text" class="form-input-custom" id="inputPaySender" value="Dimas Prasetyo" placeholder="Nama penyetor / pemilik rekening" required style="font-family: 'Poppins', sans-serif;">
+            </div>
+            <div class="form-group-custom">
+              <label class="form-label-custom" for="inputPayRef">Nomor Referensi Transaksi</label>
+              <input type="text" class="form-input-custom" id="inputPayRef" value="KAS-TUNAI-829144" readonly style="background: #F8FAFC; color: #64748B; cursor: not-allowed; border-color: #E2E8F0; font-family: 'Poppins', sans-serif; font-variant-numeric: tabular-nums;" title="Nomor referensi dibuat otomatis oleh sistem">
+            </div>
+          </div>
+
+          <!-- Dropzone Unggah Bukti -->
+          <div class="form-group-custom">
+            <label class="form-label-custom">Unggah Bukti Transfer / Foto Kuitansi Fisik (Opsional)</label>
+            <div class="upload-dropzone" onclick="simulateStaffProofUpload()">
+              <div class="upload-icon-circle">
+                <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div style="font-size: 12px; font-weight: 600; color: var(--text-main, #111111);" id="staffUploadFileName">Klik untuk unggah slip transfer bank / nota fisik</div>
+              <div style="font-size: 11px; color: var(--text-muted, #71717A); margin-top: 2px;">Format JPG, PNG, atau PDF (Maks. 5 MB)</div>
+            </div>
+          </div>
+
+          <!-- Catatan / Keterangan Pembayaran -->
+          <div class="form-group-custom">
+            <label class="form-label-custom" for="inputPayNotes">
+              <span>Catatan Lapangan / Keterangan</span>
+              <span style="font-size: 11px; font-weight: 400; color: #64748B;">(Opsional)</span>
+            </label>
+            <textarea class="form-textarea-custom" id="inputPayNotes" rows="2" style="min-height: 60px; font-size: 12.5px;" placeholder="Contoh: Titip uang sewa tunai bulan Oktober di pos jaga"></textarea>
+          </div>
+
+          <!-- Kalkulasi Sisa Tagihan Otomatis -->
+          <div class="calculation-callout">
+            <div class="calc-row">
+              <span>Sisa Tagihan Sebelumnya:</span>
+              <strong id="calcPrevDue" style="font-family: 'Poppins', sans-serif; font-variant-numeric: tabular-nums;">Rp 1.400.000</strong>
+            </div>
+            <div class="calc-row">
+              <span>Nominal yang Dibayarkan:</span>
+              <span id="calcPaidAmount" style="color: #16A34A; font-weight: 600; font-family: 'Poppins', sans-serif; font-variant-numeric: tabular-nums;">- Rp 1.400.000</span>
+            </div>
+            <div class="calc-row highlight">
+              <span>Sisa Saldo Baru:</span>
+              <span id="calcNewDue" style="color: #16A34A; font-family: 'Poppins', sans-serif; font-variant-numeric: tabular-nums;">Rp 0 (Lunas Sepenuhnya)</span>
+            </div>
+          </div>
+
+          <!-- Checkbox Kirim Kuitansi Otomatis ke WhatsApp -->
+          <div style="background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 14px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; cursor: pointer;" onclick="document.getElementById('checkboxStaffWaReceipt').click()">
+            <input type="checkbox" id="checkboxStaffWaReceipt" checked style="width: 16px; height: 16px; accent-color: #16A34A; cursor: pointer; margin-top: 2px;" onclick="event.stopPropagation()">
+            <div style="flex: 1;">
+              <div style="font-size: 12px; font-weight: 700; color: #166534; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="message-square" style="width: 13px; height: 13px; color: #16A34A;"></i>
+                <span>Kirim Draf Kuitansi &amp; Notifikasi via WhatsApp ke Penghuni</span>
+              </div>
+              <div style="font-size: 11px; color: #15803D; margin-top: 2px;">
+                Tanda terima sementara berstatus verifikasi akan dikirimkan ke WhatsApp penghuni.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-card-footer">
+          <button type="button" class="btn-pill btn-white-outline" onclick="closeStaffPaymentModal()" style="font-size: 12px; height: 38px; padding: 0 16px;">
+            Batal
+          </button>
+          <button type="submit" class="btn-pill btn-primary" style="font-size: 12px; height: 38px; padding: 0 18px; display: inline-flex; align-items: center; gap: 6px;">
+            <i data-lucide="save" style="width: 14px; height: 14px;"></i>
+            <span>Simpan Catatan Pembayaran</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Standard Scripts & RBAC Initialization -->
+  <script src="assets/js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // 1. Inisialisasi Topbar Khusus Staf (SK-02)
+      if (typeof window.renderTopbar === 'function') {
+        window.renderTopbar('dashboard', 'staff');
+      }
+
+      // 2. Inisialisasi Lucide Icons
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+
+    // Modal Catat Bayar Handlers & Searchbar Engine (Opsi A: 2 Kanal Lapangan Murni)
+    let selectedStaffPayMethod = 'Tunai (Kasir Kost)';
+
+    const activeInvoicesList = [
+      { id: 'INV-202610-02', room: 'A-02', tenant: 'Dimas Prasetyo', desc: 'Lantai 1 · Standar (3×4m)', total: 1400000, due: 1400000, status: 'Belum Lunas', badgeBg: '#FEF2F2', badgeColor: '#DC2626' },
+      { id: 'INV-202610-04', room: 'A-04', tenant: 'Budi Santoso', desc: 'Lantai 1 · Standar (3×4m)', total: 1500000, due: 1500000, status: 'Belum Lunas', badgeBg: '#FEF2F2', badgeColor: '#DC2626' },
+      { id: 'INV-202610-06', room: 'B-01', tenant: 'Dodi Firmansyah', desc: 'Lantai 2 · Standar (3×4m)', total: 1400000, due: 1400000, status: 'Belum Lunas', badgeBg: '#FEF2F2', badgeColor: '#DC2626' },
+      { id: 'INV-202610-08', room: 'B-03', tenant: 'Rizky Ramadhan', desc: 'Lantai 2 · Deluxe (4×4m)', total: 1600000, due: 1600000, status: 'Belum Lunas', badgeBg: '#FEF2F2', badgeColor: '#DC2626' },
+      { id: 'INV-202610-12', room: 'C-03', tenant: 'Rian Hidayat', desc: 'Lantai 3 · Ekonomis (3×3m)', total: 1350000, due: 1350000, status: 'Belum Lunas', badgeBg: '#FEF2F2', badgeColor: '#DC2626' }
+    ];
+
+    let currentSelectedInvoice = activeInvoicesList[0];
+
+    function openStaffPaymentModal() {
+      const modal = document.getElementById('modalStaffPayment');
+      if (modal) {
+        modal.classList.add('open', 'active');
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.pointerEvents = 'auto';
+
+        // Sembunyikan panel hasil pencarian saat modal dibuka
+        const panel = document.getElementById('invoiceSearchResultsPanel');
+        if (panel) panel.style.display = 'none';
+
+        // Pastikan kalkulasi ter-refresh
+        calculateStaffBalancePreview();
+
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+      }
+    }
+
+    function closeStaffPaymentModal() {
+      const modal = document.getElementById('modalStaffPayment');
+      if (modal) {
+        modal.classList.remove('open', 'active');
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+        const panel = document.getElementById('invoiceSearchResultsPanel');
+        if (panel) panel.style.display = 'none';
+      }
+    }
+
+    // Dismiss modal on backdrop click outside dialog card & dismiss search panel on outer click
+    document.addEventListener('click', function (e) {
+      const modal = document.getElementById('modalStaffPayment');
+      if (modal && (modal.classList.contains('open') || modal.style.display === 'flex') && e.target === modal) {
+        closeStaffPaymentModal();
+      }
+      const panel = document.getElementById('invoiceSearchResultsPanel');
+      const wrap = document.querySelector('.search-invoice-wrap');
+      if (panel && wrap && !wrap.contains(e.target)) {
+        panel.style.display = 'none';
+      }
+    });
+
+    function renderInvoiceSearchResults(items) {
+      const panel = document.getElementById('invoiceSearchResultsPanel');
+      if (!panel) return;
+      if (!items || items.length === 0) {
+        panel.innerHTML = `
+          <div style="padding: 16px 12px; text-align: center; color: #94A3B8; font-size: 12px; font-family: 'Poppins', sans-serif;">
+            <i data-lucide="search-x" style="width: 20px; height: 20px; margin: 0 auto 6px; display: block; opacity: 0.6;"></i>
+            Tidak ada tagihan atau kamar penghuni yang cocok
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
+        return;
+      }
+
+      panel.innerHTML = items.map(inv => {
+        const isSelected = currentSelectedInvoice && currentSelectedInvoice.id === inv.id;
+        return `
+          <div class="search-invoice-opt" onclick="selectInvoiceItem('${inv.id}')" style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 9px; cursor: pointer; transition: background 0.15s ease; ${isSelected ? 'background: #FFF7ED; border: 1px solid #FFEDD5;' : 'border: 1px solid transparent;'}">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 28px; height: 28px; border-radius: 8px; background: ${isSelected ? '#FF7A00' : '#F1F5F9'}; color: ${isSelected ? '#FFFFFF' : '#475569'}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; font-family: 'Poppins', sans-serif;">
+                ${inv.room}
+              </div>
+              <div>
+                <div style="font-size: 12px; font-weight: 600; color: var(--text-main, #111111); display: flex; align-items: center; gap: 6px; font-family: 'Poppins', sans-serif;">
+                  <span>${inv.tenant}</span>
+                  <span style="font-size: 11px; font-weight: 500; color: #64748B;">#${inv.id}</span>
+                </div>
+                <div style="font-size: 11px; color: #64748B; margin-top: 2px; font-family: 'Poppins', sans-serif;">
+                  Total Rp ${inv.total.toLocaleString('id-ID')} · <span style="font-size: 10.5px; font-weight: 600; color: ${inv.badgeColor}; background: ${inv.badgeBg}; padding: 1px 6px; border-radius: 4px;">${inv.status}</span>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: right; font-family: 'Poppins', sans-serif;">
+              <div style="font-size: 10.5px; color: #94A3B8; font-weight: 500;">Sisa Tagihan</div>
+              <div style="font-size: 12.5px; font-weight: 700; color: #EA580C; font-variant-numeric: tabular-nums;">Rp ${inv.due.toLocaleString('id-ID')}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function openInvoiceSearchResults() {
+      const panel = document.getElementById('invoiceSearchResultsPanel');
+      if (panel) {
+        panel.style.display = 'block';
+        const inputVal = document.getElementById('searchInvoiceInput')?.value || '';
+        if (inputVal.includes('(#')) {
+          renderInvoiceSearchResults(activeInvoicesList);
+        } else {
+          filterInvoiceSearchResults(inputVal);
+        }
+      }
+    }
+
+    function filterInvoiceSearchResults(query) {
+      const panel = document.getElementById('invoiceSearchResultsPanel');
+      if (!panel) return;
+      panel.style.display = 'block';
+      const q = (query || '').toLowerCase().trim();
+      if (!q || q.includes('(#')) {
+        renderInvoiceSearchResults(activeInvoicesList);
+        return;
+      }
+      const filtered = activeInvoicesList.filter(inv => 
+        inv.tenant.toLowerCase().includes(q) ||
+        inv.room.toLowerCase().includes(q) ||
+        inv.id.toLowerCase().includes(q)
+      );
+      renderInvoiceSearchResults(filtered);
+    }
+
+    function selectInvoiceItem(invId) {
+      const inv = activeInvoicesList.find(x => x.id === invId);
+      if (!inv) return;
+      currentSelectedInvoice = inv;
+      
+      const searchInput = document.getElementById('searchInvoiceInput');
+      if (searchInput) {
+        searchInput.value = `Kamar ${inv.room} · ${inv.tenant} (#${inv.id})`;
+      }
+
+      const badge = document.getElementById('invoiceSelectedBadge');
+      if (badge) {
+        badge.textContent = `Kamar ${inv.room} Terpilih`;
+      }
+
+      const roomBadge = document.getElementById('payModalRoomBadge');
+      if (roomBadge) roomBadge.textContent = inv.room;
+
+      const tenantName = document.getElementById('payModalTenantName');
+      if (tenantName) tenantName.textContent = inv.tenant;
+
+      const unitDesc = document.getElementById('payModalUnitDesc');
+      if (unitDesc) unitDesc.textContent = inv.desc;
+
+      const invIdElem = document.getElementById('payModalInvId');
+      if (invIdElem) invIdElem.textContent = `#${invId}`;
+
+      const amountInput = document.getElementById('inputPayAmount');
+      if (amountInput) {
+        amountInput.value = inv.due.toLocaleString('id-ID');
+      }
+
+      const senderInput = document.getElementById('inputPaySender');
+      if (senderInput) {
+        senderInput.value = inv.tenant;
+      }
+
+      const panel = document.getElementById('invoiceSearchResultsPanel');
+      if (panel) {
+        panel.style.display = 'none';
+      }
+
+      calculateStaffBalancePreview();
+    }
+
+    function clearInvoiceSearch() {
+      const input = document.getElementById('searchInvoiceInput');
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      openInvoiceSearchResults();
+    }
+
+    function selectStaffPaymentMethod(elem, method) {
+      document.querySelectorAll('#modalStaffPayment .method-radio-box').forEach(el => el.classList.remove('active'));
+      elem.classList.add('active');
+      selectedStaffPayMethod = method;
+
+      const refInput = document.getElementById('inputPayRef');
+      const dropzoneDesc = document.getElementById('staffUploadFileName');
+      const randNum = Math.floor(100000 + Math.random() * 900000);
+
+      if (method.includes('Transfer') || method.includes('Slip') || method.includes('Struk')) {
+        if (refInput) refInput.value = `TRF-SLIP-${randNum}`;
+        if (dropzoneDesc && !dropzoneDesc.textContent.includes('.jpg')) {
+          dropzoneDesc.textContent = 'Klik untuk unggah foto slip / struk transfer bank';
+        }
+      } else {
+        if (refInput) refInput.value = `KAS-TUNAI-${randNum}`;
+        if (dropzoneDesc && !dropzoneDesc.textContent.includes('.jpg')) {
+          dropzoneDesc.textContent = 'Klik untuk unggah foto tanda terima uang tunai fisik (Opsional)';
+        }
+      }
+    }
+
+    function formatStaffNominalInput(input) {
+      const cleanVal = input.value.replace(/\D/g, '');
+      if (cleanVal) {
+        input.value = parseInt(cleanVal, 10).toLocaleString('id-ID');
+      } else {
+        input.value = '';
+      }
+      calculateStaffBalancePreview();
+    }
+
+    function calculateStaffBalancePreview() {
+      let prevDue = currentSelectedInvoice ? currentSelectedInvoice.due : 1400000;
+      const enteredStr = document.getElementById('inputPayAmount')?.value || '0';
+      const entered = parseInt(enteredStr.replace(/\D/g, ''), 10) || 0;
+      const diff = prevDue - entered;
+
+      const prevDueElem = document.getElementById('calcPrevDue');
+      if (prevDueElem) prevDueElem.textContent = `Rp ${prevDue.toLocaleString('id-ID')}`;
+
+      const paidAmountElem = document.getElementById('calcPaidAmount');
+      if (paidAmountElem) paidAmountElem.textContent = `- Rp ${entered.toLocaleString('id-ID')}`;
+
+      const newDueElem = document.getElementById('calcNewDue');
+      if (newDueElem) {
+        if (diff === 0) {
+          newDueElem.textContent = 'Rp 0 (Lunas Sepenuhnya)';
+          newDueElem.style.color = '#16A34A';
+        } else if (diff > 0) {
+          newDueElem.textContent = `Rp ${diff.toLocaleString('id-ID')} (Sisa Cicilan / Piutang)`;
+          newDueElem.style.color = '#EA580C';
+        } else {
+          newDueElem.textContent = `Rp 0 (Kelebihan Bayar Rp ${Math.abs(diff).toLocaleString('id-ID')})`;
+          newDueElem.style.color = '#059669';
+        }
+      }
+    }
+
+    function simulateStaffProofUpload() {
+      const fileNameElem = document.getElementById('staffUploadFileName');
+      const room = currentSelectedInvoice ? currentSelectedInvoice.room : 'A-02';
+      if (fileNameElem) {
+        fileNameElem.innerHTML = `<span style="color: #16A34A; display: flex; align-items: center; justify-content: center; gap: 6px;"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> Slip_Setoran_Kamar_${room}.jpg (1.2 MB)</span>`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+      if (window.RumaUI && typeof window.RumaUI.showToast === 'function') {
+        window.RumaUI.showToast('Bukti pembayaran berhasil diunggah.', 'success');
+      }
+    }
+
+    function handleStaffPaymentSubmit(e) {
+      e.preventDefault();
+      const kamar = currentSelectedInvoice ? currentSelectedInvoice.room : 'A-02';
+      const tenant = currentSelectedInvoice ? currentSelectedInvoice.tenant : 'Penyewa';
+      const enteredStr = document.getElementById('inputPayAmount')?.value || '0';
+      const nominal = parseInt(enteredStr.replace(/\D/g, ''), 10) || 0;
+      const ref = document.getElementById('inputPayRef')?.value || `#DFT-${Date.now().toString().slice(-6)}`;
+      const metode = selectedStaffPayMethod || 'Tunai / Cash';
+
+      closeStaffPaymentModal();
+
+      // Sisipkan baris transaksi baru di atas tabel dengan font Poppins tabular-nums
+      const tbody = document.getElementById('staffPaymentTableBody');
+      if (tbody) {
+        const newRow = document.createElement('tr');
+        newRow.style.background = '#FFFBEB';
+        newRow.innerHTML = `
+          <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#${ref.slice(0, 14)}</td>
+          <td><span class="room-code-badge">${kamar}</span></td>
+          <td><strong>${tenant}</strong></td>
+          <td>${metode}</td>
+          <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp ${nominal.toLocaleString('id-ID')}</td>
+          <td><span class="status-badge badge-warning" style="font-size: 10px;">Pending Verifikasi</span></td>
+        `;
+        tbody.insertBefore(newRow, tbody.firstChild);
+        // Pertahankan batas maksimal 10 baris
+        if (tbody.children.length > 10) {
+          tbody.removeChild(tbody.lastChild);
+        }
+      }
+
+      if (window.RumaUI && typeof window.RumaUI.showToast === 'function') {
+        window.RumaUI.showToast(`Setoran kamar ${kamar} (Rp ${nominal.toLocaleString('id-ID')}) dicatat! Menunggu verifikasi Pemilik (Zero Self-Approval).`, 'warning');
+      } else {
+        alert(`Setoran kamar ${kamar} sebesar Rp ${nominal.toLocaleString('id-ID')} dicatat dengan status PENDING VERIFIKASI OWNER (Zero Self-Approval).`);
+      }
+    }
+
+    // Aksi Tandai Kamar Siap Huni (F-02 Turnover)
+    function markRoomReady(roomId) {
+      const cleanId = roomId.replace('-', '');
+      const item = document.getElementById(`turnoverItem${cleanId}`) || document.getElementById(`turnoverItem${roomId}`);
+      const tile = document.getElementById(`tile${cleanId}`) || document.getElementById(`tile${roomId}`);
+
+      if (item) {
+        item.style.display = 'none';
+      }
+
+      if (tile) {
+        tile.className = 'room-tile vacant';
+        tile.title = `${roomId}: Kosong · Siap Huni`;
+      }
+
+      // Periksa apakah masih ada item turnover yang aktif
+      const itemB02 = document.getElementById('turnoverItemB02');
+      const itemC02 = document.getElementById('turnoverItemC02');
+      const emptyState = document.getElementById('turnoverEmpty');
+      if (itemB02 && itemC02 && emptyState) {
+        if (itemB02.style.display === 'none' && itemC02.style.display === 'none') {
+          emptyState.style.display = 'block';
+        }
+      }
+
+      if (window.RumaUI && typeof window.RumaUI.showToast === 'function') {
+        window.RumaUI.showToast(`Kamar ${roomId} telah diinspeksi dan kini berstatus Siap Huni.`, 'success');
+      } else {
+        alert(`Kamar ${roomId} kini berstatus Kosong Siap Huni.`);
+      }
+    }
+  </script>
 </body>
 </html>
