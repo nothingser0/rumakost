@@ -1259,6 +1259,32 @@
       outline-offset: 1px;
     }
 
+    .btn-micro-brand-accent {
+      background: #FFF7ED !important;
+      border-color: #FED7AA !important;
+      color: var(--brand-primary) !important;
+    }
+
+    .btn-micro-brand-accent:hover {
+      background: #FFEDD5 !important;
+      border-color: #FDBA74 !important;
+      color: #C2410C !important;
+      transform: translateY(-1px);
+    }
+
+    .btn-micro-blue {
+      background: #EFF6FF !important;
+      border-color: #BFDBFE !important;
+      color: #1D4ED8 !important;
+    }
+
+    .btn-micro-blue:hover {
+      background: #DBEAFE !important;
+      border-color: #93C5FD !important;
+      color: #1E40AF !important;
+      transform: translateY(-1px);
+    }
+
     /* Dossier Bottom Multi-Tab Navigation (SCR-05, 06, 07, 08 Complete) */
     .dossier-tab-row {
       display: flex;
@@ -3317,8 +3343,8 @@
                 <span class="quad-kv-lbl">Kendaraan &amp; Parkir:</span>
                 <div style="display: flex; align-items: center; gap: 6px;">
                   <span class="quad-kv-val" id="dVehicleTxt" style="font-size: 11.5px;">Motor &middot; B 3456 SAA</span>
-                  <button type="button" class="btn-micro-copy" onclick="openKelolaKendaraanModal()" title="Kelola Kendaraan &amp; Stiker Parkir" style="height: 22px; padding: 0 7px; font-size: 10px;">
-                    <i data-lucide="car" style="width: 10px; height: 10px;"></i>
+                  <button type="button" class="btn-micro-copy btn-micro-blue" onclick="openKelolaKendaraanModal()" title="Kelola Kendaraan &amp; Stiker Parkir" style="height: 22px; padding: 0 8px; font-size: 10px;">
+                    <i data-lucide="car" style="width: 11px; height: 11px; color: #2563EB;"></i>
                     <span>Parkir</span>
                   </button>
                 </div>
@@ -5185,8 +5211,8 @@
     <div class="modal-card">
       <div class="modal-header-pinned">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 36px; height: 36px; border-radius: 10px; background: #F0FDF4; border: 1px solid #BBF7D0; color: #16A34A; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <i data-lucide="car" style="width: 18px; height: 18px;"></i>
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; border: 1px solid #FED7AA; color: var(--brand-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <i data-lucide="car" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
           </div>
           <div>
             <h2 class="modal-title">Registrasi Kendaraan &amp; Slot Parkir</h2>

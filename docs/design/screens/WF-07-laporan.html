@@ -1820,26 +1820,27 @@
       transform: translateY(0) !important;
       box-shadow: none !important;
     }
-    /* Modal Form Sub-Sections & Upload Dropzone (100% Identik WF-04 Registrasi Penghuni Baru) */
+    /* Modal Form Sub-Sections & Layout Elements (100% Identik Standar Estify WF-03) */
     .modal-section-divider {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding-top: 6px;
-      margin-top: 4px;
+      padding-top: 10px;
+      margin-top: 6px;
+      margin-bottom: 14px;
       border-top: 1px dashed #E2E8F0;
     }
 
     .modal-section-title {
-      font-size: 11px;
+      font-size: 13px;
       box-sizing: border-box;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text-main, #111111);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      text-transform: none;
       display: flex;
       align-items: center;
       gap: 6px;
+      margin-bottom: 12px;
     }
 
     /* Red Asterisk for Required Form Fields */
@@ -1848,33 +1849,6 @@
       font-weight: 600;
       margin-left: 2px;
       font-size: 12px;
-    }
-
-    /* Currency Input with Prefix (Fixed Overlap Bug) */
-    .input-with-prefix {
-      position: relative;
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-
-    .input-with-prefix .input-prefix {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 13px;
-      font-weight: 600;
-      color: #64748B;
-      pointer-events: none;
-      user-select: none;
-      z-index: 2;
-      line-height: 1;
-    }
-
-    .input-with-prefix .form-input-field {
-      padding-left: 42px !important;
-      font-weight: 600;
     }
 
     /* Payment Method Segmented Pills */
@@ -1886,15 +1860,15 @@
     }
 
     .method-pill-opt {
-      height: 42px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       border: 1.5px solid var(--border-control, #E2E8F0);
-      background: #FFFFFF;
-      border-radius: 12px;
-      font-size: 12.5px;
+      background: #F8FAFC;
+      border-radius: 10px;
+      font-size: 12px;
       font-weight: 600;
       color: #475569;
       cursor: pointer;
@@ -1905,7 +1879,7 @@
 
     .method-pill-opt:hover {
       border-color: #94A3B8;
-      background: #F8FAFC;
+      background: #F1F5F9;
       color: #0F172A;
     }
 
@@ -1913,13 +1887,14 @@
       border-color: var(--brand-primary, #FF7A00);
       background: #FFF7ED;
       color: var(--brand-primary, #FF7A00);
-      font-weight: 700;
+      font-weight: 600;
     }
 
     .form-group-item {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      margin-bottom: 14px;
       width: 100%;
       min-width: 0 !important;
       box-sizing: border-box;
@@ -1931,14 +1906,14 @@
       color: var(--text-main, #111111);
       cursor: default !important;
       user-select: text;
+      margin-bottom: 0;
     }
 
     .form-input-field {
       height: 42px !important;
       min-height: 42px !important;
-      /* max-height removed to allow textarea expansion */
       border: 1px solid var(--border-control, #E2E8F0) !important;
-      border-radius: 12px !important;
+      border-radius: 10px !important;
       padding: 0 14px !important;
       font-size: 13px !important;
       font-family: inherit !important;
@@ -1957,15 +1932,19 @@
     }
 
     textarea.form-input-field {
-      height: auto !important;
-      min-height: 84px !important;
-      max-height: none !important;
+      height: 80px !important;
+      min-height: 80px !important;
+      max-height: 160px !important;
       padding: 10px 14px !important;
       resize: vertical !important;
       line-height: 1.5 !important;
     }
+
+    .file-upload-dropzone {
+      border: 1.5px dashed #CBD5E1;
+      border-radius: 12px;
       background: #F8FAFC;
-      padding: 10px 14px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -3704,11 +3683,8 @@
 
           <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
             <div class="form-group-item">
-              <label class="form-label-txt">Nominal Biaya / Pengeluaran <span class="req-star">*</span></label>
-              <div class="input-with-prefix">
-                <span class="input-prefix">Rp</span>
-                <input type="text" class="form-input-field" id="inputExpenseAmount" placeholder="0" oninput="formatRupiahInput(this)" required>
-              </div>
+              <label class="form-label-txt">Nominal Biaya / Pengeluaran (Rp) <span class="req-star">*</span></label>
+              <input type="text" class="form-input-field" id="inputExpenseAmount" placeholder="Contoh: 250.000" oninput="formatRupiahInput(this)" required>
             </div>
             <div class="form-group-item">
               <label class="form-label-txt">Entitas / Vendor / Penerima <span class="req-star">*</span></label>

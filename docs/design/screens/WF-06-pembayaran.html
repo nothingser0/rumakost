@@ -88,8 +88,8 @@
       width: 100%;
     }
 
-    .col-sidebar-flow,
-    .card-detail-drawer {
+    .col-sidebar-flow {
+      align-self: start;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-2xl);
@@ -111,8 +111,8 @@
       -ms-overflow-style: none;
     }
 
-    .col-sidebar-flow::-webkit-scrollbar,
-    .card-detail-drawer::-webkit-scrollbar {
+    .col-sidebar-flow::-webkit-scrollbar {
+
       display: none;
     }
 
@@ -2051,15 +2051,24 @@
   <!-- MAIN DASHBOARD CONTENT -->
   <div class="dashboard-wrapper">
 
-    <!-- 1. TOP ROW: 3 GAUGE METRIC CARDS (100% IDENTIK WF-02 & WF-05 · EXACT 157.6PX) -->
+    <!-- 1. TOP ROW: 3 GAUGE METRIC CARDS (HORIZONTAL FULL-WIDTH 157.6PX · KONSISTEN WF-05) -->
+    <div class="metrics-row-3">
+
+    <main class="dashboard-2col-layout">
 
 
-      <!-- LEFT / MAIN FLOW (CONTENT AREA · ~1.020PX) -->
+      <div class="col-main-flow">
 
 
-        <!-- 1. TOP ROW: 3 GAUGE METRIC CARDS (100% IDENTIK WF-02 DASHBOARD · COMPUTED 156PX) -->
+
+
+
+
+
+
         <div class="metrics-row-3">
           
+
           <!-- Card 1: Kas Masuk Realisasi (Identik Dashboard WF-02) -->
           <div class="metric-card-estify">
             <div class="metric-card-top">
@@ -2146,15 +2155,28 @@
               </div>
             </div>
           </div>
+        </div>
+        <!-- DUPLICATE_MAIN_CLEANUP_START
+                </svg>
+              </div>
+            </div>
+          </div>
 
         </div>
 
-    <!-- 2. ESTIFY 2-COLUMN MASTER DASHBOARD GRID (SINKRON DENGAN WF-02 & WF-05) -->
+
+    <main class="dashboard-2col-layout">
+
+
+      <div class="col-main-flow">
+
+DUPLICATE_MAIN_CLEANUP_END -->
+
+    <!-- 2. ESTIFY 2-COLUMN MASTER DASHBOARD GRID (SINKRON WF-05) -->
     <main class="dashboard-2col-layout">
 
       <!-- LEFT / MAIN FLOW (CONTENT AREA) -->
       <div class="col-main-flow">
-
         <!-- 2. CONTROLS STRIP: SEARCH & STATUS PILL SEGMENTS (SINGLE LINE TOOLBAR) -->
         <div class="controls-strip-card">
           <div class="search-capsule-box">
@@ -2194,7 +2216,7 @@
       </div>
 
       <!-- RIGHT SIDEBAR FLOW (360PX · ESTIFY DESIGN SYSTEM · IDENTIK WF-03 DRAWER) -->
-      <aside class="col-sidebar-flow card-detail-drawer" id="paymentSidebarFlow">
+      <aside class="col-sidebar-flow" id="paymentSidebarFlow">
 
         <!-- SIDEBAR CARD 1: KANAL REKENING AKTIF (MULTI-WALLET HUB) -->
         <div class="sidebar-card-box">
@@ -3014,6 +3036,9 @@ HAPUS_RECEIPT_REST -->
 
   <!-- WORKBENCH BUSINESS LOGIC & INTERACTION ENGINE -->
   <script>
+    if (typeof window.renderTopbar === 'function') {
+      window.renderTopbar('pembayaran');
+    }
     // ══════════════════════════════════════════════════════════════
     // DATA STORE: 12 REALISTIC SYNTHETIC TRANSACTIONS (OCTOBER 2026)
     // ══════════════════════════════════════════════════════════════
@@ -3891,8 +3916,13 @@ HAPUS_RECEIPT_REST -->
         e.target.classList.remove('open');
       }
     });
+    /* EXTRA_BRACE_CLEANUP_START
+        e.target.classList.remove('open');
+      }
+    });
     }
 
+    EXTRA_BRACE_CLEANUP_END */
     // Active Invoices Data for Search Bar
     const activeInvoicesList = [
       { id: 'INV-202610-001', room: 'A-01', tenant: 'Rina Marliana', due: 0, total: 1800000, status: 'Lunas (Sisa Rp 0)', badgeColor: '#16A34A', badgeBg: '#DCFCE7' },
