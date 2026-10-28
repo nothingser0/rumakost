@@ -51,6 +51,7 @@
       gap: 20px;
       min-width: 0;
       width: 100%;
+      height: 100%;
     }
 
     .col-sidebar-flow {
@@ -380,11 +381,27 @@
     /* ═══════════════════════════════════════
        4. RECENT PAYMENTS LOG (F-05)
     ═══════════════════════════════════════ */
+    .card-payment-log {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .payment-table-container {
+      overflow-x: auto;
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
     .payment-log-table {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
       font-size: 12.5px;
+      height: 100%;
     }
 
     .payment-log-table th {
@@ -397,6 +414,8 @@
       letter-spacing: 0.4px;
       border-bottom: 1px solid var(--border-subtle, #ECEEF2);
       background: #FAFAFB;
+      height: 38px;
+      box-sizing: border-box;
     }
 
     .payment-log-table th:first-child {
@@ -411,9 +430,20 @@
     }
 
     .payment-log-table td {
-      padding: 12px 14px;
+      padding: 13.5px 14px;
       border-bottom: 1px solid var(--border-subtle, #ECEEF2);
       color: var(--text-main, #111111);
+      vertical-align: middle;
+      transition: color var(--transition-fast, 0.15s ease);
+    }
+
+    .payment-log-table tbody tr {
+      cursor: pointer;
+      transition: background-color var(--transition-fast, 0.15s ease);
+    }
+
+    .payment-log-table tbody tr:hover {
+      background-color: #F8FAFC;
     }
 
     .payment-log-table tr:last-child td {
@@ -590,6 +620,102 @@
       color: #9F1239;
     }
     .room-tile.maintenance .tile-status-dot { background: #F43F5E; }
+
+    /* Tombol Aksi Turnover (Compact White Pill Garis Hijau dengan Hover Tint Hijau Halus) */
+    .btn-turnover-action {
+      background: #FFFFFF;
+      border: 1.5px solid #16A34A;
+      color: #16A34A;
+      font-size: 11px;
+      font-weight: 600;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      align-self: flex-start !important;
+      width: fit-content !important;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all var(--transition-fast, 0.2s ease);
+      box-sizing: border-box;
+      outline: none;
+      white-space: nowrap;
+    }
+
+    .btn-turnover-action:hover {
+      background: #F0FDF4;
+      border-color: #15803D;
+      color: #15803D;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.16);
+    }
+
+    .btn-turnover-action:active {
+      transform: translateY(0);
+      background: #DCFCE7;
+    }
+
+    /* Tombol Pintasan Status Unit di Bawah Kartu Turnover */
+    .btn-shortcut-status {
+      font-size: 11.5px;
+      font-weight: 600;
+      height: 32px;
+      padding: 0 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      border-radius: 9999px;
+      flex: 1;
+      white-space: nowrap;
+      transition: all var(--transition-fast, 0.2s ease);
+      box-sizing: border-box;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Varian Perbaikan (Merah) */
+    .btn-shortcut-status.is-danger {
+      background: #FFFFFF;
+      border: 1.5px solid #FECACA;
+      color: #EF4444;
+    }
+
+    .btn-shortcut-status.is-danger:hover {
+      background: #FEF2F2;
+      border-color: #EF4444;
+      color: #DC2626;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.14);
+    }
+
+    .btn-shortcut-status.is-danger:active {
+      background: #FEE2E2;
+      transform: translateY(0);
+    }
+
+    /* Varian Kamar Kosong (Oranye Brand) */
+    .btn-shortcut-status.is-brand {
+      background: #FFFFFF;
+      border: 1.5px solid #FFEDD5;
+      color: #EA580C;
+    }
+
+    .btn-shortcut-status.is-brand:hover {
+      background: #FFF7ED;
+      border-color: #FF7A00;
+      color: #C2410C;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.14);
+    }
+
+    .btn-shortcut-status.is-brand:active {
+      background: #FFEDD5;
+      transform: translateY(0);
+    }
 
     /* Modal Catat Bayar Staf (Identik dengan Modal Catat Penerimaan WF-05 & WF-06) */
     .modal-backdrop {
@@ -830,13 +956,20 @@
       background: #F8FAFC !important;
     }
 
-    .turnover-scroll-body::-webkit-scrollbar {
+    .turnover-scroll-body::-webkit-scrollbar,
+    .room-matrix-scroll-body::-webkit-scrollbar {
       width: 4px;
     }
 
-    .turnover-scroll-body::-webkit-scrollbar-thumb {
+    .turnover-scroll-body::-webkit-scrollbar-thumb,
+    .room-matrix-scroll-body::-webkit-scrollbar-thumb {
       background: #E2E8F0;
       border-radius: 4px;
+    }
+
+    .turnover-scroll-body::-webkit-scrollbar-thumb:hover,
+    .room-matrix-scroll-body::-webkit-scrollbar-thumb:hover {
+      background: #CBD5E1;
     }
 
     .calculation-callout {
@@ -868,10 +1001,15 @@
       .dashboard-2col-layout {
         grid-template-columns: 1fr;
       }
+      .col-main-flow,
       .col-sidebar-flow {
         width: 100%;
         max-width: 100%;
         height: auto;
+      }
+      .card-payment-log,
+      #cardTurnover {
+        flex: initial;
       }
       .metrics-row-3 {
         grid-template-columns: 1fr;
@@ -989,7 +1127,7 @@
             <div class="metric-card-bottom">
               <div class="metric-val-col">
                 <span class="metric-lbl-sub">Uang Kas di Tangan Staf</span>
-                <div class="metric-value-huge">Rp 2,8 <span class="metric-sub-val">Jt</span></div>
+                <div class="metric-value-huge">Rp 2,80 <span class="metric-sub-val">Jt</span></div>
               </div>
 
               <!-- Estify Radial Arc Gauge 50% (104px x 58px) -->
@@ -1006,7 +1144,7 @@
         </div>
 
         <!-- 2. ANTREAN TIKET MENDESAK HARI INI (F-07 · Batas Tampil: Maksimal 3 Tiket) -->
-        <div class="card-box-estify">
+        <div class="card-box-estify" style="flex-shrink: 0;">
           <div class="card-top-header">
             <div style="display: flex; align-items: center; gap: 10px;">
               <h2 class="card-title-text">
@@ -1097,14 +1235,17 @@
           </div>
         </div>
 
-        <!-- 3. KAS LAPANGAN & CATAT PEMBAYARAN MASUK (F-05 · Batas Tampil: Maksimal 3 Transaksi Terkini) -->
-        <div class="card-box-estify">
-          <div class="card-top-header">
+        <!-- 3. KAS LAPANGAN & CATAT PEMBAYARAN MASUK (F-05 · Batas Tampil: Maksimal 10 Transaksi Terkini) -->
+        <div class="card-box-estify card-payment-log">
+          <div class="card-top-header" style="flex-shrink: 0;">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <h2 class="card-title-text">
-                <i data-lucide="receipt" style="width: 18px; height: 18px; color: #111111;"></i>
-                Pencatatan Kas Lapangan Terkini
-              </h2>
+              <div>
+                <h2 class="card-title-text">
+                  <i data-lucide="receipt" style="width: 18px; height: 18px; color: #111111;"></i>
+                  Pencatatan Kas Lapangan Terkini
+                </h2>
+                <span style="font-size: 11px; color: var(--text-muted, #71717A);">Klik baris untuk membuka lembar tagihan terkait</span>
+              </div>
               <span class="status-badge badge-warning" style="font-size: 11px;">Zero Self-Approval</span>
             </div>
             
@@ -1115,7 +1256,7 @@
           </div>
 
           <!-- Micro Callout Banner Zero Self-Approval -->
-          <div style="background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 12px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;">
+          <div style="background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 12px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; flex-shrink: 0;">
             <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #EA580C; flex-shrink: 0; margin-top: 1px;"></i>
             <div style="font-size: 11.5px; color: #9A3412; line-height: 1.5;">
               <strong>Aturan Zero Self-Approval:</strong> Staf dilarang mengesahkan pembayaran sendiri. Setiap penerimaan kas tunai atau konfirmasi transfer yang dicatat di lapangan akan berstatus <strong>Pending</strong> hingga diverifikasi oleh Pemilik Kost.
@@ -1123,7 +1264,7 @@
           </div>
 
           <!-- Mini Table: Log 10 Transaksi Staf Terkini (F-05) -->
-          <div style="overflow-x: auto;">
+          <div class="payment-table-container">
             <table class="payment-log-table">
               <thead>
                 <tr>
@@ -1136,8 +1277,8 @@
                 </tr>
               </thead>
               <tbody id="staffPaymentTableBody">
-                <!-- Baris 1 -->
-                <tr>
+                <!-- Baris 1: A-02 Dimas Prasetyo -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-02&role=staf'" title="Klik untuk membuka lembar tagihan Kamar A-02 (#INV-202610-02)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-10</td>
                   <td><span class="room-code-badge">A-02</span></td>
                   <td><strong>Dimas Prasetyo</strong></td>
@@ -1145,8 +1286,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.400.000</td>
                   <td><span class="status-badge badge-warning" style="font-size: 10px;">Pending Verifikasi</span></td>
                 </tr>
-                <!-- Baris 2 -->
-                <tr>
+                <!-- Baris 2: B-01 Dodi Firmansyah -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-05&role=staf'" title="Klik untuk membuka lembar tagihan Kamar B-01 (#INV-202610-05)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-09</td>
                   <td><span class="room-code-badge">B-01</span></td>
                   <td><strong>Dodi Firmansyah</strong></td>
@@ -1154,8 +1295,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.400.000</td>
                   <td><span class="status-badge badge-warning" style="font-size: 10px;">Pending Verifikasi</span></td>
                 </tr>
-                <!-- Baris 3 -->
-                <tr>
+                <!-- Baris 3: C-03 Rian Hidayat -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-07&role=staf'" title="Klik untuk membuka lembar tagihan Kamar C-03 (#INV-202610-07)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-08</td>
                   <td><span class="room-code-badge">C-03</span></td>
                   <td><strong>Rian Hidayat</strong></td>
@@ -1163,8 +1304,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.350.000</td>
                   <td><span class="status-badge badge-warning" style="font-size: 10px;">Pending Verifikasi</span></td>
                 </tr>
-                <!-- Baris 4 -->
-                <tr>
+                <!-- Baris 4: A-04 Budi Santoso -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-04&role=staf'" title="Klik untuk membuka lembar tagihan Kamar A-04 (#INV-202610-04)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-07</td>
                   <td><span class="room-code-badge">A-04</span></td>
                   <td><strong>Budi Santoso</strong></td>
@@ -1172,8 +1313,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.000.000</td>
                   <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
                 </tr>
-                <!-- Baris 5 -->
-                <tr>
+                <!-- Baris 5: C-04 Mega Lestari -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-06&role=staf'" title="Klik untuk membuka lembar tagihan Kamar C-04 (#INV-202610-06)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-06</td>
                   <td><span class="room-code-badge">C-04</span></td>
                   <td><strong>Mega Lestari</strong></td>
@@ -1181,8 +1322,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.350.000</td>
                   <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
                 </tr>
-                <!-- Baris 6 -->
-                <tr>
+                <!-- Baris 6: B-04 Eko Prasetyo -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-03&role=staf'" title="Klik untuk membuka lembar tagihan Kamar B-04 (#INV-202610-03)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-05</td>
                   <td><span class="room-code-badge">B-04</span></td>
                   <td><strong>Eko Prasetyo</strong></td>
@@ -1190,8 +1331,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.500.000</td>
                   <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
                 </tr>
-                <!-- Baris 7 -->
-                <tr>
+                <!-- Baris 7: A-05 Sri Wahyuni -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-08&role=staf'" title="Klik untuk membuka lembar tagihan Kamar A-05 (#INV-202610-08)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-04</td>
                   <td><span class="room-code-badge">A-05</span></td>
                   <td><strong>Sri Wahyuni</strong></td>
@@ -1199,8 +1340,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.500.000</td>
                   <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
                 </tr>
-                <!-- Baris 8 -->
-                <tr>
+                <!-- Baris 8: C-01 Hendra Wijaya -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-10&role=staf'" title="Klik untuk membuka lembar tagihan Kamar C-01 (#INV-202610-10)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-03</td>
                   <td><span class="room-code-badge">C-01</span></td>
                   <td><strong>Hendra Wijaya</strong></td>
@@ -1208,8 +1349,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.400.000</td>
                   <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
                 </tr>
-                <!-- Baris 9 -->
-                <tr>
+                <!-- Baris 9: C-05 Aditya Pratama -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-01&role=staf'" title="Klik untuk membuka lembar tagihan Kamar C-05 (#INV-202610-01)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-02</td>
                   <td><span class="room-code-badge">C-05</span></td>
                   <td><strong>Aditya Pratama</strong></td>
@@ -1217,8 +1358,8 @@
                   <td style="font-weight: 700; color: var(--text-main, #111111); font-variant-numeric: tabular-nums;">Rp 1.350.000</td>
                   <td><span class="status-badge badge-success" style="font-size: 10px;">Terverifikasi Owner</span></td>
                 </tr>
-                <!-- Baris 10 -->
-                <tr>
+                <!-- Baris 10: A-01 Siti Aminah -->
+                <tr onclick="location.href='WF-05-tagihan.html?id=INV-202610-01&role=staf'" title="Klik untuk membuka lembar tagihan Kamar A-01 (#INV-202610-01)">
                   <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#DFT-202610-01</td>
                   <td><span class="room-code-badge">A-01</span></td>
                   <td><strong>Siti Aminah</strong></td>
@@ -1230,7 +1371,7 @@
             </table>
           </div>
 
-          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; color: var(--text-muted, #71717A); padding-top: 8px; border-top: 1px solid var(--border-subtle, #ECEEF2);">
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; color: var(--text-muted, #71717A); padding-top: 14px; border-top: 1px solid var(--border-subtle, #ECEEF2); margin-top: auto; flex-shrink: 0;">
             <span>Menampilkan 10 catatan setoran terakhir · Total kas tercatat: <strong style="color: var(--text-main, #111111);">Rp 13.650.000</strong></span>
             <a href="WF-05-tagihan.html?role=staf" style="color: var(--brand-primary, #FF7A00); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
               Buka Matriks Tagihan
@@ -1245,7 +1386,7 @@
       <div class="col-sidebar-flow">
         
         <!-- CARD 1: AKSI CEPAT STAF (QUICK ACTIONS) -->
-        <div class="card-box-estify">
+        <div class="card-box-estify" style="flex-shrink: 0;">
           <div class="card-top-header">
             <h2 class="card-title-text">
               <i data-lucide="zap" style="width: 16px; height: 16px; color: #FF7A00;"></i>
@@ -1289,32 +1430,33 @@
           </div>
         </div>
 
-        <!-- CARD 2: PETA STATUS 15 KAMAR (SEMUA KONDISI LENGKAP 3 LANTAI) -->
-        <div class="card-box-estify">
-          <div class="card-top-header">
+        <!-- CARD 2: PETA STATUS KAMAR (DINAMIS & SCROLLABLE · POLA HEADER-BODY SCROLL-FOOTER ALA WF-03) -->
+        <div class="card-box-estify" id="cardRoomMatrix" style="display: flex; flex-direction: column; flex-shrink: 0;">
+          <!-- Top Bar (Sticky Header: Judul & Okupansi Global) -->
+          <div class="card-top-header" style="flex-shrink: 0; margin-bottom: 8px;">
             <div>
               <h2 class="card-title-text">
                 <i data-lucide="building-2" style="width: 16px; height: 16px; color: #FF7A00;"></i>
-                Peta Status 15 Kamar
+                Peta Status Kamar
               </h2>
               <span style="font-size: 11px; color: var(--text-muted, #71717A);">Kondisi Hunian & Kesiapan Unit Lapangan</span>
             </div>
-            <span class="status-badge badge-brand" style="font-size: 11px;">73% Terisi</span>
+            <span class="status-badge badge-brand" style="font-size: 11px;" id="petaOccupancyBadge">73% Terisi</span>
           </div>
 
-          <!-- Progress Bar Okupansi -->
-          <div style="display: flex; flex-direction: column; gap: 4px;">
+          <!-- Progress Bar Okupansi (Tetap di Header) -->
+          <div style="display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; margin-bottom: 12px;">
             <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary, #4B5563);">
               <span>Unit Terisi</span>
-              <strong>11 dari 15 Unit</strong>
+              <strong id="petaOccupancyText">11 dari 15 Unit</strong>
             </div>
             <div style="width: 100%; height: 8px; background: #F1F5F9; border-radius: 999px; overflow: hidden;">
-              <div style="width: 73%; height: 100%; background: #FF7A00; border-radius: 999px;"></div>
+              <div id="petaOccupancyBar" style="width: 73%; height: 100%; background: #FF7A00; border-radius: 999px;"></div>
             </div>
           </div>
 
-          <!-- Matrix Grid Terbagi Rapi Per Lantai -->
-          <div style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Scrollable Body (Dinamis: Mendukung Tambah & Hapus Lantai / Kamar Tanpa Merusak Layout) -->
+          <div class="room-matrix-scroll-body" id="roomMatrixScrollBody" style="display: flex; flex-direction: column; gap: 12px; max-height: 270px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; flex: 1 1 auto; min-height: 0;">
             
             <!-- Lantai 1 -->
             <div class="floor-row-group">
@@ -1328,7 +1470,7 @@
                   <span>A-02</span>
                   <span class="tile-status-dot"></span>
                 </div>
-                <div class="room-tile vacant" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-03: Kosong · Siap Huni">
+                <div class="room-tile cleaning" id="tileA03" onclick="location.href='WF-03-kamar.html?role=staf'" title="A-03: Turnover (Inspeksi Checkout)">
                   <span>A-03</span>
                   <span class="tile-status-dot"></span>
                 </div>
@@ -1378,7 +1520,7 @@
                   <span>C-01</span>
                   <span class="tile-status-dot"></span>
                 </div>
-                <div class="room-tile vacant" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-02: Kosong · Siap Huni">
+                <div class="room-tile cleaning" id="tileC02" onclick="location.href='WF-03-kamar.html?role=staf'" title="C-02: Turnover (Pembersihan Rutin)">
                   <span>C-02</span>
                   <span class="tile-status-dot"></span>
                 </div>
@@ -1399,36 +1541,39 @@
 
           </div>
 
-          <!-- Legend Lengkap Seluruh Kondisi Kamar (Total 15 Unit) -->
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 12px; font-size: 10.5px; color: var(--text-secondary, #4B5563); padding-top: 8px; border-top: 1px dashed var(--border-subtle, #ECEEF2);">
-            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #16A34A; flex-shrink: 0;"></span> 8 Lunas</span>
-            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #EF4444; flex-shrink: 0;"></span> 2 Telat Bayar</span>
-            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #D97706; flex-shrink: 0;"></span> 1 Jatuh Tempo</span>
-            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #FF7A00; flex-shrink: 0;"></span> 3 Siap Huni</span>
-            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #EAB308; flex-shrink: 0;"></span> 1 Dibersihkan</span>
-            <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #F43F5E; flex-shrink: 0;"></span> 1 Perbaikan</span>
-          </div>
+          <!-- Sticky Footer (Legend & Link Katalog Tetap di Bawah Sesuai Pola WF-03) -->
+          <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 10px; border-top: 1px dashed var(--border-subtle, #ECEEF2); margin-top: 10px; flex-shrink: 0;">
+            <!-- Legend Lengkap Seluruh Kondisi Kamar (15 Unit) -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 12px; font-size: 10.5px; color: var(--text-secondary, #4B5563);">
+              <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #16A34A; flex-shrink: 0;"></span> 8 Lunas</span>
+              <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #EF4444; flex-shrink: 0;"></span> 2 Telat Bayar</span>
+              <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #D97706; flex-shrink: 0;"></span> 1 Jatuh Tempo</span>
+              <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #EAB308; flex-shrink: 0;"></span> 3 Dibersihkan</span>
+              <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #F43F5E; flex-shrink: 0;"></span> 1 Perbaikan</span>
+              <span style="display: inline-flex; align-items: center; gap: 5px;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #FF7A00; flex-shrink: 0;"></span> Siap Huni (Dinamis)</span>
+            </div>
 
-          <a href="WF-03-kamar.html?role=staf" class="btn-pill btn-white-outline" style="font-size: 12px; height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;">
-            <span>Buka Katalog Kamar (15 Unit)</span>
-            <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
-          </a>
+            <a href="WF-03-kamar.html?role=staf" class="btn-pill btn-white-outline" style="font-size: 12px; height: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;">
+              <span>Buka Katalog Kamar (15 Unit)</span>
+              <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
+            </a>
+          </div>
         </div>
 
         <!-- CARD 3: TURNOVER & KEBERSIHAN UNIT (F-02 · Pola Header-Body Scroll-Footer Tetap ala WF-03) -->
-        <div class="card-box-estify" id="cardTurnover" style="display: flex; flex-direction: column;">
+        <div class="card-box-estify" id="cardTurnover" style="display: flex; flex-direction: column; flex: 1 1 auto;">
           <!-- Top Bar (Sticky Header) -->
           <div class="card-top-header" style="flex-shrink: 0; margin-bottom: 10px;">
             <h2 class="card-title-text" style="font-size: 14px;">
               <i data-lucide="sparkles" style="width: 16px; height: 16px; color: #F59E0B;"></i>
               Turnover & Kebersihan Unit
             </h2>
-            <span class="status-badge badge-warning" style="font-size: 10px;">2 Butuh Aksi</span>
+            <span class="status-badge badge-warning" id="turnoverBadgeCount" style="font-size: 10px;">3 Butuh Aksi</span>
           </div>
 
-          <!-- Scrollable Body (Max-height dengan Overflow-Y Auto Sesuai Pola WF-03) -->
-          <div class="turnover-scroll-body" style="display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; flex: 1 1 auto; min-height: 0;">
-            <!-- Unit 1 dari 2: Kamar B-02 (Perlu Aksi Staf) -->
+          <!-- Scrollable Body (Dinamis: Mendukung Tambah/Kurang Item Tanpa Batas Sesuai Pola WF-03) -->
+          <div class="turnover-scroll-body" style="display: flex; flex-direction: column; gap: 8px; max-height: 350px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; flex: 1 1 auto; min-height: 0;">
+            <!-- Unit 1 dari 3: Kamar B-02 (Perlu Aksi Staf) -->
             <div id="turnoverItemB02" style="background: #FAFAFB; border: 1px solid var(--border-subtle, #ECEEF2); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 13px; font-weight: 700; color: var(--text-main, #111111);">Kamar B-02 (Lantai 2)</span>
@@ -1436,13 +1581,13 @@
               </div>
               <span style="font-size: 11.5px; color: var(--text-secondary, #4B5563);">Sanitasi kamar mandi & sprei telah rampung. Siap diverifikasi operasional.</span>
               
-              <button type="button" class="btn-pill btn-white-outline" onclick="markRoomReady('B-02')" style="font-size: 11.5px; height: 32px; padding: 0 12px; align-self: flex-start; gap: 4px; border-color: #16A34A; color: #16A34A;">
-                <i data-lucide="check" style="width: 14px; height: 14px;"></i>
-                <span>Tandai Siap Huni</span>
+              <button type="button" class="btn-turnover-action" onclick="markRoomReady('B-02')" title="Verifikasi dan ubah status kamar B-02 ke Siap Huni">
+                <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                <span>Siap Huni</span>
               </button>
             </div>
 
-            <!-- Unit 2 dari 2: Kamar C-02 (Sedang Disanitasi) -->
+            <!-- Unit 2 dari 3: Kamar C-02 (Sedang Disanitasi) -->
             <div id="turnoverItemC02" style="background: #FAFAFB; border: 1px solid var(--border-subtle, #ECEEF2); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 13px; font-weight: 700; color: var(--text-main, #111111);">Kamar C-02 (Lantai 3)</span>
@@ -1450,9 +1595,23 @@
               </div>
               <span style="font-size: 11.5px; color: var(--text-secondary, #4B5563);">Ganti gorden & cuci exhaust kamar mandi selesai. Tunggu pengecekan.</span>
               
-              <button type="button" class="btn-pill btn-white-outline" onclick="markRoomReady('C-02')" style="font-size: 11.5px; height: 32px; padding: 0 12px; align-self: flex-start; gap: 4px; border-color: #16A34A; color: #16A34A;">
-                <i data-lucide="check" style="width: 14px; height: 14px;"></i>
-                <span>Tandai Siap Huni</span>
+              <button type="button" class="btn-turnover-action" onclick="markRoomReady('C-02')" title="Verifikasi dan ubah status kamar C-02 ke Siap Huni">
+                <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                <span>Siap Huni</span>
+              </button>
+            </div>
+
+            <!-- Unit 3 dari 3: Kamar A-03 (Inspeksi Checkout) -->
+            <div id="turnoverItemA03" style="background: #FAFAFB; border: 1px solid var(--border-subtle, #ECEEF2); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-main, #111111);">Kamar A-03 (Lantai 1)</span>
+                <span class="status-badge badge-warning" style="font-size: 10px;">Inspeksi Checkout</span>
+              </div>
+              <span style="font-size: 11.5px; color: var(--text-secondary, #4B5563);">Check-out penghuni lama selesai. Pembersihan tuntas & inventaris unit lengkap.</span>
+              
+              <button type="button" class="btn-turnover-action" onclick="markRoomReady('A-03')" title="Verifikasi dan ubah status kamar A-03 ke Siap Huni">
+                <i data-lucide="check" style="width: 13px; height: 13px;"></i>
+                <span>Siap Huni</span>
               </button>
             </div>
 
@@ -1463,16 +1622,16 @@
           </div>
 
           <!-- Sticky Footer Pintasan Status Unit (Tetap di Bawah Sesuai Pola WF-03) -->
-          <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 10px; border-top: 1px dashed var(--border-subtle, #ECEEF2); margin-top: 10px; flex-shrink: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 10px; border-top: 1px dashed var(--border-subtle, #ECEEF2); margin-top: auto; flex-shrink: 0;">
             <div style="font-size: 11px; font-weight: 600; color: var(--text-muted, #71717A); text-transform: uppercase; letter-spacing: 0.3px;">
               Pintasan Status Unit
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <a href="WF-03-kamar.html?status=perbaikan&role=staf" class="btn-pill btn-white-outline" style="font-size: 11.5px; height: 32px; padding: 0 10px; display: inline-flex; align-items: center; gap: 5px; color: #EF4444; border-color: #FECACA; text-decoration: none; flex: 1; justify-content: center;">
+              <a href="WF-03-kamar.html?status=perbaikan&role=staf" class="btn-shortcut-status is-danger">
                 <i data-lucide="wrench" style="width: 13px; height: 13px;"></i>
                 <span>1 Perbaikan (B-05)</span>
               </a>
-              <a href="WF-03-kamar.html?status=kosong&role=staf" class="btn-pill btn-white-outline" style="font-size: 11.5px; height: 32px; padding: 0 10px; display: inline-flex; align-items: center; gap: 5px; color: #FF7A00; border-color: #FFEDD5; text-decoration: none; flex: 1; justify-content: center;">
+              <a href="WF-03-kamar.html?status=kosong&role=staf" class="btn-shortcut-status is-brand">
                 <i data-lucide="building-2" style="width: 13px; height: 13px;"></i>
                 <span>3 Kamar Kosong</span>
               </a>
@@ -1562,19 +1721,22 @@
             </div>
           </div>
 
-          <!-- Pilih Metode / Kanal Pembayaran Lapangan (Opsi A: 2 Kanal Lapangan Murni) -->
+          <!-- Metode / Kanal Pembayaran Lapangan (Konsisten dengan WF-05: Tunai / Cash) -->
           <div class="form-group-custom">
             <label class="form-label-custom">Metode / Kanal Pembayaran Lapangan *</label>
-            <div class="method-selector-grid" style="grid-template-columns: 1fr 1fr; gap: 8px;">
-              <div class="method-radio-box active" onclick="selectStaffPaymentMethod(this, 'Tunai (Kasir Kost)')" style="padding: 10px 12px; flex-direction: row; justify-content: center; gap: 8px;">
-                <i data-lucide="banknote" style="width: 16px; height: 16px;"></i>
-                <span style="font-size: 12px;">Uang Tunai (Cash di Meja)</span>
+            <div style="background: #FFF7ED; border: 1.5px solid #FFEDD5; border-radius: 12px; padding: 11px 14px; display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 34px; height: 34px; border-radius: 8px; background: #FF7A00; color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                  <i data-lucide="banknote" style="width: 18px; height: 18px;"></i>
+                </div>
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #111111; font-family: 'Poppins', sans-serif;">Tunai / Cash (Kasir Kost)</div>
+                  <div style="font-size: 11px; color: #71717A; font-family: 'Poppins', sans-serif;">Penerimaan uang fisik langsung di meja operasional lapangan</div>
+                </div>
               </div>
-              <div class="method-radio-box" onclick="selectStaffPaymentMethod(this, 'Klaim Transfer (Struk)')" style="padding: 10px 12px; flex-direction: row; justify-content: center; gap: 8px;">
-                <i data-lucide="receipt" style="width: 16px; height: 16px;"></i>
-                <span style="font-size: 12px;">Titip Bukti Transfer (Slip)</span>
-              </div>
+              <span class="status-badge badge-brand" style="font-size: 11px; font-weight: 600;">Tunai Lapangan</span>
             </div>
+            <input type="hidden" id="selectedStaffMethod" value="Tunai / Cash">
           </div>
 
           <!-- Nominal Diterima & Tanggal Bayar (Menggunakan CMP-20 RumaDatePicker Calendar) -->
@@ -1590,7 +1752,7 @@
                 <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapPayDate', 'inputPayDate')" style="height: 42px !important; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input, #E2E8F0); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
                   <div class="ruma-datepicker-trigger-content" style="display: flex; align-items: center; gap: 8px;">
                     <i data-lucide="calendar" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary, #FF7A00);"></i>
-                    <span class="ruma-datepicker-val-txt" id="inputPayDateDisplay" style="font-size: 12.5px; font-weight: 600; color: var(--text-main, #111111); font-family: 'Poppins', sans-serif;">27 Oktober 2026</span>
+                    <span class="ruma-datepicker-val-txt" id="inputPayDateDisplay" style="font-size: 12.5px; font-weight: 500; color: var(--text-main, #111111); font-family: 'Poppins', sans-serif;">27 Oktober 2026</span>
                   </div>
                   <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
                 </div>
@@ -1598,26 +1760,26 @@
             </div>
           </div>
 
-          <!-- Atas Nama Pengirim & Nomor Referensi -->
+          <!-- Atas Nama Penyetor & Nomor Referensi -->
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group-custom">
-              <label class="form-label-custom" for="inputPaySender">Atas Nama Pengirim *</label>
-              <input type="text" class="form-input-custom" id="inputPaySender" value="Dimas Prasetyo" placeholder="Nama penyetor / pemilik rekening" required style="font-family: 'Poppins', sans-serif;">
+              <label class="form-label-custom" for="inputPaySender">Atas Nama Penyetor *</label>
+              <input type="text" class="form-input-custom" id="inputPaySender" value="Dimas Prasetyo" placeholder="Nama penyetor uang tunai" required style="font-weight: 500; font-family: 'Poppins', sans-serif;">
             </div>
             <div class="form-group-custom">
               <label class="form-label-custom" for="inputPayRef">Nomor Referensi Transaksi</label>
-              <input type="text" class="form-input-custom" id="inputPayRef" value="KAS-TUNAI-829144" readonly style="background: #F8FAFC; color: #64748B; cursor: not-allowed; border-color: #E2E8F0; font-family: 'Poppins', sans-serif; font-variant-numeric: tabular-nums;" title="Nomor referensi dibuat otomatis oleh sistem">
+              <input type="text" class="form-input-custom" id="inputPayRef" value="KAS-TUNAI-829144" readonly style="background: #F8FAFC; color: #64748B; cursor: not-allowed; border-color: #E2E8F0; font-weight: 500; font-family: 'Poppins', sans-serif; font-variant-numeric: tabular-nums;" title="Nomor referensi dibuat otomatis oleh sistem">
             </div>
           </div>
 
           <!-- Dropzone Unggah Bukti -->
           <div class="form-group-custom">
-            <label class="form-label-custom">Unggah Bukti Transfer / Foto Kuitansi Fisik (Opsional)</label>
+            <label class="form-label-custom">Unggah Foto Kuitansi Fisik / Tanda Terima (Opsional)</label>
             <div class="upload-dropzone" onclick="simulateStaffProofUpload()">
               <div class="upload-icon-circle">
                 <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
               </div>
-              <div style="font-size: 12px; font-weight: 600; color: var(--text-main, #111111);" id="staffUploadFileName">Klik untuk unggah slip transfer bank / nota fisik</div>
+              <div style="font-size: 12px; font-weight: 600; color: var(--text-main, #111111);" id="staffUploadFileName">Klik untuk unggah foto nota fisik / slip tanda terima</div>
               <div style="font-size: 11px; color: var(--text-muted, #71717A); margin-top: 2px;">Format JPG, PNG, atau PDF (Maks. 5 MB)</div>
             </div>
           </div>
@@ -1939,11 +2101,11 @@
       const fileNameElem = document.getElementById('staffUploadFileName');
       const room = currentSelectedInvoice ? currentSelectedInvoice.room : 'A-02';
       if (fileNameElem) {
-        fileNameElem.innerHTML = `<span style="color: #16A34A; display: flex; align-items: center; justify-content: center; gap: 6px;"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> Slip_Setoran_Kamar_${room}.jpg (1.2 MB)</span>`;
+        fileNameElem.innerHTML = `<span style="color: #16A34A; display: flex; align-items: center; justify-content: center; gap: 6px;"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> Nota_Tunai_Kamar_${room}.jpg (1.2 MB)</span>`;
         if (window.lucide) window.lucide.createIcons();
       }
       if (window.RumaUI && typeof window.RumaUI.showToast === 'function') {
-        window.RumaUI.showToast('Bukti pembayaran berhasil diunggah.', 'success');
+        window.RumaUI.showToast('Foto nota/kuitansi tunai berhasil diunggah.', 'success');
       }
     }
 
@@ -1954,7 +2116,7 @@
       const enteredStr = document.getElementById('inputPayAmount')?.value || '0';
       const nominal = parseInt(enteredStr.replace(/\D/g, ''), 10) || 0;
       const ref = document.getElementById('inputPayRef')?.value || `#DFT-${Date.now().toString().slice(-6)}`;
-      const metode = selectedStaffPayMethod || 'Tunai / Cash';
+      const metode = 'Tunai / Cash';
 
       closeStaffPaymentModal();
 
@@ -1963,6 +2125,9 @@
       if (tbody) {
         const newRow = document.createElement('tr');
         newRow.style.background = '#FFFBEB';
+        const targetInvId = currentSelectedInvoice ? currentSelectedInvoice.id : 'INV-202610-02';
+        newRow.setAttribute('onclick', `location.href='WF-05-tagihan.html?id=${targetInvId}&role=staf'`);
+        newRow.title = `Klik untuk membuka lembar tagihan Kamar ${kamar} (#${targetInvId})`;
         newRow.innerHTML = `
           <td style="font-weight: 600; color: #4B5563; font-variant-numeric: tabular-nums;">#${ref.slice(0, 14)}</td>
           <td><span class="room-code-badge">${kamar}</span></td>
@@ -2000,12 +2165,22 @@
         tile.title = `${roomId}: Kosong · Siap Huni`;
       }
 
-      // Periksa apakah masih ada item turnover yang aktif
-      const itemB02 = document.getElementById('turnoverItemB02');
-      const itemC02 = document.getElementById('turnoverItemC02');
+      // Perbarui status counter dan cek apakah masih ada item turnover yang aktif (Dinamis tanpa batas)
+      const container = document.querySelector('.turnover-scroll-body');
       const emptyState = document.getElementById('turnoverEmpty');
-      if (itemB02 && itemC02 && emptyState) {
-        if (itemB02.style.display === 'none' && itemC02.style.display === 'none') {
+      const badgeCount = document.getElementById('turnoverBadgeCount');
+      if (container && emptyState) {
+        const remainingItems = Array.from(container.children).filter(el => el.id !== 'turnoverEmpty' && el.style.display !== 'none');
+        if (badgeCount) {
+          if (remainingItems.length > 0) {
+            badgeCount.className = 'status-badge badge-warning';
+            badgeCount.textContent = `${remainingItems.length} Butuh Aksi`;
+          } else {
+            badgeCount.className = 'status-badge badge-success';
+            badgeCount.textContent = 'Semua Bersih';
+          }
+        }
+        if (remainingItems.length === 0) {
           emptyState.style.display = 'block';
         }
       }

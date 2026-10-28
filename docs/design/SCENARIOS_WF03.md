@@ -138,7 +138,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
   5. Ubah nomor kamar menjadi *"A-06"*.
   6. Unggah file foto kamar melalui area dropzone (`#addFotoKamarInput`).
   - Dropzone langsung memperlihatkan thumbnail pratinjau foto secara instan.
-  7. Centang fasilitas: *AC 1/2 PK, KM Dalam, Wi-Fi 100 Mbps*.
+  7. Centang fasilitas unit yang tersedia (pilihan fasilitas diambil dari master inventaris Pengaturan Kost): misal *AC 1/2 PK, KM Dalam, Wi-Fi 100 Mbps*.
   8. Klik **"Daftarkan Kamar"**.
   - Modal `#modalTambahKamar` tertutup.
   - Toast Success muncul: *"Kamar A-06 (Lantai 1) berhasil didaftarkan!"*.
@@ -280,21 +280,27 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-### SKENARIO 12: Penanganan Antarmuka Filter Zero State vs Absolute Zero State
-* **Tujuan**: Memastikan antarmuka memberikan umpan balik visual yang ramah dan kontekstual saat katalog tidak memiliki data.
+### SKENARIO 12: Penanganan Antarmuka Filter Zero State vs Absolute Zero State & Kunci Layout Layar Tunggal (No-Scroll)
+* **Tujuan**: Memastikan antarmuka memberikan umpan balik visual yang ramah dan kontekstual saat katalog tidak memiliki data, dengan layout grid dan side drawer yang presisi, harmonis, serta terkunci rapi pada satu layar (single-screen dashboard view) tanpa scrollbar vertikal.
 * **Uji Kasus A: Filter Zero State (Pencarian / Filter Nihil)**:
   1. Ketikkan kata kunci acak pada kotak pencarian: *"Kamar XYZ 999"*.
   - Seluruh kartu kamar tersembunyi.
   - Ditampilkan kartu `#kamarEmptyState` dengan ikon `search-x`:  
     *"Tidak ada kamar yang cocok dengan filter atau kata kunci pencarian Anda."*
   - Tampil tombol Level 2: `"Reset Filter"`.
-  - Drawer kanan beralih ke state kosong (`setDrawerEmptyState()`), menampilkan ikon `layout-grid` atau `search-x`, teks penunjuk informatif (*"Belum Ada Kamar Dipilih - Pilih salah satu kamar di daftar sebelah kiri untuk melihat rincian spesifikasi, penghuni, atau status unit."* atau pesan filter), border putus-putus (*dashed*), serta ketinggian batas bawahnya diselaraskan (*flush aligned*) dengan batas bawah kotak kamar di sisi kiri.
+  - Halaman otomatis di-scroll ke top 0 dan scroll vertikal body dinonaktifkan (`overflowY = 'hidden'`) sehingga tampilan pas 1 layar penuh tanpa scrollbar atau pergeseran layout.
+  - Sidebar kanan tetap berada di posisi aslinya (`top: 110px`, tinggi `calc(100vh - 130px)` / 565.2px, tepat di sebelah kanan card Potensi Sewa) dan beralih ke state kosong (`setDrawerEmptyState()`), menampilkan ikon `layout-grid`, judul *"Belum Ada Kamar Dipilih"*, subteks *"Pilih salah satu kamar di daftar sebelah kiri untuk melihat rincian spesifikasi, penghuni, atau status unit."*, serta border dashed subtle.
+  - Kotak `#kamarEmptyState` di sebelah kiri menyesuaikan ketinggiannya secara adaptif (`alignLeftEmptyStateBottom()`) sehingga **batas bawah kotak kiri sejajar rata dengan batas bawah sidebar kanan**, tanpa memicu scrolling vertikal.
+  2. Klik tombol `"Reset Filter"` atau hapus teks pencarian:
+  - Scroll vertikal diaktifkan kembali (`document.body.style.overflowY = ''`).
+  - Seluruh kamar dan kluster lantai tampil kembali secara utuh dan dapat di-scroll normal.
 * **Uji Kasus B: Absolute Zero State (Katalog Bersih 0 Unit di Sistem)**:
-  2. Jika seluruh data kamar dihapus dari properti (`ROOMS_DATA = {}`):
+  3. Jika seluruh data kamar dihapus dari properti (`ROOMS_DATA = {}`):
   - Ditampilkan pesan sambutan kosong berikon `door-open`:  
     *"Belum ada unit kamar di kost Anda. Mulai kelola hunian dengan mendaftarkan kamar pertama."*
   - Tampil tombol Level 1 hero: `"+ Daftarkan Kamar Pertama"`.
-  - Drawer kanan menampilkan state placeholder bersih tanpa galat konsol javascript.
+  - Sidebar kanan menampilkan pesan *"Belum Ada Kamar Terdaftar"* dengan tombol pendaftaran unit pertama.
+  - Batas bawah kotak kiri tetap sejajar rata dengan batas bawah sidebar kanan tanpa scroll.
 
 ---
 
@@ -311,19 +317,19 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-### SKENARIO 14: Auto-Sinkronisasi Dimensi Kamar Berdasarkan Pilihan Tipe Kamar (Auto-Dimension Preset)
-* **Tujuan**: Mempercepat proses pendaftaran unit kamar dengan mengisi estimasi dimensi standar secara otomatis ketika pengelola memilih tipe kamar.
+### SKENARIO 14: Auto-Sinkronisasi Dimensi Kamar Berdasarkan Pilihan Tipe Kamar (2-Column Dimension Inputs)
+* **Tujuan**: Mempercepat proses pendaftaran unit kamar dengan membagi input dimensi menjadi 2 kolom angka mandiri (Panjang × Lebar dalam meter) yang terisi otomatis berdasarkan tipe kamar.
 * **Kondisi Awal**: Modal Tambah Kamar (`#modalTambahKamar`) atau Edit Kamar (`#modalEditKamar`) sedang terbuka.
 * **Langkah-langkah Pengujian**:
   1. Klik custom dropdown **"Tipe Unit Kamar"** (`#wrapAddTipe`).
   2. Pilih opsi **"Standar AC"**.
 * **Hasil Diharapkan**:
-  - Field ukuran kamar (`#addUkuranKamar`) secara instan dan otomatis terisi dengan teks `"3.5 × 4 Meter"`.
+  - Kolom input Panjang (`#addDimensiPanjang`) terisi `3.5`, kolom Lebar (`#addDimensiLebar`) terisi `4`, dan hidden input `#addUkuranKamar` tersinkronisasi menjadi `"3.5 × 4 Meter"`.
   3. Ubah pilihan tipe kamar menjadi **"Deluxe"**.
-  - Field ukuran kamar langsung terbarui menjadi `"4 × 5 Meter"`.
+  - Kolom Panjang otomatis terisi `4` dan Lebar terisi `5` (`"4 × 5 Meter"`).
   4. Ubah ke **"Deluxe Corner View"**.
-  - Field ukuran kamar otomatis terbarui menjadi `"4.5 × 5 Meter"`.
-  - Pengelola tetap dapat mengubah/mengedit teks dimensi ini secara manual jika terdapat variasi arsitektur kamar khusus.
+  - Kolom Panjang otomatis terisi `4.5` dan Lebar terisi `5` (`"4.5 × 5 Meter"`).
+  5. Pengguna dapat mengubah angka panjang atau lebar secara langsung (misal: isi `3` dan `4`), sistem merangkai dimensi secara otomatis tanpa perlu mengetik manual simbol perkalian atau satuan.
 
 ---
 
@@ -412,9 +418,17 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
   - Muncul notifikasi toast: *"Akses Ditolak: Halaman katalog master kamar hanya untuk pengelola properti."*
 * **Uji Kasus B: Staf Operasional Membuka Halaman Katalog (`?role=staf`)**:
   2. Akses halaman dengan URL: `WF-03-kamar.html?role=staf`.
-  - Topbar menampilkan badge *"Staf Operasional"* dan 5 pill navigasi kerja operasional.
-  - Tombol hapus kamar permanen (`.btn-modal-danger`) di modal edit dan tombol hapus lantai (`.btn-del-floor-sec`) disembunyikan atau dinonaktifkan dengan tooltip proteksi: *"Wewenang Khusus: Hanya Pemilik Properti (Owner) yang berhak menghapus unit kamar atau membongkar lantai."*
-  - Staf tetap dapat mendaftarkan kamar baru, mengedit data fasilitas fisik, dan memperbarui catatan pemeliharaan.
+  - Topbar menampilkan badge *"Staf Operasional"* dan 5 pill navigasi kerja operasional (tanpa menu Laporan dan Pengaturan).
+  - Tombol Tambah Kamar Baru (`.btn-brand-add` di toolbar & drawer) disembunyikan untuk staf sesuai matriks otorisasi `SCOPE_STATEMENT.md` (Owner-Only).
+  - Tombol hapus kamar permanen (`.btn-modal-danger`) di modal edit dan tombol hapus lantai (`.btn-del-floor-sec`, `.btn-del-floor-opt`) disembunyikan.
+  - Pada Modal Edit Kamar, seluruh spesifikasi master kamar (Nomor Kamar, Lokasi Lantai, Tipe, Dimensi, Tarif Sewa, Deposit, Kapasitas, Aturan Gender) dikunci menjadi read-only dengan banner informasi *"Wewenang Terbatas Staf"*.
+  - Staf tetap dapat menginspeksi kamar, memperbarui status kesiapan fisik unit (`[ Siap Huni ]` $\leftrightarrow$ `[ Perbaikan ]`), memperbarui catatan pemeliharaan, serta memicu aksi operasional WhatsApp dan tiket perbaikan.
+* **Uji Kasus C: Jejak Audit Akuntabilitas Pembaruan Kamar (Data & Backend Audit Trail)**:
+  3. Lakukan pembaruan status fisik kamar sebagai Staf Operasional (`?role=staf`).
+  - Sistem merekam metadata audit lengkap di level model data (`lastModified`):
+    `by: 'Staf Operasional', operatorEmail: 'staf.operasional@kostmakmur.com', role: 'staff', at: '[Timestamp] WIB', action: 'Status fisik unit diubah / Catatan pemeliharaan diperbarui'`.
+  - Jika kamar diperbarui oleh Pemilik (`role=owner`), metadata tercatat: `by: 'Budi Santoso (Owner)'`.
+  - Drawer inspeksi tetap ramping dan bersih (*minimalist zero visual clutter*), menjaga fokus kerja operasional harian tanpa membebani layar dengan pod riwayat yang tidak esensial.
 
 ---
 
@@ -923,6 +937,39 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
+### SKENARIO 56: Auto-Kalkulasi Nominal Deposit Default Berdasarkan Tarif Sewa
+* **Tujuan**: Membantu pemilik kos menghitung nominal uang jaminan (deposit sewa) secara proporsional dan otomatis (default 50% dari tarif sewa bulanan, dibulatkan ke kelipatan Rp 50.000 terdekat) saat mendaftarkan atau memperbarui kamar tanpa membebani antarmuka dengan teks/badge berlebih (clean minimalist DNA), dengan tetap memberikan kebebasan kustomisasi manual tanpa terkunci.
+* **Kondisi Awal**: Pemilik membuka Modal Tambah Kamar (`#modalTambahKamar`) atau Modal Edit Kamar (`#modalEditKamar`).
+* **Langkah-langkah Pengujian**:
+  1. Pada form modal tambah kamar, ketikkan tarif sewa bulanan, misalnya `Rp 1.750.000`.
+  2. Amati kolom input **"Nominal Deposit Default (Rp)"** (`#addDepositKamar`).
+  3. Lakukan pengeditan manual pada kolom deposit, misalnya diubah menjadi `Rp 1.000.000`.
+  4. Coba ubah tarif sewa kembali.
+* **Hasil Diharapkan**:
+  - Saat tarif diisi Rp 1.750.000, deposit terisi otomatis secara mulus sebesar **Rp 900.000** (50% dari 1.750.000 adalah 875.000, dibulatkan ke kelipatan Rp 50.000 terdekat menjadi 900.000) tanpa badge atau teks pembantu panjang yang mengotori visual form.
+  - Ketika pemilik mengetik langsung nominal deposit sendiri, sistem mendeteksi input telah disesuaikan manual sehingga angka yang diketik pemilik tidak akan tertimpa saat tarif sewa diubah kembali.
+  - Alur kalkulasi yang sama berjalan konsisten pada formulir Edit Kamar (`#editDepositKamar`).
+
+---
+
+### SKENARIO 57: Inspeksi Foto Kamar Layar Penuh Minimalis (Minimalist Photo Lightbox)
+* **Tujuan**: Memfasilitasi pemilik dan staf untuk menginspeksi foto ruangan kamar dalam tampilan **layar penuh murni yang sangat bersih dan simpel** (hanya foto besar di tengah dan tombol tutup X di pojok kanan atas).
+* **Kondisi Awal**: Sebuah kamar (misal Kamar A-01) terpilih di Side Drawer kanan.
+* **Langkah-langkah Pengujian**:
+  1. Arahkan kursor (*hover*) pada kotak foto hero kamar di Side Drawer (`#drawerPhotoWrap`).
+  2. Amati efek visual (zoom scale halus gambar & kemunculan kapsul petunjuk *"Layar Penuh"* berikon `maximize-2`).
+  3. Klik kotak foto tersebut.
+  4. Amati tampilan layar penuh `#modalPhotoLightbox` yang muncul:
+     - Seluruh layar menjadi backdrop gelap bersih berlatar `rgba(10, 10, 12, 0.94)` dengan efek blur halus.
+     - Foto unit ditampilkan besar dan proporsional di tengah layar (`max-width: 92vw; max-height: 90vh; object-fit: contain;`).
+     - Terdapat satu tombol bulat tutup **X** (`.btn-minimal-close`) yang bersih di pojok kanan atas.
+  5. Tutup tampilan foto dengan salah satu cara: klik tombol close `X`, klik di area gelap luar foto, atau tekan tombol `ESC` keyboard.
+* **Hasil Diharapkan**:
+  - Foto terbuka seketika dalam tampilan layar penuh minimalis bebas distraksi.
+  - Tampilan dapat ditutup seketika tanpa jeda.
+
+---
+
 ## 5. Matriks Ringkasan Kepatuhan & Status Pengujian
 
 | ID Skenario | Nama Skenario Pengujian | Komponen / Target Interaksi | Prioritas Scope | Status Verifikasi |
@@ -982,4 +1029,6 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 | **SK-53** | Sanitasi Paste Nilai Rupiah Berdesimal Sen | `formatRupiahInput()`, Cents Stripper | **P0 (Must)** | **PASSED (100%)** |
 | **SK-54** | Pintasan Lapor Kerusakan Cepat Kamar Kosong | `#btnDrawerReportRepair`, Direct WF-08 | **P1 (Should)**| **PASSED (100%)** |
 | **SK-55** | Navigasi Keyboard Arrow Antar-Kartu Unit | Keydown Arrow Traversal, Focus Scroll | **P1 (Should)**| **PASSED (100%)** |
+| **SK-56** | Auto-Kalkulasi Rekomendasi Deposit Default (50%) | `#addDepositKamar`, Recommended 50% Sync | **P0 (Must)** | **PASSED (100%)** |
+| **SK-57** | Inspeksi Foto Kamar Resolusi Penuh (Lightbox) | `#drawerPhotoWrap`, `#modalPhotoLightbox`| **P1 (Should)**| **PASSED (100%)** |
 

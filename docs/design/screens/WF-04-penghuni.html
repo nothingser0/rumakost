@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RumaKost · Data Penghuni & Kontrak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -30,15 +33,52 @@
       gap: 20px;
     }
 
+    /* ==========================================================================
+       TABULAR FIGURES COMPLIANCE (DESIGN.MD SECTION 3.2)
+       ========================================================================== */
+    .tabular-nums,
+    table td,
+    .metric-value,
+    .currency-val,
+    .tile-rate-txt,
+    .quad-kv-val,
+    .contract-meta-val,
+    .master-badge-count,
+    .room-badge-micro,
+    .deposit-val-large,
+    .calc-summary-strip,
+    .ledger-table-grid td,
+    .contract-meta-sub {
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+    }
+
     .ruma-datepicker-trigger {
       height: 42px;
-      padding: 0 12px;
+      padding: 0 14px;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    .ruma-datepicker-trigger:hover {
+      border-color: #CBD5E1;
+      background: #F8FAFC;
+    }
+
+    .ruma-datepicker-trigger:focus-visible,
+    .ruma-datepicker-trigger.active {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
     }
 
     .ruma-datepicker-trigger-icon {
@@ -166,6 +206,7 @@
       cursor: pointer;
       transition: all var(--transition-fast);
       white-space: nowrap;
+      outline: none;
     }
 
     .btn-micro-outline i {
@@ -177,6 +218,16 @@
       border-color: var(--brand-primary);
       color: var(--brand-primary);
       background: var(--brand-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-micro-outline:active {
+      transform: translateY(0);
+    }
+
+    .btn-micro-outline:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 1px;
     }
 
     .btn-micro-brand {
@@ -192,16 +243,26 @@
       background: var(--brand-primary);
       color: #FFFFFF;
       border: none;
-      border-radius: var(--radius-full);
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(255, 122, 0, 0.25);
       transition: all var(--transition-fast);
       white-space: nowrap;
+      outline: none;
     }
 
     .btn-micro-brand:hover {
       background: var(--brand-primary-hover);
       transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.35);
+    }
+
+    .btn-micro-brand:active {
+      transform: translateY(0);
+    }
+
+    .btn-micro-brand:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 2px;
     }
 
     /* Search Input Capsule */
@@ -210,13 +271,19 @@
       align-items: center;
       gap: 8px;
       background: #F4F5F7;
-      border: 1px solid transparent;
+      border: 1.5px solid #ECEEF2;
       border-radius: var(--radius-full);
-      padding: 0 10px;
-      height: 36px;
+      padding: 0 12px;
+      height: 38px;
       width: 100%;
       transition: all var(--transition-fast);
       box-sizing: border-box;
+    }
+
+    .search-capsule-box:hover {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
 
     .search-capsule-box:focus-within {
@@ -249,11 +316,26 @@
       height: 18px;
       border-radius: 50%;
       background: #E2E8F0;
-      color: #64748B;
+      color: var(--text-muted, #64748B);
       border: none;
       cursor: pointer;
       padding: 0;
       flex-shrink: 0;
+      transition: all var(--transition-fast);
+      outline: none;
+    }
+
+    .btn-clear-search:hover {
+      background: #CBD5E1;
+      color: var(--text-main, #111111);
+    }
+
+    .btn-clear-search:active {
+      transform: scale(0.92);
+    }
+
+    .btn-clear-search:focus-visible {
+      outline: 2px solid var(--brand-primary);
     }
 
     /* Segmented Status Tabs */
@@ -282,10 +364,24 @@
       transition: all var(--transition-fast);
       white-space: nowrap;
       user-select: none;
+      outline: none;
     }
 
     .segment-tab-btn:hover {
       color: var(--text-main);
+    }
+
+    .segment-tab-btn:not(.active):hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .segment-tab-btn:active {
+      transform: scale(0.98);
+    }
+
+    .segment-tab-btn:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 1px;
     }
 
     .segment-tab-btn.active {
@@ -317,12 +413,23 @@
       cursor: pointer;
       transition: all var(--transition-fast);
       white-space: nowrap;
+      outline: none;
     }
 
     .floor-pill-btn:hover {
       background: #FFFFFF;
       border-color: #CBD5E1;
       color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    .floor-pill-btn:active {
+      transform: translateY(0);
+    }
+
+    .floor-pill-btn:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 1px;
     }
 
     .floor-pill-btn.active {
@@ -330,6 +437,12 @@
       border-color: var(--dark-pill);
       color: #FFFFFF;
       font-weight: 600;
+    }
+
+    .floor-pill-btn.active:hover {
+      background: var(--dark-pill-hover, #222222);
+      border-color: var(--dark-pill-hover, #222222);
+      color: #FFFFFF;
     }
 
     .master-items-scroll {
@@ -364,17 +477,36 @@
       gap: 8px;
       user-select: none;
       position: relative;
+      outline: none;
     }
 
     .master-tenant-tile:hover {
       border-color: #CBD5E1;
       background: #FAFAFC;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    }
+
+    .master-tenant-tile:active {
+      transform: translateY(0);
+    }
+
+    .master-tenant-tile:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 1px;
     }
 
     .master-tenant-tile.active {
       border-color: var(--brand-primary);
       background: #FFF7ED;
       box-shadow: 0 4px 12px rgba(255, 122, 0, 0.08);
+    }
+
+    .master-tenant-tile.active:hover {
+      border-color: var(--brand-primary);
+      background: #FFF7ED;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(255, 122, 0, 0.12);
     }
 
     .master-tenant-tile.active::before {
@@ -386,6 +518,21 @@
       width: 3.5px;
       background: var(--brand-primary);
       border-radius: 0 4px 4px 0;
+    }
+
+    .master-tenant-tile:hover .tile-avatar-img {
+      transform: scale(1.05);
+    }
+
+    .tile-avatar-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+      transition: transform var(--transition-fast);
     }
 
     .tile-top-row {
@@ -644,6 +791,7 @@
       color: var(--text-muted);
     }
 
+    /* Action Buttons Header Profil (Konsisten Estify DNA & WF-03) */
     .profile-action-btns {
       display: flex;
       align-items: center;
@@ -668,9 +816,9 @@
     }
 
     .btn-wa-direct {
-      background: #25D366;
+      background: #16A34A;
       color: #FFFFFF;
-      border: none;
+      border: 1px solid #16A34A;
       border-radius: var(--radius-full);
       padding: 0 14px;
       height: 34px;
@@ -681,22 +829,37 @@
       align-items: center;
       gap: 6px;
       text-decoration: none;
-      box-shadow: 0 3px 10px rgba(37, 211, 102, 0.25);
-      transition: all var(--transition-fast);
+      transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease;
       box-sizing: border-box;
       white-space: nowrap;
+      outline: none;
+      box-shadow: none;
+      transform: none;
     }
 
     .btn-wa-direct:hover {
-      background: #1EBE5D;
-      color: #FFFFFF;
-      transform: translateY(-1px);
+      background: #15803D !important;
+      border-color: #15803D !important;
+      color: #FFFFFF !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .btn-wa-direct:active {
+      transform: scale(0.98) !important;
+      background: #166534 !important;
+      border-color: #166534 !important;
+    }
+
+    .btn-wa-direct:focus-visible {
+      outline: 2px solid #16A34A;
+      outline-offset: 2px;
     }
 
     .btn-call-direct {
-      background: #F1F5F9;
-      color: var(--text-main);
-      border: 1px solid #E2E8F0;
+      background: #FFFFFF;
+      color: #334155;
+      border: 1.5px solid #CBD5E1;
       border-radius: var(--radius-full);
       padding: 0 13px;
       height: 34px;
@@ -707,72 +870,37 @@
       align-items: center;
       gap: 6px;
       text-decoration: none;
-      transition: all var(--transition-fast);
+      transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease;
       box-sizing: border-box;
       white-space: nowrap;
+      outline: none;
+      box-shadow: none;
+      transform: none;
     }
 
     .btn-call-direct:hover {
-      background: #E2E8F0;
-      color: #0F172A;
-      transform: translateY(-1px);
+      background: #F8FAFC !important;
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
+      transform: none !important;
+      box-shadow: none !important;
     }
 
-    .btn-pill-subtle {
-      background: #FFFFFF;
-      color: var(--text-main);
-      border: 1px solid #E2E8F0;
-      border-radius: var(--radius-full);
-      padding: 0 13px;
-      height: 34px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all var(--transition-fast);
-      text-decoration: none;
-      box-sizing: border-box;
-      white-space: nowrap;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    .btn-call-direct:active {
+      transform: scale(0.98) !important;
+      background: #F1F5F9 !important;
+      border-color: #64748B !important;
     }
 
-    .btn-pill-subtle:hover {
-      background: #F8FAFC;
-      border-color: #CBD5E1;
-      color: var(--brand-primary);
-      transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    }
-
-    .btn-renew-direct {
-      background: var(--dark-pill);
-      color: #FFFFFF;
-      border: none;
-      border-radius: var(--radius-full);
-      padding: 0 16px;
-      height: 34px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all var(--transition-fast);
-      box-sizing: border-box;
-      white-space: nowrap;
-    }
-
-    .btn-renew-direct:hover {
-      background: var(--dark-pill-hover);
-      transform: translateY(-1px);
+    .btn-call-direct:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 2px;
     }
 
     .btn-checkout-direct {
       background: #FFF1F2;
       color: #E11D48;
-      border: 1px solid #FECDD3;
+      border: 1.5px solid #FECDD3;
       border-radius: var(--radius-full);
       padding: 0 13px;
       height: 34px;
@@ -782,17 +910,32 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all var(--transition-fast);
+      transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease;
       text-decoration: none;
       box-sizing: border-box;
       white-space: nowrap;
+      outline: none;
+      box-shadow: none;
+      transform: none;
     }
 
     .btn-checkout-direct:hover {
-      background: #FFE4E6;
-      border-color: #FDA4AF;
-      color: #BE123C;
-      transform: translateY(-1px);
+      background: #FFE4E6 !important;
+      border-color: #FDA4AF !important;
+      color: #BE123C !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .btn-checkout-direct:active {
+      transform: scale(0.98) !important;
+      background: #FECDD3 !important;
+      border-color: #FB7185 !important;
+    }
+
+    .btn-checkout-direct:focus-visible {
+      outline: 2px solid #E11D48;
+      outline-offset: 2px;
     }
 
     /* Operational Status Banner Strip */
@@ -838,6 +981,7 @@
     }
 
     .quad-block {
+      background: #FFFFFF;
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
       padding: 16px 18px;
@@ -845,6 +989,12 @@
       flex-direction: column;
       gap: 10px;
       box-sizing: border-box;
+      transition: all var(--transition-fast);
+    }
+
+    .quad-block:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.025);
     }
 
     .quad-head-row {
@@ -970,11 +1120,17 @@
       font-weight: 500;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
       transition: all 0.15s ease;
+      outline: none;
     }
 
     .amenity-pill:hover {
       border-color: #CBD5E1;
       background: #F8FAFC;
+      transform: translateY(-1px);
+    }
+
+    .amenity-pill:active {
+      transform: translateY(0);
     }
 
     .amenity-pill i,
@@ -1001,12 +1157,22 @@
       cursor: pointer;
       transition: all var(--transition-fast);
       user-select: none;
+      outline: none;
     }
 
     .btn-micro-copy:hover {
       background: #E2E8F0;
       color: var(--text-main);
       transform: translateY(-1px);
+    }
+
+    .btn-micro-copy:active {
+      transform: translateY(0);
+    }
+
+    .btn-micro-copy:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 1px;
     }
 
     /* Dossier Bottom Multi-Tab Navigation (SCR-05, 06, 07, 08 Complete) */
@@ -1033,10 +1199,20 @@
       gap: 7px;
       transition: all 150ms ease;
       margin-bottom: -2px;
+      outline: none;
     }
 
     .dossier-tab-btn:hover {
       color: var(--text-main);
+    }
+
+    .dossier-tab-btn:active {
+      transform: translateY(0);
+    }
+
+    .dossier-tab-btn:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 2px;
     }
 
     .dossier-tab-btn.active {
@@ -1093,12 +1269,18 @@
       max-height: 50px;
       box-sizing: border-box;
       transition: all 150ms ease;
+      outline: none;
     }
 
     .ticket-mini-card:hover {
       border-color: #CBD5E1;
       background: #F8FAFC;
       box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      transform: translateY(-1px);
+    }
+
+    .ticket-mini-card:active {
+      transform: translateY(0);
     }
 
     .ticket-empty-box {
@@ -1488,6 +1670,15 @@
       pointer-events: auto !important;
     }
 
+    #modalTambahPenghuni .modal-card,
+    #modalPerpanjang .modal-card,
+    #modalPindahKamar .modal-card,
+    #modalKelolaPenghuni .modal-card,
+    #modalIzinTamu .modal-card,
+    #modalKelolaKendaraan .modal-card,
+    #modalCutiSewa .modal-card,
+    #modalSuratPeringatan .modal-card,
+    #modalBiayaInsidental .modal-card,
     .modal-card {
       background: #FFFFFF !important;
       border-radius: 20px !important;
@@ -1500,7 +1691,6 @@
       overflow: hidden !important;
       box-sizing: border-box !important;
       margin: 0 auto !important;
-      padding: 0 !important;
     }
 
     #modalBroadcast .modal-card {
@@ -1519,9 +1709,9 @@
       display: flex !important;
       align-items: center !important;
       justify-content: space-between !important;
-      gap: 12px !important;
       flex-shrink: 0 !important;
       z-index: 10 !important;
+      box-sizing: border-box !important;
     }
 
     .modal-title {
@@ -1534,8 +1724,10 @@
 
     .modal-subtitle {
       font-size: 12px !important;
-      color: var(--text-muted) !important;
+      font-weight: 500 !important;
+      color: var(--text-secondary, #4B5563) !important;
       margin: 2px 0 0 0 !important;
+      line-height: 1.3 !important;
     }
 
     .btn-modal-close {
@@ -1556,15 +1748,20 @@
     .btn-modal-close:hover {
       background: #E2E8F0 !important;
       color: #0F172A !important;
+      transform: rotate(90deg);
+    }
+
+    .btn-modal-close:active {
+      transform: rotate(90deg) scale(0.92);
     }
 
     .modal-body-scrollable {
-      padding: 20px 24px 24px !important;
+      padding: 16px 24px 20px !important;
       overflow-y: auto !important;
       flex: 1 !important;
       display: flex !important;
       flex-direction: column !important;
-      gap: 16px !important;
+      gap: 14px !important;
       box-sizing: border-box !important;
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
@@ -1619,9 +1816,16 @@
       font-family: inherit;
       transition: all var(--transition-fast);
       box-sizing: border-box;
+      outline: none;
+    }
+
+    .btn-room-select-trigger:hover {
+      border-color: #CBD5E1;
+      background: #F8FAFC;
     }
 
     .btn-room-select-trigger:focus,
+    .btn-room-select-trigger:focus-visible,
     .btn-room-select-trigger.active {
       border-color: var(--brand-primary);
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
@@ -1659,6 +1863,18 @@
       padding: 0 10px;
       height: 36px;
       box-sizing: border-box;
+      transition: all var(--transition-fast);
+    }
+
+    .room-search-inner-box:hover {
+      border-color: #CBD5E1;
+      background: #FFFFFF;
+    }
+
+    .room-search-inner-box:focus-within {
+      background: #FFFFFF;
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
     }
 
     .room-search-inner-box input {
@@ -1701,12 +1917,16 @@
       border-color: #E2E8F0;
     }
 
+    .room-option-tile:active {
+      transform: scale(0.99);
+    }
+
     .room-option-tile.active {
       background: #FFF7ED;
       border-color: #FED7AA;
     }
 
-    /* Custom Estify Select Component */
+    /* Custom Estify Select Component (DESIGN.md Uniform 42px Height Lock) */
     .custom-select-wrap {
       position: relative;
       width: 100%;
@@ -1714,22 +1934,23 @@
 
     .custom-select-trigger {
       width: 100%;
-      height: 38px;
-      padding: 0 12px;
+      height: 42px !important;
+      padding: 0 14px !important;
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
-      border-radius: 10px;
+      border-radius: 12px !important;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
       cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 13px !important;
+      font-weight: 500;
       color: var(--text-main);
       transition: all var(--transition-fast);
       box-sizing: border-box;
       user-select: none;
+      outline: none;
     }
 
     .custom-select-trigger:hover {
@@ -1738,7 +1959,8 @@
     }
 
     .custom-select-trigger.active,
-    .custom-select-trigger:focus {
+    .custom-select-trigger:focus,
+    .custom-select-trigger:focus-visible {
       border-color: var(--brand-primary);
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
     }
@@ -1785,6 +2007,10 @@
       font-weight: 600;
     }
 
+    .custom-select-option-item:active {
+      transform: scale(0.98);
+    }
+
     .custom-select-option-item.selected {
       background: #FFF7ED;
       color: var(--brand-primary);
@@ -1806,13 +2032,13 @@
     }
 
     .modal-footer-pinned {
-      padding: 16px 24px !important;
+      padding: 14px 24px !important;
       border-top: 1px solid var(--border-subtle) !important;
       background: #FFFFFF !important;
       display: flex !important;
       align-items: center !important;
       justify-content: flex-end !important;
-      gap: 12px !important;
+      gap: 10px !important;
       flex-shrink: 0 !important;
       z-index: 10 !important;
       box-sizing: border-box !important;
@@ -1826,16 +2052,19 @@
     }
 
     .form-label-txt {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
-      color: var(--text-main);
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 4px;
       cursor: default !important;
       user-select: text;
     }
 
     .form-input-field {
       height: 42px;
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-control, #E2E8F0);
       border-radius: 12px;
       padding: 0 14px;
       font-size: 13px;
@@ -1846,6 +2075,10 @@
       transition: all var(--transition-fast);
       box-sizing: border-box;
       width: 100%;
+    }
+
+    .form-input-field:hover {
+      border-color: #CBD5E1;
     }
 
     .form-input-field:focus {
@@ -1859,84 +2092,231 @@
     }
 
     .btn-modal-cancel {
-      height: 38px;
-      padding: 0 18px;
-      border-radius: var(--radius-full);
-      background: #F1F5F9;
-      border: 1px solid var(--border-subtle);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
+      height: 40px !important;
+      padding: 0 18px !important;
+      border-radius: var(--radius-full) !important;
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-control, #E2E8F0) !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: var(--text-secondary, #4B5563) !important;
+      cursor: pointer !important;
+      transition: all var(--transition-fast) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+      outline: none;
+      text-decoration: none !important;
     }
 
     .btn-modal-cancel:hover {
-      background: #E2E8F0;
-      color: var(--text-main);
+      background: #F1F5F9 !important;
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .btn-modal-cancel:active {
+      transform: translateY(0) !important;
+      background: #E2E8F0 !important;
+    }
+
+    .btn-modal-cancel:focus-visible {
+      outline: 2px solid #94A3B8;
+      outline-offset: 1px;
     }
 
     .btn-modal-primary {
-      height: 38px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      background: var(--brand-primary);
-      color: #FFFFFF;
-      border: none;
-      border-radius: var(--radius-full);
-      padding: 0 20px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
-      transition: all var(--transition-fast);
-      white-space: nowrap;
-      box-sizing: border-box;
+      height: 40px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      background: var(--brand-primary) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      border-radius: var(--radius-full) !important;
+      padding: 0 22px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28) !important;
+      transition: all var(--transition-fast) !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      outline: none;
+      text-decoration: none !important;
     }
 
     .btn-modal-primary:hover {
-      background: var(--brand-primary-hover);
-      transform: translateY(-1px);
+      background: var(--brand-primary-hover) !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 6px 18px rgba(255, 122, 0, 0.38) !important;
+    }
+
+    .btn-modal-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-modal-primary:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.28) !important;
     }
 
     .btn-modal-primary.is-whatsapp {
-      background: #25D366;
-      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+      background: #25D366 !important;
+      box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3) !important;
     }
 
     .btn-modal-primary.is-whatsapp:hover {
-      background: #1EBE5D;
+      background: #1EBE5D !important;
+    }
+
+    .btn-modal-primary.is-whatsapp:active {
+      background: #16A34A !important;
+      transform: translateY(0);
     }
 
     .btn-modal-danger {
-      height: 38px;
+      height: 40px !important;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
-      background: #DC2626;
-      color: #FFFFFF;
+      background: #DC2626 !important;
+      color: #FFFFFF !important;
       border: none;
-      border-radius: var(--radius-full);
-      padding: 0 20px;
-      font-size: 13px;
-      font-weight: 600;
+      border-radius: var(--radius-full) !important;
+      padding: 0 20px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.28);
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.28) !important;
       transition: all var(--transition-fast);
       white-space: nowrap;
       box-sizing: border-box;
+      outline: none;
     }
 
     .btn-modal-danger:hover {
-      background: #B91C1C;
+      background: #B91C1C !important;
       transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(220, 38, 38, 0.38) !important;
+    }
+
+    .btn-modal-danger:active {
+      transform: translateY(0);
+    }
+
+    .btn-modal-danger:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.28) !important;
+    }
+
+    /* Vehicle Custom Dropdown (No Native Select, Pure SVG Icons) */
+    .custom-veh-select-wrap {
+      position: relative;
+      width: 120px;
+      flex-shrink: 0;
+    }
+
+    .btn-veh-select-trigger {
+      width: 100%;
+      height: 38px;
+      padding: 0 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-control, #E2E8F0);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main, #111827);
+      cursor: pointer;
+      outline: none;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    .btn-veh-select-trigger:hover {
+      border-color: #CBD5E1;
+      background: #F8FAFC;
+    }
+
+    .btn-veh-select-trigger:focus,
+    .btn-veh-select-trigger.active {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+
+    .veh-select-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 130px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      z-index: 70;
+      padding: 4px;
+      box-sizing: border-box;
+      flex-direction: column;
+      gap: 2px;
+      animation: rumaPopUp 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .veh-select-menu.open {
+      display: flex;
+    }
+
+    .veh-select-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      user-select: none;
+    }
+
+    .veh-select-item:hover {
+      background: #F3F4F6;
+      color: #111827;
+    }
+
+    .veh-select-item.selected {
+      background: #111111;
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .veh-select-item.selected:hover {
+      background: #222222;
+      color: #FFFFFF;
+    }
+
+    .btn-modal-close:hover {
+      background: #E2E8F0 !important;
+      color: #0F172A !important;
+      transform: rotate(90deg);
+    }
+
+    .btn-modal-close:active {
+      transform: rotate(90deg) scale(0.92);
+    }
+
+    .btn-modal-close:focus-visible {
+      outline: 2px solid var(--brand-primary);
     }
 
     .btn-micro-resend {
@@ -1955,12 +2335,17 @@
       transition: all var(--transition-fast);
       user-select: none;
       white-space: nowrap;
+      outline: none;
     }
     .btn-micro-resend:hover {
       background: #DCFCE7;
       border-color: #86EFAC;
       color: #15803D;
       transform: translateY(-1px);
+    }
+    .btn-micro-resend:active {
+      transform: translateY(0);
+      background: #BBF7D0;
     }
 
     .btn-micro-emergency {
@@ -1980,12 +2365,17 @@
       text-decoration: none;
       user-select: none;
       white-space: nowrap;
+      outline: none;
     }
     .btn-micro-emergency:hover {
       background: #FEE2E2;
       border-color: #FCA5A5;
       color: #B91C1C;
       transform: translateY(-1px);
+    }
+    .btn-micro-emergency:active {
+      transform: translateY(0);
+      background: #FECACA;
     }
 
     /* Cursor Hygiene & Interactive Affordance */
@@ -2011,6 +2401,101 @@
       user-select: none;
     }
 
+    /* Preset Chip Buttons (Estify Compliant · Zero Drift Hover) */
+    .preset-chip-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      box-sizing: border-box;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      color: #475569;
+      cursor: pointer;
+      transition: all 140ms ease;
+      outline: none;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .preset-chip-btn:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+      background: #FFFBF7;
+    }
+
+    .preset-chip-btn.active {
+      background: #FFF7ED !important;
+      border-color: var(--brand-primary) !important;
+      color: var(--brand-primary) !important;
+    }
+
+    /* Initial Payment Method Grid (Selaras WF-06) */
+    .initial-method-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .initial-method-box {
+      border: 1.5px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      background: #FFFFFF;
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      outline: none;
+    }
+
+    .initial-method-box:hover {
+      border-color: var(--brand-primary);
+      background: #FFFBF7;
+    }
+
+    .initial-method-box.active {
+      border-color: var(--brand-primary);
+      background: #FFF7ED;
+      box-shadow: 0 0 0 1px var(--brand-primary);
+    }
+
+    .initial-method-box i {
+      color: #64748B;
+      transition: color var(--transition-fast);
+    }
+
+    .initial-method-box.active i {
+      color: var(--brand-primary);
+    }
+
+    .initial-method-box .m-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .initial-method-box.active .m-title {
+      color: var(--brand-primary);
+    }
+
+    .initial-method-box .m-sub {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: #94A3B8;
+    }
+
+    .initial-method-box.active .m-sub {
+      color: #EA580C;
+    }
+
     /* Modal Form Sub-Sections & Upload Dropzone */
     .modal-section-divider {
       display: flex;
@@ -2022,12 +2507,12 @@
     }
 
     .modal-section-title {
-      font-size: 11px;
+      font-size: 13px;
       box-sizing: border-box;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text-main);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      text-transform: none;
+      letter-spacing: -0.1px;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -2044,11 +2529,22 @@
       gap: 12px;
       cursor: pointer;
       transition: all var(--transition-fast);
+      outline: none;
     }
 
     .file-upload-dropzone:hover {
       border-color: var(--brand-primary);
       background: #FFF7ED;
+    }
+
+    .file-upload-dropzone:active {
+      transform: scale(0.995);
+    }
+
+    .file-upload-dropzone:hover .btn-choose-file {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+      background: #FFFFFF;
     }
 
     .file-dropzone-left {
@@ -2100,6 +2596,7 @@
       font-weight: 600;
       color: var(--text-secondary);
       flex-shrink: 0;
+      transition: all var(--transition-fast);
     }
 
     .custom-select-grid {
@@ -2118,11 +2615,17 @@
       flex-direction: column;
       gap: 2px;
       transition: all var(--transition-fast);
+      outline: none;
     }
 
     .custom-select-tile:hover {
-      border-color: #D1D5DB;
+      border-color: #CBD5E1;
       background: #FAFAFB;
+      transform: translateY(-1px);
+    }
+
+    .custom-select-tile:active {
+      transform: translateY(0);
     }
 
     .custom-select-tile.active {
@@ -2148,31 +2651,46 @@
     .duration-pills-row {
       display: flex;
       gap: 6px;
+      width: 100%;
     }
 
     .duration-pill-opt {
       flex: 1;
-      padding: 8px;
+      height: 36px;
+      padding: 0 8px;
       text-align: center;
       border-radius: var(--radius-full);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
       border: 1px solid var(--border-subtle);
       background: #F8FAFC;
       color: var(--text-secondary);
       cursor: pointer !important;
       transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
       user-select: none;
       -webkit-user-select: none;
       white-space: nowrap;
+      outline: none;
+      box-sizing: border-box;
     }
 
     .duration-pill-opt:hover {
-      border-color: #FF7A00 !important;
-      color: #FF7A00 !important;
-      background: #FFF7ED !important;
+      border-color: #D1D5DB;
+      color: var(--text-main);
       cursor: pointer !important;
-      transform: translateY(-1px);
+    }
+
+    .duration-pill-opt:active {
+      transform: scale(0.98);
+    }
+
+    .duration-pill-opt:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 1px;
     }
 
     .duration-pill-opt.active {
@@ -2181,6 +2699,12 @@
       color: #FFFFFF !important;
       cursor: pointer !important;
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+    }
+
+    .duration-pill-opt.active:hover {
+      background: var(--dark-pill-hover, #222222) !important;
+      border-color: var(--dark-pill-hover, #222222) !important;
+      color: #FFFFFF !important;
     }
 
     .pill-target-btn,
@@ -2197,12 +2721,23 @@
       cursor: pointer;
       transition: all var(--transition-fast);
       user-select: none;
+      outline: none;
     }
     .pill-target-btn:hover,
     .pill-template-btn:hover {
       background: #FFFFFF;
-      border-color: #D1D5DB;
+      border-color: #CBD5E1;
       color: var(--text-main);
+      transform: translateY(-1px);
+    }
+    .pill-target-btn:active,
+    .pill-template-btn:active {
+      transform: translateY(0);
+    }
+    .pill-target-btn:focus-visible,
+    .pill-template-btn:focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 1px;
     }
     .pill-target-btn.active {
       background: var(--dark-pill);
@@ -2212,7 +2747,7 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       4. RESPONSIVE MEDIA QUERIES
+       4. RESPONSIVE MEDIA QUERIES (DESIGN.MD AA ERGONOMICS)
        ══════════════════════════════════════════════════════════════ */
     @media (max-width: 1100px) {
       .dashboard-wrapper {
@@ -2251,6 +2786,67 @@
       .btn-wa-direct, .btn-call-direct, .btn-pill-subtle, .btn-checkout-direct, .btn-renew-direct {
         flex: 1;
         justify-content: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      /* iOS Safari Anti-Zoom Guarantee (DESIGN.md Section 3.3) */
+      input, select, textarea, .form-input-field {
+        font-size: 16px !important;
+      }
+      .modal-card {
+        width: calc(100vw - 24px) !important;
+        max-width: 100% !important;
+        border-radius: 18px !important;
+      }
+      .modal-header-pinned,
+      .modal-footer-pinned {
+        padding: 14px 18px !important;
+      }
+      .modal-body-scrollable {
+        padding: 16px 18px 20px !important;
+      }
+    }
+
+    /* ==========================================================================
+       OPTIMASI CETAK & EKSPOR DOKUMEN SPK (@media print)
+       ========================================================================== */
+    @media print {
+      .top-canopy-overlay,
+      .topbar,
+      .master-list-card,
+      .modal-backdrop,
+      .profile-action-btns,
+      .dossier-tab-row,
+      #dossierTabTagihan,
+      #dossierTabTiket,
+      .btn-micro-brand,
+      .btn-micro-outline {
+        display: none !important;
+      }
+      body {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+      }
+      .dashboard-wrapper {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .workbench-layout-grid {
+        display: block !important;
+      }
+      .detail-dossier-card {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+      #dossierTabKontrak {
+        display: block !important;
+      }
+      .contract-sheet-wrap {
+        border: 1px solid #CBD5E1 !important;
+        box-shadow: none !important;
       }
     }
   </style>
@@ -2292,11 +2888,11 @@
           </div>
         </div>
 
-        <!-- Integrated Search Capsule -->
+        <!-- Integrated Search Capsule (SCR-05: tenantSearchInput / masterSearchInput) -->
         <div class="search-capsule-box">
           <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8; flex-shrink: 0;"></i>
-          <input type="text" id="tenantSearchInput" placeholder="Cari nama, kamar, atau telp..." oninput="handleSearch(this.value)">
-          <button type="button" id="clearSearchBtn" class="btn-clear-search" onclick="clearSearch()" title="Hapus pencarian">
+          <input type="text" id="tenantSearchInput" data-alias="masterSearchInput" placeholder="Cari nama, kamar, atau telp..." oninput="handleSearch(this.value)">
+          <button type="button" id="clearSearchBtn" data-alias="masterSearchClearBtn" class="btn-clear-search" onclick="clearSearch()" title="Hapus pencarian">
             <i data-lucide="x" style="width: 11px; height: 11px;"></i>
           </button>
         </div>
@@ -2373,7 +2969,7 @@
             <div class="action-btn-cluster">
               <button type="button" class="btn-checkout-direct" onclick="openPerpanjangModal('checkout')" title="Pengakhiran Sewa / Check-Out Penghuni (SOP Resmi)">
                 <i data-lucide="user-x" style="width: 13px; height: 13px;"></i>
-                <span>Akhiri Sewa / Usir</span>
+                <span>Selesai Kontrak (Check-Out)</span>
               </button>
             </div>
           </div>
@@ -2492,7 +3088,7 @@
                 <i data-lucide="contact" style="width: 14px; height: 14px;" class="quad-icon"></i>
                 <span>Identitas & Penghuni Kamar</span>
               </div>
-              <span id="dOccupantsCountBadge" class="status-badge badge-brand" style="font-size: 11px;">3 Penghuni Aktif</span>
+              <span id="dOccupantsCountBadge" class="status-badge badge-brand" style="font-size: 11px;">1 Penghuni Aktif</span>
             </div>
 
             <div class="quad-kv-list">
@@ -2539,7 +3135,7 @@
               <div style="margin-top: 10px; padding: 10px 12px; background: #F8FAFC; border: 1px solid var(--border-subtle); border-radius: 10px;">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
                   <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Penghuni Terdaftar di Kamar:</span>
-                  <span id="dOccupantSummaryBadge" class="status-badge badge-dark" style="font-size: 10px;">Sekamar Bertiga (3 Org)</span>
+                  <span id="dOccupantSummaryBadge" class="status-badge badge-dark" style="font-size: 10px;">1 Orang (Sendiri)</span>
                 </div>
                 <div id="dOccupantsListContainer" style="display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px;">
                   <!-- Rendered dynamically -->
@@ -2547,7 +3143,7 @@
                 <div style="display: flex; gap: 6px;">
                   <button type="button" class="btn-micro-brand" onclick="openKelolaPenghuniModal()" style="flex: 1; height: 32px; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 6px;" title="Kelola Rekan Sekamar (Keluarkan / Tambah Penghuni)">
                     <i data-lucide="user-cog" style="width: 13px; height: 13px;"></i>
-                    <span>Kelola Rekan (<span id="dOccupantsCount">3 Org</span>)</span>
+                    <span>Kelola Rekan (<span id="dOccupantsCount">1 Org</span>)</span>
                   </button>
                   <button type="button" class="btn-micro-outline" onclick="openIzinTamuModal()" style="height: 32px; padding: 0 10px; font-size: 11px; background: #FFFFFF; border-color: var(--border-subtle); color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 5px;" title="Catat Izin Tamu Menginap Sementara">
                     <i data-lucide="user-plus" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
@@ -2704,7 +3300,7 @@
                   <span>100% Tertib (3 Bulan)</span>
                 </span>
               </div>
-              <a href="WF-05-tagihan.html" class="btn-micro-outline" title="Buka buku tagihan lengkap di WF-05">
+              <a href="WF-05-tagihan.html" id="btnHeaderLedger" class="btn-micro-outline" title="Buka buku tagihan lengkap di WF-05">
                 <span>Buku Tagihan (WF-05)</span>
                 <i data-lucide="arrow-right" style="width: 12px; height: 12px;"></i>
               </a>
@@ -2771,7 +3367,7 @@
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                   <button type="button" class="btn-micro-outline" onclick="openPerpanjangModal('checkout')" style="color: #E11D48; border-color: #FECDD3; background: #FFF1F2;">
                     <i data-lucide="user-x" style="width: 12px; height: 12px;"></i>
-                    <span>Akhiri Sewa / Usir</span>
+                    <span>Selesai Kontrak (Check-Out)</span>
                   </button>
                   <button type="button" class="btn-micro-outline" onclick="RumaUI.showToast('Mengunduh Salinan Dokumen SPK Kontrak PDF...', 'info')">
                     <i data-lucide="download" style="width: 12px; height: 12px;"></i>
@@ -2993,7 +3589,8 @@
         </button>
       </div>
 
-      <div class="modal-body-scrollable">
+      <form id="formTambahPenghuni" onsubmit="event.preventDefault(); saveTambahPenghuni();" style="display: flex; flex-direction: column; flex: 1; min-height: 0; margin: 0; overflow: hidden;">
+        <div class="modal-body-scrollable">
         
         <!-- BAGIAN 1: DATA IDENTITAS & PRIBADI PENYEWA -->
         <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
@@ -3019,7 +3616,17 @@
           </div>
           <div class="form-group-item">
             <label class="form-label-txt">Kota Domisili Asal *</label>
-            <input type="text" id="regCity" class="form-input-field" placeholder="Contoh: Bandung, Jawa Barat">
+            <div class="custom-room-select-wrap" id="wrapCitySelect">
+              <div style="position: relative;">
+                <i data-lucide="map-pin" style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: #94A3B8; pointer-events: none;"></i>
+                <input type="text" id="regCity" class="form-input-field" placeholder="Pilih kota atau ketik..." style="padding-left: 36px; padding-right: 14px;" onfocus="openCityDropdown()" oninput="filterCityDropdown(this.value)" autocomplete="off">
+              </div>
+              <div class="custom-room-dropdown-popover" id="cityDropdownPopover" style="max-height: 200px; overflow-y: auto;">
+                <div class="room-options-scroll" id="cityOptionsList">
+                  <!-- Rendered dynamically by filterCityDropdown -->
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -3056,6 +3663,23 @@
               <!-- Rendered dynamically by selectOccupancy -->
             </div>
 
+            <!-- Biaya Tambahan Rekan Sekamar / Surcharge (Sinkron dengan WF-03 SOP Hunian) -->
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div>
+                <span class="form-label-txt" style="font-size: 11.5px;">Biaya Tambahan Rekan Sekamar (per Bulan):</span>
+                <span style="font-size: 10.5px; color: var(--text-muted); display: block;">Biaya operasional air/listrik rekan tambahan</span>
+              </div>
+              <div style="position: relative; width: 140px;">
+                <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: #64748B;">Rp</span>
+                <input type="text" id="regExtraOccFee" class="form-input-field" value="0" placeholder="0" style="height: 32px; font-size: 11.5px; padding-left: 28px; padding-right: 8px; font-weight: 600;" oninput="handleExtraOccFeeInput(this)">
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+              <button type="button" class="btn-micro-outline" onclick="setExtraOccFee(0)" style="height: 22px; font-size: 10px; padding: 0 6px; border-radius: 6px;">Gratis / Termasuk (Rp 0)</button>
+              <button type="button" class="btn-micro-outline" onclick="setExtraOccFee(200000)" style="height: 22px; font-size: 10px; padding: 0 6px; border-radius: 6px;">+ Rp 200rb/bln</button>
+              <button type="button" class="btn-micro-outline" onclick="setExtraOccFee(300000)" style="height: 22px; font-size: 10px; padding: 0 6px; border-radius: 6px;">+ Rp 300rb/bln</button>
+            </div>
+
             <span style="font-size: 11px; color: var(--text-muted); margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; line-height: 1.4;">
               <i data-lucide="info" style="width: 13px; height: 13px; flex-shrink: 0; color: var(--brand-primary);"></i>
               <em>Catatan: Kontrak sewa SPK dan tagihan bulanan tetap ditujukan ke <strong>Penyewa Utama (PIC)</strong> di atas.</em>
@@ -3063,25 +3687,26 @@
           </div>
         </div>
 
-        <!-- Kendaraan Pribadi (Izin Parkir) - Pills Estify Sesuai Design System -->
+        <!-- Kendaraan Pribadi & Izin Parkir (Mendukung Multi-Kendaraan & Izin Parkir) -->
         <div class="form-group-item">
-          <label class="form-label-txt">Kendaraan Pribadi & Izin Parkir (Opsional)</label>
-          <div class="duration-pills-row" id="wrapVehPills" style="margin-bottom: 8px;">
-            <button type="button" class="duration-pill-opt active" id="btnVehMotor" onclick="selectVehicleType(this, 'Motor')">
-              <i data-lucide="bike" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Motor
-            </button>
-            <button type="button" class="duration-pill-opt" id="btnVehMobil" onclick="selectVehicleType(this, 'Mobil')">
-              <i data-lucide="car" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Mobil
-            </button>
-            <button type="button" class="duration-pill-opt" id="btnVehSepeda" onclick="selectVehicleType(this, 'Sepeda')">
-              <i data-lucide="footprints" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Sepeda
-            </button>
-            <button type="button" class="duration-pill-opt" id="btnVehNone" onclick="selectVehicleType(this, 'Tanpa Kendaraan')">
-              <i data-lucide="ban" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px;"></i>Tidak Ada
-            </button>
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label-txt">Kendaraan Pribadi &amp; Izin Parkir (Opsional)</label>
+            <span id="regVehicleCountBadge" class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 7px;">1 Kendaraan</span>
           </div>
-          <div id="wrapVehiclePlate">
-            <input type="text" id="regVehicle" class="form-input-field" placeholder="Nomor Polisi & Merk (Contoh: Honda Vario - B 1234 XYZ)">
+
+          <div id="regVehiclesContainer" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Rendered dynamically by renderRegVehicles() -->
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px;">
+            <button type="button" class="btn-micro-outline" id="btnAddVehicleRow" onclick="addVehicleRow()" style="height: 30px; font-size: 11px; display: inline-flex; align-items: center; gap: 5px;" title="Tambah kendaraan penyewa lain (motor/mobil tambahan)">
+              <i data-lucide="plus" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
+              <span>+ Tambah Kendaraan</span>
+            </button>
+            <button type="button" class="btn-micro-outline" id="btnToggleNoVehicle" onclick="toggleNoVehicle()" style="height: 30px; font-size: 11px; background: #F8FAFC; border-color: #E2E8F0; color: #64748B;">
+              <i data-lucide="ban" style="width: 12px; height: 12px;"></i>
+              <span id="toggleNoVehicleTxt">Tanpa Kendaraan</span>
+            </button>
           </div>
         </div>
 
@@ -3180,38 +3805,37 @@
             </button>
           </div>
 
-          <!-- Opsi Promo Pembayaran Tahunan (Muncul jika Bayar di Muka & Durasi 12 Bulan) -->
-          <div id="wrapUpfrontDiscountRow" style="display: flex; flex-direction: column; gap: 6px; background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 10px 12px; margin-top: 4px;">
+          <!-- Opsi Promo Pembayaran Tahunan (Format Rapi Seragam Uang Jaminan Deposit) -->
+          <div class="form-group-item" id="wrapUpfrontDiscountRow" style="margin-top: 4px;">
             <div style="display: flex; align-items: center; justify-content: space-between;">
-              <span style="font-size: 11px; font-weight: 700; color: #C2410C; display: flex; align-items: center; gap: 5px;">
-                <i data-lucide="tag" style="width: 12px; height: 12px;"></i>
-                Insentif Pembayaran Tahunan di Muka:
-              </span>
-              <span id="regDiscountBadge" class="status-badge badge-warning" style="font-size: 10.5px;">Gratis 1 Bulan</span>
+              <label class="form-label-txt">Insentif Pembayaran Tahunan di Muka</label>
+              <span id="regDiscountBadge" class="status-badge badge-warning" style="font-size: 10.5px; padding: 2px 7px;">Gratis 1 Bulan</span>
             </div>
-            <div class="duration-pills-row" id="wrapDiscountPills">
-              <button type="button" class="duration-pill-opt active" id="btnDiscFree1" onclick="setRegAnnualDiscount('free1')" style="font-size: 11px; padding: 4px 8px;">
-                Promo 1 Bulan Gratis (Bayar 11 Bln)
-              </button>
-              <button type="button" class="duration-pill-opt" id="btnDiscNone" onclick="setRegAnnualDiscount('none')" style="font-size: 11px; padding: 4px 8px;">
-                Tarif Normal (12 Bln Penuh)
-              </button>
-              <button type="button" class="duration-pill-opt" id="btnDiscCustom" onclick="setRegAnnualDiscount('custom')" style="font-size: 11px; padding: 4px 8px;">
-                Potongan Khusus Rp...
-              </button>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; font-weight: 600; color: #64748B;">Rp</span>
+              <input type="text" id="regCustomDiscount" class="form-input-field" value="1.100.000" placeholder="0 jika tanpa potongan insentif" style="padding-left: 36px; font-weight: 600;" oninput="handleCustomDiscountInput(this)">
             </div>
-            <div id="wrapCustomDiscountInput" style="display: none; margin-top: 4px;">
-              <div style="position: relative;">
-                <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: #64748B;">Diskon Rp</span>
-                <input type="text" id="regCustomDiscount" class="form-input-field" placeholder="Contoh: 500.000" style="padding-left: 68px; height: 32px; font-size: 11px;" oninput="updateRegProrataCalc()">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 5px; font-size: 11px;">
+              <div style="color: var(--text-muted); line-height: 1.35; max-width: 250px; flex: 1; min-width: 0;">
+                <span>Default promo tahunan:</span><br>
+                <span style="font-size: 10px; color: #94A3B8;">Potongan 1 bln (Bayar 11 bln)</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; white-space: nowrap; padding-top: 1px;">
+                <button type="button" class="preset-chip-btn active" id="btnDiscountFree1" onclick="applyDiscountPreset('free1')" title="Terapkan promo gratis 1 bulan">
+                  1 Bulan Gratis
+                </button>
+                <button type="button" class="preset-chip-btn" id="btnDiscountNone" onclick="applyDiscountPreset('none')" title="Tanpa potongan diskon">
+                  Tanpa Diskon
+                </button>
               </div>
             </div>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: end;">
-          <div class="form-group-item">
-            <label class="form-label-txt">Mulai Menempati *</label>
+        <!-- Periode Masa Sewa Kamar: Mulai & Selesai Berdampingan Rapi -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 6px;">
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-label-txt">Mulai Menempati (Check-In) *</label>
             <div class="ruma-datepicker-wrap drop-up" id="wrapRegStartDate">
               <input type="hidden" id="regStartDate" value="2026-11-01">
               <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapRegStartDate', 'regStartDate')">
@@ -3223,25 +3847,52 @@
               </div>
             </div>
           </div>
-          <div class="form-group-item">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
-              <label class="form-label-txt">Uang Jaminan Deposit *</label>
-            </div>
-            <div style="position: relative;">
-              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; font-weight: 600; color: #64748B;">Rp</span>
-              <input type="text" id="regDeposit" class="form-input-field" value="500.000" placeholder="Contoh: 1.000.000 (0 jika tanpa jaminan)" style="padding-left: 36px; font-weight: 600;" oninput="updateRegProrataCalc()">
+          <div class="form-group-item" style="margin-bottom: 0;">
+            <label class="form-label-txt">Selesai Kontrak (Check-Out)</label>
+            <div style="height: 38px; background: #F8FAFC; border: 1px solid var(--border-control, #E2E8F0); border-radius: 10px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; box-sizing: border-box;">
+              <div style="display: flex; align-items: center; gap: 7px; min-width: 0;">
+                <i data-lucide="calendar-check" style="width: 14px; height: 14px; color: var(--brand-primary); flex-shrink: 0;"></i>
+                <span id="lblRegEndDateBox" style="font-size: 12px; font-weight: 600; color: var(--text-main); white-space: nowrap;">31 Oktober 2027</span>
+              </div>
+              <span class="status-badge badge-dark" id="lblRegEndDurationBadge" style="font-size: 10px; padding: 1px 7px; flex-shrink: 0;">12 Bulan</span>
             </div>
           </div>
         </div>
 
-        <!-- KALKULASI TAGIHAN PERTAMA OTOMATIS (PRORATA & DEPOSIT TERINTEGRASI WF-05) -->
-        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; margin-top: 4px;" id="regProrataCard">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-            <div style="font-size: 12px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
-              <i data-lucide="receipt" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
+        <!-- Uang Jaminan Deposit (Perhitungan 50% WF-03 & Button Preset Bersih) -->
+        <div class="form-group-item" style="margin-top: 8px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label-txt">Uang Jaminan Deposit *</label>
+            <span class="status-badge badge-green" style="font-size: 10.5px; padding: 2px 8px;">Dana Escrow Aman</span>
+          </div>
+          <div style="position: relative;">
+            <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; font-weight: 600; color: #64748B;">Rp</span>
+            <input type="text" id="regDeposit" class="form-input-field" value="550.000" placeholder="0 jika tanpa deposit jaminan" style="padding-left: 36px; font-weight: 600;" oninput="updateRegProrataCalc()">
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 5px;">
+            <span style="font-size: 11px; color: var(--text-muted);">Preset jaminan:</span>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button type="button" class="preset-chip-btn active" id="btnDepositPreset50" onclick="applyDepositPreset('default')" title="50% harga sewa (Standar WF-03)">
+                50% Sewa (<span id="txtDepositDefaultVal">Rp 550rb</span>)
+              </button>
+              <button type="button" class="preset-chip-btn" id="btnDepositPreset1M" onclick="applyDepositPreset('1month')" title="1 bulan sewa penuh">
+                1 Bln Penuh (<span id="txtDeposit1MonthVal">Rp 1,1jt</span>)
+              </button>
+              <button type="button" class="preset-chip-btn" id="btnDepositPresetZero" onclick="applyDepositPreset('zero')" title="Bebas deposit untuk promo">
+                Bebas Deposit (Rp 0)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KALKULASI TAGIHAN PERTAMA OTOMATIS (PRORATA, DEPOSIT & PARKIR TERINTEGRASI WF-05) -->
+        <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; margin-top: 4px;" id="regProrataCard">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+            <div style="font-size: 12.5px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="receipt" style="width: 15px; height: 15px; color: var(--brand-primary);"></i>
               <span>Kalkulasi Otomatis Tagihan Pertama</span>
             </div>
-            <span id="regProrataModeBadge" class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 7px;">Lunas 12 Bln di Muka</span>
+            <span id="regProrataModeBadge" class="status-badge badge-brand" style="font-size: 10.5px; padding: 2px 8px;">Lunas 12 Bln di Muka</span>
           </div>
 
           <!-- Opsi Metode Hitung Siklus Pertama (Hanya tampil saat Bayar Bulanan) -->
@@ -3254,30 +3905,112 @@
             </button>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px;">
-            <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
-              <span id="regFirstRentLabel">Sewa Penuh 12 Bulan di Muka:</span>
-              <span id="regFirstRentVal" style="font-weight: 600; color: var(--text-main);">Rp 12.100.000</span>
+          <div style="display: flex; flex-direction: column; gap: 7px; font-size: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary);">
+              <span id="regFirstRentLabel">Sewa Penuh 12 Bulan (Termasuk Diskon):</span>
+              <span id="regFirstRentVal" style="font-weight: 600; color: var(--text-main); white-space: nowrap;">Rp 12.100.000</span>
             </div>
-            <div id="regDiscountSummaryRow" style="display: flex; justify-content: space-between; color: #C2410C;">
+            <div id="regDiscountSummaryRow" style="display: flex; justify-content: space-between; align-items: center; color: #C2410C;">
               <span>Potongan Promo Bayar Tahunan:</span>
-              <span id="regDiscountSummaryVal" style="font-weight: 700; color: #EA580C;">-Rp 1.100.000 (1 Bln Gratis)</span>
+              <span id="regDiscountSummaryVal" style="font-weight: 700; color: #EA580C; white-space: nowrap;">-Rp 1.100.000 (Promo 1 Bln Gratis)</span>
             </div>
-            <div style="display: flex; justify-content: space-between; color: var(--text-secondary);">
+            <div id="regParkingSummaryRow" style="display: none; justify-content: space-between; align-items: center; color: var(--text-secondary);">
+              <span id="regParkingSummaryLabel">Biaya Izin Parkir Kendaraan:</span>
+              <span id="regParkingSummaryVal" style="font-weight: 600; color: var(--text-main); white-space: nowrap;">Rp 0</span>
+            </div>
+            <div id="regExtraOccSummaryRow" style="display: none; justify-content: space-between; align-items: center; color: var(--text-secondary);">
+              <span id="regExtraOccSummaryLabel">Biaya Rekan Sekamar (Surcharge):</span>
+              <span id="regExtraOccSummaryVal" style="font-weight: 600; color: var(--text-main); white-space: nowrap;">Rp 0</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary);">
               <span>Uang Jaminan Deposit (Escrow):</span>
-              <span id="regFirstDepositVal" style="font-weight: 600; color: #16A34A;">Rp 500.000</span>
+              <span id="regFirstDepositVal" style="font-weight: 600; color: #16A34A; white-space: nowrap;">Rp 550.000</span>
             </div>
-            <div style="border-top: 1px dashed #CBD5E1; padding-top: 6px; margin-top: 2px; display: flex; justify-content: space-between; align-items: baseline;">
-              <div>
-                <span style="font-weight: 700; color: var(--text-main);">Total Tagihan Awal Pertama:</span>
-                <span style="font-size: 11px; color: var(--text-muted); display: block;" id="regNextDueDesc">Bebas tagihan sewa bulanan hingga 31 Oktober 2027 (Kontrak 1 Tahun Lunas).</span>
+
+            <!-- Total Bar: Rapi, Tegas, Anti-Wrap -->
+            <div style="border-top: 1.5px solid #E2E8F0; padding-top: 10px; margin-top: 4px; display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 13px; font-weight: 700; color: var(--text-main);">Total Tagihan Awal Pertama:</div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.35;" id="regNextDueDesc">Bebas tagihan sewa bulanan hingga 31 Oktober 2027 (Kontrak 1 Tahun Lunas).</div>
               </div>
-              <span id="regTotalFirstBillVal" style="font-size: 15px; font-weight: 700; color: var(--brand-primary);">Rp 12.600.000</span>
+              <div style="flex-shrink: 0; text-align: right;">
+                <span id="regTotalFirstBillVal" style="font-size: 18px; font-weight: 700; color: var(--brand-primary); letter-spacing: -0.3px; white-space: nowrap !important; display: block;">Rp 12.650.000</span>
+              </div>
             </div>
           </div>
-          <div style="font-size: 11px; color: #0284C7; background: #F0F9FF; border: 1px solid #BAE6FD; padding: 6px 10px; border-radius: 8px; margin-top: 8px; display: flex; align-items: center; gap: 6px;">
-            <i data-lucide="zap" style="width: 12px; height: 12px; flex-shrink: 0;"></i>
-            <span>Tagihan awal ini otomatis terbit ke <strong>Buku Tagihan (WF-05)</strong> dengan status <em>Belum Lunas</em>.</span>
+
+          <!-- Opsi Pembayaran Pertama (Role-Aware: Pemilik Bebas Pilih Kanal WF-06 / Staf Kas Meja) -->
+          <div id="cardInitialPayment" style="background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; margin-top: 10px; transition: all 0.2s ease;">
+            <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; user-select: none; margin: 0;">
+              <input type="checkbox" id="regInitialPaidCheckbox" onchange="toggleInitialPaidStatus(this.checked)" style="width: 16px; height: 16px; margin-top: 2px; accent-color: #16A34A; cursor: pointer; border-radius: 4px; flex-shrink: 0;">
+              <div style="flex: 1; min-width: 0;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                  <span style="font-size: 12px; font-weight: 700; color: var(--text-main);" id="lblInitialPaidTitle">Tandai Pembayaran Pertama Langsung Lunas</span>
+                  <span id="badgeInitialPaidStatus" class="status-badge badge-green" style="display: none; font-size: 9.5px; padding: 1px 7px;">Lunas Terverifikasi</span>
+                </div>
+                <span style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 2px; line-height: 1.4;" id="lblInitialPaidDesc">
+                  Penyewa sudah melunasi sewa awal &amp; deposit. Pengelola memverifikasi mutasi kas/bank secara manual tanpa biaya gateway pihak ketiga.
+                </span>
+              </div>
+            </label>
+            <input type="hidden" id="regPaidMethod" value="BCA Transfer">
+
+            <!-- Kanal Selector Grid Khusus Owner (Selaras WF-06) -->
+            <div id="wrapOwnerPayChannels" style="display: none; margin-top: 12px; border-top: 1px dashed #E2E8F0; padding-top: 10px;">
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px;">
+                <div style="flex: 1; min-width: 0; max-width: 330px;">
+                  <label style="font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 5px; margin: 0; line-height: 1.3;">
+                    <i data-lucide="wallet-cards" style="width: 13px; height: 13px; color: var(--brand-primary); flex-shrink: 0;"></i>
+                    <span>Kanal Kas / Bank Penerima *</span>
+                  </label>
+                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px; padding-left: 18px; line-height: 1.3;">
+                    Verifikasi manual mutasi oleh Pemilik (tanpa gateway)
+                  </div>
+                </div>
+                <span id="activeChannelBadge" style="font-size: 10px; font-weight: 600; color: var(--brand-primary); background: #FFF7ED; border: 1px solid #FFEDD5; padding: 2px 8px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 1px;">BCA Transfer</span>
+              </div>
+
+              <div class="initial-method-grid" id="initialMethodGrid">
+                <button type="button" class="initial-method-box active" onclick="selectInitialMethod('BCA Transfer', this)" title="Transfer Rekening BCA">
+                  <i data-lucide="credit-card" style="width: 15px; height: 15px;"></i>
+                  <span class="m-title">BCA</span>
+                  <span class="m-sub">8820-***-33</span>
+                </button>
+                <button type="button" class="initial-method-box" onclick="selectInitialMethod('Bank Mandiri', this)" title="Transfer Rekening Mandiri">
+                  <i data-lucide="landmark" style="width: 15px; height: 15px;"></i>
+                  <span class="m-title">Mandiri</span>
+                  <span class="m-sub">131-***-09</span>
+                </button>
+                <button type="button" class="initial-method-box" onclick="selectInitialMethod('QRIS Instant', this)" title="QRIS Merchant">
+                  <i data-lucide="qr-code" style="width: 15px; height: 15px;"></i>
+                  <span class="m-title">QRIS</span>
+                  <span class="m-sub">Merchant</span>
+                </button>
+                <button type="button" class="initial-method-box" onclick="selectInitialMethod('Tunai / Cash', this)" title="Kas Fisik Tunai">
+                  <i data-lucide="banknote" style="width: 15px; height: 15px;"></i>
+                  <span class="m-title">Tunai</span>
+                  <span class="m-sub">Kas Kost</span>
+                </button>
+              </div>
+
+              <div style="margin-top: 8px; font-size: 10.5px; color: #15803D; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="check-circle" style="width: 13px; height: 13px; color: #16A34A; flex-shrink: 0;"></i>
+                <span id="initialMethodNote">Kuitansi resmi langsung diterbitkan &amp; tercatat di mutasi kas/bank <strong>BCA Transfer</strong>.</span>
+              </div>
+            </div>
+
+            <!-- Staf Note (Khusus Role Staf) -->
+            <div id="wrapStaffCashNote" style="display: none; margin-top: 10px; border-top: 1px dashed #E2E8F0; padding-top: 8px; font-size: 11px; color: #15803D; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 6px 10px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="banknote" style="width: 13px; height: 13px; color: #16A34A; flex-shrink: 0;"></i>
+                <span>Uang tunai fisik diterima di meja staf dan otomatis masuk daftar setoran kas harian ke Pemilik.</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 11px; color: #0284C7; background: #F0F9FF; border: 1px solid #BAE6FD; padding: 7px 12px; border-radius: 10px; margin-top: 8px; display: flex; align-items: center; gap: 8px;" id="regBillNoticeBox">
+            <i data-lucide="info" style="width: 14px; height: 14px; flex-shrink: 0;"></i>
+            <span id="regBillNoticeTxt">Jika belum lunas atau transfer belum diverifikasi, tagihan terbit ke <strong>Buku Tagihan (WF-05)</strong> berstatus <em>Belum Lunas</em>. Kunci kamar tetap dapat diserahkan ke penyewa.</span>
           </div>
         </div>
 
@@ -3318,11 +4051,12 @@
 
       <div class="modal-footer-pinned">
         <button type="button" class="btn-modal-cancel" onclick="closeTambahPenghuniModal()">Batal</button>
-        <button type="button" class="btn-modal-primary" onclick="saveTambahPenghuni()">
+        <button type="submit" class="btn-modal-primary">
           <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
           <span>Simpan & Daftarkan Penghuni</span>
         </button>
       </div>
+      </form>
     </div>
   </div>
 
@@ -3362,14 +4096,14 @@
           </button>
           <button type="button" class="perpanjang-mode-btn" id="btnModeCheckout" onclick="setPerpanjangMode('checkout')">
             <i data-lucide="user-x" style="width: 13px; height: 13px;"></i>
-            <span>Akhiri Sewa / Check-Out</span>
+            <span>Selesai Kontrak (Check-Out)</span>
           </button>
         </div>
 
         <!-- FORM A: MODE PERPANJANG SEWA -->
-        <div id="sectionModeRenew" style="display: flex; flex-direction: column; gap: 12px;">
+        <div id="sectionModeRenew" style="display: flex; flex-direction: column; gap: 14px;">
           <!-- BAGIAN 1: DURASI & PERIODE KONTRAK BARU -->
-          <div class="modal-section-title">
+          <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
             <i data-lucide="calendar" style="width: 13px; height: 13px; color: #FF7A00;"></i>
             <span>1. Durasi & Periode Kontrak Baru</span>
           </div>
@@ -3386,7 +4120,7 @@
           </div>
 
           <!-- Periode Baru & Tarif Sewa -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt">Tanggal Mulai Periode Baru *</label>
               <input type="text" id="renewStartDate" class="form-input-field" value="01/03/2027" readonly style="background: #F8FAFC; color: #64748B;">
@@ -3398,21 +4132,26 @@
           </div>
 
           <!-- BAGIAN 2: TARIF SEWA & DEPOSIT JAMINAN -->
-          <div class="modal-section-title" style="padding-top: 8px; border-top: 1px solid var(--border-subtle); margin-top: 2px;">
-            <i data-lucide="wallet" style="width: 13px; height: 13px; color: #FF7A00;"></i>
-            <span>2. Penyesuaian Tarif Sewa & Deposit Jaminan</span>
+          <div class="modal-section-divider">
+            <div class="modal-section-title">
+              <i data-lucide="wallet" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+              <span>2. Penyesuaian Tarif Sewa & Deposit Jaminan</span>
+            </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt">Tarif Sewa Baru per Bulan (Rp) *</label>
-              <input type="text" id="renewPriceInput" class="form-input-field" value="1.200.000" oninput="calculateRenewTotal()">
+              <input type="text" id="renewPriceInput" class="form-input-field" value="1.200.000" maxlength="15" placeholder="Contoh: 1.200.000" oninput="handleRenewPriceInput(this)">
             </div>
             <div class="form-group-item">
               <label class="form-label-txt">Penanganan Uang Deposit</label>
-              <div style="height: 42px; display: flex; align-items: center; padding: 0 12px; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 12px; font-size: 11px; font-weight: 600; color: #047857; gap: 6px; box-sizing: border-box;">
-                <i data-lucide="shield-check" style="width: 15px; height: 15px; flex-shrink: 0;"></i>
-                <span>Rollover Deposit Aktif (Rp 1.000.000)</span>
+              <div style="height: 42px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 12px; font-size: 11.5px; font-weight: 600; color: #047857; box-sizing: border-box;" title="Saldo deposit lama otomatis diteruskan tanpa perlu penagihan ulang">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <i data-lucide="shield-check" style="width: 15px; height: 15px; flex-shrink: 0;"></i>
+                  <span>Rollover Deposit</span>
+                </div>
+                <span id="renewRolloverDepositBadge" class="status-badge badge-success" style="font-size: 11px; padding: 1px 7px;">Rp 1.000.000</span>
               </div>
             </div>
           </div>
@@ -3434,7 +4173,7 @@
         </div>
 
         <!-- FORM B: MODE CHECK-OUT (TERMINASI SEWA) -->
-        <div id="sectionModeCheckout" style="display: none; flex-direction: column; gap: 12px;">
+        <div id="sectionModeCheckout" style="display: none; flex-direction: column; gap: 14px;">
           <!-- Compact Alert Notice -->
           <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 10px; padding: 8px 12px; display: flex; align-items: center; gap: 8px;">
             <i data-lucide="alert-triangle" style="width: 15px; height: 15px; color: #DC2626; flex-shrink: 0;"></i>
@@ -3444,7 +4183,7 @@
           </div>
 
           <!-- BAGIAN 1: JADWAL PENGAKHIRAN & REKONSILIASI DEPOSIT (SOP SECTION 6.4) -->
-          <div class="modal-section-title">
+          <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
             <i data-lucide="calendar-x" style="width: 13px; height: 13px; color: #DC2626;"></i>
             <span>1. Jadwal Pengakhiran & Rekonsiliasi Dana Jaminan (Escrow)</span>
           </div>
@@ -3487,7 +4226,7 @@
               <span style="color: #DC2626; font-size: 12px; font-weight: 500;">Potongan Biaya (Tunggakan/Kerusakan):</span>
               <div style="display: flex; align-items: center; gap: 4px;">
                 <span style="font-size: 12px; font-weight: 600; color: var(--text-muted);">- Rp</span>
-                <input type="text" id="checkoutDeductInput" value="0" class="form-input-field" style="height: 34px; width: 140px; text-align: right; font-weight: 700; color: #DC2626;" oninput="updateCheckoutRefundCalc()">
+                <input type="text" id="checkoutDeductInput" value="0" class="form-input-field" style="height: 34px; width: 140px; text-align: right; font-weight: 700; color: #DC2626;" oninput="handleCheckoutDeductInput(this)">
               </div>
             </div>
             <div style="border-top: 1px dashed var(--border-subtle); padding-top: 6px; display: flex; justify-content: space-between; align-items: center;">
@@ -3500,20 +4239,24 @@
           </div>
 
           <!-- BAGIAN 2: REKENING PENCAIRAN DEPOSIT -->
-          <div class="modal-section-title" style="padding-top: 8px; border-top: 1px solid var(--border-subtle); margin-top: 2px;">
-            <i data-lucide="credit-card" style="width: 13px; height: 13px; color: #DC2626;"></i>
-            <span>2. Rekening Tujuan Pencairan Refund Deposit</span>
+          <div class="modal-section-divider">
+            <div class="modal-section-title">
+              <i data-lucide="credit-card" style="width: 13px; height: 13px; color: #DC2626;"></i>
+              <span>2. Rekening Tujuan Pencairan Refund Deposit</span>
+            </div>
           </div>
 
           <div class="form-group-item">
             <label class="form-label-txt">Nama Bank, Nomor Rekening & Atas Nama *</label>
-            <input type="text" class="form-input-field" placeholder="Contoh: BCA 1234567890 a.n. Siti Aminah" value="BCA 0129384756 a.n. Siti Aminah">
+            <input type="text" id="checkoutBankAccountInput" class="form-input-field" placeholder="Contoh: BCA 1234567890 a.n. Siti Aminah" value="BCA 0129384756 a.n. Siti Aminah">
           </div>
 
           <!-- BAGIAN 3: CHECKLIST SERAH TERIMA -->
-          <div class="modal-section-title" style="padding-top: 8px; border-top: 1px solid var(--border-subtle); margin-top: 2px;">
-            <i data-lucide="clipboard-check" style="width: 13px; height: 13px; color: #DC2626;"></i>
-            <span>3. Checklist Serah Terima & Inspeksi Fisik Kamar</span>
+          <div class="modal-section-divider">
+            <div class="modal-section-title">
+              <i data-lucide="clipboard-check" style="width: 13px; height: 13px; color: #DC2626;"></i>
+              <span>3. Checklist Serah Terima & Inspeksi Fisik Kamar</span>
+            </div>
           </div>
 
           <div class="form-group-item">
@@ -4429,6 +5172,9 @@
         meterToken: '3210-9876-5432',
         durationTxt: '8 dari 24 Bulan Berjalan',
         progressPct: 33,
+        occupants: [
+          { name: 'Siti Aminah', role: 'Penyewa Utama', phone: '0812-3456-7890', isPrimary: true, since: '1 Mar 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.200.000', date: '01 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
           { period: 'September 2026', amount: 'Rp 1.200.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
@@ -4465,6 +5211,9 @@
         meterToken: '3210-9876-5433',
         durationTxt: '11 dari 12 Bulan Berjalan',
         progressPct: 92,
+        occupants: [
+          { name: 'Dimas Prasetyo', role: 'Penyewa Utama', phone: '0813-8877-6655', isPrimary: true, since: '15 Des 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.200.000', date: 'Belum Bayar', method: 'Virtual Account', status: 'Jatuh Tempo H-3' },
           { period: 'September 2026', amount: 'Rp 1.200.000', date: '03 Sep 2026', method: 'Mandiri Transfer', status: 'Lunas' },
@@ -4501,6 +5250,9 @@
         meterToken: '3210-9876-5435',
         durationTxt: '10 dari 12 Bulan Berjalan',
         progressPct: 83,
+        occupants: [
+          { name: 'Budi Santoso', role: 'Penyewa Utama', phone: '0811-2233-4455', isPrimary: true, since: '1 Jan 2026' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.500.000', date: 'Belum Bayar', method: 'BCA Transfer', status: 'Jatuh Tempo H-3' },
           { period: 'September 2026', amount: 'Rp 1.500.000', date: '02 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
@@ -4537,6 +5289,10 @@
         meterToken: '3210-9876-5436',
         durationTxt: '14 dari 24 Bulan Berjalan',
         progressPct: 58,
+        occupants: [
+          { name: 'Sri Wahyuni', role: 'Penyewa Utama', phone: '0857-1122-3344', isPrimary: true, since: '1 Sep 2025' },
+          { name: 'Retno Wulandari', role: 'Teman Sekamar', phone: '0857-9988-7766', isPrimary: false, since: '1 Feb 2026' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.100.000', date: '01 Okt 2026', method: 'QRIS', status: 'Lunas' },
           { period: 'September 2026', amount: 'Rp 1.100.000', date: '01 Sep 2026', method: 'QRIS', status: 'Lunas' },
@@ -4573,6 +5329,9 @@
         meterToken: '3210-9876-5437',
         durationTxt: '15 dari 24 Bulan Berjalan',
         progressPct: 62,
+        occupants: [
+          { name: 'Dodi Firmansyah', role: 'Penyewa Utama', phone: '0821-9988-7766', isPrimary: true, since: '15 Jul 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.300.000', date: 'Telat 3 Hari', method: 'Tunai', status: 'Menunggu Bayar' },
           { period: 'September 2026', amount: 'Rp 1.300.000', date: '05 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
@@ -4609,6 +5368,10 @@
         meterToken: '3210-9876-5438',
         durationTxt: '21 dari 24 Bulan Berjalan',
         progressPct: 87,
+        occupants: [
+          { name: 'Rini Marlina', role: 'Penyewa Utama', phone: '0819-0011-2233', isPrimary: true, since: '1 Feb 2025' },
+          { name: 'Anita Sari', role: 'Teman Sekamar', phone: '0819-7766-5544', isPrimary: false, since: '15 Agt 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.300.000', date: '02 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
           { period: 'September 2026', amount: 'Rp 1.300.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
@@ -4645,6 +5408,9 @@
         meterToken: '3210-9876-5440',
         durationTxt: '1 dari 24 Bulan Berjalan',
         progressPct: 4,
+        occupants: [
+          { name: 'Eko Prasetyo', role: 'Penyewa Utama', phone: '0878-1122-9900', isPrimary: true, since: '15 Okt 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.300.000', date: '01 Okt 2026', method: 'Mandiri Transfer', status: 'Lunas' },
           { period: 'September 2026', amount: 'Rp 1.300.000', date: '01 Sep 2026', method: 'Mandiri Transfer', status: 'Lunas' },
@@ -4681,6 +5447,11 @@
         meterToken: '3210-9876-5441',
         durationTxt: '22 dari 24 Bulan Berjalan',
         progressPct: 91,
+        occupants: [
+          { name: 'Hendra Wijaya', role: 'Penyewa Utama', phone: '0812-4455-6677', isPrimary: true, since: '1 Jan 2025' },
+          { name: 'Kevin', role: 'Teman Sekamar', phone: '0812-6677-8899', isPrimary: false, since: '1 Jun 2025' },
+          { name: 'Farhan', role: 'Teman Sekamar', phone: '0813-5566-7788', isPrimary: false, since: '1 Jun 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.400.000', date: '01 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
           { period: 'September 2026', amount: 'Rp 1.400.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
@@ -4717,6 +5488,9 @@
         meterToken: '3210-9876-5443',
         durationTxt: '18 dari 24 Bulan Berjalan',
         progressPct: 75,
+        occupants: [
+          { name: 'Rian Hidayat', role: 'Penyewa Utama', phone: '0856-7788-9900', isPrimary: true, since: '1 Mei 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.350.000', date: '02 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
           { period: 'September 2026', amount: 'Rp 1.350.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
@@ -4753,6 +5527,9 @@
         meterToken: '3210-9876-5444',
         durationTxt: '15 dari 24 Bulan Berjalan',
         progressPct: 62,
+        occupants: [
+          { name: 'Mega Lestari', role: 'Penyewa Utama', phone: '0822-3344-5566', isPrimary: true, since: '1 Ags 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.350.000', date: '01 Okt 2026', method: 'QRIS', status: 'Lunas' },
           { period: 'September 2026', amount: 'Rp 1.350.000', date: '01 Sep 2026', method: 'QRIS', status: 'Lunas' },
@@ -4789,6 +5566,9 @@
         meterToken: '3210-9876-5445',
         durationTxt: '12 dari 24 Bulan Berjalan',
         progressPct: 50,
+        occupants: [
+          { name: 'Aditya Pratama', role: 'Penyewa Utama', phone: '0818-4455-6677', isPrimary: true, since: '1 Nov 2025' }
+        ],
         payHistory: [
           { period: 'Oktober 2026', amount: 'Rp 1.350.000', date: '01 Okt 2026', method: 'BCA Transfer', status: 'Lunas' },
           { period: 'September 2026', amount: 'Rp 1.350.000', date: '01 Sep 2026', method: 'BCA Transfer', status: 'Lunas' },
@@ -4821,6 +5601,18 @@
       return '62' + digits;
     }
 
+    function getRoleQuery(prefix = '?') {
+      const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+        (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+      return role === 'staff' ? (prefix + 'role=staf') : '';
+    }
+
+    function isStaffRole() {
+      const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+        (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+      return role === 'staff';
+    }
+
     // RENDER MASTER LIST
     function renderMasterList() {
       const container = document.getElementById('masterTenantList');
@@ -4831,7 +5623,8 @@
       const filtered = tenantsData.filter(t => {
         // Tab Segment
         if (currentSegmentTab === 'attention') {
-          if (t.billStatus === 'lunas' && t.contractCategory === 'aman') return false;
+          const isAttention = (t.billStatus === 'telat' || t.billStatus === 'tempo' || t.contractCategory === 'expiring');
+          if (!isAttention) return false;
         } else if (currentSegmentTab === 'lunas') {
           if (t.billStatus !== 'lunas') return false;
         }
@@ -5010,10 +5803,6 @@
         t.occupants = [
           { name: t.name, role: 'Penyewa Utama', phone: t.phone, isPrimary: true, since: t.since }
         ];
-        if (t.id === 'A-01' || t.room === 'A-01') {
-          t.occupants.push({ name: 'Rina Anggraini', role: 'Teman Sekamar', phone: '0812-7788-9900', isPrimary: false, since: '15 Mar 2026' });
-          t.occupants.push({ name: 'Maya Putri', role: 'Teman Sekamar', phone: '0813-1122-3344', isPrimary: false, since: '01 Jun 2026' });
-        }
       }
 
       const countBadge = document.getElementById('dOccupantsCount');
@@ -5059,10 +5848,12 @@
         if (!t.vehicle) {
           t.vehicle = { type: 'motor', model: 'Honda Vario 160 CC', plat: 'B 4821 KLO', sticker: '#042', fee: 'Rp 0' };
         }
-        if (t.vehicle.type === 'none') {
+        if (t.vehicles && t.vehicles.length > 0) {
+          dVehTxt.textContent = t.vehicles.map(v => `${v.type} (${v.plate || '-'})`).join(', ');
+        } else if (t.vehicle.type === 'none') {
           dVehTxt.textContent = 'Tanpa Kendaraan';
         } else {
-          const typeLabel = t.vehicle.type === 'mobil' ? '1 Mobil' : '1 Motor';
+          const typeLabel = t.vehicle.type === 'mobil' ? '1 Mobil' : (t.vehicle.type === 'sepeda' ? '1 Sepeda' : '1 Motor');
           dVehTxt.textContent = `${typeLabel} (${t.vehicle.plat || '-'}) · Stiker ${t.vehicle.sticker || '-'}`;
         }
       }
@@ -5164,7 +5955,7 @@
               </div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <span class="status-badge ${badgeClass}" style="font-size: 11px; padding: 2px 7px;">${tk.status}</span>
-                <a href="WF-08-tiket.html" class="btn-micro-outline" style="padding: 3px 9px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" title="Lihat detail tiket di WF-08">
+                <a href="WF-08-tiket.html${getRoleQuery()}" class="btn-micro-outline" style="padding: 3px 9px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;" title="Lihat detail tiket di WF-08">
                   <span>Lihat Solusi</span>
                   <i data-lucide="arrow-right" style="width: 11px; height: 11px;"></i>
                 </a>
@@ -5174,8 +5965,14 @@
           });
         }
 
+        const btnHeaderLedger = document.getElementById('btnHeaderLedger');
+        if (btnHeaderLedger) {
+          btnHeaderLedger.href = `WF-05-tagihan.html${getRoleQuery()}`;
+        }
+
         const btnHeaderTickets = document.getElementById('btnHeaderTickets');
         if (btnHeaderTickets) {
+          btnHeaderTickets.href = `WF-08-tiket.html${getRoleQuery()}`;
           if (allTickets.length > 3) {
             btnHeaderTickets.innerHTML = `<span>Semua Tiket (${allTickets.length})</span><i data-lucide="arrow-right" style="width: 12px; height: 12px;"></i>`;
           } else {
@@ -5215,7 +6012,12 @@
         document.getElementById('modalPerpanjangCurrentTarif').textContent = `Tarif Aktif: ${t.price}/bln`;
       }
       if (document.getElementById('renewPriceInput')) {
-        document.getElementById('renewPriceInput').value = t.price.replace(/[^0-9]/g, '');
+        const rawNum = parseInt(t.price.replace(/[^0-9]/g, '') || '1200000', 10);
+        document.getElementById('renewPriceInput').value = rawNum.toLocaleString('id-ID');
+      }
+      const rolloverBadge = document.getElementById('renewRolloverDepositBadge');
+      if (rolloverBadge) {
+        rolloverBadge.textContent = t.deposit || 'Rp 1.000.000';
       }
       calculateRenewTotal();
 
@@ -5225,16 +6027,20 @@
     // SEARCH & FILTER HANDLING
     function handleSearch(val) {
       currentSearch = val.toLowerCase().trim();
-      const clearBtn = document.getElementById('clearSearchBtn');
+      const clearBtn = document.getElementById('clearSearchBtn') || document.getElementById('masterSearchClearBtn');
       if (clearBtn) clearBtn.style.display = currentSearch.length > 0 ? 'inline-flex' : 'none';
       renderMasterList();
     }
 
     function clearSearch() {
-      const input = document.getElementById('tenantSearchInput');
-      input.value = '';
+      const input = document.getElementById('tenantSearchInput') || document.getElementById('masterSearchInput');
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      const clearBtn = document.getElementById('clearSearchBtn') || document.getElementById('masterSearchClearBtn');
+      if (clearBtn) clearBtn.style.display = 'none';
       handleSearch('');
-      input.focus();
     }
 
     function switchTab(tab) {
@@ -5260,11 +6066,11 @@
     let selectedPerpanjangOptVal = '12';
     let selectedBroadcastTargetVal = 'all';
 
+    // Master Vacant Rooms Data Fixture (4 Kamar Kosong Baseline)
     const vacantRoomsData = [
       { room: 'A-03', floor: '1', type: 'Standar (3×4m)', price: 'Rp 1.100.000', deposit: '500.000', maxOcc: 1 },
-      { room: 'B-02', floor: '2', type: 'Deluxe (3.5×4m)', price: 'Rp 1.500.000', deposit: '1.000.000', maxOcc: 2 },
       { room: 'B-03', floor: '2', type: 'Deluxe (3.5×4m)', price: 'Rp 1.800.000', deposit: '500.000', maxOcc: 2 },
-      { room: 'B-05', floor: '2', type: 'Deluxe (3.5×4m)', price: 'Rp 1.800.000', deposit: '500.000', maxOcc: 2 },
+      { room: 'B-05', floor: '2', type: 'Deluxe (3.5×4m)', price: 'Rp 1.500.000', deposit: '500.000', maxOcc: 2 },
       { room: 'C-02', floor: '3', type: 'VIP Balkon (4×4m)', price: 'Rp 1.900.000', deposit: '1.000.000', maxOcc: 3 }
     ];
 
@@ -5304,39 +6110,79 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    function setRegAnnualDiscount(opt) {
-      selectedAnnualDiscount = opt;
-      const btnFree1 = document.getElementById('btnDiscFree1');
-      const btnNone = document.getElementById('btnDiscNone');
-      const btnCustom = document.getElementById('btnDiscCustom');
+    function applyDiscountPreset(preset) {
+      const roomObj = vacantRoomsData.find(r => r.room === selectedRegRoom) || vacantRoomsData[0];
+      const monthlyRate = parseInt((roomObj ? roomObj.price : '1100000').replace(/\D/g, ''), 10) || 1100000;
+      const input = document.getElementById('regCustomDiscount');
       const badge = document.getElementById('regDiscountBadge');
-      const wrapCustom = document.getElementById('wrapCustomDiscountInput');
+      const btnFree1 = document.getElementById('btnDiscountFree1');
+      const btnNone = document.getElementById('btnDiscountNone');
 
-      document.querySelectorAll('#wrapDiscountPills .duration-pill-opt').forEach(b => b.classList.remove('active'));
+      if (btnFree1) btnFree1.classList.toggle('active', preset === 'free1');
+      if (btnNone) btnNone.classList.toggle('active', preset === 'none');
 
-      if (opt === 'free1') {
-        if (btnFree1) btnFree1.classList.add('active');
+      if (preset === 'free1') {
+        if (input) input.value = monthlyRate.toLocaleString('id-ID');
         if (badge) {
           badge.className = 'status-badge badge-warning';
           badge.textContent = 'Gratis 1 Bulan';
         }
-        if (wrapCustom) wrapCustom.style.display = 'none';
-      } else if (opt === 'none') {
+      } else if (preset === 'none') {
+        if (input) input.value = '0';
+        if (badge) {
+          badge.className = 'status-badge badge-dark';
+          badge.textContent = 'Tanpa Diskon';
+        }
+      }
+      updateRegProrataCalc();
+    }
+
+    function handleCustomDiscountInput(inputEl) {
+      const roomObj = vacantRoomsData.find(r => r.room === selectedRegRoom) || vacantRoomsData[0];
+      const monthlyRate = parseInt((roomObj ? roomObj.price : '1100000').replace(/\D/g, ''), 10) || 1100000;
+      const raw = inputEl.value.replace(/\D/g, '');
+      const badge = document.getElementById('regDiscountBadge');
+      const btnFree1 = document.getElementById('btnDiscountFree1');
+      const btnNone = document.getElementById('btnDiscountNone');
+
+      if (raw) {
+        const num = parseInt(raw, 10);
+        inputEl.value = num.toLocaleString('id-ID');
+        if (btnFree1) btnFree1.classList.toggle('active', num === monthlyRate);
+        if (btnNone) btnNone.classList.toggle('active', num === 0);
+
+        if (badge) {
+          if (num === 0) {
+            badge.className = 'status-badge badge-dark';
+            badge.textContent = 'Tanpa Diskon';
+          } else if (monthlyRate > 0 && num % monthlyRate === 0) {
+            const freeMonths = num / monthlyRate;
+            badge.className = 'status-badge badge-warning';
+            badge.textContent = `Gratis ${freeMonths} Bulan`;
+          } else if (monthlyRate > 0 && num >= monthlyRate) {
+            const freeMonths = Math.floor(num / monthlyRate);
+            const remainder = num % monthlyRate;
+            badge.className = 'status-badge badge-warning';
+            badge.textContent = `Gratis ${freeMonths} Bulan + Potongan Rp ${remainder.toLocaleString('id-ID')}`;
+          } else {
+            badge.className = 'status-badge badge-brand';
+            badge.textContent = `Diskon Rp ${num.toLocaleString('id-ID')}`;
+          }
+        }
+      } else {
+        inputEl.value = '0';
+        if (btnFree1) btnFree1.classList.remove('active');
         if (btnNone) btnNone.classList.add('active');
         if (badge) {
           badge.className = 'status-badge badge-dark';
-          badge.textContent = 'Tarif Normal (12 Bln)';
+          badge.textContent = 'Tanpa Diskon';
         }
-        if (wrapCustom) wrapCustom.style.display = 'none';
-      } else {
-        if (btnCustom) btnCustom.classList.add('active');
-        if (badge) {
-          badge.className = 'status-badge badge-brand';
-          badge.textContent = 'Diskon Custom';
-        }
-        if (wrapCustom) wrapCustom.style.display = 'block';
       }
       updateRegProrataCalc();
+    }
+
+    function setRegAnnualDiscount(opt) {
+      applyDiscountPreset(opt);
     }
 
     function setRegBillingMode(mode) {
@@ -5402,12 +6248,8 @@
 
       if (selectedPayTerm === 'upfront') {
         if (durationMonths === 12) {
-          if (selectedAnnualDiscount === 'free1') {
-            discountAmount = monthlyRate;
-          } else if (selectedAnnualDiscount === 'custom') {
-            const custVal = document.getElementById('regCustomDiscount')?.value.replace(/\D/g, '') || '0';
-            discountAmount = parseInt(custVal, 10);
-          }
+          const custVal = document.getElementById('regCustomDiscount')?.value.replace(/\D/g, '') || '0';
+          discountAmount = parseInt(custVal, 10);
         }
 
         const baseGrossRent = monthlyRate * durationMonths;
@@ -5426,7 +6268,15 @@
         if (discRowEl && discValEl) {
           if (discountAmount > 0) {
             discRowEl.style.display = 'flex';
-            discValEl.textContent = `-Rp ${discountAmount.toLocaleString('id-ID')} (${selectedAnnualDiscount === 'free1' ? 'Promo 1 Bln Gratis' : 'Potongan Khusus'})`;
+            let promoDesc = 'Potongan Khusus';
+            if (monthlyRate > 0 && discountAmount % monthlyRate === 0) {
+              const freeMonths = discountAmount / monthlyRate;
+              promoDesc = `Promo ${freeMonths} Bln Gratis`;
+            } else if (monthlyRate > 0 && discountAmount >= monthlyRate) {
+              const freeMonths = Math.floor(discountAmount / monthlyRate);
+              promoDesc = `Promo ${freeMonths} Bln Gratis + Diskon`;
+            }
+            discValEl.textContent = `-Rp ${discountAmount.toLocaleString('id-ID')} (${promoDesc})`;
           } else {
             discRowEl.style.display = 'none';
           }
@@ -5460,7 +6310,21 @@
         }
       }
 
-      const totalFirstBill = firstRent + depositVal;
+      // Hitung Biaya Parkir Kendaraan
+      let monthlyParkingTotal = 0;
+      if (!isNoVehicle && regVehiclesList && regVehiclesList.length > 0) {
+        regVehiclesList.forEach(v => {
+          monthlyParkingTotal += parseInt(v.fee || 0, 10);
+        });
+      }
+      const parkingTotalBill = (selectedPayTerm === 'upfront') ? (monthlyParkingTotal * durationMonths) : monthlyParkingTotal;
+
+      // Hitung Biaya Rekan Sekamar (Surcharge)
+      const extraOccEl = document.getElementById('regExtraOccFee');
+      const monthlyExtraOcc = extraOccEl ? (parseInt(extraOccEl.value.replace(/\D/g, ''), 10) || 0) : 0;
+      const extraOccTotalBill = (selectedPayTerm === 'upfront') ? (monthlyExtraOcc * durationMonths) : monthlyExtraOcc;
+
+      const totalFirstBill = firstRent + parkingTotalBill + extraOccTotalBill + depositVal;
 
       const lblEl = document.getElementById('regFirstRentLabel');
       const rentValEl = document.getElementById('regFirstRentVal');
@@ -5468,6 +6332,32 @@
       const totalValEl = document.getElementById('regTotalFirstBillVal');
       const nextDueEl = document.getElementById('regNextDueDesc');
       const modeBadge = document.getElementById('regProrataModeBadge');
+
+      const parkRow = document.getElementById('regParkingSummaryRow');
+      const parkVal = document.getElementById('regParkingSummaryVal');
+      const parkLbl = document.getElementById('regParkingSummaryLabel');
+      if (parkRow && parkVal && parkLbl) {
+        if (parkingTotalBill > 0) {
+          parkRow.style.display = 'flex';
+          parkLbl.textContent = `Biaya Izin Parkir (${selectedPayTerm === 'upfront' ? durationMonths + ' Bln di Muka' : 'Bulan 1'}):`;
+          parkVal.textContent = '+Rp ' + parkingTotalBill.toLocaleString('id-ID');
+        } else {
+          parkRow.style.display = 'none';
+        }
+      }
+
+      const occRow = document.getElementById('regExtraOccSummaryRow');
+      const occVal = document.getElementById('regExtraOccSummaryVal');
+      const occLbl = document.getElementById('regExtraOccSummaryLabel');
+      if (occRow && occVal && occLbl) {
+        if (extraOccTotalBill > 0) {
+          occRow.style.display = 'flex';
+          occLbl.textContent = `Biaya Rekan Sekamar (${selectedPayTerm === 'upfront' ? durationMonths + ' Bln di Muka' : 'Bulan 1'}):`;
+          occVal.textContent = '+Rp ' + extraOccTotalBill.toLocaleString('id-ID');
+        } else {
+          occRow.style.display = 'none';
+        }
+      }
 
       if (modeBadge) {
         if (selectedPayTerm === 'upfront') {
@@ -5485,7 +6375,20 @@
       if (totalValEl) totalValEl.textContent = 'Rp ' + totalFirstBill.toLocaleString('id-ID');
       if (nextDueEl) nextDueEl.textContent = nextDueDesc;
 
-      return { firstRent, depositVal, totalFirstBill, rentLabel, discountAmount, durationMonths, endFormatted };
+      const endPreviewEl = document.getElementById('lblRegEndDatePreview');
+      if (endPreviewEl) {
+        endPreviewEl.textContent = endFormatted;
+      }
+      const endBoxEl = document.getElementById('lblRegEndDateBox');
+      if (endBoxEl) {
+        endBoxEl.textContent = endFormatted;
+      }
+      const endDurBadge = document.getElementById('lblRegEndDurationBadge');
+      if (endDurBadge) {
+        endDurBadge.textContent = durationMonths === 12 ? '1 Tahun' : durationMonths + ' Bulan';
+      }
+
+      return { firstRent, depositVal, parkingTotalBill, extraOccTotalBill, totalFirstBill, rentLabel, discountAmount, durationMonths, endFormatted };
     }
 
     function renderRoomOptions(filter = '') {
@@ -5566,16 +6469,170 @@
       if (depositInput) {
         depositInput.value = deposit;
       }
+
+      // Update Label Preset Deposit Cepat (Formula 50% WF-03)
+      const rawPriceNum = parseInt(price.replace(/\D/g, ''), 10) || 1100000;
+      const calc50 = Math.round((rawPriceNum * 0.5) / 50000) * 50000;
+      const txtDef = document.getElementById('txtDepositDefaultVal');
+      if (txtDef) {
+        txtDef.textContent = (calc50 >= 1000000) ? 'Rp ' + (calc50 / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + 'jt' : 'Rp ' + (calc50 / 1000) + 'rb';
+      }
+      const txt1M = document.getElementById('txtDeposit1MonthVal');
+      if (txt1M) {
+        txt1M.textContent = (rawPriceNum >= 1000000) ? 'Rp ' + (rawPriceNum / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + 'jt' : 'Rp ' + (rawPriceNum / 1000) + 'rb';
+      }
       
       const maxBadge = document.getElementById('regMaxCapBadge');
       if (maxBadge) {
         maxBadge.textContent = `Maks. ${maxOcc} Orang (${type})`;
+      }
+
+      // Sync custom annual discount with new room monthly rate if free1 is active
+      const discInput = document.getElementById('regCustomDiscount');
+      if (discInput) {
+        const rawPrice = parseInt(price.replace(/\D/g, ''), 10) || 1100000;
+        const discBadge = document.getElementById('regDiscountBadge');
+        if (discBadge && discBadge.textContent.includes('Gratis')) {
+          discInput.value = rawPrice.toLocaleString('id-ID');
+        }
       }
       
       const popover = document.getElementById('roomDropdownPopover');
       if (popover) popover.classList.remove('open');
       updateRegProrataCalc();
       RumaUI.showToast(`Unit Kamar ${room} dipilih. Preset deposit disesuaikan: Rp ${deposit}`, 'info');
+    }
+
+    function applyDepositPreset(mode) {
+      const depInput = document.getElementById('regDeposit');
+      if (!depInput) return;
+      const roomObj = vacantRoomsData.find(r => r.room === selectedRegRoom) || vacantRoomsData[0];
+      const monthlyRate = parseInt((roomObj ? roomObj.price : '1100000').replace(/\D/g, ''), 10) || 1100000;
+      
+      // WF-03 Formula: 50% dari harga sewa dibulatkan ke kelipatan Rp 50.000 terdekat
+      const half = monthlyRate * 0.5;
+      const defDeposit = Math.round(half / 50000) * 50000;
+
+      // Update active state on preset buttons
+      const btnDef = document.getElementById('btnDepositPreset50');
+      const btn1M = document.getElementById('btnDepositPreset1M');
+      const btnZero = document.getElementById('btnDepositPresetZero');
+      if (btnDef) btnDef.classList.toggle('active', mode === 'default');
+      if (btn1M) btn1M.classList.toggle('active', mode === '1month');
+      if (btnZero) btnZero.classList.toggle('active', mode === 'zero');
+
+      if (mode === 'default') {
+        depInput.value = new Intl.NumberFormat('id-ID').format(defDeposit);
+        RumaUI.showToast(`Deposit disetel ke 50% sewa (Standar WF-03): Rp ${depInput.value}`, 'info');
+      } else if (mode === '1month') {
+        depInput.value = new Intl.NumberFormat('id-ID').format(monthlyRate);
+        RumaUI.showToast(`Deposit disetel ke 1 bulan sewa penuh: Rp ${depInput.value}`, 'info');
+      } else if (mode === 'zero') {
+        depInput.value = '0';
+        RumaUI.showToast('Deposit disetel bebas jaminan (Rp 0)', 'info');
+      }
+      updateRegProrataCalc();
+    }
+
+    function handleExtraOccFeeInput(el) {
+      let val = el.value.replace(/\D/g, '');
+      if (val) {
+        el.value = new Intl.NumberFormat('id-ID').format(parseInt(val, 10));
+      } else {
+        el.value = '0';
+      }
+      updateRegProrataCalc();
+    }
+
+    function setExtraOccFee(val) {
+      const el = document.getElementById('regExtraOccFee');
+      if (el) {
+        el.value = new Intl.NumberFormat('id-ID').format(val);
+        updateRegProrataCalc();
+      }
+    }
+
+    let selectedInitialPayMethod = 'BCA Transfer';
+
+    function selectInitialMethod(methodName, btnEl) {
+      selectedInitialPayMethod = methodName;
+      const hiddenInput = document.getElementById('regPaidMethod');
+      if (hiddenInput) hiddenInput.value = methodName;
+
+      document.querySelectorAll('.initial-method-box').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      const badge = document.getElementById('activeChannelBadge');
+      if (badge) badge.textContent = methodName;
+
+      const note = document.getElementById('initialMethodNote');
+      if (note) {
+        note.innerHTML = `Kuitansi resmi langsung diterbitkan &amp; tercatat di mutasi kas/bank <strong>${methodName}</strong>.`;
+      }
+    }
+
+    function setupInitialPaymentUI() {
+      const isStaff = isStaffRole();
+      const titleEl = document.getElementById('lblInitialPaidTitle');
+      const descEl = document.getElementById('lblInitialPaidDesc');
+      const chk = document.getElementById('regInitialPaidCheckbox');
+
+      if (isStaff) {
+        if (titleEl) titleEl.textContent = 'Terima Pembayaran Tunai (Cash) di Tempat';
+        if (descEl) descEl.innerHTML = 'Centang <strong>hanya jika uang tunai fisik diterima langsung oleh staf</strong>. Jika penyewa transfer, biarkan tidak dicentang agar tagihan diverifikasi Owner keesokan harinya via Buku Tagihan (WF-05).';
+      } else {
+        if (titleEl) titleEl.textContent = 'Tandai Pembayaran Pertama Langsung Lunas';
+        if (descEl) descEl.innerHTML = 'Penyewa sudah melunasi sewa awal &amp; deposit. Pengelola memverifikasi mutasi kas/bank secara manual tanpa biaya gateway pihak ketiga.';
+      }
+
+      if (chk) {
+        chk.checked = false;
+        toggleInitialPaidStatus(false);
+      }
+    }
+
+    function toggleInitialPaidStatus(isPaid) {
+      const card = document.getElementById('cardInitialPayment');
+      const badge = document.getElementById('badgeInitialPaidStatus');
+      const noticeBox = document.getElementById('regBillNoticeBox');
+      const ownerChannels = document.getElementById('wrapOwnerPayChannels');
+      const staffNote = document.getElementById('wrapStaffCashNote');
+      const isStaff = isStaffRole();
+
+      if (card) {
+        if (isPaid) {
+          card.style.background = '#FAFAFA';
+          card.style.borderColor = '#86EFAC';
+        } else {
+          card.style.background = '#FFFFFF';
+          card.style.borderColor = '#E2E8F0';
+        }
+      }
+
+      if (badge) {
+        badge.style.display = isPaid ? 'inline-flex' : 'none';
+        badge.textContent = isStaff ? 'Kas Masuk di Meja Staf' : 'Lunas Terverifikasi';
+      }
+
+      if (ownerChannels) {
+        ownerChannels.style.display = (isPaid && !isStaff) ? 'block' : 'none';
+      }
+
+      if (staffNote) {
+        staffNote.style.display = (isPaid && isStaff) ? 'block' : 'none';
+      }
+
+      const hiddenInput = document.getElementById('regPaidMethod');
+      if (hiddenInput) {
+        if (!isPaid) {
+          hiddenInput.value = 'Transfer Bank';
+        } else {
+          hiddenInput.value = isStaff ? 'Tunai / Cash' : selectedInitialPayMethod;
+        }
+      }
+
+      if (noticeBox) noticeBox.style.display = isPaid ? 'none' : 'flex';
+      if (window.lucide) lucide.createIcons();
     }
 
     function filterAvailableRooms(val) {
@@ -5676,28 +6733,302 @@
       }
     }
 
-    let selectedVehicleTypeVal = 'Motor';
-    function selectVehicleType(el, type) {
-      selectedVehicleTypeVal = type;
-      document.querySelectorAll('#wrapVehPills .duration-pill-opt').forEach(p => {
-        p.classList.remove('active');
-      });
-      el.classList.add('active');
-      const plateInput = document.getElementById('regVehicle');
-      if (type === 'Tanpa Kendaraan') {
-        if (plateInput) {
-          plateInput.value = '';
-          plateInput.placeholder = 'Tanpa kendaraan (Fasilitas parkir tidak dialokasikan)';
-          plateInput.disabled = true;
-          plateInput.style.background = '#F8FAFC';
+    // ==========================================================================
+    // MULTI-VEHICLE ENGINE (MENDUKUNG BANYAK MOTOR/MOBIL & BIAYA PARKIR)
+    // ==========================================================================
+    let regVehiclesList = [{ type: 'Motor', plate: '', fee: 0 }];
+    let isNoVehicle = false;
+
+    function getVehIconName(type) {
+      if (type === 'Mobil') return 'car';
+      if (type === 'Sepeda') return 'bike';
+      return 'bike';
+    }
+
+    function getVehDefaultFee(type, idx) {
+      if (type === 'Mobil') return 200000;
+      if (type === 'Motor') return idx === 0 ? 0 : 50000;
+      return 0; // Sepeda gratis
+    }
+
+    function renderRegVehicles() {
+      const container = document.getElementById('regVehiclesContainer');
+      const countBadge = document.getElementById('regVehicleCountBadge');
+      const addBtn = document.getElementById('btnAddVehicleRow');
+      const toggleBtn = document.getElementById('btnToggleNoVehicle');
+      if (!container) return;
+
+      if (isNoVehicle) {
+        if (countBadge) {
+          countBadge.className = 'status-badge badge-dark';
+          countBadge.textContent = 'Tanpa Kendaraan';
         }
-      } else {
-        if (plateInput) {
-          plateInput.disabled = false;
-          plateInput.style.background = '#FFFFFF';
-          plateInput.placeholder = `Nomor Polisi & Merk ${type} (Contoh: ${type === 'Mobil' ? 'Toyota Avanza - B 1234 ABC' : (type === 'Sepeda' ? 'Polygon Strattos' : 'Honda Vario - B 1234 XYZ')})`;
+        if (addBtn) addBtn.style.display = 'none';
+        if (toggleBtn) {
+          toggleBtn.className = 'btn-micro-outline';
+          toggleBtn.style.color = 'var(--brand-primary)';
+          toggleBtn.style.borderColor = 'var(--brand-primary)';
+          toggleBtn.style.background = '#FFF7ED';
+          toggleBtn.innerHTML = `
+            <i data-lucide="car" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
+            <span style="font-weight: 600;">+ Bawa Kendaraan</span>
+          `;
         }
+        container.innerHTML = `
+          <div style="background: #F8FAFC; border: 1px dashed #CBD5E1; border-radius: 12px; padding: 12px 14px; text-align: center; color: #64748B; font-size: 11.5px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i data-lucide="slash" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+            <span>Penghuni tidak membawa kendaraan pribadi (slot parkir kost tidak dialokasikan & bebas biaya parkir).</span>
+          </div>
+        `;
+        if (window.lucide) lucide.createIcons();
+        updateRegProrataCalc();
+        return;
       }
+
+      if (addBtn) addBtn.style.display = 'inline-flex';
+      if (toggleBtn) {
+        toggleBtn.className = 'btn-micro-outline';
+        toggleBtn.style.color = '#64748B';
+        toggleBtn.style.borderColor = '#E2E8F0';
+        toggleBtn.style.background = '#F8FAFC';
+        toggleBtn.innerHTML = `
+          <i data-lucide="ban" style="width: 12px; height: 12px; color: #94A3B8;"></i>
+          <span>Tanpa Kendaraan</span>
+        `;
+      }
+
+      let totalMonthlyPark = 0;
+      regVehiclesList.forEach(v => { totalMonthlyPark += parseInt(v.fee || 0, 10); });
+
+      if (countBadge) {
+        countBadge.className = 'status-badge badge-brand';
+        countBadge.textContent = `${regVehiclesList.length} Kendaraan ${totalMonthlyPark > 0 ? '(Parkir: Rp ' + totalMonthlyPark.toLocaleString('id-ID') + '/bln)' : '(Parkir Gratis)'}`;
+      }
+
+      container.innerHTML = regVehiclesList.map((veh, idx) => {
+        const canDelete = regVehiclesList.length > 1;
+        const iconName = getVehIconName(veh.type);
+        const feeVal = parseInt(veh.fee || 0, 10);
+        return `
+          <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; box-sizing: border-box;" data-veh-idx="${idx}">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="custom-veh-select-wrap" id="wrapVehSelect_${idx}">
+                <button type="button" class="btn-veh-select-trigger" onclick="toggleVehDropdown(${idx}, event)">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <i data-lucide="${iconName}" style="width: 13.5px; height: 13.5px; color: var(--brand-primary); flex-shrink: 0;"></i>
+                    <span>${escapeHtml(veh.type)}</span>
+                  </div>
+                  <i data-lucide="chevron-down" style="width: 12px; height: 12px; color: #94A3B8;"></i>
+                </button>
+                <div class="veh-select-menu" id="vehMenu_${idx}">
+                  <div class="veh-select-item ${veh.type === 'Motor' ? 'selected' : ''}" onclick="selectVehicleType(${idx}, 'Motor', event)">
+                    <i data-lucide="bike" style="width: 13.5px; height: 13.5px;"></i>
+                    <span>Motor (${idx === 0 ? 'Gratis' : 'Rp 50rb/bln'})</span>
+                  </div>
+                  <div class="veh-select-item ${veh.type === 'Mobil' ? 'selected' : ''}" onclick="selectVehicleType(${idx}, 'Mobil', event)">
+                    <i data-lucide="car" style="width: 13.5px; height: 13.5px;"></i>
+                    <span>Mobil (Rp 200rb/bln)</span>
+                  </div>
+                  <div class="veh-select-item ${veh.type === 'Sepeda' ? 'selected' : ''}" onclick="selectVehicleType(${idx}, 'Sepeda', event)">
+                    <i data-lucide="bike" style="width: 13.5px; height: 13.5px;"></i>
+                    <span>Sepeda (Gratis)</span>
+                  </div>
+                </div>
+              </div>
+              <div style="flex: 1; min-width: 0;">
+                <input type="text" class="form-input-field" value="${escapeHtml(veh.plate || '')}" placeholder="Merk & Plat (${veh.type === 'Mobil' ? 'Avanza - B 1234 XYZ' : (veh.type === 'Sepeda' ? 'Polygon' : 'Vario 160 - B 3456 SAA')})" style="height: 38px; font-size: 12px; border-radius: 10px;" oninput="updateVehiclePlate(${idx}, this.value)">
+              </div>
+              ${canDelete ? `
+                <button type="button" onclick="removeVehicleRow(${idx})" title="Hapus Kendaraan #${idx + 1}" style="width: 32px; height: 32px; border-radius: 8px; border: 1px solid #FECACA; background: #FEF2F2; color: #DC2626; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all 150ms ease;">
+                  <i data-lucide="trash-2" style="width: 13px; height: 13px;"></i>
+                </button>
+              ` : ''}
+            </div>
+
+            <!-- Sub-bar Biaya Parkir Bulanan -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 5px; border-top: 1px dashed #F1F5F9; font-size: 11px;">
+              <div style="display: flex; align-items: center; gap: 5px;">
+                <span style="color: var(--text-secondary); font-weight: 500;">Tarif Parkir:</span>
+                <button type="button" class="btn-micro-outline" onclick="setVehicleFeePreset(${idx}, 0)" style="height: 20px; font-size: 9.5px; padding: 0 5px; border-radius: 4px; ${feeVal === 0 ? 'border-color: #16A34A; color: #16A34A; background: #F0FDF4;' : ''}">Gratis</button>
+                <button type="button" class="btn-micro-outline" onclick="setVehicleFeePreset(${idx}, ${veh.type === 'Mobil' ? 200000 : 50000})" style="height: 20px; font-size: 9.5px; padding: 0 5px; border-radius: 4px; ${feeVal > 0 ? 'border-color: var(--brand-primary); color: var(--brand-primary); background: #FFF7ED;' : ''}">${veh.type === 'Mobil' ? 'Rp 200rb' : 'Rp 50rb'}</button>
+              </div>
+              <div style="display: flex; align-items: center; gap: 5px;">
+                <div style="position: relative; width: 110px;">
+                  <span style="position: absolute; left: 7px; top: 50%; transform: translateY(-50%); font-size: 10px; font-weight: 600; color: #64748B;">Rp</span>
+                  <input type="text" class="form-input-field" value="${new Intl.NumberFormat('id-ID').format(feeVal)}" style="height: 26px; font-size: 11px; padding-left: 22px; padding-right: 6px; text-align: right; font-weight: 600; border-radius: 6px;" oninput="updateVehicleFee(${idx}, this.value)">
+                </div>
+                <span style="font-size: 10.5px; color: #94A3B8;">/bln</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+      updateRegProrataCalc();
+    }
+
+    function toggleVehDropdown(idx, event) {
+      if (event) event.stopPropagation();
+      const menu = document.getElementById(`vehMenu_${idx}`);
+      const trigger = event.currentTarget;
+      const isOpen = menu && menu.classList.contains('open');
+
+      document.querySelectorAll('.veh-select-menu.open').forEach(m => m.classList.remove('open'));
+      document.querySelectorAll('.btn-veh-select-trigger.active').forEach(b => b.classList.remove('active'));
+
+      if (!isOpen && menu) {
+        menu.classList.add('open');
+        if (trigger) trigger.classList.add('active');
+      }
+    }
+
+    function selectVehicleType(idx, type, event) {
+      if (event) event.stopPropagation();
+      if (regVehiclesList[idx]) {
+        regVehiclesList[idx].type = type;
+        regVehiclesList[idx].fee = getVehDefaultFee(type, idx);
+        renderRegVehicles();
+      }
+    }
+
+    function setVehicleFeePreset(idx, fee) {
+      if (regVehiclesList[idx]) {
+        regVehiclesList[idx].fee = fee;
+        renderRegVehicles();
+      }
+    }
+
+    function updateVehicleFee(idx, val) {
+      if (regVehiclesList[idx]) {
+        const raw = parseInt(val.replace(/\D/g, ''), 10) || 0;
+        regVehiclesList[idx].fee = raw;
+        updateRegProrataCalc();
+      }
+    }
+
+    function addVehicleRow() {
+      if (isNoVehicle) {
+        isNoVehicle = false;
+        regVehiclesList = [{ type: 'Motor', plate: '', fee: 0 }];
+      } else {
+        if (regVehiclesList.length >= 4) {
+          RumaUI.showToast('Maksimal 4 kendaraan per unit kamar', 'warning');
+          return;
+        }
+        const newIdx = regVehiclesList.length;
+        regVehiclesList.push({ type: 'Motor', plate: '', fee: 50000 });
+      }
+      renderRegVehicles();
+    }
+
+    function removeVehicleRow(idx) {
+      if (regVehiclesList.length > 1) {
+        regVehiclesList.splice(idx, 1);
+        renderRegVehicles();
+      }
+    }
+
+    function updateVehiclePlate(idx, plate) {
+      if (regVehiclesList[idx]) {
+        regVehiclesList[idx].plate = plate.trim();
+      }
+    }
+
+    function toggleNoVehicle() {
+      isNoVehicle = !isNoVehicle;
+      if (!isNoVehicle && regVehiclesList.length === 0) {
+        regVehiclesList = [{ type: 'Motor', plate: '', fee: 0 }];
+      }
+      renderRegVehicles();
+    }
+
+    // ==========================================================================
+    // KOTA DOMISILI ASAL: AUTOCOMPLETE SEARCHBAR DROPDOWN
+    // ==========================================================================
+    const indonesianCities = [
+      'Bandung, Jawa Barat',
+      'Jakarta Selatan, DKI Jakarta',
+      'Jakarta Pusat, DKI Jakarta',
+      'Jakarta Barat, DKI Jakarta',
+      'Jakarta Timur, DKI Jakarta',
+      'Jakarta Utara, DKI Jakarta',
+      'Surabaya, Jawa Timur',
+      'Semarang, Jawa Tengah',
+      'Yogyakarta, D.I. Yogyakarta',
+      'Surakarta (Solo), Jawa Tengah',
+      'Malang, Jawa Timur',
+      'Bogor, Jawa Barat',
+      'Depok, Jawa Barat',
+      'Tangerang, Banten',
+      'Tangerang Selatan, Banten',
+      'Bekasi, Jawa Barat',
+      'Medan, Sumatera Utara',
+      'Palembang, Sumatera Selatan',
+      'Padang, Sumatera Barat',
+      'Pekanbaru, Riau',
+      'Bandar Lampung, Lampung',
+      'Denpasar, Bali',
+      'Makassar, Sulawesi Selatan',
+      'Balikpapan, Kalimantan Timur',
+      'Samarinda, Kalimantan Timur',
+      'Banjarmasin, Kalimantan Selatan',
+      'Pontianak, Kalimantan Barat',
+      'Manado, Sulawesi Utara',
+      'Cirebon, Jawa Barat',
+      'Sukabumi, Jawa Barat',
+      'Tasikmalaya, Jawa Barat',
+      'Serang, Banten',
+      'Batam, Kepulauan Riau'
+    ];
+
+    function openCityDropdown() {
+      const popover = document.getElementById('cityDropdownPopover');
+      if (!popover) return;
+      popover.classList.add('open');
+      const curVal = document.getElementById('regCity') ? document.getElementById('regCity').value : '';
+      filterCityDropdown(curVal);
+    }
+
+    function closeCityDropdown() {
+      const popover = document.getElementById('cityDropdownPopover');
+      if (popover) popover.classList.remove('open');
+    }
+
+    function filterCityDropdown(query = '') {
+      const q = query.toLowerCase().trim();
+      const listEl = document.getElementById('cityOptionsList');
+      if (!listEl) return;
+      const filtered = indonesianCities.filter(c => c.toLowerCase().includes(q));
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `
+          <div style="padding: 10px 12px; font-size: 11.5px; color: var(--text-muted); text-align: center;">
+            Gunakan kota kustom: <strong>"${escapeHtml(query)}"</strong>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(city => `
+        <div class="room-option-tile" onclick="selectCity('${escapeHtml(city)}')" style="padding: 8px 12px; font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: space-between;">
+          <span style="display: flex; align-items: center; gap: 7px;">
+            <i data-lucide="map-pin" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
+            <span>${city}</span>
+          </span>
+          <i data-lucide="chevron-right" style="width: 12px; height: 12px; color: #CBD5E1;"></i>
+        </div>
+      `).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function selectCity(cityName) {
+      const input = document.getElementById('regCity');
+      if (input) {
+        input.value = cityName;
+      }
+      closeCityDropdown();
     }
 
     // Auto-format currency on deposit manual override & update prorata calculation
@@ -5717,6 +7048,10 @@
       if (wrap && !wrap.contains(e.target)) {
         const popover = document.getElementById('roomDropdownPopover');
         if (popover) popover.classList.remove('open');
+      }
+      const wrapCity = document.getElementById('wrapCitySelect');
+      if (wrapCity && !wrapCity.contains(e.target)) {
+        closeCityDropdown();
       }
       const moveWrap = document.getElementById('wrapMoveRoomSelect');
       if (moveWrap && !moveWrap.contains(e.target)) {
@@ -5769,12 +7104,17 @@
       }
       setRegPayTerm('upfront');
       setRegAnnualDiscount('free1');
+      renderRegVehicles();
+      filterCityDropdown('');
+      setupInitialPaymentUI();
       updateRegProrataCalc();
       lucide.createIcons();
     }
+
     function closeTambahPenghuniModal() {
       document.getElementById('modalTambahPenghuni').classList.remove('open');
     }
+
     let isSavingTenant = false;
     function saveTambahPenghuni() {
       if (isSavingTenant) return;
@@ -5782,8 +7122,32 @@
       setTimeout(() => { isSavingTenant = false; }, 800);
       const nama = document.getElementById('regNama') ? document.getElementById('regNama').value.trim() : '';
       const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value.trim() : '';
-      const plate = document.getElementById('regVehicle') ? document.getElementById('regVehicle').value.trim() : '';
-      const vehStr = selectedVehicleTypeVal === 'Tanpa Kendaraan' ? 'Tanpa Kendaraan' : `${selectedVehicleTypeVal}${plate ? ' (' + plate + ')' : ''}`;
+      
+      // Multi-vehicle collection
+      let vehicleData = null;
+      let vehStr = 'Tanpa Kendaraan';
+      if (!isNoVehicle && regVehiclesList.length > 0) {
+        const validVehicles = regVehiclesList.filter(v => v.plate || v.type);
+        if (validVehicles.length > 0) {
+          const firstVeh = validVehicles[0];
+          vehicleData = {
+            type: firstVeh.type.toLowerCase(),
+            model: firstVeh.plate ? firstVeh.plate.split('-')[0].trim() : firstVeh.type,
+            plat: firstVeh.plate ? (firstVeh.plate.includes('-') ? firstVeh.plate.split('-')[1].trim() : firstVeh.plate) : '-',
+            sticker: `#0${Math.floor(Math.random() * 80) + 10}`,
+            fee: 'Rp 0',
+            allVehicles: validVehicles
+          };
+          if (validVehicles.length === 1) {
+            vehStr = `${firstVeh.type}${firstVeh.plate ? ' (' + firstVeh.plate + ')' : ''}`;
+          } else {
+            vehStr = `${validVehicles.length} Kendaraan (${validVehicles.map(v => v.type).join(' & ')})`;
+          }
+        }
+      }
+      if (!vehicleData) {
+        vehicleData = { type: 'none', model: '-', plat: '-', sticker: '-', fee: 'Rp 0', allVehicles: [] };
+      }
       
       if (!nama) {
         RumaUI.showToast('Silakan isi Nama Lengkap Penghuni sesuai KTP', 'warning');
@@ -5806,9 +7170,24 @@
       const phoneInput = document.getElementById('regPhone')?.value.trim() || '0812-9988-7711';
       const nikInput = document.getElementById('regNik')?.value.trim() || '3201021203950001';
       const roleInput = document.getElementById('regRole')?.value.trim() || 'Karyawan Swasta';
-      const cityInput = document.getElementById('regCity')?.value.trim() || 'Jakarta Selatan';
+      const cityInput = document.getElementById('regCity')?.value.trim() || 'Bandung, Jawa Barat';
       const emName = document.getElementById('regEmergencyName')?.value.trim() || 'Keluarga';
       const emPhone = document.getElementById('regEmergencyPhone')?.value.trim() || '0811-2233-4455';
+
+      // Build structured occupants array
+      const occupantsArray = [
+        { name: nama, phone: phoneInput, role: 'Penyewa Utama', isMain: true }
+      ];
+      extraNames.forEach((n, idx) => {
+        const extraContact = document.getElementById(`regKontak_${idx + 2}`)?.value.trim() || '-';
+        occupantsArray.push({ name: n, phone: extraContact, role: 'Rekan Sekamar', isMain: false });
+      });
+
+      const isInitialPaid = document.getElementById('regInitialPaidCheckbox')?.checked || false;
+      const isStaff = isStaffRole();
+      const paidMethodVal = isInitialPaid 
+        ? (isStaff ? 'Tunai / Cash' : (document.getElementById('regPaidMethod')?.value || selectedInitialPayMethod || 'BCA Transfer'))
+        : 'Transfer Bank';
 
       const newId = selectedRegRoom;
       const newTenant = {
@@ -5822,12 +7201,12 @@
         company: roleInput.includes('·') ? roleInput.split('·')[1].trim() : 'Perusahaan Swasta',
         phone: phoneInput,
         since: document.getElementById('regStartDate')?.value || '1 Nov 2026',
-        end: '31 Okt 2027',
+        end: calc.endFormatted || '31 Okt 2027',
         price: roomObj.price,
-        billStatus: selectedPayTerm === 'upfront' ? 'lunas' : 'telat',
-        billLabel: selectedPayTerm === 'upfront' ? `Lunas (${calc.durationMonths === 12 ? '1 Tahun' : calc.durationMonths + ' Bln'})` : 'Tagihan Baru',
+        billStatus: isInitialPaid ? 'lunas' : 'telat',
+        billLabel: isInitialPaid ? `Lunas (${calc.durationMonths === 12 ? '1 Tahun' : calc.durationMonths + ' Bln'})` : 'Tagihan Baru',
         contractCategory: 'aman',
-        contractBadge: selectedPayTerm === 'upfront' ? 'Lunas di Muka' : 'Penyewa Baru',
+        contractBadge: isInitialPaid ? 'Lunas di Muka' : 'Penyewa Baru',
         countdown: `${calc.durationMonths} Bln Lagi`,
         tagClass: 'tag-safe',
         photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
@@ -5835,12 +7214,15 @@
         nik: nikInput,
         email: email || (nama.toLowerCase().replace(/\s+/g, '.') + '@gmail.com'),
         contractNo: `SPK-2026/RUMA/${selectedRegRoom}`,
+        occupants: occupantsArray,
+        vehicle: vehicleData,
+        vehicles: vehicleData.allVehicles,
         tickets: [],
         emergency: `${emName} · ${emPhone}`,
         deposit: 'Rp ' + calc.depositVal.toLocaleString('id-ID'),
         meterToken: '8899-7766-5544',
-        durationTxt: selectedPayTerm === 'upfront' ? `Lunas di Awal (${calc.durationMonths} Bulan)` : `0 dari ${calc.durationMonths} Bulan Berjalan`,
-        progressPct: selectedPayTerm === 'upfront' ? 100 : 5,
+        durationTxt: isInitialPaid ? `Lunas di Awal (${calc.durationMonths} Bulan)` : `0 dari ${calc.durationMonths} Bulan Berjalan`,
+        progressPct: isInitialPaid ? 100 : 5,
         payHistory: [
           {
             period: selectedPayTerm === 'upfront' 
@@ -5848,8 +7230,10 @@
               : `Tagihan Awal (${calc.rentLabel.includes('Prorata') ? 'Prorata' : 'Bulan 1'} + Escrow Deposit)`,
             amount: 'Rp ' + calc.totalFirstBill.toLocaleString('id-ID'),
             date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
-            method: selectedPayTerm === 'upfront' ? 'BCA Transfer (Lunas Penuh)' : 'Virtual Account Mandiri',
-            status: selectedPayTerm === 'upfront' ? 'Lunas' : 'Belum Bayar'
+            method: isInitialPaid 
+              ? (isStaff ? 'Tunai / Cash (Meja Staf)' : `${paidMethodVal} (Terverifikasi Pemilik)`)
+              : 'Transfer Bank (Menunggu Verifikasi Owner)',
+            status: isInitialPaid ? 'Lunas' : 'Belum Bayar'
           }
         ]
       };
@@ -5865,10 +7249,11 @@
       const waChecked = document.getElementById('sendCredentialsViaWa') && document.getElementById('sendCredentialsViaWa').checked;
       const waMsg = waChecked ? ' Kredensial portal & tanda terima invoice dikirimkan via WhatsApp.' : '';
 
-      if (selectedPayTerm === 'upfront') {
-        RumaUI.showToast(`Penghuni ${nama}${extraStr} di Kamar ${selectedRegRoom} berhasil didaftarkan! Tagihan sewa ${calc.durationMonths === 12 ? '1 Tahun Lunas di Muka' : calc.durationMonths + ' Bulan di Muka'} sebesar Rp ${calc.totalFirstBill.toLocaleString('id-ID')} otomatis tercatat LUNAS.${waMsg}`, 'success');
+      if (isInitialPaid) {
+        const placeTxt = (paidMethodVal.includes('Tunai') && isStaff) ? 'di Kas Meja Staf' : `via ${paidMethodVal}`;
+        RumaUI.showToast(`Penghuni ${nama}${extraStr} di Kamar ${selectedRegRoom} berhasil didaftarkan! Pembayaran Rp ${calc.totalFirstBill.toLocaleString('id-ID')} ${placeTxt} tercatat LUNAS.${waMsg}`, 'success');
       } else {
-        RumaUI.showToast(`Penghuni ${nama}${extraStr} di Kamar ${selectedRegRoom} berhasil didaftarkan! Tagihan awal prorata Rp ${calc.totalFirstBill.toLocaleString('id-ID')} (Sewa + Deposit) otomatis terbit di menu Tagihan dengan status 'Belum Bayar'.${waMsg}`, 'success');
+        RumaUI.showToast(`Penghuni ${nama}${extraStr} di Kamar ${selectedRegRoom} berhasil didaftarkan! Kunci kamar diserahkan, tagihan Rp ${calc.totalFirstBill.toLocaleString('id-ID')} masuk antrean Buku Tagihan (WF-05) untuk diverifikasi Owner besok.${waMsg}`, 'success');
       }
     }
 
@@ -6045,7 +7430,7 @@
       t.payHistory = t.payHistory || [];
       if (diff > 0) {
         t.payHistory.unshift({
-          period: `Selisih Mutasi Kamar Upgraded (${oldRoom} â†’ ${t.room})`,
+          period: `Selisih Mutasi Kamar Upgraded (${oldRoom} → ${t.room})`,
           amount: 'Rp ' + diff.toLocaleString('id-ID'),
           date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
           method: 'Virtual Account BCA',
@@ -6055,7 +7440,7 @@
         t.billLabel = 'Selisih Kamar';
       } else if (diff < 0) {
         t.payHistory.unshift({
-          period: `Kredit Saldo Downgrade (${oldRoom} â†’ ${t.room})`,
+          period: `Kredit Saldo Downgrade (${oldRoom} → ${t.room})`,
           amount: '-Rp ' + Math.abs(diff).toLocaleString('id-ID'),
           date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
           method: 'Kredit Sewa Deposit',
@@ -6063,7 +7448,7 @@
         });
       } else {
         t.payHistory.unshift({
-          period: `Mutasi Kamar Selevel (${oldRoom} â†’ ${t.room})`,
+          period: `Mutasi Kamar Selevel (${oldRoom} → ${t.room})`,
           amount: 'Rp 0',
           date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
           method: 'Mutasi Selevel',
@@ -6350,7 +7735,8 @@
     }
 
     function updateCheckoutRefundCalc() {
-      const lockedVal = 1000000;
+      const t = tenantsData.find(item => item.id === activeTenantId);
+      const lockedVal = t && t.deposit ? (parseInt(t.deposit.replace(/\D/g, ''), 10) || 1000000) : 1000000;
       const inputEl = document.getElementById('checkoutDeductInput');
       let deductVal = 0;
       if (inputEl && currentReconcileMode === 'deduct') {
@@ -6374,12 +7760,128 @@
       }
     }
 
+    const INDO_MONTH_MAP = {
+      'jan': 0, 'januari': 0,
+      'feb': 1, 'februari': 1,
+      'mar': 2, 'maret': 2,
+      'apr': 3, 'april': 3,
+      'mei': 4,
+      'jun': 5, 'juni': 5,
+      'jul': 6, 'juli': 6,
+      'agu': 7, 'ags': 7, 'agustus': 7,
+      'sep': 8, 'september': 8,
+      'okt': 9, 'oktober': 9,
+      'nov': 10, 'november': 10,
+      'des': 11, 'desember': 11
+    };
+
+    function parseIndoDate(str) {
+      if (!str) return new Date();
+      const parts = str.trim().split(/\s+/);
+      if (parts.length >= 3) {
+        const day = parseInt(parts[0], 10);
+        const mKey = parts[1].toLowerCase().replace('.', '');
+        const month = INDO_MONTH_MAP[mKey] !== undefined ? INDO_MONTH_MAP[mKey] : 0;
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
+      return new Date();
+    }
+
+    function parseIndoDateToIso(str) {
+      const d = parseIndoDate(str);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    function formatIndoDateDisplay(date) {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
+    function formatSlashDate(date) {
+      const d = String(date.getDate()).padStart(2, '0');
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      return `${d}/${m}/${date.getFullYear()}`;
+    }
+
+    let activeRenewStartDateObj = null;
+    let activeRenewEndDateFormatted = '';
+
+    function syncRenewDates(t) {
+      const currEndDate = parseIndoDate(t.end);
+      const newStart = new Date(currEndDate.getFullYear(), currEndDate.getMonth(), currEndDate.getDate() + 1);
+      activeRenewStartDateObj = newStart;
+
+      const startInput = document.getElementById('renewStartDate');
+      if (startInput) {
+        startInput.value = formatSlashDate(newStart);
+      }
+
+      updateRenewEndDate();
+    }
+
+    function updateRenewEndDate() {
+      if (!activeRenewStartDateObj) return;
+      const s = activeRenewStartDateObj;
+      const targetMonth = s.getMonth() + currentRenewDuration;
+      const tentative = new Date(s.getFullYear(), targetMonth, s.getDate());
+      tentative.setDate(tentative.getDate() - 1);
+
+      activeRenewEndDateFormatted = formatIndoDateDisplay(tentative);
+      const endInput = document.getElementById('renewEndDate');
+      if (endInput) {
+        endInput.value = formatSlashDate(tentative);
+      }
+    }
+
     function openPerpanjangModal(initialMode = 'renew') {
+      const t = tenantsData.find(item => item.id === activeTenantId);
+      if (t) {
+        // 1. Sinkronisasi Ringkasan Profil & Kontrak Berjalan di Modal
+        const nameEl = document.getElementById('modalPerpanjangName');
+        if (nameEl) nameEl.textContent = t.name;
+
+        const roomEl = document.getElementById('modalPerpanjangRoom');
+        if (roomEl) roomEl.innerHTML = `Unit Kamar ${t.room} &middot; Masa Kontrak Berjalan s.d. ${t.end}`;
+
+        const currentTarifEl = document.getElementById('modalPerpanjangCurrentTarif');
+        if (currentTarifEl) currentTarifEl.textContent = `${t.price} / bln`;
+
+        // 2. Input Tarif Baru & Rollover Deposit
+        const renewPriceInput = document.getElementById('renewPriceInput');
+        if (renewPriceInput) {
+          const rawPrice = t.price ? t.price.replace(/\D/g, '') : '1200000';
+          renewPriceInput.value = parseInt(rawPrice, 10).toLocaleString('id-ID');
+        }
+
+        const rolloverBadge = document.getElementById('renewRolloverDepositBadge');
+        if (rolloverBadge) rolloverBadge.textContent = t.deposit || 'Rp 1.000.000';
+
+        // 3. Deposit Terkunci & Rekening Refund Check-Out
+        const lockedEl = document.getElementById('checkoutLockedDepositTxt');
+        if (lockedEl) lockedEl.textContent = t.deposit || 'Rp 1.000.000';
+        
+        const bankInput = document.getElementById('checkoutBankAccountInput');
+        if (bankInput) {
+          bankInput.value = `BCA 0129384756 a.n. ${t.name}`;
+        }
+
+        // 4. Sinkronisasi Tanggal Perpanjangan Berdasarkan Akhir Kontrak Aktif
+        syncRenewDates(t);
+
+        // 5. Inisialisasi DatePicker Check-Out
+        if (window.RumaDatePicker) {
+          const isoEndDate = parseIndoDateToIso(t.end);
+          RumaDatePicker.init('wrapCheckoutDate', 'checkoutDate', isoEndDate);
+        }
+      }
       document.getElementById('modalPerpanjang').classList.add('open');
       setPerpanjangMode(initialMode);
-      if (window.RumaDatePicker) {
-        RumaDatePicker.init('wrapCheckoutDate', 'checkoutDate', '2027-02-28');
-      }
+      updateCheckoutRefundCalc();
+      calculateRenewTotal();
       lucide.createIcons();
     }
     function closePerpanjangModal() {
@@ -6399,7 +7901,8 @@
       if (currentPerpanjangMode === 'checkout') {
         const inputEl = document.getElementById('checkoutDeductInput');
         const deductVal = (currentReconcileMode === 'deduct' && inputEl) ? parseInt(inputEl.value.replace(/\D/g, '') || '0', 10) : 0;
-        const netVal = Math.max(0, 1000000 - deductVal);
+        const lockedVal = t && t.deposit ? (parseInt(t.deposit.replace(/\D/g, ''), 10) || 1000000) : 1000000;
+        const netVal = Math.max(0, lockedVal - deductVal);
         const netTxt = 'Rp ' + netVal.toLocaleString('id-ID');
 
         // Kembalikan unit kamar ke daftar kamar kosong
@@ -6427,7 +7930,13 @@
       } else {
         // Mode Perpanjang SPK
         if (t) {
-          t.end = '15 Nov 2027';
+          const newPriceInput = document.getElementById('renewPriceInput');
+          const newPrice = newPriceInput && newPriceInput.value ? ('Rp ' + newPriceInput.value) : t.price;
+
+          if (activeRenewEndDateFormatted) {
+            t.end = activeRenewEndDateFormatted;
+          }
+          t.price = newPrice;
           t.countdown = `${currentRenewDuration} Bln Lagi`;
           t.contractCategory = 'aman';
           t.tagClass = 'tag-safe';
@@ -6445,7 +7954,7 @@
           selectTenant(t.id);
         }
 
-        RumaUI.showToast(`Kontrak Kamar ${room} (${name}) berhasil diperpanjang ${currentRenewDuration} Bulan! Tagihan periode baru dijadwalkan otomatis.`, 'success');
+        RumaUI.showToast(`Kontrak Kamar ${room} (${name}) berhasil diperpanjang ${currentRenewDuration} Bulan s.d. ${t ? t.end : ''}! Tagihan periode baru dijadwalkan otomatis.`, 'success');
       }
     }
 
@@ -6536,16 +8045,29 @@
       document.querySelectorAll('#sectionModeRenew .duration-pill-opt').forEach(p => p.classList.remove('active'));
       el.classList.add('active');
 
-      const endDates = {
-        12: '28/02/2028',
-        6: '31/08/2027',
-        3: '31/05/2027',
-        1: '31/03/2027'
-      };
-      const endDateEl = document.getElementById('renewEndDate');
-      if (endDateEl) endDateEl.value = endDates[currentRenewDuration] || '28/02/2028';
-
+      updateRenewEndDate();
       calculateRenewTotal();
+    }
+
+    function formatRupiahInput(input) {
+      let val = input.value.trim();
+      val = val.replace(/,[0-9]{1,2}$/, '');
+      val = val.replace(/\D/g, '');
+      if (!val) {
+        input.value = '';
+        return;
+      }
+      input.value = parseInt(val, 10).toLocaleString('id-ID');
+    }
+
+    function handleRenewPriceInput(input) {
+      formatRupiahInput(input);
+      calculateRenewTotal();
+    }
+
+    function handleCheckoutDeductInput(input) {
+      formatRupiahInput(input);
+      updateCheckoutRefundCalc();
     }
 
     function calculateRenewTotal() {
@@ -6660,6 +8182,11 @@
     function openIzinTamuModal() {
       const t = tenantsData.find(item => item.id === activeTenantId);
       if (!t) return;
+      const guestRoomTitle = document.getElementById('guestRoomTitle');
+      if (guestRoomTitle) guestRoomTitle.textContent = 'Kamar ' + t.room;
+      const guestHostName = document.getElementById('guestHostName');
+      if (guestHostName) guestHostName.textContent = `(Penghuni: ${t.name})`;
+
       document.getElementById('guestNameInput').value = '';
       document.getElementById('guestPhoneInput').value = '';
       selectedGuestBillingOpt = 'paid';
@@ -7177,6 +8704,11 @@
         document.querySelectorAll('.custom-select-trigger.active').forEach(t => t.classList.remove('active'));
         const chevron = document.getElementById('guestRelationChevron');
         if (chevron) chevron.style.transform = 'rotate(0deg)';
+      }
+
+      if (!e.target.closest('.custom-veh-select-wrap')) {
+        document.querySelectorAll('.veh-select-menu.open').forEach(m => m.classList.remove('open'));
+        document.querySelectorAll('.btn-veh-select-trigger.active').forEach(b => b.classList.remove('active'));
       }
     });
 

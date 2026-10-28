@@ -18,7 +18,7 @@ Layar ini menegakkan 4 pilar arsitektur operasional:
    - **Pemilik (Owner)**: Memperoleh visibilitas menyeluruh atas metrik finansial sensitif (pemasukan kotor, pengeluaran, laba bersih, kolektibilitas tagihan), grafik arus kas 6 bulan, akses penuh ke navigasi Laporan (`WF-07`) dan Pengaturan (`WF-09`).
    - **Staf Pengelola (Staff)**: Mengakses dasbor operasional dengan pembatasan ketat (*Zero Confidential Leak* & *Zero Self-Approval*). Indikator peran menampilkan badge *"Staf Operasional"*, navigasi dibatasi pada 5 pill harian, dan akses ke pengaturan properti dinonaktifkan.
 2. **Koleksi Metrik Tiga-Serangkai (Estify Radial Gauge)**: Tiga kartu metrik semi-lingkaran (*semi-circle radial gauge*) menyajikan ringkasan instan tingkat okupansi fisik (73%), kolektibilitas tagihan sewa (82%), dan realisasi pengeluaran terhadap anggaran (84%) tanpa membebani kognisi pengguna.
-3. **Komparasi Finansial & Highlight Properti**: Mengombinasikan visualisasi *Double Bar Chart* 6-bulan (Mei s.d. Oktober 2026) dengan kartu *Hero Property Highlight* berwarna oranye Estify (`#FF7A00`) yang menyajikan laba bersih berjalan (Rp 12,3 Jt) secara elegan dan lugas.
+3. **Komparasi Finansial & Highlight Properti**: Mengombinasikan visualisasi *Double Bar Chart* 6-bulan (Mei s.d. Oktober 2026) dengan kartu *Hero Property Highlight* berwarna oranye Estify (`#FF7A00`) yang menyajikan laba bersih berjalan (Rp 12,30 Jt) secara elegan dan lugas.
 4. **Infinite Looping Room Carousel**: Menampilkan katalog 15 unit kamar kost secara horizontal yang mengalir mulus (*infinite wrap-around*), dilengkapi filter instan popover nir-rongga (*zero-void*), pencarian teks bebas lag, dan navigasi langsung ke berkas dossier kamar (`WF-03`).
 
 ```
@@ -28,13 +28,13 @@ Layar ini menegakkan 4 pilar arsitektur operasional:
 │ 1. KOLOM UTAMA KIRI (~68% FLOW CONTAINER)                        │ 2. SIDEBAR KANAN (360PX FIXED)│
 │    ├─ ROW 1: 3 GAUGE METRIC CARDS (CMP-06)                       │    ├─ CARD 1: KONDISI PROPERTI│
 │    │  • Okupansi Kamar (11/15 Unit · 73% Gauge)                  │    │  • Progress Pengerjaan   │
-│    │  • Tagihan Lunas (Rp 16,5 Jt · 82% Gauge)                   │    │  • Menunggu Penugasan    │
-│    │  • Pengeluaran (Rp 4,2 Jt · 84% Gauge)                      │    │  • Laporan Baru          │
+│    │  • Tagihan Lunas (Rp 16,50 Jt · 82% Gauge)                  │    │  • Menunggu Penugasan    │
+│    │  • Pengeluaran (Rp 4,20 Jt · 84% Gauge)                     │    │  • Laporan Baru          │
 │    ├─ ROW 2: DOUBLE BAR CHART & HIGHLIGHT CARD                   │    │  • CTA 44px: Tiket (WF-08)│
 │    │  • Arus Kas 6 Bulan (Mei - Okt 2026) + Hover Tooltip        │    │                               │
 │    │  • Popover Filter Tahun (2026, 2025, 2024)                  │    ├─ CARD 2: AKTIVITAS HARIAN│
-│    │  • Orange Highlight: Kost Budi Makmur · Net Rp 12,3 Jt      │    │  • Popover Filter Waktu  │
-│    ├─ ROW 3: KAMAR KOST TERKINI (CAROUSEL 15 UNIT)               │    │  • 5 Feed Log Interaktif │
+│    │  • Orange Highlight: Kost Budi Makmur · Net Rp 12,30 Jt     │    │  • Popover Filter Waktu  │
+│    ├─ ROW 3: KAMAR KOST TERKINI (CAROUSEL 15 UNIT)               │    │  • 7 Feed Log Interaktif │
 │    │  • Toolbar 40px: Search Capsule + Filter Popover Status     │    │  • Deep Links Operasional│
 │    │  • Infinite Scroll Carousel (Tampil Awal 3 Unit)            │    │  • Link Semua Aktivitas  │
 │    │  • Kartu Kamar 3-Baris + In-Card Arrow 28px                 │    │                               │
@@ -109,7 +109,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 | **Kamar Dalam Perbaikan** | 1 Unit | 7% Maintenance | KM-B05 (Tiket Servis AC #T-04) |
 | **Penerimaan Sewa Lunas** | Rp 16.500.000 | **82% Kolektibilitas** | Target potensi sewa penuh: Rp 20.100.000 |
 | **Pengeluaran Operasional**| Rp 4.200.000 | **84% Realisasi Budget**| Anggaran operasional bulanan: Rp 5.000.000 |
-| **Pemasukan Bersih (Net)** | **Rp 12.300.000** | **+15% Trend Laba** | Pemasukan (16,5 Jt) - Pengeluaran (4,2 Jt) |
+| **Pemasukan Bersih (Net)** | **Rp 12.300.000** | **+15% Trend Laba** | Pemasukan (16,50 Jt) - Pengeluaran (4,20 Jt) |
 | **Distribusi Tiket Kerusakan**| 4 Tiket Aktif | 100% Beban Kerja | 2 Dikerjakan (50%), 1 Menunggu (25%), 1 Baru (25%) |
 
 ---
@@ -127,8 +127,8 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Hasil yang Diharapkan**:
   - Topbar menampilkan 7 pill menu utama lengkap: `Dashboard` (status aktif berlatar `#111111`), `Kamar`, `Penghuni`, `Tagihan`, `Pembayaran`, `Laporan`, `Tiket`.
   - Icon profil pengguna menampilkan inisial `"BS"` dengan dropdown yang menyertakan tautan ke `WF-09-pengaturan.html`.
-  - Kartu Metrik Baris 1 menampilkan nominal nominal rupiah lengkap: Tagihan Lunas (Rp 16,5 Jt) dan Pengeluaran (Rp 4,2 Jt).
-  - Kartu Highlight Oranye menampilkan Pemasukan Bersih sebesar Rp 12,3 Jt tanpa sensor.
+  - Kartu Metrik Baris 1 menampilkan nominal nominal rupiah lengkap: Tagihan Lunas (Rp 16,50 Jt) dan Pengeluaran (Rp 4,20 Jt).
+  - Kartu Highlight Oranye menampilkan Pemasukan Bersih sebesar Rp 12,30 Jt tanpa sensor.
   - Tautan *"Lihat Laporan Lengkap"* pada grafik mengarah ke `WF-07-laporan.html`.
 
 ---
@@ -178,8 +178,8 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
      - Periksa judul, ikon panah pengeluaran, nominal rupiah, dan arc SVG merah.
 - **Hasil yang Diharapkan**:
   - **Kartu 1**: Nilai menampilkan `"11"` dengan sub-nilai `"/ 15 Kamar"`. Arc lingkaran luar berwana oranye `#FF7A00` dengan `stroke-dashoffset="29"`, teks tengah SVG menunjukkan `"73%"`. Badge tren menampilkan `"+1 Unit"` disertai ikon Lucide `arrow-up`.
-  - **Kartu 2**: Nilai menampilkan `"Rp 16,5 Jt"`. Arc SVG berwarna hitam `#111111` dengan `stroke-dashoffset="19"`, teks tengah SVG menunjukkan `"82%"`. Badge tren menampilkan `"+8%"` disertai ikon Lucide `arrow-up`.
-  - **Kartu 3**: Nilai menampilkan `"Rp 4,2 Jt"`. Arc SVG menggunakan warna semantik Danger `#EF4444` dengan `stroke-dashoffset="17"`, teks tengah SVG menunjukkan `"84%"`. Badge tren menampilkan `"-4%"` disertai ikon Lucide `arrow-down`.
+  - **Kartu 2**: Nilai menampilkan `"Rp 16,50 Jt"`. Arc SVG berwarna hitam `#111111` dengan `stroke-dashoffset="19"`, teks tengah SVG menunjukkan `"82%"`. Badge tren menampilkan `"+8%"` disertai ikon Lucide `arrow-up`.
+  - **Kartu 3**: Nilai menampilkan `"Rp 4,20 Jt"`. Arc SVG menggunakan warna semantik Danger `#EF4444` dengan `stroke-dashoffset="17"`, teks tengah SVG menunjukkan `"84%"`. Badge tren menampilkan `"-4%"` disertai ikon Lucide `arrow-down`.
 
 ---
 
@@ -225,7 +225,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Hasil yang Diharapkan**:
   - Teks metadata menampilkan: *"Jl. Flamboyan No. 12 · 15 Unit"*.
   - Judul besar properti berbunyi *"Kost Budi Makmur"*.
-  - Angka laba bersih tampil tegas dengan ukuran 30px bold: `"Rp 12,3 Jt"` disertai badge trend `"+15%"` dengan ikon Lucide `arrow-up`.
+  - Angka laba bersih tampil tegas dengan ukuran 30px bold: `"Rp 12,30 Jt"` disertai badge trend `"+15%"` dengan ikon Lucide `arrow-up`.
   - Background kartu bersih dengan motif garis kontur arsitektural halus tanpa bocor (*overflow hidden, border-radius 20px*).
   - Mengklik tombol panah mengarahkan navigasi browser ke katalog kamar lengkap `WF-03-kamar.html`.
 
@@ -309,7 +309,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
   3. Periksa kestabilan tinggi kartu induk (`.properties-section-card`) dan tinggi kontainer empty state.
 - **Hasil yang Diharapkan**:
   - Seluruh 15 kartu unit disembunyikan (`display: none`).
-  - Panel pesan kosong `#roomEmptySearch` muncul di tengah (`display: flex`) dengan `height: 100%; min-height: 212px;`, mengisi penuh kontainer carousel `.room-cards-3col` (tinggi stabil 228px), lengkap dengan ikon Lucide `search-x` (32px Slate), judul *"Tidak ada unit kamar yang cocok"*, dan teks bantuan *"Coba nomor kamar lain (misal: A-01, B-03, C-05) atau nama penyewa"*.
+  - Panel pesan kosong `#roomEmptySearch` muncul di tengah (`display: flex`) dengan `height: 100%; min-height: 236px;`, mengisi penuh kontainer carousel `.room-cards-3col` (tinggi stabil 252px), lengkap dengan ikon Lucide `search-x` (32px Slate), judul *"Tidak ada unit kamar yang cocok"*, dan teks bantuan *"Coba nomor kamar lain (misal: A-01, B-03, C-05) atau nama penyewa"*.
   - Tinggi kartu induk `.properties-section-card` tetap 100% terkunci stabil pada ketinggian 306px (`height: 306px; min-height: 306px;`), persis membungkus kartu unit kamar tanpa ruang kosong berlebih di bagian bawah, dan dasar bawahnya sejajar rata (*flush bottom*) dengan kartu Aktivitas Terkini di kolom kanan (*zero layout shift / CLS = 0*).
 
 ---
@@ -685,7 +685,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Kondisi Awal**: Pengguna mengakses dasbor sebagai Staf Pengelola (`WF-02-dashboard.html?role=staf`).
 - **Langkah-langkah Pengujian**:
   1. Amati tampilan Baris 1 (Kartu Metrik Tiga-Serangkai): periksa apakah kartu *Tagihan Lunas* dan *Pengeluaran* menampilkan sensor atau mode pembatasan operasional.
-  2. Amati tampilan Baris 2 (Kartu Oranye Highlight Properti): periksa angka *Pemasukan Bersih* (Rp 12,3 Jt).
+  2. Amati tampilan Baris 2 (Kartu Oranye Highlight Properti): periksa angka *Pemasukan Bersih* (Rp 12,30 Jt).
   3. Periksa header kartu *Arus Kas & Operasional* dan klik tombol panah pintas eksternal (`.pill-arrow-btn[href="WF-07-laporan.html"]`).
   4. Coba ketikkan URL `WF-07-laporan.html?role=staf` secara langsung pada address bar browser.
 - **Hasil yang Diharapkan**:
@@ -718,8 +718,8 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Kondisi Awal**: Pemilik berada pada dasbor utama.
 - **Langkah-langkah Pengujian**:
   1. Klik Kartu Metrik 1 (*Okupansi Kamar 11/15 Kamar*).
-  2. Kembali ke dasbor, lalu klik Kartu Metrik 2 (*Tagihan Lunas Rp 16,5 Jt*).
-  3. Kembali ke dasbor, lalu klik Kartu Metrik 3 (*Pengeluaran Rp 4,2 Jt*).
+  2. Kembali ke dasbor, lalu klik Kartu Metrik 2 (*Tagihan Lunas Rp 16,50 Jt*).
+  3. Kembali ke dasbor, lalu klik Kartu Metrik 3 (*Pengeluaran Rp 4,20 Jt*).
 - **Hasil yang Diharapkan**:
   - Setiap kartu memiliki kursor bertipe `cursor: pointer` dan respon hover visual (`transform: translateY(-2px)`).
   - Pada langkah 1, klik mengarahkan rute browser langsung ke direktori master kamar `WF-03-kamar.html`.
@@ -767,7 +767,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
   3. Amati kontainer daftar aktivitas `.tenant-message-list`.
   4. Periksa keselarasan tinggi kartu Aktivitas Terkini terhadap kartu Kamar Kost Terkini di kolom kiri.
 - **Hasil yang Diharapkan**:
-  - Daftar 5 baris aktivitas disembunyikan secara bersih.
+  - Daftar 7 baris aktivitas disembunyikan secara bersih.
   - Kontainer menampilkan panel Empty State yang elegan: ikon Lucide `clock` atau `inbox` (28px Muted Slate), judul *"Belum ada aktivitas hari ini"*, dan pesan panduan *"Transaksi pembayaran dan laporan kerusakan baru akan tercatat otomatis di sini"*.
   - Tinggi total kartu Aktivitas Terkini tetap stabil membentang (*flex auto-stretch*) sehingga dasar bawahnya tetap sejajar rata (*flush bottom*) dengan batas bawah kartu Kamar Kost Terkini (*zero layout shift / CLS = 0*).
 
@@ -808,7 +808,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Langkah-langkah Pengujian**:
   1. Periksa tinggi batang pemasukan bulan Mei (Rp 13,5 Jt) dan pengeluaran (Rp 2,8 Jt).
   2. Periksa tinggi batang pemasukan bulan Juli (Rp 18,4 Jt) dan pengeluaran (Rp 3,2 Jt).
-  3. Periksa tinggi batang bulan berjalan Oktober (Rp 16,5 Jt pemasukan dan Rp 4,2 Jt pengeluaran).
+  3. Periksa tinggi batang bulan berjalan Oktober (Rp 16,50 Jt pemasukan dan Rp 4,20 Jt pengeluaran).
   4. Periksa posisi 6 garis gridline horizontal (`.chart-grid-line`: `line-50` s.d. `line-0`).
 - **Hasil yang Diharapkan**:
   - Batang Mei: tinggi pemasukan tepat 108px ($13.5 \times 8$) dan pengeluaran 22px ($2.8 \times 8$).
@@ -951,7 +951,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
   4. Lanjutkan pengguliran ke kanan hingga melewati unit klon akhir.
 - **Hasil yang Diharapkan**:
   - Transisi CSS dan persentase flex basis kartu kamar (`calc((100% - 28px) / 3)`) menyesuaikan lebar baru secara instan dan elastis.
-  - Kartu kamar tidak mengalami keruntuhan tinggi (*zero vertical collapse*) dan tetap sejajar rapi pada tinggi 228px.
+  - Kartu kamar tidak mengalami keruntuhan tinggi (*zero vertical collapse*) dan tetap sejajar rapi pada tinggi 252px.
   - Mekanisme *infinite loop reset* tetap mendeteksi batas offset set kartu orisinil secara mulus tanpa melompat liar (*zero erratic scroll jump*).
 
 ---

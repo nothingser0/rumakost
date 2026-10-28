@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RumaKost · Matriks Penagihan Bulanan & Invoice Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -25,6 +28,27 @@
       margin: 0;
       font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       -webkit-font-smoothing: antialiased;
+    }
+    /* Tabular Figures Compliance (DESIGN.md Bab 3.2 & Bab 8 Gate 6) */
+    .tabular-nums,
+    .billing-table td,
+    .metric-value-huge,
+    .clean-big-number,
+    .dossier-total-number,
+    .receipt-kv-table td.val,
+    .dark-headline-val,
+    .unit-pill-tag,
+    .amount-number,
+    .calc-row-val,
+    .ledger-count-badge {
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+    }
+    /* Form Input Anti-Zoom Compliance (DESIGN.md Bab 3.3) */
+    @media (max-width: 640px) {
+      input, select, textarea, .form-input-custom, .form-textarea-custom, .search-capsule-box input {
+        font-size: 16px !important;
+      }
     }
 
     /* Top canopy overlay masks content scrolling into top 20px gap */
@@ -154,6 +178,7 @@
         grid-template-columns: 1fr 1fr;
       }
       .metric-card-action {
+      overflow: hidden !important;
         grid-column: span 2;
       }
     }
@@ -163,6 +188,7 @@
         grid-template-columns: 1fr;
       }
       .metric-card-action {
+      overflow: hidden !important;
         grid-column: span 1;
       }
     }
@@ -170,6 +196,7 @@
     /* ── CARD 1 & 2: ESTIFY METRIC CARDS ── */
     .metric-card-estify,
     .metric-card-kas {
+      overflow: hidden !important;
       background: var(--bg-card);
       border-radius: 20px;
       padding: 22px 24px 20px;
@@ -183,7 +210,7 @@
       box-sizing: border-box;
       gap: 16px;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
       transition: transform var(--transition-fast), box-shadow var(--transition-fast);
     }
 
@@ -380,6 +407,7 @@
 
     /* ── CARD 2: SISA PIUTANG BERJALAN ── */
     .metric-card-piutang {
+      overflow: hidden !important;
       background: var(--bg-card);
       border-radius: 20px;
       padding: 22px 24px 20px;
@@ -393,7 +421,7 @@
       box-sizing: border-box;
       gap: 16px;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
       transition: transform var(--transition-fast), box-shadow var(--transition-fast);
     }
 
@@ -404,6 +432,7 @@
 
     /* ── CARD 3: EFISIENSI & DISTRIBUSI (Clean White Estify Card — 156PX · Konsisten WF-02) ── */
     .metric-card-action {
+      overflow: hidden !important;
       background: var(--bg-card);
       border-radius: 20px;
       padding: 16px 22px 14px;
@@ -417,7 +446,7 @@
       box-sizing: border-box;
       gap: 8px;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
       transition: transform var(--transition-fast), box-shadow var(--transition-fast);
     }
@@ -558,12 +587,13 @@
 
     /* ── CARD 3 INTEGRATED DISTRIBUTION BAR & INTERACTIVE LEGENDS ── */
     .dark-bar-track {
+      overflow: hidden !important;
       width: 100%;
       height: 7px;
       background: #F1F5F9;
       border-radius: 9999px;
       display: flex;
-      overflow: hidden;
+      overflow-y: auto;
       gap: 2px;
     }
 
@@ -629,11 +659,12 @@
       }
       .invoice-dossier-card {
         position: static;
-        max-height: none;
+        height: auto !important;
+        max-height: none !important;
       }
     }
-
     .master-ledger-card {
+      height: fit-content !important;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-2xl);
@@ -644,7 +675,50 @@
       gap: 14px;
       box-sizing: border-box;
       min-width: 0;
-      height: fit-content;
+      height: calc(100vh - 130px);
+      min-height: calc(100vh - 130px);
+    }
+    .dossier-pinned-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ECEEF2;
+      flex-shrink: 0;
+      margin-bottom: 12px;
+    }    .dossier-scroll-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      min-height: 0;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: #CBD5E1 transparent;
+    }    .dossier-scroll-body::-webkit-scrollbar {
+      width: 4px;
+    }    .dossier-scroll-body::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+/* dummy */ @media all { .dummy-wrap-fix { /*
+*/
+      }
+    }
+
+.dup-unused { display: none !important;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: 18px 20px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-sizing: border-box;
+      min-width: 0;
+      height: calc(100vh - 130px);
       min-height: calc(100vh - 130px);
     }
 
@@ -894,17 +968,22 @@
       align-items: center;
       gap: 8px;
       background: #F4F5F7;
-      border: 1px solid transparent;
+      border: 1.5px solid #ECEEF2;
       border-radius: var(--radius-full);
       padding: 0 14px;
       height: 40px;
       flex: 1;
-      min-width: 180px;
-      max-width: 300px;
+      min-width: 220px;
+      max-width: 360px;
       transition: all var(--transition-fast);
       box-sizing: border-box;
     }
 
+    .search-capsule-box:hover {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
     .search-capsule-box:focus-within {
       background: #FFFFFF;
       border-color: var(--brand-primary);
@@ -1036,14 +1115,15 @@
     }
 
     .billing-table th {
+      overflow: hidden !important;
       padding: 10px 12px;
       font-size: 11px;
       font-weight: 700;
       color: #64748B;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.5px; position: sticky; top: 0; z-index: 5; background: #F8FAFC;
       white-space: nowrap;
-      overflow: hidden;
+      overflow-y: auto;
       text-overflow: ellipsis;
       box-sizing: border-box;
     }
@@ -1075,12 +1155,13 @@
     }
 
     .billing-table td {
+      overflow: hidden !important;
       padding: 8px 12px;
       vertical-align: middle;
       color: var(--text-main);
       height: 52px;
       box-sizing: border-box;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     .unit-pill-tag {
@@ -1125,18 +1206,20 @@
     }
 
     .tenant-name-main {
+      overflow: hidden !important;
       font-weight: 600;
       color: var(--text-main);
       white-space: nowrap;
-      overflow: hidden;
+      overflow-y: auto;
       text-overflow: ellipsis;
     }
 
     .tenant-phone-sub {
+      overflow: hidden !important;
       font-size: 11px;
       color: var(--text-muted);
       white-space: nowrap;
-      overflow: hidden;
+      overflow-y: auto;
       text-overflow: ellipsis;
     }
 
@@ -1148,18 +1231,20 @@
     }
 
     .due-main-date {
+      overflow: hidden !important;
       font-weight: 600;
       font-size: 12px;
       white-space: nowrap;
-      overflow: hidden;
+      overflow-y: auto;
       text-overflow: ellipsis;
     }
 
     .due-chip {
+      overflow: hidden !important;
       font-size: 11px;
       font-weight: 600;
       white-space: nowrap;
-      overflow: hidden;
+      overflow-y: auto;
       text-overflow: ellipsis;
     }
 
@@ -1180,11 +1265,12 @@
     }
 
     .mini-progress-track {
+      overflow: hidden !important;
       width: 70px;
       height: 4.5px;
       background: #E2E8F0;
       border-radius: 999px;
-      overflow: hidden;
+      overflow-y: auto;
       margin-top: 3px;
     }
 
@@ -1244,7 +1330,7 @@
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
-      border: 1px solid transparent;
+      border: 1.5px solid #ECEEF2;
       transition: all var(--transition-fast);
       background: transparent;
     }
@@ -1377,7 +1463,7 @@
     /* ══════════════════════════════════════════════════════════════
        RIGHT COLUMN: DIGITAL PAPER INVOICE DOSSIER (SCR-10 STICKY)
        ══════════════════════════════════════════════════════════════ */
-    .invoice-dossier-card {
+    .invoice-dossier-card { overflow: hidden !important; overflow-y: hidden !important; gap: 0 !important;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-2xl);
@@ -1389,11 +1475,57 @@
       box-sizing: border-box;
       position: sticky;
       top: 110px;
-      height: fit-content;
+      height: calc(100vh - 130px);
+      max-height: calc(100vh - 130px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #CBD5E1 transparent;
+    /* dossier-card-scrollbar-clean */ .dummy-del-scrollbar { overflow-y: hidden !important;
+      width: 4px;
+    }    .invoice-dossier-card::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    .dossier-pinned-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ECEEF2;
+      flex-shrink: 0;
+      margin-bottom: 12px;
+    }    .dossier-scroll-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      min-height: 0;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: #CBD5E1 transparent;
+    }    .dossier-scroll-body::-webkit-scrollbar {
+      width: 4px;
+    }    .dossier-scroll-body::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-2xl);
+      padding: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 110px;
+      height: calc(100vh - 130px);
       max-height: calc(100vh - 130px);
       overflow-y: auto;
       scrollbar-width: none;
-      -ms-overflow-style: none;
+      -ms-overflow-style: none; overflow-y: hidden !important;
     }
 
     .invoice-dossier-card::-webkit-scrollbar {
@@ -1476,7 +1608,7 @@
       gap: 5px;
       width: 100%;
       white-space: nowrap;
-      overflow: hidden;
+      overflow-y: auto;
       text-overflow: ellipsis;
     }
 
@@ -1629,7 +1761,7 @@
       height: 6px;
       background: #FED7AA;
       border-radius: 999px;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     .progress-bar-fill {
@@ -1711,7 +1843,7 @@
       border-color: #94A3B8;
     }
 
-    .dossier-actions-col {
+    .dossier-actions-col { margin-top: auto; flex-shrink: 0; border-top: 1px solid #ECEEF2; padding-top: 14px; background: var(--bg-card);
       display: flex;
       flex-direction: column;
       gap: 9px;
@@ -1825,7 +1957,7 @@
       font-weight: 600;
       color: var(--text-main);
       white-space: nowrap;
-      overflow: hidden;
+      overflow-y: auto;
       text-overflow: ellipsis;
     }
 
@@ -2389,7 +2521,7 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-y: auto;
       transform: scale(0.96);
       transition: transform var(--transition-normal);
       max-height: 88vh;
@@ -2517,13 +2649,22 @@
     .form-label-custom {
       font-size: 12px;
       font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: default !important;
+      user-select: text;
+    } /* .dummy {
+      font-size: 12px;
+      font-weight: 600;
       color: var(--text-secondary);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .form-input-custom {
+*/  .form-input-custom { font-weight: 500; font-feature-settings: "tnum" 1;
       height: 42px !important;
       border: 1.5px solid var(--border-input, #E2E8F0);
       border-radius: 12px;
@@ -2829,24 +2970,35 @@
 
       <!-- Card 3: Efisiensi & Distribusi Penagihan (Clean White Estify Card — 156px · Konsisten WF-02) -->
       <div class="metric-card-action">
-        <!-- Baris Atas: Icon Square, Judul 14px, Siklus & Tombol WA -->
+        <!-- Baris Atas: Icon Square, Judul 14px & Badge Siklus -->
         <div class="metric-card-top dark-clean-top">
           <div class="metric-title-group">
             <div class="metric-icon-sq is-brand">
               <i data-lucide="pie-chart" style="width: 17px; height: 17px;"></i>
             </div>
             <span class="metric-lbl-title" style="color: #0F172A; font-weight: 700;">Efisiensi &amp; Distribusi Tagihan</span>
-            <span class="metric-badge-pill dark-cycle-tag">
-              <i data-lucide="calendar" style="width: 11px; height: 11px;"></i>
-              <span>Okt 2026</span>
+          </div>
+          <span class="metric-badge-pill dark-cycle-tag">
+            <i data-lucide="calendar" style="width: 11px; height: 11px;"></i>
+            <span>Okt 2026</span>
+          </span>
+        </div>
+        <!--
+          </span>
+        </div>
+
+
+
+
             </span>
           </div>
-          <button type="button" class="dark-btn-primary" onclick="openModalBroadcast()" title="Kirim Pengingat Tagihan WhatsApp ke 4 Kamar Belum Lunas">
-            <i data-lucide="message-square" style="width: 13px; height: 13px;"></i>
-            <span>Ingatkan via WA</span>
-          </button>
+
+
+
+
         </div>
         
+        -->
         <!-- Baris Tengah: Headline 26px Angka & Rasio Realisasi -->
         <div class="dark-clean-middle">
           <div style="display: flex; align-items: baseline; gap: 8px;">
@@ -2914,10 +3066,11 @@
               <i data-lucide="calendar" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
               <span>Siklus Penagihan: <strong style="color: #0F172A;">1–31 Oktober 2026</strong></span>
             </div>
-            <button type="button" class="btn-export-csv" onclick="exportBillingMatrixToCSV()" title="Ekspor seluruh data penagihan bulan berjalan ke file CSV (Excel)">
+            <button type="button" class="btn-export-csv" onclick="openModalBroadcast()" title="Kirim Pengingat Tagihan Masuk via WhatsApp Massal"><i data-lucide="megaphone" style="width: 13px; height: 13px; color: #16A34A;"></i><span>Siaran WA</span></button><button type="button" class="btn-export-csv" onclick="exportBillingMatrixToCSV()" title="Ekspor seluruh data penagihan bulan berjalan ke file CSV (Excel)">
               <i data-lucide="download" style="width: 13px; height: 13px;"></i>
               <span>Ekspor CSV</span>
             </button>
+  
           </div>
         </div>
 
@@ -2925,10 +3078,10 @@
         <div class="ledger-controls-row">
           <div class="search-capsule-box">
             <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8; flex-shrink: 0;"></i>
-            <input type="text" id="billSearchInput" placeholder="Cari nama penghuni, kamar, atau invoice..." oninput="handleSearch(this.value)">
-            <button type="button" id="clearSearchBtn" class="btn-clear-search" onclick="clearSearch()" title="Hapus pencarian">
-              <i data-lucide="x" style="width: 11px; height: 11px;"></i>
-            </button>
+            <input type="text" id="billSearchInput" placeholder="Cari penghuni, kamar, invoice..." oninput="handleSearch(this.value)">
+            <button type="button" id="clearSearchBtn" class="btn-clear-search" onclick="clearSearch()" title="Hapus pencarian"><i data-lucide="x" style="width: 11px; height: 11px;"></i></button>
+
+  
           </div>
 
           <div class="filter-pills-row">
@@ -2964,14 +3117,15 @@
                 <span style="font-size: 11px; background: var(--brand-primary); color: #FFFFFF; font-weight: 600; padding: 1px 6px; border-radius: 6px;" id="bannerDraftCount">3 Draf Belum Terbit</span>
               </div>
               <div style="font-size: 11px; color: #64748B; margin-top: 1px;">
-                Penghuni <strong>belum dapat melihat tagihan</strong> ini di portal. Silakan sesuaikan biaya listrik/air/diskon terlebih dahulu, lalu klik tombol verifikasi di bawah atau per kamar.
+                Penghuni <strong>belum dapat melihat tagihan</strong> ini di portal. Silakan sesuaikan biaya tambahan/tamu/diskon jika ada, lalu klik tombol terbitkan di bawah atau per unit kamar.
               </div>
             </div>
           </div>
           <button type="button" class="btn-action-orange" style="height: 36px; padding: 0 16px; font-size: 12px; flex-shrink: 0;" onclick="verifyAllDrafts()">
             <i data-lucide="check-check" style="width: 14px; height: 14px;"></i>
-            <span>Verifikasi &amp; Terbitkan Semua Draf</span>
+            <span>Terbitkan Semua Draf ke Penghuni</span>
           </button>
+
         </div>
 
         <!-- Data Table (SCR-09) -->
@@ -3011,6 +3165,7 @@
               <i data-lucide="chevron-left" style="width: 13px; height: 13px;"></i>
               <span>Prev</span>
             </button>
+  
             <div class="page-numbers-cluster" id="pageNumbersCluster">
               <button type="button" class="btn-page-num active" onclick="goToBillingPage(1)">1</button>
               <button type="button" class="btn-page-num" onclick="goToBillingPage(2)">2</button>
@@ -3019,6 +3174,7 @@
               <span>Next</span>
               <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i>
             </button>
+  
           </div>
         </div>
 
@@ -3030,7 +3186,7 @@
       <aside class="invoice-dossier-card" id="invoiceDossierPane">
         
         <!-- Dossier Header Strip -->
-        <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 2px;">
+        <div class="dossier-pinned-header">
           <h4 style="margin: 0; font-size: 13px; font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 7px;">
             <i data-lucide="receipt" style="width: 16px; height: 16px; color: var(--brand-primary);"></i>
             <span>Dossier Tagihan Sewa</span>
@@ -3038,14 +3194,14 @@
           <span style="font-size: 11px; font-weight: 600; background: #F1F5F9; color: #475569; padding: 2px 7px; border-radius: 6px;">Live Preview</span>
         </div>
 
-        <div class="paper-invoice-sheet">
+        <div class="dossier-scroll-body" id="dossierScrollBody"><div class="paper-invoice-sheet">
           <div class="paper-header">
             <div class="paper-header-top-row">
               <div class="paper-invoice-no">
                 <span id="dossierInvId">#INV-202610-04</span>
-                <button type="button" class="btn-copy-id" onclick="copyInvoiceId()" title="Salin Nomor Invoice">
-                  <i data-lucide="copy" style="width: 12px; height: 12px;"></i>
-                </button>
+                <button type="button" class="btn-copy-id" onclick="copyInvoiceId()" title="Salin Nomor Invoice"><i data-lucide="copy" style="width: 12px; height: 12px;"></i></button>
+
+      
               </div>
               <span class="paper-stamp-badge" id="paperStampBadge" style="background: #FFF7ED; color: #EA580C; border: 1px solid #FFEDD5;">JATUH TEMPO</span>
             </div>
@@ -3060,6 +3216,17 @@
             </div>
             <p class="dossier-draft-notice-desc">
               Tagihan ini belum dapat dilihat oleh penghuni di portal. Anda dapat klik <strong>Edit / Diskon</strong> untuk menyesuaikan biaya sebelum memverifikasi &amp; menerbitkannya.
+            </p>
+          </div>
+
+          <!-- Notice Khusus Verifikasi Bukti Transfer Masuk -->
+          <div id="dossierVerifyNotice" style="display: none; background: #FFFBEB; border: 1.5px solid #FDE68A; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #B45309;">
+              <i data-lucide="shield-alert" style="width: 14px; height: 14px; color: #D97706; flex-shrink: 0;"></i>
+              <span>Bukti Transfer Diunggah Penghuni</span>
+            </div>
+            <p style="font-size: 11px; color: #92400E; margin: 4px 0 0; line-height: 1.4;">
+              Penghuni telah mengunggah bukti bayar via <strong>Transfer BCA</strong> senilai total tagihan. Silakan periksa mutasi rekening &amp; klik <strong>Verifikasi Pembayaran Masuk</strong> di bawah untuk menyetujui transaksi.
             </p>
           </div>
 
@@ -3104,10 +3271,10 @@
             </div>
             <div class="breakdown-item-row" id="dossierCreditRow" style="display: none;">
               <span style="display: flex; align-items: center; gap: 5px;">
-                <span>Saldo Kredit Mengendap:</span>
-                <span style="font-size: 11px; color: #16A34A; background: #DCFCE7; padding: 1px 5px; border-radius: 4px; font-weight: 600;">Bulan Depan</span>
+                <span style="white-space: nowrap;">Kelebihan Bayar:</span>
+                <span style="font-size: 10px; color: #16A34A; background: #DCFCE7; border: 1px solid #BBF7D0; padding: 1px 5px; border-radius: 4px; font-weight: 600; white-space: nowrap;">Kredit Mengendap</span>
               </span>
-              <strong id="dossierCreditVal" style="color: #16A34A;">+ Rp 50.000</strong>
+              <strong id="dossierCreditVal" class="tnum" style="color: #16A34A; white-space: nowrap; flex-shrink: 0; font-weight: 700;">+ Rp 50.000</strong>
             </div>
             <div class="breakdown-item-row">
               <span>Iuran Sampah & Wi-Fi:</span>
@@ -3174,6 +3341,8 @@
           </div>
         </div>
 
+        </div> <!-- End dossier-scroll-body -->
+
         <!-- Action Footer (Strict Anti-Slop: Obsidian Black Primary + Clear Hierarchy) -->
         <div class="dossier-actions-col">
           <!-- Primary CTA (Black Button) -->
@@ -3181,36 +3350,44 @@
             <i data-lucide="plus-circle" id="btnDossierPrimaryIcon" style="width: 15px; height: 15px;"></i>
             <span id="btnDossierPrimaryText">Catat Pembayaran Masuk</span>
           </button>
+
           
           <!-- Secondary Actions Grid 1: WhatsApp & Edit/Diskon -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <button type="button" class="btn-dossier-secondary-pill" onclick="sendInvoiceWhatsApp()" title="Kirim Nota Tagihan via WhatsApp">
+          <div id="dossierSecondaryRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button type="button" class="btn-dossier-secondary-pill" id="btnDossierSendWa" onclick="sendInvoiceWhatsApp()" title="Kirim Tagihan via WhatsApp">
               <i data-lucide="send" style="width: 13px; height: 13px; color: #16A34A;"></i>
-              <span>Kirim ke WA</span>
+              <span id="btnDossierSendWaText">Kirim ke WA</span>
             </button>
-            <button type="button" class="btn-dossier-secondary-pill" onclick="openModalAdjustInvoice()" title="Sesuaikan Nominal, Beri Diskon, atau Tambahan Biaya Tagihan Berjalan">
+  
+            <button type="button" class="btn-dossier-secondary-pill" id="btnDossierEdit" onclick="openModalAdjustInvoice()" title="Sesuaikan Nominal, Beri Diskon, atau Tambahan Biaya Tagihan Berjalan">
               <i data-lucide="sliders" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
               <span>Edit / Diskon</span>
             </button>
+  
           </div>
 
-          <!-- Secondary Actions Grid 2: Cetak Kuitansi & Link Portal -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <button type="button" class="btn-dossier-secondary-pill" onclick="openReceiptModal()" title="Lihat / Cetak Kuitansi Resmi">
-              <i data-lucide="printer" style="width: 13px; height: 13px; color: #475569;"></i>
-              <span>Cetak Kuitansi</span>
-            </button>
-            <button type="button" class="btn-dossier-secondary-pill" onclick="copyTenantPortalLink()" title="Salin Tautan Portal Tagihan Penghuni">
-              <i data-lucide="external-link" style="width: 13px; height: 13px; color: var(--brand-primary);"></i>
-              <span>Link Portal</span>
-            </button>
+          <!-- Secondary Action: Cetak Kuitansi Resmi -->
+          <!--
+          <div id="dossierSecondaryRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            -->
+          <button type="button" class="btn-dossier-secondary-pill" id="btnDossierReceipt" onclick="openReceiptModal()" style="width: 100%; display: none;" title="Lihat / Cetak Kwitansi Resmi"><i data-lucide="printer" style="width: 13px; height: 13px; color: #475569;"></i><span id="btnDossierReceiptText">Lihat / Cetak Kwitansi</span></button>
+          <!--
+
+
+  
+
+
+
+  
           </div>
 
+          -->
           <!-- Destructive / Void Action Pill (Khusus Pemilik Kost) -->
-          <button type="button" class="btn-dossier-secondary-pill is-danger" id="btnVoidInvoiceAction" style="width: 100%;" onclick="openModalVoidInvoice()" title="Batalkan penerbitan tagihan ini (Void Invoice)">
-            <i data-lucide="ban" style="width: 13px; height: 13px; color: #DC2626;"></i>
-            <span>Batalkan Tagihan</span>
+          <!-- Tombol Batalkan Tagihan Dihapus Sesuai Prosedur Kos --><button style="display:none">
+
+
           </button>
+
         </div>
 
       </aside>
@@ -3228,7 +3405,7 @@
         <h3 class="modal-card-title">
           <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
           <span>Terbitkan Tagihan Baru</span>
-        </h3>
+        </span>
         <button type="button" class="btn-modal-close" onclick="closeModal('modalTerbitkanTagihan')" title="Tutup">
           <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
@@ -3241,7 +3418,7 @@
           </div>
           <div>
             <div style="font-size: 13px; font-weight: 700; color: #111111;">Tagihan On-Demand / Insidental</div>
-            <div style="font-size: 11px; color: #64748B; margin-top: 1px;">Untuk sewa susulan, kelebihan listrik kWh, denda keterlambatan, atau perbaikan fasilitas.</div>
+            <div style="font-size: 11px; color: #64748B; margin-top: 1px;">Untuk sewa susulan, biaya tamu menginap, parkir tambahan, atau perbaikan fasilitas.</div>
           </div>
         </div>
 
@@ -3250,9 +3427,9 @@
           <label class="form-label-custom">Pilih Unit Kamar &amp; Penghuni *</label>
           <div class="popover-dropdown-wrap" id="wrapNewBillRoom" style="width: 100%;">
             <button type="button" class="btn-popover-trigger" style="width: 100%; height: 42px !important; justify-content: space-between; border-radius: 12px; padding: 0 14px; font-size: 13px; box-sizing: border-box;" onclick="toggleNewBillRoomDropdown(event)">
-              <span id="selectedNewBillRoomLabel" style="font-weight: 600; color: #111111;">KM-101 &middot; Siti Aminah (Lt 1)</span>
-              <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
-            </button>
+              <span id="selectedNewBillRoomLabel" style="font-weight: 600; color: #111111;">KM-101 &middot; Siti Aminah (Lt 1)</span><i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i></button>
+
+  
             <div class="popover-menu-card" id="menuNewBillRoom" style="width: 100%; max-height: 200px; overflow-y: auto; box-sizing: border-box;">
               <button type="button" class="popover-item-btn selected" onclick="selectNewBillRoom('A-01', 'Siti Aminah', 1200000, event)">A-01 &middot; Siti Aminah (Lantai 1)</button>
               <button type="button" class="popover-item-btn" onclick="selectNewBillRoom('A-02', 'Rahmat Hidayat', 1500000, event)">A-02 &middot; Rahmat Hidayat (Lantai 1)</button>
@@ -3273,9 +3450,9 @@
               <i data-lucide="home" style="width: 16px; height: 16px;"></i>
               <span>Sewa Kamar</span>
             </div>
-            <div class="method-radio-box" onclick="selectBillType(this, 'Listrik / Air')" id="btypeListrik">
+            <div class="method-radio-box" onclick="selectBillType(this, 'Tamu / Fasilitas')" id="btypeListrik">
               <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
-              <span>Listrik / Air</span>
+              <span>Tamu / Fasilitas</span>
             </div>
             <div class="method-radio-box" onclick="selectBillType(this, 'Denda / Fasilitas')" id="btypeLainnya">
               <i data-lucide="alert-circle" style="width: 16px; height: 16px;"></i>
@@ -3291,7 +3468,7 @@
             <span style="font-size: 11px; color: #64748B;">Tarif Kontrak: <strong id="newBillBaseRateDisplay" style="color: #0F172A;">Rp 1.200.000</strong>/bln</span>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div id="dossierSecondaryRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
             <div class="method-radio-box active" onclick="selectRentScheme(this, 'full')" id="schemeFullMonth">
               <i data-lucide="calendar-check" style="width: 15px; height: 15px;"></i>
               <span>1 Bulan Penuh</span>
@@ -3312,14 +3489,14 @@
               <span style="font-size: 11px; background: #FFEDD5; color: #9A3412; padding: 2px 7px; border-radius: 6px; font-weight: 700;" id="prorataDaysBadge">17 Hari</span>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div id="dossierSecondaryRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
               <div>
                 <label style="font-size: 11px; color: #64748B; display: block; margin-bottom: 4px; font-weight: 500;">Tanggal Masuk Check-in</label>
-                <input type="date" id="inputProrataStartDate" value="2026-10-15" class="form-input-custom" style="height: 38px !important; font-size: 12px;" onchange="calculateProrataTotal()">
+                <input type="date" id="inputProrataStartDate" value="2026-10-15" class="form-input-custom" style="height: 42px !important;" onchange="calculateProrataTotal()">
               </div>
               <div>
                 <label style="font-size: 11px; color: #64748B; display: block; margin-bottom: 4px; font-weight: 500;">Akhir Siklus Bulan</label>
-                <input type="date" id="inputProrataEndDate" value="2026-10-31" class="form-input-custom" style="height: 38px !important; font-size: 12px;" onchange="calculateProrataTotal()">
+                <input type="date" id="inputProrataEndDate" value="2026-10-31" class="form-input-custom" style="height: 42px !important;" onchange="calculateProrataTotal()">
               </div>
             </div>
 
@@ -3339,7 +3516,7 @@
               <span style="font-size: 11px; color: #64748B; min-width: 90px;">Besaran Deposit:</span>
               <div style="position: relative; flex: 1;">
                 <span style="position: absolute; left: 12px; top: 11px; font-size: 12px; font-weight: 600; color: #64748B;">Rp</span>
-                <input type="text" id="inputDepositAmount" class="form-input-custom" value="1.000.000" style="padding-left: 36px; height: 38px !important; font-size: 12px;" oninput="formatNominalInput(this); updateNewBillFinalTotal();">
+                <input type="text" id="inputDepositAmount" class="form-input-custom" value="1.000.000" style="padding-left: 36px; height: 42px !important;" oninput="formatNominalInput(this); updateNewBillFinalTotal();">
               </div>
             </div>
           </div>
@@ -3358,9 +3535,9 @@
               <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapNewBillDueDate', 'inputNewBillDueDate')" style="height: 42px !important; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input, #E2E8F0); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
                 <div class="ruma-datepicker-trigger-content" style="display: flex; align-items: center; gap: 8px;">
                   <i data-lucide="calendar" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
-                  <span class="ruma-datepicker-val-txt" id="displayNewBillDueDate" style="font-size: 12px; font-weight: 600; color: var(--text-main);">31 Oktober 2026</span>
+                  <span class="ruma-datepicker-val-txt" id="displayNewBillDueDate" style="font-size: 12px; font-weight: 600; color: var(--text-main);">31 Oktober 2026</span></div><i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
                 </div>
-                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+  
               </div>
             </div>
           </div>
@@ -3369,7 +3546,7 @@
         <!-- Catatan / Keterangan Tagihan -->
         <div class="form-group-custom">
           <label class="form-label-custom">Keterangan / Rincian Tagihan</label>
-          <textarea class="form-textarea-custom" id="inputNewBillNotes" rows="2" style="min-height: 84px; font-size: 13px;" placeholder="Contoh: Tagihan sewa bulan berjalan susulan, pemakaian daya AC berlebih, dll."></textarea>
+          <textarea class="form-textarea-custom" id="inputNewBillNotes" rows="2" style="min-height: 84px; font-size: 13px;" placeholder="Contoh: Tagihan sewa bulan berjalan susulan, tamu menginap, parkir motor/mobil tambahan, dll."></textarea>
         </div>
 
         <!-- Checkbox Otomatis Kirim Notifikasi WA -->
@@ -3400,8 +3577,8 @@
       <div class="modal-card-header">
         <h3 class="modal-card-title">
           <i data-lucide="sliders" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
-          <span>Sesuaikan Tagihan &amp; Beri Diskon</span>
-        </h3>
+          <span>Penyesuaian Tagihan (Diskon &amp; Insidental)</span>
+        </span>
         <button type="button" class="btn-modal-close" onclick="closeModal('modalAdjustInvoice')" title="Tutup">
           <i data-lucide="x" style="width: 15px; height: 15px;"></i>
         </button>
@@ -3442,7 +3619,7 @@
           </div>
           <div class="form-group-custom">
             <label class="form-label-custom">
-              <span>Biaya Tambahan / Listrik</span>
+              <span>Biaya Insidental Tambahan</span>
             </label>
             <div style="position: relative; display: flex; align-items: center;">
               <span style="position: absolute; left: 12px; font-size: 12px; font-weight: 600; color: #64748B; pointer-events: none;">Rp</span>
@@ -3454,13 +3631,13 @@
         <!-- Alasan / Catatan Penyesuaian -->
         <div class="form-group-custom">
           <label class="form-label-custom">Alasan / Catatan Penyesuaian *</label>
-          <input type="text" id="adjustInvReason" class="form-input-custom" placeholder="cth: Diskon promo loyalitas / kompensasi AC rusak / kelebihan listrik" value="Iuran Sampah & Wi-Fi bulanan">
+          <input type="text" id="adjustInvReason" class="form-input-custom" placeholder="cth: Duplikat kunci hilang / tamu susulan 2 malam / kompensasi Wi-Fi mati" value="Iuran Sampah & Wi-Fi bulanan">
         </div>
 
         <!-- Notice Audit Staf -->
         <div style="background: #FFFBEB; border: 1px solid #FEF3C7; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #92400E; display: flex; align-items: flex-start; gap: 8px;">
           <i data-lucide="shield-alert" style="width: 14px; height: 14px; color: #D97706; flex-shrink: 0; margin-top: 1px;"></i>
-          <span><strong>Audit Staf &amp; Pemilik:</strong> Setiap pemberian diskon atau penambahan biaya akan tercatat dalam log audit riwayat tagihan dengan stempel nama pengubah.</span>
+          <span><strong>Catatan Operasional:</strong> Gunakan untuk biaya insidental susulan (seperti ganti kunci hilang, tamu menginap susulan, atau iuran titipan) yang belum tercatat di menu Penghuni, atau memberi potongan diskon kompensasi. Perubahan akan tersimpan di jejak audit.</span>
         </div>
 
         <!-- Ringkasan Kalkulasi Penyesuaian -->
@@ -3478,7 +3655,7 @@
             <strong id="adjustSummaryDiscount" style="color: var(--brand-primary);">- Rp 0</strong>
           </div>
           <div class="calc-row">
-            <span>Biaya Tambahan / Add-ons:</span>
+            <span>Biaya Insidental / Add-ons:</span>
             <strong id="adjustSummaryAddon">+ Rp 100.000</strong>
           </div>
           <div class="calc-row" id="adjustSummaryLateFeeRow" style="display: none;">
@@ -3501,8 +3678,8 @@
       </div>
 
       <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 18px;" onclick="closeModal('modalAdjustInvoice')">Batal</button>
-        <button type="button" class="btn-action-catat" style="height: 38px; padding: 0 20px; font-size: 12px;" onclick="saveInvoiceAdjustment()">
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalAdjustInvoice')">Batal</button>
+        <button type="button" class="btn-modal-primary" onclick="saveInvoiceAdjustment()">
           <i data-lucide="check" style="width: 14px; height: 14px;"></i>
           <span>Simpan Penyesuaian Tagihan</span>
         </button>
@@ -3519,7 +3696,7 @@
         <h3 class="modal-card-title">
           <i data-lucide="ban" style="width: 18px; height: 18px; color: #DC2626;"></i>
           <span>Batalkan Tagihan (Void)</span>
-        </h3>
+        </span>
         <button type="button" class="btn-modal-close" onclick="closeModal('modalVoidInvoice')" title="Tutup">
           <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
@@ -3552,7 +3729,7 @@
           <label style="display: block; font-size: 12px; font-weight: 600; color: #0F172A; margin-bottom: 6px;">
             Alasan Pembatalan Tagihan <span style="color: #DC2626;">*</span>
           </label>
-          <textarea id="voidReasonInput" rows="3" style="width: 100%; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 10px 12px; font-size: 12px; outline: none; font-family: inherit; resize: vertical;" placeholder="Contoh: Penghuni batal check-in, kamar dipindah, atau draf otomatis salah buat ganda..."></textarea>
+          <textarea id="voidReasonInput" class="form-textarea-custom" rows="3" style="width: 100%; min-height: 84px;" placeholder="Contoh: Penghuni batal check-in, kamar dipindah, atau draf otomatis salah buat ganda..."></textarea>
         </div>
       </div>
 
@@ -3575,7 +3752,7 @@
         <h3 class="modal-card-title">
           <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
           <span>Catat Penerimaan Pembayaran</span>
-        </h3>
+        </span>
         <button type="button" class="btn-modal-close" onclick="closeModal('modalCatatBayar')">
           <i data-lucide="x" style="width: 15px; height: 15px;"></i>
         </button>
@@ -3668,7 +3845,9 @@
                   <i data-lucide="calendar" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
                   <span class="ruma-datepicker-val-txt" id="inputPayDateDisplay" style="font-size: 12px; font-weight: 600; color: var(--text-main);">23 Oktober 2026</span>
                 </div>
-                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i>
+                <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: #94A3B8;"></i><div style="display: contents;">
+                </div>
+  
               </div>
             </div>
           </div>
@@ -3740,8 +3919,8 @@
       </div>
 
       <div class="modal-card-footer">
-        <button type="button" class="btn-exec-receipt" style="width: auto; padding: 0 16px;" onclick="closeModal('modalCatatBayar')">Batal</button>
-        <button type="button" class="btn-action-catat" style="height: 38px; padding: 0 20px; font-size: 12px;" onclick="submitPaymentRecord()">
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalCatatBayar')">Batal</button>
+        <button type="button" class="btn-modal-primary" onclick="submitPaymentRecord()">
           <i data-lucide="save" style="width: 14px; height: 14px;"></i>
           <span>Simpan Catatan Pembayaran</span>
         </button>
@@ -3792,6 +3971,7 @@
               <i data-lucide="alert-triangle" style="width: 12px; height: 12px; vertical-align: middle; margin-right: 4px;"></i>
               <span>Surat Peringatan (SP-1 &gt; H+7)</span>
             </button>
+  
           </div>
         </div>
 
@@ -3828,17 +4008,17 @@
        MODAL 4: KWITANSI RESMI PEMBAYARAN (FORMAL RECEIPT)
        ======================================================== -->
   <div class="modal-overlay" id="modalReceipt">
-    <div class="modal-card-box" style="max-width: 480px;">
-      <div class="modal-head">
-        <span class="modal-title">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-card-header">
+        <h3 class="modal-card-title">
           <i data-lucide="receipt" style="width: 16px; height: 16px; color: var(--brand-primary);"></i>
-          <span>Kwitansi Resmi RumaKost</span>
+          <span>Kwitansi Resmi RumaKost</span></h3><span style="display:none">
         </span>
-        <button type="button" class="btn-close-modal" onclick="closeModal('modalReceipt')">
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalReceipt')" title="Tutup">
           <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-card-body">
         <div class="receipt-sheet" id="printableReceipt">
           <div class="receipt-watermark" id="receiptWatermark">LUNAS</div>
           <div class="receipt-header-row">
@@ -3882,7 +4062,7 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer-row">
+      <div class="modal-card-footer">
         <button type="button" class="btn-modal-cancel" onclick="closeModal('modalReceipt')">Tutup</button>
         <button type="button" class="btn-modal-primary is-whatsapp" onclick="sendReceiptWhatsApp()">
           <i data-lucide="send" style="width: 14px; height: 14px;"></i>
@@ -3920,7 +4100,7 @@
         paidAmount: 0,
         dueAmount: 1200000,
         due: '10 Nov 2026',
-        dueDaysLeft: 'Draf Otomatis Sistem',
+        dueDaysLeft: 'Draf',
         dueClass: 'warn',
         status: 'draf',
         statusLabel: 'Draf Verifikasi Staf',
@@ -3929,6 +4109,57 @@
         refNo: '—',
         deliveryStatus: 'pending',
         deliveryMeta: 'Dibuat otomatis 1 Nov · Menunggu Verifikasi'
+      },
+      {
+        id: 'INV-202610-V01',
+        room: 'C-02',
+        floorNum: '3',
+        floor: 'Lantai 3 · Mezzanine',
+        tenant: 'Dewi Lestari',
+        phone: '0812-7788-9900',
+        period: 'Oktober 2026',
+        baseRent: 1600000,
+        addOns: 0,
+        lateFee: 0,
+        discount: 0,
+        totalAmount: 1600000,
+        paidAmount: 1600000,
+        dueAmount: 0,
+        due: '25 Okt 2026',
+        dueDaysLeft: 'Bukti Masuk',
+        dueClass: 'warn',
+        status: 'verifikasi',
+        statusLabel: 'Menunggu Verifikasi Bukti',
+        method: 'Transfer Bank BCA (Bukti Diunggah)',
+        payDate: '24 Okt 2026, 14:20 WIB',
+        refNo: 'TRF-BCA-881920',
+        deliveryStatus: 'sent',
+        deliveryMeta: 'Bukti transfer diunggah penghuni · Menunggu verifikasi'
+      },
+      {
+        id: 'INV-202610-10',
+        room: 'C-01',
+        floorNum: '3',
+        floor: 'Lantai 3 · Mezzanine',
+        tenant: 'Farhan Maulana',
+        phone: '0811-2233-4455',
+        period: 'Oktober 2026',
+        baseRent: 2000000,
+        addOns: 0,
+        lateFee: 50000,
+        totalAmount: 2050000,
+        paidAmount: 0,
+        dueAmount: 2050000,
+        due: '20 Okt 2026',
+        dueDaysLeft: 'Terlambat 4 Hari',
+        dueClass: 'danger',
+        status: 'telat',
+        statusLabel: 'Terlambat Bayar',
+        method: '—',
+        payDate: 'Belum Ada Pembayaran',
+        refNo: '—',
+        deliveryStatus: 'sent',
+        deliveryMeta: '21 Okt 2026, 14:00 · oleh Pemilik'
       },
       {
         id: 'INV-202611-D02',
@@ -3946,7 +4177,7 @@
         paidAmount: 0,
         dueAmount: 1550000,
         due: '10 Nov 2026',
-        dueDaysLeft: 'Draf Otomatis Sistem',
+        dueDaysLeft: 'Draf',
         dueClass: 'warn',
         status: 'draf',
         statusLabel: 'Draf Verifikasi Staf',
@@ -3974,7 +4205,7 @@
         paidAmount: 0,
         dueAmount: 2000000,
         due: '10 Nov 2026',
-        dueDaysLeft: 'Draf Otomatis Sistem',
+        dueDaysLeft: 'Draf',
         dueClass: 'warn',
         status: 'draf',
         statusLabel: 'Draf (+Tunggakan Okt)',
@@ -4087,31 +4318,6 @@
         deliveryMeta: '21 Okt 2026, 11:00 · oleh Staf'
       },
       {
-        id: 'INV-202610-06',
-        room: 'B-01',
-        floorNum: '2',
-        floor: 'Lantai 2 · Deluxe',
-        tenant: 'Nurul Indah',
-        phone: '0819-2233-4455',
-        period: 'Oktober 2026',
-        baseRent: 1500000,
-        addOns: 0,
-        lateFee: 0,
-        totalAmount: 1500000,
-        paidAmount: 1500000,
-        dueAmount: 0,
-        due: '28 Okt 2026',
-        dueDaysLeft: 'Sudah Terbayar',
-        dueClass: 'safe',
-        status: 'lunas',
-        statusLabel: 'Lunas Terverifikasi',
-        method: 'Transfer Bank BCA',
-        payDate: '20 Okt 2026, 11:20 WIB',
-        refNo: 'REF-BCA-112948',
-        deliveryStatus: 'sent',
-        deliveryMeta: '20 Okt 2026, 09:00 · oleh Pemilik'
-      },
-      {
         id: 'INV-202610-07',
         room: 'B-02',
         floorNum: '2',
@@ -4135,6 +4341,54 @@
         refNo: 'REF-BCA-847291',
         deliveryStatus: 'pending',
         deliveryMeta: 'Belum Disampaikan'
+        /* ignore-old
+        room: 'B-01',
+        floorNum: '2',
+        floor: 'Lantai 2 · Deluxe',
+        tenant: 'Nurul Indah',
+        phone: '0819-2233-4455',
+        period: 'Oktober 2026',
+        baseRent: 1500000,
+        addOns: 0,
+        lateFee: 0,
+        totalAmount: 1500000,
+        paidAmount: 1500000,
+        dueAmount: 0,
+        due: '25 Okt 2026-TOP',
+        dueDaysLeft: 'Sudah Terbayar',
+        dueClass: 'safe',
+        status: 'lunas',
+        statusLabel: 'Lunas Terverifikasi',
+        method: 'Transfer Bank BCA',
+        payDate: '20 Okt 2026, 11:20 WIB',
+        refNo: 'REF-BCA-112948',
+        deliveryStatus: 'sent',
+        ignore-end */
+      },
+      {
+        id: 'INV-202610-06',
+        room: 'B-01',
+        floorNum: '2',
+        floor: 'Lantai 2 · Deluxe',
+        tenant: 'Nurul Indah',
+        phone: '0819-2233-4455',
+        period: 'Oktober 2026',
+        baseRent: 1500000,
+        addOns: 0,
+        lateFee: 0,
+        totalAmount: 1500000,
+        paidAmount: 1500000,
+        dueAmount: 0,
+        due: '25 Okt 2026',
+        dueDaysLeft: 'Sudah Terbayar',
+        dueClass: 'warn',
+        status: 'lunas',
+        statusLabel: 'Lunas Terverifikasi',
+        method: 'Transfer Bank BCA',
+        payDate: '20 Okt 2026, 11:20 WIB',
+        refNo: 'REF-BCA-112948',
+        deliveryStatus: 'pending',
+        deliveryMeta: '20 Okt 2026, 09:00 · oleh Pemilik'
       },
       {
         id: 'INV-202610-08',
@@ -4387,9 +4641,14 @@
         let statusBadgeHtml = '';
         if (inv.status === 'draf') {
           statusBadgeHtml = `<span class="status-badge" style="background: rgba(255, 122, 0, 0.1); color: var(--brand-primary); border: 1px solid rgba(255,122,0,0.25);"><i data-lucide="file-clock" style="width: 11px; height: 11px;"></i>Draf Verifikasi</span>`;
+
         } else if (inv.status === 'batal') {
           statusBadgeHtml = `<span class="status-badge badge-batal"><i data-lucide="ban" style="width: 11px; height: 11px;"></i>Batal (Void)</span>`;
-        } else if (inv.status === 'lunas') {
+        } else if (inv.status === 'verifikasi') {
+          statusBadgeHtml = `<span class="status-badge" style="background: #FEF3C7; color: #B45309; border: 1px solid #FDE68A;"><i data-lucide="shield-alert" style="width: 11px; height: 11px;"></i>Verifikasi Bukti</span>`;
+        } else if (inv.status === 'verifikasi') {
+        verifyIncomingPayment(inv.id);
+      } else if (inv.status === 'lunas') {
           statusBadgeHtml = `<span class="status-badge badge-lunas"><i data-lucide="check-circle" style="width: 11px; height: 11px;"></i>Lunas</span>`;
         } else if (inv.status === 'sebagian') {
           statusBadgeHtml = `<span class="status-badge badge-sebagian"><i data-lucide="clock" style="width: 11px; height: 11px;"></i>Cicilan (${getPaymentPercentage(inv.paidAmount, inv.totalAmount)}%)</span>`;
@@ -4404,9 +4663,10 @@
           deliveryBadgeHtml = `
             <span style="font-size: 11px; color: #94A3B8; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
               <i data-lucide="clock" style="width: 11px; height: 11px;"></i>
-              <span>Belum Terbit</span>
+              <span>Belum Diterbitkan ke Penghuni</span>
             </span>
           `;
+
         } else if (inv.status === 'batal') {
           deliveryBadgeHtml = `
             <span style="font-size: 11px; color: #94A3B8; font-weight: 500; display: inline-flex; align-items: center; gap: 4px;">
@@ -4421,12 +4681,14 @@
               <i data-lucide="${isSent ? 'check-check' : 'clock'}" style="width: 11px; height: 11px;"></i>
               <span>${isSent ? 'Terkirim WA' : 'Belum Dikirim'}</span>
             </button>
+  
           `;
         }
 
         let progressHtml = '';
         if (inv.status === 'draf') {
-          progressHtml = `<span style="font-size: 11px; color: var(--brand-primary); font-weight: 600;">Menunggu Verifikasi Staf</span>`;
+          progressHtml = `<span style="font-size: 11px; color: var(--brand-primary); font-weight: 600;">Menunggu Verifikasi Staf</span>`; } else if (inv.status === 'verifikasi') { progressHtml = `<span style="font-size: 11px; color: #B45309; font-weight: 600;">Bukti Transfer Menunggu Konfirmasi</span>`;
+
         } else if (inv.status === 'batal') {
           progressHtml = `<span style="font-size: 11px; color: #64748B; font-weight: 500;">Tagihan Dibatalkan</span>`;
         } else if (inv.status === 'sebagian') {
@@ -4550,6 +4812,8 @@
       const stampElem = document.getElementById('paperStampBadge');
       const draftNotice = document.getElementById('dossierDraftNotice');
       const voidNotice = document.getElementById('dossierVoidNotice');
+      const verifyNotice = document.getElementById('dossierVerifyNotice');
+      if (verifyNotice) verifyNotice.style.display = inv.status === 'verifikasi' ? 'block' : 'none';
 
       if (inv.status === 'draf') {
         stampElem.textContent = 'DRAF VERIFIKASI';
@@ -4572,7 +4836,17 @@
       } else {
         if (draftNotice) draftNotice.style.display = 'none';
         if (voidNotice) voidNotice.style.display = 'none';
-        if (inv.status === 'lunas') {
+        if (inv.status === 'verifikasi') {
+          stampElem.textContent = 'VERIFIKASI BUKTI';
+          stampElem.style.background = '#FEF3C7';
+          stampElem.style.color = '#B45309';
+          stampElem.style.borderColor = '#FDE68A';
+        } else if (inv.status === 'belum_bayar') {
+          stampElem.textContent = 'MENUNGGU BAYAR';
+          stampElem.style.background = '#F1F5F9';
+          stampElem.style.color = '#475569';
+          stampElem.style.borderColor = '#E2E8F0';
+        } else if (inv.status === 'lunas') {
           stampElem.textContent = 'LUNAS';
           stampElem.style.background = '#DCFCE7';
           stampElem.style.color = '#16A34A';
@@ -4718,7 +4992,7 @@
       // Ringkasan Jatuh Tempo & Metode Bayar
       const dueSummaryElem = document.getElementById('dossierDueSummary');
       if (dueSummaryElem) {
-        dueSummaryElem.textContent = `${inv.due} · ${inv.dueDaysLeft}`;
+        dueSummaryElem.textContent = inv.status === 'draf' ? `${inv.due} (Draf)` : `${inv.due} · ${inv.dueDaysLeft}`;
       }
       const methodSummaryElem = document.getElementById('dossierMethodSummary');
       if (methodSummaryElem) {
@@ -4739,36 +5013,63 @@
         }
       }
 
-      // Dynamic Contextual Primary Button (Orange for Draft Verification, Obsidian Black for Payment/Receipt)
+      // Dynamic Contextual Action Buttons (Strict Anti-Slop & Role Alignment)
+      const secRow = document.getElementById('dossierSecondaryRow');
+      const btnWa = document.getElementById('btnDossierSendWa');
+      const btnWaText = document.getElementById('btnDossierSendWaText');
+      const btnEdit = document.getElementById('btnDossierEdit');
+      const btnReceipt = document.getElementById('btnDossierReceipt');
       const primaryBtn = document.getElementById('btnDossierPrimaryAction');
       const primaryIcon = document.getElementById('btnDossierPrimaryIcon');
       const primaryTxt = document.getElementById('btnDossierPrimaryText');
       if (primaryTxt && primaryIcon && primaryBtn) {
         primaryBtn.style.border = 'none';
         if (inv.status === 'draf') {
-          primaryTxt.textContent = 'Verifikasi & Terbitkan Tagihan';
-          primaryIcon.setAttribute('data-lucide', 'check-check');
+          primaryTxt.textContent = 'Terbitkan ke Penghuni';
+          primaryIcon.setAttribute('data-lucide', 'send');
           primaryBtn.classList.add('is-draft-action');
           primaryBtn.style.background = '';
-          primaryBtn.style.boxShadow = '';
+          primaryBtn.style.boxShadow = ''; if (secRow) secRow.style.gridTemplateColumns = '1fr'; if (btnWa) btnWa.style.display = 'none'; if (btnEdit) { btnEdit.style.display = 'inline-flex'; btnEdit.style.width = '100%'; } if (btnReceipt) btnReceipt.style.display = 'none';
           primaryBtn.style.cursor = 'pointer';
+
         } else if (inv.status === 'batal') {
           primaryTxt.textContent = 'Tagihan Dibatalkan (Void)';
-          primaryIcon.setAttribute('data-lucide', 'ban');
+        } else if (inv.status === 'verifikasi') {
+          primaryTxt.textContent = 'Verifikasi Pembayaran Masuk';
+          primaryIcon.setAttribute('data-lucide', 'shield-check');
           primaryBtn.classList.remove('is-draft-action');
-          primaryBtn.style.background = '#94A3B8';
-          primaryBtn.style.boxShadow = 'none';
-          primaryBtn.style.cursor = 'not-allowed';
+          primaryBtn.style.background = '#16A34A';
+          primaryBtn.style.boxShadow = '0 4px 14px rgba(22, 163, 74, 0.3)';
+          primaryBtn.style.cursor = 'pointer';
+          if (secRow) secRow.style.gridTemplateColumns = '1fr 1fr';
+          if (btnWa) { btnWa.style.display = 'inline-flex'; btnWa.style.width = 'auto'; if (btnWaText) btnWaText.textContent = 'Kirim ke WA'; }
+          if (btnEdit) { btnEdit.style.display = 'inline-flex'; btnEdit.style.width = 'auto'; }
+          if (btnReceipt) btnReceipt.style.display = 'none';
+// fix-ban-removed
+          primaryBtn.classList.remove('is-draft-action');
+// fix-grey-removed
+// fix-shadow-override
+// fix-cursor-removed
         } else {
           primaryBtn.classList.remove('is-draft-action');
           primaryBtn.style.cursor = 'pointer';
-          if (inv.status === 'lunas') {
-            primaryTxt.textContent = 'Lihat / Cetak Kuitansi Lunas';
+          /* stamp-dup-start */ if (false) {
+          stampElem.textContent = 'VERIFIKASI BUKTI';
+          stampElem.style.background = '#FEF3C7';
+          stampElem.style.color = '#B45309';
+          stampElem.style.borderColor = '#FDE68A';
+        } else if (inv.status === 'belum_bayar') {
+          stampElem.textContent = 'MENUNGGU BAYAR';
+          stampElem.style.background = '#F1F5F9';
+          stampElem.style.color = '#475569';
+          stampElem.style.borderColor = '#E2E8F0';
+        } else if (inv.status === 'lunas') {
+            primaryTxt.textContent = 'Lihat / Cetak Kwitansi Resmi'; if (secRow) secRow.style.gridTemplateColumns = '1fr'; if (btnWa) { btnWa.style.display = 'inline-flex'; btnWa.style.width = '100%'; if (btnWaText) btnWaText.textContent = 'Kirim Kwitansi via WA'; } if (btnEdit) btnEdit.style.display = 'none'; if (btnReceipt) btnReceipt.style.display = 'none';
             primaryIcon.setAttribute('data-lucide', 'printer');
             primaryBtn.style.background = '#111111';
             primaryBtn.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.15)';
           } else {
-            primaryTxt.textContent = 'Catat Pembayaran Masuk';
+            primaryTxt.textContent = 'Catat Pembayaran Masuk'; if (secRow) secRow.style.gridTemplateColumns = '1fr 1fr'; if (btnWa) { btnWa.style.display = 'inline-flex'; btnWa.style.width = 'auto'; if (btnWaText) btnWaText.textContent = 'Kirim ke WA'; } if (btnEdit) { btnEdit.style.display = 'inline-flex'; btnEdit.style.width = 'auto'; } if (btnReceipt) { btnReceipt.style.display = inv.paidAmount > 0 ? 'inline-flex' : 'none'; }
             primaryIcon.setAttribute('data-lucide', 'plus-circle');
             primaryBtn.style.background = '#111111';
             primaryBtn.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.15)';
@@ -4778,7 +5079,7 @@
 
       // Tombol Batalkan Tagihan (Void) visibility
       const btnVoid = document.getElementById('btnVoidInvoiceAction');
-      if (btnVoid) {
+      if (false && btnVoid) {
         if (inv.status === 'batal' || inv.status === 'lunas') {
           btnVoid.style.display = 'none';
         } else {
@@ -4798,11 +5099,25 @@
       }
       if (inv.status === 'draf') {
         verifyAndPublishInvoice(inv.id);
+      } else if (inv.status === 'verifikasi') {
+        verifyIncomingPayment(inv.id);
       } else if (inv.status === 'lunas') {
         openReceiptModal();
       } else {
         openModalCatatBayar();
       }
+    }
+
+    function verifyIncomingPayment(invId) {
+      const inv = invoicesData.find(i => i.id === invId);
+      if (!inv) return;
+      inv.status = 'lunas';
+      inv.statusLabel = 'Lunas Terverifikasi';
+      inv.dueDaysLeft = 'Sudah Terbayar';
+      inv.dueClass = 'safe';
+      renderBillingTable();
+      renderInvoiceDossier();
+      triggerToast(`Pembayaran tagihan #${inv.id} (${inv.tenant}) sebesar ${formatRupiah(inv.totalAmount)} BERHASIL DIVERIFIKASI! Kwitansi resmi telah sah terbit.`, 'success');
     }
 
     // Sanitasi Teks Bebas (Defensif XSS)
@@ -5144,9 +5459,9 @@
         updateNewBillFinalTotal();
       } else {
         if (rentOptions) rentOptions.style.display = 'none';
-        if (type === 'Listrik / Air') {
-          if (notesInput) notesInput.value = 'Kelebihan pemakaian listrik AC 45 kWh x Rp 2.500';
-          if (amountInput) amountInput.value = '112.500';
+        if (type === 'Tamu / Fasilitas') {
+          if (notesInput) notesInput.value = 'Biaya tamu menginap 2 malam @ Rp 30.000 + Parkir ekstra';
+          if (amountInput) amountInput.value = '60.000';
         } else if (type === 'Denda / Fasilitas') {
           if (notesInput) notesInput.value = 'Denda keterlambatan sewa / penggantian fasilitas';
           if (amountInput) amountInput.value = '50.000';
@@ -5456,7 +5771,7 @@
         return;
       }
 
-      const saveBtn = document.querySelector('#modalAdjustInvoice .btn-action-catat');
+      const saveBtn = document.querySelector('#modalAdjustInvoice .btn-modal-primary') || document.querySelector('#modalAdjustInvoice .btn-action-catat');
       if (saveBtn) {
         saveBtn.disabled = true;
         saveBtn.style.opacity = '0.6';
@@ -5661,7 +5976,7 @@
         return;
       }
 
-      const submitBtn = document.querySelector('#modalCatatBayar .btn-action-catat');
+      const submitBtn = document.querySelector('#modalCatatBayar .btn-modal-primary') || document.querySelector('#modalCatatBayar .btn-action-catat');
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.style.opacity = '0.6';

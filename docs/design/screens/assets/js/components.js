@@ -62,7 +62,8 @@
       document.body.prepend(canopy);
     }
 
-    const role = explicitRole || getCurrentRole();
+    let role = explicitRole || getCurrentRole();
+    if (role === 'staf') role = 'staff';
 
     // Guardrail RBAC: Jika Penghuni membuka dasbor utama manajemen atau master kamar/penghuni, redirect paksa ke portal penghuni (SK-20)
     const isManagementScreen = (
@@ -113,8 +114,7 @@
             <div class="user-dropdown-menu" id="userDropdownMenu">
               <div class="dropdown-user-header">
                 <div class="dropdown-user-name">Budi Santoso</div>
-                <div class="dropdown-user-email">Kamar A-04
- (Lantai 1)</div>
+                <div class="dropdown-user-email">Kamar A-04 (Lantai 1)</div>
                 <div style="margin-top: 4px;">
                   <span class="badge-status badge-brand" style="font-size: 10px; padding: 2px 8px;">Penghuni Aktif</span>
                 </div>
@@ -143,39 +143,108 @@
     } else if (role === 'staff') {
       brandTarget = 'WF-02-staf-dashboard.html';
       rightSectionHtml = `
+        <!-- Search Box (Glitch-Free Slide-to-Left Selaras WF-02-dashboard) -->
+        <div class="search-slide-box" id="topbarSearchContainer">
+          <input 
+            type="text" 
+            class="search-slide-field" 
+            id="topbarSearchInput" 
+            placeholder="Cari kamar, penghuni, tagihan..." 
+            onkeydown="handleSlideSearchKey(event)"
+          >
+          <button type="button" class="search-slide-trigger" onclick="toggleSlideSearch()" title="Cari data operasional">
+            <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+          </button>
+        </div>
 
+        <!-- Notification Dropdown (Selaras WF-02-dashboard) -->
+        <div class="notification-dropdown-wrap" id="notifDropdownWrap">
+          <button type="button" class="icon-circle-btn" id="notifBellBtn" style="position: relative;" onclick="toggleNotifDropdown(event)" title="Notifikasi Lapangan">
+            <i data-lucide="bell" style="width: 16px; height: 16px;"></i>
+            <span class="unread-dot" id="notifUnreadDot"></span>
+          </button>
 
+          <div class="notification-dropdown-menu" id="notifDropdownMenu">
+            <div class="notif-header">
+              <div class="notif-header-title">
+                Notifikasi
+                <span class="notif-badge-count" id="notifBadgeCount">3 Baru</span>
+              </div>
+              <button type="button" class="notif-mark-read-btn" onclick="markAllNotifsRead(event)">Tandai dibaca</button>
+            </div>
 
+            <div class="notif-list">
+              <!-- Item 1: Tiket Mendesak (Danger) -->
+              <div class="notif-item unread" onclick="RumaUI.showToast('Membuka tiket perbaikan A-04...', 'info'); location.href='WF-12-portal-tiket-detail.html?role=staf';">
+                <div class="notif-icon-circle" style="background:#FEE2E2; color:#DC2626;">
+                  <i data-lucide="wrench" style="width: 17px; height: 17px;"></i>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-item-header">
+                    <span class="notif-title">Tiket Kerusakan Mendesak</span>
+                    <span class="notif-micro-badge" style="background:#FEE2E2; color:#DC2626; border:1px solid #FECACA;">Mendesak</span>
+                  </div>
+                  <div class="notif-desc">Kamar A-04: Pipa wastafel bocor menetes ke lantai kamar mandi.</div>
+                  <div class="notif-time">1 jam yang lalu</div>
+                </div>
+              </div>
 
-        <button class="icon-circle-btn" title="Cari data" onclick="RumaUI.showToast('Pencarian operasional dibuka')">
-          <i data-lucide="search" style="width: 16px; height: 16px;"></i>
-        </button>
-        <button class="icon-circle-btn" title="Notifikasi" onclick="RumaUI.showToast('Belum ada tugas baru')">
-          <i data-lucide="bell" style="width: 16px; height: 16px;"></i>
-        </button>
+              <!-- Item 2: Turnover Kebersihan (Warning) -->
+              <div class="notif-item unread" onclick="RumaUI.showToast('Membuka turnover kamar...', 'info'); location.href='WF-02-staf-dashboard.html#cardTurnover';">
+                <div class="notif-icon-circle warning">
+                  <i data-lucide="sparkles" style="width: 17px; height: 17px;"></i>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-item-header">
+                    <span class="notif-title">Turnover Unit Selesai</span>
+                    <span class="notif-micro-badge badge-warning">Siap Inspeksi</span>
+                  </div>
+                  <div class="notif-desc">Kamar B-02 telah selesai dibersihkan dan siap diverifikasi Siap Huni.</div>
+                  <div class="notif-time">2 jam yang lalu</div>
+                </div>
+              </div>
+
+              <!-- Item 3: Kas Lapangan (Dark / Success) -->
+              <div class="notif-item unread" onclick="RumaUI.showToast('Membuka daftar setoran kas...', 'info'); location.href='WF-05-tagihan.html?role=staf';">
+                <div class="notif-icon-circle dark">
+                  <i data-lucide="receipt" style="width: 17px; height: 17px; color: #16A34A;"></i>
+                </div>
+                <div class="notif-body">
+                  <div class="notif-item-header">
+                    <span class="notif-title">Setoran Kas Lapangan</span>
+                    <span class="notif-micro-badge badge-dark" style="color: #16A34A;">2 Pending</span>
+                  </div>
+                  <div class="notif-desc">Total kas di tangan Rp 2,80 Jt menunggu verifikasi Pemilik.</div>
+                  <div class="notif-time">3 jam yang lalu</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Dropdown (Rini S · Selaras WF-02-dashboard) -->
         <div class="user-dropdown-wrap" id="userDropdownWrap">
-          <button type="button" class="user-profile-btn" onclick="toggleUserDropdown(event)" title="Menu Staf">
-            <div class="user-avatar" style="background: #111111; color: #FFFFFF;">RS</div>
-            <div style="font-size: 12px; font-weight: 600;">Rini S.</div>
+          <button type="button" class="user-profile-btn" onclick="toggleUserDropdown(event)" title="Menu Akun & Profil">
+            <div class="user-avatar">RS</div>
+            <div style="font-size: 12px; font-weight: 600; color: ${activeId === 'pengaturan' ? '#FF7A00' : 'inherit'};">
+              Rini S.
+            </div>
             <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted); margin-left: 2px;"></i>
           </button>
+
           <div class="user-dropdown-menu" id="userDropdownMenu">
             <div class="dropdown-user-header">
               <div class="dropdown-user-name">Rini Setiawati</div>
               <div class="dropdown-user-email">staf.operasional@kostmakmur.com</div>
-              <div style="margin-top: 4px;">
-                <span class="badge-status badge-warning" style="font-size: 10px; padding: 2px 8px;">Staf Operasional</span>
-              </div>
             </div>
-            <a href="WF-08-tiket.html?role=staf" class="dropdown-menu-item">
-              <i data-lucide="wrench" style="width: 15px; height: 15px;"></i>
-              Tiket Perbaikan Ditugaskan
+            
+            <a href="WF-09-pengaturan.html?role=staf" class="dropdown-menu-item">
+              <i data-lucide="settings" style="width: 15px; height: 15px;"></i>
+              Pengaturan
             </a>
-            <a href="WF-05-tagihan.html?role=staf" class="dropdown-menu-item">
-              <i data-lucide="receipt" style="width: 15px; height: 15px;"></i>
-              Catat Bayar Penyewa
-            </a>
+            
             <div class="dropdown-divider"></div>
+
             <a href="WF-01-login.html" onclick="handleLogout(event)" class="dropdown-menu-item danger">
               <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
               Keluar Akun
@@ -284,7 +353,7 @@
           <button type="button" class="user-profile-btn" onclick="toggleUserDropdown(event)" title="Menu Akun & Profil">
             <div class="user-avatar">BS</div>
             <div style="font-size: 12px; font-weight: 600; color: ${activeId === 'pengaturan' ? '#FF7A00' : 'inherit'};">
-              Budi S. <span style="font-size: 10px; color: var(--brand-primary); font-weight: 500;">(Pemilik)</span>
+              Budi S.
             </div>
             <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-muted); margin-left: 2px;"></i>
           </button>

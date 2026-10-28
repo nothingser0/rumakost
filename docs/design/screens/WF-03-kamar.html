@@ -594,25 +594,21 @@
       outline: none;
     }
 
+    /* 1. TERISI · LUNAS (Default & Hover: Orange Solid) */
     .room-unit-item[data-status="terisi"] {
       border: 1.5px solid var(--border-subtle, #ECEEF2);
       background: #FFFFFF;
     }
 
-    .room-unit-item[data-status="terisi"]:hover,
-    .room-unit-item[data-status="terisi"]:focus-visible,
-    .room-unit-item:hover {
+    .room-unit-item[data-status="terisi"]:not(.status-tempo-card):hover,
+    .room-unit-item[data-status="terisi"]:not(.status-tempo-card):focus-visible {
       border-color: var(--brand-primary, #FF7A00);
       background: #FFFFFF;
       transform: translateY(-2px);
       box-shadow: 0 8px 22px rgba(255, 122, 0, 0.12);
     }
 
-    .room-unit-item.active-room {
-      border-color: var(--brand-primary, #FF7A00) !important;
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18) !important;
-    }
-
+    /* 2. KOSONG · SIAP HUNI (Default & Hover: Orange Dashed) */
     .room-unit-item.status-vacant-card,
     .room-unit-item[data-status="kosong"] {
       border: 1.5px dashed #CBD5E1;
@@ -621,7 +617,8 @@
 
     .room-unit-item.status-vacant-card:hover,
     .room-unit-item.status-vacant-card:focus-visible,
-    .room-unit-item[data-status="kosong"]:hover {
+    .room-unit-item[data-status="kosong"]:hover,
+    .room-unit-item[data-status="kosong"]:focus-visible {
       border-color: var(--brand-primary, #FF7A00);
       border-style: dashed;
       background: #FFFFFF;
@@ -629,6 +626,7 @@
       box-shadow: 0 8px 22px rgba(255, 122, 0, 0.1);
     }
 
+    /* 3. DALAM PERBAIKAN (Default & Hover: Amber/Kuning Solid) */
     .room-unit-item.status-repair-card,
     .room-unit-item[data-status="perbaikan"] {
       border: 1.5px solid #FCD34D;
@@ -637,7 +635,8 @@
 
     .room-unit-item.status-repair-card:hover,
     .room-unit-item.status-repair-card:focus-visible,
-    .room-unit-item[data-status="perbaikan"]:hover {
+    .room-unit-item[data-status="perbaikan"]:hover,
+    .room-unit-item[data-status="perbaikan"]:focus-visible {
       border-color: var(--status-warning-text, #D97706);
       border-style: solid;
       background: #FFFFFF;
@@ -645,19 +644,47 @@
       box-shadow: 0 8px 22px rgba(217, 119, 6, 0.15);
     }
 
+    /* 4. JATUH TEMPO H-3 (Default & Hover: Amber/Kuning Solid) */
+    .room-unit-item.status-tempo-card {
+      border: 1.5px solid #FDE68A;
+      background: #FFFFFF;
+    }
+
+    .room-unit-item.status-tempo-card:hover,
+    .room-unit-item.status-tempo-card:focus-visible {
+      border-color: var(--status-warning-text, #D97706);
+      border-style: solid;
+      background: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(217, 119, 6, 0.15);
+    }
+
+    /* 5. TERLAMBAT / MENUNGGAK (Default & Hover: Merah Solid) */
     .room-unit-item.status-overdue-card,
-    .room-unit-item[data-status="terlambat"] {
+    .room-unit-item[data-status="terlambat"]:not(.status-tempo-card) {
       border: 1.5px solid #FECACA;
       background: #FFFFFF;
     }
 
     .room-unit-item.status-overdue-card:hover,
-    .room-unit-item[data-status="terlambat"]:hover {
+    .room-unit-item.status-overdue-card:focus-visible,
+    .room-unit-item[data-status="terlambat"]:not(.status-tempo-card):hover,
+    .room-unit-item[data-status="terlambat"]:not(.status-tempo-card):focus-visible {
       border-color: var(--status-danger-text, #EF4444);
       border-style: solid;
       background: #FFFFFF;
       transform: translateY(-2px);
       box-shadow: 0 8px 22px rgba(239, 68, 68, 0.15);
+    }
+
+    .room-unit-item.active-room {
+      border-color: var(--brand-primary, #FF7A00) !important;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.18) !important;
+    }
+
+    .room-unit-item.active-room:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.25), 0 8px 22px rgba(255, 122, 0, 0.14) !important;
     }
 
     /* Thumbnail Container (114px Proportional Ratio - Identik WF-02) */
@@ -708,11 +735,19 @@
     }
 
     .room-unit-item:hover .room-float-arrow,
+    .room-unit-item:focus-visible .room-float-arrow,
+    .room-float-arrow:hover,
+    .room-float-arrow:focus-visible,
     .room-unit-item.active-room .room-float-arrow {
       background: var(--dark-pill, #111111) !important;
       color: #FFFFFF !important;
       border-color: var(--dark-pill, #111111) !important;
       transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .room-float-arrow:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.3) !important;
     }
 
     /* Card Details below image (Identik WF-02) */
@@ -794,8 +829,8 @@
       width: 360px;
       min-width: 360px;
       max-width: 360px;
-      height: calc(100vh - 130px);
-      max-height: calc(100vh - 130px);
+      height: calc(100vh - 130px) !important;
+      max-height: calc(100vh - 130px) !important;
       overflow: hidden;
       z-index: 30;
       transition: border-color var(--transition-fast, 150ms ease), box-shadow var(--transition-fast, 150ms ease);
@@ -807,9 +842,21 @@
       flex-direction: column !important;
       justify-content: center !important;
       align-items: center !important;
-      padding: 0 !important;
+      padding: 24px !important;
       box-shadow: none !important;
       background: var(--bg-card) !important;
+      position: fixed !important;
+      top: 110px !important;
+      right: max(20px, calc((100vw - 1440px) / 2)) !important;
+      width: 360px !important;
+      min-width: 360px !important;
+      max-width: 360px !important;
+      height: calc(100vh - 130px) !important;
+      max-height: calc(100vh - 130px) !important;
+      box-sizing: border-box !important;
+      z-index: 30 !important;
+      margin-top: 0 !important;
+      transition: none !important;
     }
 
     .drawer-header-row {
@@ -925,15 +972,16 @@
     }
 
     .drawer-photo-box {
-      height: 110px;
+      height: 120px;
       width: 100%;
-      min-height: 110px;
+      min-height: 120px;
       border-radius: 12px;
       overflow: hidden;
       position: relative;
       background: #F1F5F9;
       border: 1px solid rgba(0, 0, 0, 0.05);
       flex-shrink: 0;
+      cursor: pointer;
     }
 
     .drawer-photo-box img {
@@ -941,6 +989,116 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .drawer-photo-box:hover img {
+      transform: scale(1.05);
+    }
+
+    .drawer-photo-zoom-hint {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.9;
+      transition: all var(--transition-fast);
+      pointer-events: none;
+    }
+
+    .drawer-photo-box:hover .drawer-photo-zoom-hint {
+      opacity: 1;
+      background: rgba(15, 23, 42, 0.92);
+      transform: translateY(-1px);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       MINIMALIST FULLSCREEN PHOTO VIEWER (HANYA GAMBAR & TOMBOL X)
+       ══════════════════════════════════════════════════════════════ */
+    .fullscreen-photo-viewer {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(10, 10, 12, 0.94) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
+      z-index: 99999 !important;
+      display: none;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 30px !important;
+      box-sizing: border-box !important;
+      cursor: zoom-out;
+      user-select: none;
+      animation: fadeInViewer 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fullscreen-photo-viewer.open {
+      display: flex !important;
+    }
+
+    @keyframes fadeInViewer {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .btn-minimal-close {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100000;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-minimal-close:hover {
+      background: #FF7A00;
+      border-color: #FF7A00;
+      transform: scale(1.08) rotate(90deg);
+      color: #FFFFFF;
+    }
+
+    .minimal-photo-container {
+      max-width: 92vw;
+      max-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+    }
+
+    .minimal-photo-container img {
+      max-width: 92vw;
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 14px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .spec-grid-cards {
@@ -1468,8 +1626,8 @@
       padding: 0 16px;
       font-size: 12.5px !important;
       font-weight: 500;
-      color: #64748B;
-      background: transparent;
+      color: #475569;
+      background: #F8FAFC;
       border: 1px solid #E2E8F0;
       text-decoration: none;
       transition: all var(--transition-fast);
@@ -1477,9 +1635,9 @@
     }
 
     .btn-drawer-outline-mini:hover {
-      background: #F8FAFC;
+      background: #F1F5F9;
       border-color: #CBD5E1;
-      color: var(--text-main, #111827);
+      color: #0F172A;
     }
 
     /* ══════════════════════════════════════════════════════════════
@@ -1652,34 +1810,34 @@
       box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
     }
 
-    /* HIERARKI TOMBOL MODAL:
-       LEVEL 1 PRIMARY (44px, 14px font)
-       LEVEL 2 SECONDARY (38px, 12px font)
-    */
+    /* HIERARKI TOMBOL MODAL ESTIFY (Seragam Tinggi 40px & Font 13px) */
     .btn-modal-cancel {
-      height: 38px !important;
-      padding: 0 16px !important;
+      height: 40px !important;
+      padding: 0 18px !important;
       border-radius: var(--radius-full) !important;
-      background: #F1F5F9 !important;
-      border: 1px solid var(--border-subtle) !important;
-      font-size: 12px !important;
+      background: #F8FAFC !important;
+      border: 1px solid #CBD5E1 !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
-      color: var(--text-secondary) !important;
+      color: #475569 !important;
       cursor: pointer !important;
       transition: all var(--transition-fast) !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
+      gap: 6px !important;
       box-sizing: border-box !important;
+      text-decoration: none !important;
     }
 
     .btn-modal-cancel:hover {
-      background: #E2E8F0 !important;
-      color: var(--text-main) !important;
+      background: #F1F5F9 !important;
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
     }
 
     .btn-modal-primary {
-      height: 44px !important;
+      height: 40px !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -1689,13 +1847,14 @@
       border: none !important;
       border-radius: var(--radius-full) !important;
       padding: 0 22px !important;
-      font-size: 14px !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
       cursor: pointer !important;
       box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28) !important;
       transition: all var(--transition-fast) !important;
       white-space: nowrap !important;
       box-sizing: border-box !important;
+      text-decoration: none !important;
     }
 
     .btn-modal-primary:hover {
@@ -1705,13 +1864,13 @@
     }
 
     .btn-modal-danger {
-      height: 38px !important;
-      padding: 0 16px !important;
+      height: 40px !important;
+      padding: 0 18px !important;
       border-radius: var(--radius-full) !important;
       background: #FEF2F2 !important;
       border: 1px solid #FECACA !important;
       color: #EF4444 !important;
-      font-size: 12px !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
       cursor: pointer !important;
       display: inline-flex !important;
@@ -1729,13 +1888,13 @@
     }
 
     .btn-modal-danger-solid {
-      height: 38px !important;
-      padding: 0 16px !important;
+      height: 40px !important;
+      padding: 0 18px !important;
       border-radius: var(--radius-full) !important;
       background: #EF4444 !important;
       border: 1px solid #EF4444 !important;
       color: #FFFFFF !important;
-      font-size: 12px !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
       cursor: pointer !important;
       display: inline-flex !important;
@@ -2068,9 +2227,9 @@
       gap: 8px;
     }
 
-    /* EMPTY FILTER STATE */
+    /* EMPTY FILTER STATE (Batas bawah disejajarkan presisi dengan batas bawah sidebar kanan, tanpa scroll) */
     .empty-kamar-filter {
-      padding: 40px 20px;
+      padding: 24px 20px;
       text-align: center;
       display: none;
       flex-direction: column;
@@ -2080,8 +2239,8 @@
       background: var(--bg-card);
       border-radius: 20px;
       border: 1.5px dashed var(--border-subtle);
-      min-height: 280px;
       box-sizing: border-box;
+      overflow: hidden;
     }
 
     /* MOBILE SLIDE-OVER DRAWER OVERLAY */
@@ -2251,7 +2410,7 @@
             
             <div class="metric-card-bottom">
               <div class="metric-val-col">
-                <span class="metric-lbl-sub" id="metricOccupiedSub">11 Terisi · 3 Kosong · 1 Servis</span>
+                <span class="metric-lbl-sub" id="metricOccupiedSub">Hunian Saat Ini</span>
                 <div class="metric-value-huge" id="metricOccupiedVal">11 <span class="metric-sub-val">/ 15 Kamar</span></div>
               </div>
 
@@ -2281,7 +2440,7 @@
             <div class="metric-card-bottom">
               <div class="metric-val-col">
                 <span class="metric-lbl-sub" id="metricRateSub">Rentang Rp 1,2 Jt – Rp 1,8 Jt</span>
-                <div class="metric-value-huge" id="metricRateVal">Rp 1,37 Jt <span class="metric-sub-val">/ Kamar</span></div>
+                <div class="metric-value-huge" id="metricRateVal">Rp 1,37 Juta</div>
               </div>
 
               <!-- Estify Smooth Semi-Circle Radial Progress Gauge (Blue) -->
@@ -2373,7 +2532,7 @@
           </div>
 
           <!-- Tombol Aksi Tambah Kamar Baru (SCR-03) -->
-          <button type="button" class="btn-brand-add" onclick="openTambahKamarModal()">
+          <button type="button" class="btn-brand-add" id="btnToolbarAddKamar" onclick="openTambahKamarModal()">
             <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
             <span>Tambah Kamar</span>
           </button>
@@ -2428,7 +2587,7 @@
             </div>
 
             <!-- Room A-02 -->
-            <div class="room-unit-item" id="card-A-02" data-no="A-02" data-floor="1" data-status="terisi" onclick="selectRoomCardByNo('A-02')">
+            <div class="room-unit-item status-tempo-card" id="card-A-02" data-no="A-02" data-floor="1" data-status="terisi" onclick="selectRoomCardByNo('A-02')">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80" alt="Kamar A-02">
                 <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
@@ -2466,7 +2625,7 @@
             </div>
 
             <!-- Room A-04 (Budi Santoso) -->
-            <div class="room-unit-item" id="card-A-04" data-no="A-04" data-floor="1" data-status="terisi" onclick="selectRoomCardByNo('A-04')">
+            <div class="room-unit-item status-tempo-card" id="card-A-04" data-no="A-04" data-floor="1" data-status="terisi" onclick="selectRoomCardByNo('A-04')">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400&q=80" alt="Kamar A-04">
                 <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
@@ -2524,7 +2683,7 @@
 
           <div class="rooms-grid-flow">
             <!-- Room B-01 (Dodi - Terlambat) -->
-            <div class="room-unit-item" id="card-B-01" data-no="B-01" data-floor="2" data-status="terisi" onclick="selectRoomCardByNo('B-01')">
+            <div class="room-unit-item status-overdue-card" id="card-B-01" data-no="B-01" data-floor="2" data-status="terlambat" onclick="selectRoomCardByNo('B-01')">
               <div class="room-thumb-area">
                 <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=400&q=80" alt="Kamar B-01">
                 <span class="room-float-arrow" title="Buka detail kamar"><i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i></span>
@@ -2762,9 +2921,13 @@
 
         <!-- Scrollable Content Body (Specs & Dossier Details) -->
         <div class="drawer-scroll-body" id="drawerScrollBody">
-        <!-- Photo Preview (110px) -->
-        <div class="drawer-photo-box">
+        <!-- Photo Preview (120px) dengan trigger layar penuh (Fullscreen) -->
+        <div class="drawer-photo-box" id="drawerPhotoWrap" onclick="openDrawerPhotoLightbox()" title="Klik untuk melihat foto layar penuh (Full Screen)">
           <img id="drawerPhoto" src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80" alt="Detail Kamar">
+          <div class="drawer-photo-zoom-hint">
+            <i data-lucide="maximize-2" style="width: 12px; height: 12px;"></i>
+            <span>Layar Penuh</span>
+          </div>
         </div>
 
         <!-- Specifications Grid (6 Proportional Specs) -->
@@ -3112,8 +3275,19 @@
               </div>
             </div>
             <div class="form-group-item">
-              <label class="form-label-txt" for="addUkuranKamar">Dimensi / Ukuran *</label>
-              <input type="text" id="addUkuranKamar" class="form-input-field" value="3 × 4 Meter" placeholder="Contoh: 3 × 4 Meter" required>
+              <label class="form-label-txt">Dimensi / Ukuran Kamar *</label>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="position: relative; flex: 1;">
+                  <input type="number" step="0.1" min="1" max="50" id="addDimensiPanjang" class="form-input-field" value="3" placeholder="P" style="padding-right: 28px;" oninput="syncDimensiInput('add')" required>
+                  <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: var(--text-muted); pointer-events: none;">m</span>
+                </div>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-muted); user-select: none;">&times;</span>
+                <div style="position: relative; flex: 1;">
+                  <input type="number" step="0.1" min="1" max="50" id="addDimensiLebar" class="form-input-field" value="4" placeholder="L" style="padding-right: 28px;" oninput="syncDimensiInput('add')" required>
+                  <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: var(--text-muted); pointer-events: none;">m</span>
+                </div>
+              </div>
+              <input type="hidden" id="addUkuranKamar" value="3 × 4 Meter">
             </div>
           </div>
 
@@ -3128,11 +3302,11 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt" for="addHargaKamar">Tarif Sewa per Bulan (Rp) *</label>
-              <input type="text" id="addHargaKamar" class="form-input-field" value="1.250.000" maxlength="15" placeholder="Contoh: 1.250.000" oninput="formatRupiahInput(this)" required>
+              <input type="text" id="addHargaKamar" class="form-input-field" value="1.250.000" maxlength="15" placeholder="Contoh: 1.250.000" oninput="handleHargaKamarInput(this, 'add')" required>
             </div>
             <div class="form-group-item">
               <label class="form-label-txt" for="addDepositKamar">Nominal Deposit Default (Rp) *</label>
-              <input type="text" id="addDepositKamar" class="form-input-field" value="500.000" placeholder="Contoh: 500.000" oninput="formatRupiahInput(this)" required>
+              <input type="text" id="addDepositKamar" class="form-input-field" value="650.000" placeholder="Contoh: 500.000" oninput="handleDepositInput(this, 'add')" required>
             </div>
           </div>
 
@@ -3193,42 +3367,20 @@
             </div>
           </div>
 
-          <!-- Checklist Fasilitas Kamar -->
+          <!-- Checklist Fasilitas Kamar (Berdasarkan Pengaturan Kost) -->
           <div class="form-group-item">
-            <label class="form-label-txt">Fasilitas Unit yang Tersedia</label>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+              <label class="form-label-txt" style="margin-bottom: 0;">Fasilitas Unit yang Tersedia</label>
+              <a href="WF-09-pengaturan.html#section-amenities" target="_blank" class="amenities-settings-link" title="Buka Pengaturan Kost untuk mengelola master fasilitas properti" style="font-size: 11px; font-weight: 600; color: var(--brand-primary, #FF7A00); display: inline-flex; align-items: center; gap: 4px; text-decoration: none; padding: 2px 8px; border-radius: 6px; background: #FFF7ED; border: 1px solid #FFEDD5; transition: all 0.15s ease;">
+                <i data-lucide="settings" style="width: 12px; height: 12px;"></i>
+                <span>Kelola di Pengaturan</span>
+              </a>
+            </div>
+            <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 8px 0; line-height: 1.35;">
+              Daftar fasilitas diambil dari Pengaturan Kost. Centang fasilitas yang tersedia di unit ini:
+            </p>
             <div class="modal-amenity-select-grid" id="addAmenitiesChecklist">
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="AC 1/2 PK" id="chkAddAC" checked>
-                <span>AC 1/2 PK</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="KM Dalam" id="chkAddKm" checked>
-                <span>KM Dalam</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Water Heater" id="chkAddWaterHeater" checked>
-                <span>Water Heater</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Springbed 120×200" id="chkAddKasur" checked>
-                <span>Springbed 120&times;200</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Lemari 2 Pintu" id="chkAddLemari" checked>
-                <span>Lemari 2 Pintu</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Meja & Kursi" id="chkAddMeja" checked>
-                <span>Meja & Kursi</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Wi-Fi 100 Mbps" id="chkAddWifi" checked>
-                <span>Wi-Fi 100 Mbps</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Token PLN" id="chkAddPln" checked>
-                <span>Token PLN (Mandiri)</span>
-              </label>
+              <!-- Rendered dynamically from PROPERTY_MASTER_AMENITIES -->
             </div>
           </div>
 
@@ -3298,6 +3450,12 @@
 
       <form id="formEditKamar" onsubmit="handleEditKamar(event)" style="display: flex; flex-direction: column; flex: 1; min-height: 0; margin: 0; overflow: hidden;">
         <div class="modal-body-scrollable">
+
+          <!-- SK-20: Pemberitahuan Wewenang Staf Operasional -->
+          <div id="staffEditNotice" style="display: none; margin-bottom: 14px; padding: 10px 14px; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; font-size: 11.5px; color: #1E40AF; align-items: flex-start; gap: 8px;">
+            <i data-lucide="shield-alert" style="width: 15px; height: 15px; color: #2563EB; flex-shrink: 0; margin-top: 1px;"></i>
+            <span style="line-height: 1.45;"><strong>Wewenang Terbatas Staf:</strong> Data Master Kamar (Nomor, Lantai, Tipe, Dimensi, Tarif Sewa, dan Deposit) hanya dapat diubah oleh <strong>Pemilik (Owner)</strong>. Anda berwenang memperbarui <strong>Status Kesiapan Fisik</strong> dan <strong>Catatan Pemeliharaan</strong> unit.</span>
+          </div>
 
           <!-- 1. INFORMASI UNIT & SPESIFIKASI DASAR -->
           <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
@@ -3399,8 +3557,19 @@
               </div>
             </div>
             <div class="form-group-item">
-              <label class="form-label-txt" for="editUkuranKamar">Dimensi / Ukuran *</label>
-              <input type="text" id="editUkuranKamar" class="form-input-field" required>
+              <label class="form-label-txt">Dimensi / Ukuran Kamar *</label>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="position: relative; flex: 1;">
+                  <input type="number" step="0.1" min="1" max="50" id="editDimensiPanjang" class="form-input-field" value="3" placeholder="P" style="padding-right: 28px;" oninput="syncDimensiInput('edit')" required>
+                  <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: var(--text-muted); pointer-events: none;">m</span>
+                </div>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-muted); user-select: none;">&times;</span>
+                <div style="position: relative; flex: 1;">
+                  <input type="number" step="0.1" min="1" max="50" id="editDimensiLebar" class="form-input-field" value="4" placeholder="L" style="padding-right: 28px;" oninput="syncDimensiInput('edit')" required>
+                  <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: var(--text-muted); pointer-events: none;">m</span>
+                </div>
+              </div>
+              <input type="hidden" id="editUkuranKamar" value="3 × 4 Meter">
             </div>
           </div>
 
@@ -3415,11 +3584,11 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div class="form-group-item">
               <label class="form-label-txt" for="editHargaKamar">Tarif Sewa per Bulan (Rp) *</label>
-              <input type="text" id="editHargaKamar" class="form-input-field" maxlength="15" oninput="formatRupiahInput(this)" required>
+              <input type="text" id="editHargaKamar" class="form-input-field" maxlength="15" oninput="handleHargaKamarInput(this, 'edit')" required>
             </div>
             <div class="form-group-item">
               <label class="form-label-txt" for="editDepositKamar">Nominal Deposit Default (Rp) *</label>
-              <input type="text" id="editDepositKamar" class="form-input-field" value="500.000" maxlength="15" oninput="formatRupiahInput(this)" required>
+              <input type="text" id="editDepositKamar" class="form-input-field" value="500.000" maxlength="15" oninput="handleDepositInput(this, 'edit')" required>
             </div>
             <!-- SK-46: Notifikasi Proteksi Tarif Kontrak Berjalan (Grandfathered Pricing) -->
             <div id="editGrandfatheredNotice" style="display: none; grid-column: span 2; padding: 8px 12px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 11px; color: #475569; align-items: center; gap: 8px;">
@@ -3503,42 +3672,20 @@
             </div>
           </div>
 
-          <!-- Checklist Fasilitas Kamar Edit -->
+          <!-- Checklist Fasilitas Kamar Edit (Berdasarkan Pengaturan Kost) -->
           <div class="form-group-item">
-            <label class="form-label-txt">Fasilitas Unit yang Tersedia</label>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+              <label class="form-label-txt" style="margin-bottom: 0;">Fasilitas Unit yang Tersedia</label>
+              <a href="WF-09-pengaturan.html#section-amenities" target="_blank" class="amenities-settings-link" title="Buka Pengaturan Kost untuk mengelola master fasilitas properti" style="font-size: 11px; font-weight: 600; color: var(--brand-primary, #FF7A00); display: inline-flex; align-items: center; gap: 4px; text-decoration: none; padding: 2px 8px; border-radius: 6px; background: #FFF7ED; border: 1px solid #FFEDD5; transition: all 0.15s ease;">
+                <i data-lucide="settings" style="width: 12px; height: 12px;"></i>
+                <span>Kelola di Pengaturan</span>
+              </a>
+            </div>
+            <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 8px 0; line-height: 1.35;">
+              Daftar fasilitas diambil dari Pengaturan Kost. Centang fasilitas yang tersedia di unit ini:
+            </p>
             <div class="modal-amenity-select-grid" id="editAmenitiesChecklist">
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="AC 1/2 PK" id="chkEditAC">
-                <span>AC 1/2 PK</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="KM Dalam" id="chkEditKm" checked>
-                <span>KM Dalam</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Water Heater" id="chkEditWaterHeater">
-                <span>Water Heater</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Springbed 120×200" id="chkEditKasur" checked>
-                <span>Springbed 120&times;200</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Lemari 2 Pintu" id="chkEditLemari" checked>
-                <span>Lemari 2 Pintu</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Meja & Kursi" id="chkEditMeja" checked>
-                <span>Meja & Kursi</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Wi-Fi 100 Mbps" id="chkEditWifi" checked>
-                <span>Wi-Fi 100 Mbps</span>
-              </label>
-              <label class="amenity-checkbox-label">
-                <input type="checkbox" value="Token PLN" id="chkEditPln" checked>
-                <span>Token PLN (Mandiri)</span>
-              </label>
+              <!-- Rendered dynamically from PROPERTY_MASTER_AMENITIES -->
             </div>
           </div>
 
@@ -3696,6 +3843,18 @@
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════════════════════════════
+       MINIMALIST FULLSCREEN PHOTO VIEWER (HANYA GAMBAR & TOMBOL X)
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="modal-backdrop fullscreen-photo-viewer" id="modalPhotoLightbox" onclick="closePhotoLightboxOnBackdrop(event)" title="Klik latar untuk menutup">
+    <button type="button" class="btn-minimal-close" onclick="closePhotoLightbox()" title="Tutup (ESC)" aria-label="Tutup foto">
+      <i data-lucide="x" style="width: 22px; height: 22px;"></i>
+    </button>
+    <div class="minimal-photo-container" onclick="event.stopPropagation()">
+      <img id="lightboxImg" src="" alt="Foto Kamar">
+    </div>
+  </div>
+
   <script src="assets/js/components.js"></script>
   <script>
     // Inisialisasi Topbar dengan deteksi role otomatis (?role=staf) dan activeNav 'kamar'
@@ -3777,6 +3936,7 @@
         else if (modalId === 'modalIklanKamar') closeIklanKamarModal();
         else if (modalId === 'modalKonfirmasiHapusKamar') closeKonfirmasiHapusModal();
         else if (modalId === 'modalKonfirmasiHapusLantai') closeKonfirmasiHapusLantaiModal();
+        else if (modalId === 'modalPhotoLightbox') closePhotoLightbox();
       }
     });
 
@@ -3948,6 +4108,52 @@
       }
     };
 
+    // ══════════════════════════════════════════════════════════════
+    // AUDIT TRAIL OPERATOR UTILITY (AKUNTABILITAS PEMBARUAN KAMAR)
+    // ══════════════════════════════════════════════════════════════
+    function getCurrentOperatorInfo() {
+      const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+        (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+      if (role === 'staff') {
+        return {
+          name: 'Staf Operasional',
+          email: 'staf.operasional@kostmakmur.com',
+          role: 'staff',
+          label: 'Staf Operasional'
+        };
+      }
+      return {
+        name: 'Budi Santoso',
+        email: 'budi.owner@kostmakmur.com',
+        role: 'owner',
+        label: 'Budi Santoso (Owner)'
+      };
+    }
+
+    function formatCurrentTimestamp() {
+      const now = new Date();
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = months[now.getMonth()];
+      const year = now.getFullYear();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      return `${day} ${month} ${year}, ${hours}:${mins} WIB`;
+    }
+
+    // Inisialisasi default jejak audit awal untuk seluruh unit kamar baseline
+    Object.values(ROOMS_DATA).forEach(r => {
+      if (!r.lastModified) {
+        r.lastModified = {
+          by: 'Budi Santoso (Owner)',
+          operatorEmail: 'budi.owner@kostmakmur.com',
+          role: 'owner',
+          at: '24 Okt 2026, 09:30 WIB',
+          action: 'Verifikasi baseline master unit properti'
+        };
+      }
+    });
+
     let activeRoomNo = 'A-01';
     let currentFilterLantai = 'all';
     let currentFilterStatus = 'all';
@@ -4024,8 +4230,51 @@
       searchInputEl.addEventListener('input', debounce(handleKamarFilter, 200));
     }
 
+    // Helper untuk menjaga parameter peran (?role=staf) saat navigasi antar-layar
+    function getRoleQueryParam(prefix = '&') {
+      const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+        (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+      return role === 'staff' ? (prefix + 'role=staf') : '';
+    }
+
     // SK-20: Terapkan Pembatasan Akses Role (RBAC)
     applyRoleAccessControl();
+
+    function lockMasterFieldsForStaff(isStaff) {
+      const notice = document.getElementById('staffEditNotice');
+      if (notice) notice.style.display = isStaff ? 'flex' : 'none';
+
+      // 1. Kunci input teks master kamar (Owner-Only)
+      const masterInputIds = ['editNoKamar', 'editDimensiPanjang', 'editDimensiLebar', 'editHargaKamar', 'editDepositKamar', 'editMeteranListrik'];
+      masterInputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.disabled = isStaff;
+          el.style.backgroundColor = isStaff ? 'var(--bg-card-muted, #F8FAFC)' : '';
+          el.style.cursor = isStaff ? 'not-allowed' : '';
+        }
+      });
+
+      // 2. Kunci trigger custom dropdown master (Lantai & Tipe)
+      const masterWrapIds = ['wrapEditLantai', 'wrapEditTipe'];
+      masterWrapIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.pointerEvents = isStaff ? 'none' : '';
+          el.style.opacity = isStaff ? '0.65' : '';
+        }
+      });
+
+      // 3. Kunci pills aturan hunian & kapasitas master
+      const masterPillsWrapIds = ['wrapEditCapPills', 'wrapEditGenderPills'];
+      masterPillsWrapIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.pointerEvents = isStaff ? 'none' : '';
+          el.style.opacity = isStaff ? '0.65' : '';
+        }
+      });
+    }
 
     function applyRoleAccessControl() {
       const rawRole = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
@@ -4040,11 +4289,50 @@
       const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
         (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
       if (role === 'staff') {
+        // 1. Sembunyikan aksi tambah kamar baru (Owner-Only per SCOPE_STATEMENT.md)
+        document.querySelectorAll('.btn-brand-add, #btnToolbarAddKamar, #btnEmptyAddKamar, #btnDrawerAddKamar').forEach(btn => {
+          btn.style.display = 'none';
+        });
+
+        // 2. Sembunyikan aksi destruktif kamar & lantai untuk staf
         const btnDelRoom = document.getElementById('btnDeleteRoomInModal');
         if (btnDelRoom) btnDelRoom.style.display = 'none';
         document.querySelectorAll('.btn-del-floor-sec').forEach(btn => {
           btn.style.display = 'none';
         });
+        document.querySelectorAll('.btn-del-floor-opt').forEach(btn => {
+          btn.style.display = 'none';
+        });
+
+        // 3. Sembunyikan tautan ke Pengaturan Kost master (hanya milik Owner)
+        document.querySelectorAll('.amenities-settings-link').forEach(link => {
+          link.style.display = 'none';
+        });
+
+        // 4. Kunci field master kamar pada modal edit (Staf hanya update status fisik & catatan)
+        lockMasterFieldsForStaff(true);
+      } else {
+        document.querySelectorAll('#btnToolbarAddKamar').forEach(btn => {
+          btn.style.display = '';
+        });
+        const btnDelRoom = document.getElementById('btnDeleteRoomInModal');
+        if (btnDelRoom) btnDelRoom.style.display = '';
+        document.querySelectorAll('.btn-del-floor-sec').forEach(btn => {
+          btn.style.display = '';
+        });
+        document.querySelectorAll('.btn-del-floor-opt').forEach(btn => {
+          btn.style.display = '';
+        });
+        document.querySelectorAll('.amenities-settings-link').forEach(link => {
+          link.style.display = '';
+        });
+        lockMasterFieldsForStaff(false);
+      }
+
+      // Preservasi role parameter pada pintasan lapor kendala drawer
+      const reportBtn = document.getElementById('btnDrawerReportRepair');
+      if (reportBtn) {
+        reportBtn.href = 'WF-08-tiket.html' + getRoleQueryParam('?');
       }
     }
 
@@ -4061,7 +4349,17 @@
       const drawer = document.getElementById('roomDetailDrawer');
       if (drawer) {
         drawer.classList.remove('is-empty-state');
-        drawer.style.height = '';
+        drawer.style.removeProperty('top');
+        drawer.style.removeProperty('height');
+        drawer.style.removeProperty('max-height');
+        drawer.style.removeProperty('margin-top');
+      }
+      document.body.style.overflowY = '';
+      const leftEmpty = document.getElementById('kamarEmptyState');
+      if (leftEmpty) {
+        leftEmpty.style.removeProperty('height');
+        leftEmpty.style.removeProperty('min-height');
+        leftEmpty.style.removeProperty('max-height');
       }
       const emptyView = document.getElementById('drawerEmptyStateView');
       if (emptyView) emptyView.style.display = 'none';
@@ -4148,7 +4446,7 @@
         if (data.status === 'kosong') {
           repairReportBtn.style.display = 'flex';
           repairReportBtn.onclick = function() {
-            window.location.href = 'WF-08-tiket.html?action=new&kamar=' + encodeURIComponent(data.no);
+            window.location.href = 'WF-08-tiket.html?action=new&kamar=' + encodeURIComponent(data.no) + getRoleQueryParam('&');
           };
         } else {
           repairReportBtn.style.display = 'none';
@@ -4178,7 +4476,7 @@
         document.getElementById('drawerRepairTarget').textContent = data.repairTarget || '24 Okt 2026 (Estimasi 1 Hari)';
         document.getElementById('drawerRepairNotes').textContent = data.repairNote || data.notes;
 
-        primaryBtn.href = 'WF-08-tiket.html?id=' + encodeURIComponent(data.repairTicket || 'T-04');
+        primaryBtn.href = 'WF-08-tiket.html?id=' + encodeURIComponent(data.repairTicket || 'T-04') + getRoleQueryParam('&');
         primaryText.textContent = 'Buka Tiket Perbaikan #' + (data.repairTicket || 'T-04');
         primaryBtn.innerHTML = '<i data-lucide="wrench" style="width: 14px; height: 14px;"></i> <span id="btnPrimaryText">Buka Tiket Perbaikan #' + (data.repairTicket || 'T-04') + '</span>';
 
@@ -4197,7 +4495,7 @@
 
         if (waBtn) waBtn.style.display = 'none';
 
-        primaryBtn.href = 'WF-04-penghuni.html?action=new&room=' + encodeURIComponent(data.no);
+        primaryBtn.href = 'WF-04-penghuni.html?action=new&room=' + encodeURIComponent(data.no) + getRoleQueryParam('&');
         primaryBtn.innerHTML = '<i data-lucide="user-plus" style="width: 14px; height: 14px;"></i> <span id="btnPrimaryText">+ Daftarkan Penghuni Baru</span>';
 
         shareBtn.style.display = 'flex';
@@ -4277,7 +4575,7 @@
 
         }
 
-        primaryBtn.href = 'WF-04-penghuni.html?id=' + encodeURIComponent(data.no);
+        primaryBtn.href = 'WF-04-penghuni.html?id=' + encodeURIComponent(data.no) + getRoleQueryParam('&');
         primaryBtn.innerHTML = '<i data-lucide="user-check" style="width: 14px; height: 14px;"></i> <span id="btnPrimaryText">Lihat Profil Penghuni</span>';
         shareBtn.style.display = 'none';
       }
@@ -4366,6 +4664,71 @@
       input.value = parseInt(val, 10).toLocaleString('id-ID');
     }
 
+    let isAddDepositManuallyEdited = false;
+    let isEditDepositManuallyEdited = false;
+
+    // Kalkulasi Rekomendasi Deposit 50% (Dibulatkan ke kelipatan Rp 50.000 terdekat)
+    function calculateRecommendedDeposit(rawHarga) {
+      const numHarga = parseInt(String(rawHarga).replace(/\D/g, '') || '0', 10);
+      if (numHarga < 10000) return 0;
+      // Formula: 50% dari harga sewa, dibulatkan ke kelipatan 50.000 terdekat
+      const half = numHarga * 0.5;
+      const rounded = Math.round(half / 50000) * 50000;
+      return rounded > 0 ? rounded : Math.round(half);
+    }
+
+    function handleHargaKamarInput(input, prefix) {
+      formatRupiahInput(input);
+      const isManual = prefix === 'add' ? isAddDepositManuallyEdited : isEditDepositManuallyEdited;
+      const depositInput = document.getElementById(prefix + 'DepositKamar');
+
+      // Jika kolom tarif dikosongkan atau di bawah batas minimum wajar (< 10.000), kosongkan juga depositnya
+      const rawVal = input.value.replace(/\D/g, '');
+      if (!rawVal || parseInt(rawVal, 10) < 10000) {
+        if (depositInput) depositInput.value = '';
+        if (prefix === 'add') isAddDepositManuallyEdited = false;
+        else isEditDepositManuallyEdited = false;
+        return;
+      }
+
+      // Jika pemilik belum mengedit kolom deposit secara manual, hitung otomatis rekomendasi 50%
+      if (!isManual) {
+        applyRecommendedDeposit(prefix);
+      }
+    }
+
+    function handleDepositInput(input, prefix) {
+      formatRupiahInput(input);
+      const rawVal = input.value.replace(/\D/g, '');
+      if (!rawVal || parseInt(rawVal, 10) <= 0) {
+        // Jika pemilik mengosongkan deposit, reset flag manual agar saat tarif diisi lagi nanti bisa auto-hitung
+        if (prefix === 'add') isAddDepositManuallyEdited = false;
+        else isEditDepositManuallyEdited = false;
+      } else {
+        if (prefix === 'add') isAddDepositManuallyEdited = true;
+        else isEditDepositManuallyEdited = true;
+      }
+    }
+
+    function applyRecommendedDeposit(prefix) {
+      const hargaInput = document.getElementById(prefix + 'HargaKamar');
+      const depositInput = document.getElementById(prefix + 'DepositKamar');
+      if (!hargaInput || !depositInput) return;
+
+      const rawVal = hargaInput.value.replace(/\D/g, '');
+      if (!rawVal || parseInt(rawVal, 10) < 10000) {
+        depositInput.value = '';
+        return;
+      }
+
+      const recomVal = calculateRecommendedDeposit(hargaInput.value);
+      if (recomVal > 0) {
+        depositInput.value = recomVal.toLocaleString('id-ID');
+      } else {
+        depositInput.value = '';
+      }
+    }
+
     function onKamarSearchInput(val) {
       const btnClear = document.getElementById('clearKamarSearch');
       if (btnClear) {
@@ -4385,27 +4748,55 @@
       handleKamarFilter();
     }
 
-    // Sinkronisasi tinggi drawer dengan batas bawah kotak empty state kamar di kiri
-    function alignDrawerBottomWithKamar() {
-      if (window.innerWidth <= 1200) return;
+    // Sinkronisasi batas bawah kotak empty state kamar (kiri) agar sejajar presisi dengan batas bawah sidebar kanan & tanpa scroll
+    function alignLeftEmptyStateBottom() {
       const leftEmpty = document.getElementById('kamarEmptyState');
-      const d = document.getElementById('roomDetailDrawer');
-      if (!d || !d.classList.contains('is-empty-state')) return;
+      const drawer = document.getElementById('roomDetailDrawer');
+      if (!leftEmpty) return;
 
-      if (leftEmpty && leftEmpty.style.display !== 'none') {
-        const leftRect = leftEmpty.getBoundingClientRect();
-        const dRect = d.getBoundingClientRect();
-        const targetHeight = Math.max(280, Math.round(leftRect.bottom - dRect.top));
-        d.style.height = targetHeight + 'px';
+      if (window.innerWidth <= 1200) {
+        document.body.style.overflowY = '';
+        leftEmpty.style.removeProperty('height');
+        leftEmpty.style.removeProperty('min-height');
+        leftEmpty.style.removeProperty('max-height');
+        return;
       }
+
+      if (leftEmpty.style.display === 'none') {
+        document.body.style.overflowY = '';
+        leftEmpty.style.removeProperty('height');
+        leftEmpty.style.removeProperty('min-height');
+        leftEmpty.style.removeProperty('max-height');
+        return;
+      }
+
+      // Kembalikan posisi scroll ke paling atas agar layout single screen 100% pas
+      if (window.scrollY > 0) {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
+
+      // Kunci scroll vertikal halaman saat empty state agar tidak bisa di-scroll
+      document.body.style.overflowY = 'hidden';
+
+      if (drawer) {
+        drawer.style.removeProperty('margin-top');
+      }
+
+      const dRect = drawer ? drawer.getBoundingClientRect() : null;
+      const leftRect = leftEmpty.getBoundingClientRect();
+      const drawerBottom = dRect ? dRect.bottom : (window.innerHeight - 20);
+      const targetH = Math.max(200, Math.round(drawerBottom - leftRect.top));
+      leftEmpty.style.height = targetH + 'px';
+      leftEmpty.style.maxHeight = targetH + 'px';
     }
-    window.addEventListener('resize', alignDrawerBottomWithKamar);
+    window.addEventListener('resize', alignLeftEmptyStateBottom);
 
     // Skenario 5: State Kosong pada Drawer Dossier saat 0 Kamar / Pencarian Nihil
     function setDrawerEmptyState() {
       const drawer = document.getElementById('roomDetailDrawer');
       if (drawer) {
         drawer.classList.add('is-empty-state');
+        drawer.style.removeProperty('margin-top');
       }
 
       const headerRow = document.getElementById('drawerHeaderRow');
@@ -4432,9 +4823,15 @@
       if (totalInSystem === 0) {
         if (drawerEmptyIcon) drawerEmptyIcon.setAttribute('data-lucide', 'door-open');
         if (drawerEmptyTitle) drawerEmptyTitle.textContent = 'Belum Ada Kamar Terdaftar';
-        if (drawerEmptyText) drawerEmptyText.textContent = 'Mulai kelola hunian kost Anda dengan mendaftarkan unit kamar pertama.';
+        const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+          (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+        if (drawerEmptyText) {
+          drawerEmptyText.textContent = role === 'staff'
+            ? 'Belum ada unit kamar di properti ini. Silakan hubungi Pemilik (Owner) untuk mendaftarkan unit kamar.'
+            : 'Mulai kelola hunian kost Anda dengan mendaftarkan unit kamar pertama.';
+        }
         if (btnReset) btnReset.style.display = 'none';
-        if (btnAdd) btnAdd.style.display = 'inline-flex';
+        if (btnAdd) btnAdd.style.display = (role === 'staff' ? 'none' : 'inline-flex');
       } else {
         if (drawerEmptyIcon) drawerEmptyIcon.setAttribute('data-lucide', 'layout-grid');
         if (drawerEmptyTitle) drawerEmptyTitle.textContent = 'Belum Ada Kamar Dipilih';
@@ -4443,10 +4840,10 @@
         if (btnAdd) btnAdd.style.display = 'none';
       }
 
-      // Sejajarkan tinggi batas bawah drawer dengan batas bawah kotak empty state kamar di kiri
+      // Sejajarkan batas bawah kotak kamar kiri dengan batas bawah sidebar kanan
       requestAnimationFrame(() => {
-        alignDrawerBottomWithKamar();
-        setTimeout(alignDrawerBottomWithKamar, 50);
+        alignLeftEmptyStateBottom();
+        setTimeout(alignLeftEmptyStateBottom, 50);
       });
 
       document.querySelectorAll('.room-unit-item').forEach(card => card.classList.remove('active-room'));
@@ -4501,10 +4898,17 @@
         if (totalInSystem === 0) {
           emptyEl.style.display = 'flex';
           if (emptyIcon) emptyIcon.setAttribute('data-lucide', 'door-open');
-          if (emptyText) emptyText.textContent = 'Belum ada unit kamar di kost Anda. Mulai kelola hunian dengan mendaftarkan kamar pertama.';
+          const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+            (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+          if (emptyText) {
+            emptyText.textContent = role === 'staff'
+              ? 'Belum ada unit kamar di properti ini. Silakan hubungi Pemilik (Owner) untuk mendaftarkan unit kamar.'
+              : 'Belum ada unit kamar di kost Anda. Mulai kelola hunian dengan mendaftarkan kamar pertama.';
+          }
           if (btnReset) btnReset.style.display = 'none';
-          if (btnAdd) btnAdd.style.display = 'inline-flex';
+          if (btnAdd) btnAdd.style.display = (role === 'staff' ? 'none' : 'inline-flex');
           lucide.createIcons();
+          requestAnimationFrame(alignLeftEmptyStateBottom);
         } else if (totalVisible === 0) {
           emptyEl.style.display = 'flex';
           if (emptyIcon) emptyIcon.setAttribute('data-lucide', 'search-x');
@@ -4512,8 +4916,13 @@
           if (btnReset) btnReset.style.display = 'inline-flex';
           if (btnAdd) btnAdd.style.display = 'none';
           lucide.createIcons();
+          requestAnimationFrame(alignLeftEmptyStateBottom);
         } else {
           emptyEl.style.display = 'none';
+          emptyEl.style.removeProperty('height');
+          emptyEl.style.removeProperty('min-height');
+          emptyEl.style.removeProperty('max-height');
+          document.body.style.overflowY = '';
         }
       }
 
@@ -4530,6 +4939,13 @@
     }
 
     function resetFilter() {
+      document.body.style.overflowY = '';
+      const leftEmpty = document.getElementById('kamarEmptyState');
+      if (leftEmpty) {
+        leftEmpty.style.removeProperty('height');
+        leftEmpty.style.removeProperty('min-height');
+        leftEmpty.style.removeProperty('max-height');
+      }
       document.getElementById('kamarSearchInput').value = '';
       const btnClear = document.getElementById('clearKamarSearch');
       if (btnClear) btnClear.style.display = 'none';
@@ -4554,13 +4970,76 @@
       }
 
       handleKamarFilter();
+      const drawer = document.getElementById('roomDetailDrawer');
+      if (drawer && !drawer.classList.contains('is-empty-state')) {
+        drawer.style.removeProperty('top');
+        drawer.style.removeProperty('height');
+        drawer.style.removeProperty('max-height');
+        drawer.style.removeProperty('margin-top');
+      }
       RumaUI.showToast('Filter telah direset ke seluruh kamar');
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // MASTER FASILITAS UNIT (BERSUMBER DARI PENGATURAN KOST WF-09)
+    // ══════════════════════════════════════════════════════════════
+    const PROPERTY_MASTER_AMENITIES = [
+      { name: 'AC 1/2 PK', defaultChecked: true },
+      { name: 'KM Dalam', defaultChecked: true },
+      { name: 'Water Heater', defaultChecked: true },
+      { name: 'Springbed 120×200', defaultChecked: true },
+      { name: 'Lemari 2 Pintu', defaultChecked: true },
+      { name: 'Meja & Kursi', defaultChecked: true },
+      { name: 'Wi-Fi 100 Mbps', defaultChecked: true },
+      { name: 'Token PLN', defaultChecked: true },
+      { name: 'Ventilasi / Jendela Luar', defaultChecked: false },
+      { name: 'Balkon Pribadi', defaultChecked: false }
+    ];
+
+    function renderAmenitiesChecklist(containerId, selectedList, prefix) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+      
+      PROPERTY_MASTER_AMENITIES.forEach((item, idx) => {
+        const isChecked = selectedList ? selectedList.some(a => a.toLowerCase().includes(item.name.toLowerCase().split(' ')[0])) : item.defaultChecked;
+        const chkId = `chk_${prefix}_${idx}`;
+        
+        const label = document.createElement('label');
+        label.className = 'amenity-checkbox-label';
+        label.setAttribute('for', chkId);
+        label.innerHTML = `
+          <input type="checkbox" value="${item.name}" id="${chkId}" ${isChecked ? 'checked' : ''}>
+          <span>${item.name}</span>
+        `;
+        container.appendChild(label);
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function syncDimensiInput(prefix) {
+      const pInput = document.getElementById(prefix + 'DimensiPanjang');
+      const lInput = document.getElementById(prefix + 'DimensiLebar');
+      const hiddenInput = document.getElementById(prefix + 'UkuranKamar');
+      if (pInput && lInput && hiddenInput) {
+        const p = pInput.value.trim() || '3';
+        const l = lInput.value.trim() || '4';
+        hiddenInput.value = `${p} × ${l} Meter`;
+      }
     }
 
     // ══════════════════════════════════════════════════════════════
     // LOGIKA MODAL TAMBAH & EDIT KAMAR
     // ══════════════════════════════════════════════════════════════
     function openTambahKamarModal() {
+      // SK-20 & SCOPE_STATEMENT.md: Wewenang Tambah Kamar Baru (Owner-Only)
+      const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+        (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+      if (role === 'staff') {
+        RumaUI.showToast('Wewenang Terbatas: Hanya Pemilik Properti (Owner) yang berhak mendaftarkan unit kamar baru.', 'warning');
+        return;
+      }
+
       RumaUI.openModal('modalTambahKamar');
       try { history.pushState({ modalOpen: true, modalId: 'modalTambahKamar' }, ''); } catch (err) {}
       isAddFormDirty = false;
@@ -4568,10 +5047,29 @@
       if (addFormEl) addFormEl.oninput = () => { isAddFormDirty = true; };
       const form = document.getElementById('formTambahKamar');
       if (form) form.reset();
+
+      // Sinkronisasi 2 Input Dimensi (Panjang x Lebar)
+      const pInput = document.getElementById('addDimensiPanjang');
+      const lInput = document.getElementById('addDimensiLebar');
+      if (pInput) pInput.value = '3';
+      if (lInput) lInput.value = '4';
+      syncDimensiInput('add');
+
+      // Render Checklist Fasilitas dari Pengaturan Kost
+      renderAmenitiesChecklist('addAmenitiesChecklist', null, 'add');
+
       setFormSelectValue('addLantaiKamar', '1', 'wrapAddLantai');
       setFormSelectValue('addTipeKamar', 'Standar', 'wrapAddTipe');
       setRoomPillStatus('addStatusAwal', 'kosong', document.querySelector('#wrapAddStatusPills .duration-pill-opt'), 'wrapAddStatusPills');
+
+      // Reset Flag Manual Deposit & Hitung Rekomendasi 50%
+      isAddDepositManuallyEdited = false;
+      const addHarga = document.getElementById('addHargaKamar');
+      if (addHarga && !addHarga.value) addHarga.value = '1.250.000';
+      applyRecommendedDeposit('add');
+
       lucide.createIcons();
+      applyRoleAccessControl();
     }
 
     function closeTambahKamarModal() {
@@ -4654,12 +5152,22 @@
 
       inputEl.value = '';
       lucide.createIcons();
+      applyRoleAccessControl();
       RumaUI.showToast('Lantai "' + rawName + '" berhasil ditambahkan!', 'success');
     }
 
     // Skenario 2: Hapus Opsi Lantai Draft/Typo dari Dropdown
     function removeDraftFloorOption(floorVal, floorName, event) {
       if (event) event.stopPropagation();
+
+      // SK-20: Pembatasan Wewenang Hapus Opsi Lantai (Hanya Owner)
+      const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+        (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+      if (role === 'staff') {
+        RumaUI.showToast('Wewenang Terbatas: Hanya Pemilik Properti (Owner) yang berhak menghapus opsi partisi lantai.', 'warning');
+        return;
+      }
+
       const sec = document.getElementById('floorSection' + floorVal);
       const roomCards = sec ? sec.querySelectorAll('.room-unit-item') : [];
       if (roomCards.length > 0) {
@@ -4721,6 +5229,40 @@
       RumaUI.closeModal('modalKonfirmasiHapusLantai');
       pendingDeleteFloorId = null;
       pendingDeleteFloorName = null;
+    }
+
+    // ══════════════════════════════════════════════════════════════
+    // LIGHTBOX CONTROLLER: ZOOM FOTO KAMAR RESOLUSI PENUH (Estify DNA)
+    // ══════════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════════
+    // FULLSCREEN PHOTO STUDIO: INSPEKSI KAMAR IMMERSIVE REAL ESTATE
+    // ══════════════════════════════════════════════════════════════
+    // ══════════════════════════════════════════════════════════════
+    // LIGHTBOX FOTO KAMAR: HANYA GAMBAR & TOMBOL X (MINIMALIST)
+    // ══════════════════════════════════════════════════════════════
+    function openDrawerPhotoLightbox() {
+      const modal = document.getElementById('modalPhotoLightbox');
+      const img = document.getElementById('lightboxImg');
+      if (!modal || !img) return;
+
+      const currentNo = (typeof activeRoomNo !== 'undefined' && activeRoomNo) ? activeRoomNo : 'A-01';
+      const data = ROOMS_DATA[currentNo] || {};
+      const currentPhoto = data.img || (document.getElementById('drawerPhoto') ? document.getElementById('drawerPhoto').src : '');
+      img.src = currentPhoto;
+
+      RumaUI.openModal('modalPhotoLightbox');
+      try { history.pushState({ modalOpen: true, modalId: 'modalPhotoLightbox' }, ''); } catch (err) {}
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closePhotoLightbox() {
+      RumaUI.closeModal('modalPhotoLightbox');
+    }
+
+    function closePhotoLightboxOnBackdrop(e) {
+      if (e.target.id === 'modalPhotoLightbox') {
+        closePhotoLightbox();
+      }
     }
 
     function executeDeleteFloor() {
@@ -4840,7 +5382,14 @@
         billBadgeClass: 'badge-brand',
         notes: document.getElementById('addCatatanKamar').value.trim() || 'Unit baru didaftarkan ke sistem, siap huni.',
         amenities: selectedAmenities.length ? selectedAmenities : ['KM Dalam', 'Kasur Springbed', 'WiFi 100M'],
-        img: uploadedAddPhotoUrl || 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80'
+        img: uploadedAddPhotoUrl || 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80',
+        lastModified: {
+          by: 'Budi Santoso (Owner)',
+          operatorEmail: 'budi.owner@kostmakmur.com',
+          role: 'owner',
+          at: formatCurrentTimestamp(),
+          action: 'Pendaftaran unit baru'
+        }
       };
 
       // Pastikan Floor Section di DOM tersedia
@@ -4935,7 +5484,13 @@
       document.getElementById('editNoKamar').value = data.no;
       setFormSelectValue('editLantaiKamar', data.floor, 'wrapEditLantai');
       setFormSelectValue('editTipeKamar', data.type, 'wrapEditTipe');
-      document.getElementById('editUkuranKamar').value = data.size;
+      // Sinkronisasi 2 Input Dimensi (Panjang x Lebar)
+      const sizeParts = (data.size || '3 × 4').replace(/Meter|m/gi, '').split(/×|x/i).map(s => s.trim());
+      const editP = document.getElementById('editDimensiPanjang');
+      const editL = document.getElementById('editDimensiLebar');
+      if (editP) editP.value = sizeParts[0] || '3';
+      if (editL) editL.value = sizeParts[1] || '4';
+      syncDimensiInput('edit');
       document.getElementById('editHargaKamar').value = data.rawPrice || data.price.replace(/[^\d]/g, '');
       document.getElementById('editDepositKamar').value = (data.deposit || 'Rp 500.000').replace(/[^\d]/g, '');
       document.getElementById('editMeteranListrik').value = data.pln || 'PLN 1423-8899';
@@ -4968,16 +5523,9 @@
         syncPillsUI('wrapEditStatusPills', currentPhysicalStatus === 'perbaikan' ? 'Perbaikan' : 'Siap Huni');
       }
 
-      // Sinkronisasi Checklist Fasilitas Edit
-      const editAmenities = data.amenities || [];
-      document.getElementById('chkEditAC').checked = editAmenities.some(a => a.toLowerCase().includes('ac'));
-      document.getElementById('chkEditKm').checked = editAmenities.some(a => a.toLowerCase().includes('km') || a.toLowerCase().includes('mandi') || a.toLowerCase().includes('bath'));
-      document.getElementById('chkEditKasur').checked = editAmenities.some(a => a.toLowerCase().includes('kasur') || a.toLowerCase().includes('bed') || a.toLowerCase().includes('springbed'));
-      document.getElementById('chkEditLemari').checked = editAmenities.some(a => a.toLowerCase().includes('lemari') || a.toLowerCase().includes('pakaian'));
-      document.getElementById('chkEditMeja').checked = editAmenities.some(a => a.toLowerCase().includes('meja') || a.toLowerCase().includes('kursi') || a.toLowerCase().includes('kerja'));
-      document.getElementById('chkEditWifi').checked = editAmenities.some(a => a.toLowerCase().includes('wifi') || a.toLowerCase().includes('wi-fi'));
-      document.getElementById('chkEditWaterHeater').checked = editAmenities.some(a => a.toLowerCase().includes('water') || a.toLowerCase().includes('heater'));
-      document.getElementById('chkEditPln').checked = editAmenities.some(a => a.toLowerCase().includes('token') || a.toLowerCase().includes('pln'));
+      // Render Checklist Fasilitas dari Pengaturan Kost
+      renderAmenitiesChecklist('editAmenitiesChecklist', data.amenities, 'edit');
+      isEditDepositManuallyEdited = false;
 
       RumaUI.openModal('modalEditKamar');
       const grandfatherNotice = document.getElementById('editGrandfatheredNotice');
@@ -5138,7 +5686,7 @@
       }
       const elRateVal = document.getElementById('metricRateVal');
       if (elRateVal) {
-        elRateVal.innerHTML = 'Rp ' + (avgPrice / 1000000).toFixed(2).replace('.', ',') + ' Jt <span class="metric-sub-val">/ Kamar</span>';
+        elRateVal.innerHTML = 'Rp ' + (avgPrice / 1000000).toFixed(2).replace('.', ',') + ' Jt <span class="metric-sub-val"></span>';
       }
       const elRateGauge = document.getElementById('metricRateGauge');
       const benchmarkMax = Math.max(2000000, maxPrice);
@@ -5188,6 +5736,66 @@
       e.preventDefault();
       const data = ROOMS_DATA[activeRoomNo];
       if (!data) return;
+
+      const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
+        (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
+
+      // SK-20 & SCOPE_STATEMENT.md (Opsi 1): Staf hanya berwenang memperbarui status fisik dan catatan
+      if (role === 'staff') {
+        const updatedStatus = document.getElementById('editStatusKamar').value;
+        if (data.status !== 'terisi') {
+          data.status = updatedStatus;
+          if (updatedStatus === 'perbaikan') {
+            data.bill = 'Sedang Dalam Perbaikan';
+            data.billBadgeClass = 'badge-warning';
+          } else {
+            data.bill = 'Unit Siap Huni';
+            data.billBadgeClass = 'badge-brand';
+          }
+        }
+        data.notes = document.getElementById('editCatatanKamar').value.trim();
+        if (uploadedEditPhotoUrl) {
+          data.photo = uploadedEditPhotoUrl;
+        }
+
+        // Catat jejak audit staf
+        const op = getCurrentOperatorInfo();
+        let actionDesc = 'Pembaruan catatan operasional unit';
+        if (data.status === 'perbaikan') {
+          actionDesc = 'Status unit diubah ke [Dalam Perbaikan]';
+        } else if (data.status === 'kosong') {
+          actionDesc = 'Status unit diubah ke [Siap Huni]';
+        }
+        data.lastModified = {
+          by: op.label,
+          operatorEmail: op.email,
+          role: 'staff',
+          at: formatCurrentTimestamp(),
+          action: actionDesc
+        };
+
+        const cardEl = document.getElementById('card-' + activeRoomNo);
+        if (cardEl) {
+          cardEl.setAttribute('data-status', data.status);
+          if (data.status === 'kosong') {
+            cardEl.className = 'room-unit-item status-vacant-card active-room';
+          } else if (data.status === 'perbaikan') {
+            cardEl.className = 'room-unit-item status-repair-card active-room';
+          }
+        }
+
+        closeEditKamarModal();
+        isEditSubmitting = false;
+        isEditFormDirty = false;
+        selectRoomCardByNo(activeRoomNo);
+        refreshFloorStats();
+        refreshGlobalMetrics();
+        handleKamarFilter();
+        lucide.createIcons();
+        applyRoleAccessControl();
+        RumaUI.showToast('Status operasional Kamar ' + activeRoomNo + ' berhasil diperbarui!', 'success');
+        return;
+      }
 
       const updatedNo = document.getElementById('editNoKamar').value.trim().toUpperCase();
       const ROOM_REGEX = /^[A-Z0-9\-\. ]+$/;
@@ -5277,6 +5885,16 @@
       data.pln = document.getElementById('editMeteranListrik').value.trim();
       data.notes = document.getElementById('editCatatanKamar').value.trim();
       data.amenities = selectedAmenities;
+
+      // Catat jejak audit Pemilik (Owner)
+      const opOwner = getCurrentOperatorInfo();
+      data.lastModified = {
+        by: opOwner.label,
+        operatorEmail: opOwner.email,
+        role: 'owner',
+        at: formatCurrentTimestamp(),
+        action: 'Pembaruan spesifikasi & master unit'
+      };
 
       // Skenario Relokasi Fisik: Pindah Lantai Kamar
       const cardEl = document.getElementById('card-' + oldNo);
@@ -5512,6 +6130,16 @@
         data.bill = 'Tersedia';
         data.billBadgeClass = 'badge-brand';
         data.notes = 'Perbaikan selesai. Unit bersih, AC prima & siap dipasarkan.';
+
+        // Catat jejak audit operator
+        const op = getCurrentOperatorInfo();
+        data.lastModified = {
+          by: op.label,
+          operatorEmail: op.email,
+          role: op.role,
+          at: formatCurrentTimestamp(),
+          action: 'Pemeliharaan selesai · Unit siap huni'
+        };
 
         const cardEl = document.getElementById('card-' + roomNo);
         if (cardEl) {
@@ -5770,20 +6398,24 @@
 
       // Sinkronisasi otomatis dimensi berdasarkan tipe
       if (hiddenInputId === 'addTipeKamar') {
-        const sizeInput = document.getElementById('addUkuranKamar');
-        if (sizeInput) {
-          if (value === 'Standar') sizeInput.value = '3 × 4 Meter';
-          else if (value === 'Standar AC') sizeInput.value = '3.5 × 4 Meter';
-          else if (value === 'Deluxe') sizeInput.value = '4 × 5 Meter';
-          else if (value === 'Deluxe Corner View') sizeInput.value = '4.5 × 5 Meter';
+        const pInput = document.getElementById('addDimensiPanjang');
+        const lInput = document.getElementById('addDimensiLebar');
+        if (pInput && lInput) {
+          if (value === 'Standar') { pInput.value = '3'; lInput.value = '4'; }
+          else if (value === 'Standar AC') { pInput.value = '3.5'; lInput.value = '4'; }
+          else if (value === 'Deluxe') { pInput.value = '4'; lInput.value = '5'; }
+          else if (value === 'Deluxe Corner View') { pInput.value = '4.5'; lInput.value = '5'; }
+          syncDimensiInput('add');
         }
       } else if (hiddenInputId === 'editTipeKamar') {
-        const sizeInput = document.getElementById('editUkuranKamar');
-        if (sizeInput) {
-          if (value === 'Standar') sizeInput.value = '3 × 4 Meter';
-          else if (value === 'Standar AC') sizeInput.value = '3.5 × 4 Meter';
-          else if (value === 'Deluxe') sizeInput.value = '4 × 5 Meter';
-          else if (value === 'Deluxe Corner View') sizeInput.value = '4.5 × 5 Meter';
+        const pInput = document.getElementById('editDimensiPanjang');
+        const lInput = document.getElementById('editDimensiLebar');
+        if (pInput && lInput) {
+          if (value === 'Standar') { pInput.value = '3'; lInput.value = '4'; }
+          else if (value === 'Standar AC') { pInput.value = '3.5'; lInput.value = '4'; }
+          else if (value === 'Deluxe') { pInput.value = '4'; lInput.value = '5'; }
+          else if (value === 'Deluxe Corner View') { pInput.value = '4.5'; lInput.value = '5'; }
+          syncDimensiInput('edit');
         }
       }
 
@@ -5798,8 +6430,6 @@
       const wrap = document.getElementById(wrapId);
       if (!wrap) return;
 
-
-
       const targetItem = wrap.querySelector(`.form-select-item[data-value="${value}"]`);
       if (targetItem) {
         const labelContent = targetItem.querySelector('.item-label-content');
@@ -5813,6 +6443,9 @@
       }
       lucide.createIcons();
     }
+
+    // Inisialisasi awal render checklist fasilitas kost
+    renderAmenitiesChecklist('addAmenitiesChecklist', null, 'add');
   </script>
 </body>
 </html>

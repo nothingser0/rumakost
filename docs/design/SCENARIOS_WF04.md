@@ -68,7 +68,7 @@ Desain layar ini mengimplementasikan prinsip estetika **Estify Minimalist DNA** 
 | **B-02** | Lantai 2 | **Rini Marlina** | Deluxe (3.5×4m) | Rp 1.300.000 | Rp 1.000.000 | **Lunas** (Okt) | Aktif Aman | 15 Agt 2025 – 15 Agt 2027 (10 Bln Lagi) | 2 Orang (bersama Anita Sari) | `3210-9876-5438` |
 | **B-04** | Lantai 2 | **Eko Prasetyo** | Deluxe (3.5×4m) | Rp 1.300.000 | Rp 1.000.000 | **Lunas** (Okt) | Penyewa Baru | 1 Okt 2026 – 30 Sep 2027 (11 Bln Lagi) | Tunggal (1 Orang) · Mandiri | `3210-9876-5440` |
 | **C-01** | Lantai 3 | **Hendra Wijaya** | VIP Balkon (4×4m) | Rp 1.400.000 | Rp 1.000.000 | **Lunas** (Okt) | Aktif Aman | 1 Jun 2025 – 31 Mei 2027 (7 Bln Lagi) | 3 Orang (bersama Kevin & Farhan) | `3210-9876-5441` |
-| **C-03** | Lantai 3 | **Rian Hidayat** | Standar (3×4m) | Rp 1.350.000 | Rp 1.000.000 | **Lunas** (Okt) | Aktif Aman | 10 Nov 2025 – 10 Nov 2026 (Sisa 16 Hari) | Tunggal (1 Orang) · Mandiri | `3210-9876-5443` |
+| **C-03** | Lantai 3 | **Rian Hidayat** | Standar (3×4m) | Rp 1.350.000 | Rp 1.000.000 | **Lunas** (Okt) | Aktif Aman | 1 Mei 2025 – 30 Apr 2027 (6 Bln Lagi) | Tunggal (1 Orang) · Mandiri | `3210-9876-5443` |
 | **C-04** | Lantai 3 | **Mega Lestari** | Standar (3×4m) | Rp 1.350.000 | Rp 1.000.000 | **Lunas** (Okt) | Aktif Aman | 1 Jan 2026 – 31 Des 2026 (68 Hari Lagi) | Tunggal (1 Orang) · Mandiri | `3210-9876-5444` |
 | **C-05** | Lantai 3 | **Aditya Pratama** | Standar (3×4m) | Rp 1.350.000 | Rp 1.000.000 | **Lunas** (Okt) | Aktif Aman | 1 Apr 2026 – 31 Mar 2027 (5 Bln Lagi) | Tunggal (1 Orang) · Mandiri | `3210-9876-5445` |
 
@@ -121,7 +121,6 @@ Desain layar ini mengimplementasikan prinsip estetika **Estify Minimalist DNA** 
     - Dimas Prasetyo (A-02, Jatuh Tempo H-3 & Kontrak Segera Berakhir)
     - Budi Santoso (A-04, Jatuh Tempo H-3)
     - Dodi Firmansyah (B-01, Telat Bayar H+3)
-    - Rian Hidayat (C-03, Kontrak Segera Berakhir H-16)
   - Badge counter pada header direktori (`#masterCountDisplay`) memperbarui jumlah secara instan.
   2. Klik tombol filter lantai **"Lantai 2"** (`switchFloor('2', this)`).
   - Daftar menyaring lebih lanjut menjadi penghuni di Lantai 2 saja: hanya **Dodi Firmansyah (B-01)** yang tampil.
@@ -136,9 +135,9 @@ Desain layar ini mengimplementasikan prinsip estetika **Estify Minimalist DNA** 
 * **Tujuan**: Menguji responsivitas pencarian teks reaktif yang mencakup tiga atribut sekaligus (Nama Penghuni, Nomor Kamar, Nomor WhatsApp/Telepon) serta tombol pembersih pencarian.
 * **Kondisi Awal**: Berada di halaman utama `WF-04-penghuni.html`.
 * **Langkah-langkah**:
-  1. Ketik *"B-01"* pada kotak pencarian (`#masterSearchInput`).
+  1. Ketik *"B-01"* pada kotak pencarian (`#tenantSearchInput` / `#masterSearchInput`).
 * **Hasil Diharapkan**:
-  - Tombol silang pembersih (`#masterSearchClearBtn`) otomatis muncul (`display: flex`).
+  - Tombol silang pembersih (`#clearSearchBtn` / `#masterSearchClearBtn`) otomatis muncul (`display: flex`).
   - Direktori master langsung menyaring dan hanya menampilkan kartu **Dodi Firmansyah (Kamar B-01)**.
   - Counter badge menunjukkan angka `1`.
   2. Hapus input dan ketikkan nama sebagian: *"lestari"*.
@@ -228,7 +227,10 @@ Desain layar ini mengimplementasikan prinsip estetika **Estify Minimalist DNA** 
     - Deposit Escrow: $\text{Rp } 500.000$.
     - **Total Tagihan Perdana = Rp 20.300.000**.
   6. Masukkan nama: *"Farhan Ramadhan"* dan data diri sintetis.
-  7. Klik tombol **"Daftarkan Penghuni Sekarang"**.
+  7. Centang opsi pembayaran lunas perdana:
+     - Jika dibuka oleh **Pemilik (Owner)**: muncul pilihan kanal penerimaan (*BCA*, *Mandiri*, *QRIS*, atau *Tunai / Cash* selaras dengan `WF-06-pembayaran`). Pemilik dapat memilih kanal mana saja sesuai hasil verifikasi mutasi rekening / penerimaan fisik.
+     - Jika dibuka oleh **Staf Operasional (`?role=staf`)**: opsi terkunci khusus *Tunai / Cash di Meja Staf*, atau dibiarkan tidak dicentang agar tagihan transfer bank diverifikasi Pemilik keesokan harinya via `WF-05-tagihan`.
+  8. Klik tombol **"Daftarkan Penghuni Sekarang"**.
 * **Hasil Diharapkan**:
   - Modal tertutup.
   - Data Farhan Ramadhan tercatat dengan `billStatus: 'lunas'`, `contractBadge: 'Lunas di Muka'`, dan `progressPct: 100%`.
@@ -349,15 +351,15 @@ Desain layar ini mengimplementasikan prinsip estetika **Estify Minimalist DNA** 
 
 ### SKENARIO 13: Relokasi / Mutasi Kamar Internal (Room Transfer & Prorata Selisih Tarif)
 * **Tujuan**: Menguji proses pemindahan kamar penghuni yang sedang aktif ke kamar lain yang kosong beserta penyesuaian selisih harga sewa dan pengalihan deposit.
-* **Kondisi Awal**: Siti Aminah (Kamar A-01, Tarif Rp 1.200.000) ingin pindah ke Kamar B-02 (Deluxe, Tarif Rp 1.500.000).
+* **Kondisi Awal**: Siti Aminah (Kamar A-01, Tarif Rp 1.200.000) ingin pindah ke Kamar B-05 (Deluxe, Tarif Rp 1.500.000).
 * **Langkah-langkah**:
   1. Klik tombol **"Pindah Kamar"** di Quick Actions dossier (`openPindahKamarModal()`).
   2. Modal `#modalPindahKamar` terbuka.
-  3. Buka dropdown kamar tujuan (`openMoveRoomDropdown()`), lalu pilih **"Kamar B-02 (Lantai 2 · Deluxe)"**.
+  3. Buka dropdown kamar tujuan (`openMoveRoomDropdown()`), lalu pilih **"Kamar B-05 (Lantai 2 · Deluxe)"**.
 * **Hasil Diharapkan**:
   - Sistem menampilkan kalkulator perbandingan kamar:
     - Kamar Saat Ini: *Kamar A-01 (Rp 1.200.000 / bln)*.
-    - Kamar Baru: *Kamar B-02 (Rp 1.500.000 / bln)*.
+    - Kamar Baru: *Kamar B-05 (Rp 1.500.000 / bln)*.
     - **Selisih Tarif: +Rp 300.000 / bln (Upgrade)**.
     - Saldo Deposit: Dialihkan 100% tanpa potongan.
   4. Atur tanggal efektif pindah kamar: `2026-11-01`.
@@ -365,11 +367,11 @@ Desain layar ini mengimplementasikan prinsip estetika **Estify Minimalist DNA** 
 * **Hasil Diharapkan**:
   - Modal tertutup.
   - Kamar lama (A-01) dikembalikan ke status `[ Kosong / Siap Bersih ]` dan dimasukkan ke `vacantRoomsData`.
-  - Kamar baru (B-02) dihapus dari `vacantRoomsData`.
-  - Data Siti Aminah diperbarui: kamar berubah menjadi `B-02`, lantai berubah menjadi `2`, tarif baru menjadi `Rp 1.500.000`, dan nomor SPK ditambahkan akhiran `/ADD-MUTASI`.
+  - Kamar baru (B-05) dihapus dari `vacantRoomsData`.
+  - Data Siti Aminah diperbarui: kamar berubah menjadi `B-05`, lantai berubah menjadi `2`, tarif baru menjadi `Rp 1.500.000`, dan nomor SPK ditambahkan akhiran `/ADD-MUTASI`.
   - Invoice selisih sewa `Rp 300.000` otomatis dicatatkan pada buku kas dengan status *Belum Bayar*.
   - Toast Success:  
-    `Mutasi berhasil! Siti Aminah resmi pindah ke Kamar B-02. Kamar A-01 dialihkan ke status 'Kosong / Siap Bersih'. Saldo deposit 100% dialihkan.`
+    `Mutasi berhasil! Siti Aminah resmi pindah ke Kamar B-05. Kamar A-01 dialihkan ke status 'Kosong / Siap Bersih'. Saldo deposit 100% dialihkan.`
 
 ---
 
@@ -527,15 +529,15 @@ Desain layar ini mengimplementasikan prinsip estetika **Estify Minimalist DNA** 
   2. Modal `#modalBiayaInsidental` terbuka.
   3. Klik tombol preset: **"Duplikat Kunci Hilang"** (`applyIncidentalPreset('kunci')`).
 * **Hasil Diharapkan**:
-  - Judul terisi otomatis: *"Penggantian & Duplikat Kunci Kamar Hilang"*.
-  - Nominal terisi otomatis: `Rp 75.000`.
+  - Judul terisi otomatis: *"Duplikat Kunci Kamar Fisik (Hilang)"*.
+  - Nominal terisi otomatis: `Rp 35.000`.
   4. Pilih opsi penagihan: klik **"Bayar Tunai / QRIS Langsung Sekarang"** (`setIncidentalPayOpt('cash')`).
   5. Klik tombol **"Catat Pembebanan Biaya"** (`confirmBiayaInsidental()`).
 * **Hasil Diharapkan**:
   - Modal tertutup.
-  - Transaksi baru masuk ke tabel Buku Kas: *Insidental: Penggantian & Duplikat Kunci Kamar Hilang* senilai *Rp 75.000* dengan metode *Tunai / QRIS Langsung* berstatus **Lunas**.
+  - Transaksi baru masuk ke tabel Buku Kas: *Insidental: Duplikat Kunci Kamar Fisik (Hilang)* senilai *Rp 35.000* dengan metode *Tunai / QRIS Langsung* berstatus **Lunas**.
   - Toast Success:  
-    `Biaya insidental "Penggantian & Duplikat Kunci Kamar Hilang" (Rp 75.000) berhasil dicatat untuk Kamar A-01!`
+    `Biaya insidental "Duplikat Kunci Kamar Fisik (Hilang)" (Rp 35.000) berhasil dicatat untuk Kamar A-01!`
 
 ---
 

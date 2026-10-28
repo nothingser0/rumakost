@@ -25,6 +25,77 @@
       font-family: inherit;
     }
 
+    /* ==========================================================================
+       UNIVERSAL ZERO BOX-SHADOW ON ALL BUTTONS (DESIGN STANDARDS)
+       ========================================================================== */
+    button,
+    .btn,
+    .btn-pill,
+    .btn-primary,
+    .btn-secondary,
+    .btn-dark,
+    .btn-neutral,
+    .btn-circle-filter,
+    .btn-more-options,
+    .btn-maintenance-full,
+    .pill-dropdown-trigger,
+    .pill-arrow-btn,
+    .icon-circle-btn,
+    .user-profile-btn,
+    .highlight-arrow-round,
+    .room-float-arrow,
+    [class*="btn-"],
+    button:hover,
+    button:focus,
+    button:focus-visible,
+    button:active,
+    .btn:hover,
+    .btn:focus,
+    .btn:focus-visible,
+    .btn:active,
+    [class*="btn-"]:hover,
+    [class*="btn-"]:focus,
+    [class*="btn-"]:focus-visible,
+    [class*="btn-"]:active,
+    .pill-dropdown-trigger:hover,
+    .pill-dropdown-trigger:focus,
+    .pill-dropdown-trigger:focus-visible,
+    .pill-dropdown-trigger:active,
+    .pill-arrow-btn:hover,
+    .pill-arrow-btn:focus,
+    .pill-arrow-btn:focus-visible,
+    .pill-arrow-btn:active,
+    .btn-circle-filter:hover,
+    .btn-circle-filter:focus,
+    .btn-circle-filter:focus-visible,
+    .btn-circle-filter:active,
+    .btn-more-options:hover,
+    .btn-more-options:focus,
+    .btn-more-options:focus-visible,
+    .btn-more-options:active,
+    .btn-maintenance-full:hover,
+    .btn-maintenance-full:focus,
+    .btn-maintenance-full:focus-visible,
+    .btn-maintenance-full:active,
+    .icon-circle-btn:hover,
+    .icon-circle-btn:focus,
+    .icon-circle-btn:focus-visible,
+    .icon-circle-btn:active,
+    .user-profile-btn:hover,
+    .user-profile-btn:focus,
+    .user-profile-btn:focus-visible,
+    .user-profile-btn:active,
+    .highlight-arrow-round:hover,
+    .highlight-arrow-round:focus,
+    .highlight-arrow-round:focus-visible,
+    .highlight-arrow-round:active,
+    .room-float-arrow:hover,
+    .room-float-arrow:focus,
+    .room-float-arrow:focus-visible,
+    .room-float-arrow:active {
+      box-shadow: none !important;
+    }
+
     .dashboard-wrapper {
       max-width: 1440px;
       width: calc(100% - 40px);
@@ -48,6 +119,7 @@
       gap: 20px;
       min-width: 0;
       width: 100%;
+      height: 100%;
     }
 
     .col-sidebar-flow {
@@ -432,7 +504,8 @@
     }
 
     .pill-dropdown-trigger:focus-visible {
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
+      outline: none;
+      box-shadow: none !important;
       border-color: var(--brand-primary);
     }
 
@@ -464,7 +537,8 @@
     }
 
     .pill-arrow-btn:focus-visible {
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.25) !important;
+      outline: none;
+      box-shadow: none !important;
       border-color: var(--brand-primary) !important;
     }
 
@@ -497,7 +571,8 @@
     }
 
     .btn-more-options:focus-visible {
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15) !important;
+      outline: none;
+      box-shadow: none !important;
       border-color: var(--brand-primary) !important;
     }
 
@@ -897,10 +972,11 @@
     .properties-section-card {
       background: var(--bg-card);
       border-radius: var(--radius-xl);
-      padding: 20px 24px 18px;
+      padding: 22px 24px 14px;
       box-shadow: var(--shadow-card);
       border: 1px solid var(--border-subtle);
-      min-height: 310px;
+      flex: 1;
+      min-height: 340px;
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
@@ -1032,7 +1108,7 @@
     .btn-circle-filter:focus,
     .btn-circle-filter:focus-visible {
       outline: none !important;
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15) !important;
+      box-shadow: none !important;
       border-color: var(--brand-primary);
     }
 
@@ -1051,8 +1127,8 @@
       scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
       padding: 4px 2px 8px;
-      min-height: 228px;
-      height: 228px;
+      min-height: 252px;
+      height: 252px;
       align-items: stretch;
       flex: 1;
       width: 100%;
@@ -1091,7 +1167,7 @@
     .room-empty-search {
       width: 100%;
       height: 100%;
-      min-height: 212px;
+      min-height: 236px;
       display: none;
       flex-direction: column;
       align-items: center;
@@ -1223,7 +1299,7 @@
 
     /* Image Thumbnail Container (Smooth 12px Rounded Corners on All Sides) */
     .room-thumb-area {
-      height: 114px;
+      height: 128px;
       width: 100%;
       position: relative;
       border-radius: var(--radius-md);
@@ -1280,7 +1356,8 @@
     }
 
     .room-float-arrow:focus-visible {
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.3);
+      box-shadow: none !important;
+      outline: none;
     }
 
     /* Card Details below image */
@@ -1430,14 +1507,15 @@
     }
 
     .btn-maintenance-full:focus-visible {
-      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.3);
+      box-shadow: none !important;
+      outline: none;
     }
 
     /* TENANT MESSAGES LIST */
     .tenant-message-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0px;
       margin-bottom: auto;
     }
 
@@ -1901,87 +1979,6 @@
     }
     .room-tile.vacant .tile-status-dot { background: #FF7A00; }
 
-    /* Floating Role Switcher Pill (Fixed Bottom-Right) */
-    .floating-role-switcher {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 100;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      border-radius: var(--radius-full);
-      animation: floatSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes floatSlideUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .btn-role-switch {
-      background: #111111;
-      color: #FFFFFF;
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      border-radius: var(--radius-full);
-      padding: 6px 14px 6px 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      outline: none;
-      font-family: inherit;
-      transition: all var(--transition-fast, 0.15s ease);
-    }
-
-    .btn-role-switch:hover {
-      background: #222222;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-      transform: translateY(-2px);
-    }
-
-    .role-icon-bubble {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: var(--brand-primary, #FF7A00);
-      color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .role-text-col {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1px;
-    }
-
-    .role-lbl-small {
-      font-size: 8.5px;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      color: #94A3B8;
-      text-transform: uppercase;
-      line-height: 1;
-    }
-
-    .role-name-bold {
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #FFFFFF;
-      line-height: 1.1;
-    }
-
-    .role-switch-tag {
-      font-size: 10.5px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: var(--radius-full);
-      background: rgba(255, 255, 255, 0.14);
-      color: #F8FAFC;
-      margin-left: 4px;
-    }
-
     /* Modal Form for Staff Cash Intake */
     .modal-notice-banner {
       background: #FFF7ED;
@@ -2106,10 +2103,10 @@
               <div class="metric-card-bottom">
                 <div class="metric-val-col">
                   <span class="metric-lbl-sub">Bulan ini</span>
-                  <div class="metric-value-huge">Rp 16,5 Jt</div>
+                  <div class="metric-value-huge">Rp 16,50 Jt</div>
                 </div>
 
-                <div class="gauge-meter-wrap" title="Kolektibilitas Tagihan 82% (Rp 16,5 Jt dari Rp 20,1 Jt)">
+                <div class="gauge-meter-wrap" title="Kolektibilitas Tagihan 82% (Rp 16,50 Jt dari Rp 20,10 Jt)">
                   <svg class="gauge-meter-svg" viewBox="0 0 100 58">
                     <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
                     <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#111111" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="19"/>
@@ -2173,10 +2170,10 @@
               <div class="metric-card-bottom">
                 <div class="metric-val-col">
                   <span class="metric-lbl-sub">Bulan ini</span>
-                  <div class="metric-value-huge">Rp 4,2 Jt</div>
+                  <div class="metric-value-huge">Rp 4,20 Jt</div>
                 </div>
 
-                <div class="gauge-meter-wrap" title="Pengeluaran Rp 4,2 Jt (Sisa Budget Rp 800rb dari Rp 5 Jt)">
+                <div class="gauge-meter-wrap" title="Pengeluaran Rp 4,20 Jt (Sisa Budget Rp 800rb dari Rp 5 Jt)">
                   <svg class="gauge-meter-svg" viewBox="0 0 100 58">
                     <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#F1F5F9" stroke-width="8.5" stroke-linecap="round"/>
                     <path d="M 16,52 A 34 34 0 0 1 84,52" fill="none" stroke="#EF4444" stroke-width="8.5" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="17"/>
@@ -2388,24 +2385,24 @@
                   <span class="bar-x-txt">Sep</span>
                 </div>
 
-                <!-- Okt: Pemasukan 16,5 Jt (132px) · Pengeluaran 4,2 Jt (34px) — HIGHLIGHT BULAN INI -->
+                <!-- Okt: Pemasukan 16,50 Jt (132px) · Pengeluaran 4,20 Jt (34px) — HIGHLIGHT BULAN INI -->
                 <div class="bars-pair-column is-selected-day">
                   <!-- Floating Tooltip -->
                   <div class="bar-hover-tooltip" style="bottom: 142px;">
                     <div style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Okt 2026 (Bulan Ini)</div>
                     <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
-                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: var(--text-main);">Rp 16,5 Jt</strong>
+                      <span class="tooltip-dot-orange"></span> Pemasukan: <strong style="color: var(--text-main);">Rp 16,50 Jt</strong>
                     </div>
                     <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
-                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: var(--text-main);">Rp 4,2 Jt</strong>
+                      <span class="tooltip-dot-dark"></span> Pengeluaran: <strong style="color: var(--text-main);">Rp 4,20 Jt</strong>
                     </div>
                   </div>
 
                   <div class="bars-duo">
-                    <div class="estify-bar-capsule" style="height: 132px;" title="Pemasukan: Rp 16,5 Jt (Bulan Berjalan)">
+                    <div class="estify-bar-capsule" style="height: 132px;" title="Pemasukan: Rp 16,50 Jt (Bulan Berjalan)">
                       <div class="bar-fill-solid is-pemasukan is-orange-active"></div>
                     </div>
-                    <div class="estify-bar-capsule" style="height: 34px;" title="Pengeluaran: Rp 4,2 Jt">
+                    <div class="estify-bar-capsule" style="height: 34px;" title="Pengeluaran: Rp 4,20 Jt">
                       <div class="bar-fill-solid is-pengeluaran is-peach-active"></div>
                     </div>
                   </div>
@@ -2419,7 +2416,7 @@
           <div class="orange-highlight-card" 
                tabindex="0" 
                role="link" 
-               aria-label="Kost Budi Makmur, Jl. Flamboyan No. 12, Pemasukan Bersih Rp 12,3 Jt. Buka Katalog Kamar" 
+               aria-label="Kost Budi Makmur, Jl. Flamboyan No. 12, Pemasukan Bersih Rp 12,30 Jt. Buka Katalog Kamar" 
                onclick="location.href='WF-03-kamar.html'" 
                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.href='WF-03-kamar.html';}" 
                title="Lihat Detail Properti & Kamar">
@@ -2449,7 +2446,7 @@
               <div class="highlight-emphasis-block">
                 <span class="emphasis-lbl">Pemasukan Bersih Bulan Ini</span>
                 <div class="emphasis-val-wrap">
-                  <span class="emphasis-val-huge">Rp 12,3 Jt</span>
+                  <span class="emphasis-val-huge">Rp 12,30 Jt</span>
                   <span class="emphasis-pill-trend">
                     +15% <i data-lucide="arrow-up" style="width: 11px; height: 11px; stroke-width: 2.2px;"></i>
                   </span>
@@ -3143,7 +3140,7 @@
 
         <!-- CARD 2: RECENT OPERATIONAL ACTIVITIES (Estify Activity Log Pattern · 100% In-Scope MVP) -->
         <div class="sidebar-card-box card-activity">
-          <div class="card-top-header" style="margin-bottom: 14px;">
+          <div class="card-top-header">
             <h2 class="card-title-text">Aktivitas Terkini</h2>
             <div class="custom-popover-wrap" id="wrapActivityFilter">
               <button type="button" 
@@ -3264,6 +3261,46 @@
               </div>
               <div class="tenant-msg-meta">
                 <span class="msg-timestamp">Kemarin</span>
+              </div>
+            </div>
+
+            <!-- Activity 6: Check-in Penghuni Baru & Serah Kunci -->
+            <div class="tenant-message-row" 
+                 tabindex="0" 
+                 role="link" 
+                 aria-label="Reza Rahadian Kamar B-03, check-in penghuni baru dan serah kunci, kemarin" 
+                 onclick="window.location.href='WF-04-penghuni.html?id=B-03'" 
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='WF-04-penghuni.html?id=B-03';}" 
+                 title="Profil Penghuni">
+              <div class="tenant-avatar-circle">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" alt="Reza Rahadian">
+              </div>
+              <div class="tenant-msg-content">
+                <div class="tenant-msg-name">Reza Rahadian (B-03)</div>
+                <div class="tenant-msg-snippet">Check-in unit baru · Serah terima kunci</div>
+              </div>
+              <div class="tenant-msg-meta">
+                <span class="msg-timestamp">Kemarin</span>
+              </div>
+            </div>
+
+            <!-- Activity 7: Selesai Perbaikan Teknisi -->
+            <div class="tenant-message-row" 
+                 tabindex="0" 
+                 role="link" 
+                 aria-label="Agus Pratama Teknisi, selesai perbaikan saklar Kamar A-03, 2 hari lalu" 
+                 onclick="window.location.href='WF-08-tiket.html'" 
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='WF-08-tiket.html';}" 
+                 title="Lihat Tiket">
+              <div class="tenant-avatar-circle">
+                <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=150&q=80" alt="Agus Pratama">
+              </div>
+              <div class="tenant-msg-content">
+                <div class="tenant-msg-name">Agus Pratama (Teknisi)</div>
+                <div class="tenant-msg-snippet">Selesai perbaikan saklar Kamar A-03</div>
+              </div>
+              <div class="tenant-msg-meta">
+                <span class="msg-timestamp">2 hari</span>
               </div>
             </div>
           </div>
@@ -3698,7 +3735,7 @@
         const arcWrap = document.querySelector('#card3OwnerBody .gauge-meter-wrap');
         const arcPath = document.querySelector('#card3OwnerBody .gauge-meter-svg path:nth-child(2)');
         const arcText = document.querySelector('#card3OwnerBody .gauge-meter-svg text');
-        if (arcWrap) arcWrap.title = `Pengeluaran Rp 4,2 Jt (Pagu Rp ${(budget/1000000).toFixed(1)} Jt · Sisa Rp ${((budget - expense)/1000).toLocaleString('id-ID')}rb)`;
+        if (arcWrap) arcWrap.title = `Pengeluaran Rp 4,20 Jt (Pagu Rp ${(budget/1000000).toFixed(1)} Jt · Sisa Rp ${((budget - expense)/1000).toLocaleString('id-ID')}rb)`;
         if (arcText) arcText.textContent = `${pct}%`;
         if (arcPath) {
           const circumference = 106.8;
@@ -3714,6 +3751,174 @@
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
       setTimeout(initInfiniteCarousel, 50);
     }
+
+    // ══════════════════════════════════════════════════════════════
+    // ROLE-ADAPTIVE DASHBOARD CONTROLLER (SCR-02 & SCR-02-STAF)
+    // ══════════════════════════════════════════════════════════════
+    let currentActiveRole = 'owner';
+
+    function initRoleAdaptiveDashboard() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedRole = urlParams.get('role');
+      if (requestedRole === 'staf' || requestedRole === 'staff') {
+        applyRoleView('staf', false);
+      } else {
+        applyRoleView('owner', false);
+      }
+    }
+
+    function applyRoleView(role, triggerToast = true) {
+      currentActiveRole = role;
+      const isStaff = (role === 'staf' || role === 'staff');
+
+      // Topbar role synchronization
+      if (typeof renderTopbar === 'function') {
+        renderTopbar('dashboard', isStaff ? 'staf' : 'owner');
+      }
+
+      // Row 1 Metric Cards
+      const card2Owner = document.getElementById('card2OwnerBody');
+      const card2Staff = document.getElementById('card2StaffBody');
+      const card3Owner = document.getElementById('card3OwnerBody');
+      const card3Staff = document.getElementById('card3StaffBody');
+
+      if (card2Owner && card2Staff) {
+        card2Owner.style.display = isStaff ? 'none' : 'flex';
+        card2Staff.style.display = isStaff ? 'flex' : 'none';
+      }
+      if (card3Owner && card3Staff) {
+        card3Owner.style.display = isStaff ? 'none' : 'flex';
+        card3Staff.style.display = isStaff ? 'flex' : 'none';
+      }
+
+      // Row 2 Main Section
+      const row2Owner = document.getElementById('row2OwnerView');
+      const row2Staff = document.getElementById('row2StaffView');
+      if (row2Owner && row2Staff) {
+        row2Owner.style.display = isStaff ? 'none' : 'grid';
+        row2Staff.style.display = isStaff ? 'grid' : 'none';
+      }
+
+      // Row 3 Action Buttons
+      const btnStaffPayment = document.getElementById('btnStaffRecordPayment');
+      if (btnStaffPayment) {
+        btnStaffPayment.style.display = isStaff ? 'inline-flex' : 'none';
+      }
+
+      // Sidebar Card 1: Condition Progress vs 5x3 Matrix
+      const sideOwner = document.getElementById('sidebarCard1Owner');
+      const sideStaff = document.getElementById('sidebarCard1Staff');
+      if (sideOwner && sideStaff) {
+        sideOwner.style.display = isStaff ? 'none' : 'block';
+        sideStaff.style.display = isStaff ? 'block' : 'none';
+      }
+
+      lucide.createIcons();
+    }
+
+    // Modal Catat Setoran Lapangan
+    function openStaffPaymentModal() {
+      const modal = document.getElementById('modalStaffPayment');
+      if (modal) {
+        modal.style.display = 'flex';
+        lucide.createIcons();
+      }
+    }
+
+    function closeStaffPaymentModal() {
+      const modal = document.getElementById('modalStaffPayment');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    function handleStaffPaymentFormSubmit(event) {
+      event.preventDefault();
+      const roomSelect = document.getElementById('staffPaymentRoom');
+      const amountInput = document.getElementById('staffPaymentAmount');
+      const roomVal = roomSelect ? roomSelect.value : 'A-02';
+      const amountVal = amountInput ? amountInput.value : '1.500.000';
+
+      closeStaffPaymentModal();
+      if (window.RumaUI && window.RumaUI.showToast) {
+        window.RumaUI.showToast(`Setoran Rp ${amountVal} unit ${roomVal} berhasil dicatat. Status: Menunggu Verifikasi Owner.`, 'success', 'Setoran Tersimpan');
+      }
+      if (amountInput) amountInput.value = '';
+    }
+
+    window.addEventListener('DOMContentLoaded', initRoleAdaptiveDashboard);
   </script>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: CATAT SETORAN LAPANGAN (F-05 ZERO SELF-APPROVAL)       -->
+  <!-- ============================================================== -->
+  <div id="modalStaffPayment" class="modal-backdrop-custom" role="dialog" aria-modal="true" aria-labelledby="modalStaffPaymentTitle" style="display: none;">
+    <div class="modal-card-custom" style="max-width: 480px;">
+      <div class="modal-header-custom">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: #FFF7ED; display: flex; align-items: center; justify-content: center; color: #EA580C;">
+            <i data-lucide="receipt" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h3 id="modalStaffPaymentTitle" style="margin: 0; font-size: 15px; font-weight: 700; color: var(--text-main);">Catat Pembayaran Masuk</h3>
+            <span style="font-size: 11.5px; color: var(--text-muted);">Setoran kas lapangan (Zero Self-Approval)</span>
+          </div>
+        </div>
+        <button type="button" class="btn-icon-subtle" onclick="closeStaffPaymentModal()" aria-label="Tutup modal" style="background: none; border: none; cursor: pointer; color: var(--text-muted);">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <form id="formStaffPayment" onsubmit="handleStaffPaymentFormSubmit(event)">
+        <div class="modal-body-custom" style="padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;">
+          <!-- Zero Self-Approval Notice -->
+          <div class="modal-notice-banner">
+            <i data-lucide="shield-alert" style="width: 16px; height: 16px; color: #EA580C; flex-shrink: 0; margin-top: 1px;"></i>
+            <div style="font-size: 11.5px; line-height: 1.45;">
+              <strong>Aturan Zero Self-Approval:</strong> Pembayaran yang Anda catat akan berstatus <em>Pending</em> hingga diverifikasi mutasi bank oleh Owner. Staf tidak memiliki akses mengubah status menjadi Lunas.
+            </div>
+          </div>
+
+          <div class="form-group-modal">
+            <label for="staffPaymentRoom" style="font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; display: block;">Unit Kamar & Penyewa</label>
+            <select id="staffPaymentRoom" class="input-field" required style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); padding: 0 10px; font-size: 12.5px; font-family: inherit;">
+              <option value="">-- Pilih Unit Kamar --</option>
+              <option value="A-02">A-02 &middot; Dimas Setiawan (Menunggak 2 Hari)</option>
+              <option value="A-05">A-05 &middot; Maya Puspita (Jatuh Tempo Hari Ini)</option>
+              <option value="B-03">B-03 &middot; Reza Rahadian (Tagihan Baru)</option>
+              <option value="B-04">B-04 &middot; Tari Utami (Sewa Bulanan)</option>
+            </select>
+          </div>
+
+          <div class="form-group-modal">
+            <label for="staffPaymentAmount" style="font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; display: block;">Jumlah Uang Diterima (Rp)</label>
+            <input type="text" id="staffPaymentAmount" class="input-field" placeholder="Contoh: 1.500.000" required style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); padding: 0 10px; font-size: 13px; font-weight: 600; font-family: inherit;">
+          </div>
+
+          <div class="form-group-modal">
+            <label for="staffPaymentMethod" style="font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; display: block;">Metode Pembayaran</label>
+            <select id="staffPaymentMethod" class="input-field" required style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); padding: 0 10px; font-size: 12.5px; font-family: inherit;">
+              <option value="tunai">Tunai / Uang Fisik Lapangan</option>
+              <option value="transfer">Transfer Manual Penghuni ke Rekening Staf</option>
+              <option value="qris">Titipan QRIS Personal Staf</option>
+            </select>
+          </div>
+
+          <div class="form-group-modal">
+            <label for="staffPaymentNotes" style="font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 5px; display: block;">Catatan / Keterangan (Opsional)</label>
+            <input type="text" id="staffPaymentNotes" class="input-field" placeholder="Contoh: Titip sewa kamar Okt via tunai di pos resepsionis" style="width: 100%; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); padding: 0 10px; font-size: 12px; font-family: inherit;">
+          </div>
+        </div>
+
+        <div class="modal-footer-custom" style="padding: 12px 20px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="button" class="btn-pill btn-secondary" onclick="closeStaffPaymentModal()" style="height: 36px; padding: 0 14px; font-size: 12px;">Batal</button>
+          <button type="submit" class="btn-pill btn-primary" style="height: 36px; padding: 0 16px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+            <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+            <span>Simpan & Tunggu Verifikasi</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

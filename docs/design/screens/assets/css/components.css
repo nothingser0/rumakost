@@ -714,7 +714,7 @@
 .btn-primary {
   background: var(--brand-primary);
   color: #FFFFFF;
-  box-shadow: var(--shadow-primary);
+  box-shadow: none;
 }
 
 .btn-primary:hover {
@@ -2083,7 +2083,7 @@ button i,
 
 /* WhatsApp Green Buttons */
 .btn-modal-primary.is-whatsapp,
-.btn-wa-direct,
+
 .btn-whatsapp {
   background: #16A34A !important;
   color: #FFFFFF !important;
@@ -2097,7 +2097,7 @@ button i,
 }
 
 .btn-modal-primary.is-whatsapp:hover,
-.btn-wa-direct:hover,
+
 .btn-whatsapp:hover {
   background: #15803D !important;
   transform: translateY(-2px) !important;
@@ -2152,7 +2152,7 @@ button i,
 .modal-close-btn,
 .btn-modal-close,
 .btn-circle-filter,
-.btn-call-direct,
+
 .btn-clear-search {
   background: #F8FAFC;
   border: 1px solid #ECEEF2;
@@ -2167,7 +2167,7 @@ button i,
 .modal-close-btn:hover,
 .btn-modal-close:hover,
 .btn-circle-filter:hover,
-.btn-call-direct:hover,
+
 .btn-clear-search:hover {
   background: #E2E8F0 !important;
   color: var(--text-main) !important;
@@ -3176,6 +3176,37 @@ textarea.form-input-control {
    ========================================================================== */
 
 /* 1. Universal Zero Box-Shadow Rule on Buttons */
+button,
+.btn,
+.btn-pill,
+.btn-primary,
+.btn-secondary,
+.btn-dark,
+[class*="btn-"],
+.pill-dropdown-trigger,
+.pill-arrow-btn,
+.btn-circle-filter,
+.btn-more-options,
+.icon-circle-btn,
+.user-profile-btn,
+button:focus,
+button:focus-visible,
+.btn:focus,
+.btn:focus-visible,
+[class*="btn-"]:focus,
+[class*="btn-"]:focus-visible,
+.pill-dropdown-trigger:focus,
+.pill-dropdown-trigger:focus-visible,
+.pill-arrow-btn:focus,
+.pill-arrow-btn:focus-visible,
+.btn-circle-filter:focus,
+.btn-circle-filter:focus-visible,
+.btn-more-options:focus,
+.btn-more-options:focus-visible,
+.icon-circle-btn:focus,
+.icon-circle-btn:focus-visible,
+.user-profile-btn:focus,
+.user-profile-btn:focus-visible,
 button:hover,
 button:active,
 .btn:hover,
