@@ -2285,86 +2285,205 @@
       border-radius: 0 0 20px 20px;
     }
 
+    /* HIERARKI TOMBOL MODAL ESTIFY (4-Level Stepped Depth - Seragam Tinggi 40px & Font 13px - Identik WF-03/WF-04) */
     .btn-modal-cancel {
       height: 40px !important;
       padding: 0 18px !important;
-      border-radius: var(--radius-full);
+      border-radius: var(--radius-full) !important;
       background: #F8FAFC !important;
-      border: 1px solid #CBD5E1 !important;
+      border: 1.5px solid #CBD5E1 !important;
       font-size: 13px !important;
-      font-weight: 600;
+      font-weight: 600 !important;
       color: #475569 !important;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      cursor: pointer !important;
+      transition: all var(--transition-fast) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      box-sizing: border-box !important;
+      text-decoration: none !important;
+      box-shadow: none !important;
+      outline: none !important;
     }
 
     .btn-modal-cancel:hover {
       background: #F1F5F9 !important;
       border-color: #94A3B8 !important;
-      color: var(--text-main);
+      color: #0F172A !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-cancel:active {
+      background: #E2E8F0 !important;
+      border-color: #64748B !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-danger {
+      height: 40px !important;
+      padding: 0 18px !important;
+      border-radius: var(--radius-full) !important;
+      background: #FEF2F2 !important;
+      border: 1.5px solid #FECACA !important;
+      color: #DC2626 !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      transition: all var(--transition-fast) !important;
+      box-sizing: border-box !important;
+      box-shadow: none !important;
+      outline: none !important;
+      text-decoration: none !important;
+    }
+
+    .btn-modal-danger:hover {
+      background: #FEE2E2 !important;
+      border-color: #F87171 !important;
+      color: #DC2626 !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-danger:active {
+      background: #FECACA !important;
+      border-color: #EF4444 !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-success {
+      height: 40px !important;
+      padding: 0 20px !important;
+      border-radius: var(--radius-full) !important;
+      background: #16A34A !important;
+      border: 1.5px solid #15803D !important;
+      color: #FFFFFF !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      box-shadow: none !important;
+      transition: all var(--transition-fast) !important;
+      box-sizing: border-box !important;
+      outline: none !important;
+      text-decoration: none !important;
+    }
+
+    .btn-modal-success:hover {
+      background: #15803D !important;
+      border-color: #166534 !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-success:active {
+      background: #166534 !important;
+      border-color: #14532D !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--brand-primary);
-      color: #FFFFFF;
-      border: none;
-      border-radius: var(--radius-full);
       height: 40px !important;
-      padding: 0 22px !important;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.28);
-      transition: all var(--transition-fast);
-      white-space: nowrap;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      background: var(--btn-primary-bg, #FF7A00) !important;
+      color: #FFFFFF !important;
+      border: 1.5px solid var(--btn-primary-border, #EB6E00) !important;
+      border-radius: var(--radius-full) !important;
+      padding: 0 20px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      box-shadow: none !important;
+      transition: all var(--transition-fast) !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      text-decoration: none !important;
+      outline: none !important;
     }
 
     .btn-modal-primary:hover {
-      background: var(--brand-primary-hover);
-      transform: translateY(-1px);
+      background: var(--btn-primary-hover-bg, #E06300) !important;
+      border-color: var(--btn-primary-hover-border, #B84E00) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-primary:active {
+      background: var(--btn-primary-active-bg, #D45A00) !important;
+      border-color: var(--btn-primary-active-border, #A34400) !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary.is-whatsapp {
       background: #16A34A !important;
-      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.28) !important;
+      border: 1.5px solid #15803D !important;
       color: #FFFFFF !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary.is-whatsapp:hover {
       background: #15803D !important;
+      border-color: #166534 !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-modal-primary.is-whatsapp:active {
+      background: #166534 !important;
+      border-color: #14532D !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-close {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
       background: #F1F5F9 !important;
       color: var(--text-secondary, #4B5563) !important;
       flex-shrink: 0 !important;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #94A3B8;
-      cursor: pointer;
-      transition: all var(--transition-fast);
+      border: none !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      transition: all var(--transition-fast) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-close:hover {
       background: var(--border-control, #E2E8F0) !important;
-      color: var(--text-main);
+      color: var(--text-main) !important;
+      transform: rotate(90deg);
+    }
+
+    .btn-modal-close:active {
+      transform: rotate(90deg) scale(0.92);
     }
 
     /* Modal Pinned Header/Footer/Body Architecture (Identik dengan WF-04) */
     #modalBroadcast .modal-card,
     #modalAdjustInvoice .modal-card,
     #modalCatatBayar .modal-card,
+    #modalVerifyProof .modal-card,
     #modalTerbitkanTagihan .modal-card {
       background: #FFFFFF !important;
       border-radius: 20px !important;
@@ -3184,12 +3303,13 @@
               <span>Matriks Penagihan Sewa</span>
             </h2>
             <span class="badge-count-pill" id="totalBillsCountDisplay" style="white-space: nowrap;">16 Tagihan</span>
-            <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: #475569; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 2px 10px; border-radius: var(--radius-full); white-space: nowrap;" title="Siklus Penagihan Bulan Berjalan">
-              <i data-lucide="calendar" style="width: 12px; height: 12px; color: var(--brand-primary);"></i>
-              <span>1–31 Okt 2026</span>
-            </span>
           </div>
           <div style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; flex-shrink: 0;">
+            <div class="calendar-disabled-picker" onclick="triggerToast('Siklus penagihan dikunci pada periode aktif (1–31 Oktober 2026).', 'info')" style="display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 12px; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: var(--radius-full); cursor: not-allowed; user-select: none; box-sizing: border-box; white-space: nowrap;" title="Siklus Penagihan Terkunci: 1–31 Oktober 2026 (Bulan Berjalan)">
+              <i data-lucide="calendar" style="width: 13px; height: 13px; color: var(--brand-primary); flex-shrink: 0;"></i>
+              <span style="font-size: 12px; font-weight: 600; color: #475569; letter-spacing: -0.1px;">1–31 Okt 2026</span>
+              <i data-lucide="chevron-down" style="width: 12px; height: 12px; color: #94A3B8; flex-shrink: 0;"></i>
+            </div>
             <button type="button" class="btn-export-csv" onclick="openModalBroadcast()" title="Kirim Pengingat Tagihan Masuk via WhatsApp Massal">
               <i data-lucide="megaphone" style="width: 13px; height: 13px;"></i>
               <span>Siaran WA</span>
@@ -3197,10 +3317,6 @@
             <button type="button" class="btn-export-csv" onclick="exportBillingMatrixToCSV()" title="Ekspor seluruh data penagihan bulan berjalan ke file CSV (Excel)">
               <i data-lucide="download" style="width: 13px; height: 13px;"></i>
               <span>Ekspor CSV</span>
-            </button>
-            <button type="button" class="btn-action-orange" onclick="openModalTerbitkanTagihan()" style="height: 32px; padding: 0 14px; font-size: 12px; border-radius: var(--radius-full);" title="Terbitkan Tagihan Biaya Tambahan (Listrik, Tamu, Denda, Kerusakan, dll)">
-              <i data-lucide="plus" style="width: 13px; height: 13px;"></i>
-              <span>Tambah Biaya</span>
             </button>
           </div>
         </div>
@@ -3463,14 +3579,16 @@
           <!-- Ringkasan Ketentuan & Metode Bayar -->
           <!-- Ringkasan Ketentuan & Metode Bayar -->
           <div class="dossier-terms-pod">
-            <!-- Baris 1: Batas Waktu & Chip Status -->
-            <div class="terms-pod-row">
-              <div class="terms-pod-row-left">
-                <i data-lucide="calendar" style="width: 13px; height: 13px; color: var(--brand-primary); flex-shrink: 0;"></i>
-                <span>Batas Waktu:</span>
-                <span class="terms-pod-date" id="dossierDueSummary">25 Okt 2026</span>
+            <!-- Baris 1: Batas Waktu (2 Baris Vertikal) & Chip Status -->
+            <div class="terms-pod-row" style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <div class="terms-pod-row-left" style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="display: flex; align-items: center; gap: 5px; font-size: 11px; color: #64748B; font-weight: 500;">
+                  <i data-lucide="calendar" style="width: 12px; height: 12px; color: var(--brand-primary); flex-shrink: 0;"></i>
+                  <span>Batas Waktu:</span>
+                </div>
+                <span class="terms-pod-date" id="dossierDueSummary" style="font-size: 12.5px; font-weight: 700; color: #0F172A; padding-left: 17px;">25 Okt 2026</span>
               </div>
-              <span class="terms-status-badge" id="dossierDueSub">Sudah Terbayar</span>
+              <span class="terms-status-badge" id="dossierDueSub" style="flex-shrink: 0; font-size: 11px; padding: 3px 9px; border-radius: 6px;">Sudah Terbayar</span>
             </div>
 
             <div class="terms-pod-divider"></div>
@@ -4225,17 +4343,17 @@
         </div>
       </div>
 
-      <!-- Footer Pinned Standar WF-03 / WF-05: Tombol Rapi, Konsisten 38px & Border-Radius 10px -->
+      <!-- Footer Pinned Standar WF-03 / WF-05: Tombol Rapi, Konsisten 40px & Border-Radius var(--radius-full) -->
       <div class="modal-footer-pinned" style="padding: 14px 24px !important; justify-content: space-between; align-items: center;">
-        <button type="button" onclick="rejectUploadedProof()" style="height: 38px; padding: 0 16px; border-radius: 10px; font-size: 12.5px; font-weight: 600; border: 1.5px solid #FECACA; background: #FEF2F2; color: #DC2626; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.background='#DC2626'; this.style.color='#FFFFFF'; this.style.borderColor='#DC2626';" onmouseout="this.style.background='#FEF2F2'; this.style.color='#DC2626'; this.style.borderColor='#FECACA';">
-          <i data-lucide="x-circle" style="width: 14px; height: 14px;"></i>
+        <button type="button" class="btn-modal-danger" onclick="rejectUploadedProof()" title="Tolak bukti transfer dan minta penghuni unggah ulang">
+          <i data-lucide="x-circle" style="width: 15px; height: 15px;"></i>
           <span>Tolak Bukti</span>
         </button>
         <div style="display: flex; align-items: center; gap: 10px;">
-          <button type="button" onclick="closeModal('modalVerifyProof')" style="height: 38px; padding: 0 18px; border-radius: 10px; font-size: 12.5px; font-weight: 600; border: 1px solid #CBD5E1; background: #F8FAFC; color: #475569; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s ease;" onmouseover="this.style.background='#F1F5F9'; this.style.color='#0F172A'; this.style.borderColor='#94A3B8';" onmouseout="this.style.background='#F8FAFC'; this.style.color='#475569'; this.style.borderColor='#CBD5E1';">
+          <button type="button" class="btn-modal-cancel" onclick="closeModal('modalVerifyProof')">
             Tutup
           </button>
-          <button type="button" onclick="confirmVerifyProof()" style="height: 38px; padding: 0 20px; border-radius: 10px; font-size: 12.5px; font-weight: 600; background: #16A34A; color: #FFFFFF; border: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25); transition: all 0.15s ease;" onmouseover="this.style.background='#15803D';" onmouseout="this.style.background='#16A34A';">
+          <button type="button" class="btn-modal-success" onclick="confirmVerifyProof()" title="Verifikasi dan terbitkan kwitansi lunas">
             <i data-lucide="check-circle" style="width: 15px; height: 15px;"></i>
             <span>Verifikasi &amp; Setujui Pembayaran</span>
           </button>
@@ -4333,16 +4451,20 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer-pinned">
-        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalReceipt')">Tutup</button>
-        <button type="button" class="btn-modal-cancel" onclick="window.print()" style="gap: 6px;">
-          <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
-          <span>Cetak Dokumen</span>
+      <div class="modal-footer-pinned" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 24px;">
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalReceipt')">
+          Tutup
         </button>
-        <button type="button" class="btn-modal-primary is-whatsapp" onclick="sendReceiptWhatsApp()">
-          <i data-lucide="send" style="width: 14px; height: 14px;"></i>
-          <span>Kirim Kwitansi via WA</span>
-        </button>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn-modal-cancel" onclick="window.print()" title="Cetak Dokumen Kwitansi">
+            <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+            <span>Cetak Dokumen</span>
+          </button>
+          <button type="button" class="btn-modal-primary is-whatsapp" onclick="sendReceiptWhatsApp()" title="Kirim Kwitansi ke WhatsApp Penghuni">
+            <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+            <span>Kirim via WA</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -5122,16 +5244,6 @@
           stampElem.style.background = '#DCFCE7';
           stampElem.style.color = '#16A34A';
           stampElem.style.borderColor = '#BBF7D0';
-        } else if (inv.status === 'sebagian') {
-          stampElem.textContent = 'CICILAN';
-          stampElem.style.background = '#FEF3C7';
-          stampElem.style.color = '#D97706';
-          stampElem.style.borderColor = '#FDE68A';
-        } else if (inv.status === 'tempo') {
-          stampElem.textContent = 'JATUH TEMPO';
-          stampElem.style.background = '#FFF7ED';
-          stampElem.style.color = '#EA580C';
-          stampElem.style.borderColor = '#FFEDD5';
         } else {
           stampElem.textContent = 'TERLAMBAT';
           stampElem.style.background = '#FEE2E2';
@@ -5370,15 +5482,9 @@
             primaryIcon.setAttribute('data-lucide', 'printer');
             primaryBtn.style.background = '#111111';
             primaryBtn.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.15)';
-            if (secRow) secRow.style.gridTemplateColumns = '1fr 1fr';
-            if (btnWa) { btnWa.style.display = 'inline-flex'; btnWa.style.width = 'auto'; if (btnWaText) btnWaText.textContent = 'Kirim Kwitansi WA'; }
-            if (btnEdit) {
-              btnEdit.style.display = 'inline-flex';
-              btnEdit.style.width = 'auto';
-              btnEdit.innerHTML = '<i data-lucide="plus-circle" style="width: 13px; height: 13px; color: var(--brand-primary);"></i><span>Tambah Tagihan</span>';
-              btnEdit.onclick = function() { openModalTerbitkanTagihan(inv.room, inv.tenant); };
-              btnEdit.title = 'Terbitkan tagihan baru untuk biaya tambahan (Listrik, Tamu, Kerusakan, dll)';
-            }
+            if (secRow) secRow.style.gridTemplateColumns = '1fr';
+            if (btnWa) { btnWa.style.display = 'inline-flex'; btnWa.style.width = '100%'; if (btnWaText) btnWaText.textContent = 'Kirim Kwitansi via WA'; }
+            if (btnEdit) btnEdit.style.display = 'none';
             if (btnReceipt) btnReceipt.style.display = 'none';
           } else {
             primaryTxt.textContent = 'Catat Pembayaran Masuk';
@@ -5888,6 +5994,283 @@
         }, 400);
       }
     }
+    // ========================================================
+    // MODAL CATAT PENERIMAAN PEMBAYARAN (MANUAL RECORD)
+    // ========================================================
+    function validateIndonesianPhone(phone) {
+      if (!phone) return null;
+      const clean = phone.replace(/[^0-9]/g, '');
+      let normalized = clean;
+      if (normalized.startsWith('0')) {
+        normalized = '62' + normalized.slice(1);
+      } else if (!normalized.startsWith('62')) {
+        normalized = '62' + normalized;
+      }
+      if (/^628[1-9][0-9]{7,11}$/.test(normalized)) {
+        return normalized;
+      }
+      return null;
+    }
+
+    selectedPayMethod = 'BCA Transfer';
+
+    function openModalCatatBayar() {
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      if (!inv) return;
+
+      if (inv.status === 'batal') {
+        triggerToast(`Tagihan #${inv.id} telah dibatalkan (Status: VOID) dan tidak dapat menerima pembayaran.`, 'warning');
+        return;
+      }
+      if (inv.status === 'draf') {
+        triggerToast(`Tagihan #${inv.id} masih berstatus Draf. Verifikasi & terbitkan tagihan terlebih dahulu sebelum mencatat pembayaran.`, 'warning');
+        return;
+      }
+
+      const tenantName = document.getElementById('payModalTenantName');
+      if (tenantName) tenantName.textContent = inv.tenant;
+
+      const roomBadge = document.getElementById('payModalRoomBadge');
+      if (roomBadge) roomBadge.textContent = inv.room;
+
+      const unitDesc = document.getElementById('payModalUnitDesc');
+      if (unitDesc) unitDesc.textContent = `${inv.floor || 'Lantai 1'}`;
+
+      const invIdBadge = document.getElementById('payModalInvId');
+      if (invIdBadge) invIdBadge.textContent = '#' + inv.id;
+
+      const badge = document.getElementById('invoiceSelectedBadge');
+      if (badge) badge.textContent = `Kamar ${inv.room} Terpilih`;
+
+      const senderInput = document.getElementById('inputPaySender');
+      if (senderInput) senderInput.value = inv.tenant;
+
+      const refInput = document.getElementById('inputPayRef');
+      if (refInput) refInput.value = 'TRF-BCA-' + Math.floor(100000 + Math.random() * 900000);
+
+      const dueAmount = inv.dueAmount > 0 ? inv.dueAmount : (inv.status === 'lunas' ? inv.totalAmount : inv.totalAmount);
+      const amountInput = document.getElementById('inputPayAmount');
+      if (amountInput) amountInput.value = dueAmount.toLocaleString('id-ID');
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const isStaff = urlParams.get('role') === 'staf' || urlParams.get('role') === 'staff';
+      const staffAlert = document.getElementById('modalStaffAlert');
+      if (staffAlert) staffAlert.style.display = isStaff ? 'block' : 'none';
+
+      // Reset Active Method to BCA
+      document.querySelectorAll('#modalCatatBayar .method-radio-box').forEach(el => el.classList.remove('active'));
+      const firstMethod = document.querySelector('#modalCatatBayar .method-radio-box');
+      if (firstMethod) firstMethod.classList.add('active');
+      selectedPayMethod = 'BCA Transfer';
+      const depositBox = document.getElementById('depositCalloutBox');
+      if (depositBox) depositBox.style.display = 'none';
+
+      calculateBalancePreview();
+
+      if (window.RumaDatePicker) {
+        RumaDatePicker.init('wrapPayDate', 'inputPayDate', '2026-10-23');
+      }
+
+      openModal('modalCatatBayar');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function selectPaymentMethod(elem, method) {
+      document.querySelectorAll('#modalCatatBayar .method-radio-box').forEach(el => el.classList.remove('active'));
+      if (elem) elem.classList.add('active');
+      selectedPayMethod = method;
+
+      const depositBox = document.getElementById('depositCalloutBox');
+      const refInput = document.getElementById('inputPayRef');
+      const randNum = Math.floor(100000 + Math.random() * 900000);
+
+      if (method.includes('Deposit')) {
+        if (depositBox) depositBox.style.display = 'block';
+        if (refInput) refInput.value = `DEP-KLAIM-${currentSelectedId || 'INV202610-04'}`;
+      } else {
+        if (depositBox) depositBox.style.display = 'none';
+        if (refInput) {
+          if (method.includes('BCA')) {
+            refInput.value = `TRF-BCA-${randNum}`;
+          } else if (method.includes('QRIS')) {
+            refInput.value = `QRIS-OKT-${randNum}`;
+          } else if (method.includes('Mandiri')) {
+            refInput.value = `TRF-MDR-${randNum}`;
+          } else {
+            refInput.value = `KAS-TUNAI-${randNum}`;
+          }
+        }
+      }
+    }
+
+    function calculateBalancePreview() {
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      const prevDue = inv ? (inv.dueAmount > 0 ? inv.dueAmount : (inv.status === 'lunas' ? 0 : inv.totalAmount)) : 1300000;
+      const enteredStr = document.getElementById('inputPayAmount')?.value || '0';
+      const entered = parseInt(enteredStr.replace(/\D/g, ''), 10) || 0;
+      const diff = prevDue - entered;
+
+      const prevDueElem = document.getElementById('calcPrevDue');
+      if (prevDueElem) prevDueElem.textContent = formatRupiah(prevDue);
+
+      const paidAmountElem = document.getElementById('calcPaidAmount');
+      if (paidAmountElem) paidAmountElem.textContent = `- ${formatRupiah(entered)}`;
+      
+      const newDueElem = document.getElementById('calcNewDue');
+      if (newDueElem) {
+        if (diff === 0 && prevDue === 0) {
+          newDueElem.textContent = 'Rp 0 (Tagihan Sudah Lunas Sebelumnya)';
+          newDueElem.style.color = '#16A34A';
+        } else if (diff === 0) {
+          newDueElem.textContent = 'Rp 0 (Lunas Sepenuhnya)';
+          newDueElem.style.color = '#16A34A';
+        } else if (diff > 0) {
+          newDueElem.textContent = `${formatRupiah(diff)} (Cicilan / Sisa Piutang)`;
+          newDueElem.style.color = '#EA580C';
+        } else {
+          const surplus = Math.abs(diff);
+          newDueElem.textContent = `Rp 0 (Lunas Kelebihan ${formatRupiah(surplus)})`;
+          newDueElem.style.color = '#059669';
+        }
+      }
+    }
+
+    function toggleSendWaCheckbox() {
+      const cb = document.getElementById('checkboxSendWaReceipt');
+      if (cb) cb.checked = !cb.checked;
+    }
+
+    function simulateProofUpload() {
+      const fileNameElem = document.getElementById('uploadFileName');
+      if (fileNameElem) {
+        fileNameElem.textContent = 'slip_transfer_bca_23okt.jpg (1.2 MB) (Valid)';
+        fileNameElem.style.color = '#16A34A';
+      }
+      triggerToast('Bukti transfer berhasil dilampirkan!', 'info');
+    }
+
+    let isSubmittingPayment = false;
+
+    function submitPaymentRecord() {
+      if (isSubmittingPayment) return;
+
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      if (!inv) return;
+
+      if (inv.status === 'batal' || inv.status === 'draf') {
+        triggerToast('Tagihan berstatus Draf atau Batal tidak dapat diproses pembayarannya.', 'warning');
+        return;
+      }
+
+      const enteredStr = (document.getElementById('inputPayAmount')?.value || '').replace(/\D/g, '');
+      const entered = parseInt(enteredStr, 10);
+
+      if (isNaN(entered) || entered <= 0) {
+        triggerToast('Nominal pembayaran harus lebih besar dari Rp 0.', 'warning');
+        document.getElementById('inputPayAmount')?.focus();
+        return;
+      }
+
+      if (entered > 1000000000) {
+        triggerToast('Nominal pembayaran melebihi batas wajar sistem (Maks Rp 1 Miliar).', 'warning');
+        return;
+      }
+
+      const submitBtn = document.querySelector('#modalCatatBayar .btn-modal-primary') || document.querySelector('#modalCatatBayar .btn-action-catat');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.6';
+        submitBtn.style.pointerEvents = 'none';
+      }
+      isSubmittingPayment = true;
+
+      try {
+        const refNo = document.getElementById('inputPayRef')?.value || ('TRF-BCA-' + Math.floor(100000 + Math.random() * 900000));
+        const payDate = document.getElementById('inputPayDateDisplay')?.textContent || '23 Oktober 2026';
+        const sendWa = document.getElementById('checkboxSendWaReceipt')?.checked;
+
+        const surplus = (entered > inv.dueAmount) ? (entered - inv.dueAmount) : 0;
+        inv.paidAmount = Math.min(inv.totalAmount, inv.paidAmount + entered);
+        inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
+        inv.method = selectedPayMethod;
+        inv.refNo = refNo;
+        inv.payDate = `${payDate}, ` + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+        if (surplus > 0) {
+          inv.creditBalance = (inv.creditBalance || 0) + surplus;
+        }
+
+        if (inv.dueAmount === 0) {
+          inv.status = 'lunas';
+          inv.statusLabel = surplus > 0 ? `Lunas (Kredit +${formatRupiah(surplus)})` : 'Lunas Terverifikasi';
+          inv.dueDaysLeft = 'Sudah Terbayar';
+          inv.dueClass = 'safe';
+        } else {
+          inv.status = 'sebagian';
+          inv.statusLabel = `Dibayar Sebagian (${getPaymentPercentage(inv.paidAmount, inv.totalAmount)}%)`;
+          inv.dueDaysLeft = 'Cicilan Parsial';
+          inv.dueClass = 'warn';
+        }
+
+        closeModal('modalCatatBayar');
+        renderBillingTable();
+        renderInvoiceDossier();
+
+        const waMsg = sendWa ? ' Kuitansi pembayaran resmi otomatis dikirimkan ke WhatsApp penghuni.' : '';
+        const surplusMsg = surplus > 0 ? ` Kelebihan bayar ${formatRupiah(surplus)} otomatis disimpan sebagai Saldo Kredit Penghuni untuk periode berikutnya.` : '';
+        triggerToast(`Pembayaran ${formatRupiah(entered)} untuk Kamar ${inv.room} (${inv.tenant}) berhasil dicatat!${surplusMsg}${waMsg}`, 'success');
+
+        if (sendWa) {
+          setTimeout(() => {
+            sendReceiptWhatsApp(inv.id);
+          }, 500);
+        }
+      } finally {
+        setTimeout(() => {
+          isSubmittingPayment = false;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.style.pointerEvents = 'auto';
+          }
+        }, 400);
+      }
+    }
+
+    function sendReceiptWhatsApp(targetInvId) {
+      const invId = targetInvId || currentSelectedId;
+      const inv = invoicesData.find(i => i.id === invId);
+      if (!inv) return;
+
+      if (inv.status === 'batal') {
+        triggerToast('Tagihan yang telah dibatalkan (VOID) tidak memiliki kuitansi pembayaran.', 'warning');
+        return;
+      }
+
+      if (inv.status === 'draf') {
+        triggerToast('Tagihan berstatus draf belum memiliki kuitansi pembayaran.', 'warning');
+        return;
+      }
+
+      if (inv.paidAmount === 0 && inv.status !== 'lunas') {
+        triggerToast('Tagihan ini belum memiliki pembayaran tercatat untuk diterbitkan kuitansi.', 'warning');
+        return;
+      }
+
+      const validPhone = validateIndonesianPhone(inv.phone);
+      if (!validPhone) {
+        triggerToast(`Nomor kontak WhatsApp penghuni (${inv.phone || 'kosong'}) tidak valid. Gagal membuka WhatsApp.`, 'warning');
+        return;
+      }
+
+      const receiptId = 'KWT-' + (inv.refNo && inv.refNo !== '—' ? inv.refNo.replace(/[^0-9]/g, '').slice(-6) : inv.id.replace(/[^0-9]/g, '').slice(-6));
+      const payAmount = inv.paidAmount > 0 ? inv.paidAmount : inv.totalAmount;
+      const text = `Halo Kak ${inv.tenant},\n\nTerima kasih! Pembayaran sewa Kost Budi Makmur Kamar ${inv.room} (#${inv.id}) sebesar ${formatRupiah(payAmount)} telah kami terima dan diverifikasi ${inv.status === 'lunas' ? 'LUNAS' : 'SEBAGIAN'}.\n\nNo. Kwitansi: ${receiptId}\nMetode: ${inv.method !== '—' ? inv.method : 'Transfer Bank'}\nWaktu: ${inv.payDate || '23 Okt 2026'}\n\nKwitansi resmi ini sah diterbitkan oleh manajemen RumaKost dan dapat diakses kapan saja melalui Portal Penghuni. Terima kasih atas kerja samanya!`;
+      const waUrl = `https://api.whatsapp.com/send?phone=${validPhone}&text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
+      triggerToast(`Kwitansi resmi pelunasan Kamar ${inv.room} dibuka via WhatsApp Web!`, 'success');
+    }
+
     function openReceiptModal() {
       const inv = invoicesData.find(i => i.id === currentSelectedId);
       if (!inv) return;
@@ -5937,10 +6320,162 @@
           stampBadge.style.background = '#F8FAFC';
           stampTitle.style.color = '#64748B';
         }
+      }
 
       openModal('modalReceipt');
       if (window.lucide) window.lucide.createIcons();
     }
+
+    // ========================================================
+    // MODAL SESUAIKAN TAGIHAN & DISKON (PENYESUAIAN TAGIHAN BERJALAN)
+    // ========================================================
+    function openModalAdjustInvoice(invId) {
+      const targetId = invId || currentSelectedId;
+      const inv = invoicesData.find(i => i.id === targetId);
+      if (!inv) return;
+
+      if (inv.status === 'batal') {
+        triggerToast('Tagihan #' + inv.id + ' telah dibatalkan (Status: VOID). Tidak dapat disesuaikan lagi.', 'warning');
+        return;
+      }
+
+      currentSelectedId = inv.id;
+      document.getElementById('adjustModalTenantTitle').textContent = inv.tenant + ' · Kamar ' + inv.room;
+      document.getElementById('adjustModalInvIdBadge').textContent = '#' + inv.id;
+      document.getElementById('adjustModalBaseRate').textContent = formatRupiah(inv.baseRent);
+      document.getElementById('adjustModalPeriod').textContent = inv.period;
+
+      document.getElementById('adjustInvDiscount').value = (inv.discount || 0).toLocaleString('id-ID');
+      document.getElementById('adjustInvAddon').value = (inv.addOns || 0).toLocaleString('id-ID');
+      document.getElementById('adjustInvReason').value = inv.adjustReason || 'Iuran Sampah & Wi-Fi bulanan';
+
+      recalcAdjustTotal();
+      openModal('modalAdjustInvoice');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function recalcAdjustTotal() {
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      if (!inv) return;
+
+      const base = inv.baseRent || 0;
+      const arrears = inv.previousArrears || 0;
+      const discount = parseInt((document.getElementById('adjustInvDiscount')?.value || '0').replace(/\D/g, ''), 10) || 0;
+      const addon = parseInt((document.getElementById('adjustInvAddon')?.value || '0').replace(/\D/g, ''), 10) || 0;
+      const late = inv.lateFee || 0;
+
+      const total = Math.max(0, base + arrears - discount + addon + late);
+      const due = Math.max(0, total - (inv.paidAmount || 0));
+
+      document.getElementById('adjustSummaryBase').textContent = formatRupiah(base);
+
+      const arrearsRow = document.getElementById('adjustSummaryArrearsRow');
+      const arrearsVal = document.getElementById('adjustSummaryArrears');
+      if (arrearsRow && arrearsVal) {
+        if (arrears > 0) {
+          arrearsRow.style.display = 'flex';
+          arrearsVal.textContent = '+ ' + formatRupiah(arrears);
+        } else {
+          arrearsRow.style.display = 'none';
+        }
+      }
+      
+      const discRow = document.getElementById('adjustSummaryDiscountRow');
+      const discVal = document.getElementById('adjustSummaryDiscount');
+      if (discRow && discVal) {
+        if (discount > 0) {
+          discRow.style.display = 'flex';
+          discVal.textContent = '- ' + formatRupiah(discount);
+        } else {
+          discRow.style.display = 'none';
+        }
+      }
+
+      document.getElementById('adjustSummaryAddon').textContent = '+ ' + formatRupiah(addon);
+
+      const lateRow = document.getElementById('adjustSummaryLateFeeRow');
+      const lateVal = document.getElementById('adjustSummaryLateFee');
+      if (lateRow && lateVal) {
+        if (late > 0) {
+          lateRow.style.display = 'flex';
+          lateVal.textContent = '+ ' + formatRupiah(late);
+        } else {
+          lateRow.style.display = 'none';
+        }
+      }
+
+      document.getElementById('adjustSummaryTotal').textContent = formatRupiah(total);
+      document.getElementById('adjustSummaryDue').textContent = formatRupiah(due);
+    }
+
+    function waiveAdjustLateFee() {
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      if (!inv || inv.lateFee === 0) return;
+
+      const prevFee = inv.lateFee;
+      inv.lateFee = 0;
+      recalcAdjustTotal();
+      triggerToast('Denda keterlambatan sebesar ' + formatRupiah(prevFee) + ' dinolkan. Klik Simpan Penyesuaian untuk menerapkan.', 'info');
+    }
+
+    let isSavingAdjustment = false;
+
+    function saveInvoiceAdjustment() {
+      if (isSavingAdjustment) return;
+
+      const inv = invoicesData.find(i => i.id === currentSelectedId);
+      if (!inv) return;
+
+      const discount = parseInt((document.getElementById('adjustInvDiscount')?.value || '0').replace(/\D/g, ''), 10) || 0;
+      const addon = parseInt((document.getElementById('adjustInvAddon')?.value || '0').replace(/\D/g, ''), 10) || 0;
+      const rawReason = (document.getElementById('adjustInvReason').value || '').trim() || 'Penyesuaian tagihan';
+      const reason = sanitizeText(rawReason);
+
+      const arrears = inv.previousArrears || 0;
+      const computedTotal = Math.max(0, inv.baseRent + arrears - discount + addon + (inv.lateFee || 0));
+
+      if (computedTotal < (inv.paidAmount || 0)) {
+        triggerToast('Diskon terlalu besar! Total tagihan (' + formatRupiah(computedTotal) + ') tidak boleh lebih kecil dari uang yang sudah dicicil (' + formatRupiah(inv.paidAmount) + ').', 'warning');
+        return;
+      }
+
+      const saveBtn = document.querySelector('#modalAdjustInvoice .btn-modal-primary') || document.querySelector('#modalAdjustInvoice .btn-action-catat');
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.style.opacity = '0.6';
+        saveBtn.style.pointerEvents = 'none';
+      }
+      isSavingAdjustment = true;
+
+      try {
+        inv.discount = discount;
+        inv.addOns = addon;
+        inv.adjustReason = reason;
+        inv.totalAmount = computedTotal;
+        inv.dueAmount = Math.max(0, inv.totalAmount - inv.paidAmount);
+
+        if (inv.dueAmount === 0 && inv.paidAmount > 0) {
+          inv.status = 'lunas';
+          inv.statusLabel = 'Lunas Terverifikasi';
+        } else if (inv.paidAmount > 0) {
+          inv.status = 'sebagian';
+          inv.statusLabel = 'Dibayar Sebagian (' + getPaymentPercentage(inv.paidAmount, inv.totalAmount) + '%)';
+        }
+
+        closeModal('modalAdjustInvoice');
+        renderBillingTable();
+        renderInvoiceDossier();
+        triggerToast('Tagihan ' + inv.id + ' (' + inv.room + ') berhasil disesuaikan: Total ' + formatRupiah(inv.totalAmount) + '.', 'success');
+      } finally {
+        setTimeout(() => {
+          isSavingAdjustment = false;
+          if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.style.opacity = '1';
+            saveBtn.style.pointerEvents = 'auto';
+          }
+        }, 400);
+      }
     }
 
     // ══════════════════════════════════════════════════════════════
