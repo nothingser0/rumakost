@@ -540,6 +540,7 @@
       gap: 8px;
     }
 
+    .btn-quick-sahkan-pembayaran,
     .btn-quick-sah-pembayaran {
       height: 32px;
       background: var(--dark-pill, #111111);
@@ -557,6 +558,7 @@
       box-shadow: 0 2px 6px rgba(17, 17, 17, 0.16);
     }
 
+    .btn-quick-sahkan-pembayaran:hover,
     .btn-quick-sah-pembayaran:hover {
       background: var(--dark-pill-hover, #222222);
       border-color: var(--dark-pill-hover, #222222);
@@ -581,14 +583,47 @@
     }
 
     .btn-quick-tolak-pembayaran:hover {
-      background: #FEF2F2;
-      border-color: #EF4444;
+      background: #FEE2E2;
+      border-color: #F87171;
+      color: #B91C1C;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.16);
+    }
+
+    .btn-quick-tolak-pembayaran:active {
+      background: #FECACA;
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    /* STRAY_CLEANUP_BEGIN
+      background: #FECACA;
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+      border-color: #F87171;
     }
 
     /* ══════════════════════════════════════════════════════════════
        3. CONTROLS BAR: SEARCH & STATUS PILL SEGMENTS (SINGLE LINE TOOLBAR)
        ══════════════════════════════════════════════════════════════ */
     .controls-strip-card {
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-subtle, #ECEEF2) !important;
+      border-radius: 20px !important;
+      padding: 12px 18px !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.025) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      flex-wrap: nowrap !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+      min-height: 64px !important;
+    }
+    /* OBSOLETE_CONTROLS_STRIP
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-xl);
@@ -604,7 +639,24 @@
       min-height: 60px;
     }
 
+    */
     .search-capsule-box {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      height: 40px !important;
+      padding: 0 14px !important;
+      background: #F4F5F7 !important;
+      border: 1.5px solid #ECEEF2 !important;
+      border-radius: 9999px !important;
+      width: 240px !important;
+      min-width: 180px !important;
+      max-width: 280px !important;
+      transition: all var(--transition-fast) !important;
+      box-sizing: border-box !important;
+      flex-shrink: 0 !important;
+    }
+    /* OBSOLETE_SEARCH_CAPSULE
       display: flex;
       align-items: center;
       gap: 8px;
@@ -623,6 +675,7 @@
       box-sizing: border-box;
     }
 
+    */
     .search-capsule-box:hover {
       background: #FFFFFF;
       border-color: #CBD5E1;
@@ -817,7 +870,7 @@
       box-shadow: none !important;
     }
 
-    .old-btn-action-catat {
+    /* OBSOLETE_OLD_CATAT .old-btn-action-catat {
       height: 44px;
       padding: 0 16px;
       background: var(--brand-primary);
@@ -838,7 +891,8 @@
     }
 
     .btn-action-catat:hover {
-      background: var(--brand-primary-hover);
+      background: var(--brand-primary-hover); */
+    .dummy-wrap-hover {
       transform: translateY(-1px);
     }
 
@@ -1308,10 +1362,27 @@
     }
 
     .btn-exec-approve:hover {
-      background: #262626;
+      background: #1F2937;
+      color: #FFFFFF;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(17, 17, 17, 0.25);
+    }
+
+    .btn-exec-approve:active {
+      background: #000000;
+      transform: translateY(0);
+      box-shadow: none;
+    }
+    /* STRAY_APPROVE_ACTIVE_START
+      background: #000000;
+      transform: translateY(0);
+      box-shadow: none;
+    }
+      background: #1F2937;
       transform: translateY(-1px);
     }
 
+    */
     .btn-exec-reject {
       width: 100%;
       height: 32px;
@@ -1330,10 +1401,92 @@
     }
 
     .btn-exec-reject:hover {
-      background: #FCA5A5;
+      background: #FEE2E2;
+      border-color: #F87171;
+      color: #B91C1C;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.16);
+    }
+
+    .btn-exec-reject:active {
+      background: #FECACA;
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .btn-exec-refund {
+      width: 100%;
+      height: 34px;
+      border-radius: var(--radius-full);
+      background: #FFF7ED;
+      color: #EA580C;
+      border: 1.5px solid #FED7AA;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+      box-shadow: 0 1px 3px rgba(234, 88, 12, 0.08);
+    }
+
+    .btn-exec-refund:hover {
+      background: #FFEDD5;
+      border-color: #FB923C;
+      color: #C2410C;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.22);
+    }
+
+    .btn-exec-refund:active {
+      background: #FED7AA;
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .btn-modal-refund {
+      height: 40px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      background: #EA580C !important;
+      color: #FFFFFF !important;
+      border: 1.5px solid #C2410C !important;
+      border-radius: var(--radius-full) !important;
+      padding: 0 22px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      transition: all var(--transition-fast) !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      text-decoration: none !important;
+      outline: none !important;
+      box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25) !important;
+    }
+
+    .btn-modal-refund:hover {
+      background: #C2410C !important;
+      border-color: #9A3412 !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35) !important;
+    }
+
+    .btn-modal-refund:active {
+      background: #9A3412 !important;
+      transform: translateY(0) !important;
+      box-shadow: none !important;
+    }
+    /* old reject hover removed:
       color: #B91C1C;
     }
 
+    */
     .btn-exec-receipt {
       width: 100%;
       height: 32px;
@@ -1375,7 +1528,7 @@
     }
 
     .btn-exec-reversal:hover {
-      background: #FEF2F2;
+
       border-color: #DC2626;
     }
 
@@ -1828,12 +1981,22 @@
       justify-content: flex-end;
       gap: 10px;
       background: #ffffff;
+    }
+    /* CLEANUP_FOOTER_START
+      padding: 16px 24px 20px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #ffffff;
     } */
     /* obsolete end extra braces:
     }
 
     }
 
+    */
     */
     .form-group-custom {
       display: flex;
@@ -2098,7 +2261,7 @@
     }
 
     .btn-toggle-role-pill:hover {
-      background: #262626;
+      background: #1F2937;
     }
 
     /* Digital Receipt Sheet */
@@ -2332,7 +2495,14 @@
 
 
 
-CLEAN_TAIL_END -->
+CLEAN_TAIL_END
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+-->
                 </svg>
               </div>
             </div>
@@ -2569,25 +2739,16 @@ CLEAN_TAIL_END -->
       </div>
 
       <div class="modal-body-scrollable">
-      <div style="display: none;">
-    <div class="modal-card">
-
-
-          <i data-lucide="plus-circle" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
-          <span>Catat Penerimaan Pembayaran</span>
-        </h3>
-
-<!-- modal icon cleanup -->
-        </button>
-      </div>
-
-      <div class="modal-card-body">
-        
-
         <!-- Peringatan Staf jika dalam mode staf -->
         <div id="modalStaffAlert" style="display: none; background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 10px; padding: 10px 12px; font-size: 11px; color: #C2410C;">
           <i data-lucide="info" style="width: 13px; height: 13px; vertical-align: middle; margin-right: 4px;"></i>
           <strong>Staf Operasional:</strong> Catatan ini akan berstatus <em>Menunggu Verifikasi</em> hingga divalidasi oleh Pemilik kost (Zero Self-Approval).
+        </div>
+
+        <!-- 1. INFORMASI TAGIHAN & KAMAR PENGHUNI -->
+        <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
+          <i data-lucide="receipt" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+          <span>1. Tagihan & Unit Kamar Penghuni</span>
         </div>
 
         <!-- Cari & Pilih Tagihan / Kamar Penghuni -->
@@ -2601,7 +2762,7 @@ CLEAN_TAIL_END -->
               <i data-lucide="search" style="position: absolute; left: 13px; width: 15px; height: 15px; color: #94A3B8; pointer-events: none;"></i>
               <input type="text" 
                      id="searchInvoiceInput" 
-                     class="form-input-custom" 
+                     class="form-input-field" 
                      style="width: 100%; padding-left: 38px; padding-right: 32px; font-size: 13px; font-weight: 500; height: 42px;" 
                      placeholder="Ketik nama penghuni, nomor kamar (A-04), atau nomor invoice..." 
                      value="Kamar A-04 · Budi Santoso (#INV-202610-004)"
@@ -2620,6 +2781,14 @@ CLEAN_TAIL_END -->
             <div class="invoice-search-results-panel" id="invoiceSearchResultsPanel" style="display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #FFFFFF; border: 1.5px solid #E2E8F0; border-radius: 14px; box-shadow: 0 16px 36px rgba(0,0,0,0.12); z-index: 150; max-height: 220px; overflow-y: auto; padding: 6px; box-sizing: border-box;">
               <!-- Populated dynamically by JavaScript -->
             </div>
+          </div>
+        </div>
+
+        <!-- 2. KANAL & RINCIAN TRANSAKSI -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="credit-card" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+            <span>2. Kanal & Rincian Transaksi</span>
           </div>
         </div>
 
@@ -2668,13 +2837,13 @@ CLEAN_TAIL_END -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group-custom">
             <label class="form-label-custom">Nominal Diterima (Rp) *</label>
-            <input type="text" class="form-input-custom" id="inputPayAmount" value="750.000" oninput="formatNominalInput(this)" placeholder="Masukkan nominal (contoh: 500.000)">
+            <input type="text" class="form-input-field" id="inputPayAmount" value="750.000" oninput="formatNominalInput(this)" placeholder="Masukkan nominal (contoh: 500.000)">
           </div>
           <div class="form-group-custom">
             <label class="form-label-custom">Tanggal Bayar *</label>
             <div class="ruma-datepicker-wrap align-right" id="wrapPayDate" style="width: 100%;">
               <input type="hidden" id="inputPayDate" value="2026-10-23">
-              <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapPayDate', 'inputPayDate')" style="height: 42px; border-radius: 12px; background: #FFFFFF; border: 1.5px solid var(--border-input); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
+              <div class="ruma-datepicker-trigger" onclick="RumaDatePicker.toggle('wrapPayDate', 'inputPayDate')" style="height: 42px; border-radius: 12px; background: #FFFFFF; border: 1px solid var(--border-control, #E2E8F0); padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box;">
                 <div class="ruma-datepicker-trigger-content" style="display: flex; align-items: center; gap: 8px;">
                   <i data-lucide="calendar" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
                   <span class="ruma-datepicker-val-txt" id="inputPayDateDisplay" style="font-size: 12px; font-weight: 600; color: var(--text-main);">23 Oktober 2026</span>
@@ -2691,27 +2860,51 @@ CLEAN_TAIL_END -->
             <label class="form-label-custom">
               Atas Nama Pengirim (Rekening) *
             </label>
-            <input type="text" class="form-input-custom" id="inputPaySender" value="Budi Santoso" placeholder="Nama pemilik rekening/e-wallet">
+            <input type="text" class="form-input-field" id="inputPaySender" value="Budi Santoso" placeholder="Nama pemilik rekening/e-wallet">
           </div>
           <div class="form-group-custom">
             <label class="form-label-custom">
               Nomor Referensi Transaksi
             </label>
-            <input type="text" class="form-input-custom" id="inputPayRef" value="TRF-BCA-992140" readonly style="background: #F8FAFC; color: #64748B; cursor: not-allowed; border-color: #E2E8F0;" title="Nomor referensi dibuat otomatis oleh sistem">
+            <input type="text" class="form-input-field" id="inputPayRef" value="TRF-BCA-992140" readonly style="background: #F8FAFC; color: #64748B; cursor: not-allowed; border-color: #E2E8F0;" title="Nomor referensi dibuat otomatis oleh sistem">
           </div>
         </div>
 
-        <!-- Dropzone Unggah Bukti -->
+        <!-- 3. BUKTI TRANSFER & KONFIRMASI SISA -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="file-check" style="width: 13px; height: 13px; color: #FF7A00;"></i>
+            <span>3. Bukti Transfer & Konfirmasi Sisa</span>
+          </div>
+        </div>
+
+        <!-- Dropzone Unggah Bukti (Estify pattern WF-03) -->
+        <div class="form-group-item">
+          <label class="form-label-txt">Unggah Bukti Transfer / Nota (Opsional)</label>
+          <div class="file-upload-dropzone" onclick="simulateProofUpload()">
+            <div class="file-dropzone-left">
+              <div class="file-dropzone-icon">
+                <i data-lucide="upload-cloud" style="width: 16px; height: 16px;"></i>
+              </div>
+              <div class="file-dropzone-text">
+                <span class="file-dropzone-title" id="uploadFileName">Klik untuk unggah slip transfer bank</span>
+                <span class="file-dropzone-sub">Format JPG, PNG, atau PDF sintetis (Maksimal 5 MB)</span>
+              </div>
+            </div>
+            <button type="button" class="btn-choose-file">Pilih Berkas</button>
+          </div>
+        </div>
         <div class="form-group-custom">
           <label class="form-label-custom">Unggah Bukti Transfer / Nota (Opsional)</label>
-          <div class="upload-dropzone" onclick="simulateProofUpload()">
+          <div class="upload-dropzone" style="display: none;" onclick="simulateProofUpload()">
             <div class="upload-icon-circle">
               <i data-lucide="upload-cloud" style="width: 18px; height: 18px;"></i>
             </div>
-            <div style="font-size: 12px; font-weight: 600; color: var(--text-main);" id="uploadFileName">Klik untuk unggah slip transfer bank</div>
+            <div style="font-size: 12px; font-weight: 600; color: var(--text-main);" id="oldUploadFileName">Klik untuk unggah slip transfer bank</div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Format JPG, PNG, atau PDF sintetis (Maks. 5 MB)</div>
           </div>
         </div>
+
 
         <!-- Catatan / Keterangan Pembayaran (Text Area) -->
         <div class="form-group-custom">
@@ -2719,7 +2912,7 @@ CLEAN_TAIL_END -->
             Catatan / Keterangan Pembayaran
             <span style="font-size: 11px; font-weight: 400; color: #64748B;">(Opsional)</span>
           </label>
-          <textarea class="form-textarea-custom" id="inputPayNotes" rows="2" style="min-height: 84px; font-size: 13px;" placeholder="Contoh: Titip lewat satpam, transfer via rekening ibu Siti, sisa pelunasan tgl 28"></textarea>
+          <textarea class="form-input-field" id="inputPayNotes" rows="2" style="height: 72px !important; min-height: 72px !important; padding: 10px 14px !important; resize: vertical; line-height: 1.5; font-family: inherit;" placeholder="Contoh: Titip lewat satpam, transfer via rekening ibu Siti, sisa pelunasan tgl 28"></textarea>
         </div>
 
         <!-- Kalkulasi Sisa Tagihan Otomatis (Story RK-032) -->
@@ -2755,9 +2948,9 @@ CLEAN_TAIL_END -->
       </div>
 
       <div class="modal-footer-pinned">
-      </div><div class="modal-footer-pinned"><button type="button" class="btn-modal-cancel" onclick="closeModal('modalCatatBayar')">Batal</button>
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalCatatBayar')">Batal</button>
         <button type="button" class="btn-modal-primary" onclick="submitPaymentRecord()">
-          <i data-lucide="save" style="width: 15px; height: 15px;"></i>
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
           <span>Simpan Catatan Pembayaran</span>
         </button>
       </div>
@@ -2783,20 +2976,8 @@ CLEAN_TAIL_END -->
           <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
-      <div style="display: none;">
-    <div class="modal-card" style="max-width: 480px;">
 
-
-          <i data-lucide="file-text" style="width: 18px; height: 18px; color: var(--brand-primary);"></i>
-          <span>Inspeksi Bukti Transfer Asli</span>
-        </h3>
-</div><div class="modal-body-scrollable" style="align-items: center; text-align: center; background: #F8FAFC;"><!-- proof-body -->
-<!-- modal icon cleanup -->
-        </button>
-      </div>
-
-
-        
+      <div class="modal-body-scrollable" style="align-items: center; text-align: center; background: #F8FAFC;">
         <div class="digital-receipt-sheet" style="width: 100%; box-sizing: border-box; text-align: left;">
           <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding-bottom: 12px;">
             <div>
@@ -2834,9 +3015,9 @@ CLEAN_TAIL_END -->
       </div>
 
       <div class="modal-footer-pinned">
-      </div><div class="modal-footer-pinned"><button type="button" class="btn-modal-cancel" onclick="closeModal('modalProofZoom')">Tutup</button>
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalProofZoom')">Tutup</button>
         <button type="button" class="btn-modal-primary" id="btnZoomApprove" onclick="approveSelectedFromModal();">
-          <i data-lucide="check" style="width: 15px; height: 15px;"></i>
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
           <span>Sahkan Transaksi Ini</span>
         </button>
       </div>
@@ -2862,20 +3043,9 @@ CLEAN_TAIL_END -->
           <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
-      <div style="display: none;">
-    <div class="modal-card" style="max-width: 460px;">
 
-
-          <i data-lucide="alert-triangle" style="width: 18px; height: 18px; color: #EF4444;"></i>
-          <span>Tolak Verifikasi Pembayaran</span>
-        </h3>
-</div><div class="modal-body-scrollable"><!-- reject-body -->
-<!-- modal icon cleanup -->
-        </button>
-      </div>
-
-      <div class="modal-card-body">
-</div><p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.4;">
+      <div class="modal-body-scrollable">
+        <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.4;">
           Sesuai standar operasional, penolakan pembayaran wajib menyertakan alasan jelas agar dapat ditindaklanjuti oleh staf atau penghuni kost.
         </p>
 
@@ -2886,7 +3056,7 @@ CLEAN_TAIL_END -->
       </div>
 
       <div class="modal-footer-pinned">
-      </div><div class="modal-footer-pinned"><button type="button" class="btn-modal-cancel" onclick="closeModal('modalReject')">Batal</button>
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalReject')">Batal</button>
         <button type="button" class="btn-modal-danger" onclick="confirmRejectPayment()">
           <i data-lucide="x-circle" style="width: 15px; height: 15px;"></i>
           <span>Konfirmasi Tolak Bukti</span>
@@ -2916,30 +3086,6 @@ CLEAN_TAIL_END -->
       </div>
 
       <div class="modal-body-scrollable">
-<!-- OLD_REVERSAL_GARBAGE_START
-          </div>
-        </div>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalReversal')" title="Tutup Modal">
-          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
-        </button>
-      </div>
-      <div style="display: none;">
-    <div class="modal-card" style="max-width: 480px;">
-
-
-
-      <div class="modal-body-scrollable">
-        </h3>
-
-<!-- modal icon cleanup -->
-        </button>
-      </div>
-
-      <div class="modal-card-body">
-      <div class="modal-body-scrollable">
-        <div style="background: #FEE2E2; border: 1px solid #FECDD3; border-radius: 12px; padding: 12px 14px; font-size: 12px; color: #991B1B; line-height: 1.4; margin-bottom: 14px;">
-          <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
-OLD_REVERSAL_GARBAGE_END -->
         <div style="background: #FEE2E2; border: 1px solid #FECDD3; border-radius: 12px; padding: 12px 14px; font-size: 12px; color: #991B1B; line-height: 1.4; margin-bottom: 14px;">
           <i data-lucide="info" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
           <strong>Prinsip Jejak Audit:</strong> Transaksi asli tidak akan dihapus fisik. Sistem akan membuat entri pembalik (reversal negatif) dan mengembalikan saldo tagihan kamar ke status belum terbayar.
@@ -2982,16 +3128,6 @@ OLD_REVERSAL_GARBAGE_END -->
   <div class="modal-backdrop modal-overlay" id="modalReceipt">
     <div class="modal-card" style="max-width: 500px;">
       <div class="modal-header-pinned">
-<!-- DUPLICATE_HEAD_REC_START
-    <div class="modal-card" style="max-width: 500px;">
-      <div class="modal-header-pinned">
-
-      <div class="modal-header-pinned">
-
-
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-DUPLICATE_HEAD_REC_END -->
         <div style="display: flex; align-items: center; gap: 10px;">
           <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFF7ED; color: #FF7A00; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
             <i data-lucide="printer" style="width: 18px; height: 18px;"></i>
@@ -3005,18 +3141,8 @@ DUPLICATE_HEAD_REC_END -->
           <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
-      <!-- HAPUS_RECEIPT_REST
-          </div>
-        </h3>
-        </div>
-        <button type="button" class="btn-modal-close" onclick="closeModal('modalReceipt')" title="Tutup Modal">
-<!-- modal icon cleanup -->
-        </button>
-      </div>
 
-HAPUS_RECEIPT_REST -->
       <div class="modal-body-scrollable" style="background: #F8FAFC;">
-        
         <div class="digital-receipt-sheet" id="printableReceiptArea">
           <!-- Watermark Lunas / Parsial -->
           <div class="receipt-watermark-overlay" id="receiptWatermark">LUNAS</div>
@@ -3095,7 +3221,7 @@ HAPUS_RECEIPT_REST -->
             <i data-lucide="arrow-down-left" style="width: 18px; height: 18px;"></i>
           </div>
           <div>
-            <h2 class="modal-title">Pengembalian Dana (Refund Kas)</h2>
+            <h2 class="modal-title">Pengembalian Dana (Refund Kas Keluar)</h2>
             <p class="modal-subtitle">Pencatatan kas keluar pengembalian dana sewa ke penghuni</p>
           </div>
         </div>
@@ -3103,20 +3229,13 @@ HAPUS_RECEIPT_REST -->
           <i data-lucide="x" style="width: 16px; height: 16px;"></i>
         </button>
       </div>
-      <div style="display: none;">
-    <div class="modal-card" style="max-width: 480px;">
 
-
-          <i data-lucide="arrow-down-left" style="width: 18px; height: 18px; color: #EA580C;"></i>
-          <span>Pengembalian Dana (Refund Kas Keluar)</span>
-        </h3>
-</div><div class="modal-body-scrollable"><!-- refund-body -->
-<!-- modal icon cleanup -->
-        </button>
-      </div>
-
-      <div class="modal-card-body">
-        
+      <div class="modal-body-scrollable">
+        <!-- 1. RINCIAN DANA YANG DIKEMBALIKAN -->
+        <div class="modal-section-title" style="margin-top: 0 !important; padding-top: 0 !important;">
+          <i data-lucide="receipt" style="width: 13px; height: 13px; color: #EA580C;"></i>
+          <span>1. Rincian Dana yang Dikembalikan</span>
+        </div>
 
         <!-- Callout Info Standar Pembukuan -->
         <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 12px; padding: 11px 14px; font-size: 12px; color: #9A3412; display: flex; align-items: flex-start; gap: 8px;">
@@ -3142,9 +3261,17 @@ HAPUS_RECEIPT_REST -->
           </div>
         </div>
 
+        <!-- 2. KANAL & REKENING PENGEMBALIAN -->
+        <div class="modal-section-divider">
+          <div class="modal-section-title">
+            <i data-lucide="credit-card" style="width: 13px; height: 13px; color: #EA580C;"></i>
+            <span>2. Kanal Kas Keluar &amp; Tujuan Pengembalian</span>
+          </div>
+        </div>
+
         <!-- Form Pemilihan Kanal & Rekening -->
         <div class="form-group-custom">
-          <label class="form-label-custom">Kanal Kas Keluar (Sumber Pengembalian) *</label>
+          <label class="form-label-txt">Kanal Kas Keluar (Sumber Pengembalian) *</label>
           <div class="method-selector-grid" style="grid-template-columns: repeat(3, 1fr);">
             <div class="method-radio-box active" onclick="selectRefundMethodBox(this, 'BCA Transfer')">
               <i data-lucide="credit-card" style="width: 14px; height: 14px;"></i>
@@ -3163,21 +3290,21 @@ HAPUS_RECEIPT_REST -->
         </div>
 
         <div class="form-group-custom">
-          <label class="form-label-custom">Rekening / Tujuan Pengembalian Penghuni *</label>
-          <input type="text" class="form-input-custom" id="refundRecipientInfo" placeholder="Contoh: BCA 8829-1029 a.n Dimas Setiawan" value="BCA 8829-1029 a.n Penghuni">
+          <label class="form-label-txt">Rekening / Tujuan Pengembalian Penghuni *</label>
+          <input type="text" class="form-input-field" id="refundRecipientInfo" placeholder="Contoh: BCA 8829-1029 a.n Dimas Setiawan" value="BCA 8829-1029 a.n Penghuni">
         </div>
 
         <div class="form-group-custom">
-          <label class="form-label-custom">Catatan Tambahan (Opsional)</label>
-          <textarea class="form-textarea-custom" id="refundNotes" rows="2" style="font-size: 13px; min-height: 84px;" placeholder="Contoh: Pengembalian dana transfer dobel atas permintaan penghuni"></textarea>
+          <label class="form-label-txt">Catatan Tambahan (Opsional)</label>
+          <textarea class="form-input-field" id="refundNotes" rows="2" style="font-size: 13px; min-height: 84px; height: auto !important; padding: 10px 14px !important; resize: vertical;" placeholder="Contoh: Pengembalian dana transfer dobel atas permintaan penghuni"></textarea>
         </div>
 
       </div>
 
       <div class="modal-footer-pinned">
-      </div><div class="modal-footer-pinned"><button type="button" class="btn-modal-cancel" onclick="closeModal('modalRefundSurplus')">Batal</button>
-        <button type="button" class="btn-modal-primary" style="background: #EA580C !important; border-color: #C2410C !important;" onclick="submitRefundSurplus()">
-          <i data-lucide="check" style="width: 15px; height: 15px;"></i>
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalRefundSurplus')">Batal</button>
+        <button type="button" class="btn-modal-refund" onclick="submitRefundSurplus()">
+          <i data-lucide="check" style="width: 14px; height: 14px;"></i>
           <span>Konfirmasi &amp; Catat Kas Keluar</span>
         </button>
       </div>
@@ -3773,7 +3900,7 @@ HAPUS_RECEIPT_REST -->
                 <i data-lucide="calendar-plus" style="width: 12px; height: 12px;"></i>
                 <span>Jadikan Sewa Nov 2026</span>
               </button>
-              <button type="button" class="btn-exec-receipt" onclick="openModalRefundSurplus('${item.id}', '${item.tenant}', ${item.amount}, '${item.room}')" style="background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA;" title="Kembalikan uang transfer dobel ke rekening penghuni dan catat ke mutasi pengeluaran kas">
+              <button type="button" class="btn-exec-refund" onclick="openModalRefundSurplus('${item.id}', '${item.tenant}', ${item.amount}, '${item.room}')" title="Kembalikan uang transfer dobel ke rekening penghuni dan catat ke mutasi pengeluaran kas">
                 <i data-lucide="arrow-down-left" style="width: 12px; height: 12px;"></i>
                 <span>Refund Kas Keluar (${formatRupiah(item.amount)})</span>
               </button>
@@ -3794,7 +3921,7 @@ HAPUS_RECEIPT_REST -->
           let refundSurplusBtn = '';
           if (item.isSurplus && !item.refunded) {
             refundSurplusBtn = `
-              <button type="button" class="btn-exec-receipt" onclick="openModalRefundSurplus('${item.id}', '${item.tenant}', ${item.surplusAmount}, '${item.room}')" style="background: #FFF7ED; color: #EA580C; border: 1px solid #FED7AA;" title="Kembalikan uang kelebihan bayar ke penghuni dan catat ke mutasi pengeluaran kas">
+              <button type="button" class="btn-exec-refund" onclick="openModalRefundSurplus('${item.id}', '${item.tenant}', ${item.surplusAmount}, '${item.room}')" title="Kembalikan uang kelebihan bayar ke penghuni dan catat ke mutasi pengeluaran kas">
                 <i data-lucide="arrow-down-left" style="width: 12px; height: 12px;"></i>
                 <span>Refund Kelebihan (${formatRupiah(item.surplusAmount)})</span>
               </button>
@@ -4712,6 +4839,15 @@ HAPUS_RECEIPT_REST -->
     }
 
     function openModalRefundSurplus(txId, tenant, amount, room) {
+      if (!txId) {
+        const fallback = paymentsData.find(d => (d.isSurplus || d.isDouble) && !d.refunded) || paymentsData.find(d => d.id === 'PAY-202610-04S') || paymentsData[0];
+        if (fallback) {
+          txId = fallback.id;
+          tenant = fallback.tenant;
+          amount = fallback.surplusAmount || fallback.amount;
+          room = fallback.room;
+        }
+      }
       activeRefundTxId = txId;
       activeRefundAmount = amount;
       const targetEl = document.getElementById('refundTenantTarget');

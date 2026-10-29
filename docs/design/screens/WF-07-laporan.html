@@ -156,31 +156,40 @@
     }
 
     .period-menu-item {
-      padding: 9px 12px;
+      padding: 8px 12px;
       border-radius: 10px;
       font-size: 12px;
       font-weight: 500;
-      color: var(--text-main);
+      color: #374151;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      transition: all var(--transition-fast);
+      transition: background-color var(--transition-fast, 150ms ease), color var(--transition-fast, 150ms ease);
       background: transparent;
       border: none;
       width: 100%;
       text-align: left;
+      white-space: nowrap;
+      box-sizing: border-box;
     }
 
     .period-menu-item:hover {
-      background: #F1F5F9;
-      color: var(--brand-primary);
+      background: var(--bg-hover, #F3F4F6);
+      color: var(--text-main, #111827);
     }
 
-    .period-menu-item.active {
-      background: #FFF7ED;
-      color: var(--brand-primary);
+    .period-menu-item.active,
+    .period-menu-item.selected {
+      background: #111111;
+      color: #FFFFFF;
       font-weight: 600;
+    }
+
+    .period-menu-item.active:hover,
+    .period-menu-item.selected:hover {
+      background: #111111;
+      color: #FFFFFF;
     }
 
     /* Account / Category Popover - Inherits Unified Filter Styles */
@@ -889,8 +898,8 @@
       padding-right: 4px;
       margin-top: 0;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
       align-items: center;
       justify-items: center;
       box-sizing: border-box;
@@ -1000,8 +1009,8 @@
     }
 
     .doc-menu-item:hover {
-      background: #F1F5F9;
-      color: var(--text-main);
+      background: var(--bg-hover, #F3F4F6);
+      color: var(--text-main, #111827);
     }
 
     .doc-menu-item.is-ticket {
@@ -1820,30 +1829,16 @@
       border-color: var(--btn-primary-hover-border, #B84E00) !important;
       color: #FFFFFF !important;
       transform: translateY(-1px) !important;
-      box-shadow: 0 4px 14px rgba(255, 122, 0, 0.32) !important;
+      box-shadow: none !important;
     }
 
     .btn-modal-primary:active {
       background: var(--btn-primary-active-bg, #D45A00) !important;
       border-color: var(--btn-primary-active-border, #A34400) !important;
       transform: translateY(0) !important;
-      box-shadow: 0 1px 3px rgba(255, 122, 0, 0.2) !important;
-    }
-
-    .btn-modal-cancel:hover {
-      background: #F1F5F9 !important;
-      border-color: #94A3B8 !important;
-      color: #0F172A !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
-    }
-
-    .btn-modal-cancel:active {
-      background: #E2E8F0 !important;
-      border-color: #64748B !important;
-      transform: translateY(0) !important;
       box-shadow: none !important;
     }
+
 
     /* Modal Form Sub-Sections & Layout Elements (100% Identik Standar Estify WF-03) */
     .modal-section-divider {
@@ -4055,6 +4050,70 @@
   </div>
 
   <!-- ========================================================
+       MODAL REVERSAL MUTASI KAS OPERASIONAL (SK-33: Zero Data Loss Audit Guard)
+       ======================================================== -->
+  <div class="modal-backdrop" id="modalExpenseReversal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header-pinned">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 36px; height: 36px; border-radius: 10px; background: #FEF2F2; color: #DC2626; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #FEE2E2;">
+            <i data-lucide="rotate-ccw" style="width: 18px; height: 18px;"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 15px; font-weight: 700; color: #0F172A; margin: 0;">Koreksi &amp; Reversal Mutasi Kas</h3>
+            <p style="font-size: 11px; color: #64748B; margin: 1px 0 0;">SK-33 &middot; Zero Data Loss Audit Guard (Terbitkan Jurnal Pembalik)</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" onclick="closeModal('modalExpenseReversal')" title="Tutup">
+          <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body-scrollable" style="padding: 18px 20px;">
+        <input type="hidden" id="reversalTargetId" value="">
+        <input type="hidden" id="reversalTargetAmount" value="0">
+
+        <div style="background: #FEF2F2; border: 1.5px solid #FEE2E2; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px;">
+          <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <i data-lucide="alert-triangle" style="width: 16px; height: 16px; color: #DC2626; flex-shrink: 0; margin-top: 2px;"></i>
+            <div style="font-size: 11.5px; color: #991B1B; line-height: 1.45;">
+              <strong>Perhatian Audit Kas:</strong> Transaksi asli tidak akan dihapus fisik. Sistem akan menerbitkan <strong>Jurnal Reversal (+Pemulihan Saldo)</strong> untuk menjaga integritas rekam jejak kas.
+            </div>
+          </div>
+        </div>
+
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 11.5px; color: #64748B;">No. Referensi:</span>
+            <strong id="reversalRefBadge" style="font-family: monospace; font-size: 11.5px; color: #0F172A; background: #FFFFFF; padding: 2px 8px; border-radius: 6px; border: 1px solid #CBD5E1;">#TRX-000</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 11.5px; color: #64748B;">Uraian Pengeluaran:</span>
+            <span id="reversalDescTxt" style="font-size: 11.5px; font-weight: 600; color: #1E293B; max-width: 65%; text-align: right;">-</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 11.5px; color: #64748B;">Nominal yang Dipulihkan:</span>
+            <strong id="reversalAmountTxt" style="font-size: 13px; font-weight: 700; color: #059669;">+Rp 0</strong>
+          </div>
+        </div>
+
+        <div class="form-group-item">
+          <label class="form-label-txt">Alasan Koreksi / Reversal Pembukuan <span class="req-star">*</span></label>
+          <textarea id="reversalReasonInput" class="form-input-field" rows="3" placeholder="Contoh: Koreksi salah input nominal retribusi sampah oleh staf operasional..." style="height: auto; padding: 10px 12px; resize: vertical;" required></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer-pinned">
+        <button type="button" class="btn-modal-cancel" onclick="closeModal('modalExpenseReversal')">Batal</button>
+        <button type="button" class="btn-modal-primary" id="btnSubmitReversal" onclick="executeExpenseReversal()" style="background: #DC2626; border-color: #DC2626; color: #FFFFFF;">
+          <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
+          <span>Konfirmasi Reversal Kas</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
        MODAL 3: EKSPOR LAPORAN KEUANGAN (F-10 · 100% IDENTIK WF-04 REGISTRASI PENGHUNI BARU)
        ======================================================== -->
   <div class="modal-backdrop" id="modalExport">
@@ -4119,6 +4178,7 @@
             <button type="button" class="duration-pill-opt active" id="btnScopeAll" onclick="selectExportScope(this, 'all')">Semua Modul</button>
             <button type="button" class="duration-pill-opt" id="btnScopeLedger" onclick="selectExportScope(this, 'ledger')">Buku Kas Saja</button>
             <button type="button" class="duration-pill-opt" id="btnScopePL" onclick="selectExportScope(this, 'pl')">Laba Rugi (P&amp;L)</button>
+            <button type="button" class="duration-pill-opt" id="btnScopeFiltered" onclick="selectExportScope(this, 'filtered')">Filter Aktif</button>
           </div>
         </div>
 
@@ -4833,7 +4893,9 @@
           <td>
             <div style="display: flex; flex-direction: column; gap: 3px;">
               <div style="font-weight: 600; color: #0F172A; line-height: 1.35; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                <span>${item.desc}</span>
+                <span style="${item.isReversed ? 'text-decoration: line-through; color: #94A3B8;' : ''}">${item.desc}</span>
+                ${item.isReversed ? '<span style="font-size: 10px; font-weight: 700; background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1; border-radius: 4px; padding: 1px 6px;">Terkoreksi / Reversed</span>' : ''}
+                ${item.isReversal ? '<span style="font-size: 10px; font-weight: 700; background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; border-radius: 4px; padding: 1px 6px;">Jurnal Pembalik</span>' : ''}
                 ${item.ticketNo ? `<a href="WF-08-tiket.html?highlight=${item.ticketNo}" class="badge-ticket-tag" title="Tautkan ke Tiket Maintenance #${item.ticketNo}"><i data-lucide="wrench" style="width: 10px; height: 10px;"></i> #${item.ticketNo}</a>` : ''}
               </div>
               <div style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #64748B;">
@@ -4870,6 +4932,12 @@
                   <i data-lucide="printer" style="width: 13px; height: 13px; color: #64748B;"></i>
                   <span>Cetak Kuitansi</span>
                 </button>
+                ${!isStaffRole() && item.type === 'expense' && !item.isReversed && !item.isReversal ? `
+                  <button type="button" class="doc-menu-item btn-doc-reversal" onclick="openExpenseReversalModal('${item.id}'); closeAllDocMenus();" style="color: #DC2626;">
+                    <i data-lucide="rotate-ccw" style="width: 13px; height: 13px; color: #DC2626;"></i>
+                    <span>Koreksi / Reversal Mutasi</span>
+                  </button>
+                ` : ''}
                 ${item.ticketNo ? `
                   <a href="WF-08-tiket.html?highlight=${item.ticketNo}" class="doc-menu-item is-ticket">
                     <i data-lucide="wrench" style="width: 13px; height: 13px; color: #EA580C;"></i>
@@ -5185,8 +5253,12 @@
       RumaUI.showToast(`Filter akun diterapkan: ${label}`, 'info');
     }
 
+    let isSubmittingExpense = false;
+
     function submitNewExpense(e) {
       if (e) e.preventDefault();
+      if (isSubmittingExpense) return; // SK-37: Idempotency guard against rapid multi-click
+
       const amountInput = document.getElementById('inputExpenseAmount');
       const descInput = document.getElementById('inputExpenseDesc');
       const entityInput = document.getElementById('inputExpenseEntity');
@@ -5194,6 +5266,7 @@
       const catKey = document.getElementById('expenseCatKey').value || 'utility';
       const catName = document.getElementById('expenseCatName').value || 'Listrik PLN (Token Fasum)';
       const ticketCode = document.getElementById('expenseTicketCode').value || '';
+      const submitBtn = document.getElementById('btnSubmitExpense');
 
       const rawAmount = (amountInput.value || '').replace(/\D/g, '');
       const amountVal = Number(rawAmount);
@@ -5207,40 +5280,126 @@
         return;
       }
 
-      const entityVal = (entityInput && entityInput.value.trim()) ? entityInput.value.trim() : (isStaffRole() ? 'Rini (Staf)' : 'Budi (Pemilik)');
-      const rawDate = (dateInput && dateInput.value.trim()) ? dateInput.value.trim() : '2026-10-24';
-      let dateVal = rawDate;
-      if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-        const parts = rawDate.split('-');
-        const d = parseInt(parts[2], 10);
-        const m = months[parseInt(parts[1], 10) - 1];
-        const y = parts[0];
-        dateVal = `${d} ${m} ${y}`;
+      // SK-37: Activate loading state & button disable
+      isSubmittingExpense = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.pointerEvents = 'none';
+        submitBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin" style="width: 14px; height: 14px;"></i> <span>Menyimpan...</span>';
+        if (window.lucide) lucide.createIcons();
       }
-      const isStaff = isStaffRole();
-      const newId = 'TRX-202610-0' + (ledgerData.length + 1);
-      const prevBalance = ledgerData[0] ? ledgerData[0].balance : 17400000;
-      const newBalance = prevBalance - amountVal;
 
-      const newTx = {
-        id: newId,
-        date: dateVal,
-        category: catName,
-        categoryKey: catKey,
-        type: 'expense',
-        desc: descInput.value.trim(),
-        entity: entityVal,
+      setTimeout(() => {
+        const entityVal = (entityInput && entityInput.value.trim()) ? entityInput.value.trim() : (isStaffRole() ? 'Rini (Staf)' : 'Budi (Pemilik)');
+        const rawDate = (dateInput && dateInput.value.trim()) ? dateInput.value.trim() : '2026-10-24';
+        let dateVal = rawDate;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+          const parts = rawDate.split('-');
+          const d = parseInt(parts[2], 10);
+          const m = months[parseInt(parts[1], 10) - 1];
+          const y = parts[0];
+          dateVal = `${d} ${m} ${y}`;
+        }
+        const isStaff = isStaffRole();
+        const newId = 'TRX-202610-0' + (ledgerData.length + 1);
+        const prevBalance = ledgerData[0] ? ledgerData[0].balance : 17400000;
+        const newBalance = prevBalance - amountVal;
+
+        const newTx = {
+          id: newId,
+          date: dateVal,
+          category: catName,
+          categoryKey: catKey,
+          type: 'expense',
+          desc: descInput.value.trim(),
+          entity: entityVal,
+          amount: amountVal,
+          balance: newBalance,
+          ticketNo: ticketCode,
+          author: isStaff ? 'Rini (Staf)' : 'Budi (Pemilik)'
+        };
+
+        ledgerData.unshift(newTx);
+        closeExpenseModal();
+        renderLedgerTable();
+        RumaUI.showToast(`Mutasi kas ${formatRupiah(amountVal)} berhasil dicatat ke buku besar!`, 'success');
+
+        // Reset submit flag & button
+        isSubmittingExpense = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.style.pointerEvents = '';
+          submitBtn.innerHTML = '<i data-lucide="check" style="width: 14px; height: 14px;"></i> <span>Simpan Mutasi Kas</span>';
+          if (window.lucide) lucide.createIcons();
+        }
+      }, 300);
+    }
+
+    /* -------------------------------------------------------------------------
+       SK-33: JURNAL REVERSAL KAS (ZERO DATA LOSS AUDIT GUARD)
+       ------------------------------------------------------------------------- */
+    function openExpenseReversalModal(txId) {
+      const item = ledgerData.find(e => e.id === txId);
+      if (!item) return;
+
+      document.getElementById('reversalTargetId').value = item.id;
+      document.getElementById('reversalTargetAmount').value = item.amount;
+      document.getElementById('reversalRefBadge').textContent = '#' + item.id;
+      document.getElementById('reversalDescTxt').textContent = item.desc;
+      document.getElementById('reversalAmountTxt').textContent = '+' + formatRupiah(item.amount);
+      const reasonInput = document.getElementById('reversalReasonInput');
+      if (reasonInput) reasonInput.value = '';
+
+      openModal('modalExpenseReversal');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function executeExpenseReversal() {
+      const txId = document.getElementById('reversalTargetId').value;
+      const amountVal = Number(document.getElementById('reversalTargetAmount').value) || 0;
+      const reasonInput = document.getElementById('reversalReasonInput');
+      const reason = reasonInput ? reasonInput.value.trim() : '';
+
+      if (!reason) {
+        RumaUI.showToast('Harap tuliskan alasan audit koreksi / reversal!', 'error');
+        return;
+      }
+
+      const item = ledgerData.find(e => e.id === txId);
+      if (!item) {
+        closeModal('modalExpenseReversal');
+        return;
+      }
+
+      // Mark original row as reversed
+      item.isReversed = true;
+      item.reversalNote = reason;
+
+      // Create new reversal offsetting entry (REV-202610-xxx)
+      const revId = 'REV-202610-00' + (ledgerData.filter(x => x.isReversal).length + 1);
+      const prevBalance = ledgerData[0] ? ledgerData[0].balance : 17400000;
+      const restoredBalance = prevBalance + amountVal;
+
+      const revTx = {
+        id: revId,
+        date: '24 Okt 2026',
+        category: 'Koreksi Pembukuan',
+        categoryKey: 'other',
+        type: 'income',
+        isReversal: true,
+        desc: `[REVERSAL #${item.id}] ${reason}`,
+        entity: 'Budi (Pemilik)',
         amount: amountVal,
-        balance: newBalance,
-        ticketNo: ticketCode,
-        author: isStaff ? 'Rini (Staf)' : 'Budi (Pemilik)'
+        balance: restoredBalance,
+        ticketNo: item.ticketNo || '',
+        author: 'Budi (Pemilik)'
       };
 
-      ledgerData.unshift(newTx);
-      closeExpenseModal();
+      ledgerData.unshift(revTx);
+      closeModal('modalExpenseReversal');
       renderLedgerTable();
-      RumaUI.showToast(`Mutasi kas ${formatRupiah(amountVal)} berhasil dicatat ke buku besar!`, 'success');
+      RumaUI.showToast(`Koreksi mutasi #${item.id} berhasil dicatat sebagai jurnal reversal. Saldo kas diperbarui.`, 'success');
     }
 
     function viewLedgerProof(id) {
@@ -5309,15 +5468,31 @@
       
       const scopeBadge = document.getElementById('exportScopeBadge');
       if (scopeBadge) {
-        if (scope === 'all') scopeBadge.textContent = '16 Transaksi Kas (Lengkap)';
-        else if (scope === 'ledger') scopeBadge.textContent = '16 Baris Jurnal Buku Kas';
+        if (scope === 'all') scopeBadge.textContent = `${ledgerData.length} Transaksi Kas (Lengkap)`;
+        else if (scope === 'ledger') scopeBadge.textContent = `${ledgerData.length} Baris Jurnal Buku Kas`;
         else if (scope === 'pl') scopeBadge.textContent = 'Rekapitulasi Laba Rugi Saja';
+        else if (scope === 'filtered') {
+          const count = document.getElementById('ledgerCountBadge') ? document.getElementById('ledgerCountBadge').textContent : '3';
+          scopeBadge.textContent = `Tampilan Filter Aktif (${count} Transaksi)`;
+        }
       }
       selectExportFormatPill(currentExportFormat);
     }
 
-    // Generator Dummy Berkas CSV (F-10: Ekspor Data Tabular Riil)
+    // Sanitasi Formula Injection Excel (SK-46 / CWE-1236)
+    function sanitizeCsvCell(str) {
+      if (!str) return '""';
+      let val = String(str);
+      // Jika string diawali formula trigger (=, +, -, @), sisipkan kutip satu pelindung (')
+      if (/^[=+\-@]/.test(val)) {
+        val = "'" + val;
+      }
+      return `"${val.replace(/"/g, '""')}"`;
+    }
+
+    // Generator Dummy Berkas CSV (F-10, SK-16, SK-34, SK-40, SK-46)
     function downloadCsvReport() {
+      const isStaff = isStaffRole();
       const headers = [
         "No Bukti",
         "Tanggal",
@@ -5332,30 +5507,50 @@
         "Pencatat Transaksi"
       ];
 
-      const rows = ledgerData.map(item => [
-        `"${item.id}"`,
-        `"${item.date}"`,
-        `"${item.category}"`,
-        `"${item.type === 'income' ? 'Pemasukan (Debit)' : 'Pengeluaran (Kredit)'}"`,
-        `"${item.desc.replace(/"/g, '""')}"`,
-        `"${item.entity.replace(/"/g, '""')}"`,
+      // Tentukan dataset berdasarkan scope (SK-40)
+      let targetData = ledgerData;
+      if (currentExportScope === 'filtered') {
+        targetData = ledgerData.filter(item => {
+          if (currentAccountFilter === 'income' && item.type !== 'income') return false;
+          if (currentAccountFilter === 'utility' && item.categoryKey !== 'utility' && item.categoryKey !== 'water') return false;
+          if (currentAccountFilter === 'maintenance' && item.categoryKey !== 'maintenance') return false;
+          if (currentAccountFilter === 'cleaning' && item.categoryKey !== 'cleaning') return false;
+          if (currentAccountFilter === 'other' && item.categoryKey !== 'other') return false;
+          if (currentAuditSearch) {
+            const q = currentAuditSearch.toLowerCase();
+            return item.id.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q) || item.entity.toLowerCase().includes(q) || item.category.toLowerCase().includes(q);
+          }
+          return true;
+        });
+      }
+
+      const rows = targetData.map(item => [
+        sanitizeCsvCell(item.id),
+        sanitizeCsvCell(item.date),
+        sanitizeCsvCell(item.category),
+        sanitizeCsvCell(item.type === 'income' ? 'Pemasukan (Debit)' : 'Pengeluaran (Kredit)'),
+        sanitizeCsvCell(item.desc),
+        sanitizeCsvCell(item.entity),
         item.type === 'income' ? item.amount : 0,
         item.type === 'expense' ? item.amount : 0,
         item.balance,
-        `"${item.ticketNo || '-'}"`,
-        `"${item.author}"`
+        sanitizeCsvCell(item.ticketNo || '-'),
+        sanitizeCsvCell(item.author)
       ]);
 
-      let csvStr = "\uFEFF"; // Prepend UTF-8 Byte Order Mark (BOM) agar Excel Windows langsung membaca simbol dan aksen rapi
+      let csvStr = "\uFEFF"; // Prepend UTF-8 Byte Order Mark (BOM)
       csvStr += "LAPORAN BUKU KAS & AUDIT PEMBUKUAN - RUMAKOST\r\n";
       csvStr += "Identitas Properti: Kost Eksklusif RumaKost (15 Kamar) | Periode: Oktober 2026\r\n";
-      csvStr += `Cakupan Ekspor: ${currentExportScope.toUpperCase()} | Dicetak oleh: Budi Santoso (Pemilik)\r\n`;
+      csvStr += `Cakupan Ekspor: ${currentExportScope.toUpperCase()} | Dicetak oleh: ${isStaff ? 'Rini (Staf Operasional) | Proteksi Finansial Sensitif: AKTIF' : 'Budi Santoso (Pemilik)'}\r\n`;
       csvStr += "Status Rekonsiliasi: 100% Cocok (Selisih Kas Rp 0) | Tanggal Unduh: 25 Oktober 2026\r\n\r\n";
       csvStr += headers.join(",") + "\r\n";
       csvStr += rows.map(r => r.join(",")).join("\r\n") + "\r\n\r\n";
-      csvStr += ",,,,TOTAL PEMASUKAN KAS (DEBIT),,,21400000,,,\r\n";
-      csvStr += ",,,,TOTAL PENGELUARAN KAS (KREDIT),,,,4000000,,\r\n";
-      csvStr += ",,,,SURPLUS KAS BERSIH OPERASIONAL (NOI),,,,,17400000,,\r\n";
+
+      // SK-34: Penegakan RBAC Masking Laba Bersih (NOI) pada Ekspor CSV Staf
+      const noiSummaryVal = isStaff ? "[PROTEKSI PEMILIK / TERSEMBUNYI]" : "17400000";
+      csvStr += ",,,,TOTAL PEMASUKAN KAS (DEBIT),,,21650000,,,\r\n";
+      csvStr += ",,,,TOTAL PENGELUARAN KAS (KREDIT),,,,4250000,,\r\n";
+      csvStr += `,,,,SURPLUS KAS BERSIH OPERASIONAL (NOI),,,,,${noiSummaryVal},,\r\n`;
       csvStr += ",,,,STATUS SALDO AKHIR: COCOK & TERVERIFIKASI,,,,,\r\n";
 
       const blob = new Blob([csvStr], { type: "text/csv;charset=utf-8;" });
@@ -5530,6 +5725,19 @@
 
     // Initialization & Role Checks
     window.addEventListener('DOMContentLoaded', () => {
+      // SK-35: Pembatasan Akses Mutlak untuk Role Penghuni (Zero Access & Redirect Guard)
+      const urlParams = new URLSearchParams(window.location.search);
+      const userRole = (urlParams.get('role') || '').toLowerCase();
+      if (userRole === 'penghuni' || userRole === 'tenant') {
+        if (typeof RumaUI !== 'undefined' && RumaUI.showToast) {
+          RumaUI.showToast('Akses ditolak: Modul pembukuan dan audit finansial hanya dapat diakses oleh Pemilik & Staf.', 'error');
+        }
+        setTimeout(() => {
+          window.location.href = 'WF-10-portal-penghuni.html';
+        }, 800);
+        return;
+      }
+
       if (typeof window.renderTopbar === 'function') {
         window.renderTopbar('laporan');
       }

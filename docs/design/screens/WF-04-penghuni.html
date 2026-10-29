@@ -81,14 +81,14 @@
     }
 
     .ruma-datepicker-trigger:hover {
-      border-color: #94A3B8 !important;
+      border-color: #CBD5E1 !important;
       background: #FFFFFF !important;
-      transform: translateY(-1px) !important;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+      transform: none !important;
+      box-shadow: none !important;
     }
 
     .ruma-datepicker-trigger:active {
-      transform: translateY(0) !important;
+      transform: none !important;
     }
 
     .ruma-datepicker-trigger:focus-visible,
@@ -256,14 +256,37 @@
     }
 
     .btn-micro-outline:hover {
-      border-color: var(--brand-primary) !important;
-      color: var(--brand-primary) !important;
-      background: #FFF7ED !important;
+      background: #F8FAFC !important;
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
       transform: translateY(-1px) !important;
+      box-shadow: none !important;
     }
 
     .btn-micro-outline:hover i {
-      color: var(--brand-primary) !important;
+      color: #0F172A !important;
+    }
+
+    .btn-broadcast-trigger {
+      transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease !important;
+    }
+
+    .btn-broadcast-trigger:hover {
+      background: #F8FAFC !important;
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
+      transform: translateY(-1px) !important;
+      box-shadow: none !important;
+    }
+
+    .btn-broadcast-trigger:hover i {
+      color: #0F172A !important;
+    }
+
+    .btn-broadcast-trigger:active {
+      transform: translateY(0) !important;
+      background: #F1F5F9 !important;
+      border-color: #64748B !important;
     }
 
     .btn-micro-outline:active {
@@ -294,15 +317,25 @@
       box-sizing: border-box;
     }
 
-    .btn-micro-danger:hover {
+    .btn-micro-danger:hover,
+    button[title="Selesaikan Izin Menginap Tamu"]:hover {
       background: #FFE4E6 !important;
       border-color: #FDA4AF !important;
       color: #BE123C !important;
       transform: translateY(-1px) !important;
+      box-shadow: none !important;
     }
 
-    .btn-micro-danger:active {
+    .btn-micro-danger:hover i,
+    button[title="Selesaikan Izin Menginap Tamu"]:hover i {
+      color: #BE123C !important;
+    }
+
+    .btn-micro-danger:active,
+    button[title="Selesaikan Izin Menginap Tamu"]:active {
       transform: translateY(0) !important;
+      background: #FECDD3 !important;
+      border-color: #FB7185 !important;
     }
 
     .btn-micro-brand {
@@ -466,18 +499,42 @@
       font-weight: 700;
     }
 
-    /* Floor Filter Pills */
-    .floor-filter-pills {
+    /* Floor Filter Pills: Fixed 'Semua' button + Horizontal Scrollable Floor Track */
+    .floor-filter-pills,
+    .floor-filter-pills-wrap {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .floor-pill-fixed {
+      flex-shrink: 0;
+      min-width: 62px;
+      text-align: center;
+      padding: 4px 10px;
+    }
+
+    .floor-pills-scroll-track {
       display: flex;
       align-items: center;
       gap: 4px;
-      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
+      flex: 1;
+      padding: 2px 0;
+    }
+
+    .floor-pills-scroll-track::-webkit-scrollbar {
+      display: none;
     }
 
     .floor-pill-btn {
-      flex: 1;
       text-align: center;
-      padding: 4px 6px;
+      padding: 4px 9px;
       border-radius: var(--radius-full);
       font-size: 11px;
       box-sizing: border-box;
@@ -489,6 +546,12 @@
       transition: all var(--transition-fast);
       white-space: nowrap;
       outline: none;
+      flex-shrink: 0;
+    }
+
+    .floor-pills-scroll-track .floor-pill-btn {
+      min-width: 46px;
+      flex: 1;
     }
 
     .floor-pill-btn:hover {
@@ -2997,7 +3060,7 @@
             <span class="master-badge-count" id="masterCountDisplay">11</span>
           </div>
           <div class="master-header-actions">
-            <button type="button" class="btn-micro-outline" onclick="openBroadcastModal()" title="Siaran WA ke Penyewa">
+            <button type="button" class="btn-micro-outline btn-broadcast-trigger" onclick="openBroadcastModal()" title="Siaran WA ke Penyewa">
               <i data-lucide="megaphone" style="width: 12px; height: 12px;"></i>
               <span>Siaran WA</span>
             </button>
@@ -3024,12 +3087,14 @@
           <button type="button" class="segment-tab-btn" id="tabLunas" onclick="switchTab('lunas')">Lunas (8)</button>
         </div>
 
-        <!-- Floor Filter Pills -->
-        <div class="floor-filter-pills">
-          <button type="button" class="floor-pill-btn active" onclick="switchFloor('all', this)">Semua</button>
-          <button type="button" class="floor-pill-btn" onclick="switchFloor('1', this)">Lt 1</button>
-          <button type="button" class="floor-pill-btn" onclick="switchFloor('2', this)">Lt 2</button>
-          <button type="button" class="floor-pill-btn" onclick="switchFloor('3', this)">Lt 3</button>
+        <!-- Floor Filter Pills (Button 'Semua' Tetap & Horizontal Scroll jika lantai > 3) -->
+        <div class="floor-filter-pills-wrap">
+          <button type="button" class="floor-pill-btn floor-pill-fixed active" id="btnFloorAll" onclick="switchFloor('all', this)">Semua</button>
+          <div class="floor-pills-scroll-track" id="floorPillsTrack">
+            <button type="button" class="floor-pill-btn" onclick="switchFloor('1', this)">Lt 1</button>
+            <button type="button" class="floor-pill-btn" onclick="switchFloor('2', this)">Lt 2</button>
+            <button type="button" class="floor-pill-btn" onclick="switchFloor('3', this)">Lt 3</button>
+          </div>
         </div>
 
         <div class="master-items-scroll" id="masterTenantList">
@@ -3499,7 +3564,7 @@
                   <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="dContractMeta">No. SPK-2025/RUMA/A-01 &middot; Periode 1 Mar 2025 s.d. 28 Feb 2027 &middot; Tanda Tangan Digital Sah</div>
                 </div>
                 <div style="display: flex; gap: 6px; align-items: center; flex-shrink: 0;">
-                  <button type="button" class="btn-micro-outline" onclick="openPerpanjangModal('checkout')" style="color: #E11D48; border-color: #FECDD3; background: #FFF1F2; height: 30px; padding: 0 10px; font-size: 11px; white-space: nowrap;" title="Akhiri / Check-out Masa Sewa">
+                  <button type="button" class="btn-micro-danger" onclick="openPerpanjangModal('checkout')" style="height: 30px; padding: 0 10px; font-size: 11px; white-space: nowrap;" title="Akhiri / Check-out Masa Sewa">
                     <i data-lucide="user-x" style="width: 12px; height: 12px;"></i>
                     <span>Selesai Kontrak (Check-Out)</span>
                   </button>
@@ -3739,14 +3804,14 @@
           </div>
           <div class="form-group-item">
             <label class="form-label-txt">No. WhatsApp / HP Aktif *</label>
-            <input type="tel" id="regPhone" class="form-input-field" placeholder="Contoh: 0812-3456-7890">
+            <input type="tel" id="regPhone" class="form-input-field" placeholder="Contoh: 081234567890" inputmode="tel" oninput="sanitizePhoneInput(this)" onkeypress="return filterPhoneKeypress(event, this)">
           </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
           <div class="form-group-item">
             <label class="form-label-txt">No. KTP / NIK (16 Digit) *</label>
-            <input type="text" id="regNik" class="form-input-field" placeholder="16 Digit NIK KTP" maxlength="16">
+            <input type="text" id="regNik" class="form-input-field" placeholder="16 Digit NIK KTP" maxlength="16" inputmode="numeric" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 16)" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
           </div>
           <div class="form-group-item">
             <label class="form-label-txt">Kota Domisili Asal *</label>
@@ -3983,10 +4048,10 @@
           </div>
           <div class="form-group-item" style="margin-bottom: 0;">
             <label class="form-label-txt">Selesai Kontrak (Check-Out)</label>
-            <div style="height: 38px; background: #F8FAFC; border: 1px solid var(--border-control, #E2E8F0); border-radius: 10px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; box-sizing: border-box;">
-              <div style="display: flex; align-items: center; gap: 7px; min-width: 0;">
-                <i data-lucide="calendar-check" style="width: 14px; height: 14px; color: var(--brand-primary); flex-shrink: 0;"></i>
-                <span id="lblRegEndDateBox" style="font-size: 12px; font-weight: 600; color: var(--text-main); white-space: nowrap;">31 Oktober 2027</span>
+            <div style="height: 42px; background: #F8FAFC; border: 1px solid var(--border-control, #E2E8F0); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; box-sizing: border-box;">
+              <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                <i data-lucide="calendar-check" class="ruma-datepicker-trigger-icon" style="width: 14px; height: 14px; color: var(--brand-primary); flex-shrink: 0;"></i>
+                <span id="lblRegEndDateBox" class="ruma-datepicker-val-txt">31 Oktober 2027</span>
               </div>
               <span class="status-badge badge-dark" id="lblRegEndDurationBadge" style="font-size: 10px; padding: 1px 7px; flex-shrink: 0;">12 Bulan</span>
             </div>
@@ -4006,14 +4071,14 @@
           <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 5px;">
             <span style="font-size: 11px; color: var(--text-muted);">Preset jaminan:</span>
             <div style="display: flex; align-items: center; gap: 6px;">
-              <button type="button" class="preset-chip-btn active" id="btnDepositPreset50" onclick="applyDepositPreset('default')" title="50% harga sewa (Standar WF-03)">
-                50% Sewa (<span id="txtDepositDefaultVal">Rp 550rb</span>)
+              <button type="button" class="preset-chip-btn active" id="btnDepositPreset50" onclick="applyDepositPreset('default')" title="50% harga sewa">
+                50% sewa
               </button>
               <button type="button" class="preset-chip-btn" id="btnDepositPreset1M" onclick="applyDepositPreset('1month')" title="1 bulan sewa penuh">
-                1 Bln Penuh (<span id="txtDeposit1MonthVal">Rp 1,1jt</span>)
+                1 Bln Penuh
               </button>
               <button type="button" class="preset-chip-btn" id="btnDepositPresetZero" onclick="applyDepositPreset('zero')" title="Bebas deposit untuk promo">
-                Bebas Deposit (Rp 0)
+                Bebas Deposit
               </button>
             </div>
           </div>
@@ -4163,7 +4228,7 @@
           </div>
           <div class="form-group-item">
             <label class="form-label-txt">No. HP Darurat *</label>
-            <input type="tel" id="regEmergencyPhone" class="form-input-field" placeholder="Contoh: 0812-3344-5566">
+            <input type="tel" id="regEmergencyPhone" class="form-input-field" placeholder="Contoh: 081233445566" inputmode="tel" oninput="sanitizePhoneInput(this)" onkeypress="return filterPhoneKeypress(event, this)">
           </div>
         </div>
 
@@ -4271,11 +4336,53 @@
             </div>
           </div>
 
-          <!-- BAGIAN 2: TARIF SEWA & DEPOSIT JAMINAN -->
+          <!-- BAGIAN 2: SKEMA PEMBAYARAN & TARIF SEWA -->
           <div class="modal-section-divider">
             <div class="modal-section-title">
               <i data-lucide="wallet" style="width: 13px; height: 13px; color: #FF7A00;"></i>
-              <span>2. Penyesuaian Tarif Sewa & Deposit Jaminan</span>
+              <span>2. Skema Pembayaran & Penyesuaian Tarif</span>
+            </div>
+          </div>
+
+          <!-- Skema Pembayaran Perpanjangan -->
+          <div class="form-group-item">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <label class="form-label-txt">Skema Pembayaran Perpanjangan *</label>
+              <span id="renewPayTermBadge" class="status-badge badge-brand" style="font-size: 11px;">Bayar Lunas di Muka (12 Bln)</span>
+            </div>
+            <div class="duration-pills-row" id="wrapRenewPayTermPills" style="margin-bottom: 6px;">
+              <button type="button" class="duration-pill-opt active" id="btnRenewPayTermUpfront" onclick="setRenewPayTerm('upfront')">
+                <i data-lucide="wallet-cards" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 4px;"></i>Bayar Lunas di Muka (Upfront)
+              </button>
+              <button type="button" class="duration-pill-opt" id="btnRenewPayTermMonthly" onclick="setRenewPayTerm('monthly')">
+                <i data-lucide="calendar-clock" style="width: 13px; height: 13px; vertical-align: -2px; margin-right: 4px;"></i>Bayar Bulanan Rutin
+              </button>
+            </div>
+
+            <!-- Opsi Promo & Insentif Perpanjangan Tahunan -->
+            <div class="form-group-item" id="wrapRenewDiscountRow" style="margin-top: 4px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <label class="form-label-txt">Insentif Retensi / Promo Perpanjangan</label>
+                <span id="renewDiscountBadge" class="status-badge badge-warning" style="font-size: 10.5px; padding: 2px 7px;">Gratis 1 Bulan</span>
+              </div>
+              <div style="position: relative;">
+                <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; font-weight: 600; color: #64748B;">Rp</span>
+                <input type="text" id="renewCustomDiscount" class="form-input-field" value="1.200.000" placeholder="0 jika tanpa potongan insentif" style="padding-left: 36px; font-weight: 600;" oninput="handleRenewCustomDiscountInput(this)">
+              </div>
+              <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 5px; font-size: 11px;">
+                <div style="color: var(--text-muted); line-height: 1.35; max-width: 250px; flex: 1; min-width: 0;">
+                  <span>Default promo retensi:</span><br>
+                  <span style="font-size: 10px; color: #94A3B8;">Potongan 1 bln (Bayar 11 bln)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0; white-space: nowrap; padding-top: 1px;">
+                  <button type="button" class="preset-chip-btn active" id="btnRenewDiscountFree1" onclick="applyRenewDiscountPreset('free1')" title="Terapkan promo gratis 1 bulan">
+                    1 Bulan Gratis
+                  </button>
+                  <button type="button" class="preset-chip-btn" id="btnRenewDiscountNone" onclick="applyRenewDiscountPreset('none')" title="Tanpa potongan diskon">
+                    Tanpa Diskon
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -4300,15 +4407,15 @@
           <div class="calc-summary-strip" style="padding: 10px 14px;">
             <div>
               <div style="font-size: 11px; color: #EA580C; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;">Total Nilai Komitmen Kontrak Baru:</div>
-              <div style="font-size: 15px; font-weight: 700; color: #C2410C; margin-top: 1px;" id="renewTotalValueTxt">Rp 14.400.000 (12 Bulan)</div>
+              <div style="font-size: 15px; font-weight: 700; color: #C2410C; margin-top: 1px;" id="renewTotalValueTxt">Rp 13.200.000 (12 Bulan - Lunas di Muka)</div>
             </div>
-            <span class="status-badge badge-brand" style="font-size: 11px;">Proteksi Tarif Tetap</span>
+            <span class="status-badge badge-brand" id="renewSummaryBadge" style="font-size: 11px;">Hemat Rp 1.200.000</span>
           </div>
 
           <!-- Catatan Siklus Penagihan Otomatis -->
           <div style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 9px 12px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: #475569;">
             <i data-lucide="info" style="width: 14px; height: 14px; color: #FF7A00; flex-shrink: 0;"></i>
-            <span>Kontrak baru otomatis tersambung ke jadwal penagihan rutin bulanan di modul Tagihan (WF-05).</span>
+            <span id="renewBillingNoteTxt">Invoice perpanjangan 1 tahun lunas di muka otomatis diterbitkan di modul Tagihan (WF-05).</span>
           </div>
         </div>
 
@@ -4730,7 +4837,7 @@
             </div>
             <div class="form-group-item" style="margin-bottom: 0;">
               <label class="form-label-txt">No. WhatsApp / HP *</label>
-              <input type="tel" id="newRoommatePhone" class="form-input-field" placeholder="08xx-xxxx-xxxx" style="height: 38px; font-size: 12px;">
+              <input type="tel" id="newRoommatePhone" class="form-input-field" placeholder="Contoh: 081234567890" style="height: 38px; font-size: 12px;" inputmode="tel" oninput="sanitizePhoneInput(this)" onkeypress="return filterPhoneKeypress(event, this)">
             </div>
           </div>
 
@@ -5004,7 +5111,7 @@
           </div>
           <div class="form-group-item" style="margin-bottom: 0;">
             <label class="form-label-txt">Nomor WhatsApp / HP Tamu 1</label>
-            <input type="tel" id="guestPhoneInput" class="form-input-field" placeholder="08xx-xxxx-xxxx" style="height: 38px; font-size: 12px; background: #FFFFFF;">
+            <input type="tel" id="guestPhoneInput" class="form-input-field" placeholder="Contoh: 081234567890" style="height: 38px; font-size: 12px; background: #FFFFFF;" inputmode="tel" oninput="sanitizePhoneInput(this)" onkeypress="return filterPhoneKeypress(event, this)">
           </div>
         </div>
 
@@ -6026,6 +6133,27 @@
       return '62' + digits;
     }
 
+    function sanitizePhoneInput(el) {
+      if (!el) return;
+      let val = el.value;
+      const startsWithPlus = val.startsWith('+');
+      val = val.replace(/\D/g, '');
+      if (startsWithPlus) val = '+' + val;
+      el.value = val;
+    }
+
+    function filterPhoneKeypress(e, input) {
+      const char = String.fromCharCode(e.which || e.keyCode);
+      if (char === '+' && input && input.selectionStart === 0 && !input.value.includes('+')) {
+        return true;
+      }
+      if (char >= '0' && char <= '9') {
+        return true;
+      }
+      if (e.preventDefault) e.preventDefault();
+      return false;
+    }
+
     function getRoleQuery(prefix = '?') {
       const role = (typeof getCurrentRole === 'function' ? getCurrentRole() : null) || 
         (new URLSearchParams(window.location.search).get('role') === 'staf' ? 'staff' : 'owner');
@@ -6293,7 +6421,7 @@
                   <span style="font-weight: 600; color: ${g.cost === 'Rp 0' || (g.cost && g.cost.includes('Rp 0')) ? '#16A34A' : 'var(--brand-primary)'};">${g.cost}</span>
                 </div>
               </div>
-              <button type="button" class="btn-micro-outline" onclick="endGuestStay('${g.id}')" title="Selesaikan Izin Menginap Tamu" style="height: 24px; padding: 0 6px; font-size: 10px; color: #DC2626; border-color: #FECACA; background: #FFF5F5; flex-shrink: 0; margin-left: 6px;">
+              <button type="button" class="btn-micro-danger" onclick="endGuestStay('${g.id}')" title="Selesaikan Izin Menginap Tamu" style="height: 24px; padding: 0 8px; font-size: 10px; flex-shrink: 0; margin-left: 6px;">
                 Akhiri
               </button>
             </div>
@@ -6539,6 +6667,9 @@
       currentFloorFilter = floor;
       document.querySelectorAll('.floor-pill-btn').forEach(b => b.classList.remove('active'));
       el.classList.add('active');
+      if (el && el.id !== 'btnFloorAll' && el.scrollIntoView) {
+        el.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+      }
       renderMasterList();
     }
 
@@ -6951,18 +7082,6 @@
       const depositInput = document.getElementById('regDeposit');
       if (depositInput) {
         depositInput.value = deposit;
-      }
-
-      // Update Label Preset Deposit Cepat (Formula 50% WF-03)
-      const rawPriceNum = parseInt(price.replace(/\D/g, ''), 10) || 1100000;
-      const calc50 = Math.round((rawPriceNum * 0.5) / 50000) * 50000;
-      const txtDef = document.getElementById('txtDepositDefaultVal');
-      if (txtDef) {
-        txtDef.textContent = (calc50 >= 1000000) ? 'Rp ' + (calc50 / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + 'jt' : 'Rp ' + (calc50 / 1000) + 'rb';
-      }
-      const txt1M = document.getElementById('txtDeposit1MonthVal');
-      if (txt1M) {
-        txt1M.textContent = (rawPriceNum >= 1000000) ? 'Rp ' + (rawPriceNum / 1000000).toLocaleString('id-ID', { maximumFractionDigits: 1 }) + 'jt' : 'Rp ' + (rawPriceNum / 1000) + 'rb';
       }
       
       const maxBadge = document.getElementById('regMaxCapBadge');
@@ -7706,19 +7825,36 @@
         meterToken: '8899-7766-5544',
         durationTxt: isInitialPaid ? `Lunas di Awal (${calc.durationMonths} Bulan)` : `0 dari ${calc.durationMonths} Bulan Berjalan`,
         progressPct: isInitialPaid ? 100 : 5,
-        payHistory: [
-          {
-            period: selectedPayTerm === 'upfront' 
-              ? `Sewa Upfront (${calc.durationMonths === 12 ? '1 Tahun' : calc.durationMonths + ' Bulan'} s/d ${calc.endFormatted}) + Escrow Deposit`
-              : `Tagihan Awal (${calc.rentLabel.includes('Prorata') ? 'Prorata' : 'Bulan 1'} + Escrow Deposit)`,
-            amount: 'Rp ' + calc.totalFirstBill.toLocaleString('id-ID'),
-            date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
-            method: isInitialPaid 
-              ? (isStaff ? 'Tunai / Cash (Meja Staf)' : `${paidMethodVal} (Terverifikasi Pemilik)`)
-              : 'Transfer Bank (Menunggu Verifikasi Owner)',
-            status: isInitialPaid ? 'Lunas' : 'Belum Bayar'
-          }
-        ]
+        payHistory: (selectedPayTerm === 'upfront' && calc.durationMonths === 12 && isInitialPaid)
+          ? [
+              {
+                period: `Pelunasan Sewa 1 Tahun (12 Bulan Penuh s/d ${calc.endFormatted}) + Deposit Escrow`,
+                amount: 'Rp ' + calc.totalFirstBill.toLocaleString('id-ID'),
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+                method: isStaff ? 'Tunai / Cash (Meja Staf)' : `${paidMethodVal} (Terverifikasi Pemilik)`,
+                status: 'Lunas'
+              },
+              {
+                period: `Alokasi Sewa 12 Bulan (Prepaid Lunas di Muka)`,
+                amount: 'Rp 0 (Termasuk Paket 1 Tahun)',
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+                method: 'Paket Tahunan Upfront',
+                status: 'Lunas'
+              }
+            ]
+          : [
+              {
+                period: selectedPayTerm === 'upfront' 
+                  ? `Sewa Upfront (${calc.durationMonths === 12 ? '1 Tahun' : calc.durationMonths + ' Bulan'} s/d ${calc.endFormatted}) + Escrow Deposit`
+                  : `Tagihan Awal (${calc.rentLabel.includes('Prorata') ? 'Prorata' : 'Bulan 1'} + Escrow Deposit)`,
+                amount: 'Rp ' + calc.totalFirstBill.toLocaleString('id-ID'),
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+                method: isInitialPaid 
+                  ? (isStaff ? 'Tunai / Cash (Meja Staf)' : `${paidMethodVal} (Terverifikasi Pemilik)`)
+                  : 'Transfer Bank (Menunggu Verifikasi Owner)',
+                status: isInitialPaid ? 'Lunas' : 'Belum Bayar'
+              }
+            ]
       };
 
       tenantsData.unshift(newTenant);
@@ -8483,6 +8619,28 @@
         const rolloverBadge = document.getElementById('renewRolloverDepositBadge');
         if (rolloverBadge) rolloverBadge.textContent = t.deposit || 'Rp 1.000.000';
 
+        // Reset skema pembayaran sewa perpanjangan & insentif diskon
+        selectedRenewPayTerm = 'upfront';
+        const rawMonthly = t.price ? parseInt(t.price.replace(/\D/g, '') || '1200000', 10) : 1200000;
+        selectedRenewDiscount = rawMonthly;
+        const discInput = document.getElementById('renewCustomDiscount');
+        if (discInput) discInput.value = rawMonthly.toLocaleString('id-ID');
+        const renewBtnMonthly = document.getElementById('btnRenewPayTermMonthly');
+        const renewBtnUpfront = document.getElementById('btnRenewPayTermUpfront');
+        if (renewBtnUpfront) renewBtnUpfront.classList.add('active');
+        if (renewBtnMonthly) renewBtnMonthly.classList.remove('active');
+        const renewBadge = document.getElementById('renewPayTermBadge');
+        if (renewBadge) {
+          renewBadge.className = 'status-badge badge-brand';
+          renewBadge.textContent = `Bayar Lunas di Muka (${currentRenewDuration} Bln)`;
+        }
+        const discRow = document.getElementById('wrapRenewDiscountRow');
+        if (discRow) discRow.style.display = currentRenewDuration === 12 ? 'block' : 'none';
+        const btnFree1 = document.getElementById('btnRenewDiscountFree1');
+        const btnNone = document.getElementById('btnRenewDiscountNone');
+        if (btnFree1) btnFree1.classList.add('active');
+        if (btnNone) btnNone.classList.remove('active');
+
         // 3. Deposit Terkunci & Rekening Refund Check-Out
         const lockedEl = document.getElementById('checkoutLockedDepositTxt');
         if (lockedEl) lockedEl.textContent = t.deposit || 'Rp 1.000.000';
@@ -8565,6 +8723,10 @@
         if (t) {
           const newPriceInput = document.getElementById('renewPriceInput');
           const newPrice = newPriceInput && newPriceInput.value ? ('Rp ' + newPriceInput.value) : t.price;
+          const monthlyNum = newPriceInput ? parseInt(newPriceInput.value.replace(/\D/g, '') || '1200000', 10) : 1200000;
+          const baseTotal = monthlyNum * currentRenewDuration;
+          const discountVal = (selectedRenewPayTerm === 'upfront' && currentRenewDuration === 12) ? (selectedRenewDiscount || 0) : 0;
+          const netTotal = Math.max(0, baseTotal - discountVal);
 
           if (activeRenewEndDateFormatted) {
             t.end = activeRenewEndDateFormatted;
@@ -8575,19 +8737,33 @@
           t.tagClass = 'tag-safe';
           t.billStatus = 'lunas';
           t.billLabel = 'Lunas';
+          t.payTerm = selectedRenewPayTerm;
           t.payHistory = t.payHistory || [];
-          t.payHistory.unshift({
-            period: `Perpanjangan SPK (${currentRenewDuration} Bulan s.d. ${t.end})`,
-            amount: t.price,
-            date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
-            method: 'BCA Transfer',
-            status: 'Lunas'
-          });
+
+          if (selectedRenewPayTerm === 'upfront') {
+            t.payHistory.unshift({
+              period: `Perpanjangan SPK (${currentRenewDuration} Bulan di Muka s.d. ${t.end})`,
+              amount: 'Rp ' + netTotal.toLocaleString('id-ID'),
+              date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+              method: 'BCA Transfer',
+              status: discountVal > 0 ? 'Lunas di Muka (Promo)' : 'Lunas di Muka'
+            });
+          } else {
+            t.payHistory.unshift({
+              period: `Perpanjangan SPK (${currentRenewDuration} Bulan s.d. ${t.end})`,
+              amount: t.price,
+              date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+              method: 'BCA Transfer',
+              status: 'Lunas'
+            });
+          }
           renderMasterList();
           selectTenant(t.id);
-        }
 
-        RumaUI.showToast(`Kontrak Kamar ${room} (${name}) berhasil diperpanjang ${currentRenewDuration} Bulan s.d. ${t ? t.end : ''}! Tagihan periode baru dijadwalkan otomatis.`, 'success');
+          const discInfo = discountVal > 0 ? ` (Insentif Diskon: Rp ${discountVal.toLocaleString('id-ID')})` : '';
+          const termLabel = selectedRenewPayTerm === 'upfront' ? 'Bayar Lunas di Muka' : 'Bulanan Rutin';
+          RumaUI.showToast(`Kontrak Kamar ${room} (${name}) berhasil diperpanjang ${currentRenewDuration} Bulan [Skema: ${termLabel}] s.d. ${t.end}!${discInfo}`, 'success');
+        }
       }
     }
 
@@ -8712,10 +8888,118 @@
       }
     }
 
+    let selectedRenewPayTerm = 'upfront';
+    let selectedRenewDiscount = 1200000;
+
+    function setRenewPayTerm(term) {
+      selectedRenewPayTerm = term;
+      const btnMonthly = document.getElementById('btnRenewPayTermMonthly');
+      const btnUpfront = document.getElementById('btnRenewPayTermUpfront');
+      const badge = document.getElementById('renewPayTermBadge');
+      const discRow = document.getElementById('wrapRenewDiscountRow');
+
+      if (term === 'upfront') {
+        if (btnUpfront) btnUpfront.classList.add('active');
+        if (btnMonthly) btnMonthly.classList.remove('active');
+        if (badge) {
+          badge.className = 'status-badge badge-brand';
+          badge.textContent = `Bayar Lunas di Muka (${currentRenewDuration} Bln)`;
+        }
+        if (discRow) discRow.style.display = currentRenewDuration === 12 ? 'block' : 'none';
+      } else {
+        if (btnUpfront) btnUpfront.classList.remove('active');
+        if (btnMonthly) btnMonthly.classList.add('active');
+        if (badge) {
+          badge.className = 'status-badge badge-dark';
+          badge.textContent = 'Bayar Bulanan Rutin';
+        }
+        if (discRow) discRow.style.display = 'none';
+      }
+      calculateRenewTotal();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function applyRenewDiscountPreset(type) {
+      const priceInput = document.getElementById('renewPriceInput');
+      const discInput = document.getElementById('renewCustomDiscount');
+      const badge = document.getElementById('renewDiscountBadge');
+      const btnFree1 = document.getElementById('btnRenewDiscountFree1');
+      const btnNone = document.getElementById('btnRenewDiscountNone');
+
+      const rawPrice = priceInput ? parseInt(priceInput.value.replace(/\D/g, '') || '1200000', 10) : 1200000;
+
+      if (type === 'free1') {
+        selectedRenewDiscount = rawPrice;
+        if (discInput) discInput.value = rawPrice.toLocaleString('id-ID');
+        if (badge) {
+          badge.className = 'status-badge badge-warning';
+          badge.textContent = 'Gratis 1 Bulan';
+        }
+        if (btnFree1) btnFree1.classList.add('active');
+        if (btnNone) btnNone.classList.remove('active');
+      } else {
+        selectedRenewDiscount = 0;
+        if (discInput) discInput.value = '0';
+        if (badge) {
+          badge.className = 'status-badge badge-neutral';
+          badge.textContent = 'Tanpa Diskon';
+        }
+        if (btnFree1) btnFree1.classList.remove('active');
+        if (btnNone) btnNone.classList.add('active');
+      }
+      calculateRenewTotal();
+    }
+
+    function handleRenewCustomDiscountInput(input) {
+      formatRupiahInput(input);
+      const val = parseInt(input.value.replace(/\D/g, '') || '0', 10);
+      selectedRenewDiscount = val;
+      const badge = document.getElementById('renewDiscountBadge');
+      const btnFree1 = document.getElementById('btnRenewDiscountFree1');
+      const btnNone = document.getElementById('btnRenewDiscountNone');
+
+      const priceInput = document.getElementById('renewPriceInput');
+      const rawPrice = priceInput ? parseInt(priceInput.value.replace(/\D/g, '') || '1200000', 10) : 1200000;
+
+      if (val === rawPrice) {
+        if (badge) {
+          badge.className = 'status-badge badge-warning';
+          badge.textContent = 'Gratis 1 Bulan';
+        }
+        if (btnFree1) btnFree1.classList.add('active');
+        if (btnNone) btnNone.classList.remove('active');
+      } else if (val === 0) {
+        if (badge) {
+          badge.className = 'status-badge badge-neutral';
+          badge.textContent = 'Tanpa Diskon';
+        }
+        if (btnFree1) btnFree1.classList.remove('active');
+        if (btnNone) btnNone.classList.add('active');
+      } else {
+        if (badge) {
+          badge.className = 'status-badge badge-brand';
+          badge.textContent = 'Diskon Custom';
+        }
+        if (btnFree1) btnFree1.classList.remove('active');
+        if (btnNone) btnNone.classList.remove('active');
+      }
+      calculateRenewTotal();
+    }
+
     function selectRenewDuration(el, months) {
       currentRenewDuration = parseInt(months, 10);
-      document.querySelectorAll('#sectionModeRenew .duration-pill-opt').forEach(p => p.classList.remove('active'));
+      const row = el.closest('.duration-pills-row');
+      if (row) {
+        row.querySelectorAll('.duration-pill-opt').forEach(p => p.classList.remove('active'));
+      }
       el.classList.add('active');
+
+      const discRow = document.getElementById('wrapRenewDiscountRow');
+      const badge = document.getElementById('renewPayTermBadge');
+      if (selectedRenewPayTerm === 'upfront') {
+        if (badge) badge.textContent = `Bayar Lunas di Muka (${currentRenewDuration} Bln)`;
+        if (discRow) discRow.style.display = currentRenewDuration === 12 ? 'block' : 'none';
+      }
 
       updateRenewEndDate();
       calculateRenewTotal();
@@ -8734,7 +9018,12 @@
 
     function handleRenewPriceInput(input) {
       formatRupiahInput(input);
-      calculateRenewTotal();
+      const btnFree1 = document.getElementById('btnRenewDiscountFree1');
+      if (btnFree1 && btnFree1.classList.contains('active')) {
+        applyRenewDiscountPreset('free1');
+      } else {
+        calculateRenewTotal();
+      }
     }
 
     function handleCheckoutDeductInput(input) {
@@ -8745,13 +9034,46 @@
     function calculateRenewTotal() {
       const priceInput = document.getElementById('renewPriceInput');
       const totalTxt = document.getElementById('renewTotalValueTxt');
+      const summaryBadge = document.getElementById('renewSummaryBadge');
+      const billingNoteTxt = document.getElementById('renewBillingNoteTxt');
       if (!priceInput || !totalTxt) return;
 
       const raw = priceInput.value.replace(/[^0-9]/g, '');
-      const num = parseInt(raw, 10) || 1200000;
-      const total = num * currentRenewDuration;
-      const formatted = new Intl.NumberFormat('id-ID').format(total);
-      totalTxt.textContent = `Rp ${formatted} (${currentRenewDuration} Bulan)`;
+      const monthlyPrice = parseInt(raw, 10) || 1200000;
+      const baseTotal = monthlyPrice * currentRenewDuration;
+
+      if (selectedRenewPayTerm === 'upfront') {
+        const discountVal = (currentRenewDuration === 12) ? (selectedRenewDiscount || 0) : 0;
+        const netTotal = Math.max(0, baseTotal - discountVal);
+        const formattedNet = new Intl.NumberFormat('id-ID').format(netTotal);
+
+        if (discountVal > 0) {
+          totalTxt.textContent = `Rp ${formattedNet} (${currentRenewDuration} Bulan - Lunas di Muka)`;
+          if (summaryBadge) {
+            summaryBadge.className = 'status-badge badge-success';
+            summaryBadge.textContent = `Hemat Rp ${new Intl.NumberFormat('id-ID').format(discountVal)}`;
+          }
+        } else {
+          totalTxt.textContent = `Rp ${formattedNet} (${currentRenewDuration} Bulan - Lunas di Muka)`;
+          if (summaryBadge) {
+            summaryBadge.className = 'status-badge badge-brand';
+            summaryBadge.textContent = 'Bayar Penuh di Muka';
+          }
+        }
+        if (billingNoteTxt) {
+          billingNoteTxt.textContent = `Invoice perpanjangan ${currentRenewDuration} bulan lunas di muka otomatis diterbitkan di modul Tagihan (WF-05).`;
+        }
+      } else {
+        const formatted = new Intl.NumberFormat('id-ID').format(baseTotal);
+        totalTxt.textContent = `Rp ${formatted} (Ditagih Rp ${new Intl.NumberFormat('id-ID').format(monthlyPrice)}/bln)`;
+        if (summaryBadge) {
+          summaryBadge.className = 'status-badge badge-dark';
+          summaryBadge.textContent = 'Penagihan Rutin Bulanan';
+        }
+        if (billingNoteTxt) {
+          billingNoteTxt.textContent = 'Kontrak baru otomatis tersambung ke jadwal penagihan rutin bulanan di modul Tagihan (WF-05).';
+        }
+      }
     }
 
     // BROADCAST MODAL HANDLERS
@@ -9787,6 +10109,16 @@
     // Initial render & Deep Linking (SCR-05, SCR-06, SCR-07, SCR-08 URL Support)
     window.addEventListener('DOMContentLoaded', () => {
       renderMasterList();
+
+      const floorTrack = document.getElementById('floorPillsTrack');
+      if (floorTrack) {
+        floorTrack.addEventListener('wheel', (e) => {
+          if (e.deltaY !== 0) {
+            e.preventDefault();
+            floorTrack.scrollLeft += e.deltaY;
+          }
+        }, { passive: false });
+      }
 
       const urlParams = new URLSearchParams(window.location.search);
       const paramId = urlParams.get('id') || 'A-01';
