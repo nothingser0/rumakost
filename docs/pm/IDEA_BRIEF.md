@@ -1,6 +1,6 @@
 # Brief Ide & Kelayakan — Sistem Manajemen Kost Mandiri
 
-> Status: M01 CONDITIONAL_GO (validator pasca-pembaruan lulus 2026-10-22); M02 gate lulus 2026-10-22. Pemilik menetapkan MVP Medium, satu properti, tujuh P0; fitur tambahan masuk backlog versi berikutnya. Usulan jadwal implementasi 20 minggu/240 jam belum disetujui.
+> Status: M01 CONDITIONAL_GO (validator lulus 2026-10-22); M02 baseline tujuh P0 lulus 2026-10-22. Pembaruan M04 2026-10-30 menyelaraskan deposit dan dua mode billing check-in. Estimasi 186–245 jam; atas arahan pemilik, jadwal disesuaikan menjadi 21 minggu/252 jam.
 
 ## 1. Metadata Proyek
 
@@ -25,7 +25,7 @@ Untuk pemilik atau pengelola kost skala kecil yang perlu mencatat kamar, kontrak
 |---|---|---|---|---|---|---|
 | PREM-01 | Pengelola kost kehilangan waktu atau membuat kesalahan saat mengelola tagihan/pembayaran dengan catatan terpisah. | Tinggi | Contoh alur dan dampak dari pengelola nyata. | Wawancara tentang kejadian terakhir. | Tidak ada responden yang mengalami masalah terkait. | Didukung pada sampel 6/10; pasar luas belum diuji |
 | PREM-02 | Demo ledger pembayaran dan histori yang dapat ditelusuri lebih kuat untuk portfolio daripada CRUD umum. | Sedang | Feedback reviewer dan target pengguna atas skenario demo. | Uji skenario prototype terhadap calon reviewer/pengelola. | Reviewer tidak dapat membedakan nilai alur bisnis dari CRUD standar. | Belum diuji |
-| PREM-03 | MVP Medium dapat selesai dalam kapasitas yang disetujui. | Sedang | Estimasi Story rinci termasuk buffer, QA, dan portfolio polish. | Tinjau estimasi 22 Story terhadap kapasitas sebelum menyetujui jadwal. | Estimasi rinci melewati kapasitas tersedia. | Breakdown 22 Story selesai; 174–232 jam. Usulan 20 minggu/240 jam menampung batas atas dengan sisa 8 jam; persetujuan jadwal masih menunggu pemilik. |
+| PREM-03 | MVP Medium dapat selesai dalam kapasitas yang disetujui. | Sedang | Estimasi Story rinci termasuk buffer, QA, dan portfolio polish. | Tinjau estimasi 22 Story terhadap kapasitas sebelum implementasi. | Estimasi rinci melewati kapasitas tersedia. | Baseline sebelum penyelarasan M04: 174–232 jam. Estimasi terbaru: 186–245 jam. Jadwal M02 diperbarui menjadi 21 minggu/252 jam untuk menampung batas atas estimasi. |
 | PREM-04 | Portfolio dapat memperagakan alur inti tanpa data pribadi nyata. | Sedang | Minimisasi, kontrol akses media, sanitasi, dan retensi. | Threat/data-flow review pada M05. | Demo memasukkan data nyata atau dokumen bisa diakses tanpa hak. | Data demo sintetis; NIK/KTP, detail rekening, dan bukti transfer dikeluarkan dari MVP |
 
 ### 3.1 Masalah dan Metode Riset
@@ -81,7 +81,7 @@ P1 versi berikutnya: notifikasi aplikasi, filter/pengingat tiket, ekspor CSV, la
 | Dimensi | Skor sementara | Keyakinan | Analisis dan mitigasi |
 |---|---:|---|---|
 | Teknis | 4.0/5 | 🔶 Asumsi | Aplikasi web konvensional; pembayaran parsial, otorisasi, histori, notifikasi eksternal, dan field/dokumen sensitif perlu desain eksplisit. |
-| Operasional | 3.0/5 | 🔶 Asumsi | Breakdown 22 Story mengestimasi 174–232 jam total; batas atas 16 jam melebihi intake 216 jam. Usulan jadwal 20 minggu/240 jam menunggu persetujuan. Integrasi eksternal dipindah ke backlog. |
+| Operasional | 3.0/5 | 🔶 Asumsi | Breakdown 22 Story mengestimasi 186–245 jam setelah alur deposit/billing M04 dicakup. Jadwal M02 kini 21 minggu/252 jam untuk menampung batas atas estimasi 245 jam. Integrasi eksternal tetap di backlog. |
 | Regulasi | 4.0/5 | 🔶 Asumsi | Demo dengan data sintetis dan minimisasi PII; baseline UU PDP tetap diperhatikan bila dipakai pengguna nyata. Tidak ada assurance formal. Ini bukan kajian hukum. |
 | Finansial/komersial | 3.0/5 | 🔶 Asumsi | Tidak ada monetisasi; nilai portfolio dilihat dari aturan bisnis, dokumentasi keputusan, keamanan, dan demo. Metrik ini perlu disepakati dalam scope. |
 
@@ -92,7 +92,7 @@ Feasibility-Score-Operational: 3.0
 Feasibility-Score-Regulatory: 4.0
 Feasibility-Score-Financial: 3.0
 Feasibility-Decision: CONDITIONAL_GO
-Mitigation: Sepuluh wawancara nyata dicatat; temuan mendukung hambatan tagihan/pembayaran, maintenance, dan sebagian kebutuhan laporan keuangan. Pemilik menetapkan MVP Medium satu properti dengan tujuh P0; fitur tambahan masuk backlog. Breakdown 22 Story kini tersedia di KANBAN.md dan merekonsiliasi estimasi implementasi tujuh P0 menjadi 112–150 jam.
+Mitigation: Sepuluh wawancara nyata dicatat; temuan mendukung hambatan tagihan/pembayaran, maintenance, dan sebagian kebutuhan laporan keuangan. Pemilik menetapkan MVP Medium satu properti dengan tujuh P0. Penyelarasan detail M04 menambahkan estimasi alur deposit/billing; breakdown KANBAN terbaru merekonsiliasi implementasi tujuh P0 menjadi 119–158 jam.
 
 Keputusan CONDITIONAL_GO ditetapkan pemilik pada 2026-10-22. Setelah bukti wawancara diperbarui, validator M01 dijalankan ulang pada 2026-10-22 dan lulus; keputusan tetap CONDITIONAL_GO. Riset tidak membuktikan ukuran pasar atau willingness-to-pay.
 
@@ -104,22 +104,22 @@ Estimasi Story pada Kanban telah dipecah dan jumlahnya konsisten dengan estimasi
 |---|---:|
 | Login, sesi, dan hak akses tiga role | 16–22 |
 | Kamar dan status hunian | 10–14 |
-| Penghuni dan kontrak | 14–18 |
-| Tagihan berulang | 14–18 |
-| Pembayaran parsial, saldo, dan histori | 18–24 |
+| Penghuni, kontrak, deposit dan check-out | 17–22 |
+| Billing prorata atau anniversary dan tagihan berulang | 16–20 |
+| Pembayaran parsial, saldo, escrow dan histori | 20–26 |
 | Pengeluaran dan laporan | 14–18 |
 | Ticketing, upload media, komentar dan auto-prune | 26–36 |
-| Implementasi tujuh P0 Medium | 112–150 |
-| Buffer 20% | 22–30 |
-| QA/integrasi/bug-fix | 24–32 |
-| Dokumentasi/demo/portfolio polish | 16–20 |
-| Total estimasi | 174–232 |
+| Implementasi tujuh P0 Medium | 119–158 |
+| Buffer 20% | 24–32 |
+| QA/integrasi/bug-fix | 26–34 |
+| Dokumentasi/demo/portfolio polish | 17–21 |
+| Total estimasi terkini | 186–245 |
 
-Kapasitas intake 216 jam (12 jam/minggu × 18 minggu). Breakdown 22 Story mengonfirmasi total 174–232 jam termasuk buffer 20%, QA/integrasi, dan dokumentasi/demo: estimasi tengah 203 jam (sekitar 16,9 minggu), batas atas 232 jam (sekitar 19,3 minggu), atau 16 jam di atas intake. Usulan jadwal adalah 20 minggu/240 jam pada kapasitas yang sama, menyisakan 8 jam di atas batas estimasi; ini belum disetujui pemilik. P1/P2 dan biaya provider eksternal tidak masuk estimasi MVP.
+Kapasitas intake awal 216 jam (12 jam/minggu × 18 minggu). Total terbaru 186–245 jam termasuk buffer, QA/integrasi, dan dokumentasi/demo; batas atas melampaui intake awal 29 jam tetapi tertampung dalam jadwal M02 yang diperbarui menjadi 21 minggu/252 jam. P1/P2 dan biaya provider eksternal tidak masuk estimasi MVP.
 
-Kapasitas intake sudah ditetapkan pemilik, tetapi jadwal implementasi final belum disetujui:
+Kapasitas intake awal ditetapkan 18 minggu/216 jam. Setelah rincian M04 menaikkan estimasi maksimum, jadwal diperbarui atas arahan pemilik pada 2026-10-30 menjadi 21 minggu/252 jam.
 
-Pemilik menetapkan intake 18 minggu × 12 jam = 216 jam dan menyetujui MVP Medium tujuh P0 pada 2026-10-22. Estimasi atas 232 jam melampaui intake 16 jam. Usulan 20 minggu × 12 jam = 240 jam dibuka untuk keputusan pemilik; ini tidak mengubah scope tujuh P0 atau menarik fitur backlog.
+Pemilik menetapkan kapasitas 12 jam/minggu dan tujuh P0. Jadwal awal 20 minggu/240 jam pada 2026-10-22 direvisi atas arahan pemilik pada 2026-10-30 menjadi 21 minggu/252 jam. Estimasi maksimum 245 jam tertampung dengan sisa kapasitas 7 jam; intake awal 18 minggu/216 jam tetap merupakan kapasitas intake awal, bukan jadwal akhir.
 
 ### 4.2 Build vs Adopt
 
@@ -157,7 +157,7 @@ Pemilik menetapkan intake 18 minggu × 12 jam = 216 jam dan menyetujui MVP Mediu
 
 - Skala intake: Medium (7 P0 awal; rentang Medium 6–15), satu properti.
 - MVP yang disetujui: Medium, tujuh P0, satu properti; fitur tambahan masuk backlog P1/P2 versi berikutnya.
-- Estimasi 174–232 jam; breakdown 22 Story selesai. Batas atas melebihi intake 216 jam sebanyak 16 jam. Usulan 20 minggu/240 jam menampung batas atas dengan sisa 8 jam dan menunggu persetujuan pemilik. Perubahan fitur setelah freeze memerlukan kontrol perubahan. Multi-properti tetap di luar MVP.
+- Estimasi awal 174–232 jam diperbarui setelah detail M04 menjadi 186–245 jam. Jadwal M02 direvisi menjadi 21 minggu/252 jam untuk menampung batas atas estimasi; multi-properti tetap di luar MVP.
 
 ## 7. Pertanyaan Awal untuk M02 · Scope Definition & Freeze
 

@@ -634,6 +634,116 @@
 
   // Auto initialize Lucide when document is ready
   document.addEventListener('DOMContentLoaded', function () {
+    const enhanceCustomSelects = function (scope) {
+      (scope || document).querySelectorAll('select.custom-select:not([data-custom-select-ready])').forEach(function (select) {
+        select.dataset.customSelectReady = 'true';
+        const wrap = document.createElement('div');
+        wrap.className = 'custom-select-wrap';
+        const trigger = document.createElement('button');
+        trigger.type = 'button';
+        trigger.className = 'custom-select-trigger';
+        if (select.id) {
+          trigger.id = select.id + '-trigger';
+          const labelForSelect = document.querySelector('label[for="' + select.id + '"]');
+          if (labelForSelect) labelForSelect.htmlFor = trigger.id;
+        }
+        trigger.setAttribute('aria-haspopup', 'listbox');
+        trigger.setAttribute('aria-expanded', 'false');
+        const label = document.createElement('span');
+        const chevron = document.createElement('span');
+        chevron.className = 'custom-select-chevron';
+        chevron.setAttribute('aria-hidden', 'true');
+        chevron.textContent = '⌄';
+        trigger.append(label, chevron);
+        const menu = document.createElement('div');
+        menu.className = 'custom-select-menu';
+        menu.setAttribute('role', 'listbox');
+        select.parentNode.insertBefore(wrap, select);
+        wrap.append(trigger, menu, select);
+        select.classList.add('custom-select-native');
+        if (select.required) {
+          trigger.setAttribute('aria-required', 'true');
+          select.required = false;
+          select.dataset.customRequired = 'true';
+        }
+
+        const sync = function () {
+          const option = select.options[select.selectedIndex];
+          label.textContent = option ? option.textContent.trim() : 'Pilih opsi';
+          if (select.value) trigger.removeAttribute('aria-invalid');
+          menu.querySelectorAll('[role="option"]').forEach(function (item) {
+            const active = item.dataset.value === select.value;
+            item.setAttribute('aria-selected', String(active));
+            item.classList.toggle('is-selected', active);
+          });
+        };
+        Array.from(select.options).forEach(function (option) {
+          const item = document.createElement('button');
+          item.type = 'button';
+          item.className = 'custom-select-option';
+          item.setAttribute('role', 'option');
+          item.dataset.value = option.value;
+          item.textContent = option.textContent.trim();
+          item.disabled = option.disabled;
+          item.addEventListener('click', function () {
+            select.value = option.value;
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+            sync();
+            menu.classList.remove('is-open');
+            trigger.setAttribute('aria-expanded', 'false');
+            trigger.classList.remove('is-open');
+            trigger.focus();
+          });
+          menu.appendChild(item);
+        });
+        trigger.addEventListener('click', function () {
+          const isOpen = menu.classList.toggle('is-open');
+          trigger.classList.toggle('is-open', isOpen);
+          trigger.setAttribute('aria-expanded', String(isOpen));
+        });
+        select.addEventListener('change', sync);
+        sync();
+      });
+    };
+    enhanceCustomSelects(document);
+    new MutationObserver(function (records) {
+      records.forEach(function (record) {
+        record.addedNodes.forEach(function (node) {
+          if (node.nodeType === 1) enhanceCustomSelects(node);
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+    document.addEventListener('submit', function (event) {
+      const missing = Array.from(event.target.querySelectorAll('select.custom-select[data-custom-required="true"]'))
+        .find(function (select) { return !select.value; });
+      if (missing) {
+        event.preventDefault();
+        const trigger = missing.parentElement.querySelector('.custom-select-trigger');
+        trigger.focus();
+        trigger.setAttribute('aria-invalid', 'true');
+      }
+    }, true);
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest('.custom-select-wrap')) {
+        document.querySelectorAll('.custom-select-menu.is-open').forEach(function (menu) {
+          menu.classList.remove('is-open');
+          const trigger = menu.parentElement.querySelector('.custom-select-trigger');
+          trigger.classList.remove('is-open');
+          trigger.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        document.querySelectorAll('.custom-select-menu.is-open').forEach(function (menu) {
+          menu.classList.remove('is-open');
+          const trigger = menu.parentElement.querySelector('.custom-select-trigger');
+          trigger.classList.remove('is-open');
+          trigger.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
     if (window.lucide) {
       window.lucide.createIcons();
     }

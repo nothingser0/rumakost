@@ -178,15 +178,19 @@ Untuk menghilangkan redundansi penulisan manual di setiap kartu:
 - **Estimate**: 4–6 hours
 - **Dependencies**: RK-020
 
-#### RK-025 [Story] — Pembuatan dan Pengakhiran Kontrak Sewa
+#### RK-025 [Story] — Pembuatan, Pengakhiran, dan Rekonsiliasi Deposit Kontrak
 - **Parent**: RK-003
 - **Priority**: Highest
 - **Description**: Catat ikatan sewa antara penghuni dan kamar untuk jangka waktu tertentu. Menjadi dasar resmi perhitungan tagihan sewa bulanan.
 - **Acceptance Criteria**:
   - [ ] Kontrak valid menghubungkan 1 penghuni, 1 kamar, serta periode sewa.
+  - [ ] Owner/Staff berizin dapat membuat kontrak; kontrak menyimpan nominal deposit yang dikonfirmasi saat check-in; nilai default kamar (50% tarif) dapat diedit atau dibuat nol.
+  - [ ] Saldo escrow kontrak ditampilkan terpisah dari pendapatan sewa dan berubah hanya melalui ledger deposit.
+  - [ ] Penghuni dapat mengajukan check-out; Owner melakukan inspeksi dan mengesahkan refund penuh atau pemotongan kerusakan/tunggakan dengan alasan. Refund masuk antrean pencairan manual tanpa transfer uang otomatis.
+  - [ ] Refund bersih tidak boleh negatif dan tidak dapat melebihi saldo deposit yang tersedia.
   - [ ] Kontrak dapat diakhiri (check-out) dan mencatat tanggal pengakhiran.
   - [ ] Kontrak selesai tetap dapat diakses pada tab histori kontrak.
-- **Estimate**: 5–6 hours
+- **Estimate**: 8–10 hours (estimasi M04 diperbarui; +3–4 jam dari baseline)
 - **Dependencies**: RK-022, RK-024
 
 #### RK-026 [Story] — Validasi Kontrak Tumpang Tindih
@@ -208,9 +212,12 @@ Untuk menghilangkan redundansi penulisan manual di setiap kartu:
 - **Priority**: Highest
 - **Description**: Hasilkan tagihan sewa berkala secara otomatis untuk seluruh kontrak yang aktif pada periode target. Menghindari kelalaian penagihan manual per kamar.
 - **Acceptance Criteria**:
-  - [ ] Tagihan terbit otomatis dari kontrak aktif sesuai jadwal periode.
+  - [ ] Saat check-in, Owner memilih mode prorata sampai akhir bulan atau satu bulan penuh pada siklus tanggal masuk; invoice pertama menyimpan komponen sewa dan deposit terpisah.
+  - [ ] Mode prorata menghitung hari masuk sampai akhir bulan secara inklusif, lalu periode rutin berikutnya mengikuti bulan kalender.
+  - [ ] Mode satu bulan penuh menagih sewa penuh sejak tanggal masuk dan periode berikutnya memakai tanggal anniversary dengan clamp ke akhir bulan.
+  - [ ] Tagihan rutin terbit dari kontrak aktif sesuai mode/siklus yang tersimpan.
   - [ ] Idempotent: eksekusi berulang tidak memicu duplikasi tagihan pada periode sama.
-- **Estimate**: 6–8 hours
+- **Estimate**: 8–10 hours (estimasi M04 diperbarui; +2 jam dari baseline)
 - **Dependencies**: RK-025, RK-026
 
 #### RK-028 [Story] — Daftar dan Filter Status Tagihan
@@ -268,7 +275,9 @@ Untuk menghilangkan redundansi penulisan manual di setiap kartu:
   - [ ] Pembayaran terverifikasi langsung memotong sisa tagihan tepat satu kali.
   - [ ] Pembayaran sebagian otomatis mengubah status tagihan menjadi 'Dibayar Sebagian'.
   - [ ] Total pembayaran tidak boleh mengakibatkan saldo tagihan bernilai negatif.
-- **Estimate**: 4–6 hours
+  - [ ] Owner dapat mencatat settlement tagihan dari deposit bila saldo escrow cukup; settlement tidak menambah penerimaan kas dan saldo deposit berkurang atomik.
+  - [ ] Deposit yang dipakai atau dipotong dicatat sebagai ledger event append-only dan tidak dianggap pendapatan sewa.
+- **Estimate**: 6–8 hours (estimasi M04 diperbarui; +2 jam dari baseline)
 - **Dependencies**: RK-030, RK-031
 
 #### RK-033 [Story] — Koreksi Pembayaran via Reversal
@@ -291,6 +300,7 @@ Untuk menghilangkan redundansi penulisan manual di setiap kartu:
 - **Priority**: Highest
 - **Description**: Catat biaya pengeluaran kost seperti utilitas listrik/air dan pemeliharaan gedung. Memberikan data biaya untuk rekapitulasi arus kas properti.
 - **Acceptance Criteria**:
+  - [ ] Owner/Staff berizin dapat mencatat pengeluaran operasional; hanya Owner yang dapat membuka laporan keuangan.
   - [ ] Form pengeluaran mewajibkan tanggal, kategori biaya, nominal, dan keterangan.
   - [ ] Seluruh pengeluaran tersimpan dalam riwayat pembukuan operasional.
 - **Estimate**: 4–5 hours
@@ -302,6 +312,8 @@ Untuk menghilangkan redundansi penulisan manual di setiap kartu:
 - **Description**: Tampilkan dasbor rekapitulasi pemasukan riil dan pengeluaran operasional per rentang tanggal. Memberikan gambaran cashflow bersih operasional kost.
 - **Acceptance Criteria**:
   - [ ] Pemasukan hanya mengakumulasi pembayaran yang berstatus terverifikasi.
+  - [ ] Saldo deposit escrow ditampilkan terpisah dari pendapatan sewa; non-cash settlement deposit tidak menambah penerimaan kas.
+  - [ ] Refund deposit yang sudah ditandai dibayar masuk arus kas keluar, sedangkan refund yang masih antre tidak dihitung sebagai kas keluar terealisasi.
   - [ ] Filter rentang tanggal diterapkan konsisten untuk pemasukan dan pengeluaran.
   - [ ] Menampilkan total pemasukan, total pengeluaran, dan saldo selisih kas.
 - **Estimate**: 5–7 hours

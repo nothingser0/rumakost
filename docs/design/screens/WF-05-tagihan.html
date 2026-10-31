@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -642,7 +642,7 @@
 
 
     /* ══════════════════════════════════════════════════════════════
-       3. WORKBENCH 2-COLUMN GRID (SCR-09 MASTER LEDGER & SCR-10 INVOICE)
+       3. WORKBENCH 2-COLUMN GRID ( MASTER LEDGER &  INVOICE)
        ══════════════════════════════════════════════════════════════ */
     .workbench-layout-grid {
       display: grid;
@@ -1461,7 +1461,7 @@
     }
 
     /* ══════════════════════════════════════════════════════════════
-       RIGHT COLUMN: DIGITAL PAPER INVOICE DOSSIER (SCR-10 STICKY)
+       RIGHT COLUMN: DIGITAL PAPER INVOICE DOSSIER ( STICKY)
        ══════════════════════════════════════════════════════════════ */
     .invoice-dossier-card { overflow: hidden !important; overflow-y: hidden !important; gap: 0 !important;
       background: var(--bg-card);
@@ -1612,7 +1612,7 @@
       text-overflow: ellipsis;
     }
 
-    /* Notice Khusus Draf Verifikasi (SCR-10 Clean Alert) */
+    /* Notice Khusus Draf Verifikasi ( Clean Alert) */
     .dossier-draft-notice {
       background: #FFFDF9;
       border: 1px solid #FED7AA;
@@ -3285,12 +3285,12 @@
     </div>
 
     <!-- ========================================================
-         3. WORKBENCH 2-COLUMN GRID (SCR-09 & SCR-10)
+         3. WORKBENCH 2-COLUMN GRID ( & )
          ======================================================== -->
     <main class="workbench-layout-grid">
 
       <!-- ========================================================
-           KOLOM KIRI: MASTER LEDGER MATRIKS PENAGIHAN (SCR-09)
+           KOLOM KIRI: MASTER LEDGER MATRIKS PENAGIHAN ()
            ======================================================== -->
       <section class="master-ledger-card">
         
@@ -3375,7 +3375,7 @@
 
         </div>
 
-        <!-- Data Table (SCR-09) -->
+        <!-- Data Table () -->
         <div class="billing-table-card">
           <table class="billing-table">
             <colgroup>
@@ -3428,7 +3428,7 @@
       </section>
 
       <!-- ========================================================
-           KOLOM KANAN: DIGITAL PAPER INVOICE DOSSIER (SCR-10 STICKY)
+           KOLOM KANAN: DIGITAL PAPER INVOICE DOSSIER ( STICKY)
            ======================================================== -->
       <aside class="invoice-dossier-card" id="invoiceDossierPane">
         
@@ -4232,7 +4232,7 @@
   </div>
 
   <!-- ========================================================
-       MODAL 3B: VERIFIKASI BUKTI TRANSFER PEMBAYARAN (SCR-10 / F-10)
+       MODAL 3B: VERIFIKASI BUKTI TRANSFER PEMBAYARAN ( / F-10)
        ======================================================== -->
   <div class="modal-overlay" id="modalVerifyProof">
     <div class="modal-card">
@@ -4931,7 +4931,7 @@
     }
 
     // ══════════════════════════════════════════════════════════════
-    // RENDER BILLING MASTER TABLE (SCR-09)
+    // RENDER BILLING MASTER TABLE ()
     // ══════════════════════════════════════════════════════════════
     function renderBillingTable() {
       const tbody = document.getElementById('billingTableBody');
@@ -5191,7 +5191,7 @@
     }
 
     // ══════════════════════════════════════════════════════════════
-    // RENDER INVOICE DOSSIER (SCR-10)
+    // RENDER INVOICE DOSSIER ()
     // ══════════════════════════════════════════════════════════════
     function renderInvoiceDossier() {
       const inv = invoicesData.find(i => i.id === currentSelectedId) || invoicesData[0];

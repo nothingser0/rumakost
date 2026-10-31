@@ -1348,7 +1348,7 @@
       transform: translateY(-1px);
     }
 
-    /* Dossier Bottom Multi-Tab Navigation (SCR-05, 06, 07, 08 Complete) */
+    /* Dossier Bottom Multi-Tab Navigation (, 06, 07, 08 Complete) */
     .dossier-tab-row {
       display: flex;
       align-items: center;
@@ -1420,7 +1420,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
     }
 
-    /* Ticket Mini Card (SCR-06) */
+    /* Ticket Mini Card () */
     .ticket-list-grid {
       display: flex;
       flex-direction: column;
@@ -1473,7 +1473,7 @@
       box-sizing: border-box;
     }
 
-    /* Contract Legal Clause Sheet (SCR-07, SCR-08 · Clean White Box) */
+    /* Contract Legal Clause Sheet (,  · Clean White Box) */
     .contract-sheet-wrap {
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -3071,7 +3071,7 @@
           </div>
         </div>
 
-        <!-- Integrated Search Capsule (SCR-05: tenantSearchInput / masterSearchInput) -->
+        <!-- Integrated Search Capsule (: tenantSearchInput / masterSearchInput) -->
         <div class="search-capsule-box">
           <i data-lucide="search" style="width: 13px; height: 13px; color: #94A3B8; flex-shrink: 0;"></i>
           <input type="text" id="tenantSearchInput" data-alias="masterSearchInput" placeholder="Cari nama, kamar, atau telp..." oninput="handleSearch(this.value)">
@@ -3468,21 +3468,21 @@
 
         </div>
 
-        <!-- D. MULTI-TAB DOSSIER EXTENSION: SCR-05, SCR-06, SCR-07, SCR-08 -->
+        <!-- D. MULTI-TAB DOSSIER EXTENSION: , , ,  -->
         <div class="dossier-ledger-box">
           <!-- Tab Navigation Headers -->
           <div class="dossier-tab-row">
             <button type="button" class="dossier-tab-btn active" id="btnTabLedger" onclick="switchDossierTab('ledger')">
               <i data-lucide="receipt" style="width: 14px; height: 14px;"></i>
-              <span>Tagihan & Pembayaran (SCR-06)</span>
+              <span>Tagihan & Pembayaran ()</span>
             </button>
             <button type="button" class="dossier-tab-btn" id="btnTabTickets" onclick="switchDossierTab('tickets')">
               <i data-lucide="wrench" style="width: 14px; height: 14px;"></i>
-              <span>Riwayat Komplain & Servis (SCR-06)</span>
+              <span>Riwayat Komplain & Servis ()</span>
             </button>
             <button type="button" class="dossier-tab-btn" id="btnTabContract" onclick="switchDossierTab('contract')">
               <i data-lucide="file-text" style="width: 14px; height: 14px;"></i>
-              <span>Dokumen Kontrak & Klausul SPK (SCR-07/08)</span>
+              <span>Dokumen Kontrak & Klausul SPK (/08)</span>
             </button>
           </div>
 
@@ -3524,7 +3524,7 @@
             </div>
           </div>
 
-          <!-- TAB PANE 2: RIWAYAT KOMPLAIN & TIKET (SCR-06) -->
+          <!-- TAB PANE 2: RIWAYAT KOMPLAIN & TIKET () -->
           <div class="dossier-tab-pane" id="paneTabTickets">
             <div class="ledger-top-row" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
               <div style="display: flex; align-items: center; gap: 10px;">
@@ -3550,7 +3550,7 @@
             </div>
           </div>
 
-          <!-- TAB PANE 3: DOKUMEN & KLAUSUL PERJANJIAN SEWA SPK (SCR-07 & SCR-08) -->
+          <!-- TAB PANE 3: DOKUMEN & KLAUSUL PERJANJIAN SEWA SPK ( & ) -->
           <div class="dossier-tab-pane" id="paneTabContract">
             <div class="contract-sheet-wrap">
               <div class="contract-sheet-header">
@@ -3770,7 +3770,7 @@
 
   </div>
 
-  <!-- MODAL 1: REGISTRASI PENGHUNI BARU (SCR-07 · Estify Pure Custom Form) -->
+  <!-- MODAL 1: REGISTRASI PENGHUNI BARU ( · Estify Pure Custom Form) -->
   <div class="modal-backdrop" id="modalTambahPenghuni">
     <div class="modal-card">
       <div class="modal-header-pinned">
@@ -4259,7 +4259,7 @@
     </div>
   </div>
 
-  <!-- MODAL 2: PERPANJANGAN & PENYELESAIAN KONTRAK SEWA (SCR-08 · Full Lifecycle Management) -->
+  <!-- MODAL 2: PERPANJANGAN & PENYELESAIAN KONTRAK SEWA ( · Full Lifecycle Management) -->
   <div class="modal-backdrop" id="modalPerpanjang">
     <div class="modal-card">
       <div class="modal-header-pinned">
@@ -4779,21 +4779,21 @@
             </div>
             <div class="form-group-item" style="margin-bottom: 0;">
               <label class="form-label-txt">Penyesuaian Tarif Bulanan Kamar *</label>
-              <div class="custom-select-wrap" id="wrapRemoveOccupantTarif">
+              <div class="-wrap" id="wrapRemoveOccupantTarif">
                 <input type="hidden" id="removeOccupantTarifAdjust" value="deduct">
-                <div class="custom-select-trigger" id="btnRemoveOccupantTarifTrigger" onclick="toggleRemoveTarifDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
+                <div class="-trigger" id="btnRemoveOccupantTarifTrigger" onclick="toggleRemoveTarifDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
                   <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
                     <i data-lucide="scissors" style="width: 14px; height: 14px; color: #DC2626; flex-shrink: 0;"></i>
                     <span id="removeOccupantTarifTxt" style="font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Potong Biaya Rekan (-Rp 250.000/bln)</span>
                   </div>
                   <i data-lucide="chevron-down" id="chevronRemoveTarif" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
                 </div>
-                <div class="custom-select-popover" id="popoverRemoveTarif" style="top: calc(100% + 4px);">
-                  <div class="custom-select-option-item selected" onclick="selectRemoveTarifOption('deduct', 'Potong Biaya Rekan (-Rp 250.000/bln)', 'scissors', '#DC2626')">
+                <div class="-popover" id="popoverRemoveTarif" style="top: calc(100% + 4px);">
+                  <div class="-option-item selected" onclick="selectRemoveTarifOption('deduct', 'Potong Biaya Rekan (-Rp 250.000/bln)', 'scissors', '#DC2626')">
                     <i data-lucide="scissors" style="width: 14px; height: 14px; color: #DC2626;"></i>
                     <span>Potong Biaya Rekan (-Rp 250.000/bln)</span>
                   </div>
-                  <div class="custom-select-option-item" onclick="selectRemoveTarifOption('keep', 'Tarif Kamar Tetap Sama (Flat)', 'check-circle-2', '#16A34A')">
+                  <div class="-option-item" onclick="selectRemoveTarifOption('keep', 'Tarif Kamar Tetap Sama (Flat)', 'check-circle-2', '#16A34A')">
                     <i data-lucide="check-circle-2" style="width: 14px; height: 14px; color: #16A34A;"></i>
                     <span>Tarif Kamar Tetap Sama (Flat)</span>
                   </div>
@@ -4857,25 +4857,25 @@
             </div>
             <div class="form-group-item" style="margin-bottom: 0;">
               <label class="form-label-txt">Tambahan Biaya Sekamar (Surcharge)</label>
-              <div class="custom-select-wrap" id="wrapNewRoommateSurcharge">
+              <div class="-wrap" id="wrapNewRoommateSurcharge">
                 <input type="hidden" id="newRoommateSurcharge" value="250000">
-                <div class="custom-select-trigger" id="btnNewRoommateSurchargeTrigger" onclick="toggleSurchargeDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
+                <div class="-trigger" id="btnNewRoommateSurchargeTrigger" onclick="toggleSurchargeDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
                   <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
                     <i data-lucide="tag" style="width: 14px; height: 14px; color: var(--brand-primary); flex-shrink: 0;"></i>
                     <span id="newRoommateSurchargeTxt" style="font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">+Rp 250.000 / bulan</span>
                   </div>
                   <i data-lucide="chevron-down" id="chevronSurcharge" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
                 </div>
-                <div class="custom-select-popover" id="popoverSurcharge" style="top: calc(100% + 4px);">
-                  <div class="custom-select-option-item selected" onclick="selectSurchargeOption('250000', '+Rp 250.000 / bulan')">
+                <div class="-popover" id="popoverSurcharge" style="top: calc(100% + 4px);">
+                  <div class="-option-item selected" onclick="selectSurchargeOption('250000', '+Rp 250.000 / bulan')">
                     <i data-lucide="tag" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
                     <span>+Rp 250.000 / bulan</span>
                   </div>
-                  <div class="custom-select-option-item" onclick="selectSurchargeOption('300000', '+Rp 300.000 / bulan')">
+                  <div class="-option-item" onclick="selectSurchargeOption('300000', '+Rp 300.000 / bulan')">
                     <i data-lucide="tag" style="width: 14px; height: 14px; color: var(--brand-primary);"></i>
                     <span>+Rp 300.000 / bulan</span>
                   </div>
-                  <div class="custom-select-option-item" onclick="selectSurchargeOption('0', 'Rp 0 (Tarif Kamar Flat)')">
+                  <div class="-option-item" onclick="selectSurchargeOption('0', 'Rp 0 (Tarif Kamar Flat)')">
                     <i data-lucide="minus-circle" style="width: 14px; height: 14px; color: #64748B;"></i>
                     <span>Rp 0 (Tarif Kamar Flat)</span>
                   </div>
@@ -5075,33 +5075,33 @@
             </div>
             <div class="form-group-item" style="margin-bottom: 0;">
               <label class="form-label-txt">Hubungan / Relasi *</label>
-              <div class="custom-select-wrap" id="wrapGuestRelation">
+              <div class="-wrap" id="wrapGuestRelation">
                 <input type="hidden" id="guestRelationSelect" value="Orang Tua">
-                <div class="custom-select-trigger" id="btnGuestRelationTrigger" onclick="toggleGuestRelationDropdown(event)" style="height: 38px !important; background: #FFFFFF;">
+                <div class="-trigger" id="btnGuestRelationTrigger" onclick="toggleGuestRelationDropdown(event)" style="height: 38px !important; background: #FFFFFF;">
                   <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
                     <i data-lucide="heart" id="guestRelationIcon" style="width: 14px; height: 14px; color: #EA580C; flex-shrink: 0;"></i>
                     <span id="guestRelationTxt" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Orang Tua (Ayah / Ibu)</span>
                   </div>
                   <i data-lucide="chevron-down" id="guestRelationChevron" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
                 </div>
-                <div class="custom-select-popover" id="popoverGuestRelation">
-                  <div class="custom-select-option-item selected" onclick="selectGuestRelationOption('Orang Tua', 'Orang Tua (Ayah / Ibu)', 'heart', '#EA580C')">
+                <div class="-popover" id="popoverGuestRelation">
+                  <div class="-option-item selected" onclick="selectGuestRelationOption('Orang Tua', 'Orang Tua (Ayah / Ibu)', 'heart', '#EA580C')">
                     <i data-lucide="heart" style="width: 14px; height: 14px; color: #EA580C;"></i>
                     <span>Orang Tua (Ayah / Ibu)</span>
                   </div>
-                  <div class="custom-select-option-item" onclick="selectGuestRelationOption('Saudara Kandung', 'Saudara Kandung (Kakak / Adik)', 'users', '#2563EB')">
+                  <div class="-option-item" onclick="selectGuestRelationOption('Saudara Kandung', 'Saudara Kandung (Kakak / Adik)', 'users', '#2563EB')">
                     <i data-lucide="users" style="width: 14px; height: 14px; color: #2563EB;"></i>
                     <span>Saudara Kandung (Kakak / Adik)</span>
                   </div>
-                  <div class="custom-select-option-item" onclick="selectGuestRelationOption('Teman / Rekan Kerja', 'Teman / Rekan Kerja', 'briefcase', '#16A34A')">
+                  <div class="-option-item" onclick="selectGuestRelationOption('Teman / Rekan Kerja', 'Teman / Rekan Kerja', 'briefcase', '#16A34A')">
                     <i data-lucide="briefcase" style="width: 14px; height: 14px; color: #16A34A;"></i>
                     <span>Teman / Rekan Kerja</span>
                   </div>
-                  <div class="custom-select-option-item" onclick="selectGuestRelationOption('Pasangan Sah', 'Pasangan Sah (Suami / Istri)', 'shield-check', '#7C3AED')">
+                  <div class="-option-item" onclick="selectGuestRelationOption('Pasangan Sah', 'Pasangan Sah (Suami / Istri)', 'shield-check', '#7C3AED')">
                     <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #7C3AED;"></i>
                     <span>Pasangan Sah (Suami / Istri)</span>
                   </div>
-                  <div class="custom-select-option-item" onclick="selectGuestRelationOption('Keluarga Lainnya', 'Keluarga Lainnya', 'home', '#64748B')">
+                  <div class="-option-item" onclick="selectGuestRelationOption('Keluarga Lainnya', 'Keluarga Lainnya', 'home', '#64748B')">
                     <i data-lucide="home" style="width: 14px; height: 14px; color: #64748B;"></i>
                     <span>Keluarga Lainnya</span>
                   </div>
@@ -5211,25 +5211,25 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; align-items: end;">
           <div class="form-group-item" style="margin-bottom: 0;">
             <label class="form-label-txt">Parkir Kendaraan Tamu</label>
-            <div class="custom-select-wrap" id="wrapGuestVehType">
+            <div class="-wrap" id="wrapGuestVehType">
               <input type="hidden" id="guestVehType" value="none">
-              <div class="custom-select-trigger" id="btnGuestVehTrigger" onclick="toggleGuestVehDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
+              <div class="-trigger" id="btnGuestVehTrigger" onclick="toggleGuestVehDropdown(event)" style="height: 38px !important; font-size: 12px; background: #FFFFFF;">
                 <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
                   <i data-lucide="ban" id="guestVehIcon" style="width: 14px; height: 14px; color: #64748B; flex-shrink: 0;"></i>
                   <span id="guestVehTxt" style="font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tanpa Kendaraan</span>
                 </div>
                 <i data-lucide="chevron-down" id="chevronGuestVeh" style="width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s;"></i>
               </div>
-              <div class="custom-select-popover" id="popoverGuestVeh" style="top: calc(100% + 4px);">
-                <div class="custom-select-option-item selected" onclick="selectGuestVehOption('none', 'Tanpa Kendaraan', 'ban', '#64748B')">
+              <div class="-popover" id="popoverGuestVeh" style="top: calc(100% + 4px);">
+                <div class="-option-item selected" onclick="selectGuestVehOption('none', 'Tanpa Kendaraan', 'ban', '#64748B')">
                   <i data-lucide="ban" style="width: 14px; height: 14px; color: #64748B;"></i>
                   <span>Tanpa Kendaraan</span>
                 </div>
-                <div class="custom-select-option-item" onclick="selectGuestVehOption('motor', 'Bawa Sepeda Motor', 'bike', '#EA580C')">
+                <div class="-option-item" onclick="selectGuestVehOption('motor', 'Bawa Sepeda Motor', 'bike', '#EA580C')">
                   <i data-lucide="bike" style="width: 14px; height: 14px; color: #EA580C;"></i>
                   <span>Bawa Sepeda Motor</span>
                 </div>
-                <div class="custom-select-option-item" onclick="selectGuestVehOption('mobil', 'Bawa Mobil', 'car', '#2563EB')">
+                <div class="-option-item" onclick="selectGuestVehOption('mobil', 'Bawa Mobil', 'car', '#2563EB')">
                   <i data-lucide="car" style="width: 14px; height: 14px; color: #2563EB;"></i>
                   <span>Bawa Mobil</span>
                 </div>
@@ -6469,7 +6469,7 @@
         }
       }
 
-      // 7. Update Payment History Ledger Table (SCR-06: Tampilkan Maksimal 3 Transaksi Terakhir)
+      // 7. Update Payment History Ledger Table (: Tampilkan Maksimal 3 Transaksi Terakhir)
       const ledgerTbody = document.getElementById('dLedgerTbody');
       ledgerTbody.innerHTML = '';
       const recentPayments = (t.payHistory || []).slice(0, 3);
@@ -6526,7 +6526,7 @@
         ledgerTbody.appendChild(tr);
       });
 
-      // 8. Update Ticket Complaint List (SCR-06: Tampilkan Maksimal 3 Tiket Terakhir)
+      // 8. Update Ticket Complaint List (: Tampilkan Maksimal 3 Tiket Terakhir)
       const ticketListContainer = document.getElementById('dTicketList');
       if (ticketListContainer) {
         ticketListContainer.innerHTML = '';
@@ -6592,7 +6592,7 @@
         }
       }
 
-      // 9. Update Contract Legal Sheet (SCR-07 & SCR-08)
+      // 9. Update Contract Legal Sheet ( & )
       if (document.getElementById('dContractTitle')) {
         document.getElementById('dContractTitle').textContent = `Surat Perjanjian Sewa Kamar Kost — Unit ${t.room}`;
       }
@@ -8767,7 +8767,7 @@
       }
     }
 
-    // DOSSIER BOTTOM TABS HANDLER (SCR-05, SCR-06, SCR-07, SCR-08)
+    // DOSSIER BOTTOM TABS HANDLER (, , , )
     function switchDossierTab(tabKey, shouldScroll = true) {
       document.querySelectorAll('.dossier-tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.dossier-tab-pane').forEach(pane => pane.classList.remove('active'));
@@ -8797,7 +8797,7 @@
       }
     }
 
-    // EXTENDED PERPANJANG / CHECKOUT LOGIC (SCR-08)
+    // EXTENDED PERPANJANG / CHECKOUT LOGIC ()
     let currentPerpanjangMode = 'renew'; // 'renew' | 'checkout'
     let currentRenewDuration = 12; // 12, 6, 3, 1
 
@@ -9656,7 +9656,7 @@
             </div>
 
             <div style="display: grid; grid-template-columns: 140px 1fr; gap: 10px; align-items: center;">
-              <select class="form-input-field" style="height: 38px; font-size: 12px; font-weight: 600;" onchange="updateVehicleItemType(${idx}, this.value)">
+              <select class="form-input-field custom-select" style="height: 38px; font-size: 12px; font-weight: 600;" onchange="updateVehicleItemType(${idx}, this.value)">
                 <option value="motor" ${type === 'motor' ? 'selected' : ''}>Sepeda Motor</option>
                 <option value="mobil" ${type === 'mobil' ? 'selected' : ''}>Mobil</option>
                 <option value="sepeda" ${type === 'sepeda' ? 'selected' : ''}>Sepeda Gowes</option>
@@ -10106,7 +10106,7 @@
       }
     });
 
-    // Initial render & Deep Linking (SCR-05, SCR-06, SCR-07, SCR-08 URL Support)
+    // Initial render & Deep Linking (, , ,  URL Support)
     window.addEventListener('DOMContentLoaded', () => {
       renderMasterList();
 

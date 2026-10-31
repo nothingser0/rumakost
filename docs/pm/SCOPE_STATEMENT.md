@@ -6,7 +6,7 @@
 
 Pemilik menetapkan MVP **Medium dengan satu properti dan tujuh kelompok P0**. Keputusan ini menggantikan scope Large 17 P0 yang sempat disetujui. Fitur tambahan dipindahkan ke backlog versi selanjutnya. Data demo tetap sintetis: nama/kontak, kontrak, tagihan, pembayaran, tiket, dan media yang diperlukan fitur inti. NIK, dokumen KTP, detail rekening, dan bukti transfer tidak masuk MVP dan dapat dinilai untuk versi berikutnya.
 
-Scope Medium MVP disetujui melalui arahan pemilik pada 2026-10-22 dan menggantikan baseline Large sebelumnya. Perubahan fitur setelah persetujuan ini perlu dicatat sebagai perubahan scope. Kriteria teknis dapat dielaborasi tanpa mengubah batas tujuh P0.
+Scope Medium MVP disetujui dan FROZEN pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Breakdown tetap 22 Story, dengan penyesuaian estimasi pada RK-025/RK-027/RK-032. Estimasi MVP terbaru 186–245 jam; atas arahan pemilik, jadwal diperbarui menjadi 21 minggu/252 jam untuk menampung batas atas. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
 
 ## 1. Metadata dan Kendali Dokumen
 
@@ -17,7 +17,7 @@ Scope Medium MVP disetujui melalui arahan pemilik pada 2026-10-22 dan menggantik
 - Status dokumen: FROZEN — MEDIUM MVP DISETUJUI PEMILIK 2026-10-22; menggantikan baseline Large
 - Skala: Medium (7 kelompok P0; satu properti)
 - Tanggal elicitation: 14–22 Oktober 2026; INT-10 bertanggal rentang 20–21 Oktober, hari tunggal belum diketahui
-- Tanggal pembaruan: 23 Oktober 2026 (Penegasan aturan deposit escrow, first invoice sewa+deposit, dan escrow settlement)
+- Tanggal pembaruan: 30 Oktober 2026 (Penyelarasan M05 ke wireframe/runbook M04 untuk deposit dan dua mode billing check-in)
 - Delivery: Portfolio; bukan layanan komersial
 
 ### Confidence
@@ -56,8 +56,8 @@ Sistem memiliki tiga role. Akun Staff dan Penghuni dibuat/diaktifkan oleh Owner;
 | Peran | Lihat | Buat/perbarui | Verifikasi pembayaran | Laporan |
 |---|---|---|---|---|
 | Owner | Semua data satu properti | Kamar, penghuni, kontrak, tagihan, transaksi, tiket, role dan koreksi | Ya; memeriksa mutasi di luar sistem | Semua laporan |
-| Staff | Data operasional yang ditugaskan, tiket, penghuni/kamar terkait | Memperbarui tiket; mencatat pembayaran atau penyampaian sesuai izin | Tidak; Owner saja | Laporan operasional; laporan keuangan sensitif hanya bila diizinkan Owner |
-| Penghuni | Data kamar/kontrak/tagihan sendiri dan tiket miliknya | Membuat tiket, komentar, serta lampiran | Tidak | Tidak melihat laporan properti |
+| Staff | Data operasional yang ditugaskan, tiket, penghuni/kamar terkait | Membuat/check-in kontrak, memperbarui tiket, mencatat pembayaran pending, pengeluaran operasional, atau penyampaian sesuai izin | Tidak; Owner saja | Tidak ada laporan finansial |
+| Penghuni | Data kamar/kontrak/tagihan sendiri dan tiket miliknya | Mengajukan check-out; membuat tiket, komentar, serta lampiran | Tidak | Tidak melihat laporan properti |
 
 Aturan: akses media mengikuti hak akses tiket; Penghuni hanya dapat melihat tiket miliknya. **ZERO SELF-APPROVAL untuk Staff:** Staff tidak boleh memverifikasi transaksi yang dicatatnya sendiri; Owner bertindak sebagai verifier independen dan berwenang memverifikasi, menolak, atau mengoreksi transaksi. Detail matriks izin ditetapkan pada spesifikasi M05 sebelum implementasi.
 
@@ -103,15 +103,20 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 - Given kamar belum memiliki kontrak aktif, when daftar kamar dibuka, then kamar tampil tersedia atau berstatus perawatan sesuai pilihan status.
 
 #### F-03 Penghuni dan kontrak
-- Sebagai Owner, saya ingin mencatat penghuni dan periode kontrak agar tagihan terhubung dengan masa sewa.
+- Sebagai Owner atau Staff, saya ingin mencatat penghuni dan periode kontrak agar tagihan terhubung dengan masa sewa.
 - Given kontrak aktif pada kamar, when kontrak kedua dibuat dengan periode tumpang tindih, then sistem menolak penyimpanan.
-- Given pendaftaran penghuni baru, when kontrak dibuat, then sistem mencatat nominal Uang Jaminan Deposit (Escrow) yang terpisah dari pendapatan sewa murni.
+- Given master kamar dibuat, when tarif sewa disimpan, then default deposit rekomendasi sebesar 50% tarif terisi otomatis dan dapat diedit Owner; saat kontrak dibuat, Owner/Staff dapat memakai nilai default, menggantinya, atau memilih bebas deposit/nol.
+- Given deposit kontrak ditetapkan, when penghuni membuka portal, then nilai dan saldo deposit tersedia ditampilkan terpisah dari pendapatan sewa.
 - Given kontrak berakhir, when riwayat penghuni dibuka, then kontrak lama dan catatan terkait tetap tersedia.
+- Given penghuni mengajukan check-out, when permintaan dikirim, then Owner menerima permintaan untuk inspeksi dan rekonsiliasi; hanya Owner yang mengesahkan refund/potongan deposit.
+- Given penghuni mengajukan check-out, when permintaan dikirim, then Owner menerima permintaan untuk inspeksi dan rekonsiliasi; hanya Owner yang mengesahkan refund/potongan deposit.
 
 #### F-04 Tagihan berulang dan tagihan perdana
 - Sebagai Owner/Staff berizin, saya ingin membuat tagihan bulanan dari kontrak aktif agar tagihan yang terlewat atau ganda dapat diketahui.
-- Given pendaftaran penghuni baru (check-in), when tagihan pertama diterbitkan, then sistem menggabungkan sewa bulan ke-1 dan uang jaminan deposit dalam satu invoice perdana.
-- Given penghuni masuk di tengah bulan, when tagihan perdana dihitung, then sistem mendukung opsi perhitungan Prorata Hari Berjalan atau Siklus Tanggal Masuk (Anniversary).
+- Given pendaftaran penghuni baru (check-in), when invoice pertama diterbitkan, then invoice memuat komponen sewa pertama dan deposit escrow secara terpisah.
+- Given kontrak dibuat, when invoice perdana diterbitkan saat check-in, then tanggal jatuh tempo invoice pertama tidak mendahului tanggal penerbitan/check-in.
+- Given penghuni masuk di tengah bulan, when Owner memilih mode `Prorata s/d Akhir Bulan`, then sewa dihitung dari hari masuk sampai akhir bulan secara inklusif dan invoice rutin berikutnya jatuh tempo tanggal 1.
+- Given Owner memilih mode `Siklus 1 Bulan Kalender Penuh`, when penghuni check-in, then sewa bulan pertama ditagih penuh dan invoice berikutnya mengikuti tanggal masuk bulanan (hari yang tidak ada di bulan berikutnya dijatuhkan ke hari terakhir bulan itu).
 - Given kontrak aktif pada periode tagihan, when tagihan periode dibuat dua kali, then hanya satu tagihan per kontrak-periode tersimpan.
 - Given tagihan dibuat, when status penyampaian ditandai, then status diperbarui manual tanpa mengirim pesan otomatis.
 
@@ -119,11 +124,12 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 - Sebagai pengelola, saya ingin mencatat pembayaran terhadap tagihan dan melihat sisa kewajiban.
 - Given tagihan Rp1.500.000 dan pembayaran terverifikasi Rp1.000.000, when saldo dihitung, then sisa Rp500.000.
 - Given pembayaran masih pending, when saldo dihitung, then saldo terutang belum berkurang.
-- Given penghuni ingin melunasi tagihan sewa menggunakan deposit (misal bulan terakhir check-out atau darurat), when metode pembayaran 'Potong Deposit (Escrow Settlement)' dipilih, then invoice sewa ditandai Lunas dan saldo deposit berkurang secara otomatis.
+- Given saldo deposit cukup dan Owner memilih `Potong Deposit`, when settlement disimpan, then saldo invoice sewa dan saldo escrow berkurang dengan jumlah yang sama tanpa menambah kas masuk.
+- Given kontrak di-check-out, when Owner memilih refund penuh atau potongan kerusakan/tunggakan dan memberi alasan, then sistem menghitung refund bersih, mencatat rekonsiliasi, dan memasukkan refund ke antrean pencairan manual; aplikasi tidak mentransfer uang.
 - Given transaksi terverifikasi perlu dikoreksi, when Owner membuat reversal dengan alasan, then nilai asal tetap di histori dan saldo dihitung ulang tepat satu kali.
 
 #### F-06 Pengeluaran dan laporan pemasukan/okupansi
-- Sebagai Owner, saya ingin mencatat pemasukan serta pengeluaran operasional dan melihat ringkasan periode agar dapat meninjau kondisi kost.
+- Sebagai Owner, saya ingin melihat ringkasan keuangan; Owner/Staff berizin dapat mencatat pengeluaran operasional agar biaya aktual masuk ke rekap.
 - Given catatan transaksi memiliki tanggal, kategori, dan nominal, when laporan periode dibuka, then total pemasukan dan pengeluaran hanya menjumlah catatan dalam rentang tanggal itu.
 - Given jumlah kamar dan kontrak aktif diketahui, when okupansi dihitung, then angka terisi/tersedia dapat ditelusuri ke status kamar dan kontrak aktif.
 - Laporan tidak menyebut laba akuntansi/pajak dan tidak menganggap transaksi yang tidak dicatat sebagai biaya nol.
@@ -191,7 +197,8 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 - Pembayaran merupakan catatan internal, bukan pemindahan uang.
 - Hanya transaksi yang Owner verifikasi mengurangi saldo terutang.
 - Koreksi melalui reversal yang mencatat alasan; tidak ada hapus permanen atas transaksi terverifikasi.
-- Satu tagihan per penghuni/periode; prorata, denda, diskon, deposit, refund, dan tanggal jatuh tempo masih UNKNOWN dan di luar P0 sampai dijawab.
+- Satu invoice rutin per kontrak-periode sesuai mode billing lease. Arahan pemilik terbaru menjadikan wireframe/runbook M04 sebagai acuan: mendukung prorata sampai akhir bulan dan siklus satu bulan penuh berbasis tanggal masuk. Keputusan sebelumnya untuk tanpa prorata/due day per kontrak digantikan.
+- **Deposit termasuk dalam slice MVP F-02/F-03/F-04/F-05/F-06** sesuai WF-03/WF-04/WF-05/WF-06/WF-10 dan E2E Alur 1 & 5: default kamar 50% tarif (editable), nilai kontrak/opsi nol, line invoice awal, tracking saldo escrow, settlement ke tagihan, dan rekonsiliasi check-out (refund/potongan beralasan). Ledger escrow terpisah dari pendapatan sewa dan settlement non-cash tidak menambah kas. Refund tetap pencatatan/pencairan manual; aplikasi tidak mentransfer uang. Nomor rekening refund, KTP/NIK, diskon tahunan, multi-penghuni, dan fitur tambahan lain tetap di luar tujuh P0 atau perlu perubahan scope.
 - Single-property demo; isolasi data lintas akun/workspace ditentukan di M05. Tidak ada asumsi provider/stack sebelum stack lock.
 
 ## 7. Dependensi dan Asumsi
@@ -199,22 +206,22 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 | ID | Item | Pemilik | Status |
 |---|---|---|---|
 | DEP-01 | Scope tujuh kelompok P0 Medium dan batas satu properti disetujui pemilik. | Pemilik proyek | Selesai 2026-10-22; menggantikan baseline Large sebelumnya |
-| DEP-02 | Aturan tanggal tagihan, prorata, pending vs verified, dan pembatalan disepakati. | Pemilik proyek | Terbuka |
+| DEP-02 | Billing mode, komponen invoice, pending vs verified, escrow, settlement, dan check-out diselaraskan dengan M04. | Pemilik proyek | Tagihan dan deposit ditetapkan mengikuti M04 pada 2026-10-30; detail teknis dimodelkan di M05 |
 | DEP-03 | Stack/arsitektur dan provider private object storage dipilih di M05; integrasi pesan eksternal bukan MVP. | Pemilik proyek | Terbuka |
-| ASM-01 | Akun Staff opsional; default workspace hanya Owner. | Pemilik proyek | Perlu konfirmasi |
+| ASM-01 | Role Staff operasional tersedia; akun demo dapat diaktifkan oleh Owner. | Pemilik proyek | Hak akses mengikuti M04; kebutuhan akun Staff wajib di seed masih terbuka |
 | ASM-02 | Batas satu properti cukup untuk demo; laporan multi-lokasi ditunda. | Pemilik proyek | Disetujui dan dibekukan 2026-10-22 |
 
 ## 8. Jadwal dan Perkiraan Usaha
 - Kapasitas: 12 jam/minggu × 18 minggu = **216 jam**.
-- Estimasi implementasi tujuh P0 Medium: **112–150 jam**, termasuk 3 role dan F-07 ticketing/media/komentar/storage privat/retensi; P1/P2 tidak dihitung.
-- Buffer 20%: **22–30 jam**; QA/integrasi/bug-fix: **24–32 jam**; dokumentasi/demo/portfolio polish: **16–20 jam**.
-- Total estimasi MVP: **174–232 jam**. Breakdown 22 Story di `docs/pm/KANBAN.md` merekonsiliasi implementasi P0 menjadi 112–150 jam; buffer 20%, QA/integrasi, dan dokumentasi/demo termasuk dalam total tersebut. Pada 12 jam/minggu, rentangnya sekitar 14,5–19,3 minggu. Intake 18 minggu menyediakan 216 jam, sehingga batas atas melebihi intake 16 jam. **Usulan jadwal untuk ditinjau pemilik: 20 minggu / 240 jam pada 12 jam/minggu**, cukup untuk batas atas dengan sisa 8 jam. Jadwal belum disetujui; jangan menganggap usulan sebagai komitmen. P1/P2 tetap di luar MVP.
+- Estimasi implementasi tujuh P0 Medium setelah penambahan alur escrow/billing M04: **119–158 jam** (naik 7–8 jam); P1/P2 tetap tidak dihitung.
+- Buffer 20%: **24–32 jam**; QA/integrasi/bug-fix: **26–34 jam**; dokumentasi/demo/portfolio polish: **17–21 jam**.
+- Total estimasi MVP yang diperbarui: **186–245 jam**. Breakdown 22 Story di `docs/pm/KANBAN.md` sesuai estimasi fitur; pada kapasitas 12 jam/minggu rentangnya sekitar 15,5–20,4 minggu. Atas arahan pemilik pada 2026-10-30, jadwal menjadi 21 minggu/252 jam, cukup untuk estimasi maksimum dengan sisa 7 jam. Scope tujuh P0 tetap; P1/P2 tidak ditambahkan.
 - Provider storage belum dipilih. CDN, transcoding, lampiran struk, integrasi WhatsApp/email, serta NIK/dokumen KTP/detail rekening/bukti transfer tidak masuk MVP. MVP menolak file media yang melewati batas.
 - QA dimulai setelah freeze; perubahan fitur sesudah itu perlu persetujuan perubahan scope.
 
 ## 9. Keputusan Scope
 
-Scope Medium MVP disetujui dan FROZEN pada 2026-10-22: satu properti, tujuh P0. Keputusan ini menggantikan baseline Large 17 P0 sebelumnya. Breakdown 22 Story tersedia di `docs/pm/KANBAN.md`. Estimasi MVP 174–232 jam; jadwal 20 minggu/240 jam diusulkan untuk menampung batas atas dan belum disetujui pemilik. Fitur tambahan disimpan sebagai backlog P1/P2 versi berikutnya. Persetujuan terakhir menggantikan keputusan terdahulu untuk menerima risiko scope Large.
+Scope Medium MVP disetujui dan FROZEN pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Breakdown tetap 22 Story, dengan penyesuaian estimasi pada RK-025/RK-027/RK-032. Estimasi MVP terbaru 186–245 jam; atas arahan pemilik, jadwal diperbarui menjadi 21 minggu/252 jam untuk menampung batas atas. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
 
 Scope-P0-Count: 7
 Scope-Lock-Decision: LOCKED

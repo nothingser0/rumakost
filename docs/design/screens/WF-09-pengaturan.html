@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RumaKost · Pengaturan Properti & Hak Akses (SCR-16 & SCR-17)</title>
+  <title>RumaKost · Pengaturan Properti & Hak Akses ( & )</title>
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -706,7 +706,7 @@
   <!-- Screen Identity Badge -->
   <div class="wf-badge-fixed">
     <i data-lucide="shield-check" style="width: 13px; height: 13px; color: #FF7A00;"></i>
-    SCR-16 & SCR-17 · Profil Properti & Akun Pengguna (F-01)
+     &  · Profil Properti & Akun Pengguna (F-01)
   </div>
 
   <!-- TOP CANOPY OVERLAY (Masking batas scroll atas ber-rounded) -->
@@ -734,11 +734,11 @@
 
         <a class="settings-nav-item active" onclick="activateSection('property', this)">
           <i data-lucide="home" style="width: 16px; height: 16px; color: #FF7A00;"></i>
-          <span>1. Profil Properti & Rekening (SCR-17)</span>
+          <span>1. Profil Properti & Rekening ()</span>
         </a>
         <a class="settings-nav-item" onclick="activateSection('rbac', this)">
           <i data-lucide="users" style="width: 16px; height: 16px;"></i>
-          <span>2. Akun Staf & Penghuni (SCR-16 · F-01)</span>
+          <span>2. Akun Staf & Penghuni ( · F-01)</span>
         </a>
         <a class="settings-nav-item" onclick="activateSection('security', this)">
           <i data-lucide="lock" style="width: 16px; height: 16px;"></i>
@@ -765,11 +765,11 @@
       <!-- RIGHT COLUMN: CONTENT CARDS FLOW -->
       <div class="settings-content-flow">
         
-        <!-- SECTION 1: PROFIL PROPERTI & REKENING (SCR-17) -->
+        <!-- SECTION 1: PROFIL PROPERTI & REKENING () -->
         <section id="section-property" class="card-settings-section">
           <div class="section-card-header">
             <div class="section-header-title">
-              <h2><i data-lucide="home" style="width: 18px; height: 18px; color: #FF7A00;"></i> Identitas Properti & Rekening Bank Resmi (SCR-17)</h2>
+              <h2><i data-lucide="home" style="width: 18px; height: 18px; color: #FF7A00;"></i> Identitas Properti & Rekening Bank Resmi ()</h2>
               <p>Data profil fisik kost dan rekening penampungan pembayaran sewa bulanan penyewa.</p>
             </div>
             <button type="button" class="btn-brand-primary" style="height: 34px; font-size: 11.5px; padding: 0 14px; gap: 6px;" onclick="saveAllSettings()">
@@ -894,7 +894,7 @@
               </div>
               <div class="form-group-item">
                 <label class="form-label-txt" for="propBudgetAlert">Peringatan Ambang Toleransi Pengeluaran</label>
-                <select id="propBudgetAlert" class="form-input-field">
+                <select id="propBudgetAlert" class="form-input-field custom-select">
                   <option value="80" selected>Peringatkan jika realisasi &gt; 80% (Rp 4.000.000)</option>
                   <option value="90">Peringatkan jika realisasi &gt; 90% (Rp 4.500.000)</option>
                   <option value="100">Peringatkan jika melampaui 100% (Defisit Operasional)</option>
@@ -978,11 +978,11 @@
           </div>
         </section>
 
-        <!-- SECTION 2: AKUN STAF & PENGHUNI (SCR-16 · F-01) -->
+        <!-- SECTION 2: AKUN STAF & PENGHUNI ( · F-01) -->
         <section id="section-rbac" class="card-settings-section">
           <div class="section-card-header">
             <div class="section-header-title">
-              <h2><i data-lucide="users" style="width: 18px; height: 18px; color: #FF7A00;"></i> Manajemen Pengguna & Hak Akses (SCR-16 · F-01)</h2>
+              <h2><i data-lucide="users" style="width: 18px; height: 18px; color: #FF7A00;"></i> Manajemen Pengguna & Hak Akses ( · F-01)</h2>
               <p>Pemilik membuat & mengaktifkan akun Staf dan Penghuni tanpa pendaftaran publik (F-01).</p>
             </div>
             <button type="button" class="btn-brand-primary" style="height: 34px; font-size: 11.5px; padding: 0 14px;" onclick="openAddAccountModal()">
@@ -1203,7 +1203,7 @@
       <div class="modal-body-scrollable">
         <div class="form-group-item">
           <label class="form-label-txt" for="accType">Jenis Peran Akun *</label>
-          <select id="accType" class="form-input-field" style="cursor: pointer;" onchange="handleAccountTypeChange(this.value)">
+          <select id="accType" class="form-input-field custom-select" style="cursor: pointer;" onchange="handleAccountTypeChange(this.value)">
             <option value="staff">Staf Operasional (Pengelola Lapangan)</option>
             <option value="technician">Teknisi Lapangan (Maintenance & Perbaikan)</option>
             <option value="tenant">Penghuni Kost (Akses Portal Mandiri Kamar)</option>
@@ -1228,7 +1228,7 @@
 
         <div class="form-group-item" id="roomAssignGroup" style="display: none;">
           <label class="form-label-txt" for="accRoomSelect">Penugasan Kamar Penghuni *</label>
-          <select id="accRoomSelect" class="form-input-field" style="cursor: pointer;" onchange="handleRoomSelectChange(this)">
+          <select id="accRoomSelect" class="form-input-field custom-select" style="cursor: pointer;" onchange="handleRoomSelectChange(this)">
             <option value="A-01">Kamar A-01 · Lantai 1 (Tersedia)</option>
             <option value="A-02">Kamar A-02 · Lantai 1 (Tersedia)</option>
             <option value="A-04" data-occupied="true">Kamar A-04 · Lantai 1 (Terisi Kontrak: Budi Santoso)</option>
@@ -1286,7 +1286,7 @@
   </div>
 
   <!-- ==========================================================================
-       MODAL: EDIT IZIN / STATUS AKUN (SCR-16)
+       MODAL: EDIT IZIN / STATUS AKUN ()
        ========================================================================== -->
   <div class="modal-backdrop" id="modalEditAccount" onclick="closeModalOnBackdrop(event, 'modalEditAccount')">
     <div class="modal-dialog-card">
@@ -1313,7 +1313,7 @@
           </div>
           <div class="form-group-item">
             <label class="form-label-txt">Status Akun</label>
-            <select id="editAccStatus" class="form-input-field" style="cursor: pointer;" onchange="handleEditStatusChange(this.value)">
+            <select id="editAccStatus" class="form-input-field custom-select" style="cursor: pointer;" onchange="handleEditStatusChange(this.value)">
               <option value="aktif">Aktif (Bisa Login)</option>
               <option value="nonaktif">Nonaktifkan (Kunci Akses)</option>
             </select>
@@ -1333,7 +1333,7 @@
         <!-- Skenario 21: Relokasi Kamar Penghuni -->
         <div class="form-group-item" id="editRoomAssignGroup" style="display: none;">
           <label class="form-label-txt" for="editAccRoomSelect">Relokasi Kamar Penghuni (Skenario 21) *</label>
-          <select id="editAccRoomSelect" class="form-input-field" style="cursor: pointer;">
+          <select id="editAccRoomSelect" class="form-input-field custom-select" style="cursor: pointer;">
             <option value="A-01">Kamar A-01 · Lantai 1 (Tersedia)</option>
             <option value="A-02">Kamar A-02 · Lantai 1 (Tersedia)</option>
             <option value="A-04">Kamar A-04 · Lantai 1 (Kamar Saat Ini)</option>

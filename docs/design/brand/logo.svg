@@ -1,0 +1,31 @@
+<svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RumaKost Icon — House Key">
+  <!--
+    FILOSOFI "KUNCI RUMAH":
+    Kepala kunci berbentuk rumah — melambangkan bahwa yang dikelola
+    bukan sekadar properti, melainkan tempat seseorang menyebut "pulang".
+    Kunci adalah simbol kepercayaan: pemilik mempercayakan propertinya,
+    penghuni mempercayakan kenyamanannya.
+    Dual reading: key (akses, trust) + house (home, shelter).
+  -->
+
+  <!-- Orange background -->
+  <rect width="52" height="52" rx="13" fill="#F97316"/>
+
+  <!-- Key bow: house-shaped pentagon (white) -->
+  <polygon
+    points="14,32 14,16 20,10 26,5 32,10 38,16 38,32"
+    fill="white"/>
+
+  <!-- Key hole: round cutout (orange, reveals background) -->
+  <circle cx="26" cy="21" r="6.5" fill="#F97316"/>
+
+  <!-- Key stem (blade) -->
+  <rect x="23" y="31" width="6" height="16" fill="white" rx="1.5"/>
+
+  <!-- Key tooth 1 -->
+  <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
+
+  <!-- Key tooth 2 -->
+  <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
+
+</svg>

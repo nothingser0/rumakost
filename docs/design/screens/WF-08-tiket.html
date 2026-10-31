@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RumaKost · Antrean &amp; Triase Tiket Pemeliharaan (SCR-14)</title>
+  <title>RumaKost · Antrean &amp; Triase Tiket Pemeliharaan ()</title>
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <style>
     /* ==========================================================================
-       ESTIFY MAINTENANCE TICKET QUEUE (WF-08 · SCR-14)
+       ESTIFY MAINTENANCE TICKET QUEUE (WF-08 · )
        Visual DNA: Estify Modern Real-Estate Management Dashboard
        Layout: Full-Width Dedicated Queue & Monitoring Dashboard
        Compliance: F-07 Ticketing Kerusakan (RK-037 s.d. RK-040)
@@ -1697,7 +1697,7 @@
   <!-- FLOATING SCREEN IDENTIFIER BADGE -->
   <div class="wf-badge-floating">
     <i data-lucide="wrench" style="width: 13px; height: 13px; color: #FF7A00;"></i>
-    SCR-14 &middot; Antrean &amp; Triase Tiket Pemeliharaan (F-07)
+     &middot; Antrean &amp; Triase Tiket Pemeliharaan (F-07)
   </div>
 
   <!-- TOP CANOPY OVERLAY (Masking celah atas navbar floating) -->
@@ -1837,7 +1837,7 @@
       <div class="toolbar-actions-right">
             <!-- CATEGORY DROPDOWN TRIGGER -->
             <div style="position: relative;">
-              <button class="custom-select-trigger" onclick="toggleCategoryMenu()" id="btnCategoryFilter">
+              <button class="-trigger" onclick="toggleCategoryMenu()" id="btnCategoryFilter">
                 <i data-lucide="filter" style="width: 13px; height: 13px;"></i>
                 <span id="selectedCategoryLabel">Semua Kategori</span>
                 <i data-lucide="chevron-down" style="width: 13px; height: 13px;"></i>
@@ -1867,7 +1867,7 @@
             </div>
 
             <!-- EKSPOR REKAP BUTTON -->
-            <button class="custom-select-trigger" onclick="openExportModal()" title="Ekspor Rekap Laporan Pemeliharaan">
+            <button class="-trigger" onclick="openExportModal()" title="Ekspor Rekap Laporan Pemeliharaan">
               <i data-lucide="download" style="width: 13px; height: 13px;"></i>
               <span>Ekspor</span>
             </button>
@@ -1895,7 +1895,7 @@
             <div style="font-size: 14.5px; font-weight: 700; color: var(--text-main, #111111);">Tidak Ada Tiket yang Cocok</div>
             <p style="font-size: 12px; color: #64748B; margin: 4px 0 0 0;">Coba sesuaikan kata kunci pencarian atau ubah filter status di atas.</p>
           </div>
-          <button class="custom-select-trigger" onclick="resetAllFilters()" style="margin-top: 6px;">
+          <button class="-trigger" onclick="resetAllFilters()" style="margin-top: 6px;">
             <i data-lucide="rotate-ccw" style="width: 13px; height: 13px;"></i>
             Reset Filter Pencarian
           </button>
@@ -1904,7 +1904,7 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════
-       9. MODAL 1: FORM BUAT TIKET BARU (SCR-14 · ESTIFY FORM STANDAR IDENTIK WF-04)
+       9. MODAL 1: FORM BUAT TIKET BARU ( · ESTIFY FORM STANDAR IDENTIK WF-04)
        ══════════════════════════════════════════════════════════════ -->
   <div class="modal-backdrop" id="modalCreateTicket">
     <div class="modal-card">
@@ -1940,7 +1940,7 @@
             <label class="form-label-txt" style="margin-bottom: 0;">Pilih Unit Kamar / Lokasi *</label>
             <span style="color: #94A3B8; font-size: 11px;">Cari kamar atau area lain pada dropdown</span>
           </div>
-          <div class="custom-select-wrap" id="wrapRoomSelect">
+          <div class="-wrap" id="wrapRoomSelect">
             <div style="position: relative; width: 100%;">
               <span class="search-leading-holder"><i data-lucide="search"></i></span>
               <input type="text" id="roomSearchInput" class="form-input-field" value="Kamar B-03 &middot; Lt. 2 (Reza Pratama)" placeholder="Cari kamar, lantai, atau nama..." autocomplete="off" style="padding-left: 38px; padding-right: 14px; font-weight: 600; line-height: 40px;" onfocus="openRoomDropdown()" onclick="openRoomDropdown()" oninput="filterRoomDropdown(this.value)">
@@ -1974,11 +1974,11 @@
           <!-- CUSTOM DROPDOWN 2: KATEGORI KERUSAKAN -->
           <div class="form-group-item">
             <label class="form-label-txt">Kategori Kerusakan *</label>
-            <div class="custom-select-wrap" id="wrapCategorySelect">
-              <button type="button" class="btn-custom-select-trigger" id="btnTriggerCategory" onclick="toggleCustomDropdown('dropdownCategory', this)">
+            <div class="-wrap" id="wrapCategorySelect">
+              <button type="button" class="btn--trigger" id="btnTriggerCategory" onclick="toggleCustomDropdown('dropdownCategory', this)">
                 <div class="trigger-content-box">
                   <span class="trigger-icon-holder" id="iconTriggerCategory"><i data-lucide="wind" style="color: #3B82F6;"></i></span>
-                  <span class="custom-select-label" id="labelTriggerCategory">AC &amp; Pendingin Ruangan</span>
+                  <span class="-label" id="labelTriggerCategory">AC &amp; Pendingin Ruangan</span>
                 </div>
                 <span class="trigger-chevron-icon"><i data-lucide="chevron-down"></i></span>
               </button>
@@ -2041,11 +2041,11 @@
           <!-- CUSTOM DROPDOWN 3: TINGKAT URGENSI (ALIGN RIGHT) -->
           <div class="form-group-item">
             <label class="form-label-txt">Tingkat Urgensi Perbaikan *</label>
-            <div class="custom-select-wrap align-right" id="wrapUrgencySelect">
-              <button type="button" class="btn-custom-select-trigger" id="btnTriggerUrgency" onclick="toggleCustomDropdown('dropdownUrgency', this)">
+            <div class="-wrap align-right" id="wrapUrgencySelect">
+              <button type="button" class="btn--trigger" id="btnTriggerUrgency" onclick="toggleCustomDropdown('dropdownUrgency', this)">
                 <div class="trigger-content-box">
                   <span class="trigger-icon-holder" id="iconTriggerUrgency"><i data-lucide="clock" style="color: #FF7A00;"></i></span>
-                  <span class="custom-select-label" id="labelTriggerUrgency">Normal (Respon 1x24 Jam)</span>
+                  <span class="-label" id="labelTriggerUrgency">Normal (Respon 1x24 Jam)</span>
                 </div>
                 <span class="trigger-chevron-icon"><i data-lucide="chevron-down"></i></span>
               </button>
@@ -2183,7 +2183,7 @@
       <div style="display: flex; flex-direction: column; gap: 14px;">
         <div class="form-group-item">
           <label class="form-label-text">Periode Rekap</label>
-          <select class="form-input-control">
+          <select class="form-input-control custom-select">
             <option>Bulan Berjalan (Oktober 2026)</option>
             <option>Triwulan 3 (Juli - Sept 2026)</option>
             <option>Tahun Kalender 2026 Penuh</option>
@@ -2977,7 +2977,7 @@
     }
 
     // ══════════════════════════════════════════════════════════════
-    // RENDER TICKETS LIST (SCR-14)
+    // RENDER TICKETS LIST ()
     // ══════════════════════════════════════════════════════════════
     function renderTickets() {
       const container = document.getElementById('ticketsListFeed');
