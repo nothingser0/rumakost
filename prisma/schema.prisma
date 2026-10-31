@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AppRole {
+  OWNER
+  STAFF
+  TENANT
+}
+
+model AppUser {
+  id                 String   @id @default(uuid()) @db.Uuid
+  authSubject        String   @unique @map("auth_subject")
+  emailNormalized    String   @unique @map("email_normalized")
+  displayName        String   @map("display_name")
+  role               AppRole
+  isActive           Boolean  @default(true) @map("is_active")
+  mustChangePassword Boolean  @default(true) @map("must_change_password")
+  createdById        String?  @map("created_by_id") @db.Uuid
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  createdBy    AppUser?  @relation("AppUserCreatedBy", fields: [createdById], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  createdUsers AppUser[] @relation("AppUserCreatedBy")
+
+  @@index([createdById])
+  @@map("app_users")
+}

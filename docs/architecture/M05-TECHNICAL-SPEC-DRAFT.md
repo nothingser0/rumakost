@@ -1,13 +1,13 @@
-# Draft Spesifikasi Teknis M05 — RumaKost
+﻿# Draft Spesifikasi Teknis M05 â€” RumaKost
 
-> Status: Tech Stack Lock disetujui pemilik pada 2026-10-30 (`zeenn`). Signup Vercel Hobby tanpa kartu dikonfirmasi pemilik; Neon Auth/Object Storage beta diterima untuk demo portfolio non-komersial. M05 tetap berjalan untuk melengkapi spesifikasi teknis sebelum implementasi. Baseline mengikuti MVP satu properti dan tujuh P0 di `docs/pm/SCOPE_STATEMENT.md`.
+> Status: M05 Â· Architecture & Technical Specifications lulus setelah technical sign-off pemilik pada 2026-10-31 (`zeenn`). Tech Stack Lock Opsi A disetujui pada 2026-10-30. Item yang baru dapat dieksekusi setelah scaffold (misalnya perintah package scripts) menjadi perencanaan M06; baseline tetap MVP satu properti dan tujuh P0 di `docs/pm/SCOPE_STATEMENT.md`.
 
 ## Asumsi yang dipakai
 
 1. Produk adalah aplikasi web responsif, bukan aplikasi native.
 2. Targetnya demo portfolio non-komersial dengan biaya hosting serendah mungkin; tidak ada SLA produksi.
 3. Satu aplikasi melayani Owner, Staff, dan Penghuni dengan otorisasi ditegakkan di server.
-4. PostgreSQL dan Prisma adalah arah awal yang dicatat di `PROJECT_STATE.md`, tetapi belum disetujui sebagai keputusan final.
+4. PostgreSQL dan Prisma termasuk Opsi A yang telah dikunci pemilik; versi tooling yang belum dipin diverifikasi saat scaffold M06.
 5. Seluruh data demo dan lampiran bersifat sintetis. Dokumen identitas, detail rekening, dan bukti transfer tidak masuk MVP. Detail rekening refund yang muncul pada skenario check-out M04 tetap dikecualikan oleh batas privasi M02; aplikasi hanya melacak refund manual.
 6. Media tiket berada di object storage privat. Batas unggah dan retensi mengikuti scope: foto 4 MB, video 12 MB/30 detik, maksimal 4 foto + 1 video per kiriman, 40 MB per tiket, dihapus 365 hari setelah tiket ditutup.
 7. M04 menjadi sumber perilaku layar dan alur untuk fitur dalam tujuh P0. Skenario M04 yang menambahkan kapabilitas di luar tujuh P0 (misalnya izin tamu, renewal mandiri, akun teknisi, OTP/2FA, rating, diskon tahunan, dan notifikasi WhatsApp otomatis) tetap backlog/out-of-scope sesuai M02.
@@ -157,10 +157,10 @@ Strategi verifikasi yang diusulkan: unit test untuk aturan domain finansial/stat
 
 - [x] Pemilik menyetujui Tech Stack Lock Opsi A pada 2026-10-30 (`zeenn`): framework/runtime, database/ORM, auth/session, hosting, storage, UI approach, dan tooling dasar. Strategi environment/secret masih perlu dirinci.
 - [x] Keputusan model ancaman, trust boundaries, matriks RBAC, sesi, rate limit, audit log, dan strategi backup/restore tertulis; restore drill dijadwalkan pada M07.
-- [ ] ERD dan constraint mencakup F-01–F-07 serta invarian pembayaran dan kontrak.
+- [x] ERD logis dan constraint mencakup F-01–F-07 serta invarian pembayaran dan kontrak; implementasi dan verifikasi runtime menjadi task M06.
 - [x] Kontrak operasi mencatat role, input/output, error, dan efek samping.
 - [x] Alur media privat mencakup upload, pemeriksaan akses, signed URLs, orphan cleanup, dan retensi 365 hari.
-- [x] Seluruh 613 heading skenario M04 dipetakan sebagai kandidat MVP ber-REQ atau backlog/out-of-scope; enam alur E2E dihitung terpisah. Pemetaan masih menunggu technical sign-off pemilik.
+- [x] Seluruh 613 heading skenario M04 dipetakan sebagai kandidat MVP ber-REQ atau backlog/out-of-scope; enam alur E2E dihitung terpisah dan tetap menunggu eksekusi runtime.
 - [x] Keputusan bisnis yang memengaruhi schema dan saldo telah dijawab atau secara eksplisit dikeluarkan dari MVP pada 2026-10-30.
 - [ ] Commands, project structure, dan testing strategy menjadi executable saat scaffold M06; strategi verifikasi sudah dirancang.
 - [x] Pemilik mengonfirmasi signup Vercel Hobby berhasil tanpa kartu pada 2026-10-30. Kuota usage dan perilaku fail-closed dirancang dalam FSD; implementasi dilakukan saat M06.
@@ -178,3 +178,5 @@ Tech Stack Lock Opsi A sudah disetujui `zeenn` pada 2026-10-30 dan signup tanpa 
 ## Perintah yang masih TBD
 
 `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e`, `db:migrate`, dan `db:seed` akan ditetapkan bersama `package.json` saat scaffold aplikasi M06 dimulai; stack sudah dikunci.
+
+

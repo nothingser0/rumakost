@@ -2,7 +2,7 @@
 
 ## 1. Document Metadata
 
-- **Status**: Draf untuk review teknis; belum disetujui untuk implementasi
+- **Status**: Ditinjau dan disetujui sebagai acuan implementasi M06 melalui technical sign-off pemilik pada 2026-10-31; walkthrough E2E tetap belum dieksekusi
 - **Produk**: Sistem Manajemen Kost Mandiri (RumaKost)
 - **Delivery**: Demo portfolio non-komersial
 - **Baseline scope**: Satu properti, tujuh kelompok fitur P0, 22 story
@@ -118,4 +118,4 @@ Gunakan identitas dan kontak sintetis. Jangan menyimpan NIK, dokumen identitas, 
 
 - Persetujuan scope: tercatat pada `docs/pm/PROJECT_STATE.md` dan `SCOPE_STATEMENT.md`.
 - Tech Stack Lock: `zeenn`, 2026-10-30, tercatat pada `M05-TECHNICAL-SPEC-DRAFT.md`.
-- **Review PRD dan technical sign-off M05: menunggu review manusia.**
+- Review PRD/FSD dan technical sign-off M05 disetujui `zeenn` pada 2026-10-31; persetujuan mencakup spesifikasi dan stack, bukan implementasi atau hasil runtime.

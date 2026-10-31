@@ -3,7 +3,11 @@
 - **Tanggal:** 2026-10-30
 - **Cakupan:** 613 skenario WF-01 sampai WF-12, enam acceptance walkthrough E2E, Frozen Scope M02, PRD, FSD, dan draft ERD/API M05.
 - **Metode:** review konsistensi dokumen; tidak menjalankan aplikasi atau mengklaim hasil runtime.
-- **Hasil:** temuan benturan scope yang tercatat telah diterapkan ke crosswalk dan spesifikasi. Acceptance walkthrough telah diselaraskan dengan tujuh kelompok P0. Technical sign-off manusia tetap terbuka.
+- **Hasil pada 2026-10-30:** temuan benturan scope yang tercatat telah diterapkan ke crosswalk dan spesifikasi. Acceptance walkthrough telah diselaraskan dengan tujuh kelompok P0. Technical sign-off saat itu masih terbuka.
+
+## Pembaruan status (2026-10-31)
+
+Pemilik menyelesaikan review teknis dan memberi sign-off M05 pada 2026-10-31; lihat catatan persetujuan di `docs/specs/FSD.md` dan status terkini di `docs/pm/PROJECT_STATE.md`. Sign-off berlaku untuk spesifikasi dan stack, bukan implementasi atau pengujian runtime. TODO M06 harus menyelesaikan benturan antara layar sitemap dan batas scope M02 sebelum implementasi dimulai.
 
 ## Rekonsiliasi inventaris
 

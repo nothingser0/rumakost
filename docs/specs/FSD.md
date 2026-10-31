@@ -1,15 +1,15 @@
-# Functional Specification Document (FSD) — RumaKost
+# Functional Specification Document (FSD) â€” RumaKost
 
 ## 1. Document Metadata
 
 - **System / Application Name**: Sistem Manajemen Kost Mandiri (RumaKost)
 - **Project Scale**: Medium; satu properti, tujuh kelompok P0
-- **Document Status**: Draf untuk review teknis manusia; belum disetujui untuk implementasi
+- **Document Status**: Ditinjau dan disetujui sebagai acuan implementasi M06 melalui technical sign-off pemilik pada 2026-10-31; runtime belum diverifikasi
 - **PRD Reference**: `docs/specs/PRD.md`
 - **Design Reference**: `docs/specs/DESIGN_SPEC.md`, `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`
 - **Data/API model**: `docs/architecture/M05-DATA-API-SPEC-DRAFT.md`
 - **Technical stack and rationale**: `docs/architecture/M05-TECHNICAL-SPEC-DRAFT.md`
-- **Greenfield assessment**: N/A — repository currently contains product and design documents/prototypes, not an application codebase.
+- **Greenfield assessment**: N/A â€” repository currently contains product and design documents/prototypes, not an application codebase.
 
 ### Batas domain hasil crosswalk M04
 
@@ -31,11 +31,11 @@ flowchart LR
   D --> L[Append-only audit and financial records]
 ```
 
-Trust boundaries: browser input is untrusted; server actions and route handlers authenticate and authorize each operation; database and object storage credentials are server-only; tenants are isolated by explicit ownership predicates. The MVP has one property, so multi-tenant RLS is N/A — single property and `Intake-Branch-Hierarchy: no`; application authorization remains mandatory.
+Trust boundaries: browser input is untrusted; server actions and route handlers authenticate and authorize each operation; database and object storage credentials are server-only; tenants are isolated by explicit ownership predicates. The MVP has one property, so multi-tenant RLS is N/A â€” single property and `Intake-Branch-Hierarchy: no`; application authorization remains mandatory.
 
-**Existing Repository Assessment**: N/A — no existing application codebase. Design prototypes are HTML/CSS/JavaScript artifacts and are not treated as production source or security controls.
+**Existing Repository Assessment**: N/A â€” no existing application codebase. Design prototypes are HTML/CSS/JavaScript artifacts and are not treated as production source or security controls.
 
-**Caching**: N/A — no application cache at the expected demo scale. Authenticated and private responses use non-public cache directives. **Pemrosesan terjadwal**: pakai satu pemanggilan Vercel Cron per hari untuk invoice yang jatuh tempo dan pembersihan retensi; operasi harus idempotent karena jadwal Hobby dibatasi harian dan waktunya dapat bergeser dalam satu jam. Handler menolak request tanpa Bearer `CRON_SECRET`. Jika Cron tidak tersedia pada project, hentikan otomatisasi dan lakukan tindakan Owner manual tanpa menambah biaya.
+**Caching**: N/A â€” no application cache at the expected demo scale. Authenticated and private responses use non-public cache directives. **Pemrosesan terjadwal**: pakai satu pemanggilan Vercel Cron per hari untuk invoice yang jatuh tempo dan pembersihan retensi; operasi harus idempotent karena jadwal Hobby dibatasi harian dan waktunya dapat bergeser dalam satu jam. Handler menolak request tanpa Bearer `CRON_SECRET`. Jika Cron tidak tersedia pada project, hentikan otomatisasi dan lakukan tindakan Owner manual tanpa menambah biaya.
 
 ### 2.2 Relational Database Schema
 
@@ -257,13 +257,13 @@ Pencegahan kontrak bertabrakan membutuhkan exclusion constraint PostgreSQL denga
 - **React / React DOM**: 19.3.1 / 19.3.1
 - **Language / Runtime**: TypeScript 5.9.3; Node.js 24.x (tersedia di Vercel; [`engines.node`](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions))
 - **Database Engine**: PostgreSQL (Neon Free)
-- **ORM**: Prisma (exact package version to be pinned at scaffold after registry verification)
-- **Authentication**: Neon Auth managed (beta; exact SDK version to be pinned at scaffold)
+- **ORM**: Prisma 7.10.1 with `@prisma/adapter-neon` 7.10.1; versions pinned after registry verification
+- **Authentication**: Neon Auth managed; use the branch Auth URL and provider-managed sessions. SDK integration is handled in M06-SETUP-06 after its peer dependencies are verified.
 - **Object storage**: Neon Object Storage private buckets (beta)
-- **Validation**: Zod 4.6.7 candidate; compatibility must be verified before first use
+- **Validation**: Zod 4.6.7, registry-checked and pinned for server environment validation in M06-SETUP-05
 - **Form state**: React Hook Form 7.91.0 candidate; compatibility must be verified before first use
 - **UI styling**: CSS from the approved prototype; Tailwind not selected
-- **Tooling pinned at M06 scaffold (2026-10-31)**: `create-next-app` 16.4.3; `eslint` 10.14.0; `eslint-config-next` 16.4.3; TypeScript 5.9.3; `@types/node` 24.19.2; `@types/react` and `@types/react-dom` 19.3.0. Registry and peer checks performed before install; exact resolution recorded in `package-lock.json`.
+- **Tooling pinned at M06 scaffold (2026-10-31)**: `create-next-app` 16.4.3; `eslint` 10.14.0 with `@next/eslint-plugin-next` 16.4.3; TypeScript 5.9.3; `@types/node` 24.19.2; `@types/react` and `@types/react-dom` 19.3.0. Registry and peer checks performed before install; exact resolution recorded in `package-lock.json`.
 
 ### 2.4 Architecture Decision Record
 
@@ -310,7 +310,7 @@ SEC-04 Information disclosure | Contact, lease, finance and ticket data | Data m
 SEC-05 Ticket media exposure | Private photos/videos | Neon private bucket, random opaque keys, server MIME/signature/size/duration checks, authorization before short-lived signed URL, private cache controls, orphan cleanup and deletion after 365 days. | Attempt public access, expired URL, cross-tenant fetch, spoofed MIME, oversized media, and retention cleanup. |
 SEC-06 Injection and unsafe content | Form fields, comments, search and file names | Schema validation on server, parameterized Prisma queries, output escaping, safe text-only rendering for user prose, normalized filenames not used as object keys. | XSS payload tests, malformed input tests, SQL injection probes and filename traversal attempts. |
 SEC-07 Denial of service/cost exhaustion | Auth, media uploads, database and free-tier quotas | Rate limits on authentication and upload intents; bounded pagination; server-side file quota of 40 MB/ticket and internal storage cap 4 GB/project; reject upload when cap is reached; no automatic paid upgrade. | Burst and quota-exhaustion tests, verify fail-closed behavior and no upload after cap. |
-SEC-08 Repudiation/data loss | Financial mutations and demo continuity | Append-only audit event for sensitive actions; managed provider encryption at rest and HTTPS in transit; daily logical export/snapshot if free plan supports it. Proposed portfolio RPO 24 hours, RTO 8 hours; test restore procedure before technical sign-off. No application AES-256-GCM layer unless a concrete field-level threat requires it. | Confirm provider encryption evidence, audit completeness, backup availability and restore drill. |
+SEC-08 Repudiation/data loss | Financial mutations and demo continuity | Append-only audit event for sensitive actions; managed provider encryption at rest and HTTPS in transit; daily logical export/snapshot if free plan supports it. Proposed portfolio RPO 24 hours, RTO 8 hours; perform and record the restore drill during M07 before release readiness. No application AES-256-GCM layer unless a concrete field-level threat requires it. | Confirm provider encryption evidence, audit completeness, backup availability and restore drill. |
 
 **Encryption at rest**: rely on Neon/Vercel managed encryption for provider storage; application-level AES-256-GCM is not selected because the MVP excludes identity documents, bank details, and payment receipts, and managed data storage is already the chosen boundary. Secrets use provider environment-variable storage and are never committed. **OWASP**: address access control, injection, session management, CSRF, XSS, SSRF, and unrestricted resource consumption at the listed enforcement points. Privacy: comply with the project's UU PDP baseline through data minimization, purpose limitation, access restriction, and deletion policy; legal review is outside this technical specification.
 
@@ -323,14 +323,14 @@ Nama variabel deployment berikut dicatat tanpa nilainya; secret tidak boleh ditu
 | `DATABASE_URL` | Server | PostgreSQL URL, non-empty | Pooled Neon runtime URL; server-only. |
 | `DIRECT_URL` | Migration only | PostgreSQL URL, non-empty | Direct Neon migration URL; never exposed to browser. |
 | `NEON_AUTH_BASE_URL` | Server | Valid HTTPS URL | Provider endpoint; public origin only if SDK requires it. |
-| `NEON_AUTH_SECRET` | Server | Non-empty high-entropy secret | Server-only; rotate through provider console. |
+| `NEON_AUTH_COOKIE_SECRET` | Server | Random secret, at least 32 characters | Signs the Neon Auth SDK's cached session cookie; application-generated and distinct from a Neon provider credential. |
 | `NEON_STORAGE_ENDPOINT` | Server | Valid HTTPS URL | Server-only storage API endpoint. |
 | `NEON_STORAGE_ACCESS_KEY` | Server | Non-empty secret | Server-only; least-privilege storage access. |
 | `NEON_STORAGE_SECRET_KEY` | Server | Non-empty secret | Server-only; rotate on suspected exposure. |
 | `APP_ORIGIN` | Server | Valid HTTPS URL outside local development | Allowed origin for redirects/CSRF checks. |
 | `CRON_SECRET` | Server | Random secret with at least 16 characters | Bearer authentication for daily scheduled route; server-only. |
 
-Buat `.env.example` dengan nilai kosong yang terdokumentasi dan modul environment server yang divalidasi Zod saat scaffold. Simpan nilai sebenarnya hanya di `.env.local` atau secret provider; jangan meminta secret lewat chat dan jangan membaca `.env.local` untuk memverifikasinya. Pastikan `.env*` diabaikan Git kecuali `.env.example`. Aplikasi gagal startup bila variabel wajib hilang/tidak valid. Rotasi secret segera jika ter-commit atau terekspos.
+Buat `.env.example` dengan nilai kosong yang terdokumentasi dan modul environment server yang divalidasi Zod saat scaffold. Neon Auth dikelola provider; aplikasi menggunakan endpoint branch `NEON_AUTH_BASE_URL` dan tidak menetapkan `NEON_AUTH_SECRET` untuk server Auth. `NEON_AUTH_COOKIE_SECRET` adalah secret lokal minimal 32 karakter yang hanya dipakai SDK untuk menandatangani cache sesi. Simpan nilai sebenarnya hanya di `.env.local` atau secret provider; jangan meminta secret lewat chat dan jangan membaca `.env.local` untuk memverifikasinya. Pastikan `.env*` diabaikan Git kecuali `.env.example`. Validasi dilakukan saat kapabilitas terkait digunakan: auth memerlukan pasangan variabel Auth, sementara database dan storage divalidasi oleh modul integrasinya. Rotasi secret segera jika ter-commit atau terekspos.
 
 ### 5.3 Privacy, retention, backups, and incident boundary
 
@@ -365,7 +365,7 @@ Ubah prototipe HTML beku menjadi komponen React Next.js sambil mempertahankan ta
 
 ## 8. Stack Decision dan Input Arsitektur
 
-### Stack Decision (LOCKED — human decision)
+### Stack Decision (LOCKED â€” human decision)
 
 Stack Decision LOCKED: Next.js App Router + TypeScript + CSS prototype system; PostgreSQL/Prisma on Neon Free; Neon Auth and private Object Storage beta; Vercel Hobby for non-commercial portfolio demo; zero paid upgrades.
 Stack-Locked-by: zeenn on 2026-10-30
@@ -376,7 +376,7 @@ Stack-Locked-by: zeenn on 2026-10-30
 - Q4 Expected Scale (Year 1): Portfolio demo, one property, up to five concurrent users, no commercial SLA; from `SCOPE_STATEMENT.md`.
 - Q5 Data Model Characteristics: Relational room/tenant/lease/invoice/payment/expense/ticket data, precise monetary values, immutable correction records, and private ticket media; from P0 scope and M04.
 - Q6 DevOps Complexity Tolerance: Low-cost, no-card setup and minimal operational overhead; owner explicitly selected no-card hosting and accepted beta for demo.
-- Q7 Critical Feature Priority: Seven P0 groups F-01–F-07, especially financial integrity, role/ownership isolation, and private maintenance media; from `SCOPE_STATEMENT.md`.
+- Q7 Critical Feature Priority: Seven P0 groups F-01â€“F-07, especially financial integrity, role/ownership isolation, and private maintenance media; from `SCOPE_STATEMENT.md`.
 - Q8 Compliance Requirements: Baseline privacy under UU PDP; no formal assurance, no real sensitive identity/banking data, synthetic demo data only; from intake and scope.
 
 ### Pilihan arsitektur dan alternatif
@@ -389,7 +389,7 @@ Stack-Locked-by: zeenn on 2026-10-30
 
 `docs/design/SCENARIO_EVALUATION.md` memuat 613 skenario WF-01 sampai WF-12 serta enam acceptance walkthrough E2E. Matriks mencatat klasifikasi scope dan lapisan verifikasi yang disarankan; status seluruh skenario adalah belum dieksekusi.
 
-Pemetaan saat ini: 498 skenario kandidat P0 ditautkan ke REQ; 115 skenario backlog/out-of-scope mencakup perluasan di luar M02. Enam E2E adalah acceptance walkthrough yang belum dieksekusi, bukan bukti PASS. Seluruh klasifikasi menunggu technical sign-off manusia.
+Pemetaan saat ini: 498 skenario kandidat P0 ditautkan ke REQ; 115 skenario backlog/out-of-scope mencakup perluasan di luar M02. Klasifikasi spesifikasi ditinjau dalam technical sign-off 2026-10-31. Enam E2E adalah acceptance walkthrough yang belum dieksekusi, bukan bukti PASS.
 
 | Walkthrough E2E | P0 yang dipertahankan | Penyesuaian agar sesuai scope M02 |
 |---|---|---|
@@ -413,8 +413,9 @@ Review teknis disetujui oleh pemilik pada 2026-10-31 setelah meninjau PRD/FSD, s
 
 ### M06 scaffold command (locked)
 
-Run from the repository root after inspecting existing files; preserve `docs/` and frozen design assets. Generate the Next.js App Router project using the locked version and npm, with TypeScript, `src/`, ESLint, and the existing CSS design system; skip dependency installation until pre-install checks complete:
+The workspace directory is named `RumaKost`, which npm rejects as a package name. From the repository root, scaffold to a temporary lowercase child directory, then merge only the generated application/configuration files into the root, preserving `docs/`, `DESIGN.md`, existing `public/` assets, and `.gitignore`. Remove the temporary scaffold directory after verifying the merged files. Use the locked version and npm with TypeScript, `src/`, ESLint, and no Tailwind; defer dependency installation until pre-install checks complete:
 
 ```powershell
-npx create-next-app@16.4.3 . --typescript --eslint --app --src-dir --import-alias "@/*" --no-tailwind --use-npm --skip-install --disable-git --yes
+npx create-next-app@16.4.3 .\rumakost --typescript --eslint --app --src-dir --import-alias "@/*" --no-tailwind --use-npm --skip-install --disable-git --yes --empty
 ```
+
