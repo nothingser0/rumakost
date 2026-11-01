@@ -133,7 +133,8 @@ EXIT_CODE=0
 | [x] | M06-DB-30 | Tutup gap integritas finansial WF-05 | `prisma/schema.prisma`, `prisma/migrations/20261101350000_wf05_financial_integrity/migration.sql`, FSD, M05 Data API, crosswalk, `TODO.md` | M06-DB-29; arahan Owner “ya rekomendasimu aja” 2026-11-01 | Tambah idempotency runtime, referensi payment, guard alokasi/review/reversal/void, dan koreksi scope draft WF-05. Pertahankan natural key invoice Lease/periode/jenis; catat keterbatasan reissue setelah VOID. | Backend/API, UI, penerbitan draft, workflow approval, apply ke Neon, `.env.local` | Prisma validate memakai URL sintetis; apply seluruh migration di PGlite dengan exclusion GiST dihilangkan karena emulator; seed dua kali; uji referensi, alokasi lintas invoice/nominal, verifikasi, overpayment invoice/line, transisi append-only, reversal penuh, void, idempotency, crosswalk 61 ID, `git diff --check`. Catat raw output di Evidence dan berhenti untuk review Owner. | WF-05 SK-01–61; PRD REQ-03/04/05; FSD; M05 Data API; Frozen Scope. Approved: 2026-11-01 by zeenn. |
 | [x] | M06-DB-31 | Audit konsistensi reversal payment terhadap saldo deposit WF-04 | `prisma/schema.prisma`, migration escrow WF-04, migration finansial WF-05, PRD/FSD/M05, `TODO.md` | M06-DB-28 dan M06-DB-30; permintaan Owner cek WF-04 2026-11-01 | Pastikan reversal pembayaran yang dialokasikan ke deposit tidak meninggalkan saldo escrow semu atau membolehkan penggunaan/refund atas setoran yang sudah direversal. Bedakan efek saat reversal sebelum dan sesudah ledger dipakai. | Mengubah schema/migration/aturan reversal sebelum keputusan Owner; backend/UI/Neon | Verifikasi 40 ID runbook dan crosswalk; cocokkan efek `COLLECTED`, `PaymentReversal`, dan saldo deposit dengan PRD/FSD/M05; dokumentasikan gap dan rekomendasi. Read-only selain TODO; berhenti untuk keputusan Owner jika aturan kompensasi belum ditetapkan. | WF-04 SK-05/11/12/34; WF-05 reversal; PRD REQ-05.3; FSD; M05 Data API; Frozen Scope. Approved: 2026-11-01 by zeenn. |
 | [x] | M06-DB-32 | Jaga saldo escrow saat reversal payment deposit | `prisma/schema.prisma`, `prisma/migrations/20261101360000_deposit_collection_reversal/migration.sql`, FSD, M05 Data API, `TODO.md` | M06-DB-31; keputusan Owner “rekomendasimu aja” 2026-11-01 | Tambah event append-only `COLLECTION_REVERSED` yang ditulis atomik untuk alokasi deposit ter-posting. Saldo escrow menghitung event ini sebagai pengurang; reversal ditolak bila saldo bebas tidak cukup karena settlement/withholding/refund aktif. Tolak posting `COLLECTED` dari payment yang sudah direversal. | Backend, UI, transfer refund otomatis, apply ke Neon, `.env.local` | Prisma validate dengan URL sintetis; jalankan semua migration pada PGlite disposable dengan dua exclusion GiST dihilangkan untuk kompatibilitas; seed dua kali; uji reversal deposit penuh/campuran, kompensasi otomatis, reversal sebelum ledger post, penolakan jika dana terpakai/direservasi, atomic rollback, crosswalk WF-04, `git diff --check`. Catat raw output dan berhenti untuk review Owner. | WF-04 SK-05/11/12/34; WF-05 reversal; PRD REQ-05.3; FSD; M05 Data API; Frozen Scope. Approved: 2026-11-01 by zeenn. |
-| [~] | M06-DB-33 | Audit akhir cakupan WF-05 setelah integritas finansial dan escrow | `docs/design/SCENARIOS_WF05.md`, `docs/design/SCENARIO_EVALUATION.md`, Prisma schema/migrations, PRD/FSD/M05 Data API, `TODO.md` | M06-DB-30 dan M06-DB-32; Owner menyatakan WF-04 clear dan meminta lanjut ke WF-05 2026-11-01 | Audit ulang seluruh 61 skenario WF-05 setelah guard invoice/payment/reversal dan kompensasi escrow. Pastikan isu yang tersisa benar-benar tanggung jawab DB; pisahkan invariants transaksi/backend dan batas scope. | Implementasi schema/migration/backend atau keputusan domain baru tanpa review Owner; Neon; `.env.local` | Verifikasi hitungan 61 ID runbook dan crosswalk; telusuri void terhadap payment pending, escrow settlement terhadap status invoice, minimal satu line invoice, due date, alasan audit, serta status finansial. Catat hasil/rekomendasi di Evidence; read-only selain TODO dan berhenti untuk review Owner. | WF-05 SK-01–61; FSD REQ-04/05; PRD; M05 Data API; Frozen Scope. Menunggu review Owner. |
+| [x] | M06-DB-33 | Audit akhir cakupan WF-05 setelah integritas finansial dan escrow | `docs/design/SCENARIOS_WF05.md`, `docs/design/SCENARIO_EVALUATION.md`, Prisma schema/migrations, PRD/FSD/M05 Data API, `TODO.md` | M06-DB-30 dan M06-DB-32; Owner menyatakan WF-04 clear dan meminta lanjut ke WF-05 2026-11-01 | Audit ulang seluruh 61 skenario WF-05 setelah guard invoice/payment/reversal dan kompensasi escrow. Pastikan isu yang tersisa benar-benar tanggung jawab DB; pisahkan invariants transaksi/backend dan batas scope. | Implementasi schema/migration/backend atau keputusan domain baru tanpa review Owner; Neon; `.env.local` | Verifikasi hitungan 61 ID runbook dan crosswalk; telusuri void terhadap payment pending, escrow settlement terhadap status invoice, minimal satu line invoice, due date, alasan audit, serta status finansial. Catat hasil/rekomendasi di Evidence; read-only selain TODO dan berhenti untuk review Owner. | WF-05 SK-01–61; FSD REQ-04/05; PRD; M05 Data API; Frozen Scope. Approved: 2026-11-01 by zeenn. |
+| [x] | M06-DB-34 | Tutup gap konsistensi invoice WF-05 | `prisma/migrations/20261101370000_wf05_invoice_consistency_guards/migration.sql`, FSD, M05 Data API, `TODO.md` | M06-DB-33; Owner menyetujui rekomendasi audit WF-05 2026-11-01 | Cegah void ketika ada payment `PENDING` atau `VERIFIED` aktif; wajibkan settlement deposit menunjuk invoice `ISSUED`; tegakkan minimal satu invoice line saat transaksi commit. Tolak penerapan bila data existing memiliki invoice kosong. | Backend, UI, keputusan reissue invoice, Neon, `.env.local` | Apply seluruh migration pada PGlite disposable; uji void ditolak dengan payment pending, reject lalu void lolos, invoice verified belum direversal tetap tertahan, settlement ke invoice VOID ditolak dan ISSUED lolos, invoice kosong gagal saat commit sementara invoice ber-line lolos, preflight menolak data existing kosong. Jalankan hanya Verify task ini dan catat output mentah; `git diff --check`. | WF-05 SK-17/19/40; FSD; M05 Data API; M06-DB-33. Approved: 2026-11-01 by zeenn. |
 
 ### Evidence M06-DB-01 — AppUser (2026-10-31)
 
@@ -2153,6 +2154,49 @@ EXIT_CODE=0
 ```
 
 M06-DB-32 Approved: 2026-11-01 by zeenn.
+
+### Evidence M06-DB-34: guard konsistensi invoice WF-05 (2026-11-01)
+
+Migration `20261101370000_wf05_invoice_consistency_guards` memperketat void agar menolak payment `PENDING` dan payment `VERIFIED` tanpa reversal; pembayaran pending perlu ditolak dahulu. Guard escrow mewajibkan target `APPLIED_TO_RENT` berupa line `RENT` pada invoice `ISSUED`. Constraint trigger `DEFERRABLE INITIALLY DEFERRED` memeriksa minimal satu line pada akhir transaksi invoice. Migration juga berhenti dengan pesan eksplisit bila menemukan invoice lama tanpa line. Ketentuan dicatat pada FSD dan M05 Data/API. Tidak mengubah Prisma model karena perubahan seluruhnya berupa trigger/constraint SQL.
+
+Raw Verify seluruh 27 migration pada PGlite disposable dan aturan void/invoice line:
+
+```text
+MIGRATIONS_APPLIED=27
+PASS invoice with line commits
+PASS pending payment blocks invoice void
+PASS rejected pending payment allows invoice void
+PASS empty invoice rejected at commit
+PASS rejected empty invoice leaves no row
+VERIFY_RESULT=PASS
+```
+
+Raw Verify payment verified dan settlement deposit:
+
+```text
+PASS active verified payment blocks void
+PASS deposit settlement to VOID invoice is rejected
+PASS deposit settlement to ISSUED invoice accepted
+VERIFY_RESULT=PASS
+```
+
+Raw Verify preflight untuk data lama:
+
+```text
+PASS migration preflight rejects existing empty invoice
+VERIFY_RESULT=PASS
+```
+
+PGlite memerlukan penghilangan dua exclusion constraint GiST kamar/penghuni serta `CREATE EXTENSION btree_gist` saat apply; batasan tersebut telah diuji pada task DB terdahulu, tetapi tidak tercakup di emulator ini. Migration WF-05 baru dan semua guard terkait berhasil diterapkan. Tidak memakai Neon, tidak membaca `.env.local`, dan tidak menjalankan `npm run db:migrate`.
+
+Raw Verify `git diff --check` pada file task:
+
+```text
+warning: in the working copy of 'TODO.md', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0
+```
+
+M06-DB-34 Approved: 2026-11-01 by zeenn.
 
 ### Evidence M06-DB-33: audit akhir WF-05 setelah perubahan integritas (2026-11-01)
 

@@ -237,7 +237,9 @@ CREATE TABLE payment_reversal (
 -- are append-only. A reversal must fully reverse a verified payment with a reason.
 -- Deposit reversals append COLLECTION_REVERSED per recorded deposit allocation;
 -- the reversal is rejected when unreserved escrow cannot cover the compensation.
--- An invoice with an unreversed verified payment cannot be voided.
+-- Invoice rows must have at least one line at transaction commit. An invoice
+-- cannot be voided while any payment is pending or any verified payment remains
+-- unreversed. Deposit rent settlement must target an ISSUED invoice.
 
 CREATE TABLE expense (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
