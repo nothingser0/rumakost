@@ -4,6 +4,8 @@
 
 ## Indeks
 
+- [M06-SETUP-12](#evidence-m06-setup-12)
+
 - [M06-SETUP-06](#evidence-m06-setup-06)
 - [M06-DB-01](#evidence-m06-db-01)
 - [M06-SETUP-07](#evidence-m06-setup-07)
@@ -3328,3 +3330,308 @@ Raw Verify persetujuan:
     "result":  "PASS_M06_SETUP10_OWNER_APPROVAL"
 }
 ``
+
+<a id="evidence-m06-setup-12"></a>
+### Evidence M06-SETUP-12: cakupan task backend M06 (2026-11-01)
+
+Verifikasi awal di bawah gagal karena pemeriksa menghitung baris FE yang hanya menyebut ID BE sebagai prasyarat, dan mencari teks prasyarat `M06-DB-54` tanpa memperhitungkan bentuk daftar slash. Pemeriksa diperbaiki agar menghitung format kolom hanya untuk ID task DB/BE/AUTH dan memeriksa dependency eksplisit. Satu assertion status-summary sempat gagal karena mencari frasa yang tidak dipakai; pengecekan diselaraskan dengan teks status aktual.
+
+Raw Verify awal (gagal):
+
+```json
+{
+  "checks": {
+    "task_ids_unique": true,
+    "task_rows_have_9_columns": false,
+    "setup11_records_7_day_cancel_cleanup": true,
+    "db54_created_pending_with_actor_constraint": true,
+    "be11_depends_db54_and_implements_expiry": false,
+    "be12_depends_db54_and_cleanup": false,
+    "fsd_records_expiry": true,
+    "m05_records_expiry_and_actor_contract": true,
+    "db54_does_not_claim_implementation": true
+  },
+  "task_rows": 150,
+  "task_ids": 150,
+  "failed": [
+    "task_rows_have_9_columns",
+    "be11_depends_db54_and_implements_expiry",
+    "be12_depends_db54_and_cleanup"
+  ]
+}
+```
+
+Raw Verify ulang:
+
+```json
+{
+  "checks": {
+    "task_ids_unique": true,
+    "db_be_auth_rows_have_9_columns": true,
+    "setup11_records_7_day_cancel_cleanup": true,
+    "db54_created_pending_with_actor_constraint": true,
+    "be11_depends_db54_and_implements_expiry": true,
+    "be12_depends_db54_and_cleanup": true,
+    "fsd_records_expiry": true,
+    "m05_records_expiry_and_actor_contract": true,
+    "db54_does_not_claim_implementation": true,
+    "todo_status_summary_current": true
+  },
+  "task_rows_total": 150,
+  "db_be_auth_rows_checked": 70,
+  "unique_task_ids": 150,
+  "failed": [],
+  "result": "PASS"
+}
+```
+
+
+Crosswalk operasi M05 ke task penerapan:
+
+| Operasi M05 | Task |
+|---|---|
+| `createStaffAccount` | M06-SETUP-09 |
+| `createTenantAccount` | M06-SETUP-09 |
+| `setAccountStatus` | M06-SETUP-09; audit M06-BE-13 |
+| `updateTenantProfile` | M06-BE-16; izin Owner disetujui lewat M06-SETUP-13 |
+| `changeLoginEmail` | M06-AUTH-01 |
+| `changeOwnPassword` | M06-SETUP-07 |
+| `createFloor` / `updateFloor` / `archiveFloor` / `restoreFloor` | M06-BE-02 |
+| `createRoom` / `updateRoom` / `archiveRoom` / `restoreRoom` | M06-BE-02 |
+| `createLease` | M06-BE-03; invoice awal M06-BE-04 |
+| `requestLeaseEnd` | M06-BE-09 |
+| `endLease` / `reconcileCheckoutDeposit` | M06-BE-09 |
+| `runInvoiceGeneration` | M06-BE-05, M06-INT-03 |
+| `markInvoiceDelivered` | M06-BE-06 |
+| `voidInvoice` | M06-BE-06; DB guard M06-DB-34 |
+| `recordPayment` | M06-BE-07 |
+| `verifyPayment` / `rejectPayment` | M06-BE-08 |
+| `reversePayment` | M06-BE-08 |
+| `settleInvoiceFromDeposit` | M06-BE-09 |
+| `reconcileCheckoutDeposit` | M06-BE-09 |
+| `recordExpense` | M06-BE-10 |
+| `reverseExpense` | M06-BE-10 |
+| `setOperatingBudget` | M06-BE-10 |
+| `getFinancialReport` | M06-BE-10 |
+| `createTicketDraft` | M06-BE-11 |
+| `submitTicketDraft` / `discardTicketDraft` | M06-BE-11; expiry actor SYSTEM M06-DB-54 |
+| `updateTicket` / `assignTicket` / `cancelTicket` / `reopenTicket` | M06-BE-11 |
+| `addTicketComment` | M06-BE-11 |
+| `createUploadIntent` | M06-BE-12 |
+| `finalizeUpload` / `requestAttachment` | M06-BE-12 |
+| Cross-cutting: validasi/error domain | M06-BE-01 |
+| Cross-cutting: audit atomik | M06-BE-13 |
+| Cross-cutting: query/list/detail | M06-BE-14 |
+| Cross-cutting: dashboard/activity feed | M06-BE-15 |
+
+Semua 28 baris operasi dan 40 nama metode pada tabel M05 memiliki task penerapan; `reconcileCheckoutDeposit` tertulis dua kali di sumber dan keduanya dipetakan ke M06-BE-09. M06-SETUP-13 disetujui Owner: Tenant mengubah profil sendiri, Owner dapat mengubah profil Tenant, dan Staff read-only. Operasi cross-cutting juga memiliki task khusus.
+
+
+Raw crosswalk Verify awal setelah keputusan izin profil (sebelum operasi status akun ditambahkan):
+
+```json
+{
+  "checks": {
+    "all_28_m05_operation_rows_mapped": true,
+    "all_40_m05_methods_mapped": true,
+    "no_unmapped_operation_names": true,
+    "crosswalk_task_references_exist": true,
+    "all_task_ids_unique": true,
+    "db_be_auth_rows_have_9_columns": true,
+    "void_invoice_task_and_db_guard_mapped": true,
+    "tenant_profile_owner_tenant_staff_policy_aligned": true,
+    "tenant_profile_be16_exists_and_is_gated_by_approved_decision": true,
+    "ticket_expiry_and_system_actor_prereq_mapped": true
+  },
+  "task_ids": 152,
+  "db_be_auth_rows_checked": 71,
+  "operation_rows": 28,
+  "unique_methods": 40,
+  "crosswalk_methods": 40,
+  "unmapped_methods": [],
+  "unknown_task_refs": [],
+  "result": "PASS"
+}
+```
+
+Raw `git diff --check` output: `warning: in the working copy of 'docs/architecture/M05-DATA-API-SPEC-DRAFT.md', LF will be replaced by CRLF the next time Git touches it`; `warning: in the working copy of 'docs/specs/FSD.md', LF will be replaced by CRLF the next time Git touches it`. Exit code: `0`.
+
+### Re-audit skenario WF-01?WF-12 dan task BE (2026-11-01)
+
+Runbook memakai heading SKENARIO NN; ID matriks WF-xx-SK-xx dinormalisasi berdasarkan nomor urut. Seluruh 613 heading sumber cocok dengan 613 baris matriks. Ringkasan scope lama tidak cocok dengan label baris saat ini. Ringkasan diperbaiki menjadi 392 kandidat generik, 69 P0 eksplisit, 151 backlog/out-of-scope, dan 1 keputusan Owner terbuka. setAccountStatus kini menjadi operasi M05 ke M06-SETUP-09; audit account lifecycle ditautkan ke M06-BE-13. Kontrol auth request/rate-limit ditambahkan sebagai M06-BE-17, dan rate-limit upload intent dicantumkan pada M06-BE-12. FSD SEC-01/02/07 ditautkan ke task tersebut dan verifikasi provider M07.
+
+Temuan yang menghalangi klaim penuh:
+- WF-09-SK-12: Owner belum memutuskan apakah penonaktifan Staff diblokir sampai tiket aktif dialihkan atau tiket dialihkan dalam operasi yang sama.
+- WF-09-SK-15/SK-38: skenario menetapkan reset/undangan provider tanpa sandi sementara yang ditampilkan aplikasi; implementasi M06-SETUP-09 sekarang mengembalikan dan menampilkan temporaryPassword. Ini perlu keputusan Owner.
+- Tidak ada bukti runtime seluruh skenario; crosswalk per workflow menunjukkan task pemilik dan bukan hasil test.
+
+Raw Verify re-audit:
+
+```json
+{
+  "checks": {
+    "12_sources_613_numbered_headings": true,
+    "evaluation_ids_cover_source_heading_sequences": true,
+    "workflow_counts_match_sources": true,
+    "scope_summary_matches_rows": true,
+    "scope_summary_synced_across_docs": true,
+    "stale_scope_totals_removed": true,
+    "only_open_owner_scenario_wf09_sk12": true,
+    "scenario_crosswalk_covers_all_12": true,
+    "scenario_crosswalk_task_refs_exist": true,
+    "m05_29_rows_41_methods_mapped": true,
+    "set_account_status_mapped": true,
+    "task_ids_153_unique": true,
+    "db_be_auth_rows_complete": true,
+    "be12_upload_rate_limit": true,
+    "be13_account_audit": true,
+    "be17_auth_security": true,
+    "test02_covers_be17_auth01": true,
+    "fsd_security_traceability": true,
+    "account_password_conflict_recorded": true,
+    "be_implementation_not_started": true
+  },
+  "source_files": 12,
+  "source_scenario_headings": 613,
+  "evaluation_scenario_rows": 613,
+  "source_workflow_counts": {
+    "WF-01": 64,
+    "WF-02": 75,
+    "WF-03": 57,
+    "WF-04": 40,
+    "WF-05": 61,
+    "WF-06": 55,
+    "WF-07": 50,
+    "WF-08": 68,
+    "WF-09": 90,
+    "WF-10": 26,
+    "WF-11": 13,
+    "WF-12": 14
+  },
+  "scope_counts": {
+    "generic_mvp": 392,
+    "explicit_mvp": 69,
+    "all_mvp": 461,
+    "backlog_out_of_scope": 151,
+    "owner_decisions": 1
+  },
+  "m05_operation_rows": 29,
+  "m05_unique_methods": 41,
+  "crosswalk_unique_methods": 41,
+  "unmapped_methods": [],
+  "task_ids": 153,
+  "db_be_auth_rows": 72,
+  "scenario_crosswalk_task_refs_checked": 25,
+  "open_owner_scenarios": [
+    "WF-09-SK-12"
+  ],
+  "failed": [],
+  "result": "PASS"
+}
+```
+
+Status: dokumentasi dan task register diperbarui; belum mengimplementasikan backend, schema, atau migration. M06-DB-54 menunggu review/eksekusi DB. M06-SETUP-12 menunggu review Owner.
+
+#### Keputusan Owner WF-09 dan tindak lanjut kredensial (2026-11-01)
+
+Owner menyetujui dua kebijakan: (1) penonaktifan Staff diblokir sampai setiap tiket aktif dialihkan manual kepada Staff aktif lain atau Owner; transfer dan histori assignment dipertahankan serta diaudit, dan transfer terpisah dari deaktivasi; (2) onboarding/reset kredensial memakai email provider, tanpa aplikasi membuat/mengembalikan/menampilkan sandi sementara atau token reset. Dukungan email provider harus lulus verifikasi M07; bila tidak tersedia, menjadi blocker tanpa fallback sandi aplikasi.
+
+WF-09-SK-12 diperbarui dari keputusan terbuka menjadi perilaku P0; WF-09-SK-68 menegaskan modal transfer atomik dan role Teknisi berada di backlog. WF-01-SK-22/43/44 diganti ke alur kredensial provider. SCR-01C tidak memiliki route aplikasi. M06-BE-18 ditambahkan untuk implementasi kebijakan akun dan offboarding; kode aplikasi belum diubah. `src/actions/users.ts` dan UI direktori akun masih mengembalikan/menampilkan sandi sementara, sehingga kebijakan telah diputuskan tetapi kode belum sesuai sampai M06-BE-18 dijalankan.
+
+Raw Verify dokumentasi M06-SETUP-12:
+
+```json
+{
+  "checks": {
+    "12_workflow_sources_and_613_headings": true,
+    "evaluation_covers_all_source_ids": true,
+    "scope_counts_synced_392_70_151_0": true,
+    "no_open_owner_scenario": true,
+    "wf09_staff_offboarding_policy_in_source_and_crosswalk": true,
+    "no_combined_or_automatic_staff_transfer": true,
+    "credential_policy_synced_with_account_contract": true,
+    "wf01_activation_and_legacy_scenarios_revised": true,
+    "activation_route_deferred_in_design_and_todo": true,
+    "be18_registered_once_and_integration_tested": true,
+    "m05_29_rows_41_unique_methods": true,
+    "task_ids_154_unique": true,
+    "db_be_auth_rows_73": true,
+    "setup12_waiting_owner_review": true,
+    "current_temporary_password_code_remains_followup_gap": true,
+    "evidence_contains_current_pass_and_known_gap": true,
+    "no_application_code_changed": true
+  },
+  "workflow_counts": {
+    "WF-01": 64,
+    "WF-02": 75,
+    "WF-03": 57,
+    "WF-04": 40,
+    "WF-05": 61,
+    "WF-06": 55,
+    "WF-07": 50,
+    "WF-08": 68,
+    "WF-09": 90,
+    "WF-10": 26,
+    "WF-11": 13,
+    "WF-12": 14
+  },
+  "source_scenario_headings": 613,
+  "evaluation_scenario_rows": 613,
+  "scope_counts": {
+    "generic_mvp": 392,
+    "explicit_mvp": 70,
+    "backlog_out_of_scope": 151,
+    "owner_decisions": 0
+  },
+  "m05_operation_rows": 29,
+  "m05_method_references": 42,
+  "m05_unique_methods": 41,
+  "task_ids": 154,
+  "db_be_auth_rows": 73,
+  "failed": [],
+  "result": "PASS"
+}
+```
+
+Raw `git diff --check`: output kosong; `EXIT_CODE=0`. Verifikasi memastikan tidak ada file aplikasi berubah. M06-SETUP-12 tetap menunggu review Owner; task BE belum dimulai.
+
+#### Persetujuan Owner dan verifikasi status M06-SETUP-12 (2026-11-01)
+
+Owner menyetujui hasil review M06-SETUP-12 melalui "approve". Status task ditandai `[x]` dan `Approved: 2026-11-01 by zeenn` dicatat di `TODO.md`. Audit cakupan sebelumnya tetap PASS: 613 skenario sumber dan 613 baris evaluasi, 41 metode M05 unik, 154 ID task, dan 73 task DB/BE/AUTH. M06-DB-54 tetap pending sebagai prasyarat M06-BE-11/12; implementasi BE belum dimulai.
+
+Raw Verify setelah persetujuan:
+
+```json
+{
+  "checks": {
+    "setup12_marked_approved": true,
+    "approval_recorded": true,
+    "status_summary_includes_approved_setup_range": true,
+    "all_18_be_tasks_registered": true,
+    "auth_email_change_task_registered": true,
+    "db_be_auth_rows_total_73": true,
+    "task_ids_unique_154": true,
+    "prior_source_and_evaluation_coverage_pass": true,
+    "prior_m05_methods_mapped": true,
+    "no_owner_scenario_left_open": true,
+    "db54_still_pending_before_be11_and_be12": true,
+    "be_implementation_still_not_started": true,
+    "git_diff_check_exit_zero": true
+  },
+  "be_tasks": 18,
+  "auth_tasks": 1,
+  "task_ids": 154,
+  "db_be_auth_rows": 73,
+  "prior_coverage": {
+    "source_scenarios": 613,
+    "evaluation_rows": 613,
+    "m05_unique_methods": 41
+  },
+  "git_diff_check_exit_code": 0,
+  "git_diff_check_output": "",
+  "failed": [],
+  "result": "PASS"
+}
+```
+
+`EXIT_CODE=0`

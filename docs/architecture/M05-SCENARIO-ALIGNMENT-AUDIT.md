@@ -27,7 +27,7 @@ Pemilik menyelesaikan review teknis dan memberi sign-off M05 pada 2026-10-31; li
 | WF-12 | 14 |
 | **Total** | **613, tanpa ID hilang/duplikat** |
 
-Hasil klasifikasi yang kini tercatat di `SCENARIO_EVALUATION.md`: **498 kandidat P0** dan **115 backlog/out-of-scope**. Angka ini adalah pemetaan scope; bukan pernyataan bahwa semua skenario kompatibel sebagai satu fitur atau telah diuji.
+Hasil klasifikasi terbaru di `SCENARIO_EVALUATION.md`: 392 kandidat generik, 70 P0 eksplisit, 151 backlog/out-of-scope, dan 0 keputusan Owner terbuka; total 613. Keputusan Owner WF-09-SK-12 dicatat pada 2026-11-01. Kebijakan onboarding tanpa sandi sementara juga diputuskan, tetapi implementasinya masih menjadi blocker M06-BE-18 dan menunggu verifikasi provider M07. Angka ini adalah pemetaan scope, bukan pernyataan bahwa semua skenario kompatibel sebagai satu fitur atau telah diuji.
 
 ## Perbaikan yang diterapkan
 

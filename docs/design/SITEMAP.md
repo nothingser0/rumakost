@@ -55,7 +55,7 @@ Navigasi mandiri khusus penyewa kamar terisolasi:
 | **SCR-01** | `/login` | Publik / Semua Role | Hub masuk split-screen 3D dengan pemilih 3 peran (Pemilik, Staf, Penghuni). |
 | **SCR-01A** | `/lupa-sandi` | Publik / Guest | Pengajuan pemulihan kata sandi (instruksi kontak WhatsApp Pemilik atau email). |
 | **SCR-01B** | `/reset-sandi` | Publik (Token Valid) | Formulir pembuatan kata sandi baru pasca-validasi token pemulihan. |
-| **SCR-01C** | `/aktivasi-sandi` | Staf & Penghuni Baru | Modal/Layar paksa ganti kata sandi sementara saat login perdana (*First-Time Forced Change*). |
+| **SCR-01C** | — (alur Neon Auth) | Staf & Penghuni Baru | Tidak ada route aplikasi; aktivasi kredensial dilakukan melalui email/provider, tanpa sandi sementara atau forced password change. |
 
 ---
 
@@ -160,7 +160,7 @@ Navigasi mandiri khusus penyewa kamar terisolasi:
 | **Kelola Progres Tiket & Komentar**| Ya | Ya | Thread Diskusi Saja | Mengubah status dari Diterima s.d. Selesai. |
 | **Papan Pengumuman & Broadcast** | Ya | Ya | Baca Banner Pengumuman | Notifikasi massal pemadaman/aturan. |
 | **Ganti Kata Sandi Mandiri** | Ya (`/profil`) | Ya (`/profil`) | Ya (`/portal/profil`) | Form mandiri untuk seluruh peran login. |
-| **Aktivasi Sandi Perdana** | - | Ya (`/aktivasi-sandi`) | Ya (`/aktivasi-sandi`) | Intersepsi pergantian password sementara. |
+| **Aktivasi Kredensial Provider** | Neon Auth | Neon Auth | Neon Auth | Aktivasi kredensial melalui email/provider; tidak ada route sandi sementara di aplikasi. |
 | **Log Jejak Audit (*Audit Trail*)**| **Ya (Owner-Only)**| ❌ Ditolak | ❌ Ditolak | Rekam jejak siapa input bayar / ganti status. |
 
 ---

@@ -28,7 +28,7 @@ Inventori berikut disalin dari seluruh baris screen pada sitemap M04. Rute fitur
 | **SCR-01** | `/login` | Publik / Semua Role | Hub masuk split-screen 3D dengan pemilih 3 peran (Pemilik, Staf, Penghuni). |
 | **SCR-01A** | `/lupa-sandi` | Publik / Guest | Pengajuan pemulihan kata sandi (instruksi kontak WhatsApp Pemilik atau email). |
 | **SCR-01B** | `/reset-sandi` | Publik (Token Valid) | Formulir pembuatan kata sandi baru pasca-validasi token pemulihan. |
-| **SCR-01C** | `/aktivasi-sandi` | Staf & Penghuni Baru | Modal/Layar paksa ganti kata sandi sementara saat login perdana (*First-Time Forced Change*). |
+| **SCR-01C** | — (alur Neon Auth) | Staf & Penghuni Baru | Deferred: aktivasi kredensial dilakukan melalui email/provider; tidak ada route aplikasi untuk sandi sementara atau forced password change. |
 | **SCR-02** | `/dashboard` | Pemilik & Staf | Dasbor ringkasan: metrik gauge okupansi, double bar chart arus kas, kartu properti, dan status cepat kamar. |
 | **SCR-03** | `/kamar` | Pemilik & Staf | Katalog 15 unit kamar: filter lantai, badge ketersediaan (Terisi, Kosong, Perbaikan, Dibersihkan). |
 | **SCR-04** | `/kamar/:id` | Pemilik & Staf | Detail unit: inventaris fasilitas kamar, riwayat kontrak, penghuni aktif, checklist inspeksi. |

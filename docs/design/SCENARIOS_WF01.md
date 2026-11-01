@@ -46,7 +46,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 | **USR-03** | **Penghuni Kost (Tenant)** | Budi Santoso (Penghuni) | `budi.penghuni@rumakost.id` | `password123` | Kamar A-04 (Lantai 1) | `WF-10-portal-penghuni.html` (`/portal`) | **Portal Mandiri Kamar (Isolasi Data)**: Terkunci pada data Kamar A-04 miliknya sendiri. Hanya dapat melihat tagihan miliknya, konfirmasi transfer pembayaran, dan pengajuan laporan kerusakan wajib foto/video (`WF-11`). |
 | **USR-04** | **Staf Nonaktif (Disabled)** | Joko Supriyanto | `joko.nonaktif@rumakost.id` | `password123` | - (Akses Dicabut) | Ditolak (`HTTP 403 Forbidden`) | **Akses Dibekukan**: Akun dinonaktifkan oleh Pemilik di `WF-09`. Dilarang login ke sistem. |
 | **USR-05** | **Penghuni Alumni (Expired)** | Siti Rahmawati | `siti.alumni@rumakost.id` | `password123` | Kamar B-01 (Mantan Penghuni)| `WF-10-portal-penghuni.html` (Read-Only) | **Mode Arsip Terbatas**: Kontrak sewa telah berakhir. Hanya dapat mengunduh riwayat kuitansi lama; pembuatan tiket baru dikunci. |
-| **USR-06** | **Staf Baru (First Login)** | Ahmad Zaelani | `ahmad.staf@rumakost.id` | `RumaKost#2026!` | Operasional Gedung | Modal Ganti Sandi Sementara | **Force Password Change**: Akun baru dengan kredensial bawaan. Wajib mengganti kata sandi baru sebelum dapat mengakses sistem. |
+| **USR-06** | **Staf Baru (First Login)** | Ahmad Zaelani | `ahmad.staf@rumakost.id` | Ditetapkan melalui email aktivasi Neon Auth | Operasional Gedung | Alur kredensial Neon Auth | **Onboarding provider**: akun dibuat Owner; Staf menetapkan kredensial melalui email provider sebelum masuk. Aplikasi tidak menerbitkan sandi sementara. |
 | **USR-07** | **Penghuni Multi-Kamar** | Hendra Kusuma | `hendra.multi@rumakost.id` | `password123` | Kamar A-04 & Kamar A-05 | `WF-10-portal-penghuni.html` (Unit Selector) | **Penyewa Multi-Unit (1 Properti)**: Menyewa 2 kamar sekaligus di kost yang sama. Sistem menyediakan unit switcher kamar aktif di portal. |
 | **USR-08** | **Calon Penghuni (Future Lease)**| Reza Firmansyah | `reza.calon@rumakost.id` | `password123` | Kamar C-01 (Check-in Mendatang) | `WF-10-portal-penghuni.html` (Pending State) | **Pra-Hunian (Pending Check-in)**: Akun dibuat oleh Pemilik, kontrak sewa baru mulai berlaku tanggal 1 bulan depan. Portal menyajikan hitung mundur check-in. |
 | **USR-09** | **Penghuni Menunggak (Suspended)**| Deni Pratama | `deni.tunggakan@rumakost.id` | `password123` | Kamar B-03 (Tunggakan >30 Hari) | Ditolak (`HTTP 403 Forbidden`) | **Akses Ditangguhkan**: Penghuni memiliki keterlambatan pembayaran sewa melebihi ambang batas toleransi. Akses sistem dibekukan sementara hingga melunasi tagihan ke Pemilik. |
@@ -371,18 +371,18 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 
 ---
 
-### SKENARIO 22 (SK-22): Login Pertama Kali & Wajib Ganti Kata Sandi Sementara (First-Time Login Force Change)
-- **Tujuan**: Memverifikasi alur onboarding akun staf baru yang didaftarkan oleh Pemilik dengan kata sandi sementara bawaan.
-- **Kondisi Awal**: Pemilik telah mendaftarkan staf baru di `WF-09` dengan email `ahmad.staf@rumakost.id`, password sementara `RumaKost#2026!`, dan flag `must_change_password: true`.
+### SKENARIO 22 (SK-22): Aktivasi Akun Staf melalui Email Provider
+- **Tujuan**: Memverifikasi onboarding akun Staf melalui email aktivasi Neon Auth tanpa sandi sementara yang dibuat aplikasi.
+- **Kondisi Awal**: Owner membuat akun Staf `ahmad.staf@rumakost.id`; alur email Neon Auth harus dibuktikan pada verifikasi provider M07.
 - **Langkah-langkah**:
-  1. Pilih tab peran "Staf Pengelola".
-  2. Masukkan email `ahmad.staf@rumakost.id` dan password sementara `RumaKost#2026!`.
-  3. Klik "Masuk ke Akun".
+  1. Staf membuka email provider yang dikirim setelah Owner membuat akun.
+  2. Staf menyelesaikan aktivasi dan menetapkan sandi melalui Neon Auth.
+  3. Staf membuka aplikasi, memilih peran "Staf Pengelola", lalu masuk dengan kredensial provider.
 - **Hasil Diharapkan**:
-  - Kredensial terverifikasi valid, namun sistem mendeteksi flag `must_change_password: true`.
-  - Sistem mencegat pengalihan ke dasbor dan memunculkan modal perantara terisolasi: *"Aktivasi Akun · Buat Kata Sandi Baru"*.
-  - Pengguna wajib memasukkan sandi baru (minimal 8 karakter, kombinasi huruf & angka) serta mengonfirmasinya.
-  - Setelah berhasil disimpan, flag berubah menjadi `must_change_password: false` dan pengguna diarahkan ke dasbor perannya.
+  - Aplikasi tidak membuat, mengembalikan, menampilkan, atau menyimpan sandi sementara maupun token provider.
+  - Pengguna yang belum menyelesaikan aktivasi provider tidak memperoleh sesi aplikasi atau akses route terlindungi.
+  - Setelah aktivasi berhasil, sesi dan role STAFF dibaca dari sumber otoritatif dan pengguna diarahkan ke dasbor Staf.
+  - Email, aktivasi, dan login provider harus diverifikasi pada M07; prototipe bukan bukti PASS.
 
 ---
 
@@ -669,36 +669,33 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 
 ---
 
-### SKENARIO 43 (SK-43): Penanganan Pembatalan / Penutupan Paksa Modal Ganti Sandi Pertama Kali (Mandatory Onboarding Interruption)
-- **Tujuan**: Menjamin integritas keamanan akun pengguna baru tetap terjaga saat dialog pergantian kata sandi wajib ditutup atau dibatalkan oleh pengguna.
-- **Kondisi Awal**: Staf baru `ahmad.staf@rumakost.id` memasukkan kata sandi sementara (`RumaKost#2026!`) dan modal aktivasi `#modalForceChangePassword` muncul di layar.
+### SKENARIO 43 (SK-43): Aktivasi Provider Ditinggalkan Sebelum Selesai
+- **Tujuan**: Memastikan akun yang belum menyelesaikan aktivasi Neon Auth tidak memperoleh sesi atau akses aplikasi.
+- **Kondisi Awal**: Staf baru menerima email aktivasi provider tetapi meninggalkan halaman provider sebelum proses selesai.
 - **Langkah-langkah**:
-  1. Klik tombol "Batal" (`.btn-modal-cancel`), tombol silang "X" (`.btn-modal-close`), atau tekan tombol `Escape` (ESC).
-  2. Amati status formulir login dan hak akses pengguna.
+  1. Tutup halaman provider sebelum aktivasi selesai.
+  2. Buka aplikasi dan coba masuk dengan akun tersebut.
+  3. Coba membuka route terlindungi secara langsung.
 - **Hasil Diharapkan**:
-  - Sesi sementara yang diterbitkan saat login perdana dicabut seketika (*temporary token revoked*).
-  - Modal ditutup, form kata sandi di layar utama dibersihkan (`inputPassword.value = ''`), dan tombol submit dikembalikan ke status siap klik (*resetButtonState*).
-  - Pengguna TIDAK dialihkan ke dasbor/portal, melainkan tetap berada di `WF-01-login.html`.
-  - Muncul toast pemberitahuan informatif: *"Aktivasi akun ditunda. Silakan masuk kembali saat Anda siap mengganti kata sandi."*
-  - Akun tetap berstatus `must_change_password` pada percobaan masuk berikutnya hingga kata sandi baru berhasil disimpan.
+  - Provider menolak login yang belum memenuhi status kredensial/aktivasi yang diwajibkan.
+  - Aplikasi tidak membuat sesi sementara dan tidak mengarahkan pengguna ke route terlindungi.
+  - Aplikasi tidak menampilkan atau menyimpan sandi/token sementara.
+  - Perilaku aktivasi ulang atau kedaluwarsa mengikuti kemampuan provider yang dibuktikan di M07; jangan mengasumsikan masa berlaku tertentu.
 
 ---
 
-### SKENARIO 44 (SK-44): Validasi Integritas Kata Sandi Baru pada Modal Aktivasi (Password Re-use, Complexity & Confirmation Guard)
-- **Tujuan**: Mencegah staf/penghuni baru menggunakan kembali kata sandi sementara atau membuat kata sandi baru yang lemah dan tidak cocok dengan konfirmasinya.
-- **Kondisi Awal**: Pengguna staf baru berada pada modal aktivasi `#modalForceChangePassword`.
+### SKENARIO 44 (SK-44): Penetapan Kredensial Ditangani Neon Auth
+- **Tujuan**: Memastikan pembuatan/reset kredensial mengikuti kebijakan Neon Auth, tanpa aplikasi menerima atau menyimpan sandi.
+- **Kondisi Awal**: Pengguna baru membuka alur aktivasi/reset yang dimulai dari email provider.
 - **Langkah-langkah**:
-  1. Masukkan kata sandi baru yang identik dengan kata sandi bawaan sementara: `RumaKost#2026!`.
-  2. Coba klik tombol "Simpan & Masuk ke Dasbor".
-  3. Masukkan kata sandi yang kurang dari 8 karakter (misal: `abc12`).
-  4. Masukkan kata sandi baru tanpa kombinasi angka (misal: `hanyahurufaja`).
-  5. Masukkan kata sandi baru `RumaKost2026Baru` namun ketik konfirmasi `RumaKost2026Beda`.
+  1. Masukkan sandi baru pada alur Neon Auth.
+  2. Coba nilai yang ditolak kebijakan provider dan amati validasi provider.
+  3. Masukkan sandi yang diterima provider dan selesaikan aktivasi/reset.
+  4. Masuk ke aplikasi dengan kredensial baru.
 - **Hasil Diharapkan**:
-  - Langkah 1-2 ditolak dengan toast error: *"Kata sandi baru tidak boleh sama dengan kata sandi sementara."*
-  - Langkah 3 ditolak dengan error: *"Kata sandi baru minimal 8 karakter dan tidak boleh hanya berisi spasi."*
-  - Langkah 4 ditolak dengan error: *"Kata sandi baru wajib mengandung kombinasi huruf dan angka."*
-  - Langkah 5 ditolak dengan error: *"Konfirmasi kata sandi tidak cocok. Silakan periksa kembali."*
-  - Perubahan kredensial hanya diproses dan disimpan ke database jika seluruh kriteria integritas terpenuhi.
+  - Provider yang memvalidasi dan menyimpan sandi; aplikasi tidak menerima sandi mentah atau menetapkan aturan kompleksitas sendiri.
+  - Nilai yang ditolak provider tidak menghasilkan sesi baru; nilai yang diterima dapat digunakan untuk masuk.
+  - Kebijakan sandi aktual, alur email, dan sesi diverifikasi di M07; jangan mengasumsikan batas panjang/komposisi yang tidak dijamin provider.
 
 ---
 
@@ -1008,7 +1005,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 | **SK-19** | Kepatuhan Aksesibilitas Keyboard WCAG 2.1 | Tab Order Indexing, Focus Ring `#FF7A00` | **PASSED (100%)** |
 | **SK-20** | Audit Trail Autentikasi & Security Logging | Audit Log Service, Timestamp & IP Tracking | **PASSED (100%)** |
 | **SK-21** | Role Mismatch Auto-Switching | Database Authoritative Role, Auto-Correction | **PASSED (100%)** |
-| **SK-22** | First-Time Login & Wajib Ganti Sandi | Temporary Password Flag, Activation Modal | **PASSED (100%)** |
+| **SK-22** | Provider Email Account Activation | Neon Auth email activation; no application temporary password | **Revised; provider verification pending M07** |
 | **SK-23** | Login Penghuni dengan Kontrak Telah Berakhir | Expired Contract Check, Read-Only Archive | **PASSED (100%)** |
 | **SK-24** | Pencegahan Dobel Submit & CTA Debounce | Button Debouncing, Loading Spinner Indicator | **PASSED (100%)** |
 | **SK-25** | Penanganan Gangguan Jaringan & Server Down | Offline Event, Timeout Handler, Value Retention | **PASSED (100%)** |
@@ -1029,8 +1026,8 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 | **SK-40** | Pengendalian Antrean Toast (Anti-Spam) | Queue Manager, Concurrency Throttling | **PASSED (100%)** |
 | **SK-41** | Proteksi Open Redirect Lanjutan & Scheme Check | URL Sanitizer, Protocol-Relative Guard | **PASSED (100%)** |
 | **SK-42** | Mitigasi User Enumeration & Respon Waktu Konstan| Dummy Hash Computation, Constant-Time 401 | **PASSED (100%)** |
-| **SK-43** | Penanganan Pembatalan Modal Ganti Sandi Wajib | Temporary Session Revocation, Login Retain | **PASSED (100%)** |
-| **SK-44** | Validasi Integritas Kata Sandi Baru Aktivasi | Re-use Filter, Complexity & Confirmation | **PASSED (100%)** |
+| **SK-43** | Aktivasi Provider Ditinggalkan Sebelum Selesai | No application session/access before provider activation | **Revised; provider verification pending M07** |
+| **SK-44** | Penetapan Kredensial Ditangani Neon Auth | Provider-owned password policy and session | **Revised; provider verification pending M07** |
 | **SK-45** | Aksesibilitas Pembaca Layar & ARIA Live Regions | Screen Reader WCAG 2.1 AA, Tablist Roles | **PASSED (100%)** |
 | **SK-46** | Kebijakan Clipboard pada Field Kredensial | Password Manager Paste, Masked Cut Guard | **PASSED (100%)** |
 | **SK-47** | Penanganan Peramban Tanpa JavaScript | `<noscript>` Fallback Banner Estify DNA | **PASSED (100%)** |
@@ -1059,7 +1056,7 @@ Berikut adalah data rujukan (*seed/fixture*) awal yang digunakan dalam seluruh s
 - [x] **Zero Slop Craftsmanship**: Bebas dari emoji Unicode murahan pada antarmuka; seluruh ikon menggunakan Lucide SVG murni (`mail`, `lock`, `eye`, `arrow-right`, `arrow-up-circle`, `shield-check`, `user`, `home`). Tidak ada dialog alert bawaan browser (`alert()` / `confirm()`).
 - [x] **Estify Visual Fidelity**: Menerapkan token resmi tema RumaKost: aksen oranye hangat `#FF7A00`, gelap pekat `#111111`, font Poppins, radius estetik (`var(--radius-2xl)`), dan visual arsitektur hunian modern proporsional.
 - [x] **Zero Public Registration Compliance**: Tidak menyediakan tombol registrasi mandiri publik. Seluruh akun mengacu pada inisiasi eksklusif Pemilik Properti (`WF-09`).
-- [x] **First-Time Password Change Interception**: Perlindungan akun baru dengan kata sandi sementara terdefinisi lengkap (wajib ganti sandi saat login perdana), dilengkapi proteksi pembatalan modal, highlighting error real-time, dan validasi integritas kata sandi baru.
+- [x] **Provider-Managed Credential Onboarding**: Akun baru menggunakan alur email Neon Auth; aplikasi tidak menerbitkan sandi sementara. Skenario provider belum menjadi bukti runtime dan menunggu verifikasi M07.
 - [x] **Role-Based Redirection Accuracy & Authoritative Source**: Pengalihan rute terbukti 100% akurat berdasarkan peran database:
   - Pemilik -> `WF-02-dashboard.html` (Dasbor Eksekutif)
   - Staf -> `WF-02-staf-dashboard.html` (Dasbor Operasional Terbatas)

@@ -296,10 +296,20 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 
 ---
 
-### SKENARIO 12: Deaktivasi Akun Staf dengan Tiket Aktif (Menunggu Keputusan Operasional)
+### SKENARIO 12: Deaktivasi Akun Staf dengan Tiket Aktif
 
-> P0 memakai akun Staff. Owner belum menetapkan apakah deaktivasi diblok saat ada tiket aktif atau mewajibkan alih tugas atomik. Histori actor/assignee tidak boleh dihapus atau ditulis ulang.
-- **Status**: Menunggu keputusan Owner; belum ada expected result PASS/FAIL.
+> Keputusan Owner 2026-11-01: akun Staff tidak dapat dinonaktifkan selama masih memiliki tiket aktif. Owner harus mengalihkan semua tiket ke Staff aktif lain atau Owner terlebih dahulu. Riwayat assignment dan audit transfer dipertahankan.
+- **Kondisi Awal**: Staff memiliki satu atau lebih tiket aktif yang ditugaskan kepadanya.
+- **Langkah-langkah**:
+  1. Owner mencoba menonaktifkan akun Staff.
+  2. Aplikasi menolak penonaktifan dan menunjukkan bahwa tiket aktif harus dialihkan.
+  3. Owner mengalihkan setiap tiket ke Staff aktif lain atau Owner.
+  4. Owner mencoba kembali menonaktifkan akun Staff.
+- **Hasil yang Diharapkan**:
+  - Penonaktifan ditolak selama masih ada tiket aktif yang ditugaskan kepada Staff.
+  - Setelah seluruh tiket dialihkan, penonaktifan berhasil.
+  - Setiap transfer dan perubahan status akun diaudit; assignment history tidak dihapus atau ditulis ulang.
+  - Pengalihan tiket dan deaktivasi akun adalah operasi terpisah.
 ---
 
 ### SKENARIO 13: Permission Staff Granular (Backlog)
@@ -1013,20 +1023,11 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 
 ---
 
-### SKENARIO 68: Pengalihan Mandatori Tiket Aktif saat Deaktivasi Staf/Teknisi (Mandatory Ticket Reassignment Modal)
+### SKENARIO 68: Modal Alih Tugas Wajib saat Deaktivasi (Backlog)
 
-> Teknisi dan modal pengalihan mandatory pada runbook ini terkait F-13/backlog. Perilaku akun Staff P0 saat memiliki tiket aktif masih perlu keputusan operasional pada SK-12.
-- **Tujuan**: Mencegah adanya tiket perbaikan yang terbengkalai (*orphaned maintenance tickets F-07*) saat staf atau teknisi lapangan dinonaktifkan dari sistem.
-- **Kondisi Awal**: Teknisi Pak Joko Santoso memiliki 2 tiket kerusakan berstatus *"Dalam Pengerjaan"* di modul `WF-08`. Pemilik mengubah status Pak Joko menjadi *"Nonaktifkan"*.
-- **Langkah-langkah**:
-  1. Ubah `#editAccStatus` menjadi *"Nonaktifkan (Kunci Akses)"*.
-  2. Amati pemunculan dropdown alih tugas mandatori: `#ticketReassignSelect`.
-  3. Coba simpan tanpa memilih teknisi/staf pengganti.
-  4. Pilih staf pengganti: *"Rini Setiawati (Staf Operasional)"* atau teknisi aktif lainnya, lalu klik **"Simpan Perubahan"**.
-- **Hasil yang Diharapkan**:
-  - Langkah 2-3: Sistem memblokir penyimpanan jika tiket belum dialihkan; muncul peringatan: *"Pilih staf pengganti untuk mengalihkan 2 tiket aktif milik Pak Joko Santoso sebelum menonaktifkan akun."*
-  - Langkah 4: Sistem mengeksekusi mutasi re-assign: penanggung jawab ke-2 tiket di modul `WF-08` dialihkan ke staf terpilih; akun Pak Joko berhasil dinonaktifkan; rekaman histori pengalihan dicatat di log audit.
-  - Toast sukses muncul: *"Akun dinonaktifkan. 2 tiket aktif berhasil dialihkan ke Rini Setiawati."*
+> Backlog: alur ini menggabungkan role Teknisi di luar P0 dengan pengalihan tiket dan deaktivasi dalam satu operasi. Untuk Staff, ikuti SK-12: Owner mengalihkan tiket aktif terlebih dahulu sebagai operasi terpisah, lalu menonaktifkan akun. Tidak ada auto-transfer saat deaktivasi.
+- **Status**: Bukan acceptance test P0; alur Teknisi dan modal gabungan tidak diimplementasikan.
+- **Batas P0**: Staff dengan tiket aktif ditolak penonaktifannya sampai tiket dialihkan ke Staff aktif lain atau Owner. Histori assignment dan audit transfer dipertahankan.
 
 ---
 
@@ -1348,7 +1349,7 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 | **SK-09** | Owner/Staff creates Tenant; Lease separately links Tenant and room | No self-registration; Lease is room ownership relation | F-01/F-03 | **Revised; runtime not tested** |
 | **SK-10** | Reject overlapping Lease for occupied room | Database Lease overlap guard | F-03 | **Verify in F-03** |
 | **SK-11** | Pencegahan Duplikasi Email Pengguna (Case-Insensitive) | `#accEmail`, Unique Email Validation | Validasi Unik & Form | **PASSED (100%)** |
-| **SK-12** | Disable Staff with active assigned Ticket | Preserve assignment/history; offboarding policy pending | F-01/F-07 | **Owner decision required** |
+| **SK-12** | Disable Staff with active assigned Ticket | Block deactivation until all active Tickets are reassigned to active Staff or Owner; preserve assignment history and audit each transfer | F-01/F-07 | **Owner decision recorded; pending implementation** |
 | **SK-13** | Granular Staff permissions | Fixed P0 capability matrix; no module toggles | Out of scope | **Backlog; not tested** |
 | **SK-14** | Tenant room relocation | Active Lease relocation is excluded; Tenant has no account-level room field | Out of scope | **Backlog; not tested** |
 | **SK-15** | Neon Auth managed reset | No temporary password or reset token in application | F-01/provider | **Revised; provider test in M07** |
@@ -1404,7 +1405,7 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 | **SK-65** | Ketahanan Siklus Pemulihan BFCache Pasca-Navigasi Balik| BFCache Cleanup, Icon Re-hydration | Ketahanan State Cache | **PASSED (100%)** |
 | **SK-66** | Pintasan Keyboard Cepat Simpan Pengaturan (Ctrl+S) | `Ctrl+S` / `Cmd+S` Keydown Event Interceptor | Produktivitas Keyboard | **PASSED (100%)** |
 | **SK-67** | Update Tenant phone | Optional TenantProfile phone; Staff contact profile is outside P0 | F-03 | **Revised; runtime not tested** |
-| **SK-68** | Mandatory reassignment when disabling Technician | Technician role is F-13 backlog; Staff behavior is pending SK-12 | Backlog / decision | **Not a P0 test** |
+| **SK-68** | Combined reassignment modal when disabling Technician | Technician role and combined transfer/deactivation flow are backlog; Staff follows SK-12 sequential transfer policy | Backlog / F-13 | **Not a P0 test** |
 | **SK-69** | Automatic fallback assignment and notification | Automatic notification/routing is outside P0 | F-08 backlog | **Backlog; not tested** |
 | **SK-70** | Sinkronisasi Status Sesi Lintas-Tab saat Logout | Cross-Tab Storage Event, Auto-Lock Form | Keamanan Sesi Browser | **PASSED (100%)** |
 | **SK-71** | Sanitasi Karakter Non-Printable & Zero-Width Spaces | Unicode Regex Filter, Invisible Char Purge | Sanitasi Data Eksternal| **PASSED (100%)** |
