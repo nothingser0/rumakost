@@ -74,6 +74,7 @@ Di luar scope MVP: banyak properti, pendaftaran Tenant publik, aplikasi native, 
 #### REQ-06 Pengeluaran dan laporan
 
 - Owner dan Staff berizin dapat mencatat pengeluaran dengan tanggal, kategori, nominal, dan deskripsi.
+- Kategori dan deskripsi pengeluaran wajib berisi teks nonblank; nominal harus positif. Catatan pengeluaran dan koreksi tidak ditimpa atau dihapus. Owner membalik satu pengeluaran secara penuh dengan alasan; jika perlu, catat pengeluaran pengganti sebagai catatan baru. Reversal dicatat sebagai penyesuaian kas positif tersendiri.
 - Owner dapat mengatur satu pagu pengeluaran operasional untuk setiap bulan kalender. Nilai yang belum dikonfigurasi tidak dianggap nol atau diberi default; perubahan pagu tercatat melalui audit.
 - Ringkasan Owner membandingkan pengeluaran tercatat pada bulan itu terhadap pagu. Ini bukan laba/proyeksi akuntansi; Staff dan Tenant tidak menerima nilai pagu maupun agregat keuangan.
 - Hanya Owner dapat melihat agregat keuangan. Respons server untuk Staff tidak boleh memuat angka laporan Owner.

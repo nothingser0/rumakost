@@ -4,14 +4,16 @@
 > **Modul**: M04 · UI/UX & Prototyping (Transisi ke M05 Arsitektur Teknis / M06 Implementasi Frontend & Backend)  
 > **Acuan Desain**: `docs/design/screens/WF-07-laporan.html`  
 > **Fitur Terkait**: **F-06** (Pengeluaran Operasional & Laporan Pemasukan/Okupansi Kost), **F-01** (Akses & Peran / RBAC Guard), **F-02** (Manajemen Unit & Utilisasi Kamar), **F-04** (Tagihan Berulang & Aging Schedule), **F-05** (Pembayaran & Saldo Kas Riil), **F-10** (Ekspor Data Tabular CSV & PDF Audit), **F-11** (Pencatatan Struk Pengeluaran & Tautan Tiket Kerusakan)  
-> **User Stories KANBAN**: `RK-006` (Epic Pengeluaran & Laporan Ringkas), `RK-034` (Pencatatan Pengeluaran Operasional), `RK-035` (Ringkasan Arus Kas Masuk & Keluar), `RK-036` (Rekapitulasi Tingkat Okupansi Kamar), `RK-020` (Pembatasan Akses Berdasarkan Role - Staff NOI Masking)  
-> **Hak Akses Layar**: **Pemilik Properti (Owner - Akses Penuh Superadmin)** & **Staf Pengelola (Staff - Akses Operasional Kas dengan Proteksi Masking Laba Bersih/NOI)**. *Penghuni dilarang mengakses modul ini (Zero Access).*
+> **User Stories KANBAN**: `RK-006` (Epic Pengeluaran & Laporan Ringkas), `RK-034` (Pencatatan Pengeluaran Operasional), `RK-035` (Ringkasan Arus Kas Masuk & Keluar), `RK-036` (Rekapitulasi Tingkat Okupansi Kamar).
+> **Hak Akses Layar**: laporan finansial hanya untuk Owner. Staff dapat mencatat Expense lewat operasi terpisah yang diizinkan, tetapi tidak dapat membuka buku kas atau laporan; Tenant tidak dapat mengakses modul ini.
 
 ---
 
 ## 1. Ringkasan Eksekutif Layar
 
 Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rekapitulasi arus kas operasional, dan evaluasi utilisasi properti tunggal RumaKost (*Kost Eksklusif RumaKost - 15 Kamar*). Layar ini dibangun di atas filosofi desain **Estify Minimalist DNA** dengan prinsip **Inverted Pyramid Financial Architecture**: menyajikan 4 kartu indikator kesehatan makro (*Executive KPI Gauges*) di bagian atas, bilah kendali audit terpadu (*Unified Smart Filter Bar*), dan 4 panel tab analisis mendalam (*Segmented Audit Tabs*) yang saling terhubung secara reaktif tanpa reload halaman.
+
+> **Batas data P0:** tab prototipe “Laba Rugi/P&L” adalah ringkasan transaksi dan arus kas operasional internal, bukan laporan akuntansi/pajak. Status “balance” hanya menguji penjumlahan event internal; sistem tidak memiliki saldo awal atau rekening koran untuk mengklaim cocok dengan bank. Laporan hanya tersedia untuk Owner. Biaya servis per kamar, bukti transaksi, ekspor, dan integrasi bank berada di luar P0.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -20,7 +22,7 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 │ 1. TOPBAR FLOATING (70px): Brand Logo + Dark Nav Pill (Laporan Aktif) + Avatar Pengelola              │
 ├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
 │ 2. ESTIFY KPI METRIC GAUGES (4 Cards Radial Speedometer):                                              │
-│    • Card 1: Surplus Kas / NOI (Rp 17,40 Jt · +16.0% ↑ · Margin 80.4%) [Masked on Staff Role]          │
+│    • Card 1: Arus Kas Operasional Bersih (Rp 17,40 Jt · +16.0% vs periode lalu)                        │
 │    • Card 2: Beban Operasional / OER (Rp 4,25 Jt · Rasio 19.6% · Gauge 20% Merah Sehat)               │
 │    • Card 3: Hasil per Kamar / RevPAR (Rp 1,44 Jt · Yield 86.4% · Gauge 86% Oranye)                   │
 │    • Card 4: Ketepatan Bayar Penghuni (100% · 0 Tunggakan · Gauge 100% Biru)                           │
@@ -34,8 +36,8 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 ├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
 │ 5. REVENUE & RECONCILIATION WORKBENCH CANVAS:                                                          │
 │    • Tab 1: Jurnal Kas 16 Transaksi Terverifikasi (Debit, Kredit, Saldo Berjalan, Popover Dokumen)     │
-│    • Tab 2: Laporan Laba Rugi SAK Properti (Gross Revenue, OPEX Breakdown, Net Operating Income MoM)  │
-│    • Tab 3: Matriks 15 Kamar (3 Lantai, Omzet, Beban Servis AC, Net Kontribusi, Opportunity Cost)     │
+│    • Tab 2: Ringkasan Kas Operasional (penerimaan sewa, Expense, koreksi, perbandingan periode)       │
+│    • Tab 3: Matriks 15 Kamar (okupansi, realisasi sewa, kamar kosong, Opportunity Cost)                │
 │    • Tab 4: Aging Schedule 11 Invoice (Tepat Waktu H-4 s/d Hari H vs Masa Toleransi H+2/H+3)           │
 │    • Symmetrical Bottom Reconciliation Strip (Kas Masuk, Kas Keluar, Surplus Bersih, Status 100% Cocok)│
 ├────────────────────────────────────────────────────────────────────────────────────────────────────────┤
@@ -49,14 +51,16 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 ### Pilar Arsitektural & Batasan Domain (Domain Boundaries):
 1. **Basis Kas Riil Terverifikasi (*Cash-Basis & Zero Self-Approval Sync*)**:  
    Pemasukan yang tercatat di Buku Kas Umum hanya bersumber dari pembayaran sewa yang telah diverifikasi oleh Pemilik Kost di modul Pembayaran (`WF-06`). Tagihan berstatus pending atau belum diverifikasi dilarang masuk ke jurnal kas riil.
-2. **Pemisahan Wewenang Sensitif (*RBAC Financial Masking*)**:  
-   Staf Operasional memiliki izin mencatat mutasi pengeluaran kas harian dan memeriksa buku besar kas lapangan, namun metrik sensitif laba bersih Pemilik (*Net Operating Income / NOI*) secara otomatis disamarkan (*locked & masked*) demi menjaga kerahasiaan profitabilitas properti.
+2. **Akses Laporan Finansial Owner-only**:
+   Laporan dan buku kas hanya disediakan kepada Owner. Staff yang berizin dapat mencatat Expense melalui operasi terpisah, tetapi tidak menerima payload laporan parsial atau angka yang disamarkan.
 3. **Penyelarasan Biaya Pemeliharaan ke Tiket (*Direct Ticket Maintenance Link*)**:  
    Setiap transaksi pengeluaran servis/perbaikan gedung dapat ditautkan secara langsung (*linked*) ke nomor tiket kerusakan yang diajukan penghuni (`#TKT-xxx`), mewujudkan pelacakan biaya perbaikan per unit kamar secara transparan (*Unit Yield Audit*).
 4. **Single Standalone Property Strict Guard (Bebas Multi-Properti)**:  
    Seluruh agregasi finansial, okupansi (13 terisi / 2 kosong dari total 15 unit), dan rekonsiliasi saldo mengikat secara tunggal pada satu entitas properti tanpa dropdown multi-cabang.
 5. **Ekspor Mandiri Tanpa Layanan Berbayar (*Standalone Client-Side Export*)**:  
    Ekspor CSV dan PDF digenerasikan langsung di peramban menggunakan format standar UTF-8 with BOM dan Adobe PDF-1.4 tanpa ketergantungan API pihak ketiga berbayar.
+
+Kolom biaya servis/net kontribusi pada fixture matriks 2.4 adalah data prototipe M04. Nilai tersebut tidak dipersistenkan atau ditampilkan sebagai metrik P0 karena Expense tidak dialokasikan ke Room.
 
 ---
 
@@ -67,10 +71,10 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 |---|---|---|---|
 | **Total Kas Masuk (Debit)** | Rp 21.650.000 | 11 Transaksi Pelunasan Sewa Terverifikasi | 100% Kas Riil Masuk |
 | **Total Kas Keluar (Kredit)**| Rp 4.250.000 | 5 Transaksi Biaya Operasional (Listrik, Air, WiFi, AC, Sampah) | Rasio OPEX 19.6% (Sehat <25%) |
-| **Surplus Kas Bersih (NOI)** | Rp 17.400.000 | Margin Laba Operasional 80.4% | +16.0% MoM vs Sep 2026 |
+| **Arus Kas Operasional Bersih Tercatat** | Rp 17.400.000 | Kas bersih / penerimaan sewa tercatat 80.4% | +16.0% vs Sep 2026 |
 | **Hasil per Kamar (RevPAR)**| Rp 1.443.333 (~Rp 1,44 Jt) | Utilisasi Okupansi 86.7% (13 Terisi / 15 Kamar) | Yield Kinerja Kamar 86.4% |
 | **Tingkat Ketepatan Bayar** | 100% Tertagih | 9 Tepat Waktu (H-4 s/d Hari H), 2 Masa Toleransi (H+2, H+3) | 0 Tunggakan / Zero Default |
-| **Saldo Rekonsiliasi Kas**   | Rp 17.400.000 | Selisih Buku Kas Rp 0 | 100% Balance & Verified |
+| **Jumlah Kas Internal Periode** | Rp 17.400.000 | Penerimaan tercatat dikurangi pengeluaran dan koreksi | Bukan pencocokan rekening bank |
 
 ### 2.2 Fixture Jurnal 16 Transaksi Buku Kas Umum (`ledgerData`)
 | No. Bukti | Tanggal | Kategori Akun | Tipe Mutasi | Uraian Transaksi | Pihak / Entitas | Nominal (Rp) | Saldo Berjalan (Rp) | Tautan Tiket | Pencatat |
@@ -132,13 +136,13 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 
 ---
 
-### SKENARIO 01: Inisialisasi Layar, Verifikasi 4 Indikator KPI Estify & Rekonsiliasi Saldo Awal
-* **Tujuan**: Memastikan pengguna (Pemilik) yang membuka layar `WF-07` disajikan metrik eksekutif yang akurat, 4 kartu speedometer gauge Estify ter-render sempurna, dan status rekonsiliasi kas terbukti 100% cocok (*zero discrepancy*).
+### SKENARIO 01: Inisialisasi Layar, Verifikasi 4 Indikator Operasional & Konsistensi Kas Internal
+* **Tujuan**: Memastikan pengguna (Pemilik) yang membuka layar `WF-07` disajikan indikator operasional turunan yang akurat dan penjumlahan transaksi internal konsisten. Ini bukan pencocokan dengan rekening bank.
 * **Kondisi Awal (Pre-condition)**: Pengguna login sebagai Pemilik (`budi.santoso@rumakost.id`) dan mengakses file `WF-07-laporan.html`.
 * **Langkah-langkah**:
   1. Periksa Topbar Navigasi: pastikan pill menu **"Laporan"** berstatus aktif.
   2. Amati area 4 kartu metrik Estify di bagian atas:
-     - Kartu 1: Surplus Kas (NOI).
+     - Kartu 1: Arus Kas Operasional Bersih (label NOI hanya istilah prototipe, bukan laba akuntansi).
      - Kartu 2: Beban Operasional (OER).
      - Kartu 3: Hasil per Kamar (RevPAR).
      - Kartu 4: Ketepatan Bayar.
@@ -149,7 +153,7 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
   - Kartu 2 menampilkan beban `Rp 4,25 Jt`, rasio `19.6% Rasio`, dan gauge merah 20% (menandakan batas beban sehat di bawah 25%).
   - Kartu 3 menampilkan hasil `Rp 1,44 Jt`, badge oranye `86.4% Yield`, dan gauge 86%.
   - Kartu 4 menampilkan ketepatan bayar `100%`, badge biru `0 Tunggakan`, dan gauge 100%.
-  - Badge proteksi audit pada workbench menampilkan: `Rekonsiliasi Kas 100% Cocok · Selisih Rp 0` dengan ikon perisai hijau emerald (`shield-check`).
+  - Badge workbench menampilkan: `Konsistensi internal: Kas Masuk - Kas Keluar = Saldo Periode` dengan ikon pemeriksaan. Badge ini tidak menyatakan saldo cocok dengan rekening koran.
 
 ---
 
@@ -190,8 +194,8 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
   - Strip ringkasan bawah mengonfirmasi:
     - Total Kas Masuk (Debit): `Rp 21.650.000` (hijau).
     - Total Kas Keluar (Kredit): `(Rp 4.250.000)` (merah).
-    - Surplus Kas Bersih Periode Ini: `Rp 17.400.000` (oranye brand).
-    - Status Tutup Buku Kas: `Balance 100% (No Discrepancy)` dengan ikon gembok hijau terkunci.
+    - Arus Kas Operasional Bersih Periode Ini: `Rp 17.400.000` (oranye brand).
+    - Status hitung internal: `Kas Masuk - Kas Keluar = Rp 17.400.000`; tanpa klaim rekonsiliasi bank.
 
 ---
 
@@ -361,47 +365,45 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 
 ---
 
-### SKENARIO 13: Audit Laporan Laba Rugi Komprehensif (Tab 2: P&L MoM Variance)
-* **Tujuan**: Memeriksa struktur Laporan Laba Rugi sesuai standar akuntansi properti kost, perhitungan pendapatan kotor, pos OPEX, laba operasi bersih (NOI), dan analisis varians bulanan (*Month-over-Month*).
-* **Kondisi Awal**: Pengguna beralih ke tab **"Laba Rugi (P&L)"** (`#panelPL`).
+### SKENARIO 13: Ringkasan Arus Kas Operasional (Tab 2: Perbandingan Bulanan)
+* **Tujuan**: Memeriksa penerimaan sewa yang tercatat, Expense, koreksi Expense, dan perubahan arus kas antarperiode. Ini bukan laporan laba rugi atau standar akuntansi.
+* **Kondisi Awal**: Owner beralih ke tab ringkasan operasional (`#panelPL`).
 * **Langkah-langkah**:
-  1. Amati Section 1: Pendapatan Operasional Sewa (Gross Revenue).
-  2. Amati Section 2: Beban Operasional & Pemeliharaan Gedung (OPEX).
-  3. Amati Section 3: Laba Operasional Bersih (Net Operating Income / NOI).
-  4. Periksa strip kesimpulan bawah dan catatan akuntansi.
+  1. Amati Section 1: Penerimaan sewa dari alokasi Payment terverifikasi ke line RENT.
+  2. Amati Section 2: Pengeluaran Expense yang tercatat dan koreksi reversal.
+  3. Amati Section 3: Arus Kas Operasional Bersih Tercatat.
+  4. Periksa ringkasan bawah dan catatan bahwa angka yang ditampilkan adalah transaksi kas internal.
 * **Hasil Diharapkan**:
-  - Section 1 Gross Revenue:
-    - Pendapatan sewa kamar rutin (11 kamar terisi): `Rp 21.650.000` (Okt) vs `Rp 21.000.000` (Sep), varians positif `+Rp 650 Rb (+3.1%)`.
-    - Total Gross Revenue: `Rp 21.650.000`.
-  - Section 2 OPEX:
+  - Section 1 penerimaan sewa tercatat:
+    - Pembayaran sewa terverifikasi: `Rp 21.650.000` (Okt) vs `Rp 21.000.000` (Sep); nilai ringkasan periode ini bukan pengakuan akuntansi.
+  - Section 2 Expense:
     - Beban Utilitas Listrik: `(Rp 1.250.000)` vs `(Rp 1.180.000)` (+5.9%).
     - Beban Utilitas Air PDAM: `(Rp 450.000)` vs `(Rp 420.000)` (+7.1%).
     - Beban Internet WiFi: `(Rp 650.000)` vs `(Rp 650.000)` (0.0%).
-    - Pemeliharaan Cuci AC (#TKT-003): `(Rp 1.500.000)` vs `(Rp 1.350.000)` (+11.1%).
+    - Expense pemeliharaan: `(Rp 1.500.000)` vs `(Rp 1.350.000)` (+11.1%).
     - Retribusi Kebersihan: `(Rp 400.000)` vs `(Rp 400.000)` (0.0%).
     - Total OPEX: `(Rp 4.250.000)` vs `(Rp 4.000.000)` (+6.3%).
-  - Section 3 NOI:
-    - Laba Operasional Bersih: `Rp 17.400.000` vs `Rp 17.000.000`, varians laba tumbuh `+Rp 400 Rb (+2.4%)`.
-  - Strip bawah mengonfirmasi Margin Laba Operasional sebesar `80.4% (Margin Sehat)`.
-  - Terdapat box catatan akuntansi audit yang menjelaskan bahwa pendapatan diakui berbasis kas riil yang telah diverifikasi Pemilik.
+  - Section 3 arus kas operasional bersih tercatat: `Rp 17.400.000` vs `Rp 17.000.000`; perubahan `+Rp 400.000` dibanding periode sebelumnya.
+  - Strip bawah menunjukkan perbandingan arus kas tercatat, bukan margin laba atau penilaian kesehatan akuntansi.
+  - Catatan menjelaskan bahwa hanya alokasi pembayaran terverifikasi ke line RENT dihitung sebagai penerimaan sewa; deposit dan settlement escrow non-kas dikecualikan.
 
 ---
 
-### SKENARIO 14: Audit Kinerja 15 Kamar (Tab 3: Unit Matrix), Utilisasi & Biaya Servis Unit
-* **Tujuan**: Mengevaluasi utilisasi 15 kamar per lantai, pemisahan unit terisi vs kosong, pemotongan biaya servis pada net kontribusi kamar, dan kartu peluang omzet (*Opportunity Cost*).
+### SKENARIO 14: Audit Kinerja 15 Kamar, Okupansi & Realisasi Sewa
+* **Tujuan**: Mengevaluasi okupansi dan realisasi sewa 15 kamar per lantai serta peluang omzet kamar kosong. Biaya servis per unit tidak dihitung pada P0 karena Expense tidak dialokasikan ke kamar.
 * **Kondisi Awal**: Pengguna beralih ke tab **"Kinerja Kamar (15)"** (`#panelUnitMatrix`).
 * **Langkah-langkah**:
   1. Periksa pembagian kelompok lantai (Lantai 1 Blok A, Lantai 2 Blok B, Lantai 3 Blok C).
   2. Periksa status unit kosong (Kamar A-02 di Lantai 1 dan Kamar C-04 di Lantai 3).
-  3. Periksa unit yang terdampak biaya servis (Kamar A-03, B-03, C-03 dengan beban servis AC Rp 500.000).
+  3. Bandingkan realisasi sewa dengan okupansi aktif berdasarkan Lease dan alokasi pembayaran terverifikasi ke line RENT.
   4. Periksa kartu oranye **Peluang Tambahan Omzet (Opportunity Cost)** di bawah tabel.
 * **Hasil Diharapkan**:
   - Lantai 1: 5 unit (4 terisi, 1 kosong).
   - Lantai 2: 5 unit (100% Okupansi Terisi Penuh).
   - Lantai 3: 5 unit (4 terisi, 1 kosong).
   - Kamar kosong (A-02 dan C-04) ditandai dengan baris highlight khusus `.tr-unit-vacant`, badge `Kosong 31 Hari`, realisasi omzet `Rp 0`, dan yield `0%` (merah).
-  - Kamar A-03, B-03, C-03: Realisasi omzet Rp 1.650.000 dikurangi Biaya Servis `(Rp 500.000)` menghasilkan Net Kontribusi `Rp 1.150.000` dengan Yield `69.7%`.
-  - Strip ringkasan bawah: Total Kapasitas 15 Kamar, Okupansi 13 Terisi (86.7%), Realisasi Omzet Rp 21.650.000, Net Kontribusi Kamar Rp 20.150.000 (93.1%).
+  - Realisasi sewa per kamar bersumber dari alokasi pembayaran terverifikasi pada line RENT; kamar kosong menampilkan Rp 0. Tidak ada biaya servis atau net kontribusi per kamar pada laporan P0.
+  - Strip ringkasan bawah: Total Kapasitas 15 Kamar, Okupansi 13 Terisi (86.7%), Realisasi Omzet Rp 21.650.000.
   - Kartu Opportunity Cost menginformasikan: *"Terdapat 2 unit kamar kosong (A-02 & C-04). Potensi penambahan arus kas sewa sebesar +Rp 2.300.000 / bulan jika mencapai 100% Okupansi"* dengan tautan tombol cepat ke `WF-03-kamar.html?status=kosong`.
 
 ---
@@ -488,24 +490,19 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 
 ---
 
-### SKENARIO 19: Penegakan Batasan Wewenang Peran (RBAC): Simulasi Mode Staf & Masking Laba Bersih
-* **Tujuan**: Memastikan integritas keamanan hak akses data bahwa Staf Operasional tidak dapat melihat angka laba bersih (NOI) Pemilik, sesuai aturan mutlak `docs/pm/SCOPE_STATEMENT.md` dan `KANBAN.md (RK-020)`.
-* **Kondisi Awal**: Pengguna berada di layar utama `WF-07` dalam mode default Pemilik (Superadmin).
+### SKENARIO 19: Akses Laporan Finansial Owner-Only
+* **Tujuan**: Memastikan server hanya menyediakan laporan WF-07 kepada Owner. Laporan tidak dikirim ke Staff dengan angka NOI disamarkan; Staff dan Tenant tidak menerima payload laporan.
+* **Kondisi Awal**: Sesi autentikasi tersedia untuk akun sintetis Owner, Staff, dan Tenant.
 * **Langkah-langkah**:
-  1. Amati widget mengambang di pojok kanan bawah: Role Simulator Bar (`.wf-badge-role-bar`).
-  2. Klik tombol **"Simulasi Role"** (`.btn-toggle-role-pill`).
-  3. Amati perubahan URL, teks simulator label, dan nilai pada Kartu 1 (Surplus Kas / NOI).
-  4. Periksa apakah staf tetap dapat mengakses Buku Kas Umum dan mencatat pengeluaran operasional.
-  5. Klik kembali tombol **"Simulasi Role"** untuk mengembalikan sesi ke Pemilik.
+  1. Owner meminta ringkasan laporan WF-07.
+  2. Staff meminta route/action laporan yang sama.
+  3. Tenant meminta route/action laporan yang sama.
+  4. Staff membuat catatan Expense melalui operasi terpisah yang memang diizinkan.
 * **Hasil Diharapkan**:
-  - Halaman memuat ulang dengan parameter query string `?role=staf`.
-  - Role simulator label berubah menjadi *"Mode Staf Operasional"*.
-  - **Mekanisme Masking Sensitif Berjalan Sempurna**:
-    - Nilai pada `#kpiNoiValue` (Kartu 1) yang semula `Rp 17,40 Jt` diganti dengan badge proteksi gembok abu-abu:  
-      `<i data-lucide="lock"></i> Proteksi Pemilik`.
-    - Staf dilarang melihat angka laba bersih dan margin profit pemilik.
-  - Staf tetap memiliki akses ke pencatatan kas operasional harian (token listrik, belanja kebersihan) di mana nama pencatat otomatis tercatat sebagai `Rini (Staf)`.
-  - Mengembalikan simulasi ke Pemilik menghapus parameter `?role=staf` dan menampilkan kembali seluruh angka finansial secara transparan.
+  - Permintaan Owner berhasil dan memuat data laporan yang diizinkan.
+  - Permintaan Staff dan Tenant ditolak server dengan `403` (atau `404` bila dibutuhkan untuk mencegah enumerasi); respons tidak memuat metrik, pagu, transaksi, atau payload parsial yang disamarkan.
+  - Kemampuan Staff mencatat Expense tidak memberikan akses ke laporan, buku kas, atau agregat keuangan.
+  - Role, query string, dan masking UI bukan kontrol otorisasi.
 
 ---
 
@@ -565,17 +562,17 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 
 ---
 
-### SKENARIO 23: Preservasi Konteks Akuntansi pada Tab Laba Rugi (P&L Subtotal & Divider Retention)
-* **Tujuan**: Memastikan integritas visual Laporan Laba Rugi saat difilter: pos akun individual disaring sesuai kata kunci, namun baris judul seksi, subtotal, dan laba operasional bersih tetap dipertahankan agar rasio keuangan tetap terbaca utuh.
-* **Kondisi Awal**: Pengguna berada di tab **"Laba Rugi (P&L)"** (`#panelPL`).
+### SKENARIO 23: Preservasi Konteks Ringkasan Kas Operasional saat Difilter
+* **Tujuan**: Memastikan filter mempertahankan header seksi dan subtotal transaksi agar penerimaan, Expense, reversal, dan arus kas tercatat tetap terbaca. Ini bukan laporan akuntansi.
+* **Kondisi Awal**: Owner berada di tab ringkasan operasional (`#panelPL`).
 * **Langkah-langkah**:
   1. Masukkan kata kunci pos beban: `"PDAM"` pada `#auditSearchInput`.
   2. Amati struktur tabel laporan laba rugi.
 * **Hasil Diharapkan**:
   - Baris beban individual yang tidak mengandung kata "PDAM" disembunyikan.
   - Baris detail *"Beban Utilitas: Air Bersih PDAM Tirta Moedal"* tetap tampil.
-  - **Konteks Akuntansi Terjaga**: Seluruh baris header seksi (`.pl-sec-hdr`), baris subtotal (`.pl-subtotal`), dan grand total laba operasional bersih (`.pl-grandtotal`) **tetap terlihat** (`display: ''`).
-  - Pengelola tetap dapat membaca posisi subtotal dan NOI tanpa kehilangan konteks hierarki laporan keuangan.
+  - Header seksi (`.pl-sec-hdr`), subtotal (`.pl-subtotal`), dan total arus kas tercatat (`.pl-grandtotal`) tetap terlihat saat filter diterapkan.
+  - Pengelola dapat membedakan penerimaan sewa, Expense, reversal, dan total bersih tanpa label laba akuntansi.
 
 ---
 
@@ -742,28 +739,13 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
   - Baris transaksi asli `TRX-202610-016` tetap tersimpan permanen di tabel dengan badge penanda abu-abu `Terkoreksi / Reversed` dan teks deskripsi tercoret (*strikethrough*).
   - Entri baru pembalik otomatis diterbitkan pada baris teratas dengan nomor bukti `REV-202610-001`, tipe mutasi `Reversal (+Rp 400.000)`, kategori `Koreksi Pembukuan`, uraian mencantumkan alasan audit, dan nama pencatat `Budi (Pemilik)`.
   - Saldo kas berjalan terhitung ulang secara akurat: Rp 17.400.000 + Rp 400.000 = `Rp 17.800.000`.
-  - Indikator status rekonsiliasi kas pada workbench tetap berstatus `Balance 100% (No Discrepancy)` dengan ikon perisai hijau terkunci.
+  - Rekap internal memasukkan reversal sebagai penyesuaian positif. Tidak ada klaim bahwa catatan tersebut mencerminkan uang masuk atau cocok dengan rekening bank.
 
 ---
 
-### SKENARIO 34: Penegakan RBAC pada Ekspor Dokumen CSV & PDF: Masking Data Sensitif NOI untuk Staf
-* **Tujuan**: Memverifikasi kepatuhan aturan keamanan `SCOPE_STATEMENT.md` (F-10) dan `KANBAN.md` (RK-020) bahwa ketika Staf Operasional melakukan ekspor data (CSV atau PDF), data laba bersih operasional (NOI) dan margin keuntungan pemilik tidak bocor di dalam berkas hasil unduhan.
-* **Kondisi Awal**: Pengguna berada dalam simulasi peran Staf Operasional (`?role=staf`). Kartu KPI NOI pada UI telah berstatus terkunci (*lock badge*).
-* **Langkah-langkah**:
-  1. Klik tombol **"Ekspor CSV"** (`.btn-action-outline`) di bilah kontrol kanan.
-  2. Pada modal ekspor `#modalExport`, pastikan format terpilih adalah **"Spreadsheet (.CSV)"** dan klik **"Unduh Berkas Sekarang"**.
-  3. Buka dan periksa baris data pada berkas CSV yang diunduh.
-  4. Buka kembali modal ekspor, pilih format **"Dokumen Resmi (.PDF)"** dan klik **"Unduh Berkas Sekarang"**.
-  5. Buka dokumen PDF hasil unduhan.
-* **Hasil Diharapkan**:
-  - Pada berkas CSV:
-    - Baris ringkasan bawah tidak mencantumkan nilai surplus laba bersih Pemilik: baris `SURPLUS KAS BERSIH OPERASIONAL (NOI)` bernilai `"[PROTEKSI PEMILIK / TERSEMBUNYI]"`.
-    - Kolom margin profit pemilik tidak ditampilkan atau bertuliskan `[LOCKED]`.
-    - Header audit CSV tertulis: `Dicetak oleh: Rini (Staf Operasional) | Proteksi Finansial Sensitif: AKTIF`.
-    - Struktur kolom CSV tetap valid dan tidak merusak delimiter koma saat dibuka di Microsoft Excel.
-  - Pada berkas PDF:
-    - Kotak ringkasan eksekutif kartu 1 (Surplus Kas/NOI) digantikan dengan blok peringatan proteksi abu-abu: `[Akses Khusus Pemilik Properti]`.
-    - Lembar pengesahan tanda tangan hanya menampilkan kolom verifikasi fisik operasional Staf Lapangan, bebas dari data profitabilitas properti.
+### SKENARIO 34: [DITUNDA — P1] Ekspor Laporan Finansial
+* **Batas cakupan**: Ekspor CSV/PDF termasuk F-10 backlog. P0 tidak menyediakan ekspor laporan untuk Owner maupun Staff, sehingga skenario masking data saat ekspor tidak dijalankan.
+* **Status**: Backlog; bila F-10 disetujui, ekspor tetap mengikuti akses Owner-only dan tidak boleh mengirim laporan kepada Staff.
 
 ---
 
@@ -811,14 +793,14 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 
 ---
 
-### SKENARIO 38: Penanganan & Visualisasi Status Defisit Arus Kas Operasional (Negative Net Operating Income)
-* **Tujuan**: Memverifikasi respons antarmuka dan ketahanan logika perhitungan matematika ketika total beban operasional (OPEX) melampaui total penerimaan kas sewa sehingga menghasilkan surplus negatif (Defisit Kas).
+### SKENARIO 38: Penanganan & Visualisasi Defisit Arus Kas Operasional
+* **Tujuan**: Memverifikasi respons antarmuka saat Expense tercatat melampaui penerimaan sewa tercatat sehingga menghasilkan arus kas operasional bersih negatif.
 * **Kondisi Awal**: Pengguna berada di layar utama `WF-07`. Data transaksi disimulasikan mengalami pengeluaran perbaikan darurat struktural gedung sebesar Rp 25.000.000 (Pemasukan Rp 21.650.000 vs Pengeluaran Rp 25.000.000 $\rightarrow$ Saldo Defisit -Rp 3.350.000).
 * **Langkah-langkah**:
   1. Akses layar laporan dengan dataset pengeluaran darurat tersebut.
-  2. Amati Kartu 1 Estify KPI Gauges (Surplus Kas / NOI).
-  3. Amati Kartu 2 Estify KPI Gauges (Beban Operasional / OER).
-  4. Amati baris strip kesimpulan bawah pada Tab 1 (Buku Kas Umum) dan Tab 2 (Laba Rugi).
+  2. Amati kartu arus kas operasional bersih.
+  3. Amati rasio Expense terhadap penerimaan sewa tercatat.
+  4. Amati ringkasan internal pada Tab 1 (Buku Kas Umum) dan Tab 2 (ringkasan operasional).
 * **Hasil Diharapkan**:
   - Sistem tidak mengalami crash atau menampilkan nilai `NaN%`.
   - Kartu 1 bertransisi visual ke tema merah peringatan (*danger alert theme*):
@@ -826,24 +808,14 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
     - Nominal tercantum format kurung merah tebal: `(Rp 3,35 Jt)`.
     - Delta badge menampilkan tren negatif merah: `-119.2% ↓`.
     - Semi-circle radial gauge terwarnai merah tegas dengan nilai `0% Surplus`.
-  - Kartu 2 (OER) menampilkan rasio `115.5% Rasio` dengan badge merah tebal: `Beban Melebihi Omzet (>100%)`.
-  - Strip rekonsiliasi bawah memunculkan banner peringatan: `Defisit Kas Bersih: (Rp 3.350.000) · Perhatian Pengelola Diperlukan`.
+  - Rasio Expense terhadap penerimaan sewa menampilkan `115.5%`, dengan label `Expense melebihi penerimaan sewa`.
+  - Ringkasan internal memunculkan banner: `Defisit Arus Kas Operasional: (Rp 3.350.000)`; bukan klaim laba atau saldo bank.
 
 ---
 
-### SKENARIO 39: Kinerja Kamar dengan Beban Servis Ekstrem Melebihi Omzet (Negative Unit Contribution Yield)
-* **Tujuan**: Menguji kalkulasi pada tab Kinerja Kamar (*Tab 3*) ketika suatu unit kamar aktif menyerap biaya pemeliharaan/perbaikan yang lebih besar daripada tarif sewa bulanannya.
-* **Kondisi Awal**: Pengguna berada di tab **"Kinerja Kamar (15)"** (`#panelUnitMatrix`). Kamar B-03 (Tarif sewa Rp 1.650.000) mengalami insiden perbaikan instalasi pipa air dengan total biaya servis tercatat `Rp 2.450.000`.
-* **Langkah-langkah**:
-  1. Amati baris Kamar B-03 pada kelompok Lantai 2 (Blok B).
-  2. Periksa kolom Realisasi Omzet, Beban Servis, Net Kontribusi, dan Persentase Yield.
-  3. Periksa strip agregasi total net kontribusi di bagian bawah tabel.
-* **Hasil Diharapkan**:
-  - Kolom Realisasi Omzet: `Rp 1.650.000`.
-  - Kolom Beban Servis: `(Rp 2.450.000)` dengan font merah tebal.
-  - Kolom Net Kontribusi Kamar: menampilkan nominal defisit unit `(Rp 800.000)` dengan kelas `.text-danger`.
-  - Kolom Yield Kinerja Kamar: menampilkan rasio `-48.5%` dengan badge soft red `.badge-yield-negative` dan ikon panah merah ke bawah `trending-down`.
-  - Tidak terjadi kesalahan pembagian nol (*division by zero*), dan baris ringkasan bawah tetap mengakumulasi Net Kontribusi seluruh 15 kamar secara matematis akurat (`Rp 20.150.000 - Rp 1.950.000 = Rp 18.200.000`).
+### SKENARIO 39: [DITUNDA — DI LUAR P0] Beban Servis per Kamar Melebihi Omzet
+* **Batas cakupan**: Skenario backlog, tidak dijalankan pada P0. Expense tidak terhubung ke Room atau Ticket, sehingga DB tidak memiliki dasar untuk mengatribusikan biaya servis ke kamar tertentu. Jangan menurunkan angka biaya kamar dari uraian Expense.
+* **Status**: Backlog sampai ada persetujuan scope dan aturan alokasi biaya per kamar.
 
 ---
 
@@ -932,11 +904,11 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 * **Langkah-langkah**:
   1. Periksa Buku Kas Umum pada Tab 1.
   2. Cari entri pembayaran invoice Kamar B-04 terkait penyelesaian deposit.
-  3. Amati kolom Debit (Pemasukan) dan saldo kas riil bank.
+  3. Amati kolom penerimaan kas tercatat dan saldo internal laporan.
 * **Hasil Diharapkan**:
-  - Transaksi kliring internal escrow tidak menambah nominal kas riil pada kolom Debit Buku Kas Umum karena tidak ada uang tunai/transfer baru yang masuk ke rekening operasional.
-  - Jika dicatat dalam riwayat pembukuan, transaksi ditandai dengan badge khusus `Non-Kas (Potong Deposit)` dengan nominal kas riil `Rp 0 (Clearing Transfer)`.
-  - Saldo kas fisik/bank berjalan tidak mengalami inflasi semu, menjamin rekonsiliasi kas riil tetap 100% klop dengan rekening koran bank.
+  - Settlement internal escrow tidak menambah penerimaan kas atau pendapatan sewa: tidak ada Payment baru; event hanya tercatat pada ledger deposit.
+  - Jika ditampilkan pada riwayat settlement, nilainya diberi label non-kas dan tidak masuk debit kas.
+  - Laporan menjaga total event kas internal tanpa mengklaim kecocokan dengan saldo fisik atau rekening koran bank.
 
 ---
 
@@ -987,8 +959,8 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 
 ---
 
-### SKENARIO 49: Penegakan Cash-Basis: Proteksi Pembayaran Berstatus Pending (WF-06) Tidak Masuk ke Buku Kas Umum
-* **Tujuan**: Memvalidasi kepatuhan mutlak Pilar Arsitektural #1 (*Cash-Basis & Zero Self-Approval Sync*): menjamin bahwa slip transfer pembayaran sewa yang baru diajukan penghuni dan masih berstatus pending di modul Pembayaran (`WF-06`) **tidak boleh** masuk ke Buku Kas Umum dan tidak boleh menambah saldo kas riil sebelum diverifikasi resmi oleh Pemilik Kost.
+### SKENARIO 49: Pembayaran Pending Tidak Masuk ke Laporan Kas Internal
+* **Tujuan**: Memastikan hanya alokasi Payment yang sudah diverifikasi ke line RENT yang menjadi penerimaan sewa pada laporan internal. Payment pending tidak menambah total kas tercatat.
 * **Kondisi Awal (Pre-condition)**: Pengguna login sebagai Pemilik Kost. Terdapat transaksi pembayaran sewa baru di modul `WF-06` sebesar Rp 1.650.000 dari calon penghuni yang masih berstatus *Menunggu Verifikasi (Pending Approval)*.
 * **Langkah-langkah**:
   1. Buka modul Laporan & Pembukuan `WF-07-laporan.html` pada Tab 1 (Buku Kas Umum).
@@ -998,29 +970,23 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 * **Hasil Diharapkan**:
   - Pada langkah 2: Transaksi sewa berstatus pending tersebut sama sekali **tidak muncul** pada tabel jurnal Buku Kas Umum, dan saldo kas berjalan tetap utuh `Rp 17.400.000` (*Zero Pending Leakage*).
   - Pada langkah 3: Di Tab Laba Rugi, Gross Revenue tetap `Rp 21.650.000` (tidak bertambah semu). Di Tab Umur Piutang, tagihan tersebut tetap berstatus belum terbayar lunas.
-  - Pada langkah 4: Segera setelah pembayaran disahkan oleh Pemilik di `WF-06`, transaksi masuk secara otomatis ke baris debit Buku Kas Umum dengan nomor bukti baru, saldo kas riil bertambah menjadi `Rp 19.050.000`, dan status rekonsiliasi kas tetap terbukti `Balance 100% (No Discrepancy)`.
+  - Pada langkah 4: Setelah Owner memverifikasi payment, alokasi ke line RENT baru masuk pada penerimaan kas tercatat. Angka saldo internal berubah sesuai event; tidak ada klaim pencocokan dengan bank.
 
 ---
 
-### SKENARIO 50: Akumulasi Realisasi Omzet atas Tagihan dengan Penyesuaian Diskon Sewa (WF-05 Sync)
-* **Tujuan**: Memastikan konsistensi pencatatan akuntansi saat penghuni membayar invoice sewa yang telah disesuaikan dengan diskon atau potongan khusus dari modul Tagihan (`WF-05`).
-* **Kondisi Awal**: Tagihan sewa Kamar A-01 (Tarif dasar Rp 1.400.000) diberikan potongan diskon promo loyalitas sebesar Rp 150.000 pada modul `WF-05`, sehingga nilai tagihan bersih yang dilunasi penghuni adalah Rp 1.250.000.
-* **Langkah-langkah**:
-  1. Buka Tab 1 (Buku Kas Umum) dan amati baris penerimaan sewa Kamar A-01.
-  2. Buka Tab 3 (Kinerja Kamar) dan amati baris Kamar A-01 (Lantai 1 Blok A).
-  3. Periksa strip ringkasan bawah pada Tab 1 dan Tab 3.
-* **Hasil Diharapkan**:
-  - Pada Buku Kas Umum: Mutasi debit kas masuk dicatat sesuai uang riil yang diterima kasir/bank: `+Rp 1.250.000` (bukan nilai bruto sebelum diskon).
-  - Pada Tab Kinerja Kamar: Kolom Realisasi Omzet Kamar A-01 menampilkan `Rp 1.250.000` dengan Net Kontribusi `Rp 1.250.000` dan Yield terhitung proporsional terhadap tarif dasar (`89.3%`).
-  - Tidak terjadi selisih (*zero discrepancy*) antara total kas masuk pada Buku Kas Umum dengan realisasi penerimaan sewa di Laporan Kinerja Kamar dan rekening bank.
+### SKENARIO 50: [DITUNDA — DI LUAR P0] Realisasi Omzet atas Tagihan dengan Diskon
+* **Batas cakupan**: Diskon sewa tidak termasuk tujuh fitur P0. Jangan menganggap fixture WF-05 yang memuat diskon sebagai sumber aturan produk atau menambah kolom/aturan diskon ke DB WF-07.
+* **Status**: Backlog. Jika diskon disetujui sebagai change request, audit dan penyesuaian data dilakukan pada WF-05 sebelum WF-07.
 
 ---
 
 ## 4. Matriks Ringkasan Kepatuhan & Status Pengujian
 
+Status `PASSED` pada matriks ini adalah catatan historis pengujian prototipe M04. Itu bukan bukti Verify database, backend, atau aplikasi M06.
+
 | ID Skenario | Nama Skenario Pengujian | Komponen & Fitur Terlibat | Batasan Scope | Status Verifikasi |
 |---|---|---|---|---|
-| **SK-01** | Inisialisasi Layar & 4 KPI Gauges Estify | Topbar, Radial Gauges, Rekonsiliasi Kas | F-06 (P0) / 1 Properti | **PASSED (100%)** |
+| **SK-01** | Inisialisasi Layar & indikator operasional | Topbar, KPI, konsistensi kas internal | F-06 (P0) / 1 Properti | **Belum diverifikasi DB** |
 | **SK-02** | Navigasi 4-Way Segmented Report Tabs | Tab Buttons, Dynamic Placeholder | F-06 (P0) | **PASSED (100%)** |
 | **SK-03** | Audit Jurnal Buku Kas Umum & Saldo Berjalan | `#panelLedger`, Debit/Kredit, Summary Strip | F-05, F-06 (P0) | **PASSED (100%)** |
 | **SK-04** | Smart Search Bar Simultan Lintas 4 Tab | `#auditSearchInput`, `#btnClearAuditSearch` | F-06 (P0) | **PASSED (100%)** |
@@ -1032,13 +998,13 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 | **SK-10** | Validasi Ketat Form Kas (Zero/Negative Amount)| Form Validation, Toast Error Guard | F-06 (P0) | **PASSED (100%)** |
 | **SK-11** | Penautan Tiket Maintenance pada Kas | `#directTicketSearchWrap`, Autocomplete | F-07, F-11 (P0/P1) | **PASSED (100%)** |
 | **SK-12** | Unggah Struk Pengeluaran & Auto Size KB/MB | File Dropzone, Live File Preview | F-11 (P1) | **PASSED (100%)** |
-| **SK-13** | Audit Laporan Laba Rugi Komprehensif (P&L) | `#panelPL`, MoM Variance, Margin 80.4% | F-06 (P0) | **PASSED (100%)** |
-| **SK-14** | Audit Kinerja 15 Kamar & Opportunity Cost | `#panelUnitMatrix`, Floor Group, Vacant Box | F-02, F-06 (P0) | **PASSED (100%)** |
+| **SK-13** | Ringkasan arus kas operasional tercatat | `#panelPL`, perbandingan periode | F-06 (P0); bukan akuntansi formal | **Belum diverifikasi DB** |
+| **SK-14** | Audit Kinerja 15 Kamar & Opportunity Cost | `#panelUnitMatrix`, Floor Group, Vacant Box | F-02, F-06 (P0); tanpa biaya servis per kamar | **Belum diverifikasi DB** |
 | **SK-15** | Analisis Umur Piutang (Aging Schedule) | `#panelAging`, Delta Hari, Toleransi H+3 | F-04, F-05 (P0) | **PASSED (100%)** |
 | **SK-16** | Ekspor Spreadsheet CSV (UTF-8 with BOM) | `#modalExport`, `downloadCsvReport()` | F-10 (P1) / Client-Side | **PASSED (100%)** |
 | **SK-17** | Ekspor Dokumen Resmi PDF Standar PDF-1.4 | `#modalExport`, `downloadPdfReport()` | F-10 (P1) / Client-Side | **PASSED (100%)** |
 | **SK-18** | Alur Ekspor Cetak Otomatis (Auto-Print) | `#autoPrintAfterDownload`, Print Layout | F-10 (P1) | **PASSED (100%)** |
-| **SK-19** | Penegakan RBAC: Simulasi Staf & Masking NOI | Role Simulator, Lock Badge `#kpiNoiValue` | F-01, F-06 (P0) | **PASSED (100%)** |
+| **SK-19** | Laporan Owner-Only; Staff/Tenant ditolak server | Server role guard, tanpa payload laporan parsial | F-01, F-06 (P0) | **Perlu verifikasi backend** |
 | **SK-20** | Respon Zero State & Aksesibilitas Tombol ESC | Empty State Box, ESC Listener, Dismiss | Accessibility Standards | **PASSED (100%)** |
 | **SK-21** | Segmentasi Piutang Menunggak & Zero Default | `#agingTabMenunggak`, Absolute Zero State | F-04, F-05 (P0) | **PASSED (100%)** |
 | **SK-22** | Floor Group Row Collapsing pada Kinerja Kamar | `.floor-group-row`, Filter DOM Logic | F-02, F-06 (P0) | **PASSED (100%)** |
@@ -1052,16 +1018,16 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 | **SK-30** | Dinamika Visual Pos Akun & 7 Kluster Badge | `getCategoryBadge()`, Icon Lucide Matrix | Category Mapping Engine | **PASSED (100%)** |
 | **SK-31** | Pratinjau Kuitansi Sewa Masuk (Income Proof) | `#modalProofView`, Income & Expense Dual | Document Viewer Versatility | **PASSED (100%)** |
 | **SK-32** | Ikon QRIS vs Transfer & Delta Hari Piutang | `renderAgingTable()`, Icon `qr-code` | Visual Payment Fidelity | **PASSED (100%)** |
-| **SK-33** | Jurnal Reversal Kas Salah Catat (Zero Data Loss) | Reversal Modal, Saldo Berjalan, Audit Reason | F-05, F-06 (P0) | **PASSED (100%)** |
-| **SK-34** | Proteksi Masking NOI pada Ekspor CSV/PDF Staf | `downloadCsvReport()`, Role Guard Export | F-01, F-10 (P1) | **PASSED (100%)** |
+| **SK-33** | Reversal Expense penuh dengan alasan | ExpenseReversal, histori append-only, audit reason | F-06 (P0) | **Perlu verifikasi backend** |
+| **SK-34** | Ekspor laporan Staf | Export role guard | F-10 (P1), backlog | **Ditunda** |
 | **SK-35** | Pembatasan Akses Mutlak Role Penghuni (403 Guard)| Role Guard, Redirect Portal Penghuni | F-01 (P0) / Zero Access | **PASSED (100%)** |
 | **SK-36** | Validasi Negatif Unggah Struk (>5MB & File Ilegal)| Dropzone Validation, File Type/Size Error | F-11 (P1) | **PASSED (100%)** |
 | **SK-37** | Pencegahan Klik Ganda & Idempotensi Form Kas | `#btnSubmitExpense`, Flag `isSubmitting` | UI Integrity Guard | **PASSED (100%)** |
-| **SK-38** | Penanganan Status Defisit Kas Operasional (NOI < 0)| `#kpiNoiValue`, Negative Styling, Alert Banner | Edge Financial State | **PASSED (100%)** |
-| **SK-39** | Kinerja Kamar dengan Beban Servis Melebihi Omzet | `#panelUnitMatrix`, Deficit Room Yield | F-02, F-06 (P0) | **PASSED (100%)** |
+| **SK-38** | Penanganan defisit arus kas operasional | `#kpiNoiValue`, negative cash state | F-06 (P0) | **Perlu verifikasi query/backend** |
+| **SK-39** | Beban servis per kamar melebihi omzet | Expense-to-Room allocation | Backlog di luar P0 | **Ditunda** |
 | **SK-40** | Ekspor Berkas Dinamis Berdasarkan Filter Aktif | `#modalExport`, Active Filter Dataset CSV | F-10 (P1) | **PASSED (100%)** |
 | **SK-41** | Penyaringan Multi-Kriteria Simultan Lintas Dimensi| Filter Intersection (Search & Category & Date)| Filter Engine Guard | **PASSED (100%)** |
-| **SK-42** | Integritas Biaya Tiket Servis (Anti-Double Count)| `#TKT-003`, Cross-Module Aggregation | F-11 (P1) | **PASSED (100%)** |
+| **SK-42** | Integritas biaya tiket servis (anti-double count) | Expense-to-Ticket relation | F-11 (P1) | **Ditunda** |
 | **SK-43** | Cakupan Ekspor Khusus Laporan P&L (`btnScopePL`)| `#modalExport`, Scope Selector, P&L CSV/PDF | F-10 (P1) | **PASSED (100%)** |
 | **SK-44** | Pemilihan Rentang Tanggal Pembukuan Kustom | `#periodPopoverMenu`, Custom Date Filter | F-06 (P0) | **PASSED (100%)** |
 | **SK-45** | Perlakuan Kas Riil Settlement Deposit Escrow | `#panelLedger`, Non-Cash Clearing Badge | F-05, F-06 (P0) | **PASSED (100%)** |
@@ -1069,7 +1035,7 @@ Layar **WF-07 (`SCR-12` & `SCR-13`)** adalah pusat audit keuangan eksekutif, rek
 | **SK-47** | Filter Matriks Status & Lantai pada Umur Piutang | Dual-Pill Filter (`#panelAging`), Intersection | F-04, F-05 (P0) | **PASSED (100%)** |
 | **SK-48** | Audit Traceability Tiket dari Laba Rugi ke WF-08 | `#TKT-003`, Cross-Module Audit Navigation | F-07, F-11 (P0/P1) | **PASSED (100%)** |
 | **SK-49** | Penegakan Cash-Basis vs Pembayaran Pending WF-06| `WF-06` Sync, Zero Pending Leakage Guard | F-05, F-06 (P0) | **PASSED (100%)** |
-| **SK-50** | Realisasi Omzet atas Diskon Sewa dari WF-05 | `WF-05` Sync, Net Cash Revenue Accuracy | F-04, F-06 (P0) | **PASSED (100%)** |
+| **SK-50** | Omzet setelah diskon sewa | Diskon sewa WF-05 | Backlog di luar P0 | **Ditunda** |
 
 ---
 

@@ -331,7 +331,7 @@ Pengujian fungsional mengacu pada berkas data sintetis awal Oktober 2026 yang te
      - Klik tombol **"Konfirmasi Tolak Bukti"**.
 * **Hasil Diharapkan**:
   - Modal `#modalReject` tertutup.
-  - Status transaksi `PAY-202610-02` berubah menjadi **"Ditolak"** / `reversed` (Badge Merah).
+  - Status payment `PAY-202610-02` berubah menjadi **"Ditolak"** / `REJECTED` (Badge Merah); alasan nonblank tersimpan sebagai alasan penolakan yang tidak dapat diubah.
   - Transaksi terhapus dari antrean verifikasi sidebar.
   - Pada jejak audit log kartu, ditambahkan catatan bertitik merah:  
     *“Ditolak oleh Pemilik: "Mutasi transfer tidak ditemukan pada rekening koran BCA..." · [Waktu WIB]”*.
@@ -430,13 +430,13 @@ Pengujian fungsional mengacu pada berkas data sintetis awal Oktober 2026 yang te
 ---
 
 ### SKENARIO 16: Jurnal Reversal / Koreksi Transaksi Salah Catat (Zero Data Loss Audit Guard)
-* **Tujuan**: Memastikan transaksi yang salah catat tidak dihapus dari basis data, melainkan dibatalkan melalui pembuatan entri jurnal reversal negatif dan mengembalikan saldo tagihan asal.
+* **Tujuan**: Memastikan transaksi yang salah catat tidak dihapus dari basis data, melainkan dikoreksi melalui record `PaymentReversal` penuh yang immutable dan mengembalikan saldo tagihan asal. Nilai reversal disimpan positif sebesar nilai payment asal; feed boleh menampilkannya sebagai angka negatif.
 * **Kondisi Awal**: Terdapat transaksi terverifikasi `PAY-202610-01` (Rina Marliana · Rp 1.800.000) yang salah dicatat kamar.
 * **Langkah-langkah**:
   1. Buka akordion kartu `PAY-202610-01` dan klik tombol **"Jurnal Reversal"** (`.btn-exec-reversal`).
      - *Verifikasi*: Modal `#modalReversal` terbuka.
      - Kotak merah audit menegaskan:  
-       *“Prinsip Jejak Audit: Transaksi asli tidak akan dihapus fisik. Sistem akan membuat entri pembalik (reversal negatif) dan mengembalikan saldo tagihan kamar ke status belum terbayar.”*
+       *“Prinsip Jejak Audit: Transaksi asli tidak akan dihapus fisik. Sistem akan membuat record reversal penuh terpisah dan mengembalikan saldo tagihan kamar ke status belum terbayar.”*
      - Rincian reversal menampilkan: Transaksi Asal `#PAY-202610-01`, Nominal Koreksi `- Rp 1.800.000`, Dampak: *"Kembali Belum Lunas (Sisa Rp 1,8 Jt)"*.
   2. *Validasi Alasan*:
      - Coba klik *"Eksekusi Jurnal Reversal"* tanpa mengisi alasan.
@@ -446,12 +446,13 @@ Pengujian fungsional mengacu pada berkas data sintetis awal Oktober 2026 yang te
      - Klik tombol **"Eksekusi Jurnal Reversal"**.
 * **Hasil Diharapkan**:
   - Modal tertutup otomatis.
-  - Terbit entri transaksi baru `REV-202610-02` pada posisi teratas feed:
-    - Nominal tercetak merah: `-Rp 1.800.000` (`.is-negative`).
-    - Metode: *"Jurnal Reversal"*.
-    - Status badge: *"Dibatalkan"* (`.is-danger` berlatar merah lembut).
+  - Tersimpan satu `PaymentReversal` untuk `PAY-202610-01` dengan nominal positif Rp 1.800.000 dan alasan wajib; record payment asal tetap `VERIFIED` dan tidak dihapus.
+  - Feed dapat memproyeksikan reversal sebagai item koreksi `REV-202610-02`:
+    - Nominal tampilan merah: `-Rp 1.800.000` (`.is-negative`); nilai database reversal tetap positif.
+    - Metode tampilan: *"Jurnal Reversal"*.
+    - Status tampilan: *"Dikoreksi"*; `REJECTED` hanya digunakan untuk payment klaim yang ditolak sebelum verifikasi.
     - Jejak audit mencatat alasan pembatalan dan pemulihan saldo tagihan `#INV-202610-001` ke status belum bayar.
-  - Pada transaksi asal `PAY-202610-01`, ditambahkan jejak audit: *"Dibatalkan via Reversal #REV-202610-02: Salah input kamar oleh staf..."*.
+  - Pada transaksi asal `PAY-202610-01`, ditambahkan jejak audit: *"Dikoreksi via Reversal #REV-202610-02: Salah input kamar oleh staf..."*.
   - Sisa kewajiban tagihan `#INV-202610-001` kembali menjadi Rp 1.800.000.
   - Nilai Kas Masuk Realisasi berkurang tepat Rp 1.800.000.
   - Toast sukses muncul: *"Jurnal Reversal REV-202610-02 berhasil dibukukan! Saldo tagihan kembali normal."*.
@@ -871,7 +872,7 @@ Pengujian fungsional mengacu pada berkas data sintetis awal Oktober 2026 yang te
   2. Masukkan alasan: `"Pembatalan cicilan tahap 1: dana cek giro ditolak kliring bank"`.
   3. Klik **"Eksekusi Jurnal Reversal"**.
 * **Hasil Diharapkan**:
-  - Terbit entri reversal bernilai `-Rp 1.250.000` di feed.
+  - Tersimpan `PaymentReversal` penuh bernilai positif Rp 1.250.000; feed menampilkan dampak koreksi sebagai `-Rp 1.250.000`.
   - Nilai kewajiban tagihan kamar A-04 terestorasi kembali dari Rp 750.000 menjadi Rp 2.000.000 (piutang penuh).
   - Status tagihan pada modul penagihan kembali menjadi *"Belum Dibayar"*.
   - Metrik Kas Masuk Realisasi berkurang tepat Rp 1.250.000.

@@ -53,6 +53,8 @@ erDiagram
   LEASE ||--o{ DEPOSIT_LEDGER_ENTRY : tracks_escrow
   PAYMENT ||--o| PAYMENT_REVERSAL : reversed_by
   APP_USER ||--o{ EXPENSE : records
+  EXPENSE ||--o| EXPENSE_REVERSAL : corrected_by
+  APP_USER ||--o{ EXPENSE_REVERSAL : creates
   APP_USER ||--o{ OPERATING_BUDGET : sets
   FLOOR ||--o{ ROOM : contains
   APP_USER ||--o| TENANT_PROFILE : has_profile
@@ -74,6 +76,7 @@ erDiagram
   DEPOSIT_LEDGER_ENTRY { uuid id PK; uuid lease_id FK; text kind; numeric amount }
   PAYMENT_REVERSAL { uuid id PK; uuid payment_id FK; numeric amount; text reason }
   EXPENSE { uuid id PK; numeric amount; date occurred_on }
+  EXPENSE_REVERSAL { uuid id PK; uuid expense_id FK_UK; numeric amount; text reason; uuid created_by FK }
   OPERATING_BUDGET { uuid id PK; date period_start UK; numeric amount; uuid updated_by FK }
   TICKET { uuid id PK; uuid room_id FK; uuid created_by FK; text status; date target_completion_on nullable }
   TICKET_COMMENT { uuid id PK; uuid ticket_id FK; uuid author_id FK; text visibility }
@@ -181,14 +184,24 @@ CREATE TABLE payment (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   invoice_id uuid NOT NULL REFERENCES invoice(id),
   amount numeric(12,2) NOT NULL CHECK (amount > 0),
-  method text NOT NULL,
+  method text NOT NULL CHECK (method IN ('TRANSFER', 'QRIS', 'CASH')),
   reference text UNIQUE CHECK (reference IS NULL OR btrim(reference) <> ''),
   status payment_status NOT NULL DEFAULT 'PENDING',
   recorded_by uuid NOT NULL REFERENCES app_user(id),
   verified_by uuid REFERENCES app_user(id),
   verified_at timestamptz,
+  rejected_by uuid REFERENCES app_user(id),
+  rejected_at timestamptz,
+  rejection_reason text,
   created_at timestamptz NOT NULL DEFAULT now(),
-  CHECK ((status = 'VERIFIED') = (verified_by IS NOT NULL AND verified_at IS NOT NULL))
+  CHECK ((status = 'VERIFIED') = (verified_by IS NOT NULL AND verified_at IS NOT NULL)),
+  CHECK (
+    (status = 'REJECTED' AND rejected_by IS NOT NULL AND rejected_at IS NOT NULL
+      AND rejection_reason IS NOT NULL AND btrim(rejection_reason) <> '')
+    OR
+    (status <> 'REJECTED' AND rejected_by IS NULL AND rejected_at IS NULL
+      AND rejection_reason IS NULL)
+  )
 );
 
 CREATE TABLE payment_allocation (
@@ -234,22 +247,40 @@ CREATE TABLE payment_reversal (
 -- allocations must target a line on the same issued invoice and reconcile exactly
 -- before verification; active verified totals cannot exceed invoice or line totals.
 -- Payments move only from PENDING to VERIFIED/REJECTED; allocations and reversals
--- are append-only. A reversal must fully reverse a verified payment with a reason.
+-- are append-only. Rejection requires a nonblank immutable reason. Payment method
+-- is TRANSFER, QRIS, or CASH. A reversal must fully reverse a verified payment
+-- with a reason; a rejected payment is not a reversal.
+-- Payment rows are never hard-deleted.
 -- Deposit reversals append COLLECTION_REVERSED per recorded deposit allocation;
 -- the reversal is rejected when unreserved escrow cannot cover the compensation.
 -- Invoice rows must have at least one line at transaction commit. An invoice
 -- cannot be voided while any payment is pending or any verified payment remains
 -- unreversed. Deposit rent settlement must target an ISSUED invoice.
+-- Expenses require nonblank category/description and are immutable. One full,
+-- reasoned reversal per expense is append-only and may be created only by OWNER.
 
 CREATE TABLE expense (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  category text NOT NULL,
+  category text NOT NULL CHECK (btrim(category) <> ''),
   amount numeric(12,2) NOT NULL CHECK (amount > 0),
   occurred_on date NOT NULL,
-  description text NOT NULL,
+  description text NOT NULL CHECK (btrim(description) <> ''),
   recorded_by uuid NOT NULL REFERENCES app_user(id),
   created_at timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE TABLE expense_reversal (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  expense_id uuid NOT NULL UNIQUE REFERENCES expense(id),
+  amount numeric(12,2) NOT NULL CHECK (amount > 0),
+  reason text NOT NULL CHECK (btrim(reason) <> ''),
+  created_by uuid NOT NULL REFERENCES app_user(id),
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+-- A trigger requires reversal.amount = expense.amount and created_by.role = OWNER.
+-- UPDATE/DELETE are rejected for both Expense and ExpenseReversal. AuditEvent
+-- and IdempotencyKey are written with the reversal by the backend transaction.
 
 CREATE TABLE operating_budget (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -409,7 +440,7 @@ Buat `.env.example` dengan nilai kosong yang terdokumentasi dan modul environmen
 ### 5.3 Privacy, retention, backups, and incident boundary
 
 - Demo data must be wholly synthetic. No interview participant data, actual tenant contact details, NIK, identity files, bank account data, or transfer receipts.
-- Retain ticket media until 365 days after closure; purge via an idempotent cleanup operation. Financial/audit events are not hard-deleted; correct them through reversal or append-only changes.
+- Retain ticket media until 365 days after closure; purge via an idempotent cleanup operation. Financial/audit events are not hard-deleted or overwritten; an expense correction is a full reasoned Owner reversal plus a new expense record when needed.
 - Neon Free menyediakan instant restore/PITR sampai 6 jam dengan batas histori perubahan 1 GB ([plan limits](https://neon.com/docs/introduction/plans)). Batas ini tidak menggantikan backup independen. Karena data demo sintetis, pemulihan awal memakai migrasi dan seed yang dapat diulang; Owner menjalankan PITR bila perlu dan mendokumentasikan hasil restore drill pada M07. Target operasional demo yang diusulkan: RPO maksimal 6 jam selama histori berada dalam kuota dan RTO 8 jam; keduanya bukan SLA.
 - Do not log credentials, session tokens, signed URLs, raw uploaded content, or internal comments in application logs. Security incident response: revoke affected provider credentials, invalidate sessions, disable uploads if needed, preserve audit evidence, and restore from a verified backup.
 

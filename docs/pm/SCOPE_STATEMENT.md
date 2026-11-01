@@ -133,8 +133,9 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 
 #### F-06 Pengeluaran dan laporan pemasukan/okupansi
 - Sebagai Owner, saya ingin melihat ringkasan keuangan; Owner/Staff berizin dapat mencatat pengeluaran operasional agar biaya aktual masuk ke rekap.
+- Kategori dan deskripsi pengeluaran wajib nonblank; nominal positif. Catatan pengeluaran bersifat append-only: Owner dapat membalik penuh satu catatan dengan alasan; catatan pengganti dibuat terpisah bila dibutuhkan.
 - Owner dapat menetapkan satu pagu pengeluaran operasional untuk setiap bulan kalender. Pagu yang belum diatur tidak diberi nilai default; perubahan nilai dicatat di audit.
-- Laporan/dashboard Owner membandingkan jumlah pengeluaran tercatat pada bulan terpilih dengan pagu bulan itu. Angka ini bukan laba, proyeksi, atau akuntansi formal; Staff dan Penghuni tidak menerima angka keuangan/pagu.
+- Laporan/dashboard Owner membandingkan pengeluaran yang belum direversal pada bulan terpilih dengan pagu bulan itu dan menyajikan arus kas operasional internal. Angka ini bukan rekonsiliasi rekening koran, laba, proyeksi, atau akuntansi formal; Staff dan Penghuni tidak menerima angka keuangan/pagu.
 - Given catatan transaksi memiliki tanggal, kategori, dan nominal, when laporan periode dibuka, then total pemasukan dan pengeluaran hanya menjumlah catatan dalam rentang tanggal itu.
 - Given jumlah kamar dan kontrak aktif diketahui, when okupansi dihitung, then angka terisi/tersedia dapat ditelusuri ke status kamar dan kontrak aktif.
 - Laporan tidak menyebut laba akuntansi/pajak dan tidak menganggap transaksi yang tidak dicatat sebagai biaya nol.

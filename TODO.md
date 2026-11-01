@@ -135,6 +135,11 @@ EXIT_CODE=0
 | [x] | M06-DB-32 | Jaga saldo escrow saat reversal payment deposit | `prisma/schema.prisma`, `prisma/migrations/20261101360000_deposit_collection_reversal/migration.sql`, FSD, M05 Data API, `TODO.md` | M06-DB-31; keputusan Owner “rekomendasimu aja” 2026-11-01 | Tambah event append-only `COLLECTION_REVERSED` yang ditulis atomik untuk alokasi deposit ter-posting. Saldo escrow menghitung event ini sebagai pengurang; reversal ditolak bila saldo bebas tidak cukup karena settlement/withholding/refund aktif. Tolak posting `COLLECTED` dari payment yang sudah direversal. | Backend, UI, transfer refund otomatis, apply ke Neon, `.env.local` | Prisma validate dengan URL sintetis; jalankan semua migration pada PGlite disposable dengan dua exclusion GiST dihilangkan untuk kompatibilitas; seed dua kali; uji reversal deposit penuh/campuran, kompensasi otomatis, reversal sebelum ledger post, penolakan jika dana terpakai/direservasi, atomic rollback, crosswalk WF-04, `git diff --check`. Catat raw output dan berhenti untuk review Owner. | WF-04 SK-05/11/12/34; WF-05 reversal; PRD REQ-05.3; FSD; M05 Data API; Frozen Scope. Approved: 2026-11-01 by zeenn. |
 | [x] | M06-DB-33 | Audit akhir cakupan WF-05 setelah integritas finansial dan escrow | `docs/design/SCENARIOS_WF05.md`, `docs/design/SCENARIO_EVALUATION.md`, Prisma schema/migrations, PRD/FSD/M05 Data API, `TODO.md` | M06-DB-30 dan M06-DB-32; Owner menyatakan WF-04 clear dan meminta lanjut ke WF-05 2026-11-01 | Audit ulang seluruh 61 skenario WF-05 setelah guard invoice/payment/reversal dan kompensasi escrow. Pastikan isu yang tersisa benar-benar tanggung jawab DB; pisahkan invariants transaksi/backend dan batas scope. | Implementasi schema/migration/backend atau keputusan domain baru tanpa review Owner; Neon; `.env.local` | Verifikasi hitungan 61 ID runbook dan crosswalk; telusuri void terhadap payment pending, escrow settlement terhadap status invoice, minimal satu line invoice, due date, alasan audit, serta status finansial. Catat hasil/rekomendasi di Evidence; read-only selain TODO dan berhenti untuk review Owner. | WF-05 SK-01–61; FSD REQ-04/05; PRD; M05 Data API; Frozen Scope. Approved: 2026-11-01 by zeenn. |
 | [x] | M06-DB-34 | Tutup gap konsistensi invoice WF-05 | `prisma/migrations/20261101370000_wf05_invoice_consistency_guards/migration.sql`, FSD, M05 Data API, `TODO.md` | M06-DB-33; Owner menyetujui rekomendasi audit WF-05 2026-11-01 | Cegah void ketika ada payment `PENDING` atau `VERIFIED` aktif; wajibkan settlement deposit menunjuk invoice `ISSUED`; tegakkan minimal satu invoice line saat transaksi commit. Tolak penerapan bila data existing memiliki invoice kosong. | Backend, UI, keputusan reissue invoice, Neon, `.env.local` | Apply seluruh migration pada PGlite disposable; uji void ditolak dengan payment pending, reject lalu void lolos, invoice verified belum direversal tetap tertahan, settlement ke invoice VOID ditolak dan ISSUED lolos, invoice kosong gagal saat commit sementara invoice ber-line lolos, preflight menolak data existing kosong. Jalankan hanya Verify task ini dan catat output mentah; `git diff --check`. | WF-05 SK-17/19/40; FSD; M05 Data API; M06-DB-33. Approved: 2026-11-01 by zeenn. |
+| [~] | M06-DB-35 | Audit cakupan data WF-06 pada lapisan DB | `docs/design/SCENARIOS_WF06.md`, `docs/design/SCENARIO_EVALUATION.md`, schema/migrations, PRD/FSD/M05 Data API, Frozen Scope, `TODO.md` | M06-DB-34; permintaan Owner audit WF-06 DB 2026-11-01 | Cocokkan seluruh skenario WF-06 dengan model Payment, PaymentAllocation, PaymentReversal, DepositLedgerEntry, IdempotencyKey, AuditEvent, serta Expense; bedakan constraint DB, transaksi/backend/RBAC, konflik spesifikasi, dan fitur di luar P0. | Perubahan schema/migration/backend, memperluas scope surplus/transfer/refund rekening, atau revisi skenario sebelum review Owner; Neon; `.env.local` | Verifikasi jumlah dan kelengkapan ID runbook/crosswalk; audit status dan alokasi pembayaran, metode/referensi, penolakan/alasan audit, reversal/idempotensi, escrow/refund, double transfer/overpayment, serta klasifikasi scope. Read-only selain TODO; catat gap dan rekomendasi tanpa implementasi. | WF-06 SK-01–55; PRD REQ-05/06; FSD; M05 Data API; Scope Statement. Menunggu review Owner. |
+| [~] | M06-DB-36 | Simpan alasan rejection dan batasi metode Payment P0 | `prisma/schema.prisma`, `prisma/migrations/20261101380000_payment_rejection_reason_method/migration.sql`, FSD, M05 Data API, `docs/design/SCENARIOS_WF06.md`, `TODO.md` | M06-DB-35; instruksi Owner “fix” 2026-11-01 | Simpan alasan wajib/nonblank pada Payment `REJECTED` secara immutable; batasi metode manual menjadi `TRANSFER`, `QRIS`, `CASH`; tolak hard delete Payment; bedakan REJECTED dari reversal dan normalkan nilai reversal yang tersimpan positif dari tampilan negatif. Migration fail-safe jika data lama perlu backfill. | Payment gateway/bank sync, detail rekening/nama bank, refund surplus/kredit, backend/UI, penerapan Neon, `.env.local` | `npx prisma validate` dengan URL sintetis; apply seluruh migration pada PGlite disposable; verifikasi nilai metode yang diizinkan dan penolakan metode lain, alasan wajib saat reject, penolakan reason blank/mutasi, Payment tidak dapat dihapus, preflight tidak meninggalkan perubahan jika ada status/metode lama yang perlu backfill, fixture sintetis metode `TRANSFER`; `git diff --check`. Catat output mentah task ini saja. | WF-06 SK-06/07/11/16/42/44/53; PRD REQ-05; FSD; M05 Data API; Scope Statement. Menunggu review Owner. |
+| [x] | M06-DB-37 | Audit cakupan data WF-07 pada lapisan DB | `docs/design/SCENARIOS_WF07.md`, `docs/design/SCENARIO_EVALUATION.md`, Prisma schema/migrations, PRD/FSD/M05 Data API, Scope Statement, `TODO.md` | M06-DB-36; Owner meminta lanjut ke WF-07 2026-11-01 | Cocokkan seluruh 50 skenario dengan Expense, OperatingBudget, Payment/Allocation/Reversal, Invoice, Lease, Room, dan AuditEvent; pisahkan constraint DB, transaksi/backend/RBAC, konflik spesifikasi, dan fitur di luar P0. | Implementasi schema/migration/backend atau perubahan scope sebelum review Owner; Neon; `.env.local` | Verifikasi 50 ID runbook/crosswalk unik dan lengkap; audit validasi Expense, koreksi/retensi transaksi, metode kalkulasi pemasukan-kas dan deposit, anggaran, okupansi/biaya per kamar, rekonsiliasi bank, akses laporan, dan idempotensi. Catat gap/rekomendasi serta konflik scope dalam Evidence; read-only selain TODO. | WF-07 SK-01–50; PRD REQ-06; FSD; M05 Data API; Frozen Scope. Approved: 2026-11-01 by zeenn. |
+| [x] | M06-DB-38 | Tegakkan integritas Expense dan selaraskan laporan WF-07 | `prisma/schema.prisma`, `prisma/migrations/20261101390000_wf07_expense_integrity/migration.sql`, `prisma/seed.ts`, PRD/FSD/M05 Data API/Scope, `docs/design/SCENARIOS_WF07.md`, `docs/design/SCENARIO_EVALUATION.md`, `TODO.md` | M06-DB-37; Owner meminta memperbaiki semua temuan WF-07 2026-11-01 | Tambah validasi nonblank, append-only Expense, reversal penuh beralasan oleh Owner, dan constraints unik/amount/immutability. Selaraskan laporan sebagai kas internal Owner-only; tetapkan biaya per kamar/diskon/ekspor sebagai backlog yang sudah dibekukan. | Implementasi backend/UI, rekonsiliasi bank, tautan Expense ke Room/Ticket, Neon, `.env.local` | `npx prisma validate` memakai URL sintetis; seluruh migration pada PGlite disposable dengan exclusion GiST dihilangkan hanya untuk emulator; uji blank category/description, fail-safe preflight tanpa schema residue, nominal/role/reason/amount reversal, satu reversal per Expense, update/delete Expense dan reversal ditolak, Expense pengganti setelah reversal; jalankan seed sintetis dua kali; tinjau konsistensi spesifikasi/crosswalk; `git diff --check`. Catat output raw Verify task ini saja; jangan menjalankan task Verify lain. | WF-07 SK-10/14/19/33/39/45/49/50; PRD REQ-06; FSD; M05 Data API; Frozen Scope. Approved: 2026-11-01 by zeenn. |
+| [~] | M06-DB-39 | Audit cakupan data WF-08 pada lapisan DB | `docs/design/SCENARIOS_WF08.md`, `docs/design/SCENARIO_EVALUATION.md`, Prisma schema/migrations, PRD/FSD/M05 Data API, Scope Statement, `TODO.md` | M06-DB-38; Owner meminta lanjut setelah WF-07 2026-11-01 | Cocokkan seluruh 68 skenario dengan Ticket, TicketComment, TicketAttachment, Room, Lease, AppUser, AuditEvent, dan IdempotencyKey. Pisahkan constraint DB, transaksi/backend/RBAC, konflik spesifikasi/scope, dan fitur backlog. | Perubahan schema/migration/backend atau scope sebelum review Owner; Neon; `.env.local` | Verifikasi 68 ID runbook/crosswalk unik dan lengkap; audit relasi ticket-ke-lease, kategori/nomor tiket, status/transisi/pembatalan, teks wajib, histori/retensi, lampiran dan batas media, idempotensi, aktor/pemilik, serta klaim biaya/garansi. Catat gap/rekomendasi dan konflik tanpa implementasi. Read-only selain TODO; jalankan hanya Verify task ini dan catat output mentah. | WF-08 SK-01–68; PRD REQ-07; FSD; M05 Data API; Frozen Scope. Menunggu review Owner. |
 
 ### Evidence M06-DB-01 — AppUser (2026-10-31)
 
@@ -2197,6 +2202,306 @@ EXIT_CODE=0
 ```
 
 M06-DB-34 Approved: 2026-11-01 by zeenn.
+
+### Evidence M06-DB-35: audit WF-06 untuk lapisan DB (2026-11-01)
+
+Audit read-only memetakan runbook WF-06 ke crosswalk dan menelusuri `Payment`, `PaymentAllocation`, `PaymentReversal`, `DepositLedgerEntry`, `IdempotencyKey`, `AuditEvent`, `Expense`, migration integritas M06-DB-30/32/34, PRD/FSD/M05 Data API, dan Frozen Scope. Tidak mengubah schema, migration, crosswalk, skenario, backend, Neon, atau `.env.local`.
+
+Raw Verify kelengkapan ID runbook/crosswalk dan indikator enforcement:
+
+```text
+{
+    "runbookCount":  55,
+    "crosswalkCount":  55,
+    "missingCrosswalk":  [],
+    "missingRunbook":  [],
+    "duplicateRunbook":  [],
+    "duplicateCrosswalk":  [],
+    "paymentReferenceUnique":  true,
+    "pendingToVerifiedOrRejected":  true,
+    "allocationParentAndInvoiceCaps":  true,
+    "reversalFullAmountAndReason":  true,
+    "reversalSinglePerPayment":  true,
+    "reversalAppendOnly":  true,
+    "depositReversalCompensatedAtomically":  true,
+    "idempotencyUnique":  true,
+    "auditEventReasonOptional":  true,
+    "apiRejectionReasonOptional":  true,
+    "surplusRefundOutOfScope":  true,
+    "doubleTransferResolutionOutOfScope":  true,
+    "paymentMethodConstrained":  false,
+    "result":  "PASS_STATIC_AUDIT"
+}
+EXIT_CODE=0
+```
+
+Bagian DB yang telah tertangani: nominal payment positif; status hanya mulai `PENDING` dan transisi ke `VERIFIED`/`REJECTED`; alokasi terikat pada invoice/line yang sama dan dibatasi nominal payment, invoice, serta line; pembayaran parsial dihitung dari alokasi terverifikasi; referensi eksternal opsional nonblank dan unik; reversal hanya satu per payment terverifikasi, penuh, beralasan, append-only; reversal tidak menghapus payment asal dan menghitung kembali piutang; deposit yang dikumpulkan melalui alokasi payment dikompensasi atomik saat reversal; overdraw escrow ditolak; retry memiliki `IdempotencyKey`; saldo dan metrik merupakan hasil query dari event, bukan saldo berjalan terpisah.
+
+Temuan/batas yang perlu diselaraskan sebelum klaim seluruh runbook WF-06 didukung:
+
+1. **Alasan penolakan berbeda antara runbook dan kontrak API.** WF-06-SK-11 mewajibkan alasan penolakan dan jejak audit, tetapi M05 menulis `rejection reason?` opsional. `AuditEvent.reason` dapat menyimpan alasan, namun kolomnya nullable dan tidak ada constraint DB yang mengaitkan setiap `REJECTED` dengan event beralasan. Rekomendasi: selaraskan kontrak agar alasan wajib, lalu pastikan backend menulis transisi `REJECTED` dan `AuditEvent` beralasan dalam satu transaksi. Bila Owner meminta enforcement SQL juga, tentukan apakah alasan dimodelkan langsung di Payment atau tetap di AuditEvent sebelum membuat perubahan schema.
+2. **Vocabulary metode pembayaran belum dibekukan.** `Payment.method` adalah teks bebas dan tidak ada constraint DB untuk daftar metode yang diterima. Runbook menampilkan BCA/transfer, QRIS, dan tunai; scope membatasi pencatatan manual serta mengecualikan integrasi wallet/bank. Dokumen kontrak M05 tidak menetapkan enum/metode baku. Ini belum dapat dinyatakan sebagai gap constraint karena nilai domain belum disepakati. Rekomendasi: tetapkan metode P0 di M05; setelah itu pilih validasi server atau constraint DB yang sejalan.
+3. **Semantik runbook bercampur untuk rejection dan reversal.** SK-11 menyebut status penolakan sebagai `reversed`, sedangkan DB membedakan payment `REJECTED` dari reversal payment terverifikasi yang tercatat pada `PaymentReversal`. Label dan istilah itu sebaiknya dirapikan di runbook/crosswalk; bukan masalah kurangnya entitas DB.
+
+Di luar P0 sesuai crosswalk/PRD: refund kelebihan bayar umum, kredit/carry-forward, resolusi transfer ganda sebagai refund/kredit, rekening sumber atau detail bank, bukti transfer/kuitansi digital dan ekspor CSV. `Expense` mencatat pengeluaran operasional secara terpisah; refund escrow memiliki ledger `REFUNDED` manual dengan alasan/status. RBAC Owner-only, kepemilikan lease, validasi input/XSS, respons status ke UI, query feed/filter, dan penulisan AuditEvent dalam transaksi adalah enforcement backend/query. Data demo M04 (termasuk metode/status surplus/double-transfer) tidak menjadi sumber persistensi P0 bila bertentangan dengan scope beku.
+
+Tidak ada perubahan selain task audit dan Evidence ini. Tidak menjalankan migration, test, atau operasi Neon. M06-DB-35 menunggu review Owner atas temuan dan rekomendasi.
+
+Raw Verify `git diff --check -- TODO.md`:
+
+```text
+warning: in the working copy of 'TODO.md', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0
+```
+
+### Evidence M06-DB-39: audit WF-08 untuk lapisan DB (2026-11-01)
+
+Audit read-only membandingkan 68 skenario WF-08 dan crosswalk dengan `Ticket`, `TicketComment`, `TicketAttachment`, `Room`, `Lease`, `AppUser`, `AuditEvent`, `IdempotencyKey`, migration tiket, PRD REQ-07, FSD, M05 Data/API, dan Frozen Scope. Tidak mengubah schema, migration, skenario, crosswalk, backend, Neon, atau `.env.local`.
+
+#### Temuan DB dan rekomendasi
+
+1. **Ticket belum menyimpan Lease yang menjadi dasar pelaporan.** `Ticket` hanya FK ke `Room` dan `createdBy`; PRD meminta tiket terkait kontrak/kamar aktif. Tanpa `leaseId`, DB tidak dapat mempertahankan bukti kontrak yang mengizinkan Tenant membuat tiket atau menjaga konsistensi tenant/kamar. Rekomendasi: putuskan relasi Ticket–Lease dan jaga kesesuaian lease, kamar, dan pelapor; pemeriksaan lease aktif/otorisasi tetap dilakukan server.
+2. **Kolom teks wajib menerima string kosong/spasi.** `title`, `description`, dan `TicketComment.body` NOT NULL tetapi tidak memiliki CHECK nonblank. DB juga mengizinkan mengubah/menghapus komentar lama dan menghapus Ticket tanpa child; ini melemahkan histori. Rekomendasi: CHECK nonblank, cegah hard delete tiket, dan jadikan komentar append-only kecuali ada alur koreksi/redaksi ber-audit.
+3. **Kategori kerusakan dan nomor tiket tidak dipersistenkan.** WF-08-SK-03/15/53 memakai kategori; SK-18 meminta penomoran otomatis. Model Ticket tidak memiliki kategori maupun `ticketNumber`; hanya UUID. Keduanya berguna di operasional nyata, tetapi PRD/FSD/M05 belum membekukan kategori atau format nomor. Rekomendasi: Owner memilih field/vocabulary kategori dan identifier manusia yang stabil, atau crosswalk menurunkan skenario terkait.
+4. **Status hanya membatasi nilai, bukan transisi.** Enum lima status tersedia, tetapi DB menerima lompatan status, tidak mengikat status `RESOLVED` ke `closedAt`, dan tidak menyimpan alasan/aktor/waktu pembatalan. WF-08-SK-47 mengharapkan status `CANCELLED` tetapi enum tidak memilikinya dan crosswalk menandainya MVP, berkonflik dengan model lima tahap M05. Rekomendasi: putuskan apakah cancellation adalah status terminal P0 (dengan alasan dan audit) atau backlog; pertimbangkan guard transisi DB. M05 saat ini menugaskan validasi `INVALID_TRANSITION` kepada backend.
+5. **Pembuatan tiket dalam skenario tidak konsisten dengan aturan aktor.** PRD/M05 menetapkan `createTicket` untuk Tenant pada lease aktif, sedangkan WF-08-SK-14/15/16/18 ada pada alur/aktor Owner dan Staff. Jika Staff/Owner boleh mencatat laporan atas nama Tenant, model perlu memisahkan pelaku input dari pelapor dan menyimpan lease sumber; jangan menganggap `createdBy` sekaligus mewakili keduanya.
+6. **Metadata media baru memiliki sebagian guard.** DB menolak size/duration nol dan memastikan attachment pada komentar menunjuk tiket yang sama; DB belum membatasi MIME/ukuran/durasi maksimum, jumlah media atau agregat 40 MB, maupun mewajibkan bukti awal. FSD/M05 meletakkan validasi isi/ukuran di server dan objek berada di private storage. Backend harus memfinalisasi batch dan kuota secara aman terhadap retry/konkurensi; jangan mengklaim DB dapat memverifikasi objek eksternal.
+7. **Retensi media belum dijaga lintas status tiket.** Field `closedAt`, `reopenedAt`, `deleteAfter`, `deletedAt` serta indeks `deleteAfter` tersedia, tetapi tidak ada guard yang memastikan penutupan menjadwalkan 365 hari dan reopen membatalkan tenggat lama. Update/delete metadata attachment dan transisi upload juga belum dibatasi. Rekomendasi: tentukan mutasi lifecycle DB yang sah; sinkronkan tenggat dalam transaksi close/reopen, pertahankan metadata tombstone, dan serahkan penghapusan object storage ke job idempotent.
+8. **Batas scope dan crosswalk:** biaya perbaikan tertaut, garansi, akun/penugasan teknisi, vendor, ekspor, dan notifikasi otomatis tidak menjadi model P0 (F-11/F-13/F-10/F-16). WF-08-SK-09/35 menyebut biaya/garansi walau FSD mengecualikannya; SK-20 masih MVP candidate walau notifikasi berada di F-16 P1. SK-11/44 dan biaya tertaut di SK-50 memang backlog. SK-19 mencampur tautan manual WhatsApp ke Penghuni (sesuai batas tanpa otomatisasi) dengan Teknisi (F-13 backlog), jadi crosswalk perlu dibatasi agar aksi Penghuni tidak ikut terbuang. Jangan menambah biaya/garansi ke Ticket atau menghubungkan Expense dalam task ini.
+
+RBAC/ownership untuk komentar internal, upload/download, Tenant pascakontrak, penugasan hanya kepada Owner/Staff aktif, dan penulisan `AuditEvent`/`IdempotencyKey` atomik merupakan kontrak server/transaksi M05; FK dan enum saat ini tidak cukup untuk menjalankannya sendiri. Klaim `PASSED (100%)` di dokumen M04 adalah hasil prototipe, bukan bukti implementasi DB atau backend.
+
+M06-DB-39 menunggu review Owner, terutama keputusan relasi Lease, kategori/nomor, aktor pembuat tiket, serta status pembatalan. Tidak menjalankan migration, aplikasi/backend, operasi Neon, atau task Verify lain.
+
+Raw Verify kelengkapan 68 ID dan pemeriksaan struktur model:
+
+```text
+{
+    "runbookCount":  68,
+    "runbookUnique":  true,
+    "crosswalkCount":  68,
+    "crosswalkUnique":  true,
+    "missingCrosswalk":  [
+
+                         ],
+    "missingRunbook":  [
+
+                       ],
+    "ticketHasLeaseId":  false,
+    "ticketHasCategory":  false,
+    "ticketNumberPersisted":  false,
+    "cancelledStatus":  false,
+    "titleNonblankCheck":  false,
+    "descriptionNonblankCheck":  false,
+    "commentBodyNonblankCheck":  false,
+    "result":  "PASS_STRUCTURE_COVERAGE"
+}
+```
+
+Raw Verify `git diff --check -- TODO.md`:
+
+```text
+warning: in the working copy of 'TODO.md', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0
+```
+
+### Evidence M06-DB-36: perbaikan integritas pembayaran WF-06 (2026-11-01)
+
+Temuan M06-DB-35 yang disetujui untuk diperbaiki ditangani pada lapisan DB dan kontrak data: Payment `REJECTED` menyimpan alasan wajib/nonblank yang tidak dapat diubah; metode manual dibatasi ke `TRANSFER`, `QRIS`, `CASH`; Payment tidak dapat dihapus; istilah `REJECTED` dipisahkan dari reversal; dan nilai PaymentReversal tersimpan positif. Migration memiliki preflight yang berhenti sebelum DDL bila ada metode lama di luar daftar atau Payment `REJECTED` tanpa alasan, agar Owner dapat melakukan backfill secara terencana. Tidak menerapkan migration ke Neon, tidak membaca `.env.local`, dan tidak mengubah backend/UI.
+
+Raw Verify Prisma dengan URL PostgreSQL sintetis:
+
+```text
+Loaded Prisma config from .prisma.verify.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+The schema at prisma\schema.prisma is valid 🚀
+EXIT_CODE=0
+```
+
+Raw Verify seluruh migration dan constraint pada PGlite disposable. Untuk kompatibilitas emulator saja, dua exclusion constraint GiST (overlap kamar dan tenant) serta `CREATE EXTENSION btree_gist` tidak disertakan dalam salinan SQL uji; migration repository tidak diubah untuk alasan tersebut.
+
+```text
+MIGRATIONS_APPLIED=28
+PASS allowed method QRIS
+PASS allowed method CASH
+PASS unlisted method rejected
+PASS deposit is not a payment method
+PASS rejection requires a reason
+PASS blank rejection reason blocked
+PASS rejected payment persists nonblank reason
+PASS rejection reason cannot be rewritten
+PASS payment cannot be hard-deleted
+PASS REJECTED distinct from reversal
+VERIFY_RESULT=PASS
+PASS legacy method preflight
+PASS legacy method preflight leaves schema unchanged
+PASS legacy rejected reason preflight
+PASS legacy rejected reason preflight leaves schema unchanged
+EXIT_CODE=0
+```
+
+Fixture metode `TRANSFER` juga digunakan dan diterima. Preflight lama diuji dengan data sintetis metode `BCA Transfer` dan Payment `REJECTED` tanpa alasan; kedua kasus gagal aman tanpa perubahan schema.
+
+M06-DB-36 menunggu review Owner. Status M06-DB-35 tetap menunggu review Owner atas audit WF-06. Tidak menjalankan migration, test, atau operasi Neon selain Verify khusus task ini.
+
+Raw Verify `git diff --check`:
+
+```text
+warning: in the working copy of 'TODO.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/design/SCENARIOS_WF06.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/schema.prisma', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0
+```
+
+### Evidence M06-DB-37: audit WF-07 untuk lapisan DB (2026-11-01)
+
+Audit read-only mencocokkan 50 skenario WF-07 dan crosswalk dengan `Expense`, `OperatingBudget`, `Payment`/`PaymentAllocation`/`PaymentReversal`, `Invoice`/`InvoiceLine`, `Lease`/`Room`, `DepositLedgerEntry`, `IdempotencyKey`, `AuditEvent`, PRD, FSD, M05 Data/API, dan Frozen Scope. Tidak mengubah schema, migration, skenario, crosswalk, backend, Neon, atau `.env.local`.
+
+Raw Verify kelengkapan ID dan pemeriksaan statis lapisan DB:
+
+```text
+{
+    "runbookCount":  50,
+    "crosswalkCount":  50,
+    "missingCrosswalk":  [],
+    "missingRunbook":  [],
+    "duplicateRunbook":  [],
+    "duplicateCrosswalk":  [],
+    "expenseAmountPositive":  true,
+    "expenseCategoryNonblank":  false,
+    "expenseDescriptionNonblank":  false,
+    "expenseDeleteOrUpdateTrigger":  false,
+    "expenseHasRoomLink":  false,
+    "expenseHasTicketLink":  false,
+    "budgetMonthUnique":  true,
+    "budgetFirstDay":  true,
+    "budgetPositive":  true,
+    "cashBasisSourcesPresent":  true,
+    "expenseReversalModel":  false,
+    "bankStatementOrCashAccountModel":  false,
+    "idempotencyKeyModel":  true,
+    "result":  "PASS_STATIC_AUDIT"
+}
+EXIT_CODE=0
+```
+
+Temuan dan klasifikasi:
+
+1. **Validasi Expense belum menolak teks kosong/spasi.** `amount > 0` sudah menjadi CHECK DB dan tanggal, kategori, deskripsi wajib non-NULL. Namun `category` dan `description` tidak memiliki CHECK nonblank, sedangkan M05/SC-10 mengharuskan field wajib. Rekomendasi DB: tambah pemeriksaan `btrim(...) <> ''`; jangan menetapkan enum kategori karena daftar kategori kanonis belum dibekukan.
+2. **Aturan koreksi/hapus Expense bertentangan dan belum enforced DB.** FSD/PRD mengarahkan agar histori finansial tidak ditimpa/dihapus dan koreksi memakai reversal atau catatan append-only; M05 menyebut Expense `CRUD`; crosswalk WF-07-SK-33 justru menggolongkan reversal expense sebagai backlog/out-of-scope. Migration Expense saat ini tidak memiliki trigger yang melarang update/delete, dan tidak ada entitas reversal Expense. Perlu keputusan Owner tentang batas P0 dan cara koreksi sebelum mengubah DB; jangan menganggap SK-33 otomatis P0.
+3. **Biaya servis per kamar belum dapat diturunkan.** Expense tidak memiliki FK ke Room maupun Ticket, sesuai P1 F-11 dan out-of-scope SK-14/SK-42. WF-07-SK-39 masih diklasifikasikan MVP candidate walau menguji beban servis ekstrem dan kontribusi bersih per unit. Rekomendasi: koreksi crosswalk/skenario menjadi backlog atau batasi MVP pada okupansi dan realisasi sewa per kamar; jangan menebak alokasi biaya dari teks deskripsi.
+4. **Klaim rekonsiliasi bank tidak didukung sumber data P0.** Payment allocation terverifikasi, waktu verifikasi, reversal, Expense, dan ledger deposit tersedia untuk hitungan internal; settlement deposit dapat dibedakan dari kas masuk dan pending dapat dikecualikan melalui query. Tidak ada rekening/saldo awal/mutasi bank atau bank statement untuk membandingkan buku dengan bank. Maka angka `Balance 100%` hanya boleh berarti konsistensi aritmetika internal, bukan sudah cocok dengan rekening koran. P&L/NOI pada WF-07 juga perlu disebut ringkasan arus kas operasional sesuai FSD/M05, bukan laporan akuntansi formal.
+5. **Akses dan masking laporan bukan constraint DB.** WF-07-SK-19 meminta Staff melihat sebagian laporan dengan NOI dimasking, sedangkan PRD/FSD/Scope menetapkan laporan finansial Owner-only dan server tidak mengirim angka laporan ke Staff. Rekomendasi: backend menolak akses laporan untuk Staff; selaraskan skenario/crosswalk, tanpa RLS/schema baru pada audit ini.
+6. **Bagian yang telah didukung / bukan gap DB:** OperatingBudget unik per bulan, tanggal awal bulan, nominal positif; payment/reversal memberi sumber untuk pendapatan kas terverifikasi; ledger escrow terpisah sehingga settlement non-kas bukan penerimaan kas/sewa; `IdempotencyKey` tersedia tetapi pengikatan hasil key dengan mutasi Expense wajib atomik di backend. Bukti transaksi/receipt, ekspor, diskon, integrasi bank, dan tautan Expense–Ticket tercatat backlog/out-of-scope.
+
+M06-DB-37 menunggu review Owner atas temuan dan rekomendasi. Tidak menjalankan migration, test, atau operasi Neon; Verify task ini hanya audit statis.
+
+Owner menyetujui seluruh temuan dan menginstruksikan perbaikannya pada 2026-11-01; implementasi dicatat terpisah di M06-DB-38.
+
+Raw Verify `git diff --check`:
+
+```text
+warning: in the working copy of 'TODO.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/design/SCENARIOS_WF06.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/schema.prisma', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0
+```
+
+### Evidence M06-DB-38: integritas Expense dan penyelarasan WF-07 (2026-11-01)
+
+Expense sekarang mewajibkan kategori/deskripsi nonblank, tidak dapat diubah atau dihapus, dan dapat dikoreksi dengan satu ExpenseReversal penuh beralasan yang hanya dapat dibuat Owner. Expense pengganti dicatat terpisah. FSD/PRD/M05/Scope dan WF-07/crosswalk diselaraskan: laporan Owner-only adalah ringkasan kas internal, bukan laporan akuntansi atau pencocokan bank; biaya servis per kamar, ekspor, dan diskon tetap backlog. Seed sintetis menggunakan `ON CONFLICT DO NOTHING` untuk menjaga Expense immutable saat seed diulang. Tidak ada implementasi backend/UI, penerapan Neon, atau akses `.env.local`.
+
+Raw Verify Prisma dengan URL sintetis:
+
+```text
+Loaded Prisma config from .prisma.verify.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+The schema at prisma\schema.prisma is valid 🚀
+EXIT_CODE=0
+```
+
+Raw Verify seluruh migration dan integritas Expense pada PGlite disposable. Untuk kompatibilitas emulator saja, `btree_gist` dan dua exclusion constraint lease tidak disertakan dalam salinan SQL uji; migration repository tetap utuh.
+
+```text
+(node:1392) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1392) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/Workspace/RumaKost/prisma/seed.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\Workspace\RumaKost\package.json.
+MIGRATIONS_APPLIED=29
+PASS synthetic seed twice preserves one immutable Expense
+PASS blank category blocked
+PASS blank description blocked
+PASS nonpositive expense blocked
+PASS Expense update blocked
+PASS Expense hard delete blocked
+PASS only Owner may reverse Expense
+PASS blank reversal reason blocked
+PASS partial reversal blocked
+PASS Owner full reasoned reversal accepted
+PASS one reversal per Expense
+PASS ExpenseReversal update blocked
+PASS ExpenseReversal delete blocked
+PASS replacement Expense can be recorded after reversal
+PASS legacy blank text preflight
+PASS failed preflight leaves schema unchanged
+VERIFY_RESULT=PASS
+EXIT_CODE=0
+```
+
+Raw Verify cakupan skenario dan penyelarasan scope/crosswalk:
+
+```text
+{
+    "runbookIds":  50,
+    "crosswalkIds":  50,
+    "noDuplicateIds":  true,
+    "expenseReversalP0":  true,
+    "roomCostScenarioDeferred":  true,
+    "reportAccessOwnerOnly":  true,
+    "discountScenarioDeferred":  true,
+    "scenarioDisclaimsExternalBankMatch":  true,
+    "m04ResultsExplicitlyNotM06":  true
+}
+EXIT_CODE=0
+```
+
+AuditEvent dan IdempotencyKey untuk `reverseExpense` tetap kewajiban transaksi backend sesuai kontrak; implementasi backend belum dimulai. Owner meninjau dan menyetujui M06-DB-38 pada 2026-11-01 setelah memastikan tidak ada gap DB WF-07 lain. Migration belum diterapkan ke Neon.
+
+Raw Verify pencatatan persetujuan Owner:
+
+```text
+warning: in the working copy of 'TODO.md', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0
+```
+
+Raw Verify `git diff --check` awal menemukan dua baris dengan trailing whitespace; keduanya sudah dibersihkan. Raw output awal:
+
+```text
+warning: in the working copy of 'TODO.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/design/SCENARIOS_WF06.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/design/SCENARIOS_WF07.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/schema.prisma', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/seed.ts', LF will be replaced by CRLF the next time Git touches it
+docs/design/SCENARIOS_WF07.md:7: trailing whitespace.
+> **User Stories KANBAN**: `RK-006` (Epic Pengeluaran & Laporan Ringkas), `RK-034` (Pencatatan Pengeluaran Operasional), `RK-035` (Ringkasan Arus Kas Masuk & Keluar), `RK-036` (Rekapitulasi Tingkat Okupansi Kamar). [dua spasi di akhir]
+docs/design/SCENARIOS_WF07.md:54: trailing whitespace.
+2. **Akses Laporan Finansial Owner-only**: [dua spasi di akhir]
+EXIT_CODE=1
+```
+
+Raw Verify `git diff --check` setelah pembersihan:
+
+```text
+warning: in the working copy of 'TODO.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/design/SCENARIOS_WF06.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/design/SCENARIOS_WF07.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/schema.prisma', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/seed.ts', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0
+```
 
 ### Evidence M06-DB-33: audit akhir WF-05 setelah perubahan integritas (2026-11-01)
 

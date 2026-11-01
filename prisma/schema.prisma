@@ -111,6 +111,7 @@ model AppUser {
   createdDepositLedgerEntries DepositLedgerEntry[]
   createdPaymentReversals     PaymentReversal[]    @relation("PaymentReversalCreatedBy")
   recordedExpenses            Expense[]
+  createdExpenseReversals     ExpenseReversal[]    @relation("ExpenseReversalCreatedBy")
   createdTickets              Ticket[]             @relation("TicketCreatedBy")
   assignedTickets             Ticket[]             @relation("TicketAssignedTo")
   authoredTicketComments      TicketComment[]
@@ -262,21 +263,22 @@ model InvoiceLine {
 }
 
 model Payment {
-  id           String              @id @default(uuid()) @db.Uuid
-  invoiceId    String              @map("invoice_id") @db.Uuid
-  amount       Decimal             @db.Decimal(12, 2)
-  method       String
-  reference     String?             @unique
-  status       PaymentStatus       @default(PENDING)
-  recordedById String              @map("recorded_by_id") @db.Uuid
-  verifiedById String?             @map("verified_by_id") @db.Uuid
-  verifiedAt   DateTime?           @map("verified_at") @db.Timestamptz(6)
-  rejectedById String?             @map("rejected_by_id") @db.Uuid
-  rejectedAt   DateTime?           @map("rejected_at") @db.Timestamptz(6)
-  createdAt    DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
-  allocations  PaymentAllocation[]
-  reversal     PaymentReversal?
+  id              String              @id @default(uuid()) @db.Uuid
+  invoiceId       String              @map("invoice_id") @db.Uuid
+  amount          Decimal             @db.Decimal(12, 2)
+  method          String
+  reference       String?             @unique
+  status          PaymentStatus       @default(PENDING)
+  recordedById    String              @map("recorded_by_id") @db.Uuid
+  verifiedById    String?             @map("verified_by_id") @db.Uuid
+  verifiedAt      DateTime?           @map("verified_at") @db.Timestamptz(6)
+  rejectedById    String?             @map("rejected_by_id") @db.Uuid
+  rejectedAt      DateTime?           @map("rejected_at") @db.Timestamptz(6)
+  rejectionReason String?             @map("rejection_reason")
+  createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+  allocations     PaymentAllocation[]
+  reversal        PaymentReversal?
 
   invoice    Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   recordedBy AppUser  @relation("PaymentRecordedBy", fields: [recordedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
@@ -291,11 +293,11 @@ model Payment {
 }
 
 model PaymentAllocation {
-  id                 String              @id @default(uuid()) @db.Uuid
-  paymentId          String              @map("payment_id") @db.Uuid
-  invoiceLineId      String              @map("invoice_line_id") @db.Uuid
-  amount             Decimal             @db.Decimal(12, 2)
-  depositLedgerEntry DepositLedgerEntry?
+  id                        String              @id @default(uuid()) @db.Uuid
+  paymentId                 String              @map("payment_id") @db.Uuid
+  invoiceLineId             String              @map("invoice_line_id") @db.Uuid
+  amount                    Decimal             @db.Decimal(12, 2)
+  depositLedgerEntry        DepositLedgerEntry?
   depositCollectionReversal DepositLedgerEntry? @relation("ReversedDepositCollection")
 
   payment     Payment     @relation(fields: [paymentId], references: [id], onDelete: Restrict, onUpdate: Cascade)
@@ -307,23 +309,23 @@ model PaymentAllocation {
 }
 
 model DepositLedgerEntry {
-  id                  String        @id @default(uuid()) @db.Uuid
-  leaseId             String        @map("lease_id") @db.Uuid
-  invoiceLineId       String?       @map("invoice_line_id") @db.Uuid
-  paymentAllocationId String?       @unique @map("payment_allocation_id") @db.Uuid
-  reversedPaymentAllocationId String? @unique @map("reversed_payment_allocation_id") @db.Uuid
-  kind                String
-  amount              Decimal       @db.Decimal(12, 2)
-  reason              String?
-  refundStatus        RefundStatus? @map("refund_status")
-  createdById         String        @map("created_by_id") @db.Uuid
-  createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  id                          String        @id @default(uuid()) @db.Uuid
+  leaseId                     String        @map("lease_id") @db.Uuid
+  invoiceLineId               String?       @map("invoice_line_id") @db.Uuid
+  paymentAllocationId         String?       @unique @map("payment_allocation_id") @db.Uuid
+  reversedPaymentAllocationId String?       @unique @map("reversed_payment_allocation_id") @db.Uuid
+  kind                        String
+  amount                      Decimal       @db.Decimal(12, 2)
+  reason                      String?
+  refundStatus                RefundStatus? @map("refund_status")
+  createdById                 String        @map("created_by_id") @db.Uuid
+  createdAt                   DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  lease             Lease              @relation(fields: [leaseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  invoiceLine       InvoiceLine?       @relation(fields: [invoiceLineId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  paymentAllocation PaymentAllocation? @relation(fields: [paymentAllocationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  lease                     Lease              @relation(fields: [leaseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  invoiceLine               InvoiceLine?       @relation(fields: [invoiceLineId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  paymentAllocation         PaymentAllocation? @relation(fields: [paymentAllocationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   reversedPaymentAllocation PaymentAllocation? @relation("ReversedDepositCollection", fields: [reversedPaymentAllocationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  createdBy         AppUser            @relation(fields: [createdById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  createdBy                 AppUser            @relation(fields: [createdById], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([leaseId])
   @@index([invoiceLineId])
@@ -366,11 +368,27 @@ model Expense {
   recordedById String   @map("recorded_by_id") @db.Uuid
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  recordedBy AppUser @relation(fields: [recordedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  recordedBy AppUser          @relation(fields: [recordedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  reversal   ExpenseReversal?
 
   @@index([occurredOn])
   @@index([recordedById])
   @@map("expenses")
+}
+
+model ExpenseReversal {
+  id          String   @id @default(uuid()) @db.Uuid
+  expenseId   String   @unique @map("expense_id") @db.Uuid
+  amount      Decimal  @db.Decimal(12, 2)
+  reason      String
+  createdById String   @map("created_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  expense   Expense @relation(fields: [expenseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  createdBy AppUser @relation("ExpenseReversalCreatedBy", fields: [createdById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([createdById])
+  @@map("expense_reversals")
 }
 
 model OperatingBudget {

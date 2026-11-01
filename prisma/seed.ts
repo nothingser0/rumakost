@@ -157,12 +157,7 @@ export async function seedFixtureData(client: SeedClient): Promise<void> {
     await client.query(
       `INSERT INTO expenses (id, category, amount, occurred_on, description, recorded_by_id, created_at)
        VALUES ($1, 'MAINTENANCE', 125000, '2026-11-01', 'Perawatan keran kamar demo', $2, $3)
-       ON CONFLICT (id) DO UPDATE SET
-        category = EXCLUDED.category,
-        amount = EXCLUDED.amount,
-        occurred_on = EXCLUDED.occurred_on,
-        description = EXCLUDED.description,
-        recorded_by_id = EXCLUDED.recorded_by_id`,
+       ON CONFLICT (id) DO NOTHING`,
       [ids.expense, ids.staff, fixtureTimestamp],
     );
 
