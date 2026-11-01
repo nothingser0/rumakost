@@ -149,8 +149,9 @@ Untuk menghilangkan redundansi penulisan manual di setiap kartu:
 - **Acceptance Criteria**:
   - [ ] Kamar dapat dibuat, diubah, dan dilihat oleh Owner/Staff berizin.
   - [ ] Validasi form mencegah duplikasi nomor kamar dalam properti.
+  - [ ] Panjang dan lebar kamar opsional dalam meter; keduanya kosong atau sama-sama positif. Luas diturunkan dari kedua nilai.
   - [ ] Kamar kosong dapat diubah statusnya menjadi tersedia atau perawatan.
-- **Estimate**: 5–7 hours
+- **Estimate**: 7–10 hours
 - **Dependencies**: RK-020
 
 #### RK-023 [Story] — Tampilan Okupansi Kamar Otomatis
@@ -316,7 +317,9 @@ Untuk menghilangkan redundansi penulisan manual di setiap kartu:
   - [ ] Refund deposit yang sudah ditandai dibayar masuk arus kas keluar, sedangkan refund yang masih antre tidak dihitung sebagai kas keluar terealisasi.
   - [ ] Filter rentang tanggal diterapkan konsisten untuk pemasukan dan pengeluaran.
   - [ ] Menampilkan total pemasukan, total pengeluaran, dan saldo selisih kas.
-- **Estimate**: 5–7 hours
+  - [ ] Owner dapat menetapkan/memperbarui pagu satu kali per bulan kalender; perubahan diaudit.
+  - [ ] Ringkasan Owner membandingkan expense bulan itu dengan pagu, dengan state belum diatur tanpa nilai default.
+- **Estimate**: 12–16 hours
 - **Dependencies**: RK-032, RK-033, RK-034
 
 #### RK-036 [Story] — Rekapitulasi Tingkat Okupansi Kamar

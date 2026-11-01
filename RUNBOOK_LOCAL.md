@@ -37,7 +37,9 @@ Modul `src/lib/env.ts` memvalidasi environment server saat diimpor. Siapkan `.en
 
 Salin `.env.example` menjadi `.env.local` dan isi file itu langsung di mesin sendiri atau secret manager. `.env.local` diabaikan Git. Jangan commit, tempel secret ke chat, atau membaca nilainya untuk verifikasi. Prisma CLI memuat `.env.local` melalui konfigurasi root `prisma.config.ts` dan memakai `DIRECT_URL` untuk migrasi.
 
-Di Neon Console, nonaktifkan pendaftaran publik untuk Auth branch ini; pembuatan akun dilakukan Owner melalui alur manajemen akun. Akun Owner bootstrap harus memiliki role `admin` pada Neon Auth agar operasi admin membuat dan menonaktifkan identitas dapat berjalan. Role aplikasi `OWNER` di tabel `app_users` terpisah dan tidak memberikan role provider tersebut; pastikan hanya identitas Owner bootstrap yang diberi role `admin`. Staff dan Penghuni memakai role provider `user`.
+Di Neon Console, nonaktifkan pendaftaran publik untuk Auth branch ini; pembuatan akun dilakukan Owner melalui alur manajemen akun. Siapkan identitas Owner pertama di Neon Auth terlebih dahulu dan tetapkan role provider `admin` hanya untuk identitas tersebut. Catat user ID persis yang ditampilkan Neon Auth; user ID ini berbeda dari email dan akan ditautkan ke role aplikasi `OWNER` di tabel `app_users`.
+
+Setelah database sudah dimigrasikan, jalankan `npm run db:bootstrap-owner` satu kali dari terminal lokal. Masukkan user ID Neon Auth, email identitas yang sama, dan nama Owner pada prompt. Script hanya menautkan identitas yang sudah dibuat, tidak membuat user provider atau password. Script berhenti jika baris Owner atau identitas/email sudah terdaftar. Jangan jalankan pada database produksi sampai user ID dan target database telah dipastikan. Staff dan Penghuni memakai role provider `user`.
 
 Alur reset sandi email direncanakan pada SCR-01A/SCR-01B dan harus memakai token flow Neon Auth. Konfigurasikan pengirim email/provider sebelum menguji alur itu. Reset sandi belum disediakan oleh M06-SETUP-09; task ini memberikan sandi awal sementara satu kali saat akun dibuat, lalu pengguna wajib menggantinya saat login pertama.
 

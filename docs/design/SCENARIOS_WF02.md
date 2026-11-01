@@ -15,10 +15,10 @@ Layar **WF-02 (`SCR-02`)** adalah pusat komando visual terpadu (*Executive & Ope
 
 Layar ini menegakkan 4 pilar arsitektur operasional:
 1. **Dua Perspektif Peran (Role-Adaptive Presentation)**:
-   - **Pemilik (Owner)**: Memperoleh visibilitas menyeluruh atas metrik finansial sensitif (pemasukan kotor, pengeluaran, laba bersih, kolektibilitas tagihan), grafik arus kas 6 bulan, akses penuh ke navigasi Laporan (`WF-07`) dan Pengaturan (`WF-09`).
+   - **Pemilik (Owner)**: Memperoleh visibilitas menyeluruh atas metrik finansial sensitif (penerimaan tercatat, pengeluaran, arus kas bersih tercatat, kolektibilitas tagihan), grafik arus kas 6 bulan, akses penuh ke navigasi Laporan (`WF-07`) dan Pengaturan (`WF-09`).
    - **Staf Pengelola (Staff)**: Mengakses dasbor operasional dengan pembatasan ketat (*Zero Confidential Leak* & *Zero Self-Approval*). Indikator peran menampilkan badge *"Staf Operasional"*, navigasi dibatasi pada 5 pill harian, dan akses ke pengaturan properti dinonaktifkan.
-2. **Koleksi Metrik Tiga-Serangkai (Estify Radial Gauge)**: Tiga kartu metrik semi-lingkaran (*semi-circle radial gauge*) menyajikan ringkasan instan tingkat okupansi fisik (73%), kolektibilitas tagihan sewa (82%), dan realisasi pengeluaran terhadap anggaran (84%) tanpa membebani kognisi pengguna.
-3. **Komparasi Finansial & Highlight Properti**: Mengombinasikan visualisasi *Double Bar Chart* 6-bulan (Mei s.d. Oktober 2026) dengan kartu *Hero Property Highlight* berwarna oranye Estify (`#FF7A00`) yang menyajikan laba bersih berjalan (Rp 12,30 Jt) secara elegan dan lugas.
+2. **Koleksi Metrik Tiga-Serangkai (Estify Radial Gauge)**: Tiga kartu metrik semi-lingkaran (*semi-circle radial gauge*) menyajikan ringkasan instan tingkat okupansi fisik (73%), kolektibilitas tagihan sewa (72,1%), dan realisasi pengeluaran terhadap pagu fixture (84%).
+3. **Komparasi Finansial & Highlight Properti**: Mengombinasikan visualisasi *Double Bar Chart* 6-bulan (Mei s.d. Oktober 2026) dengan kartu *Hero Property Highlight* berwarna oranye Estify (`#FF7A00`) yang menyajikan arus kas bersih tercatat periode berjalan (Rp 6,15 Jt).
 4. **Infinite Looping Room Carousel**: Menampilkan katalog 15 unit kamar kost secara horizontal yang mengalir mulus (*infinite wrap-around*), dilengkapi filter instan popover nir-rongga (*zero-void*), pencarian teks bebas lag, dan navigasi langsung ke berkas dossier kamar (`WF-03`).
 
 ```
@@ -28,12 +28,12 @@ Layar ini menegakkan 4 pilar arsitektur operasional:
 │ 1. KOLOM UTAMA KIRI (~68% FLOW CONTAINER)                        │ 2. SIDEBAR KANAN (360PX FIXED)│
 │    ├─ ROW 1: 3 GAUGE METRIC CARDS (CMP-06)                       │    ├─ CARD 1: KONDISI PROPERTI│
 │    │  • Okupansi Kamar (11/15 Unit · 73% Gauge)                  │    │  • Progress Pengerjaan   │
-│    │  • Tagihan Lunas (Rp 16,50 Jt · 82% Gauge)                  │    │  • Menunggu Penugasan    │
+│    │  • Sewa Lunas (Rp 10,35 Jt · 72,1% Gauge)                   │    │  • Menunggu Penugasan    │
 │    │  • Pengeluaran (Rp 4,20 Jt · 84% Gauge)                     │    │  • Laporan Baru          │
 │    ├─ ROW 2: DOUBLE BAR CHART & HIGHLIGHT CARD                   │    │  • CTA 44px: Tiket (WF-08)│
 │    │  • Arus Kas 6 Bulan (Mei - Okt 2026) + Hover Tooltip        │    │                               │
 │    │  • Popover Filter Tahun (2026, 2025, 2024)                  │    ├─ CARD 2: AKTIVITAS HARIAN│
-│    │  • Orange Highlight: Kost Budi Makmur · Net Rp 12,30 Jt     │    │  • Popover Filter Waktu  │
+│    │  • Orange Highlight: Kost Budi Makmur · Arus Bersih Rp 6,15 Jt│   │  • Popover Filter Waktu  │
 │    ├─ ROW 3: KAMAR KOST TERKINI (CAROUSEL 15 UNIT)               │    │  • 7 Feed Log Interaktif │
 │    │  • Toolbar 40px: Search Capsule + Filter Popover Status     │    │  • Deep Links Operasional│
 │    │  • Infinite Scroll Carousel (Tampil Awal 3 Unit)            │    │  • Link Semua Aktivitas  │
@@ -104,13 +104,16 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 | Parameter Metrik | Nilai Nominal / Angka | Persentase / Indikator | Basis Kalkulasi |
 |---|---|---|---|
 | **Kapasitas Total Kamar** | 15 Unit | 100% | 5 kamar per lantai (3 lantai) |
-| **Kamar Terhuni Aktif** | 11 Unit | **73% Okupansi** | 11 unit dihuni (8 Lunas, 3 Jatuh Tempo / Terlambat: A-02, A-04, B-01) |
+| **Kamar Terhuni Aktif** | 11 Unit | **73% Okupansi** | 11 unit dihuni; 8 lunas, 3 belum lunas (A-02 dan B-01 terlambat; A-04 jatuh tempo H-3) |
 | **Kamar Kosong Siap Huni**| 3 Unit | 20% Kekosongan | KM-A03, KM-B03, KM-C02 |
 | **Kamar Dalam Perbaikan** | 1 Unit | 7% Maintenance | KM-B05 (Tiket Servis AC #T-04) |
-| **Penerimaan Sewa Lunas** | Rp 16.500.000 | **82% Kolektibilitas** | Target potensi sewa penuh: Rp 20.100.000 |
-| **Pengeluaran Operasional**| Rp 4.200.000 | **84% Realisasi Budget**| Anggaran operasional bulanan: Rp 5.000.000 |
-| **Pemasukan Bersih (Net)** | **Rp 12.300.000** | **+15% Trend Laba** | Pemasukan (16,50 Jt) - Pengeluaran (4,20 Jt) |
+| **Penerimaan Sewa Lunas** | Rp 10.350.000 | **72,1% Kolektibilitas** | Asumsi satu tagihan Oktober terbit untuk tiap 11 lease aktif: nilai tagihan Rp 14.350.000; 8 status Lunas dihitung sebagai pembayaran penuh. Kolektibilitas = Rp10.350.000 / Rp14.350.000. |
+| **Pengeluaran Operasional**| Rp 4.200.000 | **84% Realisasi Pagu**| Anggaran operasional bulanan: Rp 5.000.000. Nilai Rp4,2 juta adalah agregat fixture; runbook belum merinci transaksi Expense penyusunnya. |
+| **Arus Kas Bersih Tercatat** | **Rp 6.150.000** | Tren tidak ditampilkan | Penerimaan sewa lunas (Rp10,35 juta) - pengeluaran operasional (Rp4,20 juta); tidak mencakup deposit. Perbandingan tren memerlukan data periode pembanding yang konsisten. |
+| **Jumlah Tarif Bulanan Seluruh Kamar** | Rp 20.650.000 | 15 unit | Jumlah tarif pada tabel kamar, termasuk B-05 yang sedang dalam perbaikan; bukan denominator kolektibilitas. |
 | **Distribusi Tiket Kerusakan**| 4 Tiket Aktif | 100% Beban Kerja | 2 Dikerjakan (50%), 1 Menunggu (25%), 1 Baru (25%) |
+
+> **Batas fixture:** tabel ini memberi status kamar dan agregat finansial, bukan rincian invoice, alokasi Payment, atau baris Expense. Angka 72,1% memakai asumsi satu invoice RENT Oktober untuk tiap lease aktif dan status Lunas berarti pembayaran penuh terverifikasi; Rp4,2 juta adalah agregat Expense yang dinyatakan skenario. Nilai ini menjadi target rekonsiliasi fixture backend, bukan bukti transaksi yang sudah tersedia.
 
 ---
 
@@ -122,13 +125,13 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Langkah-langkah Pengujian**:
   1. Buka halaman `WF-02-dashboard.html`.
   2. Periksa Topbar navigasi utama (`#mainTopbar`).
-  3. Periksa tampilan kartu metrik, grafik arus kas, dan kartu highlight laba bersih.
+  3. Periksa tampilan kartu metrik, grafik arus kas, dan kartu arus kas bersih tercatat.
   4. Periksa menu dropdown profil pengguna di sudut kanan atas Topbar.
 - **Hasil yang Diharapkan**:
   - Topbar menampilkan 7 pill menu utama lengkap: `Dashboard` (status aktif berlatar `#111111`), `Kamar`, `Penghuni`, `Tagihan`, `Pembayaran`, `Laporan`, `Tiket`.
   - Icon profil pengguna menampilkan inisial `"BS"` dengan dropdown yang menyertakan tautan ke `WF-09-pengaturan.html`.
-  - Kartu Metrik Baris 1 menampilkan nominal nominal rupiah lengkap: Tagihan Lunas (Rp 16,50 Jt) dan Pengeluaran (Rp 4,20 Jt).
-  - Kartu Highlight Oranye menampilkan Pemasukan Bersih sebesar Rp 12,30 Jt tanpa sensor.
+  - Kartu Metrik Baris 1 menampilkan penerimaan sewa lunas (Rp 10,35 Jt), kolektibilitas 72,1%, dan pengeluaran (Rp 4,20 Jt).
+  - Kartu Highlight Oranye menampilkan arus kas bersih tercatat sebesar Rp 6,15 Jt tanpa sensor.
   - Tautan *"Lihat Laporan Lengkap"* pada grafik mengarah ke `WF-07-laporan.html`.
 
 ---
@@ -178,7 +181,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
      - Periksa judul, ikon panah pengeluaran, nominal rupiah, dan arc SVG merah.
 - **Hasil yang Diharapkan**:
   - **Kartu 1**: Nilai menampilkan `"11"` dengan sub-nilai `"/ 15 Kamar"`. Arc lingkaran luar berwana oranye `#FF7A00` dengan `stroke-dashoffset="29"`, teks tengah SVG menunjukkan `"73%"`. Badge tren menampilkan `"+1 Unit"` disertai ikon Lucide `arrow-up`.
-  - **Kartu 2**: Nilai menampilkan `"Rp 16,50 Jt"`. Arc SVG berwarna hitam `#111111` dengan `stroke-dashoffset="19"`, teks tengah SVG menunjukkan `"82%"`. Badge tren menampilkan `"+8%"` disertai ikon Lucide `arrow-up`.
+  - **Kartu 2**: Nilai menampilkan `"Rp 10,35 Jt"`. Kolektibilitas dihitung dari pembayaran terverifikasi dibanding nilai tagihan sewa Oktober yang diterbitkan, yaitu `72,1%` (dibulatkan sesuai tampilan). Tidak ada badge tren karena fixture tidak memuat pembanding periode sebelumnya yang konsisten.
   - **Kartu 3**: Nilai menampilkan `"Rp 4,20 Jt"`. Arc SVG menggunakan warna semantik Danger `#EF4444` dengan `stroke-dashoffset="17"`, teks tengah SVG menunjukkan `"84%"`. Badge tren menampilkan `"-4%"` disertai ikon Lucide `arrow-down`.
 
 ---
@@ -215,17 +218,17 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 
 ---
 
-### SKENARIO 07: Peninjauan Kartu Performa Highlight Properti & Ringkasan Laba Bersih
-- **Tujuan**: Memastikan integritas kartu oranye Estify (`.orange-highlight-card`) dalam menyajikan identitas hunian dan akumulasi keuntungan bersih.
+### SKENARIO 07: Peninjauan Kartu Performa Highlight Properti & Arus Kas Bersih Tercatat
+- **Tujuan**: Memastikan integritas kartu oranye Estify (`.orange-highlight-card`) dalam menyajikan identitas hunian dan arus kas bersih tercatat.
 - **Kondisi Awal**: Kartu oranye tampil di sebelah kanan grafik pada Baris 2.
 - **Langkah-langkah Pengujian**:
   1. Periksa elemen identitas properti: tag pill *"Properti Utama"*, sub-metadata alamat, dan judul besar properti.
-  2. Periksa blok penekanan utama (*Emphasis Block*): nominal laba bersih dan pill tren.
+  2. Periksa blok penekanan utama (*Emphasis Block*): nominal arus kas bersih tercatat; tren tidak ditampilkan tanpa pembanding periode yang konsisten.
   3. Klik tombol lingkaran panah di sudut kanan atas kartu (`.highlight-arrow-round`).
 - **Hasil yang Diharapkan**:
   - Teks metadata menampilkan: *"Jl. Flamboyan No. 12 · 15 Unit"*.
   - Judul besar properti berbunyi *"Kost Budi Makmur"*.
-  - Angka laba bersih tampil tegas dengan ukuran 30px bold: `"Rp 12,30 Jt"` disertai badge trend `"+15%"` dengan ikon Lucide `arrow-up`.
+  - Angka arus kas bersih tercatat tampil tegas dengan ukuran 30px bold: `"Rp 6,15 Jt"`. Badge tren tidak tampil karena periode pembanding belum ditetapkan.
   - Background kartu bersih dengan motif garis kontur arsitektural halus tanpa bocor (*overflow hidden, border-radius 20px*).
   - Mengklik tombol panah mengarahkan navigasi browser ke katalog kamar lengkap `WF-03-kamar.html`.
 
@@ -274,12 +277,12 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
      - *Verifikasi UI*: Popover menu `#menuFilterRoomStatus` terbuka menampilkan 5 opsi kategori status dengan badge jumlah unit.
   2. Klik opsi **"Kosong · Siap Huni (3)"**.
      - *Amati respon carousel dan badge count*.
-  3. Buka kembali popover, lalu pilih opsi **"Terlambat / Tempo (2)"**.
+  3. Buka kembali popover, lalu pilih opsi **"Belum Lunas (3)"**.
      - *Amati respon carousel*.
   4. Buka kembali popover, lalu pilih opsi **"Semua Unit (15)"**.
 - **Hasil yang Diharapkan**:
   - Pemilihan *"Kosong · Siap Huni"* memfilter tampilan sehingga hanya menampilkan 3 unit kartu bergaris putus-putus (`KM-A03`, `KM-B03`, `KM-C02`). Badge total count berubah menjadi `"3 Unit"`. Muncul toast informasi: *"Menampilkan kamar: Kosong · Siap Huni"*.
-  - Pemilihan *"Terlambat / Tempo"* menampilkan tepat 2 unit: `KM-A02` (badge merah Terlambat H+5) dan `KM-A04` (badge kuning Jatuh Tempo H-3). Badge count menjadi `"2 Unit"`.
+  - Pemilihan *"Belum Lunas"* menampilkan tepat 3 unit: `KM-A02` (terlambat H+5), `KM-A04` (jatuh tempo H-3), dan `KM-B01` (terlambat 3 hari). Badge count menjadi `"3 Unit"`.
   - Memilih kembali *"Semua Unit"* memulihkan seluruh 15 kartu kamar dan me-reset engine infinite scroll.
 
 ---
@@ -492,7 +495,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Hasil yang Diharapkan**:
   - Seluruh unit kamar berstatus normal (14 unit lainnya) disembunyikan dari viewport.
   - Hanya tepat **1 unit** yang ditampilkan: `Kamar B-05`.
-  - Kartu Kamar B-05 menampilkan badge status berlatar kuning/amber: `Dalam Perbaikan`, dengan sub-deskripsi: *"Lantai 2 · Deluxe (Servis AC)"* dan tarif *"Rp 1.700.000 /bln"*.
+  - Kartu Kamar B-05 menampilkan badge status berlatar kuning/amber: `Dalam Perbaikan`, dengan sub-deskripsi: *"Lantai 2 · Standar AC (Servis AC)"* dan tarif *"Rp 1.500.000 /bln"*, sesuai tabel baseline kamar.
   - Badge counter pada toolbar menampilkan label `"1 Unit"`.
   - Muncul toast konfirmasi: *"Menampilkan kamar: Dalam Perbaikan"* (Tipe: `info`).
 
@@ -532,12 +535,12 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Langkah-langkah Pengujian**:
   1. Cari atau geser carousel hingga menampilkan Kamar B-01.
   2. Periksa status badge kartu dan teks sub-spesifikasi.
-  3. Buka popover status kamar, lalu pilih opsi *"Terlambat / Tempo (3)"*.
+  3. Buka popover status kamar, lalu pilih opsi *"Belum Lunas (3)"*.
   4. Amati apakah Kamar B-01 tetap tampil atau tersembunyi.
 - **Hasil yang Diharapkan**:
   - Pada langkah 2, Kamar B-01 menampilkan badge merah bahaya: `Telat 3 Hari` dengan teks sub-spesifikasi eksplisit: *"Lantai 2 · Dodi Firmansyah"*.
   - Tarif menampilkan *"Rp 1.300.000 /bln"*.
-  - Pada langkah 4, karena atribut `data-status="terlambat"`, kartu Kamar B-01 bersama unit keterlambatan lainnya (A-02 & A-04) tetap tampil di layar.
+  - Pada langkah 4, karena filter mencakup status belum lunas, kartu Kamar B-01 bersama A-02 (terlambat) dan A-04 (belum jatuh tempo) tetap tampil di layar.
 
 ---
 
@@ -681,11 +684,11 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 ---
 
 ### SKENARIO 36: Proteksi Kerahasiaan Data Finansial Dasbor pada Mode Staf (Zero Confidential Leak)
-- **Tujuan**: Memvalidasi penegakan batas kerahasiaan bisnis di mana Staf Operasional (`?role=staf`) dibatasi dari akses angka laba bersih properti, visualisasi grafik arus kas, dan modul laporan keuangan eksekutif.
+- **Tujuan**: Memvalidasi penegakan batas kerahasiaan bisnis di mana Staf Operasional (`?role=staf`) dibatasi dari akses angka arus kas bersih tercatat, visualisasi grafik arus kas, dan modul laporan keuangan eksekutif.
 - **Kondisi Awal**: Pengguna mengakses dasbor sebagai Staf Pengelola (`WF-02-dashboard.html?role=staf`).
 - **Langkah-langkah Pengujian**:
   1. Amati tampilan Baris 1 (Kartu Metrik Tiga-Serangkai): periksa apakah kartu *Tagihan Lunas* dan *Pengeluaran* menampilkan sensor atau mode pembatasan operasional.
-  2. Amati tampilan Baris 2 (Kartu Oranye Highlight Properti): periksa angka *Pemasukan Bersih* (Rp 12,30 Jt).
+  2. Amati tampilan Baris 2 (Kartu Oranye Highlight Properti): periksa angka *Arus Kas Bersih Tercatat* (Rp 6,15 Jt).
   3. Periksa header kartu *Arus Kas & Operasional* dan klik tombol panah pintas eksternal (`.pill-arrow-btn[href="WF-07-laporan.html"]`).
   4. Coba ketikkan URL `WF-07-laporan.html?role=staf` secara langsung pada address bar browser.
 - **Hasil yang Diharapkan**:
@@ -718,7 +721,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Kondisi Awal**: Pemilik berada pada dasbor utama.
 - **Langkah-langkah Pengujian**:
   1. Klik Kartu Metrik 1 (*Okupansi Kamar 11/15 Kamar*).
-  2. Kembali ke dasbor, lalu klik Kartu Metrik 2 (*Tagihan Lunas Rp 16,50 Jt*).
+  2. Kembali ke dasbor, lalu klik Kartu Metrik 2 (*Sewa Lunas Rp 10,35 Jt*).
   3. Kembali ke dasbor, lalu klik Kartu Metrik 3 (*Pengeluaran Rp 4,20 Jt*).
 - **Hasil yang Diharapkan**:
   - Setiap kartu memiliki kursor bertipe `cursor: pointer` dan respon hover visual (`transform: translateY(-2px)`).
@@ -728,13 +731,13 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 
 ---
 
-### SKENARIO 39: Penelusuran Lengkap Notifikasi Multi-Kategori Topbar (Tiket Kerusakan & Pembayaran Dikonfirmasi)
+### SKENARIO 39: Penelusuran Lengkap Notifikasi Multi-Kategori Topbar (Tiket Kerusakan & Pembayaran Menunggu Verifikasi)
 - **Tujuan**: Memvalidasi fungsionalitas penelusuran (*deep-link routing*) untuk Notifikasi Item 2 dan Item 3 pada panel notifikasi Topbar.
 - **Kondisi Awal**: Pemilik login. Panel notifikasi Topbar terbuka menampilkan 3 item belum dibaca.
 - **Langkah-langkah Pengujian**:
   1. Klik Notifikasi Item 2 (*"Laporan Kerusakan Baru: Siti Aminah melaporkan wastafel bocor di Kamar B-02"*).
   2. Periksa respon toast dan perpindahan halaman browser.
-  3. Kembali ke dasbor, buka kembali panel notifikasi, lalu klik Notifikasi Item 3 (*"Pembayaran Dikonfirmasi: Budi Santoso (A-04) telah melunasi sewa bulan ini (Rp 1.500.000)"*).
+  3. Kembali ke dasbor, buka kembali panel notifikasi, lalu klik Notifikasi Item 3 (*"Pembayaran masuk: Budi Santoso (A-04) mengajukan pembayaran sewa bulan ini (Rp 1.500.000), menunggu verifikasi"*).
   4. Periksa respon toast dan perpindahan halaman browser.
 - **Hasil yang Diharapkan**:
   - Pada langkah 1, muncul toast: *"Membuka tiket perbaikan..."* (Tipe: `info`), dan browser berpindah langsung ke antrean tiket `WF-08-tiket.html`.
@@ -808,12 +811,12 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Langkah-langkah Pengujian**:
   1. Periksa tinggi batang pemasukan bulan Mei (Rp 13,5 Jt) dan pengeluaran (Rp 2,8 Jt).
   2. Periksa tinggi batang pemasukan bulan Juli (Rp 18,4 Jt) dan pengeluaran (Rp 3,2 Jt).
-  3. Periksa tinggi batang bulan berjalan Oktober (Rp 16,50 Jt pemasukan dan Rp 4,20 Jt pengeluaran).
+  3. Periksa tinggi batang bulan berjalan Oktober terhadap fixture finansial yang telah direkonsiliasi (penerimaan Rp 10,35 Jt dan pengeluaran Rp 4,20 Jt).
   4. Periksa posisi 6 garis gridline horizontal (`.chart-grid-line`: `line-50` s.d. `line-0`).
 - **Hasil yang Diharapkan**:
   - Batang Mei: tinggi pemasukan tepat 108px ($13.5 \times 8$) dan pengeluaran 22px ($2.8 \times 8$).
   - Batang Juli: tinggi pemasukan tepat 147px ($18.4 \times 8$) dan pengeluaran 26px ($3.2 \times 8$).
-  - Batang Oktober: tinggi pemasukan tepat 132px ($16.5 \times 8$) dan pengeluaran 34px ($4.2 \times 8$).
+  - Batang Oktober: tinggi pemasukan 83px (Rp10,35 Jt dibulatkan ke piksel terdekat pada skala 8px/Jt) dan pengeluaran 34px ($4.2 \times 8$). Prototipe M04 masih memakai nilai fixture lama dan harus diselaraskan sebelum verifikasi visual angka.
   - Seluruh batang bertumpu persis di atas garis sumbu-X nol (`line-0` pada `top: 160px`) dan tidak ada yang melampaui garis batas 20 Jt (`line-50` pada `top: 0px`).
 
 ---
@@ -824,12 +827,12 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Langkah-langkah Pengujian**:
   1. Cari Kamar A-04 (Budi Santoso). Periksa warna badge status, teks label, dan nominal tarif.
   2. Cari Kamar A-02 (Dimas Prasetyo) dan Kamar B-01 (Dodi Firmansyah). Periksa warna badge status dan teksnya.
-  3. Buka popover status kamar dan pilih opsi **"Terlambat / Tempo (3)"**.
+  3. Buka popover status kamar dan pilih opsi **"Belum Lunas (3)"**.
 - **Hasil yang Diharapkan**:
   - Kamar A-04 menampilkan badge kuning/amber (`.badge-warning`): teks `"Jatuh Tempo H-3"` (memberi tanda peringatan preventif sebelum jatuh tempo).
   - Kamar A-02 menampilkan badge merah terang (`.badge-danger`): teks `"Terlambat H+5"` (menandakan keterlambatan kritis).
   - Kamar B-01 menampilkan badge merah terang (`.badge-danger`): teks `"Telat 3 Hari"`.
-  - Pada langkah 3, filter *"Terlambat / Tempo"* memadankan ketiga unit tersebut secara harmonis (total 3 unit) tanpa membedakan status warning vs danger secara eksklusif.
+  - Pada langkah 3, filter *"Belum Lunas"* memadankan ketiga unit tersebut (total 3 unit), sementara label visual tetap membedakan A-02/B-01 yang terlambat dari A-04 yang belum jatuh tempo.
 
 ---
 
@@ -1068,7 +1071,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
 - **Hasil yang Diharapkan**:
   - Sistem mendeteksi `role === 'staff'` pada halaman `WF-02-dashboard.html`.
   - Fungsi `renderTopbar` mengeksekusi `window.location.replace('WF-02-staf-dashboard.html')`.
-  - Halaman seketika berganti ke Dasbor Operasional Staf (`WF-02-staf-dashboard.html`) tanpa membocorkan data grafik keuangan eksekutif atau margin laba bersih pemilik.
+  - Halaman seketika berganti ke Dasbor Operasional Staf (`WF-02-staf-dashboard.html`) tanpa membocorkan data grafik keuangan eksekutif atau arus kas bersih tercatat pemilik.
 
 ---
 
@@ -1081,10 +1084,10 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
      - Kartu 1: *Okupansi Kamar* (11 / 15 Kamar · 73% Gauge oranye).
      - Kartu 2: *Tiket Kerusakan* (3 Tiket Aktif · 60% Gauge merah · badge 1 Mendesak).
      - Kartu 3: *Setoran Lapangan* (Rp 2,8 Jt · 50% Gauge hitam · badge 2 Pending).
-  3. Verifikasi ketiadaan metrik margin finansial, omzet total, atau laba bersih pemilik (*Zero Confidential Leak*).
+  3. Verifikasi ketiadaan metrik margin finansial, omzet total, atau arus kas bersih tercatat pemilik (*Zero Confidential Leak*).
 - **Hasil yang Diharapkan**:
   - Halaman langsung dimulai dengan 3 Radial Gauge Operasional murni, menjaga konsistensi visual 100% dengan pola dasbor Owner tanpa pemborosan hero banner.
-  - Seluruh data rahasia laba bersih tetap terlindungi secara aman (*Zero Confidential Leak*).
+  - Seluruh data arus kas bersih tercatat tetap terlindungi (*Zero Confidential Leak*).
 
 ---
 
@@ -1225,7 +1228,7 @@ Sesuai dengan ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0
   - Kartu 1 mengarahkan browser ke `WF-03-kamar.html?role=staf`.
   - Kartu 2 mengarahkan browser ke `WF-08-tiket.html?role=staf`.
   - Kartu 3 mengarahkan browser ke `WF-05-tagihan.html?role=staf`.
-  - Tidak ada data finansial laba bersih atau pengeluaran pemilik yang terekspos.
+  - Tidak ada data finansial arus kas bersih tercatat atau pengeluaran pemilik yang terekspos.
 
 ---
 

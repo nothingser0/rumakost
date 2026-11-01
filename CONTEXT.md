@@ -29,6 +29,11 @@ Gunakan fixture sintetis saja. Jangan memasukkan data penghuni/responden nyata, 
 ## Istilah domain
 
 - **Lease**: kontrak satu Tenant untuk satu kamar dalam satu properti.
+- **Tipe kamar**: label opsional pada kamar untuk pengelompokan dan pencarian; tidak mengubah tarif atau hak sewa dengan sendirinya.
+- **Dimensi kamar**: panjang dan lebar opsional dalam meter; keduanya diisi bersama dan harus positif. Luas dihitung dari dimensi, bukan disimpan.
+- **Floor / lantai**: bagian bernama dari satu properti yang disimpan meskipun belum memiliki kamar; kamar dapat terhubung ke lantai.
+- **Kamar diarsipkan**: kamar yang dikeluarkan dari daftar operasional sambil mempertahankan riwayat kontrak, tiket, dan audit; pemulihan arsip mengembalikannya ke daftar aktif.
+- **Anggaran operasional**: satu pagu pengeluaran yang ditetapkan Owner untuk setiap bulan kalender. Tidak ada nilai default; pengeluaran bulan tersebut dibandingkan dengan pagu, dan perubahan tercatat pada audit.
 - **Invoice**: tagihan dari Lease; komponen sewa dan deposit dibedakan.
 - **Deposit escrow**: dana jaminan yang saldonya diturunkan dari ledger, terpisah dari pendapatan sewa.
 - **Payment pending**: klaim pembayaran yang belum mengubah saldo sampai diverifikasi Owner.

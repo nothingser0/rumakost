@@ -5,7 +5,7 @@
 - **Status**: Ditinjau dan disetujui sebagai acuan implementasi M06 melalui technical sign-off pemilik pada 2026-10-31; walkthrough E2E tetap belum dieksekusi
 - **Produk**: Sistem Manajemen Kost Mandiri (RumaKost)
 - **Delivery**: Demo portfolio non-komersial
-- **Baseline scope**: Satu properti, tujuh kelompok fitur P0, 22 story
+- **Baseline scope**: Satu properti, tujuh kelompok fitur P0, 22 story; termasuk CR-2026-001 (dimensi kamar dan pagu bulanan) serta CR-2026-002 (katalog lantai dan arsip kamar) yang disetujui 2026-11-01
 - **Sumber kebutuhan**: `docs/pm/SCOPE_STATEMENT.md`
 - **Desain beku**: `docs/specs/DESIGN_SPEC.md`, `docs/design/SITEMAP.md`, dan `docs/design/SCENARIOS_E2E_WALKTHROUGH.md`
 - **Tech Stack Lock**: `docs/architecture/M05-TECHNICAL-SPEC-DRAFT.md`
@@ -22,12 +22,12 @@ Di luar scope MVP: banyak properti, pendaftaran Tenant publik, aplikasi native, 
 | Fitur | Requirement | Layar / alur M04 | Prioritas |
 |---|---|---|---|
 | F-01 Akses dan peran | REQ-01.1 aktivasi akun; REQ-01.2 role dan kepemilikan; REQ-01.3 sesi | WF-01, WF-02, WF-09, WF-10 | P0 |
-| F-02 Manajemen kamar | REQ-02.1 data kamar; REQ-02.2 okupansi dan status operasional | WF-03 | P0 |
-| F-03 Penghuni dan kontrak | REQ-03.1 profil penghuni; REQ-03.2 kontrak/check-in; REQ-03.3 permintaan check-out dan rekonsiliasi Owner | WF-04, WF-10 | P0 |
+| F-02 Manajemen kamar | REQ-02.1 data kamar, dimensi opsional, dan catatan operasional; REQ-02.2 okupansi dan status operasional | WF-03 | P0 |
+| F-03 Penghuni dan kontrak | REQ-03.1 profil penghuni termasuk telepon opsional; REQ-03.2 kontrak/check-in; REQ-03.3 permintaan check-out dan rekonsiliasi Owner | WF-04, WF-10 | P0 |
 | F-04 Tagihan berulang | REQ-04.1 invoice awal; REQ-04.2 mode tagihan; REQ-04.3 penerbitan idempotent | WF-05 | P0 |
 | F-05 Pembayaran dan saldo | REQ-05.1 klaim pending dan verifikasi manual; REQ-05.2 saldo parsial; REQ-05.3 reversal dan ledger deposit | WF-06, WF-10 | P0 |
-| F-06 Pengeluaran dan laporan | REQ-06.1 catatan pengeluaran; REQ-06.2 ringkasan Owner-only | WF-07 | P0 |
-| F-07 Tiket kerusakan | REQ-07.1 tiket penghuni dengan media wajib; REQ-07.2 alur Staff/Owner; REQ-07.3 komentar/lampiran privat | WF-08, WF-11, WF-12 | P0 |
+| F-06 Pengeluaran dan laporan | REQ-06.1 catatan pengeluaran dan pagu bulanan; REQ-06.2 ringkasan Owner-only | WF-07 | P0 |
+| F-07 Tiket kerusakan | REQ-07.1 tiket penghuni dengan media wajib; REQ-07.2 alur Staff/Owner termasuk target penyelesaian; REQ-07.3 komentar/lampiran privat | WF-08, WF-11, WF-12 | P0 |
 
 ### 3.1 User Stories dan Acceptance Criteria
 
@@ -41,12 +41,17 @@ Di luar scope MVP: banyak properti, pendaftaran Tenant publik, aplikasi native, 
 #### REQ-02 Manajemen kamar
 
 - Owner mengelola data dan status operasional kamar; Staff hanya melakukan pembaruan operasional yang diizinkan scope.
+- Lantai disimpan sebagai katalog satu properti dan dapat ada walau belum memiliki kamar. Nama lantai dinormalisasi untuk mencegah duplikasi.
+- Kode kamar dinormalisasi menjadi huruf kapital, 1–10 karakter alfanumerik/tanda hubung, dan unik; tarif harus lebih dari Rp0 sampai Rp100.000.000, sedangkan default deposit Rp0–Rp100.000.000.
+- Kamar dan lantai yang tidak aktif diarsipkan agar histori tetap terhubung; kamar dengan histori tidak dihapus permanen. Lantai yang masih direferensikan kamar tidak dapat dihapus permanen.
+- Dimensi kamar berupa panjang dan lebar dalam meter bersifat opsional, tetapi harus diisi berpasangan dan lebih dari nol. Luas dihitung dari dimensi dan tidak disimpan terpisah.
 - Given kamar mempunyai kontrak aktif yang bertumpang tindih, when kontrak aktif kedua dibuat, then sistem menolak penyimpanan.
 - Okupansi dihitung dari status dan tanggal kontrak; status fisik kamar disimpan terpisah.
 
 #### REQ-03 Penghuni dan siklus kontrak
 
 - Owner atau Staff berizin membuat profil penghuni dan kontrak berisi tanggal, tarif, deposit, serta mode billing.
+- Profil dapat menyimpan pekerjaan, instansi, kota asal, dan kontak darurat terstruktur secara opsional; nomor telepon tervalidasi E.164. Lease dapat memiliki nomor SPK opsional yang unik. NIK dan berkas identitas tetap di luar MVP.
 - Deposit boleh nol; nilai default hanya saran dan bukan tagihan wajib. Deposit disimpan terpisah dari pendapatan sewa.
 - Given Tenant mengirim permintaan check-out, when sistem menerimanya, then statusnya menunggu review Owner; hanya Owner yang menyelesaikan inspeksi, terminasi, dan rekonsiliasi deposit.
 - Given hasil rekonsiliasi memerlukan refund, when Owner menyimpan keputusan, then sistem mencatat tugas pencairan manual dan tidak mentransfer uang atau menyimpan detail rekening tujuan.
@@ -69,6 +74,8 @@ Di luar scope MVP: banyak properti, pendaftaran Tenant publik, aplikasi native, 
 #### REQ-06 Pengeluaran dan laporan
 
 - Owner dan Staff berizin dapat mencatat pengeluaran dengan tanggal, kategori, nominal, dan deskripsi.
+- Owner dapat mengatur satu pagu pengeluaran operasional untuk setiap bulan kalender. Nilai yang belum dikonfigurasi tidak dianggap nol atau diberi default; perubahan pagu tercatat melalui audit.
+- Ringkasan Owner membandingkan pengeluaran tercatat pada bulan itu terhadap pagu. Ini bukan laba/proyeksi akuntansi; Staff dan Tenant tidak menerima nilai pagu maupun agregat keuangan.
 - Hanya Owner dapat melihat agregat keuangan. Respons server untuk Staff tidak boleh memuat angka laporan Owner.
 - Laporan menunjukkan transaksi tercatat dan okupansi turunan; laporan bukan laporan laba akuntansi atau pajak.
 

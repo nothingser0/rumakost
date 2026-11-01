@@ -53,6 +53,9 @@ erDiagram
   LEASE ||--o{ DEPOSIT_LEDGER_ENTRY : tracks_escrow
   PAYMENT ||--o| PAYMENT_REVERSAL : reversed_by
   APP_USER ||--o{ EXPENSE : records
+  APP_USER ||--o{ OPERATING_BUDGET : sets
+  FLOOR ||--o{ ROOM : contains
+  APP_USER ||--o| TENANT_PROFILE : has_profile
   ROOM ||--o{ TICKET : concerns
   APP_USER ||--o{ TICKET : creates_or_assigned
   TICKET ||--o{ TICKET_COMMENT : contains
@@ -60,8 +63,10 @@ erDiagram
   APP_USER ||--o{ AUDIT_EVENT : performs
 
   APP_USER { uuid id PK; text auth_subject UK; text email_normalized UK; app_role role }
-  ROOM { uuid id PK; text code UK; numeric monthly_rent }
-  LEASE { uuid id PK; uuid room_id FK; uuid tenant_user_id FK; date starts_on; date ends_on; billing_mode billing_mode }
+  TENANT_PROFILE { uuid user_id PK_FK; varchar phone_e164 nullable; varchar occupation nullable; varchar employer nullable; varchar city_of_origin nullable; varchar emergency_contact_name nullable; varchar emergency_contact_relation nullable; varchar emergency_contact_phone_e164 nullable; text emergency_contact_note nullable }
+  FLOOR { uuid id PK; text name; text normalized_name UK; timestamptz archived_at nullable }
+  ROOM { uuid id PK; text code UK; uuid floor_id FK nullable; numeric monthly_rent; numeric deposit_default_amount; room_physical_status physical_status; varchar maintenance_note nullable; timestamptz archived_at nullable; numeric width_m nullable; numeric length_m nullable }
+  LEASE { uuid id PK; text contract_number UK nullable; uuid room_id FK; uuid tenant_user_id FK; date starts_on; date ends_on; billing_mode billing_mode }
   INVOICE { uuid id PK; uuid lease_id FK; date period_start; date period_end; date due_on }
   INVOICE_LINE { uuid id PK; uuid invoice_id FK; text kind; numeric amount }
   PAYMENT { uuid id PK; uuid invoice_id FK; numeric amount; payment_status status }
@@ -69,7 +74,8 @@ erDiagram
   DEPOSIT_LEDGER_ENTRY { uuid id PK; uuid lease_id FK; text kind; numeric amount }
   PAYMENT_REVERSAL { uuid id PK; uuid payment_id FK; numeric amount; text reason }
   EXPENSE { uuid id PK; numeric amount; date occurred_on }
-  TICKET { uuid id PK; uuid room_id FK; uuid created_by FK; text status }
+  OPERATING_BUDGET { uuid id PK; date period_start UK; numeric amount; uuid updated_by FK }
+  TICKET { uuid id PK; uuid room_id FK; uuid created_by FK; text status; date target_completion_on nullable }
   TICKET_COMMENT { uuid id PK; uuid ticket_id FK; uuid author_id FK; text visibility }
   TICKET_ATTACHMENT { uuid id PK; uuid ticket_id FK; text object_key UK; bigint size_bytes }
   AUDIT_EVENT { uuid id PK; uuid actor_id FK; text action; timestamptz occurred_at }
@@ -88,24 +94,58 @@ CREATE TABLE app_user (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   auth_subject text NOT NULL UNIQUE,
   email_normalized text NOT NULL UNIQUE,
-  display_name text NOT NULL,
+  display_name text NOT NULL CHECK (btrim(display_name) <> ''),
   role app_role NOT NULL,
   is_active boolean NOT NULL DEFAULT true,
   created_at timestamptz NOT NULL DEFAULT now()
 );
 
+CREATE TABLE tenant_profile (
+  user_id uuid PRIMARY KEY REFERENCES app_user(id) ON DELETE RESTRICT,
+  phone_e164 varchar(16) CHECK (phone_e164 IS NULL OR phone_e164 ~ '^\+[1-9][0-9]{0,14}$'),
+  occupation varchar(100),
+  employer varchar(150),
+  city_of_origin varchar(100),
+  emergency_contact_name varchar(100),
+  emergency_contact_relation varchar(50),
+  emergency_contact_phone_e164 varchar(16),
+  emergency_contact_note text,
+  CHECK (emergency_contact_phone_e164 IS NULL OR emergency_contact_phone_e164 ~ '^\+[1-9][0-9]{0,14}$'),
+  CHECK ((emergency_contact_name IS NULL) = (emergency_contact_phone_e164 IS NULL)),
+  CHECK (emergency_contact_name IS NULL OR btrim(emergency_contact_name) <> ''),
+  CHECK (emergency_contact_relation IS NULL OR btrim(emergency_contact_relation) <> '')
+);
+
+CREATE TABLE floor (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL CHECK (name = btrim(name) AND name <> ''),
+  normalized_name text NOT NULL UNIQUE,
+  archived_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  CHECK (normalized_name = lower(btrim(name)))
+);
+
 CREATE TABLE room (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  code text NOT NULL UNIQUE,
-  floor text,
-  monthly_rent numeric(12,2) NOT NULL CHECK (monthly_rent >= 0),
-  deposit_default_amount numeric(12,2) NOT NULL DEFAULT 0 CHECK (deposit_default_amount >= 0),
+  code text NOT NULL UNIQUE CHECK (code = upper(btrim(code)) AND code ~ '^[A-Z0-9-]{1,10}$'),
+  floor_id uuid REFERENCES floor(id) ON DELETE RESTRICT,
+  room_type text,
+  width_m numeric(5,2),
+  length_m numeric(5,2),
+  monthly_rent numeric(12,2) NOT NULL CHECK (monthly_rent > 0 AND monthly_rent <= 100000000),
+  deposit_default_amount numeric(12,2) NOT NULL CHECK (deposit_default_amount BETWEEN 0 AND 100000000),
   physical_status text NOT NULL,
-  created_at timestamptz NOT NULL DEFAULT now()
+  maintenance_note varchar(500),
+  archived_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  CHECK ((width_m IS NULL) = (length_m IS NULL)
+         AND (width_m IS NULL OR (width_m > 0 AND length_m > 0)))
 );
 
 CREATE TABLE lease (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  contract_number text UNIQUE CHECK (contract_number IS NULL OR btrim(contract_number) <> ''),
   room_id uuid NOT NULL REFERENCES room(id),
   tenant_user_id uuid NOT NULL REFERENCES app_user(id),
   starts_on date NOT NULL,
@@ -141,6 +181,8 @@ CREATE TABLE payment (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   invoice_id uuid NOT NULL REFERENCES invoice(id),
   amount numeric(12,2) NOT NULL CHECK (amount > 0),
+  method text NOT NULL,
+  reference text UNIQUE CHECK (reference IS NULL OR btrim(reference) <> ''),
   status payment_status NOT NULL DEFAULT 'PENDING',
   recorded_by uuid NOT NULL REFERENCES app_user(id),
   verified_by uuid REFERENCES app_user(id),
@@ -160,12 +202,22 @@ CREATE TABLE payment_allocation (
 CREATE TABLE deposit_ledger_entry (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   lease_id uuid NOT NULL REFERENCES lease(id),
+  invoice_line_id uuid REFERENCES invoice_line(id),
   payment_allocation_id uuid UNIQUE REFERENCES payment_allocation(id),
-  kind text NOT NULL CHECK (kind IN ('COLLECTED', 'APPLIED_TO_RENT', 'WITHHELD_AT_CHECKOUT', 'REFUNDED')),
+  reversed_payment_allocation_id uuid UNIQUE REFERENCES payment_allocation(id),
+  kind text NOT NULL CHECK (kind IN ('COLLECTED', 'COLLECTION_REVERSED', 'APPLIED_TO_RENT', 'WITHHELD_AT_CHECKOUT', 'REFUNDED')),
   amount numeric(12,2) NOT NULL CHECK (amount > 0),
   reason text,
+  refund_status text CHECK (refund_status IN ('PENDING', 'PAID', 'REJECTED')),
   created_by uuid NOT NULL REFERENCES app_user(id),
-  created_at timestamptz NOT NULL DEFAULT now()
+  created_at timestamptz NOT NULL DEFAULT now(),
+  CHECK (
+    (kind = 'COLLECTED' AND payment_allocation_id IS NOT NULL AND reversed_payment_allocation_id IS NULL AND invoice_line_id IS NULL AND refund_status IS NULL)
+    OR (kind = 'COLLECTION_REVERSED' AND payment_allocation_id IS NULL AND reversed_payment_allocation_id IS NOT NULL AND invoice_line_id IS NULL AND reason IS NOT NULL AND btrim(reason) <> '' AND refund_status IS NULL)
+    OR (kind = 'APPLIED_TO_RENT' AND payment_allocation_id IS NULL AND reversed_payment_allocation_id IS NULL AND invoice_line_id IS NOT NULL AND refund_status IS NULL)
+    OR (kind = 'WITHHELD_AT_CHECKOUT' AND payment_allocation_id IS NULL AND reversed_payment_allocation_id IS NULL AND invoice_line_id IS NULL AND reason IS NOT NULL AND btrim(reason) <> '' AND refund_status IS NULL)
+    OR (kind = 'REFUNDED' AND payment_allocation_id IS NULL AND reversed_payment_allocation_id IS NULL AND invoice_line_id IS NULL AND reason IS NOT NULL AND btrim(reason) <> '' AND refund_status IS NOT NULL)
+  )
 );
 
 CREATE TABLE payment_reversal (
@@ -177,6 +229,16 @@ CREATE TABLE payment_reversal (
   created_at timestamptz NOT NULL DEFAULT now()
 );
 
+-- Runtime integrity guards are installed by M06-DB migrations:
+-- lines can only be added to ISSUED invoices and cannot be edited/deleted;
+-- allocations must target a line on the same issued invoice and reconcile exactly
+-- before verification; active verified totals cannot exceed invoice or line totals.
+-- Payments move only from PENDING to VERIFIED/REJECTED; allocations and reversals
+-- are append-only. A reversal must fully reverse a verified payment with a reason.
+-- Deposit reversals append COLLECTION_REVERSED per recorded deposit allocation;
+-- the reversal is rejected when unreserved escrow cannot cover the compensation.
+-- An invoice with an unreversed verified payment cannot be voided.
+
 CREATE TABLE expense (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   category text NOT NULL,
@@ -185,6 +247,15 @@ CREATE TABLE expense (
   description text NOT NULL,
   recorded_by uuid NOT NULL REFERENCES app_user(id),
   created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE operating_budget (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  period_start date NOT NULL UNIQUE CHECK (EXTRACT(DAY FROM period_start) = 1),
+  amount numeric(12,2) NOT NULL CHECK (amount > 0),
+  updated_by uuid NOT NULL REFERENCES app_user(id),
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE TABLE ticket (
@@ -196,6 +267,7 @@ CREATE TABLE ticket (
   description text NOT NULL,
   priority text NOT NULL,
   status text NOT NULL,
+  target_completion_on date,
   closed_at timestamptz,
   created_at timestamptz NOT NULL DEFAULT now()
 );
@@ -249,7 +321,7 @@ CREATE INDEX idx_ticket_attachment_delete_after ON ticket_attachment (delete_aft
 CREATE INDEX idx_audit_entity_time ON audit_event (entity_type, entity_id, occurred_at DESC);
 ```
 
-Pencegahan kontrak bertabrakan membutuhkan exclusion constraint PostgreSQL dengan rentang tanggal dan `btree_gist`, atau transaksi serializable dengan penguncian kamar. Pilih dan verifikasi implementasinya pada rancangan migrasi final. Foreign key, validasi nominal, keunikan, tipe uang presisi, dan catatan koreksi immutable wajib diterapkan. Entitas tambahan pada model logis meliputi `tenant_profile`, `lease_end_request`, dan histori status tiket; bentuk constraint final ditetapkan saat rancangan migrasi; keputusan domain tercatat di draf data/API.
+Pencegahan kontrak bertabrakan menggunakan exclusion constraint PostgreSQL dengan rentang tanggal dan `btree_gist`. Nama AppUser menolak nilai kosong/spasi; TenantProfile mendukung pekerjaan/instansi/kota asal opsional serta kontak darurat terstruktur dengan E.164 dan nama/nomor berpasangan; nomor telepon utama tetap opsional dan non-unique. `lease.contract_number` adalah nomor SPK opsional dan unik. Trigger DepositLedgerEntry mengunci Lease saat insert, memvalidasi line sumber sesuai lease dan status payment terverifikasi tanpa reversal untuk setoran, mewajibkan alasan nonblank, dan menolak settlement/refund/reversal setoran yang melebihi escrow tersedia; refund pending ikut dicadangkan sampai dibayar atau ditolak. Reversal payment menambahkan `COLLECTION_REVERSED` secara atomik untuk setoran deposit yang telah dicatat; koreksi gagal seluruhnya bila saldo bebas escrow tidak cukup. `room.maintenance_note` opsional maksimal 500 karakter; `ticket.target_completion_on` opsional. Migration DB menolak hard delete Room/Floor, arsip Room dengan Lease `SCHEDULED`/`ACTIVE`, perubahan status fisik Room saat Lease tersebut ada, arsip Floor selama masih punya Room yang belum diarsipkan, Room aktif pada Floor arsip, serta Lease `SCHEDULED`/`ACTIVE` pada Room arsip atau `MAINTENANCE`. Backend tetap bertanggung jawab atas RBAC, ownership, serta audit event operasi. Entitas tambahan meliputi `lease_end_request` dan histori status tiket.
 
 ### 2.3 Framework Versions & Ecosystem Libraries (Pinned)
 

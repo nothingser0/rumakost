@@ -1,12 +1,12 @@
 # Frozen Scope — Sistem Manajemen Kost Mandiri
 
-> Status: FROZEN atas arahan pemilik pada 22 Oktober 2026. Keputusan ini menggantikan scope Large sebelumnya: MVP Medium, satu properti, tujuh kelompok P0. Fitur tambahan dipindahkan ke backlog versi berikutnya.
+> Status: Baseline FROZEN pada 22 Oktober 2026; diperbarui dengan CR-2026-001 dan CR-2026-002 yang disetujui 1 November 2026. MVP tetap Medium, satu properti, tujuh kelompok P0. Fitur tambahan lainnya dipindahkan ke backlog versi berikutnya.
 
 ## Keputusan Pemilik tentang Batas Properti
 
 Pemilik menetapkan MVP **Medium dengan satu properti dan tujuh kelompok P0**. Keputusan ini menggantikan scope Large 17 P0 yang sempat disetujui. Fitur tambahan dipindahkan ke backlog versi selanjutnya. Data demo tetap sintetis: nama/kontak, kontrak, tagihan, pembayaran, tiket, dan media yang diperlukan fitur inti. NIK, dokumen KTP, detail rekening, dan bukti transfer tidak masuk MVP dan dapat dinilai untuk versi berikutnya.
 
-Scope Medium MVP disetujui dan FROZEN pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Breakdown tetap 22 Story, dengan penyesuaian estimasi pada RK-025/RK-027/RK-032. Estimasi MVP terbaru 186–245 jam; atas arahan pemilik, jadwal diperbarui menjadi 21 minggu/252 jam untuk menampung batas atas. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
+Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Pada 2026-11-01, CR-2026-001 menambahkan dimensi kamar opsional ke F-02 dan pagu bulanan ke F-06. CR-2026-002 memperjelas F-02: lantai adalah katalog satu properti, kamar dan lantai diarsipkan agar histori bertahan, kode kamar dinormalisasi, serta rentang tarif dan deposit dijaga. Penutupan gap persistensi WF-03 menegaskan kontak telepon penghuni pada F-03, catatan kamar pada F-02, dan target penyelesaian tiket pada F-07; tidak menambah kelompok fitur, role, atau jalur multi-penghuni. Foto kamar tetap tidak termasuk P0. Jumlah kelompok tetap tujuh dan skala tetap Medium.
 
 ## 1. Metadata dan Kendali Dokumen
 
@@ -14,10 +14,10 @@ Scope Medium MVP disetujui dan FROZEN pada 2026-10-22: satu properti, tujuh P0. 
 - Pemilik proyek: belum dicatat
 - Solo developer: pemilik proyek, dibantu AI
 - Referensi: IDEA_BRIEF.md dan USER_RESEARCH_REPORT.md
-- Status dokumen: FROZEN — MEDIUM MVP DISETUJUI PEMILIK 2026-10-22; menggantikan baseline Large
+- Status dokumen: FROZEN — MEDIUM MVP DISETUJUI PEMILIK 2026-10-22; perubahan CR-2026-001 dan CR-2026-002 disetujui 2026-11-01
 - Skala: Medium (7 kelompok P0; satu properti)
 - Tanggal elicitation: 14–22 Oktober 2026; INT-10 bertanggal rentang 20–21 Oktober, hari tunggal belum diketahui
-- Tanggal pembaruan: 30 Oktober 2026 (Penyelarasan M05 ke wireframe/runbook M04 untuk deposit dan dua mode billing check-in)
+- Tanggal pembaruan: 1 November 2026 (CR-2026-001: dimensi kamar/pagu; CR-2026-002: lantai/arsip/integritas data kamar)
 - Delivery: Portfolio; bukan layanan komersial
 
 ### Confidence
@@ -68,12 +68,12 @@ MVP memuat tujuh kelompok P0, sesuai rentang Medium (6–15), dan dibatasi ke sa
 | ID | Area | Deskripsi kebutuhan | Prioritas | Akar masalah | Perkiraan jam (kasar) | Keyakinan |
 |---|---|---|---|---|---:|---|
 | **F-01** | Akses dan peran | Owner login, membuat/mengaktifkan akun Staff dan Penghuni; masing-masing mendapat hak minimum sesuai perannya. | **P0 (Must)** | Kebutuhan kontrol Owner/Staff/Penghuni | 16–22 | 🔶 |
-| **F-02** | Manajemen kamar | Catat kamar dan status operasional/hunian dalam satu properti. | **P0 (Must)** | Prasyarat pengelolaan properti | 10–14 | 🔶 |
-| **F-03** | Penghuni dan siklus kontrak | Catat penghuni, periode sewa, status kontrak aktif/berakhir, dan histori kontrak. | **P0 (Must)** | Menghubungkan penghuni dengan tagihan; INT-02/04 melaporkan data penghuni tertinggal | 14–18 | 🔶 |
+| **F-02** | Manajemen kamar | Catat katalog lantai satu properti dan data kamar, termasuk dimensi opsional (panjang/lebar dalam meter), catatan operasional, status operasional/hunian, dan arsip yang mempertahankan histori. Luas diturunkan dari dimensi. | **P0 (Must)** | Prasyarat pengelolaan properti | 12–17 | 🔶 |
+| **F-03** | Penghuni dan siklus kontrak | Catat penghuni beserta kontak utama dan darurat, pekerjaan/instansi/kota asal opsional, periode sewa, nomor SPK opsional, status kontrak aktif/berakhir, dan histori kontrak. NIK dan berkas identitas tetap di luar MVP. | **P0 (Must)** | Menghubungkan penghuni dengan tagihan; INT-02/04 melaporkan data penghuni tertinggal | 14–18 | 🔶 |
 | **F-04** | Tagihan berulang | Buat tagihan bulanan dari kontrak aktif, cegah duplikasi, dan tampilkan status penyampaian manual. | **P0 (Must)** | Tagihan manual/kontak usang (INT-02/04) | 14–18 | 🔶 |
 | **F-05** | Pembayaran, saldo parsial, dan riwayat | Catat pembayaran dan klaim; hanya yang diverifikasi Owner mengurangi saldo. Koreksi menyimpan jejak; tanpa koneksi bank/gateway. | **P0 (Must)** | Rekonsiliasi, pembayaran parsial, dan catatan tersebar (INT-01–05, INT-09) | 18–24 | 🔶 |
-| **F-06** | Pengeluaran dan laporan pemasukan/okupansi | Catat pemasukan/pengeluaran kost secara sederhana, lalu tampilkan ringkasan periode dan okupansi satu properti. Bukan akuntansi/pajak. | **P0 (Must)** | Rekap keuangan sulit disusun (INT-02/04/06/10) | 14–18 | 🔶 |
-| **F-07** | Ticketing kerusakan dari penghuni | Penghuni membuat tiket untuk kamar/kontraknya dengan uraian dan minimal satu foto/video wajib. Penghuni, Staff, dan Owner dapat berkomentar; komentar dapat menyertakan lampiran. Staff/Owner mengatur prioritas, penanggung jawab, status, serta tindak lanjut. | **P0 (Must)** | Keluhan/perbaikan tercecer atau terlambat (INT-01–05, INT-08) | 26–36 | 🔶 |
+| **F-06** | Pengeluaran dan laporan pemasukan/okupansi | Catat pengeluaran, atur satu pagu operasional per bulan, lalu tampilkan pengeluaran aktual dibanding pagu serta ringkasan pemasukan/okupansi satu properti. Bukan akuntansi/pajak. | **P0 (Must)** | Rekap keuangan sulit disusun (INT-02/04/06/10) | 21–27 | 🔶 |
+| **F-07** | Ticketing kerusakan dari penghuni | Penghuni membuat tiket untuk kamar/kontraknya dengan uraian dan minimal satu foto/video wajib. Penghuni, Staff, dan Owner dapat berkomentar; komentar dapat menyertakan lampiran. Staff/Owner mengatur prioritas, penanggung jawab, target penyelesaian, status, serta tindak lanjut. | **P0 (Must)** | Keluhan/perbaikan tercecer atau terlambat (INT-01–05, INT-08) | 26–36 | 🔶 |
 | **F-08** | Notifikasi dalam aplikasi | Beri notifikasi saat tiket ditugaskan, status berubah, atau komentar baru masuk; sediakan daftar dan status sudah dibaca. | **P1 (Should)** | Mengurangi tiket yang terlewat | 12–18 | 🔶 |
 | **F-09** | Filter dan pengingat tiket lama | Filter tiket menurut status, prioritas, kamar, dan lama terbuka; tandai tiket yang melewati ambang umur. | **P1 (Should)** | Tindak lanjut maintenance | 8–12 | 🔶 |
 | **F-10** | Ekspor CSV | Ekspor laporan keuangan dan riwayat tiket dengan filter periode dan pemeriksaan akses role. | **P1 (Should)** | Rekap dan portabilitas laporan | 6–10 | 🔶 |
@@ -99,13 +99,16 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 
 #### F-02 Manajemen kamar
 - Sebagai Owner, saya ingin mencatat kamar dan statusnya agar penempatan penghuni bisa ditelusuri.
+- Owner dapat mengisi panjang dan lebar kamar secara opsional dalam meter; keduanya harus diisi bersama dan bernilai positif. Luas diturunkan, bukan disimpan sebagai angka terpisah.
+- Lantai dicatat sebagai katalog agar lantai kosong tetap tersedia; kamar merujuk lantai tersebut. Kode kamar huruf kapital dan unik setelah trim, panjang 1–10 karakter alfanumerik/tanda hubung. Tarif kamar Rp1–100.000.000 dan default deposit Rp0–100.000.000.
+- Kamar/lantai yang tidak aktif diarsipkan. Kamar dengan histori tidak dihapus permanen; lantai yang masih dipakai kamar tidak bisa dihapus permanen. Foto kamar berada di backlog.
 - Given kamar tercatat memiliki kontrak aktif, when status hunian ditampilkan, then kamar ditandai terisi dan tidak dapat menerima kontrak aktif kedua.
 - Given kamar belum memiliki kontrak aktif, when daftar kamar dibuka, then kamar tampil tersedia atau berstatus perawatan sesuai pilihan status.
 
 #### F-03 Penghuni dan kontrak
 - Sebagai Owner atau Staff, saya ingin mencatat penghuni dan periode kontrak agar tagihan terhubung dengan masa sewa.
 - Given kontrak aktif pada kamar, when kontrak kedua dibuat dengan periode tumpang tindih, then sistem menolak penyimpanan.
-- Given master kamar dibuat, when tarif sewa disimpan, then default deposit rekomendasi sebesar 50% tarif terisi otomatis dan dapat diedit Owner; saat kontrak dibuat, Owner/Staff dapat memakai nilai default, menggantinya, atau memilih bebas deposit/nol.
+- Given master kamar dibuat, when tarif sewa disimpan, then default deposit rekomendasi sebesar 50% tarif (dibulatkan ke kelipatan Rp50.000 sesuai WF-03) terisi otomatis dan dapat diedit Owner; saat kontrak dibuat, Owner/Staff dapat memakai nilai default, menggantinya, atau memilih bebas deposit/nol.
 - Given deposit kontrak ditetapkan, when penghuni membuka portal, then nilai dan saldo deposit tersedia ditampilkan terpisah dari pendapatan sewa.
 - Given kontrak berakhir, when riwayat penghuni dibuka, then kontrak lama dan catatan terkait tetap tersedia.
 - Given penghuni mengajukan check-out, when permintaan dikirim, then Owner menerima permintaan untuk inspeksi dan rekonsiliasi; hanya Owner yang mengesahkan refund/potongan deposit.
@@ -130,6 +133,8 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 
 #### F-06 Pengeluaran dan laporan pemasukan/okupansi
 - Sebagai Owner, saya ingin melihat ringkasan keuangan; Owner/Staff berizin dapat mencatat pengeluaran operasional agar biaya aktual masuk ke rekap.
+- Owner dapat menetapkan satu pagu pengeluaran operasional untuk setiap bulan kalender. Pagu yang belum diatur tidak diberi nilai default; perubahan nilai dicatat di audit.
+- Laporan/dashboard Owner membandingkan jumlah pengeluaran tercatat pada bulan terpilih dengan pagu bulan itu. Angka ini bukan laba, proyeksi, atau akuntansi formal; Staff dan Penghuni tidak menerima angka keuangan/pagu.
 - Given catatan transaksi memiliki tanggal, kategori, dan nominal, when laporan periode dibuka, then total pemasukan dan pengeluaran hanya menjumlah catatan dalam rentang tanggal itu.
 - Given jumlah kamar dan kontrak aktif diketahui, when okupansi dihitung, then angka terisi/tersedia dapat ditelusuri ke status kamar dan kontrak aktif.
 - Laporan tidak menyebut laba akuntansi/pajak dan tidak menganggap transaksi yang tidak dicatat sebagai biaya nol.
@@ -212,21 +217,21 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 | ASM-02 | Batas satu properti cukup untuk demo; laporan multi-lokasi ditunda. | Pemilik proyek | Disetujui dan dibekukan 2026-10-22 |
 
 ## 8. Jadwal dan Perkiraan Usaha
-- Kapasitas: 12 jam/minggu × 18 minggu = **216 jam**.
-- Estimasi implementasi tujuh P0 Medium setelah penambahan alur escrow/billing M04: **119–158 jam** (naik 7–8 jam); P1/P2 tetap tidak dihitung.
-- Buffer 20%: **24–32 jam**; QA/integrasi/bug-fix: **26–34 jam**; dokumentasi/demo/portfolio polish: **17–21 jam**.
-- Total estimasi MVP yang diperbarui: **186–245 jam**. Breakdown 22 Story di `docs/pm/KANBAN.md` sesuai estimasi fitur; pada kapasitas 12 jam/minggu rentangnya sekitar 15,5–20,4 minggu. Atas arahan pemilik pada 2026-10-30, jadwal menjadi 21 minggu/252 jam, cukup untuk estimasi maksimum dengan sisa 7 jam. Scope tujuh P0 tetap; P1/P2 tidak ditambahkan.
+- Kapasitas perencanaan revisi: 12 jam/minggu × 22 minggu = **264 jam**; rencana intake awal 216 jam perlu dinaikkan setelah CR.
+- Estimasi implementasi tujuh P0 Medium setelah CR-2026-001: **128–170 jam**; P1/P2 tetap tidak dihitung.
+- Buffer 20%: **26–34 jam**; QA/integrasi/bug-fix: **26–34 jam**; dokumentasi/demo/portfolio polish: **17–21 jam**.
+- Total estimasi MVP setelah CR-2026-001: **197–259 jam**. Breakdown 22 Story di `docs/pm/KANBAN.md` sesuai estimasi fitur; pada kapasitas 12 jam/minggu rentangnya sekitar 16,4–21,6 minggu. Jadwal menjadi 22 minggu/264 jam, cukup untuk estimasi maksimum dengan sisa 5 jam. Scope tujuh P0 tetap; P1/P2 tidak ditambahkan.
 - Provider storage belum dipilih. CDN, transcoding, lampiran struk, integrasi WhatsApp/email, serta NIK/dokumen KTP/detail rekening/bukti transfer tidak masuk MVP. MVP menolak file media yang melewati batas.
 - QA dimulai setelah freeze; perubahan fitur sesudah itu perlu persetujuan perubahan scope.
 
 ## 9. Keputusan Scope
 
-Scope Medium MVP disetujui dan FROZEN pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Breakdown tetap 22 Story, dengan penyesuaian estimasi pada RK-025/RK-027/RK-032. Estimasi MVP terbaru 186–245 jam; atas arahan pemilik, jadwal diperbarui menjadi 21 minggu/252 jam untuk menampung batas atas. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
+Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Perubahan 2026-10-30 menyelaraskan deposit escrow dan mode billing check-in dengan M04. CR-2026-001 dan CR-2026-002 disetujui Owner melalui instruksi chat 2026-11-01: dimensi kamar/pagu bulanan, katalog lantai, arsip kamar/lantai, dan integritas kode serta nominal F-02. Tidak ada tabel properti multi-tenant; foto kamar tetap backlog. Jumlah kelompok dan story tetap; estimasi 197–259 jam serta jadwal 22 minggu/264 jam tetap baseline. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
 
 Scope-P0-Count: 7
 Scope-Lock-Decision: LOCKED
 
-Persetujuan pemilik proyek: MVP Medium tujuh P0 dikonfirmasi pada chat 2026-10-22 setelah scope Large dinyatakan melebihi kebutuhan. Kapasitas intake tetap 216 jam; estimasi atas MVP sekitar 16 jam di atasnya dan perlu dikendalikan lewat task breakdown.
+Persetujuan pemilik proyek: MVP Medium tujuh P0 dikonfirmasi pada chat 2026-10-22. CR-2026-001 dan CR-2026-002 disetujui Owner pada chat 2026-11-01. Kapasitas intake tetap 216 jam; estimasi atas MVP 259 jam, sehingga jadwal 22 minggu menjadi baseline perencanaan.
 
 ## Rujukan Teknis Storage (ditinjau 22 Oktober 2026)
 

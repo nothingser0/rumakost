@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "node scripts/run-tests.mjs",
+    "db:bootstrap-owner": "node scripts/bootstrap-owner.mjs",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "prisma db seed"
   },
