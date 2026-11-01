@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/server";
-import { getSessionUser } from "@/lib/auth/auth-policy.mjs";
+import type { AuthAppUser } from "@/lib/auth/app-user";
+import { getCurrentAuthAppUser } from "@/lib/auth/current-app-user";
+import { getPostPasswordChangePath } from "@/lib/auth/password-policy.mjs";
 import { LoginForm } from "./login-form";
 import styles from "./page.module.css";
 
@@ -27,9 +29,24 @@ export default function LoginPage() {
 
 async function LoginContent() {
   const session = await auth.getSession();
+  const sessionUser = session.data?.user;
 
-  if (getSessionUser(session)) {
-    redirect("/dashboard");
+  if (sessionUser) {
+    let appUser: AuthAppUser | null;
+    try {
+      appUser = await getCurrentAuthAppUser();
+    } catch {
+      await auth.signOut();
+      return <LoginUnavailable />;
+    }
+
+    if (!appUser?.isActive) {
+      await auth.signOut();
+    } else if (appUser.mustChangePassword) {
+      redirect("/aktivasi-sandi");
+    } else {
+      redirect(getPostPasswordChangePath(appUser.role));
+    }
   }
 
   return (
@@ -62,6 +79,14 @@ async function LoginContent() {
         </div>
         <p className={styles.footer}>© 2026 RumaKost · Sistem Manajemen Kost Mandiri</p>
       </section>
+    </main>
+  );
+}
+
+function LoginUnavailable() {
+  return (
+    <main className={styles.sessionFallback}>
+      <p>Sesi tidak dapat diperiksa. Muat ulang halaman atau coba lagi.</p>
     </main>
   );
 }

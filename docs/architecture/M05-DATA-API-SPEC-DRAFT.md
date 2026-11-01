@@ -130,7 +130,7 @@ Common behavior: unauthenticated `401`; authenticated but unauthorized `403` (or
 
 1. **Verifikasi bayar:** kunci row pembayaran, pastikan `PENDING`, pastikan actor Owner, ubah ke `VERIFIED`, isi verifier/time, tulis audit, commit sekali. Retry kedua mengembalikan status kini dan tidak mengurangi saldo lagi.
 2. **Reversal:** kunci payment, pastikan `VERIFIED` dan belum pernah direversal; simpan reversal penuh dengan alasan, audit event, dan commit. Payment asal tetap tidak berubah.
-3. **Generate invoice:** unique constraint lease/periode/mode + transaction/upsert membuat proses aman diulang; prorata/anniversary memakai kalkulasi tanggal yang konsisten dan tidak membuat invoice untuk kontrak yang belum eligible.
+3. **Generate invoice:** unique constraint lease/periode/jenis invoice (`kind`) + transaction/upsert membuat proses aman diulang; billing mode dibaca dari Lease. Prorata/anniversary memakai kalkulasi tanggal yang konsisten dan tidak membuat invoice untuk kontrak yang belum eligible.
 4. **Escrow:** verifikasi alokasi ke line deposit membuat `COLLECTED`; settlement mengunci lease/ledger dan invoice line, memeriksa saldo tersedia, menulis event ledger dan melunasi saldo line sewa secara atomik. Check-out mengunci saldo, menolak refund/potongan melebihi saldo, lalu mencatat alasan dan status antrean refund manual.
 5. **Kirim ticket dengan lampiran:** buat batch upload terbatas; server verifikasi objek dan agregat sebelum mengubah ticket ke `RECEIVED`. Jika gagal, hapus objek sementara lewat cleanup job.
 6. **Tutup ticket:** set `closedAt`, hitung `deleteAfter = closedAt + 365 days`. Jika reopened, hapus jadwal lama dan hitung ulang saat close berikutnya.

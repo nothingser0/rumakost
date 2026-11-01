@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/server";
+import { getAuthAppUser, type AuthAppUser } from "@/lib/auth/app-user";
 import { validateSignInInput } from "./auth-policy.mjs";
 
 export type SignInState = {
@@ -22,6 +23,8 @@ export async function signInAction(
     return { error: "Email atau kata sandi tidak valid." };
   }
 
+  let signInFailed = false;
+
   try {
     const { error } = await auth.signIn.email({
       email: credentials.data.email,
@@ -29,16 +32,34 @@ export async function signInAction(
       rememberMe: formData.get("rememberMe") === "on",
     });
 
-    if (error) {
-      return { error: "Email atau kata sandi tidak valid." };
-    }
+    signInFailed = Boolean(error);
+  } catch {
+    signInFailed = true;
+  }
+
+  if (signInFailed) return { error: "Email atau kata sandi tidak valid." };
+
+  let appUser: AuthAppUser | null;
+
+  try {
+    const session = await auth.getSession();
+    const subject = session.data?.user?.id;
+    appUser = subject ? await getAuthAppUser(subject) : null;
   } catch {
     return { error: "Belum bisa masuk. Coba lagi sebentar." };
   }
 
-  redirect(
-    credentials.data.destinationRole === "TENANT" ? "/portal" : "/dashboard",
-  );
+  if (!appUser?.isActive) {
+    try {
+      await auth.signOut();
+    } catch {
+      return { error: "Akun belum aktif. Coba keluar lalu hubungi pemilik kost." };
+    }
+    return { error: "Akun belum aktif atau belum terdaftar. Hubungi pemilik kost." };
+  }
+
+  if (appUser.mustChangePassword) redirect("/aktivasi-sandi");
+  redirect(appUser.role === "TENANT" ? "/portal" : "/dashboard");
 }
 
 export async function signOutAction(): Promise<void> {

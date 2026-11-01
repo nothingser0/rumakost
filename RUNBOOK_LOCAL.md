@@ -37,7 +37,9 @@ Modul `src/lib/env.ts` memvalidasi environment server saat diimpor. Siapkan `.en
 
 Salin `.env.example` menjadi `.env.local` dan isi file itu langsung di mesin sendiri atau secret manager. `.env.local` diabaikan Git. Jangan commit, tempel secret ke chat, atau membaca nilainya untuk verifikasi. Prisma CLI memuat `.env.local` melalui konfigurasi root `prisma.config.ts` dan memakai `DIRECT_URL` untuk migrasi.
 
-Di Neon Console, nonaktifkan pendaftaran publik untuk Auth branch ini; pembuatan akun dilakukan Owner melalui alur manajemen akun. Aplikasi hanya meneruskan pembacaan sesi dan menangani masuk/keluar lewat server. Endpoint signup, reset sandi, OTP, dan 2FA tidak termasuk scope.
+Di Neon Console, nonaktifkan pendaftaran publik untuk Auth branch ini; pembuatan akun dilakukan Owner melalui alur manajemen akun. Akun Owner bootstrap harus memiliki role `admin` pada Neon Auth agar operasi admin membuat dan menonaktifkan identitas dapat berjalan. Role aplikasi `OWNER` di tabel `app_users` terpisah dan tidak memberikan role provider tersebut; pastikan hanya identitas Owner bootstrap yang diberi role `admin`. Staff dan Penghuni memakai role provider `user`.
+
+Alur reset sandi email direncanakan pada SCR-01A/SCR-01B dan harus memakai token flow Neon Auth. Konfigurasikan pengirim email/provider sebelum menguji alur itu. Reset sandi belum disediakan oleh M06-SETUP-09; task ini memberikan sandi awal sementara satu kali saat akun dibuat, lalu pengguna wajib menggantinya saat login pertama.
 
 ## Command yang tersedia
 

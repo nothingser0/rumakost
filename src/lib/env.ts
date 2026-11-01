@@ -68,6 +68,8 @@ const authEnvSchema = serverEnvSchema.pick({
   NEON_AUTH_COOKIE_SECRET: true,
 });
 
+const databaseEnvSchema = serverEnvSchema.pick({ DATABASE_URL: true });
+
 function parseEnvironment<T extends z.ZodType>(schema: T): z.infer<T> {
   const result = schema.safeParse(process.env);
 
@@ -86,6 +88,10 @@ function parseEnvironment<T extends z.ZodType>(schema: T): z.infer<T> {
 
 export function getAuthEnv() {
   return parseEnvironment(authEnvSchema);
+}
+
+export function getDatabaseEnv() {
+  return parseEnvironment(databaseEnvSchema);
 }
 
 export function getServerEnv() {
