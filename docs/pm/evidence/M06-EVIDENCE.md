@@ -3635,3 +3635,62 @@ Raw Verify setelah persetujuan:
 ```
 
 `EXIT_CODE=0`
+
+### Evidence M06-DB-54: actor SYSTEM pada status event tiket (2026-11-01)
+
+`TicketStatusEvent` kini memiliki `actorType` `USER/SYSTEM`. Migrasi menambahkan kolom dengan default `USER` agar semua histori lama tetap sebagai aksi pengguna, membuat `actorId` nullable, lalu menjaga pasangan actor type dan ID dengan CHECK; FK AppUser tetap membatasi event USER ke pengguna yang ada. Spesifikasi M05 Data API sudah menyatakan kontrak yang sama sehingga tidak perlu diubah. Task belum disetujui Owner; backend/job belum dikerjakan dan migrasi belum diterapkan ke Neon.
+
+Prisma divalidasi memakai config sementara dengan URL PostgreSQL sintetis. Config sementara dihapus setelah Verify; `.env.local` tidak digunakan atau dibaca.
+
+Raw `npx prisma validate --config prisma.verify.config.ts`:
+
+```text
+Loaded Prisma config from prisma.verify.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+┌─────────────────────────────────────────────────────────┐
+│  Update available 7.10.1 -> 8.0.0-rc.29                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                           │
+└─────────────────────────────────────────────────────────┘
+The schema at prisma\schema.prisma is valid 🚀
+EXIT_CODE=0
+```
+
+Migrasi dijalankan pada fixture `TicketStatusEvent` minimal di PGlite in-memory disposable. Fixture merepresentasikan kolom lama dan FK `ticket_id`/`actor_id`; tidak menerapkan migration ke database Neon.
+
+Raw Verify PGlite:
+
+```json
+{
+  "checks": {
+    "migration_applied_to_disposable_pglite": true,
+    "old_event_preserved_as_user": true,
+    "user_event_accepts_app_user_fk": true,
+    "system_event_accepts_null_actor": true,
+    "user_with_null_actor_rejected": true,
+    "system_with_app_user_rejected": true,
+    "unknown_user_rejected_by_fk": true
+  },
+  "failed": [],
+  "result": "PASS"
+}
+```
+
+`EXIT_CODE=0`
+
+Raw `git diff --check` dan pengecekan whitespace migration:
+
+```text
+warning: in the working copy of 'prisma/schema.prisma', LF will be replaced by CRLF the next time Git touches it
+GIT_DIFF_CHECK_EXIT_CODE=0
+MIGRATION_TRAILING_WHITESPACE_LINES=0
+MIGRATION_FINAL_NEWLINE=True
+```
+
+Owner menyetujui M06-DB-54 pada 2026-11-01. Status TODO diubah menjadi `[x]` dan approval dicatat sebagai `Approved: 2026-11-01 by zeenn`. Tidak ada perubahan schema/migration setelah Verify; migrasi belum diterapkan ke Neon dan task BE belum dimulai.

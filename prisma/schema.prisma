@@ -84,6 +84,11 @@ enum TicketStatus {
   DRAFT
 }
 
+enum TicketStatusActorType {
+  USER
+  SYSTEM
+}
+
 enum CommentVisibility {
   TENANT_VISIBLE
   INTERNAL
@@ -465,17 +470,18 @@ model Ticket {
 }
 
 model TicketStatusEvent {
-  id                String        @id @default(uuid()) @db.Uuid
-  ticketId          String        @map("ticket_id") @db.Uuid
-  fromStatus        TicketStatus? @map("from_status")
-  toStatus          TicketStatus  @map("to_status")
-  actorId           String        @map("actor_id") @db.Uuid
+  id                String                @id @default(uuid()) @db.Uuid
+  ticketId          String                @map("ticket_id") @db.Uuid
+  fromStatus        TicketStatus?         @map("from_status")
+  toStatus          TicketStatus          @map("to_status")
+  actorType         TicketStatusActorType @default(USER) @map("actor_type")
+  actorId           String?               @map("actor_id") @db.Uuid
   reason            String?
-  resolutionSummary String?       @map("resolution_summary")
-  occurredAt        DateTime      @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  resolutionSummary String?               @map("resolution_summary")
+  occurredAt        DateTime              @default(now()) @map("occurred_at") @db.Timestamptz(6)
 
-  ticket Ticket  @relation(fields: [ticketId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  actor  AppUser @relation("TicketStatusEventActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  ticket Ticket   @relation(fields: [ticketId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  actor  AppUser? @relation("TicketStatusEventActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([ticketId, occurredAt])
   @@index([actorId])
