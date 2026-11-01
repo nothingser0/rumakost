@@ -3304,3 +3304,27 @@ Raw Verify persetujuan:
     "result":  "PASS_M06_SETUP03_OWNER_APPROVAL"
 }
 ``
+<a id="evidence-m06-setup-10-review"></a>
+### Evidence M06-SETUP-10: review Owner dan status task (2026-11-01)
+
+Owner menyetujui M06-SETUP-10 pada 2026-11-01. Persetujuan mencakup hasil Verify pada database sekali pakai; bootstrap ke Auth/database milik Owner belum dijalankan.
+
+Raw Verify persetujuan:
+
+``json
+{
+    "task":  "M06-SETUP-10",
+    "checks":  {
+                   "rowMarkedComplete":  true,
+                   "approvalRecorded":  true,
+                   "disposableVerifyEvidencePresent":  true,
+                   "actualOwnerBootstrapNotClaimed":  true,
+                   "setup03Approved":  true
+               },
+    "diffCheckExitCode":  0,
+    "diffCheckOutput":  [
+
+                        ],
+    "result":  "PASS_M06_SETUP10_OWNER_APPROVAL"
+}
+``
