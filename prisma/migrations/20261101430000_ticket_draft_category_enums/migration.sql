@@ -1,0 +1,2 @@
+ALTER TYPE "TicketStatus" ADD VALUE 'DRAFT';
+ALTER TYPE "TicketCategory" ADD VALUE 'DOORS_LOCKS';

@@ -6,7 +6,7 @@
 
 Pemilik menetapkan MVP **Medium dengan satu properti dan tujuh kelompok P0**. Keputusan ini menggantikan scope Large 17 P0 yang sempat disetujui. Fitur tambahan dipindahkan ke backlog versi selanjutnya. Data demo tetap sintetis: nama/kontak, kontrak, tagihan, pembayaran, tiket, dan media yang diperlukan fitur inti. NIK, dokumen KTP, detail rekening, dan bukti transfer tidak masuk MVP dan dapat dinilai untuk versi berikutnya.
 
-Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Pada 2026-11-01, CR-2026-001 menambahkan dimensi kamar opsional ke F-02 dan pagu bulanan ke F-06. CR-2026-002 memperjelas F-02: lantai adalah katalog satu properti, kamar dan lantai diarsipkan agar histori bertahan, kode kamar dinormalisasi, serta rentang tarif dan deposit dijaga. Penutupan gap persistensi WF-03 menegaskan kontak telepon penghuni pada F-03, catatan kamar pada F-02, dan target penyelesaian tiket pada F-07; tidak menambah kelompok fitur, role, atau jalur multi-penghuni. Foto kamar tetap tidak termasuk P0. Jumlah kelompok tetap tujuh dan skala tetap Medium.
+Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Pada 2026-11-01, CR-2026-001 menambahkan dimensi kamar opsional ke F-02 dan pagu bulanan ke F-06. CR-2026-002 memperjelas F-02: lantai adalah katalog satu properti, kamar dan lantai diarsipkan agar histori bertahan, kode kamar dinormalisasi, serta rentang tarif dan deposit dijaga. Penutupan gap persistensi WF-03 menegaskan kontak telepon penghuni pada F-03, catatan kamar pada F-02, dan target penyelesaian tiket pada F-07. Pada 2026-11-01 Owner menetapkan semua role dapat membuat tiket; Tenant wajib memakai lease aktif miliknya, sementara Owner/Staff dapat membuat tiket kamar kosong dengan lease opsional; pembatalan wajib beralasan dan terminal. Tidak menambah kelompok fitur, role, atau jalur multi-penghuni. Arahan Owner untuk akun mengizinkan Staff membuat Tenant dan Owner mengelola perubahan email login melalui Neon Auth; tujuh P0 tetap sama. Foto kamar tetap tidak termasuk P0. Jumlah kelompok tetap tujuh dan skala tetap Medium.
 
 ## 1. Metadata dan Kendali Dokumen
 
@@ -56,7 +56,7 @@ Sistem memiliki tiga role. Akun Staff dan Penghuni dibuat/diaktifkan oleh Owner;
 | Peran | Lihat | Buat/perbarui | Verifikasi pembayaran | Laporan |
 |---|---|---|---|---|
 | Owner | Semua data satu properti | Kamar, penghuni, kontrak, tagihan, transaksi, tiket, role dan koreksi | Ya; memeriksa mutasi di luar sistem | Semua laporan |
-| Staff | Data operasional yang ditugaskan, tiket, penghuni/kamar terkait | Membuat/check-in kontrak, memperbarui tiket, mencatat pembayaran pending, pengeluaran operasional, atau penyampaian sesuai izin | Tidak; Owner saja | Tidak ada laporan finansial |
+| Staff | Data operasional yang ditugaskan, tiket, penghuni/kamar terkait | Membuat/check-in kontrak, membuat tiket untuk kamar termasuk kamar kosong dan memperbarui tiket, mencatat pembayaran pending, pengeluaran operasional, atau penyampaian sesuai izin | Tidak; Owner saja | Tidak ada laporan finansial |
 | Penghuni | Data kamar/kontrak/tagihan sendiri dan tiket miliknya | Mengajukan check-out; membuat tiket, komentar, serta lampiran | Tidak | Tidak melihat laporan properti |
 
 Aturan: akses media mengikuti hak akses tiket; Penghuni hanya dapat melihat tiket miliknya. **ZERO SELF-APPROVAL untuk Staff:** Staff tidak boleh memverifikasi transaksi yang dicatatnya sendiri; Owner bertindak sebagai verifier independen dan berwenang memverifikasi, menolak, atau mengoreksi transaksi. Detail matriks izin ditetapkan pada spesifikasi M05 sebelum implementasi.
@@ -67,13 +67,13 @@ MVP memuat tujuh kelompok P0, sesuai rentang Medium (6–15), dan dibatasi ke sa
 
 | ID | Area | Deskripsi kebutuhan | Prioritas | Akar masalah | Perkiraan jam (kasar) | Keyakinan |
 |---|---|---|---|---|---:|---|
-| **F-01** | Akses dan peran | Owner login, membuat/mengaktifkan akun Staff dan Penghuni; masing-masing mendapat hak minimum sesuai perannya. | **P0 (Must)** | Kebutuhan kontrol Owner/Staff/Penghuni | 16–22 | 🔶 |
+| **F-01** | Akses dan peran | Owner login, membuat/mengaktifkan akun Staff dan Penghuni; Staff juga dapat membuat/mengaktifkan akun Penghuni. Hanya Owner mengelola akun Staff dan perubahan email login melalui Neon Auth terkelola. Ketiga role dapat mengganti password sendiri melalui provider. Tidak ada pendaftaran mandiri/publik. | **P0 (Must)** | Kebutuhan kontrol Owner/Staff/Penghuni | 16–22 | 🔶 |
 | **F-02** | Manajemen kamar | Catat katalog lantai satu properti dan data kamar, termasuk dimensi opsional (panjang/lebar dalam meter), catatan operasional, status operasional/hunian, dan arsip yang mempertahankan histori. Luas diturunkan dari dimensi. | **P0 (Must)** | Prasyarat pengelolaan properti | 12–17 | 🔶 |
 | **F-03** | Penghuni dan siklus kontrak | Catat penghuni beserta kontak utama dan darurat, pekerjaan/instansi/kota asal opsional, periode sewa, nomor SPK opsional, status kontrak aktif/berakhir, dan histori kontrak. NIK dan berkas identitas tetap di luar MVP. | **P0 (Must)** | Menghubungkan penghuni dengan tagihan; INT-02/04 melaporkan data penghuni tertinggal | 14–18 | 🔶 |
 | **F-04** | Tagihan berulang | Buat tagihan bulanan dari kontrak aktif, cegah duplikasi, dan tampilkan status penyampaian manual. | **P0 (Must)** | Tagihan manual/kontak usang (INT-02/04) | 14–18 | 🔶 |
 | **F-05** | Pembayaran, saldo parsial, dan riwayat | Catat pembayaran dan klaim; hanya yang diverifikasi Owner mengurangi saldo. Koreksi menyimpan jejak; tanpa koneksi bank/gateway. | **P0 (Must)** | Rekonsiliasi, pembayaran parsial, dan catatan tersebar (INT-01–05, INT-09) | 18–24 | 🔶 |
 | **F-06** | Pengeluaran dan laporan pemasukan/okupansi | Catat pengeluaran, atur satu pagu operasional per bulan, lalu tampilkan pengeluaran aktual dibanding pagu serta ringkasan pemasukan/okupansi satu properti. Bukan akuntansi/pajak. | **P0 (Must)** | Rekap keuangan sulit disusun (INT-02/04/06/10) | 21–27 | 🔶 |
-| **F-07** | Ticketing kerusakan dari penghuni | Penghuni membuat tiket untuk kamar/kontraknya dengan uraian dan minimal satu foto/video wajib. Penghuni, Staff, dan Owner dapat berkomentar; komentar dapat menyertakan lampiran. Staff/Owner mengatur prioritas, penanggung jawab, target penyelesaian, status, serta tindak lanjut. | **P0 (Must)** | Keluhan/perbaikan tercecer atau terlambat (INT-01–05, INT-08) | 26–36 | 🔶 |
+| **F-07** | Ticketing kerusakan | Owner, Staff, dan Penghuni dapat membuat tiket kategori/uraian dengan minimal satu foto/video. Penghuni wajib terkait lease aktif miliknya; Owner/Staff dapat memilih kamar termasuk kamar kosong dan lease terkait secara opsional. Semua role dapat berkomentar; komentar dapat menyertakan lampiran. Staff/Owner mengatur prioritas, penanggung jawab internal, target penyelesaian, status, dan pembatalan beralasan. Status/history dan media mengikuti aturan retensi F-07. Biaya servis tertaut, garansi, akun Teknisi, dan notifikasi otomatis tidak termasuk P0. | **P0 (Must)** | Keluhan/perbaikan tercecer atau terlambat (INT-01???05, INT-08) | 26???36 | ???? |
 | **F-08** | Notifikasi dalam aplikasi | Beri notifikasi saat tiket ditugaskan, status berubah, atau komentar baru masuk; sediakan daftar dan status sudah dibaca. | **P1 (Should)** | Mengurangi tiket yang terlewat | 12–18 | 🔶 |
 | **F-09** | Filter dan pengingat tiket lama | Filter tiket menurut status, prioritas, kamar, dan lama terbuka; tandai tiket yang melewati ambang umur. | **P1 (Should)** | Tindak lanjut maintenance | 8–12 | 🔶 |
 | **F-10** | Ekspor CSV | Ekspor laporan keuangan dan riwayat tiket dengan filter periode dan pemeriksaan akses role. | **P1 (Should)** | Rekap dan portabilitas laporan | 6–10 | 🔶 |
@@ -92,7 +92,7 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 ### 4.1 User Stories dan Acceptance Criteria (Kriteria Penerimaan)
 
 #### F-01 Akses dan peran
-- Sebagai Owner, saya ingin membuat/mengaktifkan akun Staff dan Penghuni tanpa pendaftaran publik agar akses terikat ke kost yang tepat.
+- Sebagai Owner, saya ingin membuat/mengaktifkan akun Staff dan Penghuni tanpa pendaftaran mandiri/publik agar akses terikat ke kost yang tepat. Sebagai Staff, saya ingin membuat/mengaktifkan akun Penghuni. Sebagai Owner, saya ingin memperbarui email login melalui Neon Auth terkelola.
 - Given pengguna berperan Penghuni, when ia membuka data kamar, tagihan, atau tiket, then ia hanya dapat melihat data dirinya sendiri.
 - Given Staff mencoba membuka laporan keuangan Owner-only atau data penghuni lain yang tidak dibutuhkan, when akses diperiksa, then sistem menolak permintaan.
 - Owner memiliki akses penuh pada satu properti; semua role hanya dapat melihat media lampiran yang diizinkan untuk tiket terkait.
@@ -140,11 +140,12 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 - Given jumlah kamar dan kontrak aktif diketahui, when okupansi dihitung, then angka terisi/tersedia dapat ditelusuri ke status kamar dan kontrak aktif.
 - Laporan tidak menyebut laba akuntansi/pajak dan tidak menganggap transaksi yang tidak dicatat sebagai biaya nol.
 
-#### F-07 Ticketing kerusakan oleh penghuni
-- Sebagai Penghuni, saya ingin membuat tiket yang terhubung ke kamar/kontrak saya dan melampirkan bukti agar masalah dapat diperiksa.
-- Given tiket baru dikirim, when validasi dilakukan, then uraian dan minimal satu foto atau video wajib tersedia; tiket terhubung ke kamar dan pemiliknya.
+#### F-07 Ticketing kerusakan
+- Sebagai Owner, Staff, atau Penghuni, saya dapat membuat tiket agar masalah pemeliharaan bisa dicatat; Penghuni harus memakai lease aktif miliknya, sedangkan Owner/Staff dapat melaporkan masalah kamar kosong.
+- Given tiket baru dikirim, when validasi dilakukan, then kategori, judul, uraian, kamar, dan minimal satu foto atau video wajib tersedia; lease dapat kosong untuk Owner/Staff dan wajib aktif/milik pembuat untuk Penghuni.
 - Sebagai Penghuni, saya ingin melihat status dan menambahkan komentar; komentar boleh memiliki lampiran.
 - Given Staff/Owner memperbarui status, prioritas, penanggung jawab, atau komentar, when perubahan disimpan, then waktu dan pelakunya tercatat dalam riwayat tiket.
+- Given Owner/Staff membatalkan tiket, when alasan pembatalan disimpan, then status terminal `CANCELLED`, aktor, waktu, dan alasan tercatat tanpa menghapus tiket; hanya tiket `RESOLVED` dapat dibuka kembali oleh Owner.
 - Given catatan internal dibuat oleh Staff/Owner, when Penghuni membuka tiket, then catatan internal tidak terlihat olehnya.
 - Given tiket ditutup, when daftar tiket terbuka dibuka, then tiket tertutup tidak muncul sebagai pekerjaan aktif namun riwayat tetap tersedia.
 
@@ -227,7 +228,7 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 
 ## 9. Keputusan Scope
 
-Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Perubahan 2026-10-30 menyelaraskan deposit escrow dan mode billing check-in dengan M04. CR-2026-001 dan CR-2026-002 disetujui Owner melalui instruksi chat 2026-11-01: dimensi kamar/pagu bulanan, katalog lantai, arsip kamar/lantai, dan integritas kode serta nominal F-02. Tidak ada tabel properti multi-tenant; foto kamar tetap backlog. Jumlah kelompok dan story tetap; estimasi 197–259 jam serta jadwal 22 minggu/264 jam tetap baseline. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
+Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Perubahan 2026-10-30 menyelaraskan deposit escrow dan mode billing check-in dengan M04. CR-2026-001 dan CR-2026-002 disetujui Owner melalui instruksi chat 2026-11-01: dimensi kamar/pagu bulanan, katalog lantai, arsip kamar/lantai, dan integritas kode serta nominal F-02. Tidak ada tabel properti multi-tenant; foto kamar tetap backlog. Jumlah kelompok dan story tetap; estimasi 197–259 jam serta jadwal 22 minggu/264 jam tetap baseline. Arahan Owner 2026-11-01 juga memperjelas F-01: tidak ada self-registration, Owner membuat Staff/Tenant, Staff dapat membuat Tenant, email login diubah Owner melalui Neon Auth, dan ketiga role dapat mengganti password sendiri melalui provider; tidak menambah role atau kelompok fitur. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
 
 Scope-P0-Count: 7
 Scope-Lock-Decision: LOCKED

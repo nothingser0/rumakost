@@ -13,7 +13,7 @@
 
 ### Batas domain hasil crosswalk M04
 
-Implementasi P0 mengikuti tujuh kelompok fitur Frozen Scope M02. Satu Lease memiliki satu Tenant dan satu kamar; roommate, multi-kamar Tenant, mutasi kamar saat kontrak aktif, properti editable, kapasitas/gender/amenity dinamis, tata tertib dinamis, serta permission Staff granular adalah backlog. InvoiceLine dibatasi ke `RENT` dan `DEPOSIT`; pembayaran di atas saldo terbuka ditolak tanpa credit balance, refund surplus, atau pemindahan tunggakan ke invoice lain. Refund manual hanya muncul dari rekonsiliasi deposit. Expense berdiri sendiri tanpa foreign key ke Ticket. Hanya Tenant pada lease aktif dapat membuat tiket; Owner/Staff mengelola tiket dan mengunggah bukti after-service sesuai izin, tanpa akun Teknisi, rating, garansi, atau kebijakan biaya servis Tenant. Akun Tenant pascakontrak read-only menolak seluruh mutasi dan upload, termasuk klaim pembayaran. Peringatan H-3/H+5, suspensi karena tunggakan, serta ambang kebijakan khusus bukan P0.
+Implementasi P0 mengikuti tujuh kelompok fitur Frozen Scope M02. Satu Lease memiliki satu Tenant dan satu kamar; roommate, multi-kamar Tenant, mutasi kamar saat kontrak aktif, properti editable, kapasitas/gender/amenity dinamis, tata tertib dinamis, serta permission Staff granular adalah backlog. InvoiceLine dibatasi ke `RENT` dan `DEPOSIT`; pembayaran di atas saldo terbuka ditolak tanpa credit balance, refund surplus, atau pemindahan tunggakan ke invoice lain. Refund manual hanya muncul dari rekonsiliasi deposit. Expense berdiri sendiri tanpa foreign key ke Ticket. Owner, Staff, dan Tenant dapat membuat tiket dengan kategori AC, pipa, kelistrikan, pintu/kunci, furnitur, atau umum; prioritas, judul, uraian, dan minimal satu foto/video yang berhasil diunggah wajib tersedia sebelum tiket dikirim. Tiket dimulai sebagai `DRAFT`; hanya berubah menjadi `RECEIVED` setelah minimal satu attachment `AVAILABLE` pada akhir transaksi. Tenant wajib memakai lease aktif miliknya saat membuat dan mengirim; Owner/Staff dapat memilih kamar kosong dengan lease opsional. Tenant hanya mengirim atau membuang draft miliknya; pembatalan beralasan adalah status terminal, sedangkan Owner saja dapat membuka kembali tiket `RESOLVED`. Komentar dan histori status append-only. Biaya servis tertaut, garansi, akun Teknisi, rating, dan notifikasi otomatis berada di luar P0. Akun Tenant pascakontrak read-only menolak seluruh mutasi dan upload, termasuk klaim pembayaran. Peringatan H-3/H+5, suspensi karena tunggakan, serta ambang kebijakan khusus bukan P0.
 
 ## 2. Component Architecture
 
@@ -59,9 +59,11 @@ erDiagram
   FLOOR ||--o{ ROOM : contains
   APP_USER ||--o| TENANT_PROFILE : has_profile
   ROOM ||--o{ TICKET : concerns
+  LEASE o|--o{ TICKET : optionally_contextualizes
   APP_USER ||--o{ TICKET : creates_or_assigned
   TICKET ||--o{ TICKET_COMMENT : contains
   TICKET ||--o{ TICKET_ATTACHMENT : has
+  TICKET ||--o{ TICKET_STATUS_EVENT : records
   APP_USER ||--o{ AUDIT_EVENT : performs
 
   APP_USER { uuid id PK; text auth_subject UK; text email_normalized UK; app_role role }
@@ -78,13 +80,15 @@ erDiagram
   EXPENSE { uuid id PK; numeric amount; date occurred_on }
   EXPENSE_REVERSAL { uuid id PK; uuid expense_id FK_UK; numeric amount; text reason; uuid created_by FK }
   OPERATING_BUDGET { uuid id PK; date period_start UK; numeric amount; uuid updated_by FK }
-  TICKET { uuid id PK; uuid room_id FK; uuid created_by FK; text status; date target_completion_on nullable }
+  TICKET { uuid id PK; bigint ticket_number UK; uuid room_id FK; uuid lease_id FK nullable; uuid created_by FK; ticket_category category; text title; text description; text status; date target_completion_on nullable; text cancellation_reason nullable; uuid cancelled_by FK nullable; timestamptz cancelled_at nullable }
   TICKET_COMMENT { uuid id PK; uuid ticket_id FK; uuid author_id FK; text visibility }
-  TICKET_ATTACHMENT { uuid id PK; uuid ticket_id FK; text object_key UK; bigint size_bytes }
+  TICKET_ATTACHMENT { uuid id PK; uuid ticket_id FK; uuid upload_batch_id; text object_key UK; bigint size_bytes; text mime_type; integer duration_seconds nullable; timestamptz delete_after nullable }
+  TICKET_STATUS_EVENT { uuid id PK; uuid ticket_id FK; ticket_status from_status nullable; ticket_status to_status; uuid actor_id FK; text reason nullable; timestamptz occurred_at }
   AUDIT_EVENT { uuid id PK; uuid actor_id FK; text action; timestamptz occurred_at }
 ```
 
-- **Object storage decision**: Neon Object Storage (selected), private bucket; signed URLs dibuat server setelah pemeriksaan role/kepemilikan; validasi MIME/ukuran/durasi di server; retensi 365 hari setelah tiket ditutup; tanpa CDN publik.
+- **Ticket data integrity**: semua role dapat membuat tiket. Tenant wajib memilih lease aktif miliknya pada kamar terkait; Owner/Staff dapat membuat tiket pada kamar kosong. Status `CANCELLED` terminal dengan alasan/aktor/waktu; tiket tidak dihapus. Status dan komentar memiliki histori append-only. DB menjaga metadata MIME/ukuran/durasi, maksimum 4 foto + 1 video per upload batch, 40 MB agregat per tiket, dan referensi metadata lampiran awal. Format isi file dan keberhasilan upload diverifikasi server.
+- **Object storage decision**: Neon Object Storage (selected), private bucket; signed URLs dibuat server setelah pemeriksaan role/kepemilikan; validasi isi MIME/ukuran/durasi di server; retensi 365 hari setelah tiket selesai atau dibatalkan; tanpa CDN publik.
 
 Daftar entitas logis, constraint, ERD, matriks operasi, dan invarian finansial tersedia di `docs/architecture/M05-DATA-API-SPEC-DRAFT.md`. DDL PostgreSQL berikut mencatat batas integritas utama; nama final dan foreign key autentikasi provider harus dicocokkan dengan schema Neon Auth saat perencanaan implementasi.
 
@@ -354,7 +358,7 @@ CREATE INDEX idx_ticket_attachment_delete_after ON ticket_attachment (delete_aft
 CREATE INDEX idx_audit_entity_time ON audit_event (entity_type, entity_id, occurred_at DESC);
 ```
 
-Pencegahan kontrak bertabrakan menggunakan exclusion constraint PostgreSQL dengan rentang tanggal dan `btree_gist`. Nama AppUser menolak nilai kosong/spasi; TenantProfile mendukung pekerjaan/instansi/kota asal opsional serta kontak darurat terstruktur dengan E.164 dan nama/nomor berpasangan; nomor telepon utama tetap opsional dan non-unique. `lease.contract_number` adalah nomor SPK opsional dan unik. Trigger DepositLedgerEntry mengunci Lease saat insert, memvalidasi line sumber sesuai lease dan status payment terverifikasi tanpa reversal untuk setoran, mewajibkan alasan nonblank, dan menolak settlement/refund/reversal setoran yang melebihi escrow tersedia; refund pending ikut dicadangkan sampai dibayar atau ditolak. Reversal payment menambahkan `COLLECTION_REVERSED` secara atomik untuk setoran deposit yang telah dicatat; koreksi gagal seluruhnya bila saldo bebas escrow tidak cukup. `room.maintenance_note` opsional maksimal 500 karakter; `ticket.target_completion_on` opsional. Migration DB menolak hard delete Room/Floor, arsip Room dengan Lease `SCHEDULED`/`ACTIVE`, perubahan status fisik Room saat Lease tersebut ada, arsip Floor selama masih punya Room yang belum diarsipkan, Room aktif pada Floor arsip, serta Lease `SCHEDULED`/`ACTIVE` pada Room arsip atau `MAINTENANCE`. Backend tetap bertanggung jawab atas RBAC, ownership, serta audit event operasi. Entitas tambahan meliputi `lease_end_request` dan histori status tiket.
+Pencegahan kontrak bertabrakan menggunakan exclusion constraint PostgreSQL dengan rentang tanggal dan `btree_gist`. Nama AppUser menolak nilai kosong/spasi; TenantProfile mendukung pekerjaan/instansi/kota asal opsional serta kontak darurat terstruktur dengan E.164 dan nama/nomor berpasangan; nomor telepon utama tetap opsional dan non-unique. `lease.contract_number` adalah nomor SPK opsional dan unik. Trigger DepositLedgerEntry mengunci Lease saat insert, memvalidasi line sumber sesuai lease dan status payment terverifikasi tanpa reversal untuk setoran, mewajibkan alasan nonblank, dan menolak settlement/refund/reversal setoran yang melebihi escrow tersedia; refund pending ikut dicadangkan sampai dibayar atau ditolak. Reversal payment menambahkan `COLLECTION_REVERSED` secara atomik untuk setoran deposit yang telah dicatat; koreksi gagal seluruhnya bila saldo bebas escrow tidak cukup. `lease_end_request` memakai composite FK `(lease_id, requested_by_tenant_id)` ke `(leases.id, leases.tenant_user_id)` agar DB menolak permintaan check-out atas nama Tenant lain; autentikasi/role pemanggil dan review Owner tetap diverifikasi server. `room.maintenance_note` opsional maksimal 500 karakter; `ticket.target_completion_on` opsional. Migration DB menolak hard delete Room/Floor, arsip Room dengan Lease `SCHEDULED`/`ACTIVE`, perubahan status fisik Room saat Lease tersebut ada, arsip Floor selama masih punya Room yang belum diarsipkan, Room aktif pada Floor arsip, serta Lease `SCHEDULED`/`ACTIVE` pada Room arsip atau `MAINTENANCE`. Backend tetap bertanggung jawab atas RBAC, ownership akses baca, serta audit event operasi. Entitas lain meliputi histori status tiket.
 
 ### 2.3 Framework Versions & Ecosystem Libraries (Pinned)
 
@@ -364,6 +368,7 @@ Pencegahan kontrak bertabrakan menggunakan exclusion constraint PostgreSQL denga
 - **Database Engine**: PostgreSQL (Neon Free)
 - **ORM**: Prisma 7.10.1 with `@prisma/adapter-neon` 7.10.1; versions pinned after registry verification
 - **Authentication**: Neon Auth managed; use the branch Auth URL and provider-managed sessions. SDK integration is handled in M06-SETUP-06 after its peer dependencies are verified.
+- **Account lifecycle (F-01)**: Owner creates/activates Staff and Tenant accounts; Staff may create/activate Tenant accounts only. No public or self-registration. Owner initiates login-email changes through Neon Auth managed identity; `authSubject` remains stable, and the `AppUser.emailNormalized` mirror changes only after provider confirmation. Owner, Staff, and Tenant may change their own password through Neon Auth. Passwords and session tokens remain provider-managed; verify provider reset/session behavior in M07.
 - **Object storage**: Neon Object Storage private buckets (beta)
 - **Validation**: Zod 4.6.7, registry-checked and pinned for server environment validation in M06-SETUP-05
 - **Form state**: React Hook Form 7.91.0 candidate; compatibility must be verified before first use

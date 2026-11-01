@@ -216,24 +216,25 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 - **Langkah-langkah**:
   1. Klik tombol **"+ Buat Akun Baru (F-01)"**.
   2. Pastikan dropdown `Jenis Peran Akun` (`#accType`) memilih *"Staf Operasional (Pengelola Lapangan)"*.
-  3. Periksa penampakan grup formulir penugasan kamar (`#roomAssignGroup`) dan checklist izin modul (`#permissionCheckGroup`).
+  3. Pastikan jenis akun dibatasi pada role resmi P0; tidak ada konfigurasi izin Staff per modul.
   4. Masukkan data:
      - `Nama Lengkap Pengguna`: *"Ahmad Fauzi"*
      - `Email Login Akun`: *"ahmad.staf@kostbudimakmur.id"*
-     - `Nomor WhatsApp`: *"0812-7788-9911"*
-  5. Biarkan ke-4 checklist izin tercentang, termasuk opsi *Catat Pembayaran Masuk (Pending)*.
+  5. Jangan tampilkan checkbox permission granular; role Staff memakai capability matrix tetap di server.
   6. Klik tombol **"Buat & Aktifkan Akun"** (`submitNewAccount()`).
 - **Hasil yang Diharapkan**:
-  - `#roomAssignGroup` tersembunyi (`display: none`), sedangkan `#permissionCheckGroup` tampil (`display: flex`).
+  - Tidak ada group penugasan kamar atau checklist permission granular untuk akun Staff.
   - Modal tertutup otomatis; baris baru tertambahkan ke `#userTableBody` dengan avatar oranye inisial `"AF"`.
-  - Kolom RBAC menampilkan label *"Operasional & Catat Bayar"* beserta catatan pengaman *"Zero Self-Approval (Tanpa Laporan Laba)"*.
+  - Kolom RBAC menampilkan capability tetap Staff, termasuk larangan verifikasi pembayaran sendiri dan akses laporan finansial.
   - Status akun langsung *"Aktif"* dengan badge hijau.
   - Counter tab bertambah: "Semua Pengguna (5)" dan "Staf Operasional (3)".
   - Toast sukses tampil: *"Akun Ahmad Fauzi berhasil dibuat & diaktifkan (F-01)."*
 
 ---
 
-### SKENARIO 08: Pembuatan & Aktivasi Akun Teknisi Lapangan Baru (F-01 & F-07 Maintenance Scope)
+### SKENARIO 08: Akun Teknisi Lapangan (Backlog F-13, Bukan P0)
+
+> Skenario ini tidak dijalankan untuk MVP. Role aplikasi tetap OWNER, STAFF, dan TENANT; akun Teknisi/vendor berada di backlog F-13.
 - **Tujuan**: Memverifikasi pembuatan akun staf teknis yang wewenangnya dibatasi murni untuk penanganan tiket perbaikan tanpa akses keuangan atau sewa.
 - **Kondisi Awal**: Modal `#modalAddAccount` dibuka kembali.
 - **Langkah-langkah**:
@@ -251,39 +252,32 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 
 ---
 
-### SKENARIO 09: Pembuatan Akun Penghuni Mandiri & Penugasan Kamar Kosong (F-01 & F-03 Room Assignment)
-- **Tujuan**: Menguji alur pembuatan akun penyewa kamar dengan pengikatan unit kamar kosong yang sah (*Data Isolation & Room Binding*).
-- **Kondisi Awal**: Modal `#modalAddAccount` terbuka.
+### SKENARIO 09: Pembuatan Akun Penghuni oleh Owner atau Staff (F-01)
+- **Tujuan**: Memastikan Tenant tidak mendaftar sendiri; Owner atau Staff membuat dan mengaktifkan akun Tenant, sementara akses data hunian mengikuti Lease.
+- **Kondisi Awal**: Owner atau Staff terautentikasi berada di direktori akun. Tidak ada pendaftaran publik atau formulir self-service.
 - **Langkah-langkah**:
-  1. Ubah `Jenis Peran Akun` menjadi *"Penghuni Kost (Akses Portal Mandiri Kamar)"*.
-  2. Amati transformasi kontrol form pada modal.
-  3. Pilih unit kamar pada dropdown `#accRoomSelect`: *"Kamar B-01 · Lantai 2 (Tersedia)"*.
-  4. Isi data identitas:
-     - `Nama Lengkap`: *"Siti Rahmawati"*
-     - `Email Login Akun`: *"siti.rahma@gmail.com"*
-     - `Nomor WhatsApp`: *"0813-4455-6677"*
-  5. Klik tombol **"Buat & Aktifkan Akun"**.
+  1. Pilih aksi buat akun dan role `TENANT`.
+  2. Masukkan nama dan email login yang telah dikonfirmasi oleh Neon Auth managed flow.
+  3. Simpan AppUser dan TenantProfile dengan actor yang sedang login.
+  4. Jika Tenant akan menempati kamar, buat Lease terpisah melalui alur F-03 untuk menghubungkan Tenant dengan Room; jangan simpan room assignment langsung pada AppUser.
 - **Hasil yang Diharapkan**:
-  - Saat opsi penghuni dipilih: checklist izin modul staf otomatis disembunyikan; dropdown penugasan kamar ditampilkan (`display: flex`).
-  - Modal tertutup; baris pengguna baru bertambah dengan badge peran hijau *"Penghuni Kamar"*.
-  - Kolom nama mencantumkan sub-label: *"Kamar B-01 · 0813-4455-6677"*.
-  - Kolom RBAC mengonfirmasi isolasi: *"Portal Mandiri Kamar B-01 · Hanya data sewa, tagihan & tiket sendiri"*.
-  - Akun terhubung secara permanen dengan portal mandiri (`WF-10`).
-  - Counter tab "Penghuni Kost" terbarui menjadi `(2)`.
+  - Owner dan Staff dapat membuat akun Tenant; hanya Owner dapat membuat akun Staff.
+  - Permintaan tanpa autentikasi, self-registration, atau role selain `TENANT` pada operasi Staff ditolak.
+  - Akun Tenant dapat ada tanpa Lease; tanpa Lease aktif, Tenant tidak memperoleh akses ke data hunian.
+  - Konflik kamar ditangani oleh constraint dan alur pembuatan Lease, bukan dengan menghapus atau menolak akun Tenant yang sudah dibuat.
 
 ---
 
-### SKENARIO 10: Pencegahan Tabrakan Penugasan Kamar Terisi (Room Collision / Overbooking Guard)
-- **Tujuan**: Memastikan sistem secara preventif menolak penugasan kamar kepada penghuni baru jika kamar tersebut sedang terikat kontrak aktif penyewa lain.
-- **Kondisi Awal**: Modal `#modalAddAccount` terbuka; dropdown jenis peran bernilai `"tenant"`. Kamar A-04 saat ini disewa oleh Budi Santoso.
+### SKENARIO 10: Pencegahan Tabrakan saat Membuat Lease (Room Collision / Overbooking Guard)
+- **Tujuan**: Memastikan sistem menolak Lease baru jika kamar tersebut sedang terikat kontrak aktif penghuni lain.
+- **Kondisi Awal**: Akun Tenant telah ada; Owner atau Staff memulai alur pembuatan Lease F-03. Kamar A-04 saat ini disewa oleh Tenant lain.
 - **Langkah-langkah**:
-  1. Buka dropdown `#accRoomSelect`.
-  2. Pilih opsi **"Kamar A-04 · Lantai 1 (Terisi Kontrak: Budi Santoso)"** yang bertanda atribut `data-occupied="true"`.
-  3. Amati respons visual pada formulir modal dialog (`handleRoomSelectChange()`).
-  4. Isi nama dan email valid, lalu tekan tombol **"Buat & Aktifkan Akun"**.
+  1. Pilih Tenant yang belum memiliki Lease aktif.
+  2. Pada alur pembuatan Lease F-03, pilih kamar A-04 yang sedang disewa Tenant lain.
+  3. Coba simpan Lease yang bentrok.
 - **Hasil yang Diharapkan**:
-  - Langkah 2-3: Kotak peringatan merah terang `#roomOccupiedAlert` seketika muncul di bawah dropdown: *"Peringatan Tabrakan Kamar (Skenario 12): Kamar A-04 memiliki kontrak sewa aktif hingga 2026-11-01. Pilih kamar kosong atau selesaikan kontrak lama terlebih dahulu."*
-  - Langkah 4: Tombol submit menolak proses simpan (`submitNewAccount()`); modal tetap terbuka; muncul Toast bahaya semantik: *"Kamar A-04 sedang terisi kontrak aktif! Mencegah tabrakan kamar (Skenario 12)."* (Kategori: `danger`).
+  - Sistem menolak pembuatan Lease karena rentang kamar bertabrakan dengan Lease aktif lain.
+  - Akun Tenant tetap ada dan tidak mendapat akses terhadap Lease milik Tenant lain.
 
 ---
 
@@ -302,38 +296,20 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 
 ---
 
-### SKENARIO 12: Deaktivasi Akun Staf & Deteksi Tiket Kerusakan Aktif (Orphaned Maintenance Alert)
-- **Tujuan**: Memverifikasi mekanisme penonaktifan akun staf dan memunculkan peringatan proteksi jika staf yang dinonaktifkan masih memiliki tanggung jawab tiket aktif.
-- **Kondisi Awal**: Staf Pak Joko Santoso memiliki tiket perbaikan aktif yang sedang dikerjakan di modul `WF-08`.
-- **Langkah-langkah**:
-  1. Pada baris Pak Joko Santoso di tabel pengguna, klik tombol **"Edit Izin"**.
-  2. Amati modal dialog `#modalEditAccount` yang terbuka dengan data Pak Joko.
-  3. Ubah dropdown `Status Akun` (`#editAccStatus`) dari *"Aktif (Bisa Login)"* menjadi *"Nonaktifkan (Kunci Akses)"*.
-  4. Amati peringatan yang muncul di dalam modal (`handleEditStatusChange()`).
-  5. Klik tombol **"Simpan Perubahan"** (`saveAccountChanges()`).
-- **Hasil yang Diharapkan**:
-  - Saat status diubah ke nonaktif: Kotak alert kuning amber `#staffDeactivateAlert` seketika tampil: *"Perhatian Tugas Aktif (Skenario 13): Pengguna ini memiliki tiket perbaikan aktif yang sedang dikerjakan. Pastikan tugas dialihkan ke staf lain setelah dinonaktifkan."*
-  - Saat disimpan: Modal tertutup; badge status akun Pak Joko pada tabel master berganti menjadi merah bertuliskan *"Nonaktif"*; tombol aksi tetap tersedia untuk aktivasi ulang jika diperlukan.
-  - Toast sukses muncul: *"Perubahan status & izin akun Pak Joko Santoso berhasil disimpan (Skenario 22)."*
+### SKENARIO 12: Deaktivasi Akun Staf dengan Tiket Aktif (Menunggu Keputusan Operasional)
 
+> P0 memakai akun Staff. Owner belum menetapkan apakah deaktivasi diblok saat ada tiket aktif atau mewajibkan alih tugas atomik. Histori actor/assignee tidak boleh dihapus atau ditulis ulang.
+- **Status**: Menunggu keputusan Owner; belum ada expected result PASS/FAIL.
 ---
 
-### SKENARIO 13: Pembaruan Hak Akses Granular Staf Pasca-Aktivasi (Granular RBAC Update)
-- **Tujuan**: Memastikan Pemilik dapat memodifikasi hak akses checklist modul staf secara mandiri tanpa harus menghapus dan membuat ulang akun.
-- **Kondisi Awal**: Modal `#modalEditAccount` terbuka untuk akun Rini Setiawati.
-- **Langkah-langkah**:
-  1. Periksa bagian *Pembaruan Hak Akses Modul Staf* (`#editPermissionCheckGroup`).
-  2. Hilangkan centang pada izin **"Catat Pembayaran Masuk (Pending)"** (`#editPModCatatBayar`).
-  3. Biarkan centang Modul Kamar, Modul Penghuni, dan Modul Tiket tetap aktif.
-  4. Klik tombol **"Simpan Perubahan"**.
-- **Hasil yang Diharapkan**:
-  - Sistem memperbarui konfigurasi izin akun Rini di database.
-  - Pada sesi login Staf berikutnya, tombol pencatatan pembayaran sewa pending pada modul keuangan dinonaktifkan/disembunyikan.
-  - Toast konfirmasi sukses tampil: *"Perubahan status & izin akun Rini Setiawati berhasil disimpan (Skenario 22)."*
+### SKENARIO 13: Permission Staff Granular (Backlog)
 
+> P0 memakai capability tetap per role. Tidak ada permission checklist atau mutasi granular Staff pada MVP.
 ---
 
 ### SKENARIO 14: Relokasi Kamar Penghuni Mandiri Tanpa Menghilangkan Riwayat (Tenant Room Transfer)
+
+> Perpindahan kamar dengan Lease aktif dikecualikan dari P0. Histori hunian disimpan lewat Lease terpisah; akun Tenant tidak memiliki room assignment yang dapat dipindah.
 - **Tujuan**: Memverifikasi alur pemindahan penugasan unit kamar bagi penyewa yang pindah kamar, dengan mempertahankan kuitansi dan tiket terdahulu.
 - **Kondisi Awal**: Penghuni Budi Santoso tercatat menempati Kamar A-04.
 - **Langkah-langkah**:
@@ -349,59 +325,49 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 
 ---
 
-### SKENARIO 15: Reset Kredensial & Pembuatan Kata Sandi Sementara oleh Pemilik (Admin-Initiated Credential Reset)
-- **Tujuan**: Memverifikasi penerbitan kata sandi sementara yang aman bagi pengguna yang lupa kredensial login tanpa fasilitas self-service publik.
+### SKENARIO 15: Reset Kredensial melalui Neon Auth Terkelola
+- **Tujuan**: Memastikan reset kredensial memakai alur provider terkelola dan aplikasi tidak membuat, menampilkan, atau menyimpan kata sandi sementara.
 - **Kondisi Awal**: Modal `#modalEditAccount` untuk Rini Setiawati sedang terbuka.
 - **Langkah-langkah**:
-  1. Gulir ke bagian bawah modal menuju sub-seksi *Atur Ulang Sandi Pengguna*.
-  2. Klik tombol **"Reset Sandi"** (`resetUserPasswordModal()`).
+  1. Owner memulai reset/invitation dari alur Neon Auth terkelola untuk akun tersebut.
+  2. Provider mengirim tautan verifikasi/reset kepada alamat yang tercatat.
 - **Hasil yang Diharapkan**:
-  - Sistem meng-generate string sandi sementara berformat aman secara kriptografis (misal: `Ruma#4829!`).
-  - Database menandai flag `must_change_password: true` pada akun terkait.
-  - Muncul Toast info: *"Sandi sementara rini.staf@kostbudimakmur.id: Ruma#XXXX! (Skenario 16). Wajib ganti saat login."*
-  - Kredensial sementara ini siap disalin oleh Pemilik untuk diteruskan secara privat kepada staf bersangkutan.
+  - Aplikasi tidak menerima atau menampilkan password, token provider, atau tautan reset yang dapat digunakan ulang.
+  - Neon Auth mengelola verifikasi alamat, reset password, dan sesi; status lokal hanya diperbarui berdasarkan hasil provider yang tervalidasi.
+  - Audit mencatat aktor dan hasil operasi tanpa mencatat rahasia autentikasi.
 
 ---
 
-### SKENARIO 16: Pembaruan Kata Sandi Superadmin & Validasi Form (Security Hardening)
-- **Tujuan**: Memvalidasi aturan keamanan perubahan kata sandi Pemilik (wajib isi sandi saat ini, panjang minimal 8 karakter, konfirmasi kecocokan).
-- **Kondisi Awal**: Pemilik berada pada Seksi 3 (`#section-security`).
+### SKENARIO 16: Perubahan Password Sendiri melalui Neon Auth
+- **Tujuan**: Memastikan Owner, Staff, dan Tenant dapat mengubah password miliknya melalui provider tanpa password melewati server aplikasi.
+- **Kondisi Awal**: Pengguna terautentikasi membuka pengaturan keamanan akun.
 - **Langkah-langkah**:
-  1. *Uji 16A (Sandi Saat Ini Kosong)*: Isi sandi baru `"SuperBudi2026!"`, biarkan kata sandi saat ini kosong -> Klik "Perbarui Kata Sandi".
-  2. *Uji 16B (Sandi Baru < 8 Karakter)*: Isi sandi saat ini, isi sandi baru `"pass123"` (7 karakter) -> Klik simpan.
-  3. *Uji 16C (Konfirmasi Tidak Cocok)*: Isi sandi baru `"SuperBudi2026!"`, isi konfirmasi `"SuperBudi2026?"` -> Klik simpan.
-  4. *Uji 16D (Valid)*: Isi sandi saat ini yang sah, isi sandi baru `"SuperBudi2026!"`, isi konfirmasi persis sama -> Klik **"Perbarui Kata Sandi"** (`changePasswordSubmit()`).
+  1. Pengguna memulai perubahan password melalui Neon Auth.
+  2. Provider meminta verifikasi/reauthentication yang sesuai dan mengelola input kredensial.
+  3. Ulangi dengan Owner, Staff, dan Tenant.
 - **Hasil yang Diharapkan**:
-  - *Uji 16A*: Ditolak; Toast warning: *"Masukkan kata sandi saat ini!"*.
-  - *Uji 16B*: Ditolak; Toast warning: *"Kata sandi baru minimal 8 karakter!"*.
-  - *Uji 16C*: Ditolak; Toast warning: *"Konfirmasi kata sandi tidak cocok!"*.
-  - *Uji 16D*: Diterima; seluruh field input sandi dikosongkan seketika; Toast sukses tampil: *"Kata sandi berhasil diperbarui! Seluruh sesi aktif di perangkat lain dinonaktifkan (Skenario 17)."* (Kategori: `success`).
+  - Ketiga role dapat mengubah password hanya untuk identitas sendiri.
+  - Aplikasi tidak menerima atau menyimpan password baru; penolakan dan kebijakan kompleksitas berasal dari provider.
+  - Verifikasi konsekuensi perubahan terhadap sesi aktif di SK-17; jangan menyatakan sesi lain dicabut sebelum dibuktikan di M07.
 
 ---
 
-### SKENARIO 17: Terminasi Sesi Login Bersamaan Saat Ganti Sandi Superadmin (Session Invalidation)
-- **Tujuan**: Memastikan keamanan akses superadmin bahwa penggantian kata sandi membatalkan seluruh token JWT / cookie sesi di perangkat lain.
-- **Kondisi Awal**: Pemilik sedang login di browser desktop dan juga memiliki sesi aktif di browser ponsel pintar.
+### SKENARIO 17: Perilaku Sesi setelah Perubahan Password (Provider Verification)
+- **Tujuan**: Memverifikasi perilaku sesi setelah perubahan password sesuai kemampuan Neon Auth.
+- **Kondisi Awal**: Satu pengguna mempunyai sesi provider pada dua perangkat.
 - **Langkah-langkah**:
-  1. Selesaikan penggantian kata sandi dengan sukses di browser desktop (mengikuti Skenario 16D).
-  2. Buka browser ponsel pintar dan lakukan refresh pada halaman dasbor.
+  1. Ubah password melalui flow provider pada perangkat pertama.
+  2. Gunakan sesi perangkat kedua untuk melakukan request terlindungi.
 - **Hasil yang Diharapkan**:
-  - Kunci rahasia / salt token pengguna diperbarui di backend; token lama pada ponsel pintar seketika menjadi tidak valid.
-  - Layar ponsel pintar secara otomatis mengalihkan pengguna ke `WF-01-login.html`.
-  - Muncul banner peringatan: *"Sesi Anda telah kedaluwarsa karena pembaruan kata sandi. Silakan masuk kembali."*
+  - Catat apakah provider mencabut sesi lain dan dalam jangka waktu apa; verifikasi provider control dan hasil runtime di M07.
+  - Aplikasi tidak mengakses token provider secara langsung atau mengklaim revocation yang tidak dikonfirmasi.
 
 ---
 
 ### SKENARIO 18: Proteksi Anti-Lockout Akun Terakhir Pemilik (Permanent Superadmin Guard)
-- **Tujuan**: Mencegah kebuntuan akses total ke sistem akibat penonaktifan atau penghapusan tidak sengaja pada akun Pemilik Properti.
-- **Kondisi Awal**: Pemilik berada pada tabel master pengguna Seksi 2.
-- **Langkah-langkah**:
-  1. Periksa baris Budi Santoso (Owner) pada tabel `#userTableBody`.
-  2. Amati kolom status dan kolom aksi paling kanan.
-- **Hasil yang Diharapkan**:
-  - Kolom status mengunci badge hijau *"Aktif"*.
-  - Kolom aksi tidak menampilkan tombol "Edit Izin" maupun tombol hapus/deaktivasi, melainkan hanya menyajikan label teks mati abu-abu: *"Utama"*.
-  - Sistem backend memiliki aturan mutlak: *"Sistem wajib memiliki minimal 1 akun Pemilik aktif (Anti-Lockout Rule)."*
+
+> Keputusan apakah properti harus memiliki tepat satu Owner atau minimal satu Owner aktif belum ditetapkan pada Frozen Scope. Skenario ini menunggu keputusan Owner dan tidak menjadi invariant DB sampai disetujui.
+- **Status**: Menunggu keputusan Owner; tidak menetapkan jumlah Owner, constraint DB, atau expected result anti-lockout.
 
 ---
 
@@ -543,57 +509,49 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 ---
 
 ### SKENARIO 29: Kepatuhan Privasi Data Pribadi UU PDP (PII Soft-Delete & Anonymization)
-- **Tujuan**: Memenuhi regulasi Pelindungan Data Pribadi (UU PDP) dengan menyediakan opsi penyemaran data pribadi (*anonymization*) bagi eks-penghuni yang telah keluar lebih dari masa retensi.
-- **Kondisi Awal**: Akun eks-penghuni berstatus nonaktif selama lebih dari 365 hari.
-- **Langkah-langkah**:
-  1. Pemilik memilih aksi penyemaran data pribadi pada akun nonaktif.
-  2. Konfirmasi penghapusan data kontak pribadi.
-- **Hasil yang Diharapkan**:
-  - Nama pengguna diubah secara anonim menjadi *"Eks-Penghuni (Tersamarkan)"*.
-  - Nomor WhatsApp dan detail kontak darurat dihapus permanen dari basis data operasional.
-  - Nomor invoice dan nominal transaksi sewa tetap tersimpan demi kewajiban pembukuan keuangan.
+
+> Masa retensi dan prosedur anonymization akun belum ditetapkan pada P0. Skenario ini tidak dijalankan dan tidak menjadi kebijakan penghapusan DB sampai aturan retensi/keuangan disetujui.
+- **Status**: Ditunda. Tidak ada durasi retensi atau prosedur anonymization yang dapat diuji sebelum kebijakan Owner disetujui.
 
 ---
 
-### SKENARIO 30: Audit Trail Mutasi Konfigurasi & Hak Akses Pengguna (Compliance & Akuntabilitas)
-- **Tujuan**: Mencatat seluruh aktivitas krusial administratif (buat akun, ubah peran, deaktivasi, ganti rekening bank) ke dalam rekaman jejak audit yang tidak dapat dimanipulasi.
-- **Kondisi Awal**: Pemilik melakukan pembuatan akun baru dan penggantian nomor rekening bank.
+### SKENARIO 30: Audit Trail Mutasi Akun P0 (Compliance & Akuntabilitas)
+- **Tujuan**: Mencatat pembuatan, deaktivasi, dan perubahan email login akun melalui jejak audit append-only; data rekening bank berada di luar P0.
+- **Kondisi Awal**: Owner membuat akun Staff, Staff membuat akun Tenant, lalu Owner meminta perubahan email login.
 - **Langkah-langkah**:
-  1. Eksekusi pembuatan akun staf baru (`submitNewAccount`).
-  2. Eksekusi penyimpanan nomor rekening bank baru (`saveAllSettings`).
-  3. Buka tabel audit sistem internal.
+  1. Jalankan pembuatan akun Staff/Tenant oleh actor yang diizinkan.
+  2. Perubahan email diselesaikan dan dikonfirmasi oleh Neon Auth.
+  3. Periksa `AuditEvent` yang ditulis bersama perubahan AppUser.
 - **Hasil yang Diharapkan**:
-  - Sistem menerbitkan baris log audit otomatis memuat: `timestamp`, `actor_user_id (Owner)`, `action_type (CREATE_USER / UPDATE_BANK_ACCOUNT)`, `ip_address`, dan rincian perubahan (`old_value` vs `new_value`).
-  - Jejak audit ini bersifat *immutable* (tidak dapat diubah atau dihapus oleh siapapun).
+  - Audit memuat actor, action, entity, timestamp, serta metadata perubahan yang aman; password, token, alamat IP, dan detail rekening tidak disimpan.
+  - Baris AuditEvent tidak dapat diubah atau dihapus oleh jalur aplikasi.
 
 ---
 
-### SKENARIO 31: Proteksi Imutabilitas Email Login & Peran Pengguna pada Modal Edit (Immutable Anchor Guard)
-- **Tujuan**: Memastikan atribut email dan peran sistem tidak dapat diubah sembarangan pada modal edit akun demi menjaga integritas relasi data (Foreign Key Anchor).
+### SKENARIO 31: Perubahan Email Login oleh Owner dan Proteksi Role
+- **Tujuan**: Memastikan Owner dapat meminta perubahan email melalui Neon Auth tanpa mengubah identitas internal; perubahan role tetap tidak dapat dilakukan lewat payload edit umum.
 - **Kondisi Awal**: Modal `#modalEditAccount` terbuka untuk salah satu pengguna (misal: Rini Setiawati).
 - **Langkah-langkah**:
-  1. Periksa field `Email Login` (`#editAccEmail`) dan `Peran Sistem` (`#editAccRole`).
-  2. Coba klik dan ketikkan karakter baru pada kedua field tersebut.
-  3. Buka developer tools browser (Inspect Element), coba hapus atribut `readonly` secara manual lalu simpan.
+  1. Owner memilih perubahan email untuk sebuah akun dan mengirim alamat baru ke alur Neon Auth terkelola.
+  2. Provider mengonfirmasi perubahan email; jalur aplikasi menyelaraskan `AppUser.emailNormalized` setelah konfirmasi.
+  3. Uji payload edit umum dengan role berbeda atau email yang belum dikonfirmasi provider.
 - **Hasil yang Diharapkan**:
-  - Secara antarmuka: Kedua field berstatus `readonly` dengan latar abu-abu `#F8FAFC` dan kursor `not-allowed`.
-  - Secara backend/API: Sistem memvalidasi payload; nilai email dan role diabaikan/dikunci pada nilai database asal. Hanya nama pengguna dan status akun yang diproses mutasinya.
-  - Mencegah eskalasi hak akses (*privilege escalation*) dan rusaknya referensi tiket/kuitansi.
+  - Perubahan email hanya dimulai Owner dan menggunakan verifikasi Neon Auth; `authSubject` tidak berubah.
+  - Email duplikat atau belum dikonfirmasi ditolak; kegagalan provider tidak membuat identitas Neon dan mirror AppUser menyimpang tanpa mekanisme retry/reconciliation.
+  - Perubahan role melalui payload umum ditolak. Tidak ada jalur pembuatan akun Owner oleh Staff.
 
 ---
 
-### SKENARIO 32: Penanganan Okupansi Kamar 100% / Kamar Penuh saat Registrasi Penghuni Baru (Zero Vacant Room Guard)
-- **Tujuan**: Menguji perilaku sistem saat Pemilik mencoba mendaftarkan akun penghuni baru ketika seluruh 15 unit kamar kost sedang terisi penuh.
+### SKENARIO 32: Penanganan Kamar Penuh saat Pembuatan Lease (Zero Vacant Room Guard)
+- **Tujuan**: Menguji pembuatan Lease saat seluruh kamar telah terisi tanpa menolak pembuatan akun Tenant yang tidak terkait langsung dengan kamar.
 - **Kondisi Awal**: Modul master kamar (`F-02`) mencatat 15 kamar terisi (Okupansi 100%). Seluruh opsi kamar di `#accRoomSelect` bertanda `data-occupied="true"`.
 - **Langkah-langkah**:
-  1. Buka modal `#modalAddAccount`.
-  2. Pilih `Jenis Peran Akun`: *"Penghuni Kost (Akses Portal Mandiri Kamar)"*.
-  3. Amati status dropdown penugasan kamar `#accRoomSelect` dan kotak peringatan `#roomOccupiedAlert`.
-  4. Coba tekan tombol "Buat & Aktifkan Akun".
+  1. Owner atau Staff memulai pembuatan Lease untuk Tenant tanpa Lease aktif.
+  2. Pilih salah satu kamar yang sudah memiliki Lease aktif.
+  3. Kirim perubahan Lease.
 - **Hasil yang Diharapkan**:
-  - Dropdown kamar otomatis memicu `#roomOccupiedAlert` merah pekat: *"Seluruh kamar saat ini terisi kontrak aktif. Selesaikan kontrak sewa lama di modul Penghuni sebelum mendaftarkan penghuni baru."*
-  - Tombol simpan dinonaktifkan (`disabled`) atau menampilkan validasi error seketika.
-  - Sistem menolak penciptaan akun penghuni "tanpa kamar" (*orphan tenant*) atau akun ganda pada kamar terisi.
+  - Database menolak Lease yang bertabrakan; akun Tenant tetap dapat dibuat tanpa Lease.
+  - Server menyampaikan kamar penuh sebagai konflik Lease dan tidak menghapus atau menduplikasi akun Tenant.
 
 ---
 
@@ -648,33 +606,22 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 
 ---
 
-### SKENARIO 37: Proteksi Pendaftaran Staf Tanpa Izin Modul (Zero-Permission Staff Guard)
-- **Tujuan**: Mencegah terciptanya akun staf "kosong" yang tidak memiliki wewenang modul sama sekali di dalam sistem.
-- **Kondisi Awal**: Modal `#modalAddAccount` terbuka dengan peran *"Staf Operasional"*.
-- **Langkah-langkah**:
-  1. Hilangkan seluruh centang pada 4 kartu izin modul:
-     - Uncheck `#pModKamar`
-     - Uncheck `#pModPenghuni`
-     - Uncheck `#pModTiket`
-     - Uncheck `#pModCatatBayar`
-  2. Klik tombol **"Buat & Aktifkan Akun"**.
-- **Hasil yang Diharapkan**:
-  - Sistem menolak proses pembuatan akun staf tanpa izin (*zero-permission*).
-  - Modal tetap terbuka; muncul Toast peringatan semantik: *"Pilih minimal 1 hak akses modul untuk akun Staf Operasional."* (Kategori: `warning`).
+### SKENARIO 37: Permission Staff Kosong (Backlog)
 
+> P0 memakai capability tetap per role. Tidak ada hak akses modular yang dapat dipilih atau diuji.
 ---
 
-### SKENARIO 38: Intersepsi Wajib Ganti Sandi Pertama Kali Login Pasca-Reset (Force First-Time Password Change)
-- **Tujuan**: Memastikan pengguna yang kata sandinya di-reset oleh Pemilik wajib mengganti sandi sementara saat pertama kali login di `WF-01`.
-- **Kondisi Awal**: Pemilik mengeksekusi reset sandi akun Rini Setiawati (`resetUserPasswordModal()`), menerbitkan sandi `Ruma#4829!`. Flag `must_change_password` aktif.
+### SKENARIO 38: Penyelesaian Reset Kredensial lewat Neon Auth
+- **Tujuan**: Memastikan pengguna menyelesaikan verifikasi/reset kredensial melalui Neon Auth tanpa aplikasi menerbitkan sandi sementara.
+- **Kondisi Awal**: Owner memulai reset kredensial akun Rini Setiawati melalui Neon Auth managed flow; provider mengirim tautan sekali pakai yang kedaluwarsa.
 - **Langkah-langkah**:
-  1. Buka `WF-01-login.html`.
-  2. Masukkan email `rini.staf@kostbudimakmur.id` dan sandi `Ruma#4829!`.
-  3. Klik tombol "Masuk ke Akun".
+  1. Rini membuka tautan provider dari inbox terdaftar dan memverifikasi identitas.
+  2. Rini menetapkan password baru langsung pada halaman Neon Auth.
+  3. Rini kembali ke aplikasi dan masuk melalui sesi provider.
 - **Hasil yang Diharapkan**:
-  - Sistem mengautentikasi kredensial sementara dengan sukses.
-  - Sistem mencegat navigasi dasbor dan menampilkan modal layar penuh: *"Pembaruan Kata Sandi Perdana Wajib: Masukkan kata sandi baru pribadi Anda sebelum melanjutkan."*
-  - Akun tidak dapat mengakses modul operasional sebelum sandi baru yang sah tersimpan.
+  - Provider mengonfirmasi kredensial baru dan sesi terkelola; aplikasi tidak pernah melihat sandi lama atau baru.
+  - Tautan reset sekali pakai dan kedaluwarsa; request berulang tidak mengungkap apakah email terdaftar.
+  - Aplikasi tidak menyimpan sandi sementara atau token sesi ke database.
 
 ---
 
@@ -758,6 +705,8 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 ---
 
 ### SKENARIO 45: Reaktivasi Akun Nonaktif & Proteksi Tabrakan Okupansi Kamar (Tenant Reactivation Collision Guard)
+
+> Mengaktifkan akun tidak mengaktifkan ulang atau memindahkan Lease. Akses kamar tetap berasal dari Lease; penyewaan ulang kamar diproses sebagai Lease baru.
 - **Tujuan**: Memastikan alur pengaktifan kembali akun staf atau penghuni nonaktif berjalan aman, serta secara proaktif memblokir reaktivasi akun penghuni jika kamar lamanya telah disewa orang lain.
 - **Kondisi Awal**: Akun Budi Santoso (Penghuni Kamar A-04) berstatus "Nonaktif" pasca-offboarding. Saat ini Kamar A-04 telah disewa oleh penghuni baru dengan kontrak aktif.
 - **Langkah-langkah**:
@@ -773,6 +722,8 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 ---
 
 ### SKENARIO 46: Proteksi Tabrakan Relokasi Kamar pada Modal Kelola Akun (Edit Modal Relocation Collision Guard)
+
+> Relokasi kamar melalui edit akun bukan alur P0; bentrok kamar dijaga saat membuat Lease baru.
 - **Tujuan**: Mencegah pemindahan unit kamar penghuni pada modal edit ke kamar lain yang sedang dihuni oleh penyewa aktif.
 - **Kondisi Awal**: Modal `#modalEditAccount` terbuka untuk akun Penghuni Siti Rahmawati (Kamar B-01). Kamar A-04 saat ini terisi kontrak aktif.
 - **Langkah-langkah**:
@@ -800,46 +751,28 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 
 ---
 
-### SKENARIO 48: Pencegahan Pembuatan / Injeksi Akun Pemilik Ganda (Single-Property Multi-Owner Prevention)
-- **Tujuan**: Menegakkan batas arsitektur properti mandiri (*Single Independent Property Guard*) dengan menolak pembuatan akun Pemilik kedua (Superadmin ganda) baik melalui antarmuka maupun manipulasi payload API.
-- **Kondisi Awal**: Pemilik membuka modal `#modalAddAccount`.
-- **Langkah-langkah**:
-  1. Periksa daftar opsi dropdown `Jenis Peran Akun` (`#accType`).
-  2. Buka DevTools peramban (Inspect Element), tambahkan elemen `<option value="owner">Pemilik Properti (Superadmin)</option>` secara ilegal pada `#accType`.
-  3. Pilih opsi tersebut, isi nama dan email valid, lalu tekan tombol **"Buat & Aktifkan Akun"**.
-  4. Simulasikan pengiriman payload HTTP `POST /api/users` dengan atribut `{ role: "owner" }`.
-- **Hasil yang Diharapkan**:
-  - Langkah 1: Dropdown bawaan hanya menyediakan 3 opsi resmi: *Staf Operasional*, *Teknisi Lapangan*, dan *Penghuni Kost*. Tidak ada opsi Pemilik.
-  - Langkah 3-4: Skrip validasi klien dan endpoint backend mendeteksi pelanggaran batasan: sistem menolak payload dengan status HTTP 403 Forbidden atau 422 Unprocessable Entity.
-  - Muncul pesan error keamanan: *"Pelanggaran Batas Sistem: RumaKost hanya mendukung satu akun Pemilik Properti Utama (Single Property Guard)."*
-  - Integritas wewenang superadmin tunggal tetap terjaga mutlak.
+### SKENARIO 48: Kebijakan Cardinality Akun Owner (Menunggu Keputusan)
 
+> Frozen Scope menetapkan satu properti, tetapi belum menetapkan jumlah akun Owner atau syarat minimal Owner aktif. Tidak ada constraint DB atau expected result anti-lockout sebelum Owner memutuskan kebijakan.
 ---
 
-### SKENARIO 49: Penyampaian Kredensial Pengguna Baru via Tautan Langsung WhatsApp (Direct wa.me Credential Dispatch)
-- **Tujuan**: Memfasilitasi distribusi kredensial login (email & kata sandi sementara) dari Pemilik ke staf atau penghuni baru secara instan melalui tautan WhatsApp tanpa gateway SMS berbayar.
-- **Kondisi Awal**: Pemilik baru saja membuat akun staf baru untuk "Ahmad Fauzi" (Skenario 07) atau mereset sandi pengguna (Skenario 15).
+### SKENARIO 49: Pengiriman Kredensial via WhatsApp (Out of Scope)
+
+> MVP tidak mengirim password/token melalui WhatsApp atau kanal aplikasi. Pengguna mengikuti alur invitation/reset terkelola Neon Auth.
+- **Tujuan**: Menandai pengiriman kredensial lewat WhatsApp sebagai fitur non-P0; kredensial tetap ditangani provider.
+- **Kondisi Awal**: Owner membuat akun atau memulai reset melalui Neon Auth.
 - **Langkah-langkah**:
-  1. Amati notifikasi konfirmasi sukses dan tombol aksi lanjutan pada modal/toast.
-  2. Klik tombol **"Kirim Kredensial via WA"** (`dispatchCredentialsViaWhatsApp()`).
+  1. Pastikan tidak ada aksi yang menyalin password, token, atau tautan reset ke WhatsApp.
 - **Hasil yang Diharapkan**:
-  - Sistem men-generate URL tautan WhatsApp standar: `https://wa.me/6281277889911?text=...`.
-  - Teks pesan otomatis terformat rapi dan profesional:  
-    *"Halo Ahmad Fauzi, akun RumaKost Anda telah diaktifkan oleh Pemilik. Portal Login: https://kostbudimakmur.id/login | Email: ahmad.staf@kostbudimakmur.id | Sandi Sementara: Ruma#XXXX! | Harap segera perbarui kata sandi saat pertama kali masuk."*
-  - Tautan membuka aplikasi WhatsApp Web/Mobile di jendela baru secara mulus tanpa biaya integrasi API pihak ketiga.
+  - Tidak ada dispatch kredensial dari aplikasi pada MVP.
+  - Invitation dan reset tetap memakai kanal terkelola Neon Auth.
 
 ---
 
 ### SKENARIO 50: Penegakan Soft-Delete & Pencegahan Hard-Delete Pengguna (Referential Integrity Guard)
-- **Tujuan**: Menjamin bahwa seluruh data pengguna yang pernah bertransaksi atau bertugas tidak dapat dihapus permanen secara fisik (*zero hard-delete*), melindungi keutuhan relasi tabel database.
-- **Kondisi Awal**: Pemilik berada pada baris akun staf Rini Setiawati atau penghuni lama di Seksi 2.
-- **Langkah-langkah**:
-  1. Periksa seluruh tombol aksi pada baris tabel pengguna dan modal edit.
-  2. Buka DevTools console dan kirimkan request HTTP `DELETE /api/users/2`.
-- **Hasil yang Diharapkan**:
-  - Antarmuka tidak pernah menyediakan tombol "Hapus Akun / Delete User" permanen, melainkan hanya opsi "Nonaktifkan (Kunci Akses)".
-  - Request `DELETE` fisik ditolak mutlak oleh API backend dengan status HTTP 405 Method Not Allowed atau HTTP 400 Bad Request: *"Penghapusan permanen dilarang demi integritas audit keuangan dan operasional. Gunakan mekanisme nonaktifkan akun."*
-  - Seluruh riwayat transaksi sewa masa lalu yang dicatat staf atau dibayar penghuni tetap terhubung utuh ke ID pengguna terkait (*zero orphaned foreign-key records*).
+
+> FK `RESTRICT` melindungi akun yang masih direferensikan. Larangan hard-delete universal dan retention/anonymization belum diputuskan; perlakukan skenario ini sebagai pending policy, bukan constraint baru.
+- **Status**: Ditunda. DB saat ini menolak penghapusan akun yang masih direferensikan oleh FK `RESTRICT`; kebijakan untuk akun tanpa referensi belum ditetapkan.
 
 ---
 
@@ -958,18 +891,13 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 ---
 
 ### SKENARIO 59: Pencegahan Penggunaan Kembali Kata Sandi Lama (Password Reuse Prevention)
-- **Tujuan**: Meningkatkan standar keamanan akun Superadmin dengan mencegah penggunaan kembali kata sandi yang saat ini sedang aktif.
-- **Kondisi Awal**: Kata sandi Pemilik saat ini adalah `SuperBudi2026!`. Pemilik berada pada Seksi 3 Keamanan Sandi.
+- **Tujuan**: Memastikan kebijakan penggunaan ulang password tidak diimplementasikan dengan menyimpan password/history pada database aplikasi.
+- **Kondisi Awal**: Pengguna memakai kontrol perubahan password Neon Auth.
 - **Langkah-langkah**:
-  1. Masukkan kata sandi saat ini: `SuperBudi2026!`.
-  2. Masukkan kata sandi baru yang sama persis: `SuperBudi2026!`.
-  3. Masukkan konfirmasi kata sandi: `SuperBudi2026!`.
-  4. Klik tombol **"Perbarui Kata Sandi"** (`changePasswordSubmit()`).
+  1. Periksa apakah Neon Auth menyediakan kontrol password reuse pada tier/konfigurasi yang digunakan.
 - **Hasil yang Diharapkan**:
-  - Sistem memvalidasi kesamaan nilai: `if (newP === curr)`.
-  - Formulir menolak proses pembaharuan kata sandi.
-  - Muncul Toast peringatan keamanan: *"Kata sandi baru tidak boleh sama dengan kata sandi saat ini! Gunakan variasi kombinasi baru demi keamanan."* (Kategori: `warning`).
-  - Field kata sandi baru difokuskan ulang secara otomatis.
+  - Tidak ada password lama/hash yang disimpan di database aplikasi untuk menerapkan password history.
+  - Provider enforcement dicatat di M07; jika provider tidak menyediakan kontrol tersebut, kebijakan tidak dijanjikan oleh aplikasi tanpa keputusan arsitektur baru.
 
 ---
 
@@ -1070,6 +998,8 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 ---
 
 ### SKENARIO 67: Pembaruan Nomor WhatsApp Pengguna pada Modal Kelola Akun (User Contact Update Guard)
+
+> Nomor telepon Tenant opsional disimpan pada `TenantProfile`; Staff profile/contact tidak termasuk model P0. Perubahan kontak Tenant tidak mengubah email login atau Lease.
 - **Tujuan**: Memastikan nomor telepon WhatsApp staf atau penghuni dapat diperbarui jika pengguna berganti nomor kontak, dengan validasi format dan sinkronisasi instan ke seluruh sistem.
 - **Kondisi Awal**: Modal `#modalEditAccount` terbuka untuk staf Rini Setiawati atau penghuni Budi Santoso.
 - **Langkah-langkah**:
@@ -1084,6 +1014,8 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 ---
 
 ### SKENARIO 68: Pengalihan Mandatori Tiket Aktif saat Deaktivasi Staf/Teknisi (Mandatory Ticket Reassignment Modal)
+
+> Teknisi dan modal pengalihan mandatory pada runbook ini terkait F-13/backlog. Perilaku akun Staff P0 saat memiliki tiket aktif masih perlu keputusan operasional pada SK-12.
 - **Tujuan**: Mencegah adanya tiket perbaikan yang terbengkalai (*orphaned maintenance tickets F-07*) saat staf atau teknisi lapangan dinonaktifkan dari sistem.
 - **Kondisi Awal**: Teknisi Pak Joko Santoso memiliki 2 tiket kerusakan berstatus *"Dalam Pengerjaan"* di modul `WF-08`. Pemilik mengubah status Pak Joko menjadi *"Nonaktifkan"*.
 - **Langkah-langkah**:
@@ -1099,6 +1031,8 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 ---
 
 ### SKENARIO 69: Penanganan Status Seluruh Staf Nonaktif (Zero Active Staff Fallback to Owner Alert)
+
+> Pengalihan otomatis, notifikasi dan default assignee tidak ditetapkan oleh P0; perlakukan sebagai keputusan backend/notification backlog, bukan kebutuhan DB.
 - **Tujuan**: Menguji perilaku sistem saat seluruh akun staf operasional dan teknisi berstatus nonaktif, memastikan alur notifikasi operasional tidak macet.
 - **Kondisi Awal**: Seluruh staf (Rini Setiawati dan Pak Joko Santoso) dinonaktifkan oleh Pemilik.
 - **Langkah-langkah**:
@@ -1409,18 +1343,18 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 | **SK-04** | Pengelolaan Dinamis Tata Tertib Kost (Rules Builder) | `#rulesListContainer`, `addNewRule()`, Re-index | Dynamic DOM & Kontrak | **PASSED (100%)** |
 | **SK-05** | Proteksi Batas Minimum Tata Tertib Kost (Boundary Guard) | `removeRule()`, Min 1 Rule Constraint | Domain Boundary & Error | **PASSED (100%)** |
 | **SK-06** | Filter Tab Direktori Pengguna Berdasarkan Peran | `#btnFilterAll`, `#btnFilterStaff`, `#btnFilterTenant` | Direktori & Navigasi | **PASSED (100%)** |
-| **SK-07** | Pembuatan & Aktivasi Akun Staf Baru (F-01 Owner-Only) | `#modalAddAccount`, `#permissionCheckGroup` | F-01 RBAC & Zero Public | **PASSED (100%)** |
-| **SK-08** | Pembuatan & Aktivasi Akun Teknisi Lapangan Baru | `#accType`, Modul Tiket Perbaikan F-07 | F-01 & F-07 Maintenance | **PASSED (100%)** |
-| **SK-09** | Pembuatan Akun Penghuni Mandiri & Penugasan Kamar | `#roomAssignGroup`, `#accRoomSelect` | F-01, F-03 & Isolasi Data | **PASSED (100%)** |
-| **SK-10** | Pencegahan Tabrakan Penugasan Kamar Terisi (Overbooking)| `data-occupied="true"`, `#roomOccupiedAlert` | Proteksi Tabrakan Data | **PASSED (100%)** |
+| **SK-07** | Owner creates Staff using fixed P0 role capabilities | No granular permission checklist | F-01 RBAC | **Revised; runtime not tested** |
+| **SK-08** | Technician role | F-13 and not one of three MVP roles | Out of scope | **Backlog; not tested** |
+| **SK-09** | Owner/Staff creates Tenant; Lease separately links Tenant and room | No self-registration; Lease is room ownership relation | F-01/F-03 | **Revised; runtime not tested** |
+| **SK-10** | Reject overlapping Lease for occupied room | Database Lease overlap guard | F-03 | **Verify in F-03** |
 | **SK-11** | Pencegahan Duplikasi Email Pengguna (Case-Insensitive) | `#accEmail`, Unique Email Validation | Validasi Unik & Form | **PASSED (100%)** |
-| **SK-12** | Deaktivasi Akun Staf & Deteksi Tiket Kerusakan Aktif | `#editAccStatus`, `#staffDeactivateAlert` | F-07 Lifecycle & Alert | **PASSED (100%)** |
-| **SK-13** | Pembaruan Hak Akses Granular Staf Pasca-Aktivasi | `#editPermissionCheckGroup`, Modul Checklist | RBAC Granular Update | **PASSED (100%)** |
-| **SK-14** | Relokasi Kamar Penghuni Mandiri Tanpa Hapus Riwayat | `#editRoomAssignGroup`, `#editAccRoomSelect` | F-03 Mutasi & Kontrak | **PASSED (100%)** |
-| **SK-15** | Reset Kredensial & Sandi Sementara oleh Pemilik | `resetUserPasswordModal()`, Temp Password | Pemulihan Kredensial | **PASSED (100%)** |
-| **SK-16** | Pembaruan Kata Sandi Superadmin & Validasi Form | `#currPass`, `#newPass`, `#confirmPass` | Keamanan Kredensial | **PASSED (100%)** |
-| **SK-17** | Terminasi Sesi Login Bersamaan Saat Ganti Sandi | Token Revocation, Session Invalidation | Keamanan Sesi Akun | **PASSED (100%)** |
-| **SK-18** | Proteksi Anti-Lockout Akun Terakhir Pemilik | Baris Owner, Label *"Utama"*, Permanent Role | Anti-Lockout Superadmin | **PASSED (100%)** |
+| **SK-12** | Disable Staff with active assigned Ticket | Preserve assignment/history; offboarding policy pending | F-01/F-07 | **Owner decision required** |
+| **SK-13** | Granular Staff permissions | Fixed P0 capability matrix; no module toggles | Out of scope | **Backlog; not tested** |
+| **SK-14** | Tenant room relocation | Active Lease relocation is excluded; Tenant has no account-level room field | Out of scope | **Backlog; not tested** |
+| **SK-15** | Neon Auth managed reset | No temporary password or reset token in application | F-01/provider | **Revised; provider test in M07** |
+| **SK-16** | Owner/Staff/Tenant changes own password | Provider owns credential inputs/policy | F-01/provider | **Provider test in M07** |
+| **SK-17** | Session behavior after password change | Verify actual Neon Auth revocation; no unsupported guarantee | F-01/provider | **Provider test in M07** |
+| **SK-18** | Last-active Owner protection | Cardinality/anti-lockout rule not approved | Pending decision | **Not a DB requirement yet** |
 | **SK-19** | Interaksi Navigasi Sticky Sidebar & Real-time ScrollSpy | `.settings-nav-sidebar`, Scroll Listener | Estify DNA UX & Navigasi | **PASSED (100%)** |
 | **SK-20** | Aksesibilitas Keyboard (ESC Key) & Dismiss Backdrop | `Escape` Listener, `closeModalOnBackdrop()` | Aksesibilitas WCAG 2.1 | **PASSED (100%)** |
 | **SK-21** | Desain Responsif Breakpoint Tablet & Ponsel | `@media (max-width: 1100px)`, Single Col | Responsivitas Mobile | **PASSED (100%)** |
@@ -1431,28 +1365,28 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 | **SK-26** | Sinkronisasi Otomatis Tata Tertib ke Kontrak Sewa PDF | Contract Clause Snapshot, F-03 Sync | Siklus Kontrak Digital | **PASSED (100%)** |
 | **SK-27** | Deteksi & Proteksi Perubahan Belum Disimpan | Dirty Form State Guard, BeforeUnload Alert | Perlindungan Input Data | **PASSED (100%)** |
 | **SK-28** | Siklus Offboarding & Mode Arsip Read-Only Penyewa | Post-Lease Lifecycle, Read-Only Portal | Siklus Hidup Akun | **PASSED (100%)** |
-| **SK-29** | Kepatuhan Privasi Data Pribadi UU PDP (Anonymization) | PII Soft-Delete, Financial Anonymization | Kepatuhan Hukum UU PDP | **PASSED (100%)** |
-| **SK-30** | Audit Trail Mutasi Konfigurasi & Hak Akses Pengguna | Audit Logging Engine, Immutable Records | Kepatuhan & Tata Kelola| **PASSED (100%)** |
-| **SK-31** | Proteksi Imutabilitas Email & Peran pada Modal Edit | `#editAccEmail`, `#editAccRole`, Readonly Lock | Imutabilitas Anchor Key| **PASSED (100%)** |
-| **SK-32** | Penanganan Okupansi 100% saat Tambah Penghuni | `#accRoomSelect`, Zero Vacant Room Alert | Kapasitas & Hunian | **PASSED (100%)** |
+| **SK-29** | Former Tenant anonymization | Retention and financial preservation policy not approved | Pending decision | **Not a DB requirement yet** |
+| **SK-30** | Audit account creation/deactivation/managed email change | Append-only AuditEvent; no bank data or authentication secrets | F-01 | **Backend transaction; not tested** |
+| **SK-31** | Owner-managed login-email change; protect role | Neon Auth confirms change; authSubject remains stable | F-01/provider | **Revised; provider test in M07** |
+| **SK-32** | Reject Lease when all rooms are occupied | Tenant account remains independent of room/Lease | F-03 | **Verify in F-03** |
 | **SK-33** | Validasi Whitespace Murni & Format Email RFC 5322 | String Trim Guard, RFC 5322 Regex | Validasi Formulir Ketat| **PASSED (100%)** |
 | **SK-34** | Sanitasi & Eliminasi Butir Tata Tertib Kosong | Blank Rule Auto-Pruning, Pre-Save Check | Integritas Kontrak | **PASSED (100%)** |
 | **SK-35** | Sinkronisasi Reaktif Nama Properti ke Sidebar Pod | `.property-pod-text h4`, Reactive DOM Sync | Mikro-Interaksi UI | **PASSED (100%)** |
 | **SK-36** | Sinkronisasi Visibilitas Baris Baru pada Filter Aktif | Active Filter Context Switcher, Flash DOM | UX Filter Konsistensi | **PASSED (100%)** |
-| **SK-37** | Proteksi Pendaftaran Staf Tanpa Izin Modul | `#permissionCheckGroup`, Min 1 Permission | RBAC Boundary Guard | **PASSED (100%)** |
-| **SK-38** | Intersepsi Wajib Ganti Sandi Perdana Pasca-Reset | Auth Interceptor, First-Time Reset Intercept | Keamanan Autentikasi | **PASSED (100%)** |
+| **SK-37** | Zero module permissions on Staff | Granular permissions are out of P0 | Out of scope | **Backlog; not tested** |
+| **SK-38** | Complete provider-managed credential reset | No app-generated temporary password | F-01/provider | **Revised; provider test in M07** |
 | **SK-39** | Sinkronisasi Nama Pemilik ke Baris Akun Superadmin | `#propOwner`, Row 1 User Table Sync | Koherensi Identitas | **PASSED (100%)** |
 | **SK-40** | Debouncing & Proteksi Klik Ganda Tombol Submit | Double Submit Lock, Disabled State | Ketahanan UI (Anti-Rage)| **PASSED (100%)** |
 | **SK-41** | Validasi Karakter Numerik & Batas Rekening Bank | `#bankAccNum`, Numeric Masking Engine | F-05 Validasi Finansial | **PASSED (100%)** |
 | **SK-42** | Interaksi Topbar: Notifikasi, Slide-Search & Logout | `#notifBellBtn`, `#topbarSearchInput`, Logout | Topbar Shell Global | **PASSED (100%)** |
 | **SK-43** | Ketahanan Teks Ekstrem Panjang pada Tabel Pengguna | CSS Text Ellipsis, Tooltip Hover | Layout Robustness | **PASSED (100%)** |
 | **SK-44** | Restorasi Nilai Formulir Awal saat Dibatalkan | `resetSettingsForm()`, Snapshot Rollback | Pemulihan Input Form | **PASSED (100%)** |
-| **SK-45** | Reaktivasi Akun Nonaktif & Proteksi Tabrakan Okupansi | `#editAccStatus`, Occupancy Collision Intercept| Siklus Akun & Hunian | **PASSED (100%)** |
-| **SK-46** | Proteksi Tabrakan Relokasi Kamar pada Modal Kelola | `#editAccRoomSelect`, Overbooking Guard | Proteksi Relokasi Kamar| **PASSED (100%)** |
+| **SK-45** | Reactivate Tenant account | Reactivation does not restore/move a Lease; room access remains Lease-based | F-01/F-03 | **Revised; runtime not tested** |
+| **SK-46** | Relocate Tenant through account edit | No account-level assignment or active Lease relocation | Out of scope | **Backlog; not tested** |
 | **SK-47** | Peringatan Penonaktifan Penghuni dengan Tunggakan Aktif| Active Invoices Check, Arrears Alert Box | Finansial & Operasional| **PASSED (100%)** |
-| **SK-48** | Pencegahan Pembuatan/Injeksi Akun Pemilik Ganda | Multi-Owner Guard, Role Whitelist Check | Single Property Boundary| **PASSED (100%)** |
-| **SK-49** | Penyampaian Kredensial Pengguna Baru via wa.me | WhatsApp E.164 URL, Zero-Cost Onboarding | Onboarding Kredensial | **PASSED (100%)** |
-| **SK-50** | Penegakan Soft-Delete & Pencegahan Hard-Delete | Zero Hard-Delete, Foreign-Key Preservation | Integritas Database | **PASSED (100%)** |
+| **SK-48** | Single Owner account policy | One property does not set Owner cardinality | Pending decision | **Not a DB requirement yet** |
+| **SK-49** | Send credentials through WhatsApp | Application does not send passwords/tokens/reset links | Out of scope | **Backlog; not tested** |
+| **SK-50** | Prevent user hard-delete | FKs protect referenced history; universal denial needs policy | Pending decision | **Not a DB requirement yet** |
 | **SK-51** | Pencarian Cepat Pengguna pada Tabel Direktori Akun | `#userTableSearchInput`, Instant Filter | Direktori & Search UX | **PASSED (100%)** |
 | **SK-52** | Validasi Field Wajib Profil Properti & Deteksi Spasi | `#propName`, `#propOwner`, `#propAddress` Trim | Validasi Form Profil | **PASSED (100%)** |
 | **SK-53** | Validasi Sintaks & Batas Digit WhatsApp Pengelola | `#propPhone`, Numeric & Length Range Check | Validasi Kontak Darurat| **PASSED (100%)** |
@@ -1461,7 +1395,7 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 | **SK-56** | Batas Maksimum Butir Tata Tertib Kost (Maks. 15) | Rules Upper Bound Check, PDF Overflow Guard | Kontrak & Batas Data | **PASSED (100%)** |
 | **SK-57** | Batas Panjang Karakter per Butir Aturan (Maks. 250)| `maxlength="250"`, Character Counter Guard | Formatting & UI Layout | **PASSED (100%)** |
 | **SK-58** | Pencegahan Duplikasi Butir Tata Tertib | Case-Insensitive Duplicate Rule Checker | Integritas Kontrak | **PASSED (100%)** |
-| **SK-59** | Pencegahan Penggunaan Kembali Kata Sandi Lama | `newPass === currPass` Constraint | Keamanan Kredensial | **PASSED (100%)** |
+| **SK-59** | Password reuse prevention | Provider-only; no app password history/hash | F-01/provider | **Verify provider capability in M07** |
 | **SK-60** | Focus Trap Keyboard pada Modal Dialog Akun | Focus Loop Listener, WCAG 2.1 AA | Aksesibilitas Keyboard | **PASSED (100%)** |
 | **SK-61** | Rate Limiting & Proteksi Brute-Force Sandi Pemilik | 5-Attempts Lockout Engine, 15m Cooldown | Keamanan Siber Akun | **PASSED (100%)** |
 | **SK-62** | Penanganan Kegagalan Jaringan & Mode Offline Simpan | `navigator.onLine`, Retry CTA, Form Preserved | Ketahanan Jaringan | **PASSED (100%)** |
@@ -1469,9 +1403,9 @@ Seluruh skenario pengujian diverifikasi terhadap data awal (*baseline fixtures*)
 | **SK-64** | Kepatuhan Preferensi Aksesibilitas Gerak Berkurang | `prefers-reduced-motion: reduce`, Instant Jump | Aksesibilitas Gerak | **PASSED (100%)** |
 | **SK-65** | Ketahanan Siklus Pemulihan BFCache Pasca-Navigasi Balik| BFCache Cleanup, Icon Re-hydration | Ketahanan State Cache | **PASSED (100%)** |
 | **SK-66** | Pintasan Keyboard Cepat Simpan Pengaturan (Ctrl+S) | `Ctrl+S` / `Cmd+S` Keydown Event Interceptor | Produktivitas Keyboard | **PASSED (100%)** |
-| **SK-67** | Pembaruan Nomor WhatsApp Pengguna pada Modal Kelola | `#editAccPhone`, Numeric & Length Validation | Manajemen Kontak | **PASSED (100%)** |
-| **SK-68** | Pengalihan Mandatori Tiket Aktif saat Deaktivasi Staf | `#ticketReassignSelect`, F-07 Assignee Sync | F-07 Integritas Tiket | **PASSED (100%)** |
-| **SK-69** | Penanganan Status Seluruh Staf Nonaktif | Zero Staff Operational Callout, Owner Fallback | Fallback Operasional | **PASSED (100%)** |
+| **SK-67** | Update Tenant phone | Optional TenantProfile phone; Staff contact profile is outside P0 | F-03 | **Revised; runtime not tested** |
+| **SK-68** | Mandatory reassignment when disabling Technician | Technician role is F-13 backlog; Staff behavior is pending SK-12 | Backlog / decision | **Not a P0 test** |
+| **SK-69** | Automatic fallback assignment and notification | Automatic notification/routing is outside P0 | F-08 backlog | **Backlog; not tested** |
 | **SK-70** | Sinkronisasi Status Sesi Lintas-Tab saat Logout | Cross-Tab Storage Event, Auto-Lock Form | Keamanan Sesi Browser | **PASSED (100%)** |
 | **SK-71** | Sanitasi Karakter Non-Printable & Zero-Width Spaces | Unicode Regex Filter, Invisible Char Purge | Sanitasi Data Eksternal| **PASSED (100%)** |
 | **SK-72** | Kepatuhan Lembar Gaya Cetak Administrasi Kost | `@media print` Stylesheet, Non-Print Hide | Format Cetak & Fisik | **PASSED (100%)** |

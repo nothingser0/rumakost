@@ -27,13 +27,16 @@ Di luar scope MVP: banyak properti, pendaftaran Tenant publik, aplikasi native, 
 | F-04 Tagihan berulang | REQ-04.1 invoice awal; REQ-04.2 mode tagihan; REQ-04.3 penerbitan idempotent | WF-05 | P0 |
 | F-05 Pembayaran dan saldo | REQ-05.1 klaim pending dan verifikasi manual; REQ-05.2 saldo parsial; REQ-05.3 reversal dan ledger deposit | WF-06, WF-10 | P0 |
 | F-06 Pengeluaran dan laporan | REQ-06.1 catatan pengeluaran dan pagu bulanan; REQ-06.2 ringkasan Owner-only | WF-07 | P0 |
-| F-07 Tiket kerusakan | REQ-07.1 tiket penghuni dengan media wajib; REQ-07.2 alur Staff/Owner termasuk target penyelesaian; REQ-07.3 komentar/lampiran privat | WF-08, WF-11, WF-12 | P0 |
+| F-07 Tiket kerusakan | REQ-07.1 tiket dibuat semua role dengan aturan keterkaitan lease; media wajib; REQ-07.2 alur Staff/Owner termasuk target penyelesaian dan pembatalan; REQ-07.3 komentar/lampiran privat serta histori | WF-08, WF-11, WF-12 | P0 |
 
 ### 3.1 User Stories dan Acceptance Criteria
 
 #### REQ-01 Akses dan peran
 
-- Owner membuat/mengaktifkan akun Staff dan Tenant; pendaftaran publik dimatikan.
+- Owner membuat/mengaktifkan akun Staff dan Tenant; Staff juga dapat membuat/mengaktifkan akun Tenant. Hanya Owner yang dapat mengelola akun Staff. Pendaftaran mandiri dan publik dimatikan.
+- Owner dapat meminta perubahan email login akun melalui Neon Auth terkelola. `authSubject` tetap menjadi identitas stabil; perubahan email hanya tercermin pada `AppUser.emailNormalized` setelah Neon Auth mengonfirmasi alamat baru, dan email tetap unik setelah normalisasi.
+- Owner, Staff, dan Tenant dapat mengganti password akun sendiri melalui Neon Auth terkelola; aplikasi tidak menerima atau menyimpan password. Kebijakan sesi, reset, dan penggunaan ulang password ditangani provider dan diverifikasi di M07.
+- Pembuatan akun Staff/Tenant menulis actor dan identitas aplikasi; TenantProfile dapat dibuat tanpa Lease. Hubungan Tenant ke kamar berasal dari Lease, bukan kolom kamar pada akun.
 - Given permintaan belum terautentikasi, when mengakses operasi terlindungi, then sistem menolak operasi dan tidak mengirim data terlindungi.
 - Given Staff atau Tenant mencoba aksi khusus Owner, when server memeriksa izin, then server menolak tanpa bergantung pada visibilitas UI.
 - Given Tenant meminta kamar, kontrak, tagihan, pembayaran, tiket, atau media, when kepemilikan diperiksa, then hanya data Tenant itu sendiri yang dikembalikan.
@@ -82,11 +85,13 @@ Di luar scope MVP: banyak properti, pendaftaran Tenant publik, aplikasi native, 
 
 #### REQ-07 Tiket kerusakan
 
-- Tenant membuat tiket yang terkait dengan kontrak/kamar aktif, uraian, dan minimal satu foto atau video.
-- Owner/Staff mengelola status, prioritas, penanggung jawab internal, dan komentar internal. Tenant dengan lease aktif hanya membaca/berkomentar pada tiketnya sendiri; setelah kontrak berakhir seluruh mutasi ditolak.
+- Owner, Staff, dan Tenant dapat membuat tiket dengan kategori, prioritas, judul, uraian, dan minimal satu foto atau video. Tiket Tenant wajib terkait lease aktif miliknya; Owner/Staff dapat memilih kamar mana pun termasuk kamar kosong, dan boleh mengaitkan lease kamar tersebut.
+- Owner/Staff mengelola status, prioritas, penanggung jawab internal, target penyelesaian, dan komentar internal. Tenant dengan lease aktif hanya membaca/berkomentar pada tiketnya sendiri; setelah kontrak berakhir seluruh mutasi ditolak.
+- Status alur adalah `RECEIVED`, `ASSIGNED`, `IN_PROGRESS`, `INSPECTION`, `RESOLVED`, dan `CANCELLED`. Pembatalan oleh Owner/Staff memerlukan alasan, mencatat aktor/waktu, mempertahankan tiket dan histori, serta terminal. Hanya Owner dapat membuka kembali tiket `RESOLVED`; tiket `CANCELLED` tidak dapat dibuka kembali.
+- Komentar dan event status bersifat append-only. Nomor tiket diberikan unik oleh database. Biaya servis tertaut dan garansi bukan bagian P0.
 - Komentar internal dan lampiran yang tidak terlihat Tenant tidak pernah dikirim pada respons Tenant.
-- Batas unggah: foto maks. 4 MB per file, video maks. 12 MB dan 30 detik, maks. empat foto dan satu video per pengiriman, serta 40 MB per tiket. Validasi dilakukan di server.
-- Media tiket disimpan privat dan dihapus 365 hari setelah penutupan terakhir; jika tiket dibuka kembali, hitungan retensi dimulai lagi setelah penutupan berikutnya.
+- Batas unggah: foto maks. 4 MB per file, video maks. 12 MB dan 30 detik, maks. empat foto dan satu video per pengiriman, serta 40 MB per tiket. Database menegakkan metadata, batas agregat, dan batch; server memeriksa isi/format objek yang diunggah.
+- Media tiket disimpan privat dan dihapus 365 hari setelah tiket selesai atau dibatalkan; jika tiket selesai dibuka kembali, hitungan retensi dimulai lagi setelah penutupan berikutnya.
 
 ### 3.2 Skenario Penerimaan Rilis (Given-When-Then)
 

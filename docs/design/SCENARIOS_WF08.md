@@ -7,6 +7,8 @@
 > **User Stories KANBAN**: `RK-007` (Epic Ticketing Kerusakan Penghuni), `RK-037` (Pembuatan Tiket Aduan dengan Bukti Wajib), `RK-038` (Percakapan & Catatan Tindak Lanjut Tiket), `RK-039` (Triase Prioritas & Penugasan Tiket), `RK-040` (Penyelesaian & Penutupan Siklus Tiket)  
 > **Hak Akses Layar**: **Pemilik Properti (Owner)** & **Staf Pengelola (Staff)**  
 
+> **Catatan keputusan DB M06 (2026-11-01):** runbook ini adalah prototipe M04, bukan kontrak final RBAC. Semua role (Owner, Staff, Penghuni) boleh membuat tiket. Tenant harus memilih lease aktif miliknya; Owner/Staff boleh membuat tiket untuk kamar kosong dan lease terkait opsional. Pembatalan `CANCELLED` membutuhkan alasan, menyimpan aktor/waktu, mempertahankan histori, dan tidak dapat dibuka kembali. DB tidak mencatat biaya servis atau garansi; keduanya backlog. Lihat FSD, PRD, dan crosswalk untuk kontrak yang berlaku.
+
 ---
 
 ## 1. Ringkasan Eksekutif Layar
@@ -993,8 +995,8 @@ Antarmuka ini menjembatani aduan kerusakan yang diajukan oleh penghuni kamar (`W
   - Tiket bermutasi status menjadi `'cancelled'` (Batal / Ditolak) dan keluar dari antrean pengerjaan aktif.
   - Header modal tiket menampilkan badge abu-abu netral: `Dibatalkan` berikon silang melingkar (`x-circle`).
   - Stepper progres ditandai dengan garis pembatalan merah/abu-abu tanpa beralih ke Tahap 5 Selesai.
-  - Linimasa aktivitas mencatat alasan pembatalan resmi oleh Staf/Pemilik kost.
-  - Biaya operasional otomatis tercatat `Rp 0`.
+  - Linimasa append-only mencatat alasan, aktor, dan waktu pembatalan; tiket tersimpan sebagai status terminal dan tidak dapat dibuka kembali.
+  - Tidak ada biaya servis atau Expense yang otomatis dibuat.
   - Counter badge status di toolbar diperbarui, dan jika tiket tersebut sebelumnya berkategori *Mendesak*, angka pada Hero Gauge 2 otomatis berkurang.
   - Toast konfirmasi muncul: *"Tiket [ID] telah dibatalkan dengan status Aduan Tidak Valid"*.
 

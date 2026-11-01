@@ -11,13 +11,13 @@
 
 ## 1. Ringkasan Eksekutif Layar
 
-Layar **WF-10 (`SCR-P01` & `SCR-P02`)** adalah portal swalayan mandiri (*Tenant Self-Service Hub*) khusus untuk penghuni kost terdaftar di RumaKost. Mengadopsi bahasa visual **Estify Real Estate DNA**, antarmuka ini memberikan transparansi penuh atas seluruh siklus hidup hunian (*tenant lifecycle*): mulai dari fase pra-hunian (*pending check-in*), masa sewa aktif, konfirmasi lanjut perpanjangan sewa, tagihan berjalan dan cicilan parsial, rincian sub-meteran kWh listrik, konfirmasi transfer bank, penanganan klaim transfer ditolak pemilik, kwitansi digital bebas navbar (*DOC-01*), pelacakan progres servis kerusakan maupun status bebas keluhan (*empty state*), saldo deposit jaminan (*escrow*), buku panduan tata tertib, hingga rencana check-out dan status alumni.
+Layar **WF-10 (`SCR-P01` & `SCR-P02`)** adalah portal untuk penghuni kost terdaftar di RumaKost. Katalog skenario ini mencakup perilaku P0 dan beberapa eksplorasi prototipe yang sudah dipindahkan ke backlog. Scope P0 meliputi konteks Lease sendiri, invoice dan pembayaran manual, riwayat transaksi, tiket, saldo ledger deposit, kontak darurat, serta permintaan check-out. Upload bukti pembayaran, PDF/kwitansi, meteran, kredensial WiFi/pengumuman, kendaraan/izin tamu, perpanjangan mandiri, dan minimum notice 30 hari tidak menjadi acceptance test P0.
 
 ### Empat Pilar Arsitektur Antarmuka Penghuni:
 1. **Pemisahan Wewenang Data Privat (Zero Cross-Tenant Leak)**: Penghuni hanya memiliki akses ke kamar dan tagihan miliknya sendiri (Kamar A-04). Sistem tidak menampilkan data penghuni lain atau data keuangan kost global.
-2. **Siklus Pembayaran Transparan, Meteran, & Kwitansi Sah (F-04 & F-05)**: Penghuni dapat meninjau rincian tagihan sewa pokok, iuran kebersihan/sampah, dan sub-meteran listrik kWh, menyalin nomor rekening resmi bank pemilik kost, mengonfirmasi transfer dengan melampirkan struk, melihat alasan jika transfer ditolak pemilik (*payment rejected notice*), serta mencetak atau membagikan kuitansi digital (*DOC-01*) berstempel LUNAS ke WhatsApp.
+2. **Tagihan dan Klaim Pembayaran (F-04 & F-05)**: Penghuni dapat melihat invoice dan sisa kewajiban miliknya, mengirim klaim pembayaran manual tanpa menyimpan bukti transfer, melihat alasan penolakan, serta melihat histori pembayaran dan reversal. Meteran listrik, detail rekening, bukti transfer, PDF, dan kwitansi digital berada di luar P0.
 3. **Pintasan Cepat Pelaporan & Tracking Tiket (F-07)**: Menghubungkan langsung penghuni ke pelacakan status perbaikan fasilitas aktif via stepper 5 segmen Estify, menyajikan status kamar normal (*zero ticket empty state*), serta tombol navigasi menuju formulir pembuatan komplain baru ([`WF-11`](file:///D:/Workspace/RumaKost/docs/design/screens/WF-11-portal-tiket-baru.html)) dan lembar detail komprehensif ([`WF-12`](file:///D:/Workspace/RumaKost/docs/design/screens/WF-12-portal-tiket-detail.html)).
-4. **Utilitas Keseharian, Deposit, & Tata Tertib**: Kredensial WiFi dedicated dengan tombol *1-Click Copy*, pengumuman pemeliharaan fasilitas bersama, transparansi saldo deposit jaminan, formulir pelaporan tamu menginap (*Izin Tamu*), pembaharuan plat nomor kendaraan, konfirmasi lanjut sewa, serta rencana check-out mandiri.
+4. **Deposit dan Check-Out**: Penghuni dapat melihat saldo ledger deposit miliknya dan mengajukan permintaan check-out untuk ditinjau Owner. Saldo ledger tidak membuktikan dana disimpan terpisah dan bukan jaminan refund penuh. WiFi, pengumuman, izin tamu, kendaraan, dan renewal mandiri berada di backlog.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -97,28 +97,25 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-### SKENARIO 02: Peninjauan Rincian Invoice Tagihan Berjalan & Unduh PDF
-- **Tujuan**: Memvalidasi akurasi perhitungan nominal tagihan sewa kamar berjalan dan simulasi pengunduhan invoice.
+### SKENARIO 02: Peninjauan Rincian Invoice Tagihan Berjalan
+- **Status**: Rincian invoice milik sendiri termasuk P0; unduh PDF merupakan backlog.
+- **Tujuan**: Memvalidasi line invoice dan saldo tagihan yang dihitung dari data persisten.
 - **Langkah Pengujian**:
-  1. Periksa rincian item pada kartu tagihan: Sewa Pokok (Rp 1.500.000) + Sampah (Rp 50.000) + Listrik Sub-Meteran (Rp 0).
-  2. Periksa baris total kewajiban: **Rp 1.550.000**.
-  3. Klik tombol **"Unduh Invoice PDF"**.
-- **Hasil yang Diharapkan**: Toast notifikasi informatif muncul: *"Mengunduh berkas invoice digital #INV-202611-A04.pdf..."*.
+  1. Periksa line sewa dan, jika ada, line deposit yang ditampilkan dari invoice Tenant tersebut.
+  2. Pastikan total dan sisa tagihan sesuai nilai line dikurangi alokasi pembayaran yang berlaku.
+- **Hasil yang Diharapkan**: Detail invoice akurat; tidak memerlukan biaya sampah, meteran listrik, atau pembuatan PDF pada P0.
 
 ---
 
-### SKENARIO 03: Alur Konfirmasi Pembayaran Transfer Bank Mandiri (F-05)
-- **Tujuan**: Memvalidasi alur modal bayar, tombol salin rekening BCA, dropzone struk transfer, dan transisi status tagihan.
+### SKENARIO 03: Pengajuan Klaim Pembayaran Transfer Manual (F-05)
+- **Tujuan**: Memvalidasi pencatatan klaim pembayaran manual dan transisi invoice ke status menunggu verifikasi.
 - **Langkah Pengujian**:
-  1. Klik tombol **"Konfirmasi Pembayaran Transfer"**.
-  2. Klik tombol **"Salin No. Rek"** pada baris rekening BCA `8830-123-456`.
-  3. Klik dropzone atau pilih file struk transfer (`Struk_Transfer_BCA_Budi.jpg`).
-  4. Klik tombol **"Kirim Konfirmasi Bayar"**.
+  1. Klik tombol **"Konfirmasi Pembayaran"** pada invoice milik sendiri yang masih terbuka.
+  2. Isi nominal klaim yang tidak melebihi sisa tagihan dan pilih metode transfer manual.
+  3. Kirim klaim pembayaran tanpa melampirkan atau menyimpan bukti transfer.
 - **Hasil yang Diharapkan**:
-  - Toast *"Nomor Rekening BCA berhasil disalin ke clipboard!"* muncul.
-  - Dropzone menampilkan nama berkas struk aktif.
-  - Status invoice berubah menjadi badge oranye: **"Menunggu Verifikasi Pemilik"**.
-  - Tombol bayar utama dinonaktifkan (`disabled`) dengan teks *"Konfirmasi Terkirim"*.
+  - Klaim tersimpan sebagai Payment `PENDING`; saldo invoice tidak berubah sampai Owner memverifikasi.
+  - Status invoice menampilkan **"Menunggu Verifikasi Pemilik"** dan klaim duplikat tidak dibuat oleh pengiriman yang sama.
 
 ---
 
@@ -134,6 +131,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 ---
 
 ### SKENARIO 05: Interaktivitas Kredensial WiFi & Pengumuman Kost
+- **Status**: Backlog; kredensial WiFi dan pengumuman tidak termasuk kontrak data P0.
 - **Tujuan**: Memastikan fungsionalitas salin sandi WiFi kamar dan keterbacaan pengumuman operasional.
 - **Langkah Pengujian**:
   1. Klik tombol **"Salin"** pada baris SSID `RumaKost_Lt2_5G`.
@@ -151,6 +149,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 ---
 
 ### SKENARIO 07: Pengajuan Lapor Tamu Menginap (Modal SCR-P08)
+- **Status**: Backlog; izin tamu tidak termasuk P0.
 - **Tujuan**: Memverifikasi formulir izin tamu menginap sementara guna kepatuhan tata tertib kost.
 - **Langkah Pengujian**:
   1. Klik tombol **"Ajukan Izin Tamu"**.
@@ -160,12 +159,13 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-### SKENARIO 08: Peninjauan Riwayat Pembayaran & Kwitansi Digital Lunas
-- **Tujuan**: Memastikan riwayat sewa masa lalu tersaji lengkap dengan akses kwitansi resmi.
+### SKENARIO 08: Peninjauan Riwayat Pembayaran
+- **Status**: Riwayat pembayaran milik Tenant termasuk P0; pembuatan kwitansi digital merupakan backlog.
+- **Tujuan**: Memastikan pembayaran, penolakan, dan reversal masa lalu tersaji dari histori transaksi.
 - **Langkah Pengujian**:
-  1. Periksa 3 baris histori sewa sebelumnya (Oktober, September, Agustus 2026 berstatus Lunas).
-  2. Klik tombol **"Kwitansi"** pada baris invoice Oktober 2026.
-- **Hasil yang Diharapkan**: Modal dialog kwitansi digital resmi (*DOC-01*) terbuka dengan stempel LUNAS.
+  1. Periksa riwayat Payment dan reversal pada invoice milik Tenant.
+  2. Pastikan klaim `PENDING`/`REJECTED` tidak dihitung sebagai pembayaran terverifikasi.
+- **Hasil yang Diharapkan**: Histori mencerminkan status dan nominal tersimpan; tidak memerlukan DOC-01 pada P0.
 
 ---
 
@@ -177,9 +177,9 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 ---
 
 ### SKENARIO 10: Uji Guardrail Keamanan & RBAC Isolasi Data
-- **Tujuan**: Menjamin bahwa peran Penghuni dicegat saat mencoba membuka rute sensitif milik Pemilik Kost.
-- **Langkah Pengujian**: Ketik `WF-02-dashboard.html` atau `WF-07-laporan.html` di address bar browser.
-- **Hasil yang Diharapkan**: Script pengaman di `components.js` mencegat akses dan meredirect kembali ke `WF-10-portal-penghuni.html`.
+- **Tujuan**: Memastikan server menolak akses Penghuni ke data/rute sensitif milik Owner dan tidak membocorkan keberadaan resource.
+- **Langkah Pengujian**: Dengan sesi Penghuni, kirim permintaan langsung ke endpoint data dashboard Owner/laporan finansial dan ubah ID resource Tenant lain.
+- **Hasil yang Diharapkan**: Server menolak permintaan tanpa mengembalikan data terlarang; redirect atau penyamaran UI bukan kontrol otorisasi.
 
 ---
 
@@ -198,9 +198,9 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 ---
 
 ### SKENARIO 13: Status Tagihan Terlambat Lewat Jatuh Tempo (`?status=overdue`)
-- **Tujuan**: Memvalidasi penegakan visual jika pembayaran sewa melewati tanggal jatuh tempo (H+3).
+- **Tujuan**: Memvalidasi status tampilan ketika invoice masih memiliki saldo terbuka setelah `dueOn`.
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?status=overdue`.
-- **Hasil yang Diharapkan**: Border kartu berwarna merah, badge status *Destructive Triad* *"Terlambat 3 Hari"*, dan penegasan batas toleransi keterlambatan.
+- **Hasil yang Diharapkan**: Status overdue dihitung dari tanggal jatuh tempo dan saldo terbuka; tidak memicu suspend otomatis atau menerapkan masa toleransi H+3 yang belum ditetapkan P0.
 
 ---
 
@@ -212,43 +212,47 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 ---
 
 ### SKENARIO 15: Penghuni Pemegang Unit Ganda / Multi-Unit Switcher (`?multi=true`)
+- **Status**: Backlog; scope P0 satu properti dan konteks Tenant tidak mendukung multi-unit bersamaan.
 - **Tujuan**: Memastikan penghuni yang menyewa lebih dari satu kamar (misal: A-04 & A-05) dapat berpindah unit tanpa salah alur.
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?multi=true`.
 - **Hasil yang Diharapkan**: Header menyajikan dropdown pemilih unit (*Kamar A-04 ⇄ Kamar A-05*) dan memperbarui konteks data saat dipindahkan.
 
 ---
 
-### SKENARIO 16: Pembaruan Profil Mandiri & Pendaftaran Plat Kendaraan (`SCR-P06`)
-- **Tujuan**: Memverifikasi kemampuan penghuni memperbarui kontak darurat keluarga dan nomor plat motor/mobil untuk akses parkir kost.
-- **Hasil yang Diharapkan**: Formulir modal menyimpan data nomor kontak darurat dan plat kendaraan dengan feedback toast sukses.
+### SKENARIO 16: Pembaruan Kontak Darurat pada Profil Penghuni
+- **Tujuan**: Memverifikasi persistensi kontak darurat penghuni yang termasuk F-03 P0.
+- **Hasil yang Diharapkan**: Profil menyimpan nama, hubungan, dan nomor kontak darurat sesuai validasi yang ditetapkan. Plat kendaraan/parkir tidak dikumpulkan pada P0.
 
 ---
 
 ### SKENARIO 17: Akses Buku Saku Panduan & Tata Tertib Kost (`SCR-P07`)
+- **Status**: Backlog; tata tertib digital tidak termasuk P0.
 - **Tujuan**: Memastikan penghuni dapat membaca tata tertib kost secara digital kapan saja.
 - **Hasil yang Diharapkan**: Modal menyajikan jam malam gerbang (23:00 WIB), aturan bertamu di ruang tamu umum, dan jadwal buang sampah.
 
 ---
 
-### SKENARIO 18: Pengajuan Rencana Check-Out / Notice to Vacate 30 Hari
+### SKENARIO 18: Pengajuan Permintaan Check-Out
 - **Tujuan**: Memfasilitasi penghuni yang tidak berencana memperpanjang sewa untuk memberikan pemberitahuan resmi kepada pengelola.
-- **Hasil yang Diharapkan**: Form merekam tanggal check-out, nomor rekening pengembalian deposit, alasan, dan mengirim notifikasi ke pengelola kost.
+- **Hasil yang Diharapkan**: Form mencatat Lease milik pemohon, tanggal check-out yang diminta, dan alasan opsional sebagai permintaan `PENDING` untuk ditinjau Owner. Sistem tidak meminta detail rekening refund dan tidak menetapkan minimum notice 30 hari pada P0.
 
 ---
 
 ### SKENARIO 19: Transparansi Status Saldo Deposit Jaminan (Escrow Tracking)
-- **Tujuan**: Menjamin ketenangan penyewa terkait kejelasan uang jaminan kamar yang dipegang pengelola.
-- **Hasil yang Diharapkan**: Kartu escrow samping menampilkan saldo Rp 500.000 aman tersimpan beserta syarat pengembalian 100%.
+- **Tujuan**: Menampilkan saldo deposit milik Tenant yang dihitung dari ledger deposit.
+- **Hasil yang Diharapkan**: Kartu menampilkan saldo ledger dan rincian setoran/pemakaian/refund milik Tenant. Tampilan tidak menyatakan dana disimpan terpisah atau menjanjikan refund 100%; Owner melakukan inspeksi dan rekonsiliasi saat check-out.
 
 ---
 
 ### SKENARIO 20: Transparansi Sub-Meteran Listrik kWh & Audit Pemakaian (`SCR-09M`)
+- **Status**: Backlog; model meteran/utilitas belum termasuk P0.
 - **Tujuan**: Mencegah sengketa penagihan listrik dengan menyediakan transparansi angka meteran awal, angka akhir, dan batas kuota gratis.
 - **Hasil yang Diharapkan**: Modal perbandingan meteran menampilkan angka awal (1.240 kWh) vs akhir (1.315 kWh) dengan status pemakaian 75 kWh di bawah kuota gratis 100 kWh.
 
 ---
 
 ### SKENARIO 21: Pratinjau Kuitansi Digital Lunas Bebas Navbar (`DOC-01`)
+- **Status**: Backlog; pembuatan/ekspor kwitansi tidak termasuk P0.
 - **Tujuan**: Memfasilitasi penghuni melihat bukti pembayaran resmi berstempel LUNAS, ber-QR code otentikasi, serta tombol cetak dan bagikan ke WhatsApp.
 - **Hasil yang Diharapkan**: Tampilan kwitansi formal standar `DOC-01` dengan stempel tanda air hijau dan tombol cetak dokumen.
 
@@ -260,15 +264,15 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 
 ---
 
-### SKENARIO 23: Penolakan Klaim Transfer oleh Pemilik Kost (`?status=rejected`)
-- **Tujuan**: Menguji alur ketika struk transfer yang dikirim penghuni tidak valid atau mutasi bank belum masuk saat diperiksa Pemilik Kost.
+### SKENARIO 23: Penolakan Klaim Pembayaran oleh Owner (`?status=rejected`)
+- **Tujuan**: Menguji alur ketika klaim pembayaran belum dapat diverifikasi oleh Owner.
 - **Kondisi Awal**: Buka URL: `WF-10-portal-penghuni.html?status=rejected`.
 - **Langkah Pengujian**:
   1. Periksa kartu tagihan sewa.
   2. Amati badge status: berubah menjadi merah *Destructive Triad* bertuliskan *"Klaim Pembayaran Ditolak Pemilik"*.
-  3. Amati kotak pemberitahuan alasan penolakan: *"Alasan Owner: Mutasi pada rekening BCA belum ditemukan untuk nominal Rp 1.550.000. Harap periksa tanggal efektif transfer atau unggah struk mutasi yang valid."*.
-  4. Periksa tombol aksi: tombol berubah menjadi **[Unggah Ulang Bukti Transfer]** dan tombol hubungi pemilik via WhatsApp.
-- **Hasil yang Diharapkan**: Penghuni memperoleh feedback transparan mengapa klaim bayar belum di-ACC tanpa kebingungan, serta dapat segera mengirim ulang bukti yang benar.
+  3. Amati alasan penolakan nonblank yang dicatat Owner.
+  4. Periksa bahwa Tenant dapat mengajukan klaim baru setelah penolakan, tanpa upload bukti transfer pada P0.
+- **Hasil yang Diharapkan**: Penolakan Payment tersimpan bersama alasan; klaim baru merupakan Payment baru dan tidak menimpa histori klaim sebelumnya.
 
 ---
 
@@ -285,6 +289,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 ---
 
 ### SKENARIO 25: Konfirmasi Rencana Perpanjang Sewa Mandiri (Lease Renewal Intent)
+- **Status**: Backlog; renewal mandiri bukan fitur P0. Penerbitan invoice tetap mengikuti Lease yang dibuat/diperbarui pengelola.
 - **Tujuan**: Memfasilitasi penghuni yang ingin mengonfirmasi kelanjutan sewa untuk bulan berikutnya tanpa menunggu ditagih.
 - **Kondisi Awal**: Masa sewa mendekati akhir periode berjalan (H-15).
 - **Langkah Pengujian**:
@@ -297,6 +302,7 @@ Sesuai ketetapan **Frozen Scope Medium (1 Properti Mandiri, 7 Kelompok P0)** pad
 ---
 
 ### SKENARIO 26: Validasi Batasan Ukuran & Format Berkas Struk Transfer
+- **Status**: Backlog; MVP tidak menerima atau menyimpan bukti transfer.
 - **Tujuan**: Memastikan dropzone mengamankan sistem dari pengunggahan berkas yang tidak sesuai ketentuan (F-05 & F-17).
 - **Kondisi Awal**: Buka modal konfirmasi pembayaran transfer.
 - **Langkah Pengujian**:

@@ -175,31 +175,40 @@ export async function seedFixtureData(client: SeedClient): Promise<void> {
 
     await client.query(
       `INSERT INTO tickets
-        (id, room_id, created_by_id, assigned_to_id, title, description, priority, status, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, 'Keran kamar menetes', 'Keran wastafel kamar demo menetes perlahan.',
-         'NORMAL', 'IN_PROGRESS', $5, $5)
-       ON CONFLICT (id) DO UPDATE SET
-        room_id = EXCLUDED.room_id,
-        created_by_id = EXCLUDED.created_by_id,
-        assigned_to_id = EXCLUDED.assigned_to_id,
-        title = EXCLUDED.title,
-        description = EXCLUDED.description,
-        priority = EXCLUDED.priority,
-        status = EXCLUDED.status,
-        closed_at = NULL,
-        reopened_at = NULL,
-        updated_at = EXCLUDED.updated_at`,
-      [ids.ticket, ids.room, ids.tenant, ids.staff, fixtureTimestamp],
+        (id, room_id, lease_id, created_by_id, status_changed_by_id, assigned_to_id,
+         title, description, category, priority, status, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $4, NULL, 'Keran kamar menetes',
+         'Keran wastafel kamar demo menetes perlahan.', 'PLUMBING', 'NORMAL', 'RECEIVED', $5, $5)
+       ON CONFLICT (id) DO NOTHING`,
+      [ids.ticket, ids.room, ids.lease, ids.tenant, fixtureTimestamp],
+    );
+
+    await client.query(
+      `INSERT INTO ticket_attachments
+        (id, ticket_id, uploaded_by_id, object_key, mime_type, size_bytes, upload_status, created_at)
+       VALUES ($1, $2, $3, 'fixture/ticket/seed-evidence.jpg', 'image/jpeg', 1024, 'PENDING_UPLOAD', $4)
+       ON CONFLICT (id) DO NOTHING`,
+      ["70000000-0000-4000-8000-000000000003", ids.ticket, ids.tenant, fixtureTimestamp],
+    );
+
+    await client.query(
+      `UPDATE tickets
+       SET assigned_to_id = $2, status_changed_by_id = $2, status = 'ASSIGNED'
+       WHERE id = $1 AND status = 'RECEIVED'`,
+      [ids.ticket, ids.staff],
+    );
+
+    await client.query(
+      `UPDATE tickets
+       SET status_changed_by_id = $2, status = 'IN_PROGRESS'
+       WHERE id = $1 AND status = 'ASSIGNED'`,
+      [ids.ticket, ids.staff],
     );
 
     await client.query(
       `INSERT INTO ticket_comments (id, ticket_id, author_id, body, visibility, created_at)
        VALUES ($1, $2, $3, 'Laporan demo sudah diterima dan sedang ditangani.', 'TENANT_VISIBLE', $4)
-       ON CONFLICT (id) DO UPDATE SET
-        ticket_id = EXCLUDED.ticket_id,
-        author_id = EXCLUDED.author_id,
-        body = EXCLUDED.body,
-        visibility = EXCLUDED.visibility`,
+       ON CONFLICT (id) DO NOTHING`,
       [ids.ticketComment, ids.ticket, ids.tenant, fixtureTimestamp],
     );
 
