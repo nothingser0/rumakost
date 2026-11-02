@@ -433,8 +433,10 @@ model Ticket {
   roomId               String         @map("room_id") @db.Uuid
   leaseId              String?        @map("lease_id") @db.Uuid
   createdById          String         @map("created_by_id") @db.Uuid
+  /// NULL only when the draft is cancelled automatically after seven days.
   statusChangedById    String?        @map("status_changed_by_id") @db.Uuid
   assignedToId         String?        @map("assigned_to_id") @db.Uuid
+  /// NULL only for a SYSTEM cancellation with reason DRAFT_EXPIRED.
   cancelledById        String?        @map("cancelled_by_id") @db.Uuid
   title                String
   description          String

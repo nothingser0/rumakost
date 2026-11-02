@@ -70,6 +70,7 @@
 - [M06-BE-04](#evidence-m06-be-04)
 - [M06-BE-05](#evidence-m06-be-05)
 - [M06-BE-06](#evidence-m06-be-06)
+- [M06-BE-10](#evidence-m06-be-10)
 
 ## Evidence
 
@@ -4385,3 +4386,140 @@ ok 11 - kegagalan audit membatalkan ledger dan idempotency
 # duration_ms 742.0682
 ```
 EXIT_CODE=0
+
+<a id="evidence-m06-be-10"></a>
+
+### Evidence M06-BE-10 - Expense, reversal, pagu bulanan, dan laporan finansial (2026-11-02)
+
+- Owner dan Staff dapat mencatat Expense dengan validasi nominal, teks, dan tanggal; Tenant ditolak.
+- Reversal hanya untuk Owner, penuh sesuai nominal Expense asal, beralasan, append-only, dan retry idempotent. Mutasi menyimpan AuditEvent dan IdempotencyKey dalam transaksi yang sama.
+- Pagu satu per bulan di-upsert dan perubahan diaudit. Laporan membedakan pagu belum diatur dari nol; realisasi hanya menjumlah Expense yang belum direversal pada bulan itu.
+- Laporan Owner memfilter periode, menghitung pemasukan dari alokasi Payment terverifikasi ke line RENT, mengecualikan pending, deposit, dan settlement escrow; koreksi payment/Expense terpisah mengikuti tanggal reversal. Arus kas adalah ringkasan transaksi internal, bukan rekonsiliasi bank.
+- Okupansi dihitung pada akhir periode dari Lease ACTIVE dan Room yang tidak diarsipkan; kamar maintenance tetap masuk kapasitas. SQL repository belum dijalankan terhadap PostgreSQL/Neon; Verify menggunakan fixture memori. Tidak ada migrasi diterapkan, akses Neon dilakukan, atau `.env.local` dibaca.
+
+Verify `npm run test -- reports`:
+
+```text
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs reports
+
+TAP version 13
+# Subtest: Owner and Staff can record Expense once with an idempotent retry
+ok 1 - Owner and Staff can record Expense once with an idempotent retry
+  ---
+  duration_ms: 15.9311
+  ...
+# Subtest: Expense input requires a positive amount, nonblank text, and a real date
+ok 2 - Expense input requires a positive amount, nonblank text, and a real date
+  ---
+  duration_ms: 10.5349
+  ...
+# Subtest: Tenant cannot record Expense; Staff cannot reverse Expense
+ok 3 - Tenant cannot record Expense; Staff cannot reverse Expense
+  ---
+  duration_ms: 1.9622
+  ...
+# Subtest: Owner reversal is full, append-only, reasoned, and idempotent
+ok 4 - Owner reversal is full, append-only, reasoned, and idempotent
+  ---
+  duration_ms: 3.9732
+  ...
+# Subtest: Owner can set one positive monthly budget and the operation audits each update
+ok 5 - Owner can set one positive monthly budget and the operation audits each update
+  ---
+  duration_ms: 4.6251
+  ...
+# Subtest: Owner report filters period, excludes deposit and pending money, and reconciles net cash
+ok 6 - Owner report filters period, excludes deposit and pending money, and reconciles net cash
+  ---
+  duration_ms: 7.2255
+  ...
+# Subtest: unconfigured monthly budget stays distinct from zero and reports empty actuals as zero
+ok 7 - unconfigured monthly budget stays distinct from zero and reports empty actuals as zero
+  ---
+  duration_ms: 1.6148
+  ...
+# Subtest: Staff and Tenant receive no financial report payload
+ok 8 - Staff and Tenant receive no financial report payload
+  ---
+  duration_ms: 2.7451
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 877.0877
+EXIT_CODE=0
+
+<a id="evidence-m06-db-55"></a>
+
+### Evidence M06-DB-55 - Expiry draft tiket oleh SYSTEM (2026-11-02)
+
+Implementasi DB membatasi expiry ke transisi draft berumur minimal 7 hari menjadi `CANCELLED`, alasan persis `DRAFT_EXPIRED`, `statusChangedById` dan `cancelledById` NULL, serta event `SYSTEM` tanpa actor. Label `DRAFT_EXPIRED` dicadangkan untuk job. Pembatalan manual tetap memerlukan AppUser yang sama pada `statusChangedById`/`cancelledById`. Migrasi SQL diuji pada fixture PGlite in-memory; hasil ini bukan pengganti PostgreSQL/Neon.
+
+Verify task belum lengkap: migration belum dijalankan pada Neon disposable. Neon CLI tidak tersedia (`npx --yes neonctl --help` tidak mengeluarkan output sebelum dihentikan), browser host melaporkan `Browser access host is unavailable`, dan tidak tersedia connector/API Neon pada sesi ini. `.env.local` tidak dibaca, secret tidak ditampilkan, dan branch Neon proyek tidak disentuh. M06-DB-55 tetap `[ ]`; belum ada persetujuan Owner.
+
+Raw `npx prisma validate --config prisma.verify.config.ts` (config sementara memakai URL sintetis dan sudah dihapus):
+
+```text
+Loaded Prisma config from prisma.verify.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+┌─────────────────────────────────────────────────────────┐
+│  Update available 7.10.1 -> 8.0.0-rc.29                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                           │
+└─────────────────────────────────────────────────────────┘
+The schema at prisma\schema.prisma is valid 🚀
+EXIT_CODE=0
+```
+
+Raw Verify migration PGlite in-memory disposable:
+
+```json
+{
+  "checks": {
+    "migration_applied_to_disposable_pglite": "PASS",
+    "expired_draft_system_cancelled_with_null_user_fields": "PASS",
+    "history_preserved_and_append_only": "PASS",
+    "expiry_before_seven_days_rejected": "PASS",
+    "wrong_system_reason_rejected": "PASS",
+    "system_transition_to_other_status_rejected": "PASS",
+    "system_cancellation_without_actor_requires_reserved_reason": "PASS",
+    "manual_user_cancel_preserves_matching_actor": "PASS",
+    "user_cannot_use_system_expiry_reason": "PASS",
+    "cancelled_ticket_is_terminal": "PASS",
+    "cancelled_user_actor_pair_rejects_null_status_actor": "PASS",
+    "USER_event_requires_actor_id": "PASS",
+    "SYSTEM_event_requires_null_actor_id": "PASS"
+  },
+  "failed": [],
+  "result": "PASS"
+}
+EXIT_CODE=0
+```
+
+Raw `git diff --check`:
+
+```text
+warning: in the working copy of 'docs/pm/evidence/M06-EVIDENCE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'prisma/schema.prisma', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/lib/errors/domain-error.mjs', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0
+```
+Raw pemeriksaan whitespace migration (file baru belum tercakup oleh `git diff --check` karena belum di-stage):
+
+```text
+MIGRATION_TRAILING_WHITESPACE_LINES=
+MIGRATION_FINAL_NEWLINE=True
+EXIT_CODE=0
+```
