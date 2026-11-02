@@ -76,6 +76,7 @@ const voidAttemptSchema = z.object({
   invoiceStatus: z.enum(["ISSUED", "VOID"]).nullable(),
   pendingPaymentCount: z.number().int().nonnegative(),
   activeVerifiedPaymentCount: z.number().int().nonnegative(),
+  depositSettlementCount: z.number().int().nonnegative(),
   resultInvoiceId: z.string().uuid().nullable(),
   resultVoidedAt: z.string().datetime({ offset: true }).nullable(),
   auditEventId: z.string().uuid().nullable(),
@@ -136,7 +137,17 @@ const invoiceSelect = `
        WHERE line.invoice_id = invoice.id
     ) AS totals
     CROSS JOIN LATERAL (
-      SELECT COALESCE(SUM(allocation.amount), 0)::text AS "amountPaid"
+      SELECT (
+               COALESCE(SUM(allocation.amount), 0)
+               + COALESCE((
+                   SELECT SUM(entry.amount)
+                     FROM deposit_ledger_entries AS entry
+                     JOIN invoice_lines AS applied_line
+                       ON applied_line.id = entry.invoice_line_id
+                    WHERE applied_line.invoice_id = invoice.id
+                      AND entry.kind = 'APPLIED_TO_RENT'
+                 ), 0)
+             )::numeric(12,2)::text AS "amountPaid"
         FROM payment_allocations AS allocation
         JOIN invoice_lines AS line ON line.id = allocation.invoice_line_id
         JOIN payments AS payment ON payment.id = allocation.payment_id
@@ -203,6 +214,9 @@ function throwVoidFailure(attempt: z.infer<typeof voidAttemptSchema>): never {
   if (attempt.activeVerifiedPaymentCount > 0) {
     throw new DomainError("VERIFIED_PAYMENT_UNREVERSED");
   }
+  if (attempt.depositSettlementCount > 0) {
+    throw new DomainError("INVOICE_HAS_DEPOSIT_SETTLEMENT");
+  }
   throw new DomainError("INTERNAL_ERROR");
 }
 
@@ -239,7 +253,14 @@ const VOID_INVOICE_SQL = `
                  SELECT 1 FROM payment_reversals AS reversal
                   WHERE reversal.payment_id = payment.id
                )
-           )::integer AS "activeVerifiedPaymentCount"
+           )::integer AS "activeVerifiedPaymentCount",
+           (
+             SELECT COUNT(*)::integer
+               FROM deposit_ledger_entries entry
+               JOIN invoice_lines line ON line.id = entry.invoice_line_id
+              WHERE line.invoice_id = (SELECT id FROM target)
+                AND entry.kind = 'APPLIED_TO_RENT'
+           ) AS "depositSettlementCount"
       FROM payments AS payment
       JOIN target ON target.id = payment.invoice_id
   ),
@@ -253,6 +274,7 @@ const VOID_INVOICE_SQL = `
        AND target.status = 'ISSUED'
        AND payment_state."pendingPaymentCount" = 0
        AND payment_state."activeVerifiedPaymentCount" = 0
+       AND payment_state."depositSettlementCount" = 0
        AND NOT EXISTS (SELECT 1 FROM existing)
      RETURNING invoice.id,
                to_char(invoice.voided_at AT TIME ZONE 'UTC',
@@ -305,6 +327,8 @@ const VOID_INVOICE_SQL = `
            AS "pendingPaymentCount",
          COALESCE((SELECT "activeVerifiedPaymentCount" FROM payment_state), 0)::integer
            AS "activeVerifiedPaymentCount",
+         COALESCE((SELECT "depositSettlementCount" FROM payment_state), 0)::integer
+           AS "depositSettlementCount",
          (SELECT id FROM updated) AS "resultInvoiceId",
          (SELECT "voidedAt" FROM updated) AS "resultVoidedAt",
          (SELECT id FROM audit) AS "auditEventId",

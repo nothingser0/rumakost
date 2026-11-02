@@ -1,7 +1,12 @@
 import { createHash } from "node:crypto";
 import { DomainError, mapPersistenceError } from "../errors/domain-error.mjs";
 import { calculateInitialInvoice } from "../billing/initial-invoice.mjs";
-import { createLeaseSchema } from "../validation/operations.mjs";
+import {
+  createLeaseSchema,
+  endLeaseSchema,
+  requestLeaseEndSchema,
+  reviewLeaseEndRequestSchema,
+} from "../validation/operations.mjs";
 
 const LEASE_CREATION_ROLES = ["OWNER", "STAFF"];
 
@@ -119,5 +124,84 @@ export async function createLease({ actor, input, repository, now = () => new Da
     status: statusForDates(normalizedData, jakartaDate(now())),
     initialInvoice,
     requestHash: requestFingerprint(actor.id, normalizedData),
+  }));
+}
+
+function requireRole(actor, role) {
+  if (!actor || !actor.isActive || actor.mustChangePassword) {
+    throw new DomainError("UNAUTHENTICATED");
+  }
+  if (actor.role !== role) {
+    throw new DomainError(role === "OWNER" ? "NOT_OWNER" : "FORBIDDEN");
+  }
+}
+
+function parseLifecycleInput(schema, input) {
+  const result = schema.safeParse(input);
+  if (!result.success) throw result.error;
+  return result.data;
+}
+
+function lifecycleFingerprint(operation, actorId, data) {
+  const request = { ...data };
+  delete request.idempotencyKey;
+  return createHash("sha256")
+    .update(JSON.stringify({ operation, actorId, request }))
+    .digest("hex");
+}
+
+export async function requestLeaseEnd({
+  actor,
+  input,
+  repository,
+  today = jakartaDate(new Date()),
+}) {
+  requireRole(actor, "TENANT");
+  const data = parseLifecycleInput(requestLeaseEndSchema, input);
+  return persist(() => repository.requestLeaseEnd({
+    actorId: actor.id,
+    leaseId: data.leaseId,
+    requestedEndOn: data.requestedEndOn,
+    reason: data.reason ?? null,
+    localDate: today,
+    idempotencyKey: data.idempotencyKey,
+    requestHash: lifecycleFingerprint("requestLeaseEnd", actor.id, data),
+  }));
+}
+
+export async function endLease({
+  actor,
+  input,
+  repository,
+  today = jakartaDate(new Date()),
+}) {
+  requireRole(actor, "OWNER");
+  const data = parseLifecycleInput(endLeaseSchema, input);
+  return persist(() => repository.endLease({
+    actorId: actor.id,
+    leaseId: data.leaseId,
+    actualEndOn: data.actualEndOn,
+    localDate: today,
+    idempotencyKey: data.idempotencyKey,
+    requestHash: lifecycleFingerprint("endLease", actor.id, data),
+  }));
+}
+
+export async function reviewLeaseEndRequest({
+  actor,
+  input,
+  repository,
+  today = jakartaDate(new Date()),
+}) {
+  requireRole(actor, "OWNER");
+  const data = parseLifecycleInput(reviewLeaseEndRequestSchema, input);
+  return persist(() => repository.reviewLeaseEndRequest({
+    actorId: actor.id,
+    requestId: data.requestId,
+    decision: data.decision,
+    actualEndOn: data.actualEndOn ?? null,
+    localDate: today,
+    idempotencyKey: data.idempotencyKey,
+    requestHash: lifecycleFingerprint("reviewLeaseEndRequest", actor.id, data),
   }));
 }

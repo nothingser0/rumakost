@@ -223,6 +223,19 @@ export const endLeaseSchema = strictSchema(
   }, true),
 );
 
+export const reviewLeaseEndRequestSchema = strictSchema(
+  idempotencyShape({
+    requestId: idSchema,
+    decision: z.enum(["APPROVE", "REJECT"]),
+    actualEndOn: dateOnlySchema.optional(),
+  }, true),
+).refine(
+  (value) => value.decision === "APPROVE"
+    ? value.actualEndOn !== undefined
+    : value.actualEndOn === undefined,
+  { path: ["actualEndOn"] },
+);
+
 export const reconcileCheckoutDepositSchema = strictSchema(
   idempotencyShape({
     leaseId: idSchema,
@@ -296,6 +309,13 @@ export const settleInvoiceFromDepositSchema = strictSchema(
     invoiceLineId: idSchema,
     amount: positiveMoneySchema,
     reason: optionalReasonSchema,
+  }, true),
+);
+
+export const resolveCheckoutRefundSchema = strictSchema(
+  idempotencyShape({
+    entryId: idSchema,
+    status: z.enum(["PAID", "REJECTED"]),
   }, true),
 );
 
@@ -449,6 +469,7 @@ export const operationSchemas = Object.freeze({
   createLease: createLeaseSchema,
   requestLeaseEnd: requestLeaseEndSchema,
   endLease: endLeaseSchema,
+  reviewLeaseEndRequest: reviewLeaseEndRequestSchema,
   reconcileCheckoutDeposit: reconcileCheckoutDepositSchema,
   runInvoiceGeneration: runInvoiceGenerationSchema,
   markInvoiceDelivered: markInvoiceDeliveredSchema,
@@ -458,6 +479,7 @@ export const operationSchemas = Object.freeze({
   rejectPayment: rejectPaymentSchema,
   reversePayment: reversePaymentSchema,
   settleInvoiceFromDeposit: settleInvoiceFromDepositSchema,
+  resolveCheckoutRefund: resolveCheckoutRefundSchema,
   recordExpense: recordExpenseSchema,
   reverseExpense: reverseExpenseSchema,
   setOperatingBudget: setOperatingBudgetSchema,

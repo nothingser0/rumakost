@@ -300,14 +300,14 @@ export function createLeaseRepository() {
           `SELECT EXISTS (
                     SELECT 1 FROM leases
                      WHERE room_id = $1::uuid
-                       AND status IN ('SCHEDULED', 'ACTIVE')
+                       AND status <> 'CANCELLED'
                        AND daterange(starts_on, ends_on, '[]')
                            && daterange($3::date, $4::date, '[]')
                   ) AS "roomConflict",
                   EXISTS (
                     SELECT 1 FROM leases
                      WHERE tenant_user_id = $2::uuid
-                       AND status IN ('SCHEDULED', 'ACTIVE')
+                       AND status <> 'CANCELLED'
                        AND daterange(starts_on, ends_on, '[]')
                            && daterange($3::date, $4::date, '[]')
                   ) AS "tenantConflict"`,
@@ -358,14 +358,14 @@ export function createLeaseRepository() {
                   NOT EXISTS (
                     SELECT 1 FROM leases AS existing_room_lease
                      WHERE existing_room_lease.room_id = room.id
-                       AND existing_room_lease.status IN ('SCHEDULED', 'ACTIVE')
+                       AND existing_room_lease.status <> 'CANCELLED'
                        AND daterange(existing_room_lease.starts_on, existing_room_lease.ends_on, '[]')
                            && daterange($5::date, $6::date, '[]')
                   )
                   AND NOT EXISTS (
                     SELECT 1 FROM leases AS existing_tenant_lease
                      WHERE existing_tenant_lease.tenant_user_id = tenant.id
-                       AND existing_tenant_lease.status IN ('SCHEDULED', 'ACTIVE')
+                       AND existing_tenant_lease.status <> 'CANCELLED'
                        AND daterange(existing_tenant_lease.starts_on, existing_tenant_lease.ends_on, '[]')
                            && daterange($5::date, $6::date, '[]')
                   )

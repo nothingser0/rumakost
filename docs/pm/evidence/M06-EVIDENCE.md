@@ -4166,4 +4166,222 @@ ok 6 - void succeeds after every pending payment is rejected and every verified 
 # duration_ms 673.8744
 ```
 
-- M06-BE-06 Verify lulus dan task menunggu review Owner; task belum ditandai selesai.
+- M06-BE-06 disetujui Owner pada 2026-11-02 oleh zeenn.
+
+
+<a id="evidence-m06-be-07"></a>
+
+### Evidence M06-BE-07 - Pencatatan klaim pembayaran (2026-11-02)
+
+- `recordPaymentAction` mengautentikasi Owner, Staff, dan Tenant. Repository memeriksa ulang AppUser aktif dan role; Tenant hanya dapat mengklaim invoice Lease miliknya yang berstatus aktif pada tanggal `Asia/Jakarta`. Owner/Staff tetap dapat mencatat pembayaran tunggakan pascakontrak.
+- Klaim dibuat sebagai `PENDING`. Saldo dihitung dari alokasi Payment `VERIFIED` yang belum direversal; klaim `PENDING`/`REJECTED` dan alokasi payment yang direversal tidak mengurangi saldo. Nominal di atas saldo terbuka ditolak, dan referensi opsional dibatasi unik database.
+- Payment, audit `PAYMENT_RECORDED`, dan respons `IdempotencyKey` disimpan dalam transaksi yang sama. Advisory lock idempotency dan row lock invoice melindungi retry serta pembacaan saldo terhadap mutasi invoice yang terserialisasi.
+- Verify memakai repository memori dengan fixture sintetis; 6 test lulus. SQL repository belum dijalankan terhadap PostgreSQL/Neon. Tidak ada migrasi, Neon CLI/query, atau pembacaan `.env.local`.
+
+Verify `npm run test -- payments-record`:
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs payments-record
+
+TAP version 13
+# Subtest: Owner, Staff, and Tenant can record pending claims; Tenant ownership and active Lease are enforced
+ok 1 - Owner, Staff, and Tenant can record pending claims; Tenant ownership and active Lease are enforced
+  ---
+  duration_ms: 22.8979
+  ...
+# Subtest: Tenant cannot record a claim against another Tenant's invoice
+ok 2 - Tenant cannot record a claim against another Tenant's invoice
+  ---
+  duration_ms: 0.7704
+  ...
+# Subtest: void invoices are closed and a fully paid issued invoice rejects a new amount as overpayment
+ok 3 - void invoices are closed and a fully paid issued invoice rejects a new amount as overpayment
+  ---
+  duration_ms: 73.8893
+  ...
+# Subtest: rejects invalid methods, nonpositive or malformed amounts, and claims above outstanding balance
+ok 4 - rejects invalid methods, nonpositive or malformed amounts, and claims above outstanding balance
+  ---
+  duration_ms: 16.1387
+  ...
+# Subtest: pending claims do not reduce open balance; only active verified allocations count
+ok 5 - pending claims do not reduce open balance; only active verified allocations count
+  ---
+  duration_ms: 7.5018
+  ...
+# Subtest: optional reference must be unique and idempotency replay returns one persisted claim
+ok 6 - optional reference must be unique and idempotency replay returns one persisted claim
+  ---
+  duration_ms: 7.9599
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 852.4873
+EXIT_CODE=0
+```
+
+M06-BE-07 disetujui Owner pada 2026-11-02 oleh zeenn.
+
+<a id="evidence-m06-be-08"></a>
+
+### Evidence M06-BE-08 - Review, alokasi, rejection, dan reversal payment (2026-11-02)
+
+- Action verifikasi, penolakan, dan reversal hanya menerima Owner. Scope yang dibekukan mengizinkan Owner memverifikasi klaim yang ia catat sendiri; Staff tidak dapat mereview pembayaran.
+- Verifikasi mengunci key idempotency, Payment, lalu Invoice. Alokasi memakai saldo line terbaru dan urutan RENT lalu DEPOSIT. PaymentAllocation, perubahan status, AuditEvent, IdempotencyKey, dan pencatatan DepositLedgerEntry COLLECTED berada dalam satu transaksi. Audit atau pencatatan escrow yang gagal membatalkan transaksi.
+- Respons verifikasi, rejection, dan reversal membawa amountPaid serta amountOutstanding hasil kalkulasi dalam transaksi. Reversal membuat PaymentReversal penuh; trigger migration menambahkan COLLECTION_REVERSED per alokasi deposit. Backend tidak menggandakan kompensasi. Guard DB menolak reversal bila escrow bebas tidak mencukupi, termasuk reservasi refund pending.
+- Verify memakai repository memori dan fixture sintetis; 9 test lulus, termasuk retry, simulasi concurrency/overpayment, campuran alokasi, reversal escrow, dan rollback audit. SQL repository belum dijalankan terhadap PostgreSQL/Neon. Tidak ada migrasi, Neon CLI/query, atau pembacaan .env.local.
+- M06-BE-13 menjadi audit coverage final setelah mutasi domain selesai; M06-BE-08/09/10/11/12/16/18 dan M06-AUTH-01 tidak lagi menunggu task audit final untuk menulis audit inline.
+
+Verify npm run test -- payment-ledger:
+
+    > rumakost@0.1.0 test
+    > node scripts/run-tests.mjs payment-ledger
+
+    TAP version 13
+    # Subtest: Owner may verify their own claim and allocations use RENT before DEPOSIT
+    ok 1 - Owner may verify their own claim and allocations use RENT before DEPOSIT
+      ---
+      duration_ms: 20.8827
+      ...
+    # Subtest: allocation fills outstanding RENT before DEPOSIT after earlier verified payments
+    ok 2 - allocation fills outstanding RENT before DEPOSIT after earlier verified payments
+      ---
+      duration_ms: 1.2956
+      ...
+    # Subtest: only Owner may verify or reject a payment
+    ok 3 - only Owner may verify or reject a payment
+      ---
+      duration_ms: 2.1565
+      ...
+    # Subtest: rejection requires a reason and rejected payments cannot be verified or reversed
+    ok 4 - rejection requires a reason and rejected payments cannot be verified or reversed
+      ---
+      duration_ms: 18.6391
+      ...
+    # Subtest: concurrent verification serializes invoice balance and rejects an overpayment race
+    ok 5 - concurrent verification serializes invoice balance and rejects an overpayment race
+      ---
+      duration_ms: 2.4092
+      ...
+    # Subtest: full reversal compensates deposit and replay creates only one audit
+    ok 6 - full reversal compensates deposit and replay creates only one audit
+      ---
+      duration_ms: 4.8543
+      ...
+    # Subtest: reversal fails atomically when escrow is reserved
+    ok 7 - reversal fails atomically when escrow is reserved
+      ---
+      duration_ms: 2.2167
+      ...
+    # Subtest: audit failure rolls back verification and leaves no allocations or idempotency record
+    ok 8 - audit failure rolls back verification and leaves no allocations or idempotency record
+      ---
+      duration_ms: 5.5931
+      ...
+    # Subtest: reusing an idempotency key with different rejection content conflicts
+    ok 9 - reusing an idempotency key with different rejection content
+      ---
+      duration_ms: 5.096
+      ...
+    1..9
+    # tests 9
+    # suites 0
+    # pass 9
+    # fail 0
+    # cancelled 0
+    # skipped 0
+    # todo 0
+    # duration_ms 806.4214
+    EXIT_CODE=0
+
+<a id="evidence-m06-be-09"></a>
+
+### Evidence M06-BE-09 - Siklus Lease selesai dan rekonsiliasi deposit (2026-11-02)
+
+- Tenant dapat meminta check-out untuk Lease miliknya; Owner dapat menolak permintaan, menyetujuinya sambil menetapkan tanggal aktual, atau mengakhiri Lease secara langsung. Persetujuan/akhir Lease, AuditEvent, dan IdempotencyKey disimpan atomik. Pengakhiran langsung menyetujui permintaan pending bila ada.
+- Rentang `endsOn` inklusif dipertahankan. Pembuatan Lease mengunci Tenant dan Room serta memeriksa rentang Lease yang bukan `CANCELLED`, termasuk Lease `ENDED`, sehingga kamar/penghuni baru tidak dapat tumpang tindih pada hari akhir.
+- Settlement deposit hanya untuk line `RENT` invoice `ISSUED`; ia mengurangi saldo line, saldo invoice yang dibaca, batas klaim pembayaran, alokasi/verifikasi payment berikutnya, dan escrow. Settlement dicatat append-only sebagai `APPLIED_TO_RENT`. Invoice yang telah memakai settlement deposit tidak dapat di-void.
+- Check-out hanya dapat direkonsiliasi saat Lease `ENDED`. Potongan masuk sebagai `WITHHELD_AT_CHECKOUT`; refund masuk `REFUNDED/PENDING`. Owner dapat menandai refund `PAID` atau `REJECTED` satu kali; status `REJECTED` melepas reservasi escrow, sedangkan `PAID` tetap mengurangi saldo tersedia. Lock Lease mengurutkan settlement, refund, dan reversal deposit.
+- Verify pertama menemukan satu fixture test yang mengharapkan `OVERPAYMENT` padahal nominal uji sudah di bawah saldo line; fixture dipisah antara batas invoice dan batas escrow. Verify akhir lulus 11/11. Semua repository test menggunakan fixture memori; SQL PostgreSQL/Neon belum dijalankan. Tidak ada migration apply, Neon CLI/query, atau pembacaan `.env.local`.
+
+Verify `npm run test -- deposits` (rerun akhir setelah koreksi fixture):
+
+```text
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs deposits
+
+TAP version 13
+# Subtest: Tenant hanya dapat meminta check-out Lease miliknya dan retry tidak menggandakan event
+ok 1 - Tenant hanya dapat meminta check-out Lease miliknya dan retry tidak menggandakan event
+  ---
+  duration_ms: 27.8585
+  ...
+# Subtest: permintaan check-out ditolak jika tanggal invalid atau sudah ada permintaan pending
+ok 2 - permintaan check-out ditolak jika tanggal invalid atau sudah ada permintaan pending
+  ---
+  duration_ms: 7.0938
+  ...
+# Subtest: Owner dapat menolak permintaan tanpa mengakhiri kontrak dan tidak dapat meninjau ulang
+ok 3 - Owner dapat menolak permintaan tanpa mengakhiri kontrak dan tidak dapat meninjau ulang
+  ---
+  duration_ms: 24.0447
+  ...
+# Subtest: persetujuan Owner mengakhiri Lease pada tanggal aktual dan membebaskan Room
+ok 4 - persetujuan Owner mengakhiri Lease pada tanggal aktual dan membebaskan Room
+  ---
+  duration_ms: 2.4164
+  ...
+# Subtest: Owner mengakhiri Lease langsung hanya dengan tanggal aktual yang valid
+ok 5 - Owner mengakhiri Lease langsung hanya dengan tanggal aktual yang valid
+  ---
+  duration_ms: 11.5195
+  ...
+# Subtest: settlement deposit mengurangi saldo line RENT dan escrow secara atomik serta idempotent
+ok 6 - settlement deposit mengurangi saldo line RENT dan escrow secara atomik serta idempotent
+  ---
+  duration_ms: 10.6852
+  ...
+# Subtest: settlement menolak nominal di atas saldo sewa dan saldo escrow serta role bukan Owner
+ok 7 - settlement menolak nominal di atas saldo sewa dan saldo escrow serta role bukan Owner
+  ---
+  duration_ms: 6.4014
+  ...
+# Subtest: rekonsiliasi hanya setelah Lease selesai; refund pending dicadangkan hingga dibayar atau ditolak
+ok 8 - rekonsiliasi hanya setelah Lease selesai; refund pending dicadangkan hingga dibayar atau ditolak
+  ---
+  duration_ms: 25.3721
+  ...
+# Subtest: saldo tersedia memperhitungkan reversal dan seluruh escrow yang terpakai/direservasi
+ok 9 - saldo tersedia memperhitungkan reversal dan seluruh escrow yang terpakai/direservasi
+  ---
+  duration_ms: 10.3305
+  ...
+# Subtest: dua settlement bersamaan tidak dapat memakai escrow yang sama
+ok 10 - dua settlement bersamaan tidak dapat memakai escrow yang sama
+  ---
+  duration_ms: 13.0557
+  ...
+# Subtest: kegagalan audit membatalkan ledger dan idempotency
+ok 11 - kegagalan audit membatalkan ledger dan idempotency
+  ---
+  duration_ms: 1.9521
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 742.0682
+```
+EXIT_CODE=0
