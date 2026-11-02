@@ -64,6 +64,12 @@
 - [M06-DB-51](#evidence-m06-db-51)
 - [M06-DB-52](#evidence-m06-db-52)
 - [M06-DB-53](#evidence-m06-db-53)
+- [M06-BE-01](#evidence-m06-be-01)
+- [M06-BE-02](#evidence-m06-be-02)
+- [M06-BE-03](#evidence-m06-be-03)
+- [M06-BE-04](#evidence-m06-be-04)
+- [M06-BE-05](#evidence-m06-be-05)
+- [M06-BE-06](#evidence-m06-be-06)
 
 ## Evidence
 
@@ -3694,3 +3700,470 @@ MIGRATION_FINAL_NEWLINE=True
 ```
 
 Owner menyetujui M06-DB-54 pada 2026-11-01. Status TODO diubah menjadi `[x]` dan approval dicatat sebagai `Approved: 2026-11-01 by zeenn`. Tidak ada perubahan schema/migration setelah Verify; migrasi belum diterapkan ke Neon dan task BE belum dimulai.
+
+<a id="evidence-m06-be-01"></a>
+
+### Evidence M06-BE-01 — Validasi input dan error domain bersama (2026-11-02)
+
+- Menyediakan 40 schema input server untuk operasi M05. Perubahan sandi tidak memiliki schema server karena credential tetap langsung ke Neon Auth client/provider sesuai kontrak.
+- Schema memakai object strict, normalisasi nama/email/kode kamar/nominal, tanggal kalender valid, E.164, rentang tarif/deposit, dimensi berpasangan, dan idempotency key wajib untuk mutasi yang dapat menggandakan transaksi finansial atau histori tiket.
+- Error Zod, Prisma, Neon Auth, storage provider, dan error tak dikenal dipetakan ke kode/status stabil; detail SQL, provider, token, dan nilai payload tidak dikembalikan.
+- Owner menyetujui patokan uang `NUMERIC(12,2)` pada 2026-11-02. Kalimat M05 yang menyebut `NUMERIC(14,2)` diselaraskan dengan FSD, Prisma, dan migrasi DB.
+- Aturan format media tetap perlu diselesaikan pada M06-BE-12: FSD menyebut MP4/MOV, tetapi constraint DB saat ini menerima MP4. Schema upload pada task ini memvalidasi bentuk metadata; allowlist/limit format ditangani bersama keputusan BE-12.
+- TODO M06-BE-01 tetap `[ ]` menunggu review Owner.
+
+Verify `npm run test -- validation`:
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs validation
+
+TAP version 13
+# Subtest: exposes strict schemas for each M05 server operation
+ok 1 - exposes strict schemas for each M05 server operation
+  ---
+  duration_ms: 11.7752
+  ...
+# Subtest: normalizes account names and emails without accepting client role
+ok 2 - normalizes account names and emails without accepting client role
+  ---
+  duration_ms: 3.8186
+  ...
+# Subtest: normalizes money strings and enforces numeric(12,2) boundaries
+ok 3 - normalizes money strings and enforces numeric(12,2) boundaries
+  ---
+  duration_ms: 7.7985
+  ...
+# Subtest: enforces room rent limits and paired positive dimensions
+ok 4 - enforces room rent limits and paired positive dimensions
+  ---
+  duration_ms: 9.7015
+  ...
+# Subtest: rejects impossible dates and invalid lease ranges
+ok 5 - rejects impossible dates and invalid lease ranges
+  ---
+  duration_ms: 5.0433
+  ...
+# Subtest: requires emergency contact name and phone to change together
+ok 6 - requires emergency contact name and phone to change together
+  ---
+  duration_ms: 4.5541
+  ...
+# Subtest: maps provider, persistence, validation, and unknown errors safely
+ok 7 - maps provider, persistence, validation, and unknown errors safely
+  ---
+  duration_ms: 3.8433
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 784.3534
+EXIT_CODE=0
+```
+
+Catatan waktu: pernyataan task BE belum dimulai pada catatan M06-DB-54 di atas berlaku saat Verify DB54, 2026-11-01. M06-BE-01 dimulai pada 2026-11-02.
+
+### Evidence M06-BE-02 — Operasi kamar dan katalog lantai (2026-11-02)
+
+- Menambahkan Server Actions untuk daftar/baca, buat, ubah, arsip, dan pulihkan Floor/Room. Setiap mutasi memeriksa sesi dan role; hanya Owner mengubah katalog, sementara Staff hanya mengubah status fisik Room. Tenant hanya membaca Room yang punya riwayat Lease atas namanya.
+- Validasi server menggunakan schema M06-BE-01: kode Room trim-uppercase, nama Floor trim + NFC dan kunci lowercase, dimensi berpasangan, rentang uang, cursor, dan batas daftar default 20/maksimum 100.
+- Deposit default dibuat server sebesar 50% tarif dan dibulatkan ke kelipatan Rp50.000 terdekat; nilai ini hanya saran awal. Update deposit hanya tersedia untuk Owner.
+- Query database memakai parameter terikat dan DTO terbatas; tidak ada operasi hard-delete. Error unique, FK, batas DB, dan konflik lifecycle dipetakan ke kode aman. Semua tes menggunakan repository in-memory sintetis.
+- Verify pertama menemukan ekspektasi test pembulatan Rp150.000 yang salah; contoh WF-03 menetapkan pembulatan Rp875.000 menjadi Rp900.000, sehingga nilai tepat di tengah dibulatkan ke atas. Ekspektasi dikoreksi dan Verify final lulus.
+- Tidak membuat akun, menjalankan Neon CLI, membaca `.env.local`, menjalankan migrasi, atau mengirim query ke Neon pada Verify ini.
+- Catatan workspace saat Verify BE-02: file `prisma/migrations/20261101330000_wf03_room_operational_rules/migration.sql` kosong dan suite tidak memverifikasinya. Pada 2026-11-02, atas persetujuan Owner, migrasi dipulihkan dari Git (4.1 KB); tidak menjalankan migrasi atau mengakses Neon.
+- M06-BE-01 disetujui Owner lewat instruksi “ok lanjut” pada 2026-11-02. M06-BE-02 disetujui Owner lewat instruksi “ok lanjut” pada 2026-11-02.
+
+Verify `npm run test -- rooms-floors`:
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs rooms-floors
+
+TAP version 13
+# Subtest: normalizes floor names and rejects collisions after normalization
+ok 1 - normalizes floor names and rejects collisions after normalization
+  ---
+  duration_ms: 18.0714
+  ...
+# Subtest: normalizes room codes and calculates the approved default deposit
+ok 2 - normalizes room codes and calculates the approved default deposit
+  ---
+  duration_ms: 17.0364
+  ...
+# Subtest: rejects room codes that collide after trimming and uppercasing
+ok 3 - rejects room codes that collide after trimming and uppercasing
+  ---
+  duration_ms: 4.1064
+  ...
+# Subtest: rejects room-code collisions after normalization during updates
+ok 4 - rejects room-code collisions after normalization during updates
+  ---
+  duration_ms: 8.3957
+  ...
+# Subtest: enforces money, dimensions, and paired dimension boundaries
+ok 5 - enforces money, dimensions, and paired dimension boundaries
+  ---
+  duration_ms: 14.1774
+  ...
+# Subtest: allows Staff to change only room physical status
+ok 6 - allows Staff to change only room physical status
+  ---
+  duration_ms: 1.9801
+  ...
+# Subtest: blocks room archive and physical status changes while a lease is scheduled or active
+ok 7 - blocks room archive and physical status changes while a lease is scheduled or active
+  ---
+  duration_ms: 5.3137
+  ...
+# Subtest: floor archive waits for active room records; restore requires an active floor
+ok 8 - floor archive waits for active room records; restore requires an active floor
+  ---
+  duration_ms: 3.2668
+  ...
+# Subtest: allows Tenant to read only rooms connected to their own lease history
+ok 9 - allows Tenant to read only rooms connected to their own lease history
+  ---
+  duration_ms: 1.6084
+  ...
+# Subtest: bounds room and floor lists to 20 by default and 100 maximum
+ok 10 - bounds room and floor lists to 20 by default and 100 maximum
+  ---
+  duration_ms: 8.912
+  ...
+# Subtest: maps database race conflicts to stable room and floor errors
+ok 11 - maps database race conflicts to stable room and floor errors
+  ---
+  duration_ms: 4.1621
+  ...
+# Subtest: normalizes floor edits and rejects collisions after normalization
+ok 12 - normalizes floor edits and rejects collisions after normalization
+  ---
+  duration_ms: 3.6116
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 811.0159
+EXIT_CODE=0
+```
+
+
+<a id="evidence-m06-be-03"></a>
+
+### Evidence M06-BE-03 - Pembuatan Lease atomik (2026-11-02)
+
+- Owner menyetujui M06-BE-03 pada 2026-11-02; task ditutup di `TODO.md`.
+- Menambahkan Server Action `createLeaseAction` di `src/actions/leases.ts`; aksi mengotorisasi Owner/Staff pada server, mengambil `createdById` dari sesi, lalu memperbarui cache daftar kontrak, penghuni, dan tagihan.
+- `src/lib/leases/operations.mjs` memvalidasi payload ketat, menolak caller Tenant, membuat fingerprint idempotensi, menghitung status Lease memakai tanggal `Asia/Jakarta`, dan memanggil kalkulator invoice perdana M06-BE-04.
+- `src/lib/leases/repository.ts` menjalankan query berurutan melalui satu transaksi Neon HTTP. Transaksi mengunci row AppUser dan Room, mengecek Tenant aktif beserta TenantProfile, status/arsip Room dan Floor, mengecek rentang konflik inklusif, lalu menyimpan Lease, Invoice `INITIAL`, line `RENT`/`DEPOSIT`, dan respons `IdempotencyKey` bersama. Exclusion constraints DB-02/19 dan trigger DB-26 tetap menjadi pagar integritas terhadap race.
+- Retry dengan key dan payload sama mengembalikan respons tersimpan; payload berbeda dengan key sama ditolak sebagai konflik. Error database dipetakan ke kode domain yang aman.
+- `tests/leases/leases.test.mjs` memakai repository memori dengan fixture sintetis untuk role/actor sesi, account/profile Tenant, status tanggal, overlap inklusif, dua create bersamaan, archived Room/Floor, maintenance, rollback invoice, serta retry berurutan dan bersamaan. Test ini tidak terhubung ke PostgreSQL/Neon; transaksi SQL belum dijalankan terhadap database.
+- Verify pertama gagal 3 assertion karena test mengharapkan error domain alih-alih `ZodError` dan mengharapkan Lease future berstatus `ACTIVE`; ekspektasi test diperbaiki sebelum Verify akhir.
+- Tidak menjalankan migrasi, Neon CLI/query, atau membaca `.env.local`.
+
+Verify akhir `npm run test -- leases`:
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs leases
+
+TAP version 13
+# Subtest: allows Owner and Staff and records the authenticated actor
+ok 1 - allows Owner and Staff and records the authenticated actor
+  ---
+  duration_ms: 80.2551
+  ...
+# Subtest: rejects Tenant callers and client-supplied actor fields
+ok 2 - rejects Tenant callers and client-supplied actor fields
+  ---
+  duration_ms: 4.8278
+  ...
+# Subtest: validates calendar dates and determines Lease status in Jakarta time
+ok 3 - validates calendar dates and determines Lease status in Jakarta time
+  ---
+  duration_ms: 14.5603
+  ...
+# Subtest: requires an active Tenant account and TenantProfile
+ok 4 - requires an active Tenant account and TenantProfile
+  ---
+  duration_ms: 3.9138
+  ...
+# Subtest: rejects archived rooms, archived floors, and rooms under maintenance
+ok 5 - rejects archived rooms, archived floors, and rooms under maintenance
+  ---
+  duration_ms: 10.9076
+  ...
+# Subtest: treats Lease end dates as inclusive for room and Tenant overlap
+ok 6 - treats Lease end dates as inclusive for room and Tenant overlap
+  ---
+  duration_ms: 7.852
+  ...
+# Subtest: serializes competing creates so only one overlapping room Lease succeeds
+ok 7 - serializes competing creates so only one overlapping room Lease succeeds
+  ---
+  duration_ms: 5.4698
+  ...
+# Subtest: serializes competing creates so one Tenant cannot hold overlapping Leases
+ok 8 - serializes competing creates so one Tenant cannot hold overlapping Leases
+  ---
+  duration_ms: 3.3988
+  ...
+# Subtest: rolls back Lease and idempotency when initial invoice creation fails
+ok 9 - rolls back Lease and idempotency when initial invoice creation fails
+  ---
+  duration_ms: 5.2521
+  ...
+# Subtest: returns the stored result on an identical idempotent retry
+ok 10 - returns the stored result on an identical idempotent retry
+  ---
+  duration_ms: 8.7275
+  ...
+# Subtest: collapses simultaneous retries with one idempotency key into one Lease
+ok 11 - collapses simultaneous retries with one idempotency key into one Lease
+  ---
+  duration_ms: 4.5421
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 789.4999
+EXIT_CODE=0
+```
+
+<a id="evidence-m06-be-04"></a>
+
+### Evidence M06-BE-04 - Kalkulator invoice perdana dan prorata (2026-11-02)
+
+- Owner menyetujui M06-BE-04 pada 2026-11-02; task ditutup di `TODO.md`.
+- Menambahkan kalkulator murni di `src/lib/billing/initial-invoice.mjs` beserta entry point TypeScript `src/lib/billing/initial-invoice.ts`.
+- Mode `PRORATA_TO_MONTH_END` menghitung hari check-in sampai akhir bulan secara inklusif memakai rumus M05 dan membulatkan nominal ke Rp1.000 terdekat; nilai tepat di tengah dibulatkan ke atas.
+- Mode `FULL_MONTH_ANNIVERSARY` menagih satu bulan penuh. Periode invoice berakhir sehari sebelum siklus tanggal masuk berikutnya; tanggal masuk diklem ke hari terakhir pada bulan yang lebih pendek.
+- Jatuh tempo invoice perdana sama dengan tanggal check-in. Baris `RENT` dan `DEPOSIT` disimpan terpisah; deposit memakai jumlah yang disepakati, dan line deposit tidak dibuat bila nominalnya nol. Kalkulator tidak memaksakan default deposit kamar.
+- Nominal diproses dengan integer minor units (`BigInt`) untuk menjaga presisi. Kalkulasi prorata yang membulat ke nol ditolak sebagai `AMOUNT_INVALID`, sebab `InvoiceLine.amount` wajib positif.
+- Fixture WF-05 (15 Okt 2026, Rp1.200.000, 17/31 hari) menghasilkan sewa Rp658.000; fixture WF-04 prorata (16 Nov 2026, Rp1.100.000, deposit Rp500.000) menghasilkan Rp550.000 + Rp500.000; fixture WF-04 full-month menghasilkan Rp1.100.000 + Rp500.000.
+- Tidak menjalankan migrasi, Neon CLI, query database, atau membaca `.env.local`.
+
+Verify `npm run test -- initial-invoice`:
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs initial-invoice
+
+TAP version 13
+# Subtest: matches WF-05 prorata amount and inclusive billable days
+ok 1 - matches WF-05 prorata amount and inclusive billable days
+  ---
+  duration_ms: 8.9343
+  ...
+# Subtest: matches WF-04 prorata check-in with separate rent and deposit lines
+ok 2 - matches WF-04 prorata check-in with separate rent and deposit lines
+  ---
+  duration_ms: 1.1191
+  ...
+# Subtest: matches WF-04 full-month anniversary billing
+ok 3 - matches WF-04 full-month anniversary billing
+  ---
+  duration_ms: 1.3468
+  ...
+# Subtest: uses nearest-thousand rounding with positive midpoint rounded up
+ok 4 - uses nearest-thousand rounding with positive midpoint rounded up
+  ---
+  duration_ms: 0.603
+  ...
+# Subtest: handles final days of common and leap February inclusively
+ok 5 - handles final days of common and leap February inclusively
+  ---
+  duration_ms: 1.0275
+  ...
+# Subtest: clamps a month-end anniversary to the shorter next month
+ok 6 - clamps a month-end anniversary to the shorter next month
+  ---
+  duration_ms: 0.6153
+  ...
+# Subtest: keeps prorata at the end of year 9999 within its valid calendar month
+ok 7 - keeps prorata at the end of year 9999 within its valid calendar month
+  ---
+  duration_ms: 0.8314
+  ...
+# Subtest: uses the agreed deposit amount as provided and omits its line when it is zero
+ok 8 - uses the agreed deposit amount as provided and omits its line when it is zero
+  ---
+  duration_ms: 1.2969
+  ...
+# Subtest: rejects a positive rent that rounds to a zero invoice line
+ok 9 - rejects a positive rent that rounds to a zero invoice line
+  ---
+  duration_ms: 1.7025
+  ...
+# Subtest: rejects invalid dates, money, and billing modes
+ok 10 - rejects invalid dates, money, and billing modes
+  ---
+  duration_ms: 3.0051
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 369.4582
+EXIT_CODE=0
+```
+
+<a id="evidence-m06-be-05"></a>
+
+### Evidence M06-BE-05 - Generator invoice rutin idempotent (2026-11-02)
+
+- Menambahkan kalkulasi periode rutin untuk `PRORATA_TO_MONTH_END` (tanggal 1 sampai akhir bulan) dan `FULL_MONTH_ANNIVERSARY` (tanggal mulai tiap bulan, diklem ke tanggal terakhir bila perlu). Invoice pertama tidak diduplikasi; Lease harus sudah mulai, berstatus `ACTIVE`/`SCHEDULED`, dan tanggal akhir inklusif tidak boleh sebelum tanggal jatuh tempo.
+- Scheduler memproses tepat satu `localDate` Jakarta per pemanggilan. Owner-only Server Action dapat meminta rerun tanggal lampau, tetapi menolak tanggal masa depan. Tidak ada backfill otomatis untuk Lease yang sudah `ENDED` atau `CANCELLED`; tanggal terlewat bisa direrun Owner selama Lease masih eligible.
+- Repository memvalidasi ulang Lease dan periode, lalu menulis Invoice `RECURRING`, satu line `RENT`, dan AuditEvent dalam satu statement PostgreSQL atomik. Unique key `(lease_id, period_start, period_end, kind)` bersama `ON CONFLICT DO NOTHING` melindungi retry/concurrency dan tidak menerbitkan ulang invoice `VOID`. Audit membedakan `SCHEDULER` (actor null) dari `OWNER_RERUN` (actor Owner) serta menyimpan hitungan aman.
+- Test suite memakai repository memori sintetis untuk aturan periode, eligibility, batas tengah malam Jakarta, owner authorization, rerun/concurrency dan sumber audit. Verify ini tidak membuka koneksi PostgreSQL/Neon; SQL transaksional belum diuji pada database. Tidak menjalankan migrasi, Neon CLI/query, atau membaca `.env.local`.
+- Task disetujui Owner pada 2026-11-02 oleh zeenn.
+
+Verify `npm run test -- generate-invoices`:
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs generate-invoices
+
+TAP version 13
+# Subtest: creates calendar-mode recurring periods only on the first day of a later month
+ok 1 - creates calendar-mode recurring periods only on the first day of a later month
+  ---
+  duration_ms: 12.7602
+  ...
+# Subtest: uses the start-day anniversary and clamps each short month from the original start day
+ok 2 - uses the start-day anniversary and clamps each short month from the original start day
+  ---
+  duration_ms: 1.7589
+  ...
+# Subtest: does not create a recurring invoice on the initial lease date or outside lease eligibility
+ok 3 - does not create a recurring invoice on the initial lease date or outside lease eligibility
+  ---
+  duration_ms: 1.3487
+  ...
+# Subtest: allows a scheduled Lease after its start date and keeps the end date inclusive
+ok 4 - allows a scheduled Lease after its start date and keeps the end date inclusive
+  ---
+  duration_ms: 0.5507
+  ...
+# Subtest: derives local generation dates on the Asia/Jakarta midnight boundary
+ok 5 - derives local generation dates on the Asia/Jakarta midnight boundary
+  ---
+  duration_ms: 47.6378
+  ...
+# Subtest: generates one invoice under concurrent retries and audits both sources
+ok 6 - generates one invoice under concurrent retries and audits both sources
+  ---
+  duration_ms: 8.4134
+  ...
+# Subtest: rejects unauthorized reruns and a user actor on scheduler runs
+ok 7 - rejects unauthorized reruns and a user actor on scheduler runs
+  ---
+  duration_ms: 2.3051
+  ...
+# Subtest: records an audited zero-invoice run when no Lease is eligible
+ok 8 - records an audited zero-invoice run when no Lease is eligible
+  ---
+  duration_ms: 0.8556
+  ...
+# Subtest: rejects invalid billing dates and amounts from persisted Lease records
+ok 9 - rejects invalid billing dates and amounts from persisted Lease records
+  ---
+  duration_ms: 2.3175
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 594.6844
+EXIT_CODE=0
+```
+
+<a id="evidence-m06-be-06"></a>
+
+### Evidence M06-BE-06 - Pembacaan, penyampaian, dan void invoice (2026-11-02)
+
+- Menambahkan daftar invoice ber-keyset pagination (default 20, maksimum 100) dan detail invoice. Query repository memakai role dari AppUser aktif; Owner/Staff membaca data properti, sedangkan Tenant dibatasi ke Lease miliknya sebelum pagination. Detail Tenant lintas pemilik merespons 404 agar keberadaan invoice tidak dapat ditebak.
+- Status tampilan dihitung dari total line dan alokasi payment `VERIFIED` yang belum direversal: `UNPAID`, `PARTIAL`, `PAID`, `OVERDUE`, atau `VOID`. Alokasi `PENDING`, `REJECTED`, dan payment yang sudah direversal tidak menambah jumlah dibayar. Invoice `VOID` memiliki saldo tertagih nol.
+- Owner/Staff dapat menandai invoice `SENT` secara manual. Operasi tidak mengirim pesan, tidak menerima timestamp dari client, serta mencatat AuditEvent satu kali; timestamp penyampaian berasal dari audit.
+- Void hanya untuk Owner dengan alasan wajib. Operasi mengunci idempotency key dan row Invoice, lalu secara atomik mengecek payment `PENDING` dan `VERIFIED` aktif, mengubah invoice ke `VOID`, menulis AuditEvent, serta menyimpan respons idempotency. Retry key/payload sama mengembalikan respons; key dengan payload berbeda ditolak. Guard trigger DB tetap menjadi lapisan terakhir untuk menolak void saat klaim pending atau verified aktif masih ada.
+- Verify menggunakan repository memori fixture sintetis; 6 test lulus. SQL repository belum dieksekusi pada database, tidak ada Neon/CLI/migrasi, dan `.env.local` tidak dibaca.
+
+Verify `npm run test -- invoices`:
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs invoices
+
+TAP version 13
+# Subtest: derives unpaid, partial, paid, overdue, and void status from active verified allocation totals
+ok 1 - derives unpaid, partial, paid, overdue, and void status from active verified allocation totals
+  ---
+  duration_ms: 39.668
+  ...
+# Subtest: limits invoice reads to the Tenant's own Lease and returns a not-found result for another Tenant's invoice
+ok 2 - limits invoice reads to the Tenant's own Lease and returns a not-found result for another Tenant's invoice
+  ---
+  duration_ms: 28.9218
+  ...
+# Subtest: invoice list pagination is bounded, stable, and emits a keyset cursor
+ok 3 - invoice list pagination is bounded, stable, and emits a keyset cursor
+  ---
+  duration_ms: 4.1712
+  ...
+# Subtest: manual delivery permits Owner and Staff, is idempotent, and rejects a client-supplied timestamp
+ok 4 - manual delivery permits Owner and Staff, is idempotent, and rejects a client-supplied timestamp
+  ---
+  duration_ms: 4.6787
+  ...
+# Subtest: void requires an Owner, a reason, rejected pending claims, and reversed verified payments
+ok 5 - void requires an Owner, a reason, rejected pending claims, and reversed verified payments
+  ---
+  duration_ms: 8.4684
+  ...
+# Subtest: void succeeds after every pending payment is rejected and every verified payment is reversed, then safely replays
+ok 6 - void succeeds after every pending payment is rejected and every verified payment is reversed, then safely replays
+  ---
+  duration_ms: 5.518
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 673.8744
+```
+
+- M06-BE-06 Verify lulus dan task menunggu review Owner; task belum ditandai selesai.

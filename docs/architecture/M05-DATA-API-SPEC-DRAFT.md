@@ -8,7 +8,7 @@
 - Database menyimpan data operasional dan jejak audit; auth provider menyimpan kredensial dan sesi.
 - Pembayaran tidak memindahkan uang. Tidak ada integrasi bank/payment gateway.
 - Deposit escrow termasuk dalam slice P0 berdasarkan WF-03/WF-04/WF-05/WF-06/WF-10 dan E2E Alur 1 & 5. Model mendukung nilai default kamar, nilai kontrak, komponen invoice awal, saldo escrow, settlement ke tagihan, dan rekonsiliasi check-out. Prorata dan mode satu bulan penuh berbasis tanggal masuk sama-sama didukung sesuai WF-04/WF-05. Keputusan sebelumnya untuk tanpa prorata/due day per kontrak digantikan oleh arahan pemilik agar M05 mengikuti M04. Denda umum, diskon tahunan, meteran utilitas, izin tamu, renewal mandiri, akun teknisi, OTP/2FA, rating, dan ekspor lanjutan tetap di luar P0 kecuali scope diubah.
-- Semua nilai uang disimpan sebagai `NUMERIC(14,2)` atau representasi Decimal setara; API mengirim nominal sebagai string desimal agar presisi tidak hilang.
+- Semua nilai uang disimpan sebagai `NUMERIC(12,2)` atau representasi Decimal setara; API mengirim nominal sebagai string desimal agar presisi tidak hilang.
 - Tanggal kalender disimpan sebagai `DATE`; timestamp audit disimpan UTC. Zona tampilan: `Asia/Jakarta`.
 - **Arahan pemilik terbaru 2026-10-30:** wireframe/runbook M04 menjadi sumber aturan billing: mode prorata sampai akhir bulan atau satu bulan kalender penuh pada siklus tanggal masuk. Keputusan no-prorata dan due day per kontrak yang disampaikan sebelumnya digantikan.
 - **Arahan pemilik 2026-10-30:** deposit escrow dicakup seperti alur check-in, invoice pertama, settlement, dan check-out yang ada di M04.
