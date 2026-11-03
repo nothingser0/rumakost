@@ -4584,6 +4584,65 @@ ok 8 - Staff and Tenant receive no financial report payload
 # duration_ms 877.0877
 EXIT_CODE=0
 
+Reverify `npm run test -- reports` (2026-11-03):
+
+```text
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs reports
+
+TAP version 13
+# Subtest: Owner and Staff can record Expense once with an idempotent retry
+ok 1 - Owner and Staff can record Expense once with an idempotent retry
+  ---
+  duration_ms: 9.7344
+  ...
+# Subtest: Expense input requires a positive amount, nonblank text, and a real date
+ok 2 - Expense input requires a positive amount, nonblank text, and a real date
+  ---
+  duration_ms: 3.4847
+  ...
+# Subtest: Tenant cannot record Expense; Staff cannot reverse Expense
+ok 3 - Tenant cannot record Expense; Staff cannot reverse Expense
+  ---
+  duration_ms: 0.6004
+  ...
+# Subtest: Owner reversal is full, append-only, reasoned, and idempotent
+ok 4 - Owner reversal is full, append-only, reasoned, and idempotent
+  ---
+  duration_ms: 1.763
+  ...
+# Subtest: Owner can set one positive monthly budget and the operation audits each update
+ok 5 - Owner can set one positive monthly budget and the operation audits each update
+  ---
+  duration_ms: 1.8599
+  ...
+# Subtest: Owner report filters period, excludes deposit and pending money, and reconciles net cash
+ok 6 - Owner report filters period, excludes deposit and pending money, and reconciles net cash
+  ---
+  duration_ms: 3.2335
+  ...
+# Subtest: unconfigured monthly budget stays distinct from zero and reports empty actuals as zero
+ok 7 - unconfigured monthly budget stays distinct from zero and reports empty actuals as zero
+  ---
+  duration_ms: 0.5847
+  ...
+# Subtest: Staff and Tenant receive no financial report payload
+ok 8 - Staff and Tenant receive no financial report payload
+  ---
+  duration_ms: 0.7785
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 270.943
+EXIT_CODE=0
+```
+
 <a id="evidence-m06-db-55"></a>
 
 ### Evidence M06-DB-55 - Expiry draft tiket oleh SYSTEM (2026-11-02)
