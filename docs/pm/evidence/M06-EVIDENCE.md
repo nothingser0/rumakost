@@ -4529,6 +4529,7 @@ EXIT_CODE=0
 - Pagu satu per bulan di-upsert dan perubahan diaudit. Laporan membedakan pagu belum diatur dari nol; realisasi hanya menjumlah Expense yang belum direversal pada bulan itu.
 - Laporan Owner memfilter periode, menghitung pemasukan dari alokasi Payment terverifikasi ke line RENT, mengecualikan pending, deposit, dan settlement escrow; koreksi payment/Expense terpisah mengikuti tanggal reversal. Arus kas adalah ringkasan transaksi internal, bukan rekonsiliasi bank.
 - Okupansi dihitung pada akhir periode dari Lease ACTIVE dan Room yang tidak diarsipkan; kamar maintenance tetap masuk kapasitas. SQL repository belum dijalankan terhadap PostgreSQL/Neon; Verify menggunakan fixture memori. Tidak ada migrasi diterapkan, akses Neon dilakukan, atau `.env.local` dibaca.
+- Rerun pada HEAD `b6fadbd` (2026-11-03): `npm run test -- reports`, 8/8 lulus. Output mentah: `docs/pm/evidence/M06-BE-10-VERIFY.md`.
 
 Verify `npm run test -- reports`:
 
