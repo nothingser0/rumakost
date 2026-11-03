@@ -4655,7 +4655,7 @@ EXIT_CODE=0
 - Menambahkan Server Actions untuk draft tiket, daftar/detail, submit/discard, update, assignment, cancellation, reopen Owner, dan komentar. Service mengikat actor dari sesi, memvalidasi input/hasil, membuat fingerprint idempotensi, dan menolak role yang tidak berwenang.
 - Repository menyimpan mutasi Ticket, AuditEvent, dan IdempotencyKey dalam satu transaksi Neon. Pembacaan Tenant dibatasi ke draft miliknya dan tiket pada lease sendiri. Detail Tenant menyaring komentar internal beserta lampirannya; `object_key` tidak masuk respons.
 - Submit membutuhkan attachment `AVAILABLE`; Tenant harus tetap memiliki lease aktif untuk submit/discard draft dan komentar. Status transisi/cancellation/assignee/resolution tetap dijaga trigger DB. Reopen hanya Owner.
-- `runTicketDraftExpiryJob` disediakan sebagai fungsi internal untuk dispatcher Cron harian M06-INT-03. Job membatalkan draft umur minimal 7 hari dengan actor SYSTEM melalui trigger, mencatat audit, dan mengantre attachment. `AVAILABLE` berpindah ke `DELETE_PENDING`; `PENDING_UPLOAD` tetap pada statusnya dengan `delete_after` segera karena trigger DB saat ini tidak mengizinkan transisi dari `PENDING_UPLOAD` ke `DELETE_PENDING`. M06-BE-12 perlu memproses queue `PENDING_UPLOAD` yang sudah jatuh tempo dan menandainya gagal setelah objek sementara dibersihkan.
+- `runTicketDraftExpiryJob` disediakan sebagai fungsi internal untuk dispatcher Cron harian M06-INT-03. Job membatalkan draft umur minimal 7 hari dengan actor SYSTEM melalui trigger, mencatat audit, dan mengantre attachment. `AVAILABLE` berpindah ke `DELETE_PENDING`; `PENDING_UPLOAD` diberi `delete_after` segera dan diproses oleh cleanup M06-BE-12 menuju `DELETE_PENDING`, lalu `DELETED` setelah objek sementara dibersihkan.
 - Verify memakai repository fixture/injected dan tidak menjalankan SQL ke PostgreSQL/Neon. Tidak menjalankan migrasi, Neon CLI/query, atau membaca `.env.local`. Pada run awal M06-DB-55 masih menunggu review; rerun setelah persetujuan DB-55 tercatat di bawah.
 
 Verify `npm run test -- tickets`:
@@ -5210,7 +5210,7 @@ ok 25 - draft expiry validates counts returned by the internal job
 EXIT_CODE=0
 ```
 
-Verify BE-11 lulus 25/25 setelah DB-55 disetujui. M06-BE-11 tetap `[ ]` dan menunggu review Owner.
+Verify BE-11 lulus 25/25 setelah DB-55 disetujui. Owner menyetujui M06-BE-11 pada 2026-11-03 (zeenn).
 
 <a id="evidence-m06-db-55"></a>
 
@@ -5483,8 +5483,8 @@ Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain
 ### Evidence M06-BE-12 - Media privat, finalisasi, akses, dan retensi (2026-11-03)
 
 - Keputusan Owner: pertahankan MP4 dan MOV. Migration baru `20261103100000_ticket_mov_media` mengizinkan `video/quicktime` dan menghitung MP4+MOV sebagai satu batas video per batch; migration historis tidak diubah.
-- Verify final menerapkan seluruh 38 migration dari awal pada database Neon kosong `m06be12review`, dibuat di branch disposable `rumakost-be12-verify-final-20261103`. Branch `dev` dan database `neondb` tidak menjadi target. Branch disposable dihapus; CLI memastikan branch tidak ditemukan dan yang tersisa `dev`.
-- Neon probe lulus 16/16: 10 batas schema/trigger dan 6 query SQL repository aktual: create intent, replay create, akses finalize, finalize, replay finalize, akses unduh.
+- Verify awal menerapkan seluruh 38 migration pada database Neon kosong `m06be12review`; rerun setelah cleanup probe memakai database `m06be12cleanup` di branch disposable `rumakost-be12-cleanup-20261103`, induk `dev`. Kedua branch disposable dihapus; sesudah rerun, daftar branch hanya memuat `dev`.
+- Neon probe awal lulus 16/16. Rerun lulus 19/19: 10 batas schema/trigger, 6 query SQL upload/akses, dan 3 query cleanup aktual yang membuktikan `PENDING_UPLOAD` kedaluwarsa masuk `DELETE_PENDING`, ditandai `DELETED`, serta menghasilkan audit.
 - Test fake lulus 9/9 untuk metadata/signature, ukuran/durasi, route, otorisasi, idempotensi, kuota/rate, URL signed, dan cleanup. Integrasi provider bucket masih M06-INT-02; transfer object memakai fake.
 - `npm run typecheck` dijalankan sebagai pemeriksaan tambahan. Ia masih gagal pada diagnostic di modul lain; output tidak menunjukkan diagnostic pada file BE-12. Typecheck bukan bagian Verify task.
-- Output mentah Verify tersimpan di [M06-BE-12-VERIFY.md](M06-BE-12-VERIFY.md). M06-BE-12 tetap `[ ]`, menunggu review Owner.
+- Output mentah Verify lulus 9/9 dan 19/19 tersimpan di [M06-BE-12-VERIFY.md](M06-BE-12-VERIFY.md). Fixture probe berjalan dalam transaksi rollback. M06-BE-12 tetap `[ ]`, menunggu review Owner.

@@ -197,6 +197,70 @@ async function verifyRepositorySql() {
   return [createPassed, createReplayPassed, accessBeforeFinalizePassed, finalizePassed, finalizeReplayPassed, accessPassed];
 }
 
+async function verifyMediaCleanupSql() {
+  const cleanupUpdateSql = await repositorySql("PREPARE_MEDIA_CLEANUP_UPDATE_SQL");
+  const cleanupSelectSql = await repositorySql("PREPARE_MEDIA_CLEANUP_SELECT_SQL");
+  const markDeletedSql = await repositorySql("MARK_ATTACHMENT_DELETED_SQL");
+  const attachmentId = randomUUID();
+  const objectKey = `ticket-media/${randomUUID()}`;
+  let pendingUploadQueued = false;
+  let attachmentDeleted = false;
+  let auditRecorded = false;
+
+  await client.query("BEGIN");
+  try {
+    await insertAttachment({ id: attachmentId, objectKey });
+    const cleanupNow = new Date();
+    const expiredAt = new Date(cleanupNow.getTime() - 60_000).toISOString();
+    await client.query("SELECT set_config('rumakost.ticket_retention_update', 'on', TRUE)");
+    await client.query(
+      "UPDATE ticket_attachments SET delete_after = $2::timestamptz WHERE id = $1::uuid",
+      [attachmentId, expiredAt],
+    );
+    await client.query("SELECT set_config('rumakost.ticket_retention_update', 'off', TRUE)");
+    await client.query(
+      "SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))",
+      ["rumakost:ticket-media-cleanup"],
+    );
+    await client.query("SELECT set_config('rumakost.ticket_retention_update', 'on', TRUE)");
+    await client.query(cleanupUpdateSql, [cleanupNow.toISOString()]);
+    await client.query("SELECT set_config('rumakost.ticket_retention_update', 'off', TRUE)");
+
+    const candidates = await client.query(cleanupSelectSql, [100]);
+    pendingUploadQueued = candidates.rows?.some((row) => row.id === attachmentId && row.objectKey === objectKey) === true;
+
+    if (pendingUploadQueued) {
+      const marked = await client.query(markDeletedSql, [attachmentId]);
+      const state = await client.query(
+        `SELECT upload_status::text AS "uploadStatus", deleted_at AS "deletedAt"
+           FROM ticket_attachments WHERE id = $1::uuid`,
+        [attachmentId],
+      );
+      attachmentDeleted = marked.rows?.[0]?.deleted === true
+        && state.rows?.[0]?.uploadStatus === "DELETED"
+        && state.rows[0].deletedAt !== null;
+      const audit = await client.query(
+        `SELECT COUNT(*)::integer AS count FROM audit_events
+          WHERE action = 'TICKET_MEDIA_DELETED'
+            AND entity_type = 'TICKET_ATTACHMENT'
+            AND entity_id = $1::uuid`,
+        [attachmentId],
+      );
+      auditRecorded = audit.rows?.[0]?.count === 1;
+    }
+  } catch (error) {
+    const code = error && typeof error === "object" && "code" in error ? String(error.code) : "UNKNOWN";
+    process.stderr.write(`REPOSITORY_CLEANUP_SQL_ERROR code=${code}\n`);
+  } finally {
+    await client.query("ROLLBACK").catch(() => undefined);
+  }
+
+  process.stdout.write(`REPOSITORY_EXPIRED_PENDING_UPLOAD_QUEUED=${pendingUploadQueued ? "PASS" : "FAIL"}\n`);
+  process.stdout.write(`REPOSITORY_MARK_ATTACHMENT_DELETED=${attachmentDeleted ? "PASS" : "FAIL"}\n`);
+  process.stdout.write(`REPOSITORY_MEDIA_DELETION_AUDIT=${auditRecorded ? "PASS" : "FAIL"}\n`);
+  return [pendingUploadQueued, attachmentDeleted, auditRecorded];
+}
+
 async function expectAccepted(name, action) {
   await client.query("BEGIN");
   let accepted = false;
@@ -235,6 +299,8 @@ async function main() {
   await seedMediaFixture();
   const repositorySqlChecks = await verifyRepositorySql();
   process.stdout.write(`REPOSITORY_SQL_CHECKS=${repositorySqlChecks.filter(Boolean).length}/${repositorySqlChecks.length}\n`);
+  const cleanupSqlChecks = await verifyMediaCleanupSql();
+  process.stdout.write(`REPOSITORY_CLEANUP_SQL_CHECKS=${cleanupSqlChecks.filter(Boolean).length}/${cleanupSqlChecks.length}\n`);
 
   const checks = [];
   checks.push(await expectAccepted("MOV_12_MIB_30S_ACCEPTED", () => insertAttachment()));
@@ -297,7 +363,7 @@ async function main() {
   const catalogPassed = catalogRow?.mimeConstraintAllowsMov === true && catalogRow?.batchTriggerCountsMov === true;
   process.stdout.write(`MIGRATION_CATALOG=${catalogPassed ? "PASS" : "FAIL"}\n`);
   checks.push(catalogPassed);
-  checks.push(...repositorySqlChecks);
+  checks.push(...repositorySqlChecks, ...cleanupSqlChecks);
 
   process.stdout.write(`MIGRATION_AND_REPOSITORY_CHECKS=${checks.filter(Boolean).length}/${checks.length}\n`);
   if (checks.some((passed) => !passed)) process.exitCode = 1;

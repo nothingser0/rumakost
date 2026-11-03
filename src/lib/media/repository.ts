@@ -378,6 +378,43 @@ const FINALIZE_UPLOAD_SQL = `
     OR EXISTS (SELECT 1 FROM allowed WHERE upload_status = 'AVAILABLE') AS finalized
 `;
 
+const PREPARE_MEDIA_CLEANUP_UPDATE_SQL = `
+  UPDATE ticket_attachments
+     SET upload_status = 'DELETE_PENDING'::"TicketUploadStatus",
+         delete_after = COALESCE(delete_after, CURRENT_TIMESTAMP)
+   WHERE (upload_status = 'AVAILABLE'::"TicketUploadStatus" AND delete_after <= $1::timestamptz)
+      OR (upload_status = 'PENDING_UPLOAD'::"TicketUploadStatus" AND (
+           delete_after <= $1::timestamptz
+           OR created_at <= $1::timestamptz - INTERVAL '1 hour'
+         ))
+`;
+
+const PREPARE_MEDIA_CLEANUP_SELECT_SQL = `
+  SELECT id, object_key AS "objectKey"
+    FROM ticket_attachments
+   WHERE upload_status = 'DELETE_PENDING'::"TicketUploadStatus"
+   ORDER BY delete_after NULLS FIRST, created_at, id
+   LIMIT $1::integer
+`;
+
+const MARK_ATTACHMENT_DELETED_SQL = `
+  WITH deleted AS (
+    UPDATE ticket_attachments
+       SET upload_status = 'DELETED'::"TicketUploadStatus"
+     WHERE id = $1::uuid
+       AND upload_status = 'DELETE_PENDING'::"TicketUploadStatus"
+    RETURNING id
+  ),
+  audit AS (
+    INSERT INTO audit_events (id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata)
+    SELECT gen_random_uuid(), NULL, 'TICKET_MEDIA_DELETED', 'TICKET_ATTACHMENT', deleted.id,
+           CURRENT_TIMESTAMP, jsonb_build_object('uploadStatus', 'DELETED')
+      FROM deleted
+    RETURNING id
+  )
+  SELECT EXISTS (SELECT 1 FROM deleted) AS deleted
+`;
+
 function parseStoredResponse(value: unknown): { requestHash: string; attachmentId: string } {
   const parsed = z.object({
     requestHash: z.string().regex(/^[a-f0-9]{64}$/),
@@ -576,24 +613,9 @@ export function createMediaRepository(): MediaRepository {
         const results = await sql.transaction([
           sql.query(`SELECT pg_advisory_xact_lock(hashtextextended($1::text, 0))`, ["rumakost:ticket-media-cleanup"]),
           sql.query(`SELECT set_config('rumakost.ticket_retention_update', 'on', TRUE)`, []),
-          sql.query(`
-            UPDATE ticket_attachments
-               SET upload_status = 'DELETE_PENDING'::"TicketUploadStatus",
-                   delete_after = COALESCE(delete_after, CURRENT_TIMESTAMP)
-             WHERE (upload_status = 'AVAILABLE'::"TicketUploadStatus" AND delete_after <= $1::timestamptz)
-                OR (upload_status = 'PENDING_UPLOAD'::"TicketUploadStatus" AND (
-                     delete_after <= $1::timestamptz
-                     OR created_at <= $1::timestamptz - INTERVAL '1 hour'
-                   ))
-          `, [input.now]),
+          sql.query(PREPARE_MEDIA_CLEANUP_UPDATE_SQL, [input.now]),
           sql.query(`SELECT set_config('rumakost.ticket_retention_update', 'off', TRUE)`, []),
-          sql.query(`
-            SELECT id, object_key AS "objectKey"
-              FROM ticket_attachments
-             WHERE upload_status = 'DELETE_PENDING'::"TicketUploadStatus"
-             ORDER BY delete_after NULLS FIRST, created_at, id
-             LIMIT $1::integer
-          `, [limit]),
+          sql.query(PREPARE_MEDIA_CLEANUP_SELECT_SQL, [limit]),
         ]);
         return firstRows(results, 4).map((candidate) => {
           const parsed = z.object({ id: z.string().uuid(), objectKey: z.string().min(1) }).strict().safeParse(candidate);
@@ -609,23 +631,7 @@ export function createMediaRepository(): MediaRepository {
       try {
         const sql = getSql();
         const results = await sql.transaction([
-          sql.query(`
-            WITH deleted AS (
-              UPDATE ticket_attachments
-                 SET upload_status = 'DELETED'::"TicketUploadStatus"
-               WHERE id = $1::uuid
-                 AND upload_status = 'DELETE_PENDING'::"TicketUploadStatus"
-              RETURNING id
-            ),
-            audit AS (
-              INSERT INTO audit_events (id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata)
-              SELECT gen_random_uuid(), NULL, 'TICKET_MEDIA_DELETED', 'TICKET_ATTACHMENT', deleted.id,
-                     CURRENT_TIMESTAMP, jsonb_build_object('uploadStatus', 'DELETED')
-                FROM deleted
-              RETURNING id
-            )
-            SELECT EXISTS (SELECT 1 FROM deleted) AS deleted
-          `, [id]),
+          sql.query(MARK_ATTACHMENT_DELETED_SQL, [id]),
         ]);
         const row = z.object({ deleted: z.boolean() }).strict().safeParse(firstRow(results, 0));
         if (!row.success) throw new DomainError("INTERNAL_ERROR");
