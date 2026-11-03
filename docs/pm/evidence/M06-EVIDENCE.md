@@ -4442,6 +4442,80 @@ ok 11 - kegagalan audit membatalkan ledger dan idempotency
 ```
 EXIT_CODE=0
 
+Reverify `npm run test -- deposits` (2026-11-03):
+
+```text
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs deposits
+
+TAP version 13
+# Subtest: Tenant hanya dapat meminta check-out Lease miliknya dan retry tidak menggandakan event
+ok 1 - Tenant hanya dapat meminta check-out Lease miliknya dan retry tidak menggandakan event
+  ---
+  duration_ms: 9.7328
+  ...
+# Subtest: permintaan check-out ditolak jika tanggal invalid atau sudah ada permintaan pending
+ok 2 - permintaan check-out ditolak jika tanggal invalid atau sudah ada permintaan pending
+  ---
+  duration_ms: 1.1249
+  ...
+# Subtest: Owner dapat menolak permintaan tanpa mengakhiri kontrak dan tidak dapat meninjau ulang
+ok 3 - Owner dapat menolak permintaan tanpa mengakhiri kontrak dan tidak dapat meninjau ulang
+  ---
+  duration_ms: 3.762
+  ...
+# Subtest: persetujuan Owner mengakhiri Lease pada tanggal aktual dan membebaskan Room
+ok 4 - persetujuan Owner mengakhiri Lease pada tanggal aktual dan membebaskan Room
+  ---
+  duration_ms: 1.3388
+  ...
+# Subtest: Owner mengakhiri Lease langsung hanya dengan tanggal aktual yang valid
+ok 5 - Owner mengakhiri Lease langsung hanya dengan tanggal aktual yang valid
+  ---
+  duration_ms: 2.2237
+  ...
+# Subtest: settlement deposit mengurangi saldo line RENT dan escrow secara atomik serta idempotent
+ok 6 - settlement deposit mengurangi saldo line RENT dan escrow secara atomik serta idempotent
+  ---
+  duration_ms: 2.6942
+  ...
+# Subtest: settlement menolak nominal di atas saldo sewa dan saldo escrow serta role bukan Owner
+ok 7 - settlement menolak nominal di atas saldo sewa dan saldo escrow serta role bukan Owner
+  ---
+  duration_ms: 1.2913
+  ...
+# Subtest: rekonsiliasi hanya setelah Lease selesai; refund pending dicadangkan hingga dibayar atau ditolak
+ok 8 - rekonsiliasi hanya setelah Lease selesai; refund pending dicadangkan hingga dibayar atau ditolak
+  ---
+  duration_ms: 4.7991
+  ...
+# Subtest: saldo tersedia memperhitungkan reversal dan seluruh escrow yang terpakai/direservasi
+ok 9 - saldo tersedia memperhitungkan reversal dan seluruh escrow yang terpakai/direservasi
+  ---
+  duration_ms: 1.19
+  ...
+# Subtest: dua settlement bersamaan tidak dapat memakai escrow yang sama
+ok 10 - dua settlement bersamaan tidak dapat memakai escrow yang sama
+  ---
+  duration_ms: 1.206
+  ...
+# Subtest: kegagalan audit membatalkan ledger dan idempotency
+ok 11 - kegagalan audit membatalkan ledger dan idempotency
+  ---
+  duration_ms: 0.699
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 279.5519
+EXIT_CODE=0
+```
+
 <a id="evidence-m06-be-10"></a>
 
 ### Evidence M06-BE-10 - Expense, reversal, pagu bulanan, dan laporan finansial (2026-11-02)
