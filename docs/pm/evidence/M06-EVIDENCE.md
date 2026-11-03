@@ -4370,6 +4370,7 @@ EXIT_CODE=0
 - Settlement deposit hanya untuk line `RENT` invoice `ISSUED`; ia mengurangi saldo line, saldo invoice yang dibaca, batas klaim pembayaran, alokasi/verifikasi payment berikutnya, dan escrow. Settlement dicatat append-only sebagai `APPLIED_TO_RENT`. Invoice yang telah memakai settlement deposit tidak dapat di-void.
 - Check-out hanya dapat direkonsiliasi saat Lease `ENDED`. Potongan masuk sebagai `WITHHELD_AT_CHECKOUT`; refund masuk `REFUNDED/PENDING`. Owner dapat menandai refund `PAID` atau `REJECTED` satu kali; status `REJECTED` melepas reservasi escrow, sedangkan `PAID` tetap mengurangi saldo tersedia. Lock Lease mengurutkan settlement, refund, dan reversal deposit.
 - Verify pertama menemukan satu fixture test yang mengharapkan `OVERPAYMENT` padahal nominal uji sudah di bawah saldo line; fixture dipisah antara batas invoice dan batas escrow. Verify akhir lulus 11/11. Semua repository test menggunakan fixture memori; SQL PostgreSQL/Neon belum dijalankan. Tidak ada migration apply, Neon CLI/query, atau pembacaan `.env.local`.
+- Rerun pada HEAD `cdd8bb4` (2026-11-03): `npm run test -- deposits`, 11/11 lulus. Output mentah: `docs/pm/evidence/M06-BE-09-VERIFY.md`.
 
 Verify `npm run test -- deposits` (rerun akhir setelah koreksi fixture):
 
