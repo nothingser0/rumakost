@@ -4,6 +4,7 @@
 
 ## Indeks
 
+- [M06-DB-57](#evidence-m06-db-57)
 - [M06-SETUP-12](#evidence-m06-setup-12)
 
 - [M06-SETUP-06](#evidence-m06-setup-06)
@@ -73,6 +74,9 @@
 - [M06-BE-10](#evidence-m06-be-10)
 - [M06-BE-11](#evidence-m06-be-11)
 - [M06-BE-12](#evidence-m06-be-12)
+- [M06-BE-18 blocker](#evidence-m06-be-18-blocker)
+- [M06-AUTH-01 blocker](#evidence-m06-auth-01-blocker)
+- [M06-AUTH-02 review arsitektur auth](#evidence-m06-auth-02-review-arsitektur-auth)
 
 ## Evidence
 
@@ -5518,3 +5522,75 @@ Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain
 - Verify lokal PASS: suite `auth-reset-request` 5/5; probe GET `/lupa-sandi` dan `/login` keduanya 200; form email, ketiadaan signup/password field, dan link login ke reset terdeteksi. Tidak ada email, Neon Auth request, atau database yang disentuh.
 - Pemeriksaan klik visual penuh tidak tersedia karena browser access host CUA gagal tersambung; fallback menjalankan Edge headless ditolak execution policy. HTTP probe dan pemeriksaan kontrak kode selesai; Owner masih perlu meninjau tampilan.
 - Output mentah tersimpan di [M06-FE-22-VERIFY.md](M06-FE-22-VERIFY.md). Owner menyetujui M06-FE-22 pada 2026-11-03 (zeenn).
+
+<a id="evidence-m06-fe-23"></a>
+
+### Evidence M06-FE-23 - Penyelesaian reset kata sandi (2026-11-03)
+
+- Halaman `/reset-sandi` membaca token dari query provider, menolak token kosong/duplikat/query error, lalu meminta kata sandi baru dan konfirmasi. Server memvalidasi panjang 8–128 karakter dan kesamaan input. Metadata menetapkan `no-referrer` agar URL token tidak dikirim sebagai referrer.
+- Server Action mengirim token dan kata sandi langsung ke `auth.resetPassword` dari SDK Neon Auth terpasang. Aplikasi tidak membuat token, menyimpan sandi, atau memunculkan detail kesalahan provider.
+- Verify lokal PASS: suite `auth-reset-completion` 5/5; route probe untuk token kosong, token sintetis, dan query `INVALID_TOKEN` semuanya HTTP 200 dengan state yang sesuai; policy `no-referrer` hadir. Fixture provider menunjukkan penolakan token tidak mengubah kata sandi sintetis.
+- Diagnostik typecheck proyek penuh gagal (79 error pada file di luar perubahan FE-23); file TypeScript FE-23 yang berubah tidak memiliki error. Rincian ringkasnya tercatat di Evidence task.
+- Provider Neon Auth dan database tidak disentuh; email reset tidak dikirim. Validasi token serta perubahan akun live tetap untuk M07. Pemeriksaan klik visual tidak direkam.
+- Output mentah tersimpan di [M06-FE-23-VERIFY.md](M06-FE-23-VERIFY.md). Owner menyetujui M06-FE-23 pada 2026-11-03 (zeenn); diagnostic typecheck proyek penuh tetap dicatat sebagai kondisi di luar Verify task.
+
+<a id="evidence-m06-be-17"></a>
+
+### Evidence M06-BE-17 - Pengamanan batas autentikasi dan request (2026-11-03)
+
+- Server Action login, logout, request/complete reset, aktivasi, dan perubahan sandi sekarang mensyaratkan header `Origin` yang sama dengan `APP_ORIGIN`; header hilang, origin asing, atau environment malformed ditolak sebelum provider dipanggil. Login page tidak lagi melakukan `signOut` saat GET; sesi tidak aktif mendapatkan aksi logout POST yang melewati pemeriksaan origin.
+- Callback reset tetap dipatok ke `APP_ORIGIN/reset-sandi`; reset tetap mengembalikan state generik untuk respons error/exception provider. Header `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy` global, dan `no-referrer` untuk reset dipasang lewat `next.config.ts`; `X-Powered-By` dimatikan.
+- Verify `npm run test -- auth-security` PASS 16/16. Route probe sebelumnya menghasilkan HTTP 200 untuk `/reset-sandi` (token kosong, sintetis, dan query error) serta `/lupa-sandi`; header framing, MIME, dan Referrer-Policy sesuai. Typecheck proyek penuh masih gagal dengan 77 diagnostic di luar `src/lib/auth/`; folder auth memiliki 0 diagnostic. Test memakai callback sintetis; tidak ada email reset, request Neon Auth, query database, atau perubahan konfigurasi Neon/Vercel.
+- Limiter akun kini dihubungkan ke fungsi migration M06-DB-57: reservation berjalan sebelum provider, kegagalan kredensial menaikkan progressive delay, dan login sukses meresetnya. SQL sudah diuji terpisah dengan PGlite, tetapi belum diterapkan atau diuji pada Neon; M06-DB-57 masih menunggu review Owner.
+- **Blocker gate (follow-up 2026-11-03):** Owner menyetujui publish dan rule `M06-BE-17 Auth Login IP Rate Limit` sudah dipublikasikan ke project Vercel `rumakost`; CLI memverifikasi 1 rule aktif dan valid untuk `(POST AND /login) OR (POST AND /lupa-sandi)`, 5 request/IP/60 detik. Test auth lulus 16/16. Belum ada deployment production atau domain (`vercel list` dan `vercel domains ls` tidak menemukan keduanya), jadi belum ada request/HTTP 429 live yang dapat diverifikasi. M06-DB-57 masih menunggu review Owner dan belum diterapkan ke Neon. Task tetap `[ ]`; raw output ada di [M06-BE-17-VERIFY.md](M06-BE-17-VERIFY.md).
+
+<a id="evidence-m06-be-18-blocker"></a>
+
+### Evidence M06-BE-18 — Blocker permission Neon Auth (2026-11-03)
+
+- **Keputusan Owner:** pertahankan least privilege; jangan memberi Staff role provider `admin`. Tunda operasi akun provider sampai tersedia jalur manajemen dengan permission terbatas. Keputusan ini tidak menyetujui task BE-18 selesai; statusnya tetap `[ ]`.
+- SDK lokal yang dipin: `@neondatabase/auth@0.5.0-beta`; `better-auth@1.6.23`.
+- Source SDK lokal menunjukkan `adminRoles` default ke `["admin"]`. Role provider `admin` memiliki permission `user:create`, `user:ban`, `user:set-role`, `user:list`, dan operasi admin lainnya; role `user` memiliki permission kosong. Endpoint `createUser` memeriksa `user:create`; `banUser` dan `unbanUser` memeriksa `user:ban`. Jadi Staff dengan role provider biasa tidak dapat memprovisikan atau menonaktifkan identitas Tenant melalui endpoint tersebut. Memberi Staff provider `admin` memperluas kuasanya melampaui otorisasi Staff aplikasi.
+- Sumber lokal: `node_modules/better-auth/dist/plugins/admin/admin.mjs` baris 12–20; `node_modules/better-auth/dist/plugins/admin/access/statement.mjs` baris 3–50; `node_modules/better-auth/dist/plugins/admin/routes.mjs` baris 130–187 dan 444–520. SDK Neon terpasang mengekspos opsi client plugins dan tidak mengekspos konfigurasi plugin server untuk mendefinisikan permission provider terbatas.
+- Verify task `npm run test -- account-lifecycle` dijalankan satu kali dan gagal karena suite belum ada: `No tests found for suite: account-lifecycle`, exit 1. Tidak ada source aplikasi yang diubah, request Neon/Auth atau database tidak dilakukan, dan tidak ada klaim Verify lulus. Output disimpan di [M06-BE-18-BLOCKER.md](M06-BE-18-BLOCKER.md).
+- BE-15 belum siap karena prasyarat BE-13; BE-13 masih memerlukan BE-18. Jangan melompati dependency tersebut tanpa memecah scope dan mencatat keputusan Owner.
+
+<a id="evidence-m06-db-57"></a>
+
+### Evidence M06-DB-57 — Limiter login per akun (2026-11-03)
+
+- Tambah state satu baris per `AppUser`, menyimpan maksimal lima timestamp dalam sliding window 60 detik, hitungan kegagalan berurutan, dan `blockedUntil`. Fungsi DB mereservasi percobaan dengan row lock, mencatat exponential progressive delay dengan batas parameter, serta menghapus eskalasi saat login sukses.
+- PGlite in-memory dengan fixture sintetis lulus untuk lima percobaan, penolakan keenam, pruning timestamp kedaluwarsa, backoff, reset sukses, batas parameter, FK, dan kolom tanpa email/IP/password/token. Prisma validate lulus dengan URL sintetis. Neon tidak disentuh.
+- Uji paralel memakai satu koneksi PGlite, bukan multi-session PostgreSQL. Pemeriksaan pertama `git diff --check` gagal karena metadata Git rusak; metadata tersebut kemudian diganti dari clone bersih dengan HEAD yang sama seperti `origin/dev`. Pemeriksaan lanjutan `git diff --check` dan `git fsck --full --no-reflogs` lulus. Metadata lama dipertahankan di `D:\Workspace\.RumaKost-git-corrupt-backup-20261103-133445`.
+- Output Verify lengkap: [M06-DB-57-VERIFY.md](M06-DB-57-VERIFY.md). M06-DB-57 tetap `[ ]`, menunggu review Owner.
+
+<a id="evidence-m06-auth-01-blocker"></a>
+
+### Evidence M06-AUTH-01 — Blocker perubahan email akun target (2026-11-03)
+
+- Kontrak `changeLoginEmail` menerima `userId` dan email baru; WF-09-SK-31 menyebut Owner memilih perubahan email untuk sebuah akun. Provider harus memverifikasi alamat baru, `authSubject` tetap, dan `AppUser.emailNormalized` hanya diperbarui setelah konfirmasi.
+- SDK lokal yang dipin: `@neondatabase/auth@0.5.0-beta`; `better-auth@1.6.23`.
+- Source lokal `better-auth/dist/api/routes/update-user.mjs` mendefinisikan POST `/change-email` dengan `newEmail` dan `callbackURL`, memakai `sensitiveSessionMiddleware`, dan mengambil alamat lama dari `ctx.context.session.user.email`. Ini alur pengguna untuk akun pada sesi itu, tanpa argumen `userId` target. Endpoint OTP `/email-otp/change-email` juga mengambil akun dari sesi saat ini.
+- Jalur admin `adminUpdateUser` menerima `userId` dan email, namun memerlukan permission `user:set-email` dan langsung memanggil `internalAdapter.updateUser`; endpoint ini tidak mengirim atau menunggu verifikasi alamat baru. Menggunakannya untuk task ini akan melewati verifikasi yang diwajibkan. Neon menjelaskan Managed Auth tidak mendukung custom server-side handlers/plugins. [Better Auth User & Accounts](https://better-auth.com/docs/concepts/users-accounts); [Neon Auth architecture](https://neon.com/blog/neon-auth-branchable-identity-in-your-database).
+- Verify `npm run test -- auth-email-change` dijalankan satu kali dan gagal karena suite belum tersedia: `No tests found for suite: auth-email-change`, exit 1. Output mentah disimpan di [M06-AUTH-01-BLOCKER.md](M06-AUTH-01-BLOCKER.md).
+- Tidak ada source aplikasi yang diubah, tidak ada perubahan `authSubject` atau `emailNormalized`, dan tidak ada request Neon Auth maupun query database. Task tetap `[ ]`.
+- Rekomendasi: pertahankan syarat Owner mengubah akun target melalui verifikasi provider, lalu tunda sampai Neon menyediakan admin-initiated verified email-change flow atau desain provider alternatif disetujui. Alternatifnya adalah Owner hanya mengubah email akunnya sendiri melalui alur sesi Neon Auth; itu memerlukan perubahan keputusan/domain di PRD, FSD, M05, dan WF-09 sebelum implementasi.
+
+<a id="evidence-m06-auth-02-review-arsitektur-auth"></a>
+
+### Evidence M06-AUTH-02 — Review arsitektur autentikasi (2026-11-03)
+
+- Owner menyetujui pembukaan kembali keputusan arsitektur auth. Memo membandingkan Neon Auth managed, Better Auth self-hosted dengan Neon PostgreSQL, dan Clerk berdasarkan kontrak lifecycle akun dan perubahan email target.
+- Rekomendasi dalam memo: lakukan spike Better Auth self-hosted lebih dahulu, dengan bukti invitation tanpa password sementara dan email target tervalidasi. Clerk menjadi fallback yang memerlukan persetujuan eksplisit atas migrasi provider, secret backend, Invite-only, dan biaya/plan.
+- Task M06-BE-18 dan M06-AUTH-01 tetap terbuka/blocked. Tidak ada provider, dependency, konfigurasi, akun, branch, atau database Neon yang diubah.
+- Verify task: source trace memo dan batas scope. Output mentah:
+
+```text
+PASS: Three provider options documented
+PASS: Target-email verification contract retained
+PASS: No provider selected before Owner review
+PASS: Blockers remain open
+PASS: Official primary-source links included
+PASS: No implementation or Neon mutation in task scope
+EXIT_CODE=0
+```

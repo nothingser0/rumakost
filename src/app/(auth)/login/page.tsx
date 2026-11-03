@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/server";
 import type { AuthAppUser } from "@/lib/auth/app-user";
 import { getCurrentAuthAppUser } from "@/lib/auth/current-app-user";
+import { signOutAction } from "@/lib/auth/actions";
 import { getPostPasswordChangePath } from "@/lib/auth/password-policy.mjs";
 import { LoginForm } from "./login-form";
 import styles from "./page.module.css";
@@ -36,17 +37,18 @@ async function LoginContent() {
     try {
       appUser = await getCurrentAuthAppUser();
     } catch {
-      await auth.signOut();
       return <LoginUnavailable />;
     }
 
-    if (!appUser?.isActive) {
-      await auth.signOut();
-    } else if (appUser.mustChangePassword) {
+    if (appUser?.isActive && appUser.mustChangePassword) {
       redirect("/aktivasi-sandi");
-    } else {
+    }
+
+    if (appUser?.isActive) {
       redirect(getPostPasswordChangePath(appUser.role));
     }
+
+    return <LoginUnavailable />;
   }
 
   return (
@@ -86,7 +88,12 @@ async function LoginContent() {
 function LoginUnavailable() {
   return (
     <main className={styles.sessionFallback}>
-      <p>Sesi tidak dapat diperiksa. Muat ulang halaman atau coba lagi.</p>
+      <p>Sesi ini tidak dapat digunakan. Keluar lalu coba lagi.</p>
+      <form action={signOutAction}>
+        <button className={styles.submitButton} type="submit">
+          Keluar dari sesi ini
+        </button>
+      </form>
     </main>
   );
 }

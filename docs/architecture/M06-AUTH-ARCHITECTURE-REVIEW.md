@@ -1,0 +1,30 @@
+# Review arsitektur autentikasi M06
+
+Tanggal: 2026-11-03  
+Status: proposal untuk review Owner; belum memilih atau mengganti provider.
+
+## Masalah yang harus diselesaikan
+
+M06-BE-18 memerlukan provisioning akun oleh Owner/Staff sesuai role, onboarding lewat email, serta deaktivasi tanpa memberikan Staff hak admin provider. M06-AUTH-01 memerlukan Owner memulai perubahan email akun target, alamat baru dikonfirmasi sebelum `AppUser.emailNormalized` berubah, `authSubject` tetap, serta retry/reconciliation dan audit. Kontrak ini ada di M05 Data API §4.1, FSD §7, dan WF-09 SK-31/SK-59. Kedua task terblokir oleh kemampuan Neon Auth managed saat ini; Verify masing-masing juga belum memiliki suite test.
+
+## Perbandingan opsi
+
+| Opsi | Provisioning dan aktivasi | Perubahan email akun target | Batas permission dan dampak | Penilaian |
+|---|---|---|---|---|
+| Neon Auth managed (saat ini) | API admin provisioning/status memerlukan izin provider yang luas; belum tersedia jalur server khusus dengan hak Staff terbatas. | `changeEmail` bawaan memakai sesi akun yang sedang login; update admin target mengubah alamat langsung tanpa menunggu verifikasi. | Tidak mendukung custom server handler/plugin. Mengubah domain menjadi email self-service saja akan bertentangan dengan FSD, M05, dan WF-09. | Tidak memenuhi kontrak yang disetujui. Jangan lanjutkan BE-18/AUTH-01 pada managed provider dengan bypass atau memberi Staff provider admin. |
+| Better Auth di-host aplikasi sendiri, PostgreSQL tetap di Neon | Server plugin dapat menambahkan endpoint dan aturan aplikasi. Namun API admin bawaan mewajibkan password saat membuat user, jadi onboarding tanpa password sementara tetap perlu dibuktikan sebelum memilihnya. Email delivery dan pengamanan endpoint menjadi tanggung jawab aplikasi. | Alur bawaan hanya menangani email pengguna yang sedang login dan menunggu verifikasi. Endpoint terkontrol untuk akun target dapat dibuat melalui plugin, tetapi state verifikasi, anti-replay, transaksi/reconciliation dan audit harus dirancang dan diuji sendiri. | Tidak perlu memberi Staff role admin provider; server dapat menerapkan matriks OWNER/STAFF/TENANT sebelum menjalankan operasi auth. Neon Postgres dipertahankan, tetapi Neon Auth managed, sesi, konfigurasi, dan kemungkinan ID provider berubah. Perlu rencana migrasi akun dan pengiriman email. | Rekomendasi: jadikan opsi ini spike teknis pertama karena paling selaras dengan least-privilege aplikasi dan tidak menambah identity vendor. Adopsi hanya jika spike membuktikan aktivasi tanpa password sementara dan perubahan email target terverifikasi. |
+| Clerk hosted | Backend invitation mengirim tautan dan menandai email terverifikasi setelah tautan diterima. Invitation saja tidak mematikan signup publik; mode Invite-only harus dikonfigurasi. Invitation default kedaluwarsa setelah satu bulan. | Backend API menyediakan pembuatan alamat email target, persiapan dan percobaan verifikasi, lalu perubahan alamat utama. Aplikasi harus menyimpan pending state dan baru menyelaraskan `emailNormalized` setelah provider mengonfirmasi alamat yang sama. | Secret Key digunakan untuk Backend API CRUD dan harus hanya berada di server; itu tetap kunci berkuasa luas jika bocor, walaupun Staff tidak pernah menerima role/kredensial Clerk. `authSubject` dan sesi perlu migrasi, dependency/config berubah, serta plan dan biaya harus dinilai terhadap keputusan zero-paid-upgrades. | Fallback bila spike Better Auth terlalu banyak kode khusus dan Owner menerima blast radius Secret Key, migrasi identitas, serta batas biaya. Belum disetujui untuk dipakai. |
+
+Sumber kemampuan provider: [Neon Auth architecture](https://neon.com/blog/neon-auth-branchable-identity-in-your-database); [Better Auth v1.6 plugins](https://better-auth.com/docs/1.6/concepts/plugins), [Admin plugin](https://better-auth.com/docs/1.6/plugins/admin), dan [User & Accounts](https://better-auth.com/docs/concepts/users-accounts); [Clerk invitations](https://clerk.com/docs/guides/users/inviting), [create email address](https://clerk.com/docs/reference/backend/email-addresses/create-email-address), [Backend EmailAddress](https://clerk.com/docs/reference/backend/types/backend-email-address), [Backend API](https://clerk.com/docs/reference/backend-api), [Invite-only mode](https://clerk.com/docs/guides/secure/restricting-access), serta [Backend API credentials](https://clerk.com/docs/guides/development/sdk-development/terminology).
+
+## Rekomendasi dan gerbang keputusan
+
+1. Pertahankan kebutuhan domain saat ini dan jangan ubah email menjadi self-service.
+2. Jalankan spike Better Auth self-hosted dengan fixture sintetik. Spike harus membuktikan: undangan/signup tertutup untuk akun tanpa undangan; user menetapkan password sendiri tanpa aplikasi membuat atau mengirim password sementara; Staff hanya dapat membuat akun Tenant; Owner dapat mengelola Staff/Tenant; deaktivasi memblokir login dan mencabut sesi; Owner memulai perubahan email akun target; email baru diverifikasi sebelum perubahan alamat utama dan mirror DB; retry tidak menggandakan event/audit; dan kegagalan provider dapat direkonsiliasi.
+3. Gunakan hanya environment auth development/disposable yang disetujui untuk spike. Jangan mengubah akun Neon Auth milik Owner, branch proyek, atau database proyek dalam task keputusan ini.
+4. Jika spike tidak memenuhi kriteria tanpa custom credential/token buatan aplikasi yang dilarang, hentikan dan ajukan Clerk sebagai opsi kedua. Sebelum implementasi Clerk, Owner harus menerima perubahan provider, cara migrasi `authSubject`/sesi, penyimpanan server-only untuk Secret Key, mode Invite-only, dan biaya/plan.
+5. Setelah arah dipilih, buat change request dan selaraskan FSD, M05 Data API, `.env.example`, RUNBOOK, setup, test plan, dan task FE/BE sebelum mengimplementasikan. Sampai saat itu M06-BE-18 dan M06-AUTH-01 tetap `[ ]`/blocked.
+
+## Verify dokumen
+
+Verifikasi task ini memeriksa bahwa ketiga opsi, kontrak target-email, rekomendasi, batas scope, serta tautan dokumentasi resmi tetap ada di memo. Output mentah dicatat di `docs/pm/evidence/M06-EVIDENCE.md` setelah task diperiksa.

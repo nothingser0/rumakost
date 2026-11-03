@@ -138,9 +138,22 @@ model AppUser {
   uploadedTicketAttachments   TicketAttachment[]
   auditEvents                 AuditEvent[]
   updatedOperatingBudgets     OperatingBudget[]    @relation("OperatingBudgetUpdatedBy")
+  authLoginRateLimit          AuthLoginRateLimit?
 
   @@index([createdById])
   @@map("app_users")
+}
+
+model AuthLoginRateLimit {
+  appUserId           String     @id @map("app_user_id") @db.Uuid
+  attemptTimestamps   DateTime[] @default([]) @map("attempt_timestamps") @db.Timestamptz(6)
+  consecutiveFailures Int        @default(0) @map("consecutive_failures")
+  blockedUntil        DateTime?  @map("blocked_until") @db.Timestamptz(6)
+  updatedAt           DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  appUser AppUser @relation(fields: [appUserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("auth_login_rate_limits")
 }
 
 model TenantProfile {
