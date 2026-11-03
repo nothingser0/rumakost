@@ -4599,3 +4599,118 @@ REMAINING_BRANCHES=dev
 ```
 
 Branch disposable sudah dihapus dan listing Neon sesudah teardown hanya memuat `dev`. Secret tidak dicetak; `.env.local` tidak dibaca. Verify M06-DB-55 pada PostgreSQL Neon disposable lulus untuk apply SQL dan 13 perilaku. Task tetap `[ ]` sampai Owner review dan memberi persetujuan.
+
+### Raw Verify PostgreSQL Neon disposable M06-DB-56 (2026-11-03)
+
+Migration repair `20261101125000_restore_tenant_profile_if_missing` diuji pada clone sementara dari branch `dev`, ID `br-tiny-waterfall-b3fjagr0`, kedaluwarsa `2026-11-05T00:00:00Z`. Clone dihapus setelah Verify. Tidak ada operasi tulis ke branch `dev`; `.env.local` tidak dibaca.
+
+Output snapshot clone sebelum repair:
+
+```text
+ database |     role     | tenant_profiles_exists | migration_table_exists
+----------+--------------+------------------------+------------------------
+ neondb   | neondb_owner | f                      | t
+(1 row)
+
+        migration_name         | finished
+-------------------------------+----------
+ 20261031120000_app_user       | t
+ 20261101120000_tenant_profile | t
+(2 rows)
+```
+
+Raw output apply repair pertama:
+
+```text
+CREATE TABLE
+DO
+EXIT_CODE=0
+```
+
+Raw output menjalankan ulang repair untuk cek idempotensi:
+
+```text
+NOTICE:  relation "tenant_profiles" already exists, skipping
+CREATE TABLE
+DO
+EXIT_CODE=0
+```
+
+Raw output katalog dan behavior dengan AppUser sintetis dalam transaksi yang di-rollback:
+
+```text
+             conname              | contype | convalidated
+----------------------------------+---------+--------------
+ tenant_profiles_pkey             | p       | t
+ tenant_profiles_user_id_fkey     | f       | t
+ tenant_profiles_user_id_not_null | n       | t
+(3 rows)
+
+BEGIN
+INSERT 0 1
+INSERT 0 1
+NOTICE:  DUPLICATE_PROFILE_REJECTED
+NOTICE:  INVALID_FK_REJECTED
+DO
+ROLLBACK
+EXIT_CODE=0
+```
+
+Output apply migration lanjutan dari Room sampai WF-04: `MIGRATION_COUNT=21`, seluruh statement DDL berhasil, `EXIT_CODE=0`. Probe setelahnya:
+
+```text
+ rooms_exists | leases_exists | tenant_profiles_exists | tenant_phone_column_exists | tenant_user_fk_validated
+--------------+---------------+------------------------+----------------------------+--------------------------
+ t            | t             | t                      | t                          | t
+(1 row)
+
+ wf04_constraint_count
+-----------------------
+                   214
+(1 row)
+EXIT_CODE=0
+```
+
+Clone kemudian direset untuk clean chain. Seluruh 37 migration, termasuk repair di posisi setelah TenantProfile dasar dan sebelum Room, diterapkan berurutan. Repair mengeluarkan `NOTICE: relation "tenant_profiles" already exists, skipping`; seluruh statement DDL berhasil dengan `MIGRATION_COUNT=37`, `EXIT_CODE=0`. Probe hasil clean chain:
+
+```text
+ tenant_profiles_exists | rooms_exists | tickets_exists | tenant_pk_validated | tenant_user_fk_validated
+------------------------+--------------+----------------+---------------------+--------------------------
+ t                      | t            | t              | t                   | t
+(1 row)
+
+ migration_table_exists
+------------------------
+ f
+(1 row)
+EXIT_CODE=0
+```
+
+Apply tersebut memakai raw SQL lewat embedded `neon psql`, bukan `prisma migrate deploy`; karena itu probe clean chain di atas memang tidak membuat `_prisma_migrations`.
+
+Raw output Prisma validate dengan config sementara dan URL sintetis; config dihapus setelah Verify:
+
+```text
+Loaded Prisma config from prisma.verify.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+The schema at prisma\schema.prisma is valid 🚀
+EXIT_CODE=0
+```
+
+Raw output teardown:
+
+```text
+Name           m06-db-56-repair-20261103
+ID             br-tiny-waterfall-b3fjagr0
+Current State  ready
+Expires At     2026-11-05T00:00:00Z
+Created At     2026-11-03T02:31:31Z
+CLI_EXIT_CODE=0
+
+Name           ID                      Current State  Created At
+[default] dev  br-calm-river-b3bnl63t  ready          2026-10-31T06:24:35Z
+LIST_EXIT_CODE=0
+```
+
+Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain lulus. M06-DB-56 tetap `[ ]` untuk review Owner.
