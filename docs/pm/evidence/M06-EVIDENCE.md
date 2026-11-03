@@ -4461,7 +4461,7 @@ EXIT_CODE=0
 
 Implementasi DB membatasi expiry ke transisi draft berumur minimal 7 hari menjadi `CANCELLED`, alasan persis `DRAFT_EXPIRED`, `statusChangedById` dan `cancelledById` NULL, serta event `SYSTEM` tanpa actor. Label `DRAFT_EXPIRED` dicadangkan untuk job. Pembatalan manual tetap memerlukan AppUser yang sama pada `statusChangedById`/`cancelledById`. Migrasi SQL diuji pada fixture PGlite in-memory; hasil ini bukan pengganti PostgreSQL/Neon.
 
-Verify task belum lengkap: migration belum dijalankan pada Neon disposable. Neon CLI tidak tersedia (`npx --yes neonctl --help` tidak mengeluarkan output sebelum dihentikan), browser host melaporkan `Browser access host is unavailable`, dan tidak tersedia connector/API Neon pada sesi ini. `.env.local` tidak dibaca, secret tidak ditampilkan, dan branch Neon proyek tidak disentuh. M06-DB-55 tetap `[ ]`; belum ada persetujuan Owner.
+Pada 2026-11-03 Neon CLI `neon` versi `8.16.0` berhasil mengakses project `rumakost` dan branch disposable. `.env.local` dan secret tidak dibaca/ditampilkan. Verify Neon disposable dicatat di bawah; branch `dev` tidak diubah. M06-DB-55 tetap `[ ]` dan menunggu review/persetujuan Owner.
 
 Raw `npx prisma validate --config prisma.verify.config.ts` (config sementara memakai URL sintetis dan sudah dihapus):
 
@@ -4523,3 +4523,79 @@ MIGRATION_TRAILING_WHITESPACE_LINES=
 MIGRATION_FINAL_NEWLINE=True
 EXIT_CODE=0
 ```
+Recheck akses Neon (2026-11-03):
+
+```text
+neon=8.16.0
+project_list=PASS
+disposable_psql=PASS
+neonctl=NOT_FOUND
+psql_binary=NOT_FOUND (Neon CLI embedded TypeScript psql fallback)
+docker=NOT_FOUND
+podman=NOT_FOUND
+DATABASE_ENV_VAR_NAMES=NONE
+```
+
+### Raw Verify PostgreSQL Neon disposable M06-DB-55 (2026-11-03)
+
+Neon CLI membuat branch disposable `m06-db-55-verify-20261103` (`br-dark-waterfall-b3y4boql`) dari `dev`, dengan masa berlaku sampai `2026-11-05T00:00:00Z`. Snapshot turunan `dev` menunjukkan `_prisma_migrations` mencatat dua migration pertama selesai, tetapi `public.tenant_profiles` tidak ada. Tidak ada operasi yang mengubah branch `dev`. Untuk menguji seluruh chain dari schema bersih, hanya schema `public` pada branch disposable yang di-reset; 36 file `migration.sql` kemudian dialirkan berurutan ke `neon psql`. Ini adalah apply SQL langsung, bukan `prisma migrate deploy` dan tidak membuat metadata `_prisma_migrations`.
+
+Output probe snapshot sebelum reset:
+
+```text
+database=neondb
+role=neondb_owner
+tenant_profiles_exists=false
+migration_table_exists=true
+20261031120000_app_user finished=true
+20261101120000_tenant_profile finished=true
+```
+
+Output raw apply chain:
+
+```text
+DISPOSABLE_BRANCH_RESET | neondb | neondb_owner
+MIGRATION_COUNT=36
+MIGRATION_EXIT_CODE=0
+...CREATE FUNCTION
+CREATE TRIGGER
+...CREATE TYPE
+ALTER TABLE
+CREATE FUNCTION
+```
+
+Behavior probe memakai fixture sintetis. Percobaan fixture awal ditolak oleh constraint `rooms_code_canonical` karena kode kamar melebihi 10 karakter; transaksi rollback. Fixture diperpendek menjadi `DB55VFY`. Assertion histori juga dikoreksi untuk mempertahankan event awal `DRAFT` bersama event expiry `SYSTEM`. Tidak ada perubahan pada migration selama koreksi harness.
+
+Output raw behavior probe akhir:
+
+```text
+SYSTEM event requires null actor id                        | t
+USER event requires actor id                               | t
+cancelled ticket is terminal                               | t
+expiry before seven days                                   | t
+initial and SYSTEM history remain after rejected mutations | t
+manual actor required for ordinary cancellation           | t
+manual cancellation keeps matching USER actor              | t
+status history append only on delete                       | t
+status history append only on update                       | t
+system actor cannot use another status                     | t
+user cannot use reserved expiry reason                     | t
+valid expiry preserves ticket and writes SYSTEM history    | t
+wrong system expiry reason                                 | t
+
+checks_passed=13
+all_passed=true
+BEHAVIOR_EXIT_CODE=0
+COMMIT
+```
+
+Teardown disposable:
+
+```text
+Name           m06-db-55-verify-20261103
+ID             br-dark-waterfall-b3y4boql
+DELETE_EXIT_CODE=0
+REMAINING_BRANCHES=dev
+```
+
+Branch disposable sudah dihapus dan listing Neon sesudah teardown hanya memuat `dev`. Secret tidak dicetak; `.env.local` tidak dibaca. Verify M06-DB-55 pada PostgreSQL Neon disposable lulus untuk apply SQL dan 13 perilaku. Task tetap `[ ]` sampai Owner review dan memberi persetujuan.
