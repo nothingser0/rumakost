@@ -57,6 +57,7 @@ const serverEnvSchema = z.object({
   NEON_AUTH_BASE_URL: httpsUrl,
   NEON_AUTH_COOKIE_SECRET: z.string().min(32),
   NEON_STORAGE_ENDPOINT: httpsUrl,
+  NEON_STORAGE_REGION: z.string().trim().min(1).max(32).regex(/^[a-z0-9-]+$/),
   NEON_STORAGE_BUCKET: z.string().trim().min(3).max(63).regex(/^[a-z0-9][a-z0-9.-]*[a-z0-9]$/),
   NEON_STORAGE_ACCESS_KEY: z.string().trim().min(1),
   NEON_STORAGE_SECRET_KEY: z.string().trim().min(1),
@@ -73,6 +74,7 @@ const databaseEnvSchema = serverEnvSchema.pick({ DATABASE_URL: true });
 const appOriginEnvSchema = serverEnvSchema.pick({ APP_ORIGIN: true });
 const storageEnvSchema = serverEnvSchema.pick({
   NEON_STORAGE_ENDPOINT: true,
+  NEON_STORAGE_REGION: true,
   NEON_STORAGE_BUCKET: true,
   NEON_STORAGE_ACCESS_KEY: true,
   NEON_STORAGE_SECRET_KEY: true,

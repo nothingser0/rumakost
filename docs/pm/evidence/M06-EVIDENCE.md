@@ -5619,3 +5619,12 @@ EXIT_CODE=0
 - User provision tanpa password memakai helper server `internalAdapter.createUser`; plugin Admin bawaan meminta password. Integrasi session-bound endpoint, audit, email delivery nyata dan sinkronisasi AppUser belum dikerjakan. Spike tidak memilih provider produksi atau menyelesaikan M06-BE-18.
 - Project disposable dihapus. Verifikasi daftar Neon sesudah penghapusan hanya menampilkan project `rumakost` (`floral-wind-91503829`). `.env.local` dan project aktif tidak disentuh.
 - Output mentah dan rincian ada di [M06-AUTH-03-VERIFY.md](M06-AUTH-03-VERIFY.md). Status `[ ]`, menunggu review Owner.
+
+<a id="evidence-m06-int-02"></a>
+
+### Evidence M06-INT-02 — Neon Object Storage privat (2026-11-03)
+
+- Bucket `uploads` pada branch proyek `dev` telah berstatus `private`. Neon CLI menarik environment Storage hanya untuk branch turunan disposable; nilai rahasia tidak ditampilkan. Object Storage Neon menyediakan endpoint S3-compatible, sehingga adapter AWS SDK yang digunakan aplikasi dapat diuji terhadap provider.
+- Provider Verify PASS 1/1 pada branch `int02-verify-64b7b523f9`: signed PUT dan signed GET berhasil; GET anonim ditolak; server-side read mengembalikan bytes yang sama; cache header private; delete dua kali aman dan objek tidak ditemukan setelahnya. Branch dan temporary environment file dihapus. `.env.local` dan branch parent `dev` tidak diubah.
+- Environment aplikasi sekarang memetakan `AWS_REGION` Neon ke `NEON_STORAGE_REGION`; pemilik tetap mengisi kredensial lokal sendiri. Bucket/upload/storage quota dan cleanup domain tetap dibatasi oleh M06-BE-12.
+- `npm run typecheck` saat ini gagal dengan 77 error di modul lain; tidak ada error yang dilaporkan pada file storage/env yang diubah dalam task ini. Status task `[ ]`, menunggu review Owner. Raw output: [M06-INT-02-VERIFY.md](M06-INT-02-VERIFY.md).
