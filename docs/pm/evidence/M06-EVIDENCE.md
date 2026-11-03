@@ -5071,7 +5071,7 @@ ok 25 - draft expiry validates counts returned by the internal job
 
 Implementasi DB membatasi expiry ke transisi draft berumur minimal 7 hari menjadi `CANCELLED`, alasan persis `DRAFT_EXPIRED`, `statusChangedById` dan `cancelledById` NULL, serta event `SYSTEM` tanpa actor. Label `DRAFT_EXPIRED` dicadangkan untuk job. Pembatalan manual tetap memerlukan AppUser yang sama pada `statusChangedById`/`cancelledById`. Migrasi SQL diuji pada fixture PGlite in-memory; hasil ini bukan pengganti PostgreSQL/Neon.
 
-Pada 2026-11-03 Neon CLI `neon` versi `8.16.0` berhasil mengakses project `rumakost` dan branch disposable. `.env.local` dan secret tidak dibaca/ditampilkan. Verify Neon disposable dicatat di bawah; branch `dev` tidak diubah. M06-DB-55 tetap `[ ]` dan menunggu review/persetujuan Owner.
+Pada 2026-11-03 Neon CLI `neon` versi `8.16.0` berhasil mengakses project `rumakost` dan branch disposable. `.env.local` dan secret tidak dibaca/ditampilkan. Verify Neon disposable dicatat di bawah; branch `dev` tidak diubah. Owner menyetujui M06-DB-55 pada 2026-11-03 (zeenn).
 
 Raw `npx prisma validate --config prisma.verify.config.ts` (config sementara memakai URL sintetis dan sudah dihapus):
 
@@ -5208,7 +5208,7 @@ DELETE_EXIT_CODE=0
 REMAINING_BRANCHES=dev
 ```
 
-Branch disposable sudah dihapus dan listing Neon sesudah teardown hanya memuat `dev`. Secret tidak dicetak; `.env.local` tidak dibaca. Verify M06-DB-55 pada PostgreSQL Neon disposable lulus untuk apply SQL dan 13 perilaku. Task tetap `[ ]` sampai Owner review dan memberi persetujuan.
+Branch disposable sudah dihapus dan listing Neon sesudah teardown hanya memuat `dev`. Secret tidak dicetak; `.env.local` tidak dibaca. Verify M06-DB-55 pada PostgreSQL Neon disposable lulus untuk apply SQL dan 13 perilaku. Approved: 2026-11-03 by zeenn.
 
 ### Raw Verify PostgreSQL Neon disposable M06-DB-56 (2026-11-03)
 
@@ -5305,6 +5305,12 @@ Loaded Prisma config from prisma.verify.config.ts.
 
 Prisma schema loaded from prisma\schema.prisma.
 The schema at prisma\schema.prisma is valid 🚀
+EXIT_CODE=0
+```
+
+Raw `git diff --check` untuk patch migration DB-56 (`b6c1d068919b72607f39eebffff5377e56607677^..b6c1d068919b72607f39eebffff5377e56607677`), diperiksa dari clone bersih branch `dev` dengan HEAD yang sama:
+
+```text
 EXIT_CODE=0
 ```
 
