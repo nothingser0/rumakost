@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import Link from "next/link";
 import { signInAction, type SignInState } from "@/lib/auth/actions";
 import styles from "./page.module.css";
 
@@ -75,10 +76,15 @@ export function LoginForm() {
         </button>
       </div>
 
-      <label className={styles.rememberLabel}>
-        <input name="rememberMe" type="checkbox" />
-        <span>Ingat saya di perangkat ini</span>
-      </label>
+      <div className={styles.loginOptions}>
+        <label className={styles.rememberLabel}>
+          <input name="rememberMe" type="checkbox" />
+          <span>Ingat saya di perangkat ini</span>
+        </label>
+        <Link className={styles.textLink} href="/lupa-sandi">
+          Lupa kata sandi?
+        </Link>
+      </div>
 
       {state.error ? <p aria-live="polite" className={styles.error} role="alert">{state.error}</p> : null}
 

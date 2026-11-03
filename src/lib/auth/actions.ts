@@ -3,11 +3,39 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/server";
 import { getAuthAppUser, type AuthAppUser } from "@/lib/auth/app-user";
+import { getAppOriginEnv } from "@/lib/env";
 import { validateSignInInput } from "./auth-policy.mjs";
+import { performPasswordResetRequest } from "./password-reset-request.mjs";
 
 export type SignInState = {
   error: string | null;
 };
+
+export type PasswordResetRequestState = {
+  status: "idle" | "invalid" | "accepted" | "unavailable";
+};
+
+export async function requestPasswordResetAction(
+  _previousState: PasswordResetRequestState,
+  formData: FormData,
+): Promise<PasswordResetRequestState> {
+  let appOrigin: string;
+
+  try {
+    appOrigin = getAppOriginEnv().APP_ORIGIN;
+  } catch {
+    return { status: "unavailable" };
+  }
+
+  const result = await performPasswordResetRequest({
+    rawEmail: formData.get("email"),
+    appOrigin,
+    requestReset: ({ email, redirectTo }) =>
+      auth.requestPasswordReset({ email, redirectTo }),
+  });
+
+  return result;
+}
 
 export async function signInAction(
   _previousState: SignInState,

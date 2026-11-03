@@ -265,10 +265,37 @@
   width: fit-content;
   align-items: center;
   gap: 9px;
-  margin-top: 19px;
   color: var(--text-body);
   cursor: pointer;
   font-size: 13px;
+}
+
+.loginOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 19px;
+}
+
+.textLink {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  color: var(--color-primary-dark);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.textLink:hover {
+  text-decoration: underline;
+}
+
+.textLink:focus-visible {
+  border-radius: 2px;
+  outline: 3px solid #c25e00;
+  outline-offset: 3px;
 }
 
 .rememberLabel input {

@@ -5507,3 +5507,14 @@ Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain
 - Update hanya menerima field `TenantProfile`. E.164 dan panjang kolom `VARCHAR` mengikuti constraint schema; nama dan nomor kontak darurat harus disediakan atau dihapus berpasangan. Email login dan Lease tidak diterima sebagai field.
 - Update profil dan `AuditEvent` berjalan dalam satu statement PostgreSQL. Metadata audit berisi nama field yang berubah tanpa nilai kontak. Pengulangan nilai yang sama tidak menulis event audit kedua.
 - Verify PASS 9/9 pada Node.js v24.22.2. Test memakai repository fake sintetis; query belum diuji terhadap Neon dan tidak ada database proyek yang disentuh. Output mentah tersimpan di [M06-BE-16-VERIFY.md](M06-BE-16-VERIFY.md). Owner menyetujui M06-BE-16 pada 2026-11-03 (zeenn).
+
+<a id="evidence-m06-fe-22"></a>
+
+### Evidence M06-FE-22 - Pemulihan kata sandi via email (2026-11-03)
+
+- Halaman `/lupa-sandi` memakai layout auth RumaKost yang sudah ada dan ditautkan dari halaman `/login`. Tidak menyediakan pendaftaran publik.
+- Server Action memvalidasi format email dan meminta reset lewat `auth.requestPasswordReset` dari server SDK Neon Auth. Callback dipatok ke `APP_ORIGIN/reset-sandi`; email, detail provider, dan status keberadaan akun tidak dikirim kembali ke browser.
+- Untuk semua email valid, tampilan respons sama sekalipun provider mengembalikan error atau melempar exception. Ini menjaga hasil halaman tetap non-enumerating. Pengiriman email/provider live tidak dijalankan; validasi live reset termasuk M07 sesuai FSD SEC-02.
+- Verify lokal PASS: suite `auth-reset-request` 5/5; probe GET `/lupa-sandi` dan `/login` keduanya 200; form email, ketiadaan signup/password field, dan link login ke reset terdeteksi. Tidak ada email, Neon Auth request, atau database yang disentuh.
+- Pemeriksaan klik visual penuh tidak tersedia karena browser access host CUA gagal tersambung; fallback menjalankan Edge headless ditolak execution policy. HTTP probe dan pemeriksaan kontrak kode selesai; Owner masih perlu meninjau tampilan.
+- Output mentah tersimpan di [M06-FE-22-VERIFY.md](M06-FE-22-VERIFY.md). Owner menyetujui M06-FE-22 pada 2026-11-03 (zeenn).
