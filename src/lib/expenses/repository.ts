@@ -206,7 +206,7 @@ const REVERSE_EXPENSE_SQL = `
       reason, safe_metadata
     )
     SELECT $6::uuid, actor.id, 'EXPENSE_REVERSED', 'EXPENSE', inserted."expenseId",
-           CURRENT_TIMESTAMP, inserted.reason,
+           CURRENT_TIMESTAMP, 'OWNER_RECORDED_EXPENSE_REVERSAL',
            jsonb_build_object('amount', inserted.amount, 'reversalId', inserted.id)
       FROM inserted
       JOIN actor ON TRUE

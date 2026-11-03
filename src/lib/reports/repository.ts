@@ -57,7 +57,14 @@ const SET_OPERATING_BUDGET_SQL = `
        AND NOT must_change_password
   ),
   prior AS MATERIALIZED (
-    SELECT id, amount
+    SELECT id,
+           to_char(period_start, 'YYYY-MM') AS month,
+           amount::numeric(12,2)::text AS amount,
+           updated_by_id AS "updatedById",
+           to_char(created_at AT TIME ZONE 'UTC',
+                   'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "createdAt",
+           to_char(updated_at AT TIME ZONE 'UTC',
+                   'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "updatedAt"
       FROM operating_budgets
      WHERE period_start = $3::date
   ),
@@ -73,6 +80,7 @@ const SET_OPERATING_BUDGET_SQL = `
        SET amount = EXCLUDED.amount,
            updated_by_id = EXCLUDED.updated_by_id,
            updated_at = CURRENT_TIMESTAMP
+     WHERE operating_budgets.amount IS DISTINCT FROM EXCLUDED.amount
     RETURNING id,
               to_char(period_start, 'YYYY-MM') AS month,
               amount::numeric(12,2)::text AS amount,
@@ -92,7 +100,7 @@ const SET_OPERATING_BUDGET_SQL = `
            jsonb_build_object(
              'month', written.month,
              'amount', written.amount,
-             'previousAmount', (SELECT amount::numeric(12,2)::text FROM prior)
+             'previousAmount', (SELECT amount FROM prior)
            )
       FROM written
       JOIN actor ON TRUE
@@ -100,12 +108,12 @@ const SET_OPERATING_BUDGET_SQL = `
   )
   SELECT (SELECT id FROM actor) AS "actorId",
          (SELECT role FROM actor) AS "actorRole",
-         (SELECT id FROM written) AS "resultId",
-         (SELECT month FROM written) AS "resultMonth",
-         (SELECT amount FROM written) AS "resultAmount",
-         (SELECT "updatedById" FROM written) AS "resultUpdatedById",
-         (SELECT "createdAt" FROM written) AS "resultCreatedAt",
-         (SELECT "updatedAt" FROM written) AS "resultUpdatedAt",
+         COALESCE((SELECT id FROM written), (SELECT id FROM prior)) AS "resultId",
+         COALESCE((SELECT month FROM written), (SELECT month FROM prior)) AS "resultMonth",
+         COALESCE((SELECT amount FROM written), (SELECT amount FROM prior)) AS "resultAmount",
+         COALESCE((SELECT "updatedById" FROM written), (SELECT "updatedById" FROM prior)) AS "resultUpdatedById",
+         COALESCE((SELECT "createdAt" FROM written), (SELECT "createdAt" FROM prior)) AS "resultCreatedAt",
+         COALESCE((SELECT "updatedAt" FROM written), (SELECT "updatedAt" FROM prior)) AS "resultUpdatedAt",
          (SELECT id FROM audit) AS "auditEventId"
     FROM (SELECT 1) AS request
 `;
@@ -287,7 +295,7 @@ export function createReportsRepository(): ReportsRepository {
       }
       if (!attempt.data.resultId || !attempt.data.resultMonth || !attempt.data.resultAmount ||
           !attempt.data.resultUpdatedById || !attempt.data.resultCreatedAt ||
-          !attempt.data.resultUpdatedAt || !attempt.data.auditEventId) {
+          !attempt.data.resultUpdatedAt) {
         throw new DomainError("INTERNAL_ERROR");
       }
 

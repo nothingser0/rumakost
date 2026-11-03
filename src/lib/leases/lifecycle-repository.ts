@@ -167,7 +167,7 @@ const REQUEST_LEASE_END_SQL = `
       reason, safe_metadata
     )
     SELECT $9::uuid, actor.id, 'LEASE_END_REQUESTED', 'LEASE_END_REQUEST', inserted.id,
-           CURRENT_TIMESTAMP, $4::text,
+           CURRENT_TIMESTAMP, 'TENANT_REQUESTED_EARLY_END',
            jsonb_build_object('leaseId', inserted."leaseId",
                               'requestedEndOn', inserted."requestedEndOn",
                               'status', 'PENDING')

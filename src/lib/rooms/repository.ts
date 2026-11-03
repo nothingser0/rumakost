@@ -167,18 +167,40 @@ export function createRoomRepository() {
       );
     },
 
-    async createRoom(input: RoomCreateInput): Promise<RoomRecord> {
+    async createRoom(input: RoomCreateInput & { actorId: string }): Promise<RoomRecord> {
       const rows = await queryRows(
-        `INSERT INTO rooms (
-           id, code, floor_id, room_type, width_m, length_m,
-           monthly_rent, deposit_default_amount, physical_status,
-           maintenance_note, created_at, updated_at
-         ) VALUES (
-           gen_random_uuid(), $1, $2::uuid, $3, $4::numeric, $5::numeric,
-           $6::numeric, $7::numeric, $8::"RoomPhysicalStatus",
-           $9, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+        `WITH actor AS MATERIALIZED (
+           SELECT id FROM app_users
+            WHERE id = $10::uuid AND role = 'OWNER'::"AppRole"
+              AND is_active AND NOT must_change_password
+         ), inserted AS (
+           INSERT INTO rooms (
+             id, code, floor_id, room_type, width_m, length_m,
+             monthly_rent, deposit_default_amount, physical_status,
+             maintenance_note, created_at, updated_at
+           )
+           SELECT gen_random_uuid(), $1, $2::uuid, $3, $4::numeric, $5::numeric,
+                  $6::numeric, $7::numeric, $8::"RoomPhysicalStatus",
+                  $9, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+             FROM actor
+           RETURNING *
+         ), audit AS (
+           INSERT INTO audit_events (
+             id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata
+           )
+           SELECT gen_random_uuid(), actor.id, 'ROOM_CREATED', 'ROOM', inserted.id,
+                  CURRENT_TIMESTAMP,
+                  jsonb_build_object(
+                    'code', inserted.code,
+                    'floorId', inserted.floor_id,
+                    'physicalStatus', inserted.physical_status,
+                    'monthlyRent', inserted.monthly_rent::text,
+                    'depositDefaultAmount', inserted.deposit_default_amount::text
+                  )
+             FROM actor CROSS JOIN inserted
+           RETURNING id
          )
-         RETURNING ${roomColumns}`,
+         SELECT ${roomColumns} FROM inserted JOIN audit ON TRUE`,
         [
           input.code,
           input.floorId,
@@ -189,6 +211,7 @@ export function createRoomRepository() {
           input.depositDefaultAmount,
           input.physicalStatus,
           input.maintenanceNote,
+          input.actorId,
         ],
         roomRowSchema,
       );
@@ -196,7 +219,7 @@ export function createRoomRepository() {
       return rows[0];
     },
 
-    async updateRoom(roomId: string, input: RoomUpdateInput): Promise<RoomRecord> {
+    async updateRoom(roomId: string, input: RoomUpdateInput, actorId: string): Promise<RoomRecord> {
       const columns: Record<keyof RoomUpdateInput, { column: string; cast: string }> = {
         code: { column: "code", cast: "" },
         floorId: { column: "floor_id", cast: "::uuid" },
@@ -218,10 +241,48 @@ export function createRoomRepository() {
       if (assignments.length === 0) throw new TypeError("Room update is empty.");
       assignments.push("updated_at = CURRENT_TIMESTAMP");
 
+      const changedConditions = Object.entries(input).map(([key], index) => {
+        const column = columns[key as keyof RoomUpdateInput];
+        return `prior.${column.column} IS DISTINCT FROM $${index + 2}${column.cast}`;
+      });
+      const actorParameter = parameters.length + 1;
+      const staffPermissionParameter = actorParameter + 1;
+      const changedFieldsParameter = actorParameter + 2;
+      const staffMayUpdate = Object.keys(input).length === 1 && "physicalStatus" in input;
+      parameters.push(actorId, staffMayUpdate, JSON.stringify(Object.keys(input)));
+
       const rows = await queryRows(
-        `UPDATE rooms SET ${assignments.join(", ")}
-         WHERE id = $1::uuid AND archived_at IS NULL
-         RETURNING ${roomColumns}`,
+        `WITH actor AS MATERIALIZED (
+           SELECT id, role::text AS role FROM app_users
+            WHERE id = $${actorParameter}::uuid
+              AND role IN ('OWNER'::"AppRole", 'STAFF'::"AppRole")
+              AND is_active AND NOT must_change_password
+         ), authorized AS MATERIALIZED (
+           SELECT * FROM actor
+            WHERE role = 'OWNER' OR (role = 'STAFF' AND $${staffPermissionParameter}::boolean)
+         ), prior AS MATERIALIZED (
+           SELECT room.* FROM rooms room JOIN authorized ON TRUE
+            WHERE room.id = $1::uuid AND room.archived_at IS NULL
+            FOR UPDATE OF room
+         ), updated AS (
+           UPDATE rooms room SET ${assignments.join(", ")}
+             FROM prior
+            WHERE room.id = prior.id
+              AND (${changedConditions.join(" OR ")})
+           RETURNING room.*
+         ), audit AS (
+           INSERT INTO audit_events (
+             id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata
+           )
+           SELECT gen_random_uuid(), authorized.id, 'ROOM_UPDATED', 'ROOM', updated.id,
+                  CURRENT_TIMESTAMP,
+                  jsonb_build_object('changedFields', $${changedFieldsParameter}::jsonb)
+             FROM updated CROSS JOIN authorized
+           RETURNING id
+         )
+         SELECT ${roomColumns} FROM updated
+         UNION ALL
+         SELECT ${roomColumns} FROM prior WHERE NOT EXISTS (SELECT 1 FROM updated)`,
         parameters,
         roomRowSchema,
       );
@@ -229,26 +290,58 @@ export function createRoomRepository() {
       return rows[0];
     },
 
-    async archiveRoom(roomId: string): Promise<RoomRecord> {
+    async archiveRoom(roomId: string, actorId: string): Promise<RoomRecord> {
       const rows = await queryRows(
-        `UPDATE rooms
-         SET archived_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
-         WHERE id = $1::uuid AND archived_at IS NULL
-         RETURNING ${roomColumns}`,
-        [roomId],
+        `WITH actor AS MATERIALIZED (
+           SELECT id FROM app_users
+            WHERE id = $2::uuid AND role = 'OWNER'::"AppRole"
+              AND is_active AND NOT must_change_password
+         ), updated AS (
+           UPDATE rooms room
+              SET archived_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
+             FROM actor
+            WHERE room.id = $1::uuid AND room.archived_at IS NULL
+           RETURNING room.*
+         ), audit AS (
+           INSERT INTO audit_events (
+             id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata
+           )
+           SELECT gen_random_uuid(), actor.id, 'ROOM_ARCHIVED', 'ROOM', updated.id,
+                  CURRENT_TIMESTAMP, jsonb_build_object('code', updated.code)
+             FROM actor CROSS JOIN updated
+           RETURNING id
+         )
+         SELECT ${roomColumns} FROM updated JOIN audit ON TRUE`,
+        [roomId, actorId],
         roomRowSchema,
       );
       if (!rows[0]) throw new Error("ROOM_NOT_FOUND");
       return rows[0];
     },
 
-    async restoreRoom(roomId: string): Promise<RoomRecord> {
+    async restoreRoom(roomId: string, actorId: string): Promise<RoomRecord> {
       const rows = await queryRows(
-        `UPDATE rooms
-         SET archived_at = NULL, updated_at = CURRENT_TIMESTAMP
-         WHERE id = $1::uuid AND archived_at IS NOT NULL
-         RETURNING ${roomColumns}`,
-        [roomId],
+        `WITH actor AS MATERIALIZED (
+           SELECT id FROM app_users
+            WHERE id = $2::uuid AND role = 'OWNER'::"AppRole"
+              AND is_active AND NOT must_change_password
+         ), updated AS (
+           UPDATE rooms room
+              SET archived_at = NULL, updated_at = CURRENT_TIMESTAMP
+             FROM actor
+            WHERE room.id = $1::uuid AND room.archived_at IS NOT NULL
+           RETURNING room.*
+         ), audit AS (
+           INSERT INTO audit_events (
+             id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata
+           )
+           SELECT gen_random_uuid(), actor.id, 'ROOM_RESTORED', 'ROOM', updated.id,
+                  CURRENT_TIMESTAMP, jsonb_build_object('code', updated.code)
+             FROM actor CROSS JOIN updated
+           RETURNING id
+         )
+         SELECT ${roomColumns} FROM updated JOIN audit ON TRUE`,
+        [roomId, actorId],
         roomRowSchema,
       );
       if (!rows[0]) throw new Error("ROOM_NOT_FOUND");

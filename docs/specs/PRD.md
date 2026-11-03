@@ -34,8 +34,8 @@ Di luar scope MVP: banyak properti, pendaftaran Tenant publik, aplikasi native, 
 #### REQ-01 Akses dan peran
 
 - Owner membuat/mengaktifkan akun Staff dan Tenant; Staff juga dapat membuat/mengaktifkan akun Tenant. Hanya Owner yang dapat mengelola akun Staff. Pendaftaran mandiri dan publik dimatikan.
-- Owner dapat meminta perubahan email login akun melalui Neon Auth terkelola. `authSubject` tetap menjadi identitas stabil; perubahan email hanya tercermin pada `AppUser.emailNormalized` setelah Neon Auth mengonfirmasi alamat baru, dan email tetap unik setelah normalisasi.
-- Owner, Staff, dan Tenant dapat mengganti password akun sendiri melalui Neon Auth terkelola; aplikasi tidak menerima atau menyimpan password. Kebijakan sesi, reset, dan penggunaan ulang password ditangani provider dan diverifikasi di M07.
+- Owner dapat meminta perubahan email login akun melalui alur Better Auth yang dikendalikan aplikasi. `authSubject` tetap menjadi identitas stabil; alamat baru harus diverifikasi sebelum identitas Auth dan `AppUser.emailNormalized` diperbarui, dan email tetap unik setelah normalisasi.
+- Owner, Staff, dan Tenant dapat mengganti password akun sendiri melalui Better Auth. Password dikirim ke endpoint aplikasi melalui HTTPS dan di-hash oleh Better Auth; aplikasi tidak menyimpan, mengembalikan, atau mencatat password mentah. Aktivasi dan pemulihan memakai tautan email melalui adapter server; vendor email dan uji pengiriman live ditetapkan pada M07.
 - Pembuatan akun Staff/Tenant menulis actor dan identitas aplikasi; TenantProfile dapat dibuat tanpa Lease. Hubungan Tenant ke kamar berasal dari Lease, bukan kolom kamar pada akun.
 - Given permintaan belum terautentikasi, when mengakses operasi terlindungi, then sistem menolak operasi dan tidak mengirim data terlindungi.
 - Given Staff atau Tenant mencoba aksi khusus Owner, when server memeriksa izin, then server menolak tanpa bergantung pada visibilitas UI.

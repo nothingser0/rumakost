@@ -9,11 +9,3 @@ const signInSchema = z.object({
 export function validateSignInInput(value) {
   return signInSchema.safeParse(value);
 }
-
-export function getSessionUser(result) {
-  return result?.data?.user ?? null;
-}
-
-export function isAllowedAuthReadPath(path) {
-  return path.length === 1 && path[0] === "get-session";
-}

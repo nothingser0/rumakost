@@ -24,19 +24,17 @@ try {
     if (line.done) throw new Error("invalid_input");
     return line.value.trim();
   };
-  const authSubject = await ask("Neon Auth user ID: ");
+  const authSubject = randomUUID();
   const email = (await ask("Email akun Owner: ")).toLowerCase();
   const displayName = await ask("Nama Owner: ");
   prompts.close();
 
   if (
-    authSubject.length < 1 ||
-    authSubject.length > 255 ||
     email.length > 320 ||
     !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
     displayName.length < 1 ||
     displayName.length > 160 ||
-    /[\u0000-\u001f\u007f]/.test(authSubject + email + displayName)
+    /[\u0000-\u001f\u007f]/.test(email + displayName)
   ) {
     throw new Error("invalid_input");
   }
@@ -53,11 +51,21 @@ try {
 
   const conflicts = await client.query(
     `SELECT 1 FROM app_users
-     WHERE auth_subject = $1 OR email_normalized = $2
+     WHERE email_normalized = $1
+     UNION ALL
+     SELECT 1 FROM "user"
+     WHERE email = $1
      LIMIT 1`,
-    [authSubject, email],
+    [email],
   );
   if (conflicts.rows.length > 0) throw new Error("identity_already_linked");
+
+  await client.query(
+    `INSERT INTO "user"
+      (id, name, email, email_verified, created_at, updated_at)
+     VALUES ($1, $2, $3, FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
+    [authSubject, displayName, email],
+  );
 
   await client.query(
     `INSERT INTO app_users
@@ -67,7 +75,7 @@ try {
     [randomUUID(), authSubject, email, displayName],
   );
   await client.query("COMMIT");
-  stdout.write("OWNER_BOOTSTRAP=created\n");
+  stdout.write("OWNER_BOOTSTRAP=created_pending_verification\n");
 } catch (error) {
   await client?.query("ROLLBACK").catch(() => undefined);
   const message = error instanceof Error ? error.message : "unknown";

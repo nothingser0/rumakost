@@ -3,13 +3,13 @@
 ## 1. Metadata
 
 - **Project Name**: Sistem Manajemen Kost Mandiri
-- **Current Active Module**: M06 · Development Execution (M06-SETUP-02 harness root awaiting owner review)
+- **Current Active Module**: M06 · Development Execution (M06-BE-01–18 complete; M06-INT/FE/TEST remain)
 - **Scale**: medium (7 P0 groups; single-property MVP frozen; implementation planning pending)
 - **Delivery**: portfolio
 - **Lifecycle Path**: Portfolio / Medium+
-- **Primary Tech Stack**: Next.js App Router, TypeScript, PostgreSQL/Prisma on Neon Free, Neon Auth/Object Storage beta, Vercel Hobby
+- **Primary Tech Stack**: Next.js App Router, TypeScript, Better Auth with PostgreSQL/Prisma on Neon Free, Neon private Object Storage, Vercel Hobby
 - **Project Language**: Indonesian
-- **Last Active Session Date**: 2026-10-31
+- **Last Active Session Date**: 2026-11-03
 - **Session Operator**: Solo developer dibantu AI
 
 ### 1.1 Intake Gate
@@ -30,7 +30,7 @@
 
 ## 2. Status Fase dan Gate
 
-**Status Gate (2026-10-31): M00 · Product Research & Discovery WAIVED, M01 · Idea Feasibility PASSED, M02 · Scope Definition & Freeze PASSED, M03 · Legal, SOW & Client Data Protection WAIVED, M04 · UI/UX & Prototyping PASSED, dan M05 · Architecture & Technical Specifications PASSED setelah technical sign-off pemilik. M06 · Development Execution aktif; scaffold disetujui pemilik dan task berikutnya adalah pemasangan harness root.**
+**Status Gate (2026-11-03): M00 · Product Research & Discovery WAIVED, M01 · Idea Feasibility PASSED, M02 · Scope Definition & Freeze PASSED, M03 · Legal, SOW & Client Data Protection WAIVED, M04 · UI/UX & Prototyping PASSED, dan M05 · Architecture & Technical Specifications PASSED setelah technical sign-off pemilik. M06 · Development Execution aktif; M06-BE-01–18 selesai sesuai delegasi Owner. Runtime Better Auth telah diverifikasi pada Neon disposable; integrasi pada branch proyek, FE, test integration, dan walkthrough acceptance tetap mengikuti antrean TODO.**
 
 | Module | Nama | Status | Catatan |
 |---|---|---|---|
@@ -38,9 +38,9 @@
 | M01 | Idea Feasibility | CONDITIONAL_GO Â· GATE PASSED (2026-10-30) | Validator lulus dengan exit code 0; skor rata-rata 3.50 dan mitigasi CONDITIONAL_GO tercatat. |
 | M02 | Scope Definition & Freeze | GATE PASSED (2026-10-30; BASELINE 2026-10-22, JADWAL DIPERBARUI 2026-10-30) | Validator lulus; baseline tetap 7 P0/22 Story. Arahan pemilik menyelaraskan tujuh P0 ke M04. Estimasi 186â€“245 jam; jadwal direvisi menjadi 21 minggu/252 jam (12 jam/minggu), batas atas tertampung dengan sisa 7 jam tanpa perubahan scope. |
 | M03 | Legal, SOW & Client Data Protection | WAIVED Â· GATE PASSED (2026-10-30) | Proyek portfolio/internal; SOW komersial tidak berlaku. Charter solo tetap rekomendasi opsional. |
-| M04 | UI/UX & Prototyping | GATE PASSED (2026-10-30) | Pemilik menyetujui Design Freeze melalui chat; `zeenn` dicatat sebagai approver pada `docs/specs/DESIGN_SPEC.md`. UI/UX audit lulus dengan 0 violation dan 48 advisory; delapan dropdown form memakai popover kustom. Evaluasi 613 skenario WF-01 sampai WF-12: 392 kandidat generik, 70 P0 eksplisit, 151 backlog/out-of-scope, dan 0 keputusan Owner terbuka; implementasi onboarding provider WF-09 masih terhambat sampai M06-BE-18/M07; enam walkthrough E2E tetap acceptance criteria yang belum dieksekusi. |
-| M05 | Architecture & Technical Specifications | GATE PASSED (2026-10-31) | Opsi A dikunci pemilik: Next.js 16.4.3, TypeScript/CSS prototipe, PostgreSQL/Prisma di Neon Free, Neon Auth/Object Storage (beta), dan Vercel Hobby. Keputusan domain dikonfirmasi 2026-10-30; technical sign-off `zeenn` pada 2026-10-31 mencakup review PRD/FSD, scope, handoff M04, keputusan domain, backup, dan kemampuan provider. Catatan implementasi yang belum executable dipindahkan menjadi tugas M06; tidak ada klaim bahwa aplikasi atau E2E sudah diuji. |
-| M06 | Development Execution | IN PROGRESS; M06-SETUP-02 AWAITING OWNER REVIEW | Pemilik menyetujui TODO dan daftar layar deferred. Scaffold Next.js 16.4.3 tersedia dan disetujui pemilik pada 2026-10-31. Harness Medium+ sembilan file sudah disalin ke root dan diverifikasi; `.env.example` dikecualikan dari aturan ignore, dan runbook menjelaskan sumber tiap environment value. M06-SETUP-04/05 perlu merekonsiliasi kontrak `NEON_AUTH_SECRET` dan nama kredensial Object Storage terhadap SDK/provider sebelum integrasi. Dependency sudah terpasang untuk memulihkan `npm run dev`; audit versi/deprecation dan pin tooling tetap menjadi task M06-SETUP-04. Server dev siap melalui Webpack; binary SWC native Windows masih memberi peringatan. |
+| M04 | UI/UX & Prototyping | GATE PASSED (2026-10-30) | Pemilik menyetujui Design Freeze melalui chat; `zeenn` dicatat sebagai approver pada `docs/specs/DESIGN_SPEC.md`. UI/UX audit lulus dengan 0 violation dan 48 advisory; delapan dropdown form memakai popover kustom. Evaluasi 613 skenario WF-01 sampai WF-12: 392 kandidat generik, 70 P0 eksplisit, 151 backlog/out-of-scope, dan 0 keputusan Owner skenario terbuka; alur akun M06-AUTH-05/BE-18 sudah terverifikasi, uji email live tetap M07; enam walkthrough E2E tetap acceptance criteria yang belum dieksekusi. |
+| M05 | Architecture & Technical Specifications | GATE PASSED (2026-10-31) | Opsi A dikunci pemilik: Next.js 16.4.3, TypeScript/CSS prototipe, PostgreSQL/Prisma di Neon Free, Auth/Object Storage, dan Vercel Hobby. Keputusan 2026-11-03 mengganti komponen Neon Auth managed dengan Better Auth self-hosted di Neon PostgreSQL melalui ADR-003; keputusan database, storage, hosting, dan tanpa upgrade berbayar tetap. Technical sign-off `zeenn` pada 2026-10-31 mencakup review PRD/FSD, scope, handoff M04, keputusan domain, backup, dan kemampuan provider. |
+| M06 | Development Execution | IN PROGRESS; M06-BE-01–18 COMPLETE UNDER OWNER DELEGATION | Scaffold Next.js 16.4.3 dan harness Medium+ tersedia. Backend selesai; Verify runtime Better Auth dan migration lulus pada Neon disposable. Integrasi DB proyek, FE, dan test integration masih di antrean; email delivery live menunggu keputusan vendor dan verifikasi M07. Akun lama tidak dimigrasikan dan branch aktif tidak disentuh. |
 
 ## 3. Asumsi Aktif
 
@@ -69,7 +69,7 @@
 
 ## 5. Aksi Berikutnya
 
-Pemilik meninjau M06-SETUP-02; setelah disetujui, lanjutkan ke M06-SETUP-03 (pre-read spesifikasi).
+Lanjutkan task M06-INT, M06-FE, dan M06-TEST sesuai dependensi serta gerbang yang tercatat di `TODO.md`. M06-BE-01–18 sudah ditutup sesuai delegasi; M06-AUTH-05 diverifikasi pada Neon disposable dan tidak mengubah branch proyek aktif.
 
 
 

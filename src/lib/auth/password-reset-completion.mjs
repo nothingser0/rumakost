@@ -34,7 +34,10 @@ export async function performPasswordResetCompletion({
       newPassword: parsed.data.newPassword,
     });
 
-    if (result?.error || result?.data?.status !== true) {
+    if (
+      result?.error ||
+      (result?.status !== true && result?.data?.status !== true)
+    ) {
       return { status: "failed" };
     }
 

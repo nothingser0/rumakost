@@ -31,7 +31,11 @@ export type UploadRecord = Omit<StoredUpload, "created"> & {
 export type MediaRepository = {
   createUploadIntent(input: Record<string, unknown>): Promise<StoredUpload>;
   getUploadForFinalize(input: Record<string, unknown>): Promise<UploadRecord | null>;
-  queueInvalidUpload(id: string): Promise<void>;
+  queueInvalidUpload(
+    id: string,
+    actorId: string,
+    reason: "FILE_TOO_LARGE" | "UPLOAD_INCOMPLETE" | "INVALID_MEDIA",
+  ): Promise<void>;
   finalizeUpload(input: Record<string, unknown>): Promise<boolean>;
   getAttachmentForDownload(input: Record<string, unknown>): Promise<(UploadRecord & { deleteAfter: Date | string | null }) | null>;
   prepareMediaCleanup(input: { now: Date; limit: number }): Promise<Array<{ id: string; objectKey: string }>>;

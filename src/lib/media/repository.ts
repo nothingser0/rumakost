@@ -205,7 +205,8 @@ const CREATE_UPLOAD_INTENT_SQL = `
        AND counts."ticketBytes"::numeric + $8::numeric <= $13::numeric
        AND (CASE WHEN $7::text IN ('image/jpeg', 'image/png', 'image/webp')
          THEN counts."batchPhotos" < 4 ELSE counts."batchVideos" < 1 END)
-     RETURNING id, object_key, upload_status::text AS upload_status, created_at
+    RETURNING id, object_key, upload_status::text AS upload_status, created_at,
+              mime_type, size_bytes
   ),
   saved AS (
     INSERT INTO idempotency_keys ("key", operation, response_code, response_payload, completed_at)
@@ -216,6 +217,18 @@ const CREATE_UPLOAD_INTENT_SQL = `
            ), CURRENT_TIMESTAMP
       FROM inserted
     RETURNING "key"
+  ),
+  intent_audit AS (
+    INSERT INTO audit_events (id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata)
+    SELECT gen_random_uuid(), actor.id, 'TICKET_MEDIA_UPLOAD_INTENT_CREATED',
+           'TICKET_ATTACHMENT', inserted.id, CURRENT_TIMESTAMP,
+           jsonb_build_object(
+             'mimeType', inserted.mime_type,
+             'sizeBytes', inserted.size_bytes::text,
+             'uploadStatus', inserted.upload_status
+           )
+      FROM actor CROSS JOIN inserted
+    RETURNING id
   ),
   quota_alert AS (
     INSERT INTO audit_events (id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata)
@@ -379,14 +392,24 @@ const FINALIZE_UPLOAD_SQL = `
 `;
 
 const PREPARE_MEDIA_CLEANUP_UPDATE_SQL = `
-  UPDATE ticket_attachments
-     SET upload_status = 'DELETE_PENDING'::"TicketUploadStatus",
-         delete_after = COALESCE(delete_after, CURRENT_TIMESTAMP)
-   WHERE (upload_status = 'AVAILABLE'::"TicketUploadStatus" AND delete_after <= $1::timestamptz)
-      OR (upload_status = 'PENDING_UPLOAD'::"TicketUploadStatus" AND (
-           delete_after <= $1::timestamptz
-           OR created_at <= $1::timestamptz - INTERVAL '1 hour'
-         ))
+  WITH queued AS (
+    UPDATE ticket_attachments
+       SET upload_status = 'DELETE_PENDING'::"TicketUploadStatus",
+           delete_after = COALESCE(delete_after, CURRENT_TIMESTAMP)
+     WHERE (upload_status = 'AVAILABLE'::"TicketUploadStatus" AND delete_after <= $1::timestamptz)
+        OR (upload_status = 'PENDING_UPLOAD'::"TicketUploadStatus" AND (
+             delete_after <= $1::timestamptz
+             OR created_at <= $1::timestamptz - INTERVAL '1 hour'
+           ))
+    RETURNING id
+  ), audit AS (
+    INSERT INTO audit_events (id, actor_id, action, entity_type, entity_id, occurred_at, reason, safe_metadata)
+    SELECT gen_random_uuid(), NULL, 'TICKET_MEDIA_DELETE_QUEUED', 'TICKET_ATTACHMENT', queued.id,
+           CURRENT_TIMESTAMP, 'RETENTION_POLICY', jsonb_build_object('uploadStatus', 'DELETE_PENDING')
+      FROM queued
+    RETURNING id
+  )
+  SELECT queued.id FROM queued CROSS JOIN audit
 `;
 
 const PREPARE_MEDIA_CLEANUP_SELECT_SQL = `
@@ -561,17 +584,30 @@ export function createMediaRepository(): MediaRepository {
       }
     },
 
-    async queueInvalidUpload(id) {
+    async queueInvalidUpload(id, actorId, reason) {
       try {
         const sql = getSql();
         await sql.transaction([
           sql.query(`SELECT set_config('rumakost.ticket_retention_update', 'on', TRUE)`, []),
           sql.query(`
-            UPDATE ticket_attachments
-               SET upload_status = 'DELETE_PENDING'::"TicketUploadStatus",
-                   delete_after = CURRENT_TIMESTAMP
-             WHERE id = $1::uuid AND upload_status = 'PENDING_UPLOAD'::"TicketUploadStatus"
-          `, [id]),
+            WITH actor AS MATERIALIZED (
+              SELECT id FROM app_users WHERE id = $2::uuid
+            ), queued AS (
+              UPDATE ticket_attachments
+                 SET upload_status = 'DELETE_PENDING'::"TicketUploadStatus",
+                     delete_after = CURRENT_TIMESTAMP
+               WHERE id = $1::uuid AND upload_status = 'PENDING_UPLOAD'::"TicketUploadStatus"
+              RETURNING id
+            ), audit AS (
+              INSERT INTO audit_events (id, actor_id, action, entity_type, entity_id, occurred_at, reason, safe_metadata)
+              SELECT gen_random_uuid(), actor.id, 'TICKET_MEDIA_UPLOAD_REJECTED',
+                     'TICKET_ATTACHMENT', queued.id, CURRENT_TIMESTAMP, $3::text,
+                     jsonb_build_object('uploadStatus', 'DELETE_PENDING')
+                FROM actor CROSS JOIN queued
+              RETURNING id
+            )
+            SELECT EXISTS (SELECT 1 FROM queued) AND EXISTS (SELECT 1 FROM audit) AS queued
+          `, [id, actorId, reason]),
           sql.query(`SELECT set_config('rumakost.ticket_retention_update', 'off', TRUE)`, []),
         ]);
       } catch (error) {

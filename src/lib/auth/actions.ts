@@ -1,7 +1,9 @@
 "use server";
 
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/server";
+import { getAppOriginEnv } from "@/lib/env";
 import { getAuthAppUser, type AuthAppUser } from "@/lib/auth/app-user";
 import { runTrustedAuthMutation } from "./server-action-security";
 import { validateSignInInput } from "./auth-policy.mjs";
@@ -32,7 +34,15 @@ export type PasswordResetCompletionState = {
 
 async function signOutAfterIncompleteLogin(): Promise<void> {
   try {
-    await auth.signOut();
+    const cookieHeader = (await cookies()).toString();
+    if (!cookieHeader) return;
+
+    await auth.api.signOut({
+      headers: new Headers({
+        cookie: cookieHeader,
+        origin: getAppOriginEnv().APP_ORIGIN,
+      }),
+    });
   } catch {
     return;
   }
@@ -48,8 +58,11 @@ export async function requestPasswordResetAction(
       const result = await performPasswordResetRequest({
         rawEmail: formData.get("email"),
         appOrigin,
-        requestReset: (input: { email: string; redirectTo: string }) =>
-          auth.requestPasswordReset(input),
+        requestReset: async (input: { email: string; redirectTo: string }) =>
+          auth.api.requestPasswordReset({
+            body: input,
+            headers: await headers(),
+          }),
       });
 
       if (result.status === "invalid") return { status: "invalid" };
@@ -70,8 +83,11 @@ export async function completePasswordResetAction(
         rawToken: formData.get("token"),
         rawNewPassword: formData.get("newPassword"),
         rawConfirmPassword: formData.get("confirmPassword"),
-        resetPassword: (input: { token: string; newPassword: string }) =>
-          auth.resetPassword(input),
+        resetPassword: async (input: { token: string; newPassword: string }) =>
+          auth.api.resetPassword({
+            body: input,
+            headers: await headers(),
+          }),
       });
 
       if (result.status === "invalid") return { status: "invalid" };
@@ -87,7 +103,7 @@ export async function signInAction(
 ): Promise<SignInState> {
   return runTrustedAuthMutation<SignInState>(
     { error: "Email atau kata sandi tidak valid." },
-    async () => {
+    async (appOrigin) => {
       const credentials = validateSignInInput({
         email: formData.get("email"),
         password: formData.get("password"),
@@ -98,22 +114,28 @@ export async function signInAction(
         return { error: "Email atau kata sandi tidak valid." };
       }
 
+      let authSubject: string | null = null;
+      const providerHeaders = new Headers(await headers());
+      providerHeaders.set("origin", appOrigin);
       const loginResult = await performRateLimitedLogin({
         email: credentials.data.email,
         findAccountId: getAuthLoginAccountId,
         reserveAttempt: reserveAuthLoginAttempt,
         authenticate: async () => {
           try {
-            const { error } = await auth.signIn.email({
-              email: credentials.data.email,
-              password: credentials.data.password,
-              rememberMe: formData.get("rememberMe") === "on",
+            const result = await auth.api.signInEmail({
+              body: {
+                email: credentials.data.email,
+                password: credentials.data.password,
+                rememberMe: formData.get("rememberMe") === "on",
+              },
+              headers: providerHeaders,
             });
 
-            if (!error) return "success";
+            authSubject = result.user.id;
+            return "success";
+          } catch (error) {
             return isCredentialAuthError(error) ? "invalid" : "unavailable";
-          } catch {
-            return "unavailable";
           }
         },
         recordFailure: recordAuthLoginFailure,
@@ -136,9 +158,7 @@ export async function signInAction(
       let appUser: AuthAppUser | null;
 
       try {
-        const session = await auth.getSession();
-        const subject = session.data?.user?.id;
-        appUser = subject ? await getAuthAppUser(subject) : null;
+        appUser = authSubject ? await getAuthAppUser(authSubject) : null;
       } catch {
         await signOutAfterIncompleteLogin();
         return { error: "Belum bisa masuk. Coba lagi sebentar." };
@@ -161,8 +181,8 @@ export async function signInAction(
 export async function signOutAction(): Promise<void> {
   const signedOut = await runTrustedAuthMutation<boolean>(false, async () => {
     try {
-      const { error } = await auth.signOut();
-      return !error;
+      await auth.api.signOut({ headers: await headers() });
+      return true;
     } catch {
       return false;
     }

@@ -398,6 +398,28 @@ export function createLeaseRepository() {
           ],
         ),
         sql.query(
+          `INSERT INTO audit_events (
+             id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata
+           )
+           SELECT gen_random_uuid(), actor.id, 'LEASE_CREATED', 'LEASE', lease.id,
+                  CURRENT_TIMESTAMP,
+                  jsonb_build_object(
+                    'tenantUserId', lease.tenant_user_id,
+                    'roomId', lease.room_id,
+                    'status', lease.status,
+                    'billingMode', lease.billing_mode,
+                    'startsOn', lease.starts_on,
+                    'endsOn', lease.ends_on
+                  )
+             FROM app_users actor
+             JOIN leases lease ON lease.id = $2::uuid
+            WHERE actor.id = $1::uuid
+              AND actor.role IN ('OWNER'::"AppRole", 'STAFF'::"AppRole")
+              AND actor.is_active AND NOT actor.must_change_password
+           RETURNING id`,
+          [input.actorId, leaseId],
+        ),
+        sql.query(
           `INSERT INTO invoices (
              id, lease_id, period_start, period_end, due_on, kind, status,
              issued_at, delivery_status, voided_at, created_at, updated_at
@@ -429,6 +451,27 @@ export function createLeaseRepository() {
             input.initialInvoice.periodEnd,
             input.initialInvoice.dueOn,
           ],
+        ),
+        sql.query(
+          `INSERT INTO audit_events (
+             id, actor_id, action, entity_type, entity_id, occurred_at, safe_metadata
+           )
+           SELECT gen_random_uuid(), actor.id, 'INITIAL_INVOICE_ISSUED', 'INVOICE', invoice.id,
+                  CURRENT_TIMESTAMP,
+                  jsonb_build_object(
+                    'leaseId', invoice.lease_id,
+                    'kind', invoice.kind,
+                    'periodStart', invoice.period_start,
+                    'periodEnd', invoice.period_end,
+                    'status', invoice.status
+                  )
+             FROM app_users actor
+             JOIN invoices invoice ON invoice.id = $2::uuid
+            WHERE actor.id = $1::uuid
+              AND actor.role IN ('OWNER'::"AppRole", 'STAFF'::"AppRole")
+              AND actor.is_active AND NOT actor.must_change_password
+           RETURNING id`,
+          [input.actorId, invoiceId],
         ),
         ...input.initialInvoice.lines.map((line, index) =>
           sql.query(
@@ -476,8 +519,10 @@ export function createLeaseRepository() {
       const room = roomRow === undefined ? null : roomRowSchema.parse(roomRow);
       const conflict = conflictRowSchema.parse(rowsAt(results, 3)[0]);
       const leaseRows = rowsAt(results, 4);
-      const invoiceRows = rowsAt(results, 5);
-      const lineOffset = 6;
+      const leaseAuditRows = rowsAt(results, 5);
+      const invoiceRows = rowsAt(results, 6);
+      const invoiceAuditRows = rowsAt(results, 7);
+      const lineOffset = 8;
       const lineRows = input.initialInvoice.lines.flatMap((_, index) =>
         rowsAt(results, lineOffset + index),
       );
@@ -497,7 +542,9 @@ export function createLeaseRepository() {
         });
       }
       if (
+        leaseAuditRows.length !== 1 ||
         invoiceRows.length !== 1 ||
+        invoiceAuditRows.length !== 1 ||
         lineRows.length !== input.initialInvoice.lines.length ||
         idempotencyRows.length !== 1
       ) {

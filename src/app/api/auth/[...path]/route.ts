@@ -1,18 +1,16 @@
 import { auth } from "@/lib/auth/server";
-import { isAllowedAuthReadPath } from "@/lib/auth/auth-policy.mjs";
+import { getAppOriginEnv } from "@/lib/env";
+import { handleAuthMutation } from "@/lib/auth/auth-route.mjs";
+import { toNextJsHandler } from "better-auth/next-js";
 
-const { GET: neonGetSession } = auth.handler();
+const authHandlers = toNextJsHandler(auth);
 
-type RouteContext = {
-  params: Promise<{ path: string[] }>;
-};
+export const GET = authHandlers.GET;
 
-export async function GET(request: Request, context: RouteContext) {
-  const { path } = await context.params;
-
-  if (!isAllowedAuthReadPath(path)) {
-    return new Response(null, { status: 404 });
-  }
-
-  return neonGetSession(request, context);
+export async function POST(request: Request) {
+  return handleAuthMutation(
+    request,
+    getAppOriginEnv().APP_ORIGIN,
+    authHandlers.POST,
+  );
 }

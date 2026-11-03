@@ -74,9 +74,12 @@
 - [M06-BE-10](#evidence-m06-be-10)
 - [M06-BE-11](#evidence-m06-be-11)
 - [M06-BE-12](#evidence-m06-be-12)
+- [M06-BE-13](#evidence-m06-be-13)
+- [M06-BE-15](#evidence-m06-be-15)
 - [M06-BE-18 blocker](#evidence-m06-be-18-blocker)
 - [M06-AUTH-01 blocker](#evidence-m06-auth-01-blocker)
 - [M06-AUTH-02 review arsitektur auth](#evidence-m06-auth-02-review-arsitektur-auth)
+- [M06-AUTH-04 keputusan Better Auth + Neon PostgreSQL](#evidence-m06-auth-04)
 
 ## Evidence
 
@@ -5628,3 +5631,43 @@ EXIT_CODE=0
 - Provider Verify PASS 1/1 pada branch `int02-verify-64b7b523f9`: signed PUT dan signed GET berhasil; GET anonim ditolak; server-side read mengembalikan bytes yang sama; cache header private; delete dua kali aman dan objek tidak ditemukan setelahnya. Branch dan temporary environment file dihapus. `.env.local` dan branch parent `dev` tidak diubah.
 - Environment aplikasi sekarang memetakan `AWS_REGION` Neon ke `NEON_STORAGE_REGION`; pemilik tetap mengisi kredensial lokal sendiri. Bucket/upload/storage quota dan cleanup domain tetap dibatasi oleh M06-BE-12.
 - `npm run typecheck` saat ini gagal dengan 77 error di modul lain; tidak ada error yang dilaporkan pada file storage/env yang diubah dalam task ini. Status task `[ ]`, menunggu review Owner. Raw output: [M06-INT-02-VERIFY.md](M06-INT-02-VERIFY.md).
+
+<a id="evidence-m06-auth-04"></a>
+
+### Evidence M06-AUTH-04 — Kontrak Better Auth + Neon PostgreSQL (2026-11-03)
+
+- Atas arahan Owner, runtime Auth aplikasi akan beralih dari Neon Auth managed ke Better Auth self-hosted yang memakai Neon PostgreSQL. Keputusan dicatat di ADR-003; database/Prisma, private Neon Object Storage, Vercel Hobby, dan batas tanpa upgrade berbayar tetap.
+- CR-2026-003 di `SCOPE_STATEMENT.md` mengganti runtime Auth tanpa mengubah tujuh P0. FSD/PRD/M05 Data API, arsitektur, project state, runbook, `.env.example`, dan dependency TODO diselaraskan. Password masuk ke endpoint Better Auth melalui HTTPS dan di-hash; domain aplikasi tidak mencatat atau menyimpan password mentah/token. Email sender masih belum dipilih.
+- Verify `npm run test -- auth-architecture-contract`: PASS 3/3. Output mentah: [M06-AUTH-04-VERIFY.md](M06-AUTH-04-VERIFY.md). Owner menyetujui task pada 2026-11-03.
+- Implementasi runtime dan verifikasi Neon disposable dilakukan terpisah di M06-AUTH-05; `.env.local`, akun nyata, deployment, dan branch/database Neon aktif tidak disentuh. M06-AUTH-05 menjadi prasyarat BE-18/AUTH-01; BE-13 menunggu keduanya; BE-15 menunggu BE-13.
+
+<a id="evidence-m06-auth-05"></a>
+
+### Evidence M06-AUTH-05 — Runtime Better Auth pada Neon disposable (2026-11-03)
+
+- Runtime Auth memakai Better Auth melalui Prisma; tabel `user`, `session`, `account`, dan `verification` masuk migration chain. Role aplikasi tetap bersumber dari `AppUser`, signup publik dinonaktifkan, dan sesi mensyaratkan akun aplikasi aktif.
+- Verifier membuat branch Neon schema-only dan database kosong, menerapkan 41 migration, lalu menjalankan suite provider: 3 lulus, 0 gagal. Raw output lengkap: [M06-AUTH-05-VERIFY.md](M06-AUTH-05-VERIFY.md).
+- `DISPOSABLE_BRANCH_DELETED=true`; branch induk `dev` hanya dibaca untuk pemeriksaan, `.env.local` tidak dibaca/diubah, tidak ada akun nyata, deployment, atau email live yang disentuh. Node lokal v22.13.1 mengeluarkan warning eksperimental; target project tetap Node 24.x.
+- Test akun nonaktif dan password salah menghasilkan log penolakan yang diharapkan. Email memakai fake sender. Bootstrap Owner hanya menghasilkan identitas pending; login Owner dan live email menunggu alur lifecycle serta konfigurasi pengiriman email.
+- Status: Verify PASS pada Neon disposable; task ditutup sesuai delegasi Owner pada 2026-11-03. Email live dan integrasi pada branch proyek tetap mengikuti task berikutnya.
+
+<a id="evidence-m06-be-13"></a>
+
+### Evidence M06-BE-13 — Audit coverage final lintas operasi sensitif (2026-11-03)
+
+- Audit action crosswalk mencakup room/floor, pembuatan dan lifecycle Lease/Invoice, payment/deposit/expense/budget, ticket/comment/assignment, upload/access/retention media, TenantProfile, account lifecycle, dan perubahan email login. Daftar action diuji dari source pada `tests/audit/audit.test.mjs`.
+- Mutasi SQL menyimpan audit dalam statement CTE yang sama atau transaction Neon; operasi Prisma menyimpan AppUser/Session dan AuditEvent dalam transaction yang sama. Replay state/no-op tidak menambah audit; set pagu dengan nominal identik kini mengembalikan nilai tersimpan tanpa update atau event baru.
+- Metadata audit memakai field allowlist; email, credential, token, cookie, isi komentar/deskripsi, nomor telepon, signed URL, dan object key tidak disalin. Alasan bebas tetap pada domain record bila model memilikinya; audit hanya menyimpan kode alasan. Void Invoice menggunakan `OWNER_REQUESTED_VOID` karena model Invoice belum menyediakan kolom alasan khusus.
+- Regression coverage yang sudah ada untuk rollback dan retry provider ditautkan dari suite M06-AUTH-01, M06-BE-08, M06-BE-12, dan M06-BE-18. Verify khusus BE-13 ini adalah pemeriksaan source/contract lokal; tidak menjalankan suite lain dan tidak mengklaim uji rollback SQL terhadap Neon hidup.
+- `npm run test -- audit`: PASS 6/6. Output mentah: [M06-BE-13-VERIFY.md](M06-BE-13-VERIFY.md). Tidak ada koneksi Neon atau `.env.local` yang digunakan.
+- Task ditutup sesuai delegasi Owner pada 2026-11-03.
+
+<a id="evidence-m06-be-15"></a>
+
+### Evidence M06-BE-15 — Agregat dashboard dan feed aktivitas per role (2026-11-03)
+
+- Dashboard memakai query agregat untuk okupansi pada tanggal acuan dan status tiket terkini. Kamar maintenance tetap menjadi kapasitas; kamar arsip dikecualikan. Owner menerima kolektibilitas cohort invoice RENT, arus kas laporan, serta pagu bulanan atau state `NOT_SET`. Aksi Staff tidak membuat repository laporan dan payload tidak memiliki field finance.
+- Periode dan tanggal acuan memakai kalender `Asia/Jakarta`; periode lalu berakhir pada hari kalender terakhir, periode berjalan berakhir hari ini, dan periode mendatang ditolak.
+- Feed menggabungkan `AuditEvent` dan `TicketStatusEvent`, menggunakan cursor `(occurredAt, id)`, memfilter Staff ke entitas operasional, dan menghapus duplikasi status yang memiliki audit pasangan. Response tidak membawa metadata audit, alasan bebas, deskripsi tiket, email, atau object key. Event diarahkan ke halaman domain terkait bila ada deep link.
+- `npm run test -- dashboard-activity`: PASS 10/10. Output mentah dan detail pemeriksaan ada di [M06-BE-15-VERIFY.md](M06-BE-15-VERIFY.md).
+- Verifikasi ini memakai fixture sintetis dan pemeriksaan kontrak source SQL; tidak membuka koneksi Neon atau `.env.local` dan tidak membuktikan SQL berjalan pada PostgreSQL hidup. Pemeriksaan integrasi Neon tetap berada pada task integrasi yang sesuai. Task ditutup sesuai delegasi Owner, tanpa mencatat persetujuan terpisah, pada 2026-11-03.

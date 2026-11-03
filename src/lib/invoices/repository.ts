@@ -291,7 +291,7 @@ const VOID_INVOICE_SQL = `
            'INVOICE',
            updated.id,
            CURRENT_TIMESTAMP,
-           $4::text,
+           'OWNER_REQUESTED_VOID',
            jsonb_build_object('status', 'VOID')
       FROM updated
       CROSS JOIN authorized_actor AS actor

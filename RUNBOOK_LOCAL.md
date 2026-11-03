@@ -1,12 +1,12 @@
 # Menjalankan RumaKost secara lokal
 
+RumaKost menggunakan Better Auth yang menyimpan identitas dan sesi di Neon PostgreSQL melalui Prisma. Pendaftaran publik tidak tersedia. Email aktivasi dan reset memakai adapter server; pengirim email belum dipilih, jadi alur email live belum siap.
+
 ## Prasyarat
 
 - Windows, macOS, atau Linux.
-- Node.js 24.x dan npm. Catat versi lokal dengan `node -v` dan `npm -v`; `package.json` menetapkan Node 24.x sesuai FSD.
+- Node.js 24.x dan npm. Catat versi lokal dengan `node -v` dan `npm -v`; `package.json` menetapkan Node 24.x.
 - Git untuk clone dan pembaruan repository.
-
-Untuk halaman login, siapkan variabel Auth dan secret cookie SDK pada `.env.local` sebelum menjalankan aplikasi. Database dan storage tetap dibutuhkan pada task integrasinya.
 
 ## Instalasi dan startup
 
@@ -17,41 +17,49 @@ npm install
 npm run dev
 ```
 
-Script `dev` memakai Webpack (`next dev --webpack`). Server lokal tersedia di `http://localhost:3000`; biarkan terminal berjalan dan hentikan dengan Ctrl+C. Jika port 3000 sedang terpakai, jalankan `npm run dev -- --port 3001`.
+Script `dev` lebih dahulu menjalankan `prisma generate` tanpa koneksi database, lalu memakai Webpack (`next dev --webpack`). Server lokal tersedia di `http://localhost:3000`; biarkan terminal berjalan dan hentikan dengan Ctrl+C. Jika port 3000 sedang terpakai, jalankan `npm run dev -- --port 3001` dan samakan `APP_ORIGIN` serta `BETTER_AUTH_URL`.
 
 Pada Windows yang dipakai saat scaffold, binary SWC native gagal dimuat dan Next.js memakai WASM. Webpack tetap menyiapkan server; peringatan SWC dapat muncul di terminal. Jangan mengubah konfigurasi provider atau menambahkan dependency untuk mengatasinya tanpa task/keputusan terkait.
 
 ## Environment dan secret
 
-Modul `src/lib/env.ts` memvalidasi environment server saat diimpor. Siapkan `.env.local` untuk branch Neon yang dipakai dan jangan membuat resource berbayar; gunakan project/branch demo yang disetujui Owner.
+Salin `.env.example` menjadi `.env.local`, lalu isi file itu langsung di mesin sendiri atau secret manager. Jangan kirim nilainya ke chat atau commit. `.env.local` diabaikan Git.
 
 | Variabel | Cara mendapat/menetapkan nilai | Catatan |
 |---|---|---|
-| `DATABASE_URL` | Di Neon Console pilih project dan branch, buka **Connect**, lalu salin connection string dengan **Pooled connection** aktif. | URL pooled untuk runtime server. |
+| `DATABASE_URL` | Di Neon Console pilih project dan branch, buka **Connect**, lalu salin connection string dengan **Pooled connection** aktif. | URL pooled untuk runtime server. Gunakan branch yang memang dipilih untuk pengembangan. |
 | `DIRECT_URL` | Salin connection string dari **Connect** yang sama dengan **Pooled connection** tidak aktif. | URL direct untuk migrasi Prisma; server-only. |
-| `NEON_AUTH_BASE_URL` | Aktifkan Neon Auth pada branch yang dipakai; ambil Auth URL dari pengaturan branch. Neon CLI `neon env pull` juga dapat menarik variabel branch ke `.env.local` setelah project di-link. | URL berbeda per branch. Jangan memakai URL branch lain. |
-| `NEON_AUTH_COOKIE_SECRET` | Buat sendiri di terminal: `node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('base64url'))"`; tulis output langsung ke `.env.local`. | Secret penandatangan cache sesi server SDK, bukan secret Auth milik Neon; minimal 32 karakter. Jangan kirim ke chat atau commit. |
-| `NEON_STORAGE_ENDPOINT`, `NEON_STORAGE_REGION`, `NEON_STORAGE_BUCKET`, `NEON_STORAGE_ACCESS_KEY`, `NEON_STORAGE_SECRET_KEY` | Buat bucket privat pada branch Neon sesuai FSD. Petakan `AWS_ENDPOINT_URL_S3`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, dan `AWS_SECRET_ACCESS_KEY` dari Neon ke variabel aplikasi. `NEON_STORAGE_BUCKET` berisi nama bucket privat. | Nama bucket dan region bukan secret; tiga nilai kredensial jangan dikirim ke chat atau di-commit. |
-| `APP_ORIGIN` | Tetapkan sendiri: `http://localhost:3000` untuk pengembangan lokal; gunakan origin HTTPS deployment pada environment live. | Dipakai untuk pemeriksaan origin/redirect sesuai FSD. |
-| `CRON_SECRET` | Buat secret baru di komputer sendiri dengan Node.js: `node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('base64url'))"`. Simpan output langsung ke `.env.local`. | Minimal 16 karakter acak; jangan gunakan ulang password atau memasukkan output ke chat. |
+| `BETTER_AUTH_URL` | Tetapkan ke origin aplikasi: `http://localhost:3000` untuk lokal atau origin HTTPS aplikasi untuk live. | Harus sama dengan origin `APP_ORIGIN`; jangan menambahkan path. |
+| `BETTER_AUTH_SECRET` | Buat di terminal dengan `node -e "process.stdout.write(require('node:crypto').randomBytes(32).toString('base64url'))"`. | Secret minimal 32 karakter; simpan hanya di `.env.local`/secret provider. Bukan secret yang didapat dari Neon. |
+| `NEON_STORAGE_ENDPOINT`, `NEON_STORAGE_REGION`, `NEON_STORAGE_BUCKET`, `NEON_STORAGE_ACCESS_KEY`, `NEON_STORAGE_SECRET_KEY` | Buat bucket privat pada branch Neon yang sama. Petakan `AWS_ENDPOINT_URL_S3`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, dan `AWS_SECRET_ACCESS_KEY` dari Neon. Isi nama bucket privat pada `NEON_STORAGE_BUCKET`. | Tiga nilai kredensial bersifat rahasia; jangan kirim atau commit. |
+| `APP_ORIGIN` | Tetapkan `http://localhost:3000` untuk lokal atau origin HTTPS deployment untuk live. | Harus sama dengan `BETTER_AUTH_URL`; dipakai untuk pemeriksaan origin. |
+| `CRON_SECRET` | Buat secret acak lokal dengan perintah Node di atas. | Minimal 16 karakter; jangan gunakan ulang password. |
 
-Salin `.env.example` menjadi `.env.local` dan isi file itu langsung di mesin sendiri atau secret manager. `.env.local` diabaikan Git. Jangan commit, tempel secret ke chat, atau membaca nilainya untuk verifikasi. Prisma CLI memuat `.env.local` melalui konfigurasi root `prisma.config.ts` dan memakai `DIRECT_URL` untuk migrasi.
+Auth dan database tetap server-only. Jangan gunakan kredensial atau fixture akun nyata untuk demo; gunakan data sintetis.
 
-Di Neon Console, nonaktifkan pendaftaran publik untuk Auth branch ini; pembuatan akun dilakukan Owner melalui alur manajemen akun. Siapkan identitas Owner pertama di Neon Auth terlebih dahulu dan tetapkan role provider `admin` hanya untuk identitas tersebut. Catat user ID persis yang ditampilkan Neon Auth; user ID ini berbeda dari email dan akan ditautkan ke role aplikasi `OWNER` di tabel `app_users`.
+## Migrasi dan akun
 
-Setelah database sudah dimigrasikan, jalankan `npm run db:bootstrap-owner` satu kali dari terminal lokal. Masukkan user ID Neon Auth, email identitas yang sama, dan nama Owner pada prompt. Script hanya menautkan identitas yang sudah dibuat, tidak membuat user provider atau password. Script berhenti jika baris Owner atau identitas/email sudah terdaftar. Jangan jalankan pada database produksi sampai user ID dan target database telah dipastikan. Staff dan Penghuni memakai role provider `user`.
+Verifier M06-AUTH-05 membuat branch Neon schema-only dan database kosong, menerapkan seluruh migration Prisma, menjalankan suite `auth-provider`, lalu menghapus branch tersebut. Jalankan dengan project ID dan branch induk yang tepat:
 
-Alur reset sandi email direncanakan pada SCR-01A/SCR-01B dan harus memakai token flow Neon Auth. Konfigurasikan pengirim email/provider sebelum menguji alur itu. Reset sandi belum disediakan oleh M06-SETUP-09; task ini memberikan sandi awal sementara satu kali saat akun dibuat, lalu pengguna wajib menggantinya saat login pertama.
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-auth-provider-disposable.ps1 -ProjectId <project-id> -ParentBranch dev
+```
+
+Verifier menolak jika variabel koneksi/auth sudah ada di environment proses, tidak memuat `.env.local`, dan tidak mencetak connection string atau secret. Jangan jalankan `npm run db:migrate` untuk branch aktif sebagai bagian dari verifikasi ini. Perintah migrasi biasa memakai `DIRECT_URL` dari `.env.local` dan mengubah database pada branch yang dituju; perubahan ke branch aktif memerlukan task dan arahan Owner tersendiri.
+
+`npm run db:bootstrap-owner` saat ini hanya menyiapkan identitas Owner berstatus belum terverifikasi dan tanpa kredensial. Akun itu belum dapat login. Jangan jalankan sampai alur aktivasi akun serta pengiriman email diselesaikan pada task lanjutan dan target database dipastikan.
 
 ## Command yang tersedia
 
 | Command | Fungsi |
 |---|---|
 | `npm run dev` | Server pengembangan dengan Webpack |
+| `npm run db:generate` | Membuat Prisma Client dari schema lokal tanpa menghubungi database |
 | `npm run lint` | ESLint |
 | `npm run typecheck` | Pemeriksaan TypeScript tanpa output build |
-| `npm run test -- auth` | Test policy dan validasi task autentikasi |
+| `npm run test -- auth` | Test validasi input login |
+| `npm run test -- auth-provider` | Suite integrasi; hanya jalankan melalui verifier disposable di atas |
+| `npm run db:migrate` | Menerapkan migration ke database pada `DIRECT_URL`; hanya setelah target branch dipastikan |
+| `npm run db:bootstrap-owner` | Menyiapkan identitas Owner pending; tunggu alur aktivasi dan arahan task lanjutan |
 | `npm run build` | Build Next.js |
 | `npm run start` | Menjalankan hasil build produksi lokal |
-
-Command migrasi, seed, dan test belum dikonfigurasi. Jalankan command hanya setelah task TODO terkait menambah dan mendokumentasikannya.

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth/server";
@@ -29,8 +30,11 @@ export default function LoginPage() {
 }
 
 async function LoginContent() {
-  const session = await auth.getSession();
-  const sessionUser = session.data?.user;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+    query: { disableCookieCache: true },
+  });
+  const sessionUser = session?.user;
 
   if (sessionUser) {
     let appUser: AuthAppUser | null;

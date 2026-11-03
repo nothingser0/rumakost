@@ -54,8 +54,8 @@ const appOrigin = z
 const serverEnvSchema = z.object({
   DATABASE_URL: postgresUrl,
   DIRECT_URL: postgresUrl,
-  NEON_AUTH_BASE_URL: httpsUrl,
-  NEON_AUTH_COOKIE_SECRET: z.string().min(32),
+  BETTER_AUTH_URL: appOrigin,
+  BETTER_AUTH_SECRET: z.string().min(32),
   NEON_STORAGE_ENDPOINT: httpsUrl,
   NEON_STORAGE_REGION: z.string().trim().min(1).max(32).regex(/^[a-z0-9-]+$/),
   NEON_STORAGE_BUCKET: z.string().trim().min(3).max(63).regex(/^[a-z0-9][a-z0-9.-]*[a-z0-9]$/),
@@ -65,10 +65,12 @@ const serverEnvSchema = z.object({
   CRON_SECRET: z.string().min(16),
 });
 
-const authEnvSchema = serverEnvSchema.pick({
-  NEON_AUTH_BASE_URL: true,
-  NEON_AUTH_COOKIE_SECRET: true,
-});
+const authEnvSchema = serverEnvSchema
+  .pick({ BETTER_AUTH_URL: true, BETTER_AUTH_SECRET: true, APP_ORIGIN: true })
+  .refine(
+    ({ BETTER_AUTH_URL, APP_ORIGIN }) =>
+      parseUrl(BETTER_AUTH_URL)?.origin === parseUrl(APP_ORIGIN)?.origin,
+  );
 
 const databaseEnvSchema = serverEnvSchema.pick({ DATABASE_URL: true });
 const appOriginEnvSchema = serverEnvSchema.pick({ APP_ORIGIN: true });

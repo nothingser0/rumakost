@@ -104,6 +104,7 @@ export async function createRoom({ actor, input, repository }) {
 
   return persist(() =>
     repository.createRoom({
+      actorId: actor.id,
       code: data.code,
       floorId: data.floorId ?? null,
       roomType: data.roomType ?? null,
@@ -164,7 +165,9 @@ export async function updateRoom({ actor, input, repository }) {
   }
   if (data.maintenanceNote !== undefined) updates.maintenanceNote = data.maintenanceNote;
 
-  return persist(() => repository.updateRoom(data.roomId, updates));
+  if (Object.keys(updates).every((key) => updates[key] === room[key])) return room;
+
+  return persist(() => repository.updateRoom(data.roomId, updates, actor.id));
 }
 
 export async function archiveRoom({ actor, input, repository }) {
@@ -176,7 +179,7 @@ export async function archiveRoom({ actor, input, repository }) {
     throw new DomainError("ROOM_IN_USE");
   }
 
-  return persist(() => repository.archiveRoom(roomId));
+  return persist(() => repository.archiveRoom(roomId, actor.id));
 }
 
 export async function restoreRoom({ actor, input, repository }) {
@@ -190,7 +193,7 @@ export async function restoreRoom({ actor, input, repository }) {
     throw new DomainError("ROOM_IN_USE");
   }
 
-  return persist(() => repository.restoreRoom(roomId));
+  return persist(() => repository.restoreRoom(roomId, actor.id));
 }
 
 export async function getRoom({ actor, input, repository }) {

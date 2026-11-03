@@ -83,7 +83,7 @@ export async function createFloor({ actor, input, repository }) {
   const { name } = parse(createFloorSchema, input);
   await requireAvailableName(repository, name);
 
-  return persist(() => repository.createFloor({ name }));
+  return persist(() => repository.createFloor({ name, actorId: actor.id }));
 }
 
 export async function updateFloor({ actor, input, repository }) {
@@ -95,8 +95,9 @@ export async function updateFloor({ actor, input, repository }) {
   }
 
   await requireAvailableName(repository, name, floorId);
+  if (name === floor.name) return floor;
   return persist(() =>
-    repository.updateFloor(floorId, { name }),
+    repository.updateFloor(floorId, { name }, actor.id),
   );
 }
 
@@ -112,7 +113,7 @@ export async function archiveFloor({ actor, input, repository }) {
     throw new DomainError("FLOOR_IN_USE");
   }
 
-  return persist(() => repository.archiveFloor(floorId));
+  return persist(() => repository.archiveFloor(floorId, actor.id));
 }
 
 export async function restoreFloor({ actor, input, repository }) {
@@ -124,7 +125,7 @@ export async function restoreFloor({ actor, input, repository }) {
   }
 
   await requireAvailableName(repository, floor.name, floorId);
-  return persist(() => repository.restoreFloor(floorId));
+  return persist(() => repository.restoreFloor(floorId, actor.id));
 }
 
 export async function listFloors({ actor, options = {}, repository }) {

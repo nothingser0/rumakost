@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/src/generated/prisma/
 /spikes/neon-auth/node_modules/
 /.pnp
 .pnp.*

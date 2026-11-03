@@ -914,8 +914,11 @@ const mutationSql = `
              WHEN 'reopenTicket' THEN 'TICKET_REOPENED'
            END,
            'TICKET', changed.id, CURRENT_TIMESTAMP,
-           CASE WHEN $5::text IN ('discardTicketDraft', 'cancelTicket')
-             THEN $6::jsonb->>'reason' ELSE NULL END,
+           CASE $5::text
+             WHEN 'discardTicketDraft' THEN 'CREATOR_DISCARDED_DRAFT'
+             WHEN 'cancelTicket' THEN 'USER_REQUESTED_CANCELLATION'
+             ELSE NULL
+           END,
            jsonb_build_object(
              'ticketNumber', changed."ticketNumber"::text,
              'fromStatus', target.status,
@@ -1137,20 +1140,29 @@ async function expireExpiredTicketDrafts(): Promise<TicketExpiryResult> {
       `, []),
       sql.query(`SELECT set_config('rumakost.ticket_retention_update', 'on', TRUE)`, []),
       sql.query(`
-        UPDATE ticket_attachments attachment
-           SET upload_status = CASE
-                 WHEN attachment.upload_status = 'AVAILABLE'::"TicketUploadStatus"
-                   THEN 'DELETE_PENDING'::"TicketUploadStatus"
-                 ELSE attachment.upload_status
-               END,
-               delete_after = CURRENT_TIMESTAMP
-          FROM tickets ticket
-         WHERE ticket.id = attachment.ticket_id
-           AND ticket.status = 'CANCELLED'::"TicketStatus"
-           AND ticket.cancellation_reason = 'DRAFT_EXPIRED'
-           AND ticket.created_at <= CURRENT_TIMESTAMP - INTERVAL '7 days'
-           AND attachment.upload_status IN ('PENDING_UPLOAD'::"TicketUploadStatus", 'AVAILABLE'::"TicketUploadStatus")
-        RETURNING attachment.id
+        WITH queued AS (
+          UPDATE ticket_attachments attachment
+             SET upload_status = CASE
+                   WHEN attachment.upload_status = 'AVAILABLE'::"TicketUploadStatus"
+                     THEN 'DELETE_PENDING'::"TicketUploadStatus"
+                   ELSE attachment.upload_status
+                 END,
+                 delete_after = CURRENT_TIMESTAMP
+            FROM tickets ticket
+           WHERE ticket.id = attachment.ticket_id
+             AND ticket.status = 'CANCELLED'::"TicketStatus"
+             AND ticket.cancellation_reason = 'DRAFT_EXPIRED'
+             AND ticket.created_at <= CURRENT_TIMESTAMP - INTERVAL '7 days'
+             AND attachment.upload_status IN ('PENDING_UPLOAD'::"TicketUploadStatus", 'AVAILABLE'::"TicketUploadStatus")
+          RETURNING attachment.id
+        ), audit AS (
+          INSERT INTO audit_events (id, actor_id, action, entity_type, entity_id, occurred_at, reason, safe_metadata)
+          SELECT gen_random_uuid(), NULL, 'TICKET_MEDIA_DELETE_QUEUED', 'TICKET_ATTACHMENT', queued.id,
+                 CURRENT_TIMESTAMP, 'DRAFT_EXPIRED', jsonb_build_object('uploadStatus', 'DELETE_PENDING')
+            FROM queued
+          RETURNING id
+        )
+        SELECT queued.id FROM queued CROSS JOIN audit
       `, []),
       sql.query(`SELECT set_config('rumakost.ticket_retention_update', 'off', TRUE)`, []),
     ]);

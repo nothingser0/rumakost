@@ -1,12 +1,18 @@
 # Frozen Scope — Sistem Manajemen Kost Mandiri
 
-> Status: Baseline FROZEN pada 22 Oktober 2026; diperbarui dengan CR-2026-001 dan CR-2026-002 yang disetujui 1 November 2026. MVP tetap Medium, satu properti, tujuh kelompok P0. Fitur tambahan lainnya dipindahkan ke backlog versi berikutnya.
+> Status: Baseline FROZEN pada 22 Oktober 2026; diperbarui dengan CR-2026-001/002 pada 1 November dan CR-2026-003 pada 3 November 2026. MVP tetap Medium, satu properti, tujuh kelompok P0. Fitur tambahan lainnya dipindahkan ke backlog versi berikutnya.
 
 ## Keputusan Pemilik tentang Batas Properti
 
 Pemilik menetapkan MVP **Medium dengan satu properti dan tujuh kelompok P0**. Keputusan ini menggantikan scope Large 17 P0 yang sempat disetujui. Fitur tambahan dipindahkan ke backlog versi selanjutnya. Data demo tetap sintetis: nama/kontak, kontrak, tagihan, pembayaran, tiket, dan media yang diperlukan fitur inti. NIK, dokumen KTP, detail rekening, dan bukti transfer tidak masuk MVP dan dapat dinilai untuk versi berikutnya.
 
-Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Pada 2026-11-01, CR-2026-001 menambahkan dimensi kamar opsional ke F-02 dan pagu bulanan ke F-06. CR-2026-002 memperjelas F-02: lantai adalah katalog satu properti, kamar dan lantai diarsipkan agar histori bertahan, kode kamar dinormalisasi, serta rentang tarif dan deposit dijaga. Penutupan gap persistensi WF-03 menegaskan kontak telepon penghuni pada F-03, catatan kamar pada F-02, dan target penyelesaian tiket pada F-07. Pada 2026-11-01 Owner menetapkan semua role dapat membuat tiket; Tenant wajib memakai lease aktif miliknya, sementara Owner/Staff dapat membuat tiket kamar kosong dengan lease opsional; pembatalan wajib beralasan dan terminal. Tidak menambah kelompok fitur, role, atau jalur multi-penghuni. Arahan Owner untuk akun mengizinkan Staff membuat Tenant dan Owner mengelola perubahan email login melalui Neon Auth; tujuh P0 tetap sama. Foto kamar tetap tidak termasuk P0. Jumlah kelompok tetap tujuh dan skala tetap Medium.
+Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Pada 2026-10-30, pemilik mengarahkan agar perilaku tujuh P0 di M05 mengikuti wireframe/runbook M04; deposit escrow dan dua mode billing check-in dimasukkan di slice F-03/F-04/F-05. Pada 2026-11-01, CR-2026-001 menambahkan dimensi kamar opsional ke F-02 dan pagu bulanan ke F-06. CR-2026-002 memperjelas F-02: lantai adalah katalog satu properti, kamar dan lantai diarsipkan agar histori bertahan, kode kamar dinormalisasi, serta rentang tarif dan deposit dijaga. Penutupan gap persistensi WF-03 menegaskan kontak telepon penghuni pada F-03, catatan kamar pada F-02, dan target penyelesaian tiket pada F-07. Pada 2026-11-01 Owner menetapkan semua role dapat membuat tiket; Tenant wajib memakai lease aktif miliknya, sementara Owner/Staff dapat membuat tiket kamar kosong dengan lease opsional; pembatalan wajib beralasan dan terminal. Tidak menambah kelompok fitur, role, atau jalur multi-penghuni. CR-2026-003 mengganti runtime Auth dari Neon Auth managed ke Better Auth self-hosted pada Neon PostgreSQL; izin dan alur akun tetap, vendor pengiriman email belum dipilih. Foto kamar tetap tidak termasuk P0. Jumlah kelompok tetap tujuh dan skala tetap Medium.
+
+## CR-2026-003 — Runtime Auth menggunakan Better Auth pada Neon PostgreSQL
+
+Arahan Owner pada 2026-11-03: ganti Neon Auth managed untuk runtime aplikasi dengan Better Auth self-hosted yang menyimpan data identitas/sesi di Neon PostgreSQL melalui Prisma. Tetap gunakan Neon private Object Storage, Vercel Hobby, dan batas tanpa upgrade berbayar. Perubahan ini tidak menambah fitur, role, P0, atau layanan identity vendor.
+
+Aturan akun tidak berubah: pendaftaran publik dimatikan; Owner mengelola Staff dan Penghuni; Staff hanya mengelola Penghuni; perubahan email akun target harus menunggu verifikasi alamat baru. Password masuk ke endpoint Better Auth melalui HTTPS dan di-hash sebelum penyimpanan; aplikasi tidak menyimpan atau mencatat password mentah/token. Vendor email belum dipilih; pengiriman live diuji pada M07. Migrasi runtime hanya diverifikasi pada Neon disposable. Tidak ada pemindahan akun, perubahan branch aktif, deployment, atau edit `.env.local` yang disetujui oleh keputusan ini.
 
 ## 1. Metadata dan Kendali Dokumen
 
@@ -14,10 +20,10 @@ Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Pada 2026-1
 - Pemilik proyek: belum dicatat
 - Solo developer: pemilik proyek, dibantu AI
 - Referensi: IDEA_BRIEF.md dan USER_RESEARCH_REPORT.md
-- Status dokumen: FROZEN — MEDIUM MVP DISETUJUI PEMILIK 2026-10-22; perubahan CR-2026-001 dan CR-2026-002 disetujui 2026-11-01
+- Status dokumen: FROZEN — MEDIUM MVP DISETUJUI PEMILIK 2026-10-22; CR-2026-001/002 dicatat 2026-11-01; CR-2026-003 mengubah komponen Auth pada 2026-11-03 tanpa mengubah scope fitur
 - Skala: Medium (7 kelompok P0; satu properti)
 - Tanggal elicitation: 14–22 Oktober 2026; INT-10 bertanggal rentang 20–21 Oktober, hari tunggal belum diketahui
-- Tanggal pembaruan: 1 November 2026 (CR-2026-001: dimensi kamar/pagu; CR-2026-002: lantai/arsip/integritas data kamar)
+- Tanggal pembaruan: 3 November 2026 (CR-2026-001: dimensi kamar/pagu; CR-2026-002: lantai/arsip/integritas data kamar; CR-2026-003: runtime Auth)
 - Delivery: Portfolio; bukan layanan komersial
 
 ### Confidence
@@ -67,7 +73,7 @@ MVP memuat tujuh kelompok P0, sesuai rentang Medium (6–15), dan dibatasi ke sa
 
 | ID | Area | Deskripsi kebutuhan | Prioritas | Akar masalah | Perkiraan jam (kasar) | Keyakinan |
 |---|---|---|---|---|---:|---|
-| **F-01** | Akses dan peran | Owner login, membuat/mengaktifkan akun Staff dan Penghuni; Staff juga dapat membuat/mengaktifkan akun Penghuni. Hanya Owner mengelola akun Staff dan perubahan email login melalui Neon Auth terkelola. Ketiga role dapat mengganti password sendiri melalui provider. Tidak ada pendaftaran mandiri/publik. | **P0 (Must)** | Kebutuhan kontrol Owner/Staff/Penghuni | 16–22 | 🔶 |
+| **F-01** | Akses dan peran | Owner login, membuat/mengaktifkan akun Staff dan Penghuni; Staff juga dapat membuat/mengaktifkan akun Penghuni. Hanya Owner mengelola akun Staff dan memulai perubahan email login akun target melalui Better Auth. Ketiga role dapat mengganti password sendiri melalui flow Better Auth. Tidak ada pendaftaran mandiri/publik. | **P0 (Must)** | Kebutuhan kontrol Owner/Staff/Penghuni | 16–22 | 🔶 |
 | **F-02** | Manajemen kamar | Catat katalog lantai satu properti dan data kamar, termasuk dimensi opsional (panjang/lebar dalam meter), catatan operasional, status operasional/hunian, dan arsip yang mempertahankan histori. Luas diturunkan dari dimensi. | **P0 (Must)** | Prasyarat pengelolaan properti | 12–17 | 🔶 |
 | **F-03** | Penghuni dan siklus kontrak | Catat penghuni beserta kontak utama dan darurat, pekerjaan/instansi/kota asal opsional, periode sewa, nomor SPK opsional, status kontrak aktif/berakhir, dan histori kontrak. NIK dan berkas identitas tetap di luar MVP. | **P0 (Must)** | Menghubungkan penghuni dengan tagihan; INT-02/04 melaporkan data penghuni tertinggal | 14–18 | 🔶 |
 | **F-04** | Tagihan berulang | Buat tagihan bulanan dari kontrak aktif, cegah duplikasi, dan tampilkan status penyampaian manual. | **P0 (Must)** | Tagihan manual/kontak usang (INT-02/04) | 14–18 | 🔶 |
@@ -92,7 +98,7 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 ### 4.1 User Stories dan Acceptance Criteria (Kriteria Penerimaan)
 
 #### F-01 Akses dan peran
-- Sebagai Owner, saya ingin membuat/mengaktifkan akun Staff dan Penghuni tanpa pendaftaran mandiri/publik agar akses terikat ke kost yang tepat. Sebagai Staff, saya ingin membuat/mengaktifkan akun Penghuni. Sebagai Owner, saya ingin memperbarui email login melalui Neon Auth terkelola.
+- Sebagai Owner, saya ingin membuat/mengaktifkan akun Staff dan Penghuni tanpa pendaftaran mandiri/publik agar akses terikat ke kost yang tepat. Sebagai Staff, saya ingin membuat/mengaktifkan akun Penghuni. Sebagai Owner, saya ingin memperbarui email login melalui alur Better Auth setelah alamat baru diverifikasi.
 - Given pengguna berperan Penghuni, when ia membuka data kamar, tagihan, atau tiket, then ia hanya dapat melihat data dirinya sendiri.
 - Given Staff mencoba membuka laporan keuangan Owner-only atau data penghuni lain yang tidak dibutuhkan, when akses diperiksa, then sistem menolak permintaan.
 - Owner memiliki akses penuh pada satu properti; semua role hanya dapat melihat media lampiran yang diizinkan untuk tiket terkait.
@@ -228,12 +234,12 @@ F-08–F-11 adalah backlog P1 untuk iterasi berikutnya; F-12–F-17 adalah backl
 
 ## 9. Keputusan Scope
 
-Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Perubahan 2026-10-30 menyelaraskan deposit escrow dan mode billing check-in dengan M04. CR-2026-001 dan CR-2026-002 disetujui Owner melalui instruksi chat 2026-11-01: dimensi kamar/pagu bulanan, katalog lantai, arsip kamar/lantai, dan integritas kode serta nominal F-02. Tidak ada tabel properti multi-tenant; foto kamar tetap backlog. Jumlah kelompok dan story tetap; estimasi 197–259 jam serta jadwal 22 minggu/264 jam tetap baseline. Arahan Owner 2026-11-01 juga memperjelas F-01: tidak ada self-registration, Owner membuat Staff/Tenant, Staff dapat membuat Tenant, email login diubah Owner melalui Neon Auth, dan ketiga role dapat mengganti password sendiri melalui provider; tidak menambah role atau kelompok fitur. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
+Scope Medium MVP disetujui pada 2026-10-22: satu properti, tujuh P0. Perubahan 2026-10-30 menyelaraskan deposit escrow dan mode billing check-in dengan M04. CR-2026-001 dan CR-2026-002 disetujui Owner melalui instruksi chat 2026-11-01: dimensi kamar/pagu bulanan, katalog lantai, arsip kamar/lantai, dan integritas kode serta nominal F-02. Tidak ada tabel properti multi-tenant; foto kamar tetap backlog. Jumlah kelompok dan story tetap; estimasi 197–259 jam serta jadwal 22 minggu/264 jam tetap baseline. Arahan Owner 2026-11-01 memperjelas F-01: tidak ada self-registration, Owner membuat Staff/Tenant, Staff dapat membuat Tenant, email login diubah Owner, dan ketiga role dapat mengganti password sendiri. CR-2026-003 memilih Better Auth pada Neon PostgreSQL untuk implementasinya tanpa mengubah kebutuhan akses akun atau menambah role/kelompok fitur. Fitur M04 di luar tujuh P0 tetap backlog/out-of-scope.
 
 Scope-P0-Count: 7
 Scope-Lock-Decision: LOCKED
 
-Persetujuan pemilik proyek: MVP Medium tujuh P0 dikonfirmasi pada chat 2026-10-22. CR-2026-001 dan CR-2026-002 disetujui Owner pada chat 2026-11-01. Kapasitas intake tetap 216 jam; estimasi atas MVP 259 jam, sehingga jadwal 22 minggu menjadi baseline perencanaan.
+Persetujuan pemilik proyek: MVP Medium tujuh P0 dikonfirmasi pada chat 2026-10-22. CR-2026-001/002 disetujui Owner pada chat 2026-11-01. Arahan CR-2026-003 pada 2026-11-03 mengganti runtime Auth tanpa mengubah scope fitur. Kapasitas intake tetap 216 jam; estimasi atas MVP 259 jam, sehingga jadwal 22 minggu menjadi baseline perencanaan.
 
 ## Rujukan Teknis Storage (ditinjau 22 Oktober 2026)
 

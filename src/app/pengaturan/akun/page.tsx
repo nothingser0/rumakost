@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import type { AppRole } from "@/lib/auth/app-user";
 import { requireRouteAccess } from "@/lib/authorization/server";
-import { listManagedAccounts } from "@/lib/users/managed-accounts";
+import { listManagedAccounts, listTicketAssignees } from "@/lib/users/managed-accounts";
 import { AccountDirectory } from "./account-directory";
 import styles from "./page.module.css";
 
@@ -18,7 +18,11 @@ export default function ManagedAccountsPage() {
 
 async function AccountContent() {
   const actor = await requireRouteAccess("/pengaturan/akun");
-  const accounts = await listManagedAccounts(actor.role as AppRole);
+  const actorRole = actor.role as AppRole;
+  const [accounts, assignees] = await Promise.all([
+    listManagedAccounts(actorRole),
+    listTicketAssignees(actorRole),
+  ]);
 
   return (
     <main className={styles.page}>
@@ -31,7 +35,7 @@ async function AccountContent() {
             : "Buat dan kelola akun Penghuni. Pengaturan akun Staff hanya tersedia untuk Owner."}
         </p>
       </header>
-      <AccountDirectory accounts={accounts} actorRole={actor.role as AppRole} />
+      <AccountDirectory accounts={accounts} actorRole={actorRole} assignees={assignees} />
     </main>
   );
 }

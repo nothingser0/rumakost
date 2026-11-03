@@ -26,7 +26,7 @@ Gunakan modular monolith: satu aplikasi Next.js App Router, satu database Postgr
 ```mermaid
 flowchart LR
   U[Owner / Staff / Tenant browser] -->|HTTPS| V[Vercel Hobby: Next.js]
-  V --> A[Neon Auth: managed identity]
+  V --> A[Better Auth: app-managed identity and sessions]
   V --> D[Server authorization and domain modules]
   D --> P[(Neon PostgreSQL)]
   D --> O[Neon private Object Storage]
@@ -92,7 +92,7 @@ erDiagram
 - **Ticket data integrity**: semua role dapat membuat tiket. Tenant wajib memilih lease aktif miliknya pada kamar terkait; Owner/Staff dapat membuat tiket pada kamar kosong. Status `CANCELLED` terminal dengan alasan/aktor/waktu; tiket tidak dihapus. Status dan komentar memiliki histori append-only. DB menjaga metadata MIME/ukuran/durasi: JPEG/PNG/WebP maksimal 4 MiB; video MP4 atau MOV maksimal 12 MiB dan 1–30 detik; maksimum 4 foto + 1 video per upload batch; serta 40 MiB agregat per tiket dan referensi metadata lampiran awal. Format isi file dan keberhasilan upload diverifikasi server.
 - **Object storage decision**: Neon Object Storage (selected), private bucket; signed URLs dibuat server setelah pemeriksaan role/kepemilikan; validasi isi MIME/ukuran/durasi di server; retensi 365 hari setelah tiket selesai atau dibatalkan; tanpa CDN publik.
 
-Daftar entitas logis, constraint, ERD, matriks operasi, dan invarian finansial tersedia di `docs/architecture/M05-DATA-API-SPEC-DRAFT.md`. DDL PostgreSQL berikut mencatat batas integritas utama; nama final dan foreign key autentikasi provider harus dicocokkan dengan schema Neon Auth saat perencanaan implementasi.
+Daftar entitas logis, constraint, ERD, matriks operasi, dan invarian finansial tersedia di `docs/architecture/M05-DATA-API-SPEC-DRAFT.md`. DDL PostgreSQL berikut mencatat batas integritas utama; model Better Auth harus dipetakan ke Prisma dan dijaga oleh migration chain proyek.
 
 ```sql
 CREATE TYPE app_role AS ENUM ('OWNER', 'STAFF', 'TENANT');
@@ -369,8 +369,8 @@ Pencegahan kontrak bertabrakan menggunakan exclusion constraint PostgreSQL denga
 - **Language / Runtime**: TypeScript 5.9.3; Node.js 24.x (tersedia di Vercel; [`engines.node`](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions))
 - **Database Engine**: PostgreSQL (Neon Free)
 - **ORM**: Prisma 7.10.1 with `@prisma/adapter-neon` 7.10.1; versions pinned after registry verification
-- **Authentication**: Neon Auth managed; use the branch Auth URL and provider-managed sessions. SDK integration is handled in M06-SETUP-06 after its peer dependencies are verified.
-- **Account lifecycle (F-01)**: Owner creates/activates Staff and Tenant accounts; Staff may create/activate Tenant accounts only. No public or self-registration. Account onboarding and credential recovery use provider-managed email flows; the application must not generate, return, or display temporary passwords or reset tokens. Verify the installed Neon Auth flow end-to-end in M07; unsupported provider capability blocks release and does not permit a custom-password fallback. Owner initiates login-email changes through Neon Auth managed identity; `authSubject` remains stable, and the `AppUser.emailNormalized` mirror changes only after provider confirmation. Owner, Staff, and Tenant may change their own password through Neon Auth. Passwords and session tokens remain provider-managed.
+- **Authentication**: Better Auth runs in the application and stores identity/session records in the same Neon PostgreSQL database through the project Prisma migration chain. The M06-AUTH-03 spike passed the core invitation and session lifecycle on a disposable Neon project; the application integration is M06-AUTH-05.
+- **Account lifecycle (F-01)**: Owner creates/activates Staff and Tenant accounts; Staff may create/activate Tenant accounts only. No public or self-registration. Activation, verification, and reset links are issued through a server-side email adapter; the delivery vendor remains unselected and live delivery is verified in M07. Passwords reach the Better Auth application endpoint over HTTPS and are hashed by Better Auth; raw passwords, verification tokens, and session tokens are never persisted by application domain code, returned to UI state, or logged. Owner initiates a target user's login-email change; the new address must be verified before the Better Auth identity and `AppUser.emailNormalized` mirror change, while `authSubject` remains stable. M06-AUTH-01 implements this custom target-account flow because Better Auth's built-in change-email flow is session-scoped.
 - **Object storage**: Neon Object Storage private buckets (beta)
 - **Validation**: Zod 4.6.7, registry-checked and pinned for server environment validation in M06-SETUP-05
 - **Form state**: React Hook Form 7.91.0 candidate; compatibility must be verified before first use
@@ -417,8 +417,8 @@ Mutasi aplikasi lainnya memakai Server Actions dan mengikuti kontrak operasi Bag
 
 | ID / threat | Data and risk | Control and enforcement point | Planned verification in M07 |
 |---|---|---|---|
-SEC-01 Spoofing/session theft | Accounts and authenticated sessions | Neon Auth managed authentication; secure, HTTP-only, same-site cookies; server-side session validation for every protected action; sign-out invalidates session. No auth token in localStorage. | M06-BE-17; M07 test expired/revoked sessions, CSRF posture, cookie attributes, and unauthenticated actions. |
-SEC-02 Credential attacks | Passwords and account access | Password hashing is delegated to Neon Auth managed identity; application does not receive/store raw passwords or temporary credentials. Provider-managed onboarding/reset email only; no custom WhatsApp OTP. Apply auth-provider and edge rate limits, target 5 attempts/minute per IP/account with progressive delay; avoid account enumeration. | M06-BE-17/18; M07 repeated login/reset/onboarding tests, response equivalence, provider control verification, and rate-limit boundary. |
+SEC-01 Spoofing/session theft | Accounts and authenticated sessions | Better Auth session cookies are HTTP-only, Secure in HTTPS environments, and SameSite=Lax; server validates the session for each protected action and sign-out revokes it. No auth token in localStorage. | M06-AUTH-05, M06-BE-17; M07 test expired/revoked sessions, CSRF posture, cookie attributes, and unauthenticated actions. |
+SEC-02 Credential attacks | Passwords and account access | Passwords are submitted to the app's Better Auth endpoint over HTTPS and hashed by Better Auth; raw values are never persisted, returned, or logged. Activation/reset links use a server-side email adapter; no public signup or custom WhatsApp OTP. Apply account and edge rate limits, target 5 attempts/minute per IP/account with progressive delay; avoid account enumeration. | M06-AUTH-05, M06-BE-17/18; M07 repeated login/reset/onboarding tests, email delivery, and rate-limit boundary. |
 SEC-03 Tampering/replay | Payment, invoice, lease, deposit and expense state | Server-authoritative validation; PostgreSQL transactions, unique constraints, row locking for verification/reversal/settlement, idempotency keys, Decimal amounts, append-only audit events. Client-supplied role/status/balance is ignored. | Replay/concurrent mutation integration tests; verify no duplicate balance effect and valid audit trail. |
 SEC-04 Information disclosure | Contact, lease, finance and ticket data | Data minimization; synthetic records only; role and ownership authorization in data access layer and every Server Action/Route Handler. Staff financial responses are omitted server-side. UU PDP baseline privacy practices apply; no formal assurance claim. | Cross-role and cross-tenant denial matrix; inspect response payloads, logs, exports, and error responses. |
 SEC-05 Ticket media exposure | Private photos/videos | Neon private bucket, random opaque keys, server MIME/signature/size/duration checks, authorization before short-lived signed URL, private cache controls, orphan cleanup and deletion after 365 days. | Attempt public access, expired URL, cross-tenant fetch, spoofed MIME, oversized media, and retention cleanup. |
@@ -436,8 +436,8 @@ Nama variabel deployment berikut dicatat tanpa nilainya; secret tidak boleh ditu
 |---|---|---|---|
 | `DATABASE_URL` | Server | PostgreSQL URL, non-empty | Pooled Neon runtime URL; server-only. |
 | `DIRECT_URL` | Migration only | PostgreSQL URL, non-empty | Direct Neon migration URL; never exposed to browser. |
-| `NEON_AUTH_BASE_URL` | Server | Valid HTTPS URL | Provider endpoint; public origin only if SDK requires it. |
-| `NEON_AUTH_COOKIE_SECRET` | Server | Random secret, at least 32 characters | Signs the Neon Auth SDK's cached session cookie; application-generated and distinct from a Neon provider credential. |
+| `BETTER_AUTH_URL` | Server | Same valid origin as `APP_ORIGIN`; HTTPS except local development | Explicit base URL for Better Auth routes and trusted redirect handling. |
+| `BETTER_AUTH_SECRET` | Server | Random secret, at least 32 characters | Better Auth signing and encryption key; application-generated and distinct from Neon credentials. |
 | `NEON_STORAGE_ENDPOINT` | Server | Valid HTTPS URL | Server-only S3-compatible storage endpoint. |
 | `NEON_STORAGE_REGION` | Server | Non-empty region identifier | SigV4 signing region supplied by Neon for Object Storage. |
 | `NEON_STORAGE_BUCKET` | Server | Non-empty bucket name | Name of the private bucket provisioned on the same Neon branch; not a secret. |
@@ -446,7 +446,7 @@ Nama variabel deployment berikut dicatat tanpa nilainya; secret tidak boleh ditu
 | `APP_ORIGIN` | Server | Valid HTTPS URL outside local development | Allowed origin for redirects/CSRF checks. |
 | `CRON_SECRET` | Server | Random secret with at least 16 characters | Bearer authentication for daily scheduled route; server-only. |
 
-Buat `.env.example` dengan nilai kosong yang terdokumentasi dan modul environment server yang divalidasi Zod saat scaffold. Neon Auth dikelola provider; aplikasi menggunakan endpoint branch `NEON_AUTH_BASE_URL` dan tidak menetapkan `NEON_AUTH_SECRET` untuk server Auth. `NEON_AUTH_COOKIE_SECRET` adalah secret lokal minimal 32 karakter yang hanya dipakai SDK untuk menandatangani cache sesi. Petakan `AWS_ENDPOINT_URL_S3`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, dan `AWS_SECRET_ACCESS_KEY` dari Neon ke variabel `NEON_STORAGE_*`; isi `NEON_STORAGE_BUCKET` dengan nama bucket privat pada branch yang sama. Simpan nilai kredensial hanya di `.env.local` atau secret provider; jangan meminta secret lewat chat dan jangan membaca `.env.local` untuk memverifikasinya. Pastikan `.env*` diabaikan Git kecuali `.env.example`. Validasi dilakukan saat kapabilitas terkait digunakan: auth memerlukan pasangan variabel Auth, sementara database dan storage divalidasi oleh modul integrasinya. Rotasi secret segera jika ter-commit atau terekspos.
+`.env.example` dan `src/lib/env.ts` memvalidasi kontrak Better Auth (`BETTER_AUTH_URL` dan `BETTER_AUTH_SECRET`) serta mewajibkan URL tersebut sama origin dengan `APP_ORIGIN`. Petakan `AWS_ENDPOINT_URL_S3`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`, dan `AWS_SECRET_ACCESS_KEY` dari Neon ke variabel `NEON_STORAGE_*`; isi `NEON_STORAGE_BUCKET` dengan nama bucket privat pada branch yang sama. Simpan nilai kredensial hanya di `.env.local` atau secret provider; jangan meminta secret lewat chat dan jangan membaca `.env.local` untuk memverifikasinya. Pastikan `.env*` diabaikan Git kecuali `.env.example`. Validasi dilakukan saat kapabilitas terkait digunakan. Rotasi secret segera jika ter-commit atau terekspos.
 
 ### 5.3 Privacy, retention, backups, and incident boundary
 
@@ -483,7 +483,7 @@ Ubah prototipe HTML beku menjadi komponen React Next.js sambil mempertahankan ta
 
 ### Stack Decision (LOCKED â€” human decision)
 
-Stack Decision LOCKED: Next.js App Router + TypeScript + CSS prototype system; PostgreSQL/Prisma on Neon Free; Neon Auth and private Object Storage beta; Vercel Hobby for non-commercial portfolio demo; zero paid upgrades.
+Stack Decision LOCKED: Next.js App Router + TypeScript + CSS prototype system; PostgreSQL/Prisma on Neon Free; Better Auth self-hosted on Neon PostgreSQL and private Neon Object Storage beta; Vercel Hobby for non-commercial portfolio demo; zero paid upgrades. The Better Auth decision supersedes the Neon Auth managed component as recorded in ADR-003 on 2026-11-03.
 Stack-Locked-by: zeenn on 2026-10-30
 
 - Q1 Team Expertise: Solo developer with AI assistance, documented in `PROJECT_STATE.md`; no additional engineering team.

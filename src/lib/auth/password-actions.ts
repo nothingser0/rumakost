@@ -1,5 +1,6 @@
 import "server-only";
 
+import { headers } from "next/headers";
 import { auth } from "@/lib/auth/server";
 import { clearForcedPasswordChange } from "@/lib/auth/app-user";
 import { authorizeCurrentAction } from "@/lib/authorization/server";
@@ -40,12 +41,15 @@ export async function submitPasswordChange(
             currentPassword: string;
             newPassword: string;
           }) => {
-            const { error } = await auth.changePassword({
-              currentPassword,
-              newPassword,
-              revokeOtherSessions: true,
+            const result = await auth.api.changePassword({
+              body: {
+                currentPassword,
+                newPassword,
+                revokeOtherSessions: true,
+              },
+              headers: await headers(),
             });
-            return { success: !error };
+            return { success: result.status === true };
           },
           clearForcedPasswordChange,
         });

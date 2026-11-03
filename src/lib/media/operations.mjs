@@ -329,7 +329,7 @@ export async function finalizeUpload({ actor, input, repository, storage }) {
     });
   } catch (error) {
     if (error instanceof DomainError && ["FILE_TOO_LARGE", "UPLOAD_INCOMPLETE"].includes(error.code)) {
-      await repository.queueInvalidUpload(record.id);
+      await repository.queueInvalidUpload(record.id, actor.id, error.code);
       throw error;
     }
     throw new DomainError("PROVIDER_UNAVAILABLE");
@@ -340,7 +340,7 @@ export async function finalizeUpload({ actor, input, repository, storage }) {
     validateStoredMedia(record, storedObject.bytes, storedObject.sizeBytes);
   } catch (error) {
     if (error instanceof DomainError && ["INVALID_MEDIA", "FILE_TOO_LARGE", "UPLOAD_INCOMPLETE"].includes(error.code)) {
-      await repository.queueInvalidUpload(record.id);
+      await repository.queueInvalidUpload(record.id, actor.id, error.code);
     }
     throw error;
   }

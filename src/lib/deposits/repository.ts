@@ -198,7 +198,7 @@ const SETTLE_INVOICE_FROM_DEPOSIT_SQL = `
       reason, safe_metadata
     )
     SELECT $8::uuid, actor.id, 'DEPOSIT_APPLIED_TO_RENT',
-           'DEPOSIT_LEDGER_ENTRY', inserted.id, CURRENT_TIMESTAMP, $4::text,
+           'DEPOSIT_LEDGER_ENTRY', inserted.id, CURRENT_TIMESTAMP, 'OWNER_APPLIED_DEPOSIT_TO_RENT',
            jsonb_build_object('leaseId', inserted."leaseId",
                               'invoiceLineId', inserted."invoiceLineId",
                               'amount', inserted.amount)
@@ -327,7 +327,10 @@ const RECONCILE_CHECKOUT_DEPOSIT_SQL = `
              ELSE 'DEPOSIT_WITHHELD_AT_CHECKOUT'
            END,
            'DEPOSIT_LEDGER_ENTRY', inserted.id, CURRENT_TIMESTAMP,
-           inserted.reason,
+           CASE inserted.kind
+             WHEN 'REFUNDED' THEN 'OWNER_REQUESTED_CHECKOUT_REFUND'
+             ELSE 'OWNER_WITHHELD_DEPOSIT_AT_CHECKOUT'
+           END,
            jsonb_build_object('leaseId', inserted."leaseId",
                               'kind', inserted.kind,
                               'amount', inserted.amount,

@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 const requestedSuite = process.argv[2];
 const testRoot = resolve("tests");
@@ -27,7 +28,19 @@ if (testFiles.length === 0) {
   process.exit(1);
 }
 
-const result = spawnSync(process.execPath, ["--test", ...testFiles], {
+const nodeArguments = [
+  ...(requestedSuite === "auth-provider"
+    ? [
+        "--experimental-strip-types",
+        "--loader",
+        pathToFileURL(resolve("tests/auth-provider/typescript-loader.mjs")).href,
+      ]
+    : []),
+  "--test",
+  ...testFiles,
+];
+
+const result = spawnSync(process.execPath, nodeArguments, {
   stdio: "inherit",
 });
 
