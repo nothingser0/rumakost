@@ -8,11 +8,16 @@ import {
   restoreRoomSchema,
   updateRoomSchema,
 } from "../validation/operations.mjs";
+import {
+  createCursorPage,
+  DEFAULT_PAGE_SIZE,
+  MAX_PAGE_SIZE,
+} from "../data/pagination.mjs";
 import { z } from "zod";
 
 const roomListOptionsSchema = z.object({
   includeArchived: z.boolean().optional().default(false),
-  limit: z.number().int().min(1).max(100).optional().default(20),
+  limit: z.number().int().min(1).max(MAX_PAGE_SIZE).optional().default(DEFAULT_PAGE_SIZE),
   afterCode: z.string().trim().toUpperCase().regex(/^[A-Z0-9-]{1,10}$/).optional(),
 }).strict();
 
@@ -207,7 +212,15 @@ export async function listRooms({ actor, options = {}, repository }) {
     throw new DomainError("FORBIDDEN");
   }
 
-  return persist(() => repository.listRooms(parsedOptions));
+  const rows = await persist(() => repository.listRooms({
+    ...parsedOptions,
+    limit: parsedOptions.limit + 1,
+  }));
+  if (!Array.isArray(rows)) throw new DomainError("INTERNAL_ERROR");
+
+  return createCursorPage(rows, parsedOptions.limit, (room) => ({
+    afterCode: room.code,
+  }));
 }
 
 export { calculateDefaultDeposit };

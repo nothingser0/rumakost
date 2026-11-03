@@ -15,6 +15,10 @@ const floorRowSchema = z.object({
 const existsRowSchema = z.object({ exists: z.boolean() });
 
 export type FloorRecord = z.infer<typeof floorRowSchema>;
+export type FloorListResult = {
+  items: FloorRecord[];
+  nextCursor: { afterName: string } | null;
+};
 
 function getSql() {
   return neon(getDatabaseEnv().DATABASE_URL);

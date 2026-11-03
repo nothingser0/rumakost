@@ -266,6 +266,7 @@ model Invoice {
   lease Lease @relation(fields: [leaseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@unique([leaseId, periodStart, periodEnd, kind])
+  @@index([dueOn(sort: Desc), id(sort: Desc)], map: "invoices_due_on_id_idx")
   @@map("invoices")
 }
 
@@ -468,6 +469,7 @@ model Ticket {
   @@index([assignedToId])
   @@index([status, createdAt(sort: Desc)])
   @@index([category, status, createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc), id(sort: Desc)], map: "tickets_created_at_id_idx")
   @@map("tickets")
 }
 

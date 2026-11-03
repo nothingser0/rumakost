@@ -33,6 +33,10 @@ const existsRowSchema = z.object({ exists: z.boolean() });
 export type RoomRecord = z.infer<typeof roomRowSchema>;
 export type FloorRecord = z.infer<typeof floorRowSchema>;
 export type RoomPhysicalStatus = z.infer<typeof roomStatusSchema>;
+export type RoomListResult = {
+  items: RoomRecord[];
+  nextCursor: { afterCode: string } | null;
+};
 
 export type RoomCreateInput = {
   code: string;

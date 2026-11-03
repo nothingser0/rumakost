@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { DomainError, toPublicError } from "@/lib/errors/domain-error.mjs";
 import { authorizeCurrentAction } from "@/lib/authorization/server";
-import type { RoomRecord } from "@/lib/rooms/repository";
+import type { RoomListResult, RoomRecord } from "@/lib/rooms/repository";
 import {
   archiveRoom,
   createRoom,
@@ -44,7 +44,7 @@ function actionFailure(error: unknown): ActionFailure {
 
 export async function listRoomsAction(
   options: unknown = {},
-): Promise<ActionResult<RoomRecord[]>> {
+): Promise<ActionResult<RoomListResult>> {
   const access = await authorizeCurrentAction({ roles: ["OWNER", "STAFF"] });
   if (!access.allowed) return authorizationFailure(access.reason);
 

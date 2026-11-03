@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { DomainError, mapPersistenceError } from "../errors/domain-error.mjs";
 import { getJakartaLocalDate } from "../billing/generate-invoices.mjs";
+import { createCursorPage } from "../data/pagination.mjs";
 import {
   getInvoiceSchema,
   listInvoicesSchema,
@@ -116,17 +117,11 @@ export async function listInvoices({
   }));
 
   if (!Array.isArray(rows)) throw new DomainError("INTERNAL_ERROR");
-  const hasMore = rows.length > data.limit;
-  const pageRows = rows.slice(0, data.limit);
-  const items = pageRows.map((row) => presentInvoice(row, today));
-  const lastItem = items.at(-1);
-
-  return {
-    items,
-    nextCursor: hasMore && lastItem
-      ? { dueOn: lastItem.dueOn, id: lastItem.id }
-      : null,
-  };
+  const items = rows.map((row) => presentInvoice(row, today));
+  return createCursorPage(items, data.limit, (invoice) => ({
+    dueOn: invoice.dueOn,
+    id: invoice.id,
+  }));
 }
 
 export async function getInvoice({

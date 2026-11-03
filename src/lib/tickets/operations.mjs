@@ -2,6 +2,11 @@ import { createHash } from "node:crypto";
 import { z } from "zod";
 import { DomainError } from "../errors/domain-error.mjs";
 import {
+  createCursorPage,
+  DEFAULT_PAGE_SIZE,
+  MAX_PAGE_SIZE,
+} from "../data/pagination.mjs";
+import {
   addTicketCommentSchema,
   assignTicketSchema,
   cancelTicketSchema,
@@ -101,7 +106,7 @@ const expiryResultSchema = z.object({
   queuedAttachments: z.number().int().nonnegative(),
 }).strict();
 const listTicketsSchema = z.object({
-  limit: z.number().int().min(1).max(100).default(20),
+  limit: z.number().int().min(1).max(MAX_PAGE_SIZE).default(DEFAULT_PAGE_SIZE),
   cursor: z.object({
     createdAt: z.string().datetime({ offset: true }),
     id: z.string().uuid(),
@@ -175,14 +180,10 @@ export async function listTickets({ actor, input = {}, repository }) {
   const visibleRows = actor.role === "TENANT"
     ? parsedRows.filter((row) => row.status !== "DRAFT" || row.createdById === actor.id)
     : parsedRows;
-  const items = visibleRows.slice(0, data.limit);
-  const lastItem = items.at(-1);
-  return {
-    items,
-    nextCursor: visibleRows.length > data.limit && lastItem
-      ? { createdAt: lastItem.createdAt, id: lastItem.id }
-      : null,
-  };
+  return createCursorPage(visibleRows, data.limit, (ticket) => ({
+    createdAt: ticket.createdAt,
+    id: ticket.id,
+  }));
 }
 
 export async function getTicket({ actor, input, repository }) {

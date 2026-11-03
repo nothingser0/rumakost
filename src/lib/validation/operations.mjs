@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "../data/pagination.mjs";
 import {
   dateOnlySchema,
   depositAmountSchema,
@@ -260,7 +261,7 @@ const invoiceListCursorSchema = strictSchema({
 });
 
 export const listInvoicesSchema = strictSchema({
-  limit: z.number().int().min(1).max(100).default(20),
+  limit: z.number().int().min(1).max(MAX_PAGE_SIZE).default(DEFAULT_PAGE_SIZE),
   cursor: invoiceListCursorSchema.optional(),
 });
 

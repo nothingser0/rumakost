@@ -5488,3 +5488,13 @@ Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain
 - Test fake lulus 9/9 untuk metadata/signature, ukuran/durasi, route, otorisasi, idempotensi, kuota/rate, URL signed, dan cleanup. Integrasi provider bucket masih M06-INT-02; transfer object memakai fake.
 - `npm run typecheck` dijalankan sebagai pemeriksaan tambahan. Ia masih gagal pada diagnostic di modul lain; output tidak menunjukkan diagnostic pada file BE-12. Typecheck bukan bagian Verify task.
 - Output mentah Verify lulus 9/9 dan 19/19 tersimpan di [M06-BE-12-VERIFY.md](M06-BE-12-VERIFY.md). Fixture probe berjalan dalam transaksi rollback. Owner menyetujui M06-BE-12 pada 2026-11-03 (zeenn).
+
+<a id="evidence-m06-be-14"></a>
+
+### Evidence M06-BE-14 - Query aman, pagination, filter, dan batas resource (2026-11-03)
+
+- List Room/Floor/Invoice/Ticket sekarang memakai kontrak cursor konsisten dengan default 20 dan maksimum 100. Room/Floor mengambil satu row tambahan dan mengembalikan cursor lanjutan; Invoice/Ticket berbagi helper page yang sama.
+- Filter/sort tidak dikenal ditolak; service menolak role tidak berizin, akun nonaktif, dan forced-password-change sebelum repository. Query Invoice/Ticket mengikat role aktif dan ownership sebelum `ORDER BY`/`LIMIT`; Room/Floor menerapkan filter arsip dan cursor sebelum limit. Detail Room/Invoice/Ticket tetap dibatasi dengan predicate ownership. Laporan hanya menerima tanggal kalender valid dengan awal tidak melampaui akhir; tidak ditambah batas durasi tanggal tanpa requirement.
+- Migration `20261103120000_list_query_indexes` menambah indeks `invoices(due_on DESC, id DESC)` dan `tickets(created_at DESC, id DESC)`. Room code dan Floor normalized name sudah memakai indeks unik.
+- Verify lulus: test `data-boundaries` 11/11; Neon disposable menerapkan 39/39 migration dan lulus 6/6 pemeriksaan katalog indeks serta order plan. Branch disposable dihapus; daftar branch kembali hanya `dev`. Tidak ada migration ke `dev` atau pembacaan `.env.local`.
+- Syarat reaktivasi Tenant tanpa membuat/memindahkan Lease dikeluarkan dari Verify BE-14 dan tetap pada lifecycle akun BE-18. Output mentah tersimpan di [M06-BE-14-VERIFY.md](M06-BE-14-VERIFY.md). M06-BE-14 menunggu review Owner.

@@ -8,11 +8,16 @@ import {
   restoreFloorSchema,
   updateFloorSchema,
 } from "../validation/operations.mjs";
+import {
+  createCursorPage,
+  DEFAULT_PAGE_SIZE,
+  MAX_PAGE_SIZE,
+} from "../data/pagination.mjs";
 import { z } from "zod";
 
 const floorListOptionsSchema = z.object({
   includeArchived: z.boolean().optional().default(false),
-  limit: z.number().int().min(1).max(100).optional().default(20),
+  limit: z.number().int().min(1).max(MAX_PAGE_SIZE).optional().default(DEFAULT_PAGE_SIZE),
   afterName: z.string().trim().max(100).transform((value) => value.normalize("NFC")).optional(),
 }).strict();
 
@@ -129,5 +134,13 @@ export async function listFloors({ actor, options = {}, repository }) {
     throw new DomainError("FORBIDDEN");
   }
 
-  return persist(() => repository.listFloors(parsedOptions));
+  const rows = await persist(() => repository.listFloors({
+    ...parsedOptions,
+    limit: parsedOptions.limit + 1,
+  }));
+  if (!Array.isArray(rows)) throw new DomainError("INTERNAL_ERROR");
+
+  return createCursorPage(rows, parsedOptions.limit, (floor) => ({
+    afterName: floor.name,
+  }));
 }

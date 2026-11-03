@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { DomainError, toPublicError } from "@/lib/errors/domain-error.mjs";
 import { authorizeCurrentAction } from "@/lib/authorization/server";
-import type { FloorRecord } from "@/lib/floors/repository";
+import type { FloorListResult, FloorRecord } from "@/lib/floors/repository";
 import {
   archiveFloor,
   createFloor,
@@ -43,7 +43,7 @@ function actionFailure(error: unknown): ActionFailure {
 
 export async function listFloorsAction(
   options: unknown = {},
-): Promise<ActionResult<FloorRecord[]>> {
+): Promise<ActionResult<FloorListResult>> {
   const access = await authorizeCurrentAction({ roles: ["OWNER", "STAFF"] });
   if (!access.allowed) return authorizationFailure(access.reason);
 
