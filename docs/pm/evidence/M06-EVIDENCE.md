@@ -4241,6 +4241,7 @@ M06-BE-07 disetujui Owner pada 2026-11-02 oleh zeenn.
 - Verifikasi mengunci key idempotency, Payment, lalu Invoice. Alokasi memakai saldo line terbaru dan urutan RENT lalu DEPOSIT. PaymentAllocation, perubahan status, AuditEvent, IdempotencyKey, dan pencatatan DepositLedgerEntry COLLECTED berada dalam satu transaksi. Audit atau pencatatan escrow yang gagal membatalkan transaksi.
 - Respons verifikasi, rejection, dan reversal membawa amountPaid serta amountOutstanding hasil kalkulasi dalam transaksi. Reversal membuat PaymentReversal penuh; trigger migration menambahkan COLLECTION_REVERSED per alokasi deposit. Backend tidak menggandakan kompensasi. Guard DB menolak reversal bila escrow bebas tidak mencukupi, termasuk reservasi refund pending.
 - Verify memakai repository memori dan fixture sintetis; 9 test lulus, termasuk retry, simulasi concurrency/overpayment, campuran alokasi, reversal escrow, dan rollback audit. SQL repository belum dijalankan terhadap PostgreSQL/Neon. Tidak ada migrasi, Neon CLI/query, atau pembacaan .env.local.
+- Rerun Verify pada HEAD `64ac893` (2026-11-03): `npm run test -- payment-ledger`, 9/9 lulus. Output mentah: `docs/pm/evidence/M06-BE-08-VERIFY.md`.
 - M06-BE-13 menjadi audit coverage final setelah mutasi domain selesai; M06-BE-08/09/10/11/12/16/18 dan M06-AUTH-01 tidak lagi menunggu task audit final untuk menulis audit inline.
 
 Verify npm run test -- payment-ledger:
