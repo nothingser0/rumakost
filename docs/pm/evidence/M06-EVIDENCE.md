@@ -72,6 +72,7 @@
 - [M06-BE-06](#evidence-m06-be-06)
 - [M06-BE-10](#evidence-m06-be-10)
 - [M06-BE-11](#evidence-m06-be-11)
+- [M06-BE-12](#evidence-m06-be-12)
 
 ## Evidence
 
@@ -5177,3 +5178,14 @@ LIST_EXIT_CODE=0
 ```
 
 Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain lulus. M06-DB-56 tetap `[ ]` untuk review Owner.
+
+<a id="evidence-m06-be-12"></a>
+
+### Evidence M06-BE-12 - Media privat, finalisasi, akses, dan retensi (2026-11-03)
+
+- Keputusan Owner: pertahankan MP4 dan MOV. Migration baru `20261103100000_ticket_mov_media` mengizinkan `video/quicktime` dan menghitung MP4+MOV sebagai satu batas video per batch; migration historis tidak diubah.
+- Verify final menerapkan seluruh 38 migration dari awal pada database Neon kosong `m06be12review`, dibuat di branch disposable `rumakost-be12-verify-final-20261103`. Branch `dev` dan database `neondb` tidak menjadi target. Branch disposable dihapus; CLI memastikan branch tidak ditemukan dan yang tersisa `dev`.
+- Neon probe lulus 16/16: 10 batas schema/trigger dan 6 query SQL repository aktual: create intent, replay create, akses finalize, finalize, replay finalize, akses unduh.
+- Test fake lulus 9/9 untuk metadata/signature, ukuran/durasi, route, otorisasi, idempotensi, kuota/rate, URL signed, dan cleanup. Integrasi provider bucket masih M06-INT-02; transfer object memakai fake.
+- `npm run typecheck` dijalankan sebagai pemeriksaan tambahan. Ia masih gagal pada diagnostic di modul lain; output tidak menunjukkan diagnostic pada file BE-12. Typecheck bukan bagian Verify task.
+- Output mentah Verify tersimpan di [M06-BE-12-VERIFY.md](M06-BE-12-VERIFY.md). M06-BE-12 tetap `[ ]`, menunggu review Owner.

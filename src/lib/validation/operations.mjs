@@ -436,6 +436,7 @@ const mimeTypeSchema = z
 export const createUploadIntentSchema = strictSchema(
   idempotencyShape({
     ticketId: idSchema,
+    commentId: idSchema.optional(),
     fileName: safeFileNameSchema,
     contentType: mimeTypeSchema,
     sizeBytes: positiveSafeIntegerSchema,

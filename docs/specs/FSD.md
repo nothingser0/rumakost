@@ -89,7 +89,7 @@ erDiagram
   AUDIT_EVENT { uuid id PK; uuid actor_id FK; text action; timestamptz occurred_at }
 ```
 
-- **Ticket data integrity**: semua role dapat membuat tiket. Tenant wajib memilih lease aktif miliknya pada kamar terkait; Owner/Staff dapat membuat tiket pada kamar kosong. Status `CANCELLED` terminal dengan alasan/aktor/waktu; tiket tidak dihapus. Status dan komentar memiliki histori append-only. DB menjaga metadata MIME/ukuran/durasi, maksimum 4 foto + 1 video per upload batch, 40 MB agregat per tiket, dan referensi metadata lampiran awal. Format isi file dan keberhasilan upload diverifikasi server.
+- **Ticket data integrity**: semua role dapat membuat tiket. Tenant wajib memilih lease aktif miliknya pada kamar terkait; Owner/Staff dapat membuat tiket pada kamar kosong. Status `CANCELLED` terminal dengan alasan/aktor/waktu; tiket tidak dihapus. Status dan komentar memiliki histori append-only. DB menjaga metadata MIME/ukuran/durasi: JPEG/PNG/WebP maksimal 4 MiB; video MP4 atau MOV maksimal 12 MiB dan 1–30 detik; maksimum 4 foto + 1 video per upload batch; serta 40 MiB agregat per tiket dan referensi metadata lampiran awal. Format isi file dan keberhasilan upload diverifikasi server.
 - **Object storage decision**: Neon Object Storage (selected), private bucket; signed URLs dibuat server setelah pemeriksaan role/kepemilikan; validasi isi MIME/ukuran/durasi di server; retensi 365 hari setelah tiket selesai atau dibatalkan; tanpa CDN publik.
 
 Daftar entitas logis, constraint, ERD, matriks operasi, dan invarian finansial tersedia di `docs/architecture/M05-DATA-API-SPEC-DRAFT.md`. DDL PostgreSQL berikut mencatat batas integritas utama; nama final dan foreign key autentikasi provider harus dicocokkan dengan schema Neon Auth saat perencanaan implementasi.
@@ -388,9 +388,11 @@ Mutasi UI internal memakai Server Actions yang memeriksa autentikasi. HTTP handl
 #### POST /api/media/upload-intents
 
 - **Auth**: signed-in Owner/Staff, or Tenant who owns the active ticket; server verifies role and ticket ownership.
-- **Request**: `ticketId`, declared `fileName`, `contentType`, `sizeBytes`, optional `durationSeconds`, idempotency key.
+- **Request**: `ticketId`, optional `commentId`, `uploadBatchId`, declared `fileName`, `contentType`, `sizeBytes`, optional `durationSeconds`, idempotency key. Allowed content types are JPEG/PNG/WebP (4 MiB), MP4/MOV (12 MiB, 1–30 seconds). `commentId` must belong to the same ticket and be visible to the caller.
 - **Success**: `201`; returns opaque attachment ID, short-lived signed upload URL, and expiry. URL is created only after quota and ticket authorization checks.
 - **Error**: `401`, `403`/non-enumerating `404`, `409` idempotency/quota conflict, `413` file too large, `415` unsupported media, `503` provider unavailable.
+
+The browser uploads bytes directly to the signed URL, then calls the internal `finalizeUpload` Server Action. The server reads the stored object, checks its signature, actual MIME, size, and video duration, and only then marks the attachment `AVAILABLE`. This does not add a third public Route Handler.
 
 #### POST /api/media/attachments/{attachmentId}/download-url
 
@@ -421,7 +423,7 @@ SEC-03 Tampering/replay | Payment, invoice, lease, deposit and expense state | S
 SEC-04 Information disclosure | Contact, lease, finance and ticket data | Data minimization; synthetic records only; role and ownership authorization in data access layer and every Server Action/Route Handler. Staff financial responses are omitted server-side. UU PDP baseline privacy practices apply; no formal assurance claim. | Cross-role and cross-tenant denial matrix; inspect response payloads, logs, exports, and error responses. |
 SEC-05 Ticket media exposure | Private photos/videos | Neon private bucket, random opaque keys, server MIME/signature/size/duration checks, authorization before short-lived signed URL, private cache controls, orphan cleanup and deletion after 365 days. | Attempt public access, expired URL, cross-tenant fetch, spoofed MIME, oversized media, and retention cleanup. |
 SEC-06 Injection and unsafe content | Form fields, comments, search and file names | Schema validation on server, parameterized Prisma queries, output escaping, safe text-only rendering for user prose, normalized filenames not used as object keys. | XSS payload tests, malformed input tests, SQL injection probes and filename traversal attempts. |
-SEC-07 Denial of service/cost exhaustion | Auth, media uploads, database and free-tier quotas | Rate limits on authentication and upload intents; bounded pagination; server-side file quota of 40 MB/ticket and internal storage cap 4 GB/project; reject upload when cap is reached; no automatic paid upgrade. | M06-BE-12/17; M07 burst and quota-exhaustion tests, verify fail-closed behavior and no upload after cap. |
+SEC-07 Denial of service/cost exhaustion | Auth, media uploads, database and free-tier quotas | Rate limits on authentication and upload intents (10 new intents/minute per active user); bounded pagination; server-side file quota of 40 MB/ticket and internal storage cap 4 GB/project; reject upload when cap is reached; no automatic paid upgrade. | M06-BE-12/17; M07 burst and quota-exhaustion tests, verify fail-closed behavior and no upload after cap. |
 SEC-08 Repudiation/data loss | Financial mutations and demo continuity | Append-only audit event for sensitive actions; managed provider encryption at rest and HTTPS in transit; daily logical export/snapshot if free plan supports it. Proposed portfolio RPO 24 hours, RTO 8 hours; perform and record the restore drill during M07 before release readiness. No application AES-256-GCM layer unless a concrete field-level threat requires it. | Confirm provider encryption evidence, audit completeness, backup availability and restore drill. |
 
 **Encryption at rest**: rely on Neon/Vercel managed encryption for provider storage; application-level AES-256-GCM is not selected because the MVP excludes identity documents, bank details, and payment receipts, and managed data storage is already the chosen boundary. Secrets use provider environment-variable storage and are never committed. **OWASP**: address access control, injection, session management, CSRF, XSS, SSRF, and unrestricted resource consumption at the listed enforcement points. Privacy: comply with the project's UU PDP baseline through data minimization, purpose limitation, access restriction, and deletion policy; legal review is outside this technical specification.
@@ -436,13 +438,14 @@ Nama variabel deployment berikut dicatat tanpa nilainya; secret tidak boleh ditu
 | `DIRECT_URL` | Migration only | PostgreSQL URL, non-empty | Direct Neon migration URL; never exposed to browser. |
 | `NEON_AUTH_BASE_URL` | Server | Valid HTTPS URL | Provider endpoint; public origin only if SDK requires it. |
 | `NEON_AUTH_COOKIE_SECRET` | Server | Random secret, at least 32 characters | Signs the Neon Auth SDK's cached session cookie; application-generated and distinct from a Neon provider credential. |
-| `NEON_STORAGE_ENDPOINT` | Server | Valid HTTPS URL | Server-only storage API endpoint. |
+| `NEON_STORAGE_ENDPOINT` | Server | Valid HTTPS URL | Server-only S3-compatible storage endpoint. |
+| `NEON_STORAGE_BUCKET` | Server | Non-empty bucket name | Name of the private bucket provisioned on the same Neon branch; not a secret. |
 | `NEON_STORAGE_ACCESS_KEY` | Server | Non-empty secret | Server-only; least-privilege storage access. |
 | `NEON_STORAGE_SECRET_KEY` | Server | Non-empty secret | Server-only; rotate on suspected exposure. |
 | `APP_ORIGIN` | Server | Valid HTTPS URL outside local development | Allowed origin for redirects/CSRF checks. |
 | `CRON_SECRET` | Server | Random secret with at least 16 characters | Bearer authentication for daily scheduled route; server-only. |
 
-Buat `.env.example` dengan nilai kosong yang terdokumentasi dan modul environment server yang divalidasi Zod saat scaffold. Neon Auth dikelola provider; aplikasi menggunakan endpoint branch `NEON_AUTH_BASE_URL` dan tidak menetapkan `NEON_AUTH_SECRET` untuk server Auth. `NEON_AUTH_COOKIE_SECRET` adalah secret lokal minimal 32 karakter yang hanya dipakai SDK untuk menandatangani cache sesi. Simpan nilai sebenarnya hanya di `.env.local` atau secret provider; jangan meminta secret lewat chat dan jangan membaca `.env.local` untuk memverifikasinya. Pastikan `.env*` diabaikan Git kecuali `.env.example`. Validasi dilakukan saat kapabilitas terkait digunakan: auth memerlukan pasangan variabel Auth, sementara database dan storage divalidasi oleh modul integrasinya. Rotasi secret segera jika ter-commit atau terekspos.
+Buat `.env.example` dengan nilai kosong yang terdokumentasi dan modul environment server yang divalidasi Zod saat scaffold. Neon Auth dikelola provider; aplikasi menggunakan endpoint branch `NEON_AUTH_BASE_URL` dan tidak menetapkan `NEON_AUTH_SECRET` untuk server Auth. `NEON_AUTH_COOKIE_SECRET` adalah secret lokal minimal 32 karakter yang hanya dipakai SDK untuk menandatangani cache sesi. Petakan `AWS_ENDPOINT_URL_S3`, `AWS_ACCESS_KEY_ID`, dan `AWS_SECRET_ACCESS_KEY` dari Neon ke variabel `NEON_STORAGE_*`; isi `NEON_STORAGE_BUCKET` dengan nama bucket privat pada branch yang sama. Simpan nilai kredensial hanya di `.env.local` atau secret provider; jangan meminta secret lewat chat dan jangan membaca `.env.local` untuk memverifikasinya. Pastikan `.env*` diabaikan Git kecuali `.env.example`. Validasi dilakukan saat kapabilitas terkait digunakan: auth memerlukan pasangan variabel Auth, sementara database dan storage divalidasi oleh modul integrasinya. Rotasi secret segera jika ter-commit atau terekspos.
 
 ### 5.3 Privacy, retention, backups, and incident boundary
 
@@ -465,7 +468,7 @@ Buat `.env.example` dengan nilai kosong yang terdokumentasi dan modul environmen
 - One property and at most five simultaneous demo users, consistent with the frozen scope.
 - All list reads are paginated (default 20, maximum 100); ticket/event history uses cursor pagination if it grows.
 - No cache or paid external integration. Use bounded connection pooling and distinguish runtime pooled and migration direct database URLs.
-- Neon internal storage stop threshold: 4 GB/project, below the stated Free quota; refuse new uploads at/above the internal threshold and alert the Owner through an operational log/state.
+- Neon internal storage stop threshold: 4 GB/project, below the stated Free quota; refuse new uploads at/above the internal threshold and record a safe append-only operational event for Owner review, without storing filenames or object keys.
 - No billing method is to be added to Vercel or Neon. Do not enable paid upgrades or unbounded usage. If a provider changes its no-card/free policy or cannot enforce a safe limit, stop the affected integration and revisit the architecture.
 - Restore drill dan pemeriksaan usage alerts menjadi prasyarat sign-off. Ketersediaan selalu aktif tidak dijanjikan; scale-to-zero/tidur diterima untuk demo portfolio.
 
