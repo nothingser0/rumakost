@@ -43,6 +43,8 @@ const ticketStatuses = [
 
 const strictSchema = (shape) => z.object(shape).strict();
 const floorNameSchema = z.string().trim().min(1).transform((value) => value.normalize("NFC"));
+const optionalNullableTextMaxSchema = (maxLength) =>
+  z.string().trim().min(1).max(maxLength).transform((value) => value.normalize("NFC")).nullable().optional();
 const roomCodeSchema = z
   .string()
   .trim()
@@ -86,11 +88,11 @@ export const setAccountStatusSchema = strictSchema({
 
 export const updateTenantProfileSchema = strictSchema({
   phoneE164: phoneE164Schema.nullable().optional(),
-  occupation: optionalNullableTextSchema,
-  employer: optionalNullableTextSchema,
-  cityOfOrigin: optionalNullableTextSchema,
-  emergencyContactName: optionalNullableTextSchema,
-  emergencyContactRelation: optionalNullableTextSchema,
+  occupation: optionalNullableTextMaxSchema(100),
+  employer: optionalNullableTextMaxSchema(150),
+  cityOfOrigin: optionalNullableTextMaxSchema(100),
+  emergencyContactName: optionalNullableTextMaxSchema(100),
+  emergencyContactRelation: optionalNullableTextMaxSchema(50),
   emergencyContactPhoneE164: phoneE164Schema.nullable().optional(),
   emergencyContactNote: optionalNullableTextSchema,
 }).superRefine((value, context) => {

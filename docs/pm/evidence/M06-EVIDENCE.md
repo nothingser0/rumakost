@@ -5498,3 +5498,12 @@ Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain
 - Migration `20261103120000_list_query_indexes` menambah indeks `invoices(due_on DESC, id DESC)` dan `tickets(created_at DESC, id DESC)`. Room code dan Floor normalized name sudah memakai indeks unik.
 - Verify lulus: test `data-boundaries` 11/11; Neon disposable menerapkan 39/39 migration dan lulus 6/6 pemeriksaan katalog indeks serta order plan. Branch disposable dihapus; daftar branch kembali hanya `dev`. Tidak ada migration ke `dev` atau pembacaan `.env.local`.
 - Syarat reaktivasi Tenant tanpa membuat/memindahkan Lease dikeluarkan dari Verify BE-14 dan tetap pada lifecycle akun BE-18. Output mentah tersimpan di [M06-BE-14-VERIFY.md](M06-BE-14-VERIFY.md). Owner menyetujui M06-BE-14 pada 2026-11-03 (zeenn).
+
+<a id="evidence-m06-be-16"></a>
+
+### Evidence M06-BE-16 - Pembaruan profil dan kontak Tenant (2026-11-03)
+
+- Tenant hanya dapat memperbarui profil miliknya; Owner dapat memperbarui profil Tenant; Staff ditolak. Server Action mengautentikasi aktor; operasi memeriksa status/role dan ownership; query membatasi target pada role Tenant serta ownership Tenant sebelum update.
+- Update hanya menerima field `TenantProfile`. E.164 dan panjang kolom `VARCHAR` mengikuti constraint schema; nama dan nomor kontak darurat harus disediakan atau dihapus berpasangan. Email login dan Lease tidak diterima sebagai field.
+- Update profil dan `AuditEvent` berjalan dalam satu statement PostgreSQL. Metadata audit berisi nama field yang berubah tanpa nilai kontak. Pengulangan nilai yang sama tidak menulis event audit kedua.
+- Verify PASS 9/9 pada Node.js v24.22.2. Test memakai repository fake sintetis; query belum diuji terhadap Neon dan tidak ada database proyek yang disentuh. Output mentah tersimpan di [M06-BE-16-VERIFY.md](M06-BE-16-VERIFY.md). Menunggu review Owner.
