@@ -4922,6 +4922,149 @@ ok 25 - draft expiry validates counts returned by the internal job
 EXIT_CODE=0
 ```
 
+Rerun unit suite (2026-11-03, HEAD `6678854`) returned 25/25. This is preliminary evidence only: M06-BE-11 depends on M06-DB-55, which remains unapproved. It does not complete or approve M06-BE-11.
+
+```text
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs tickets
+
+TAP version 13
+# Subtest: createTicketDraft binds the authenticated actor and stable request fingerprint
+ok 1 - createTicketDraft binds the authenticated actor and stable request fingerprint
+  ---
+  duration_ms: 10.3877
+  ...
+# Subtest: createTicketDraft fingerprints business data independently from its idempotency key
+ok 2 - createTicketDraft fingerprints business data independently from its idempotency key
+  ---
+  duration_ms: 0.7696
+  ...
+# Subtest: idempotent create replay returns one ticket and does not duplicate the audit fixture
+ok 3 - idempotent create replay returns one ticket and does not duplicate the audit fixture
+  ---
+  duration_ms: 1.5525
+  ...
+# Subtest: inactive actors and forced password change cannot create tickets
+ok 4 - inactive actors and forced password change cannot create tickets
+  ---
+  duration_ms: 0.3202
+  ...
+# Subtest: invalid draft input is rejected before persistence
+ok 5 - invalid draft input is rejected before persistence
+  ---
+  duration_ms: 1.4245
+  ...
+# Subtest: listTickets requests one extra row and builds a stable next cursor
+ok 6 - listTickets requests one extra row and builds a stable next cursor
+  ---
+  duration_ms: 2.16
+  ...
+# Subtest: listTickets rejects pagination beyond the approved cap
+ok 7 - listTickets rejects pagination beyond the approved cap
+  ---
+  duration_ms: 0.5463
+  ...
+# Subtest: Tenant ticket lists suppress drafts created by other users
+ok 8 - Tenant ticket lists suppress drafts created by other users
+  ---
+  duration_ms: 0.874
+  ...
+# Subtest: getTicket maps an inaccessible or missing ticket to the non-enumerating error
+ok 9 - getTicket maps an inaccessible or missing ticket to the non-enumerating error
+  ---
+  duration_ms: 1.0572
+  ...
+# Subtest: Tenant details never expose internal comment bodies or their attachments
+ok 10 - Tenant details never expose internal comment bodies or their attachments
+  ---
+  duration_ms: 5.6568
+  ...
+# Subtest: Tenant cannot read another user's draft even if a repository returns it
+ok 11 - Tenant cannot read another user's draft even if a repository returns it
+  ---
+  duration_ms: 0.7498
+  ...
+# Subtest: submitTicketDraft includes the authenticated role and request fingerprint
+ok 12 - submitTicketDraft includes the authenticated role and request fingerprint
+  ---
+  duration_ms: 1.7014
+  ...
+# Subtest: submitTicketDraft passes through media and active-Lease failures from storage logic
+ok 13 - submitTicketDraft passes through media and active-Lease failures from storage logic
+  ---
+  duration_ms: 2.4576
+  ...
+# Subtest: discardTicketDraft requires a reason and persists tenant ownership context
+ok 14 - discardTicketDraft requires a reason and persists tenant ownership context
+  ---
+  duration_ms: 1.3126
+  ...
+# Subtest: updateTicket is restricted to Owner and Staff
+ok 15 - updateTicket is restricted to Owner and Staff
+  ---
+  duration_ms: 1.7172
+  ...
+# Subtest: state transition conflicts are returned without exposing persistence details
+ok 16 - state transition conflicts are returned without exposing persistence details
+  ---
+  duration_ms: 0.3608
+  ...
+# Subtest: assignTicket permits internal roles and rejects malformed assignee IDs
+ok 17 - assignTicket permits internal roles and rejects malformed assignee IDs
+  ---
+  duration_ms: 1.1244
+  ...
+# Subtest: manual cancellation cannot use the reserved system expiry reason
+ok 18 - manual cancellation cannot use the reserved system expiry reason
+  ---
+  duration_ms: 0.8849
+  ...
+# Subtest: cancelled tickets stay terminal
+ok 19 - cancelled tickets stay terminal
+  ---
+  duration_ms: 0.3793
+  ...
+# Subtest: reopenTicket is Owner-only
+ok 20 - reopenTicket is Owner-only
+  ---
+  duration_ms: 0.8324
+  ...
+# Subtest: Tenant cannot create an internal comment
+ok 21 - Tenant cannot create an internal comment
+  ---
+  duration_ms: 0.8405
+  ...
+# Subtest: Tenant comments are persisted as tenant-visible and include actor identity
+ok 22 - Tenant comments are persisted as tenant-visible and include actor identity
+  ---
+  duration_ms: 1.0271
+  ...
+# Subtest: Tenant comments are rejected after their lease ends
+ok 23 - Tenant comments are rejected after their lease ends
+  ---
+  duration_ms: 0.3822
+  ...
+# Subtest: malformed repository records fail closed
+ok 24 - malformed repository records fail closed
+  ---
+  duration_ms: 0.3456
+  ...
+# Subtest: draft expiry validates counts returned by the internal job
+ok 25 - draft expiry validates counts returned by the internal job
+  ---
+  duration_ms: 0.7242
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 301.3473
+```
+
 <a id="evidence-m06-db-55"></a>
 
 ### Evidence M06-DB-55 - Expiry draft tiket oleh SYSTEM (2026-11-02)
