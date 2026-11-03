@@ -5329,7 +5329,7 @@ Name           ID                      Current State  Created At
 LIST_EXIT_CODE=0
 ```
 
-Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain lulus. M06-DB-56 tetap `[ ]` untuk review Owner.
+Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain lulus. Owner menyetujui M06-DB-56 pada 2026-11-03 (zeenn). Approved: 2026-11-03 by zeenn.
 
 <a id="evidence-m06-be-12"></a>
 
