@@ -71,6 +71,7 @@
 - [M06-BE-05](#evidence-m06-be-05)
 - [M06-BE-06](#evidence-m06-be-06)
 - [M06-BE-10](#evidence-m06-be-10)
+- [M06-BE-11](#evidence-m06-be-11)
 
 ## Evidence
 
@@ -4640,6 +4641,280 @@ ok 8 - Staff and Tenant receive no financial report payload
 # skipped 0
 # todo 0
 # duration_ms 270.943
+EXIT_CODE=0
+```
+
+<a id="evidence-m06-be-11"></a>
+
+### Evidence M06-BE-11 - Siklus tiket, status, assignment, target, dan komentar (2026-11-03)
+
+- Menambahkan Server Actions untuk draft tiket, daftar/detail, submit/discard, update, assignment, cancellation, reopen Owner, dan komentar. Service mengikat actor dari sesi, memvalidasi input/hasil, membuat fingerprint idempotensi, dan menolak role yang tidak berwenang.
+- Repository menyimpan mutasi Ticket, AuditEvent, dan IdempotencyKey dalam satu transaksi Neon. Pembacaan Tenant dibatasi ke draft miliknya dan tiket pada lease sendiri. Detail Tenant menyaring komentar internal beserta lampirannya; `object_key` tidak masuk respons.
+- Submit membutuhkan attachment `AVAILABLE`; Tenant harus tetap memiliki lease aktif untuk submit/discard draft dan komentar. Status transisi/cancellation/assignee/resolution tetap dijaga trigger DB. Reopen hanya Owner.
+- `runTicketDraftExpiryJob` disediakan sebagai fungsi internal untuk dispatcher Cron harian M06-INT-03. Job membatalkan draft umur minimal 7 hari dengan actor SYSTEM melalui trigger, mencatat audit, dan mengantre attachment. `AVAILABLE` berpindah ke `DELETE_PENDING`; `PENDING_UPLOAD` tetap pada statusnya dengan `delete_after` segera karena trigger DB saat ini tidak mengizinkan transisi dari `PENDING_UPLOAD` ke `DELETE_PENDING`. M06-BE-12 perlu memproses queue `PENDING_UPLOAD` yang sudah jatuh tempo dan menandainya gagal setelah objek sementara dibersihkan.
+- Verify memakai repository fixture/injected dan tidak menjalankan SQL ke PostgreSQL/Neon. Tidak menjalankan migrasi, Neon CLI/query, atau membaca `.env.local`. M06-DB-55 masih menunggu review Owner.
+
+Verify `npm run test -- tickets`:
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs tickets
+
+TAP version 13
+# Subtest: createTicketDraft binds the authenticated actor and stable request fingerprint
+ok 1 - createTicketDraft binds the authenticated actor and stable request fingerprint
+  ---
+  duration_ms: 10.089
+  ...
+# Subtest: createTicketDraft fingerprints business data independently from its idempotency key
+ok 2 - createTicketDraft fingerprints business data independently from its idempotency key
+  ---
+  duration_ms: 1.0205
+  ...
+# Subtest: inactive actors and forced password change cannot create tickets
+ok 3 - inactive actors and forced password change cannot create tickets
+  ---
+  duration_ms: 1.0434
+  ...
+# Subtest: invalid draft input is rejected before persistence
+ok 4 - invalid draft input is rejected before persistence
+  ---
+  duration_ms: 1.3374
+  ...
+# Subtest: listTickets requests one extra row and builds a stable next cursor
+ok 5 - listTickets requests one extra row and builds a stable next cursor
+  ---
+  duration_ms: 2.2207
+  ...
+# Subtest: listTickets rejects pagination beyond the approved cap
+ok 6 - listTickets rejects pagination beyond the approved cap
+  ---
+  duration_ms: 0.4066
+  ...
+# Subtest: getTicket maps an inaccessible or missing ticket to the non-enumerating error
+ok 7 - getTicket maps an inaccessible or missing ticket to the non-enumerating error
+  ---
+  duration_ms: 0.75
+  ...
+# Subtest: Tenant details never expose internal comment bodies or their attachments
+ok 8 - Tenant details never expose internal comment bodies or their attachments
+  ---
+  duration_ms: 5.446
+  ...
+# Subtest: submitTicketDraft includes the authenticated role and request fingerprint
+ok 9 - submitTicketDraft includes the authenticated role and request fingerprint
+  ---
+  duration_ms: 2.2052
+  ...
+# Subtest: submitTicketDraft passes through media and active-Lease failures from storage logic
+ok 10 - submitTicketDraft passes through media and active-Lease failures from storage logic
+  ---
+  duration_ms: 1.0847
+  ...
+# Subtest: discardTicketDraft requires a reason and persists tenant ownership context
+ok 11 - discardTicketDraft requires a reason and persists tenant ownership context
+  ---
+  duration_ms: 1.5805
+  ...
+# Subtest: updateTicket is restricted to Owner and Staff
+ok 12 - updateTicket is restricted to Owner and Staff
+  ---
+  duration_ms: 1.9382
+  ...
+# Subtest: state transition conflicts are returned without exposing persistence details
+ok 13 - state transition conflicts are returned without exposing persistence details
+  ---
+  duration_ms: 0.5718
+  ...
+# Subtest: assignTicket permits internal roles and rejects malformed assignee IDs
+ok 14 - assignTicket permits internal roles and rejects malformed assignee IDs
+  ---
+  duration_ms: 1.2369
+  ...
+# Subtest: manual cancellation cannot use the reserved system expiry reason
+ok 15 - manual cancellation cannot use the reserved system expiry reason
+  ---
+  duration_ms: 0.913
+  ...
+# Subtest: reopenTicket is Owner-only
+ok 16 - reopenTicket is Owner-only
+  ---
+  duration_ms: 0.942
+  ...
+# Subtest: Tenant cannot create an internal comment
+ok 17 - Tenant cannot create an internal comment
+  ---
+  duration_ms: 1.037
+  ...
+# Subtest: Tenant comments are persisted as tenant-visible and include actor identity
+ok 18 - Tenant comments are persisted as tenant-visible and include actor identity
+  ---
+  duration_ms: 1.479
+  ...
+# Subtest: malformed repository records fail closed
+ok 19 - malformed repository records fail closed
+  ---
+  duration_ms: 0.505
+  ...
+# Subtest: draft expiry validates counts returned by the internal job
+ok 20 - draft expiry validates counts returned by the internal job
+  ---
+  duration_ms: 0.739
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 299.229
+EXIT_CODE=0
+```
+
+Reverify setelah penambahan filter defense-in-depth, test idempotency, dan guard terminal:
+
+```text
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs tickets
+
+TAP version 13
+# Subtest: createTicketDraft binds the authenticated actor and stable request fingerprint
+ok 1 - createTicketDraft binds the authenticated actor and stable request fingerprint
+  ---
+  duration_ms: 11.3793
+  ...
+# Subtest: createTicketDraft fingerprints business data independently from its idempotency key
+ok 2 - createTicketDraft fingerprints business data independently from its idempotency key
+  ---
+  duration_ms: 0.7444
+  ...
+# Subtest: idempotent create replay returns one ticket and does not duplicate the audit fixture
+ok 3 - idempotent create replay returns one ticket and does not duplicate the audit fixture
+  ---
+  duration_ms: 1.6058
+  ...
+# Subtest: inactive actors and forced password change cannot create tickets
+ok 4 - inactive actors and forced password change cannot create tickets
+  ---
+  duration_ms: 0.3252
+  ...
+# Subtest: invalid draft input is rejected before persistence
+ok 5 - invalid draft input is rejected before persistence
+  ---
+  duration_ms: 1.466
+  ...
+# Subtest: listTickets requests one extra row and builds a stable next cursor
+ok 6 - listTickets requests one extra row and builds a stable next cursor
+  ---
+  duration_ms: 2.3552
+  ...
+# Subtest: listTickets rejects pagination beyond the approved cap
+ok 7 - listTickets rejects pagination beyond the approved cap
+  ---
+  duration_ms: 0.5839
+  ...
+# Subtest: Tenant ticket lists suppress drafts created by other users
+ok 8 - Tenant ticket lists suppress drafts created by other users
+  ---
+  duration_ms: 0.9107
+  ...
+# Subtest: getTicket maps an inaccessible or missing ticket to the non-enumerating error
+ok 9 - getTicket maps an inaccessible or missing ticket to the non-enumerating error
+  ---
+  duration_ms: 1.0819
+  ...
+# Subtest: Tenant details never expose internal comment bodies or their attachments
+ok 10 - Tenant details never expose internal comment bodies or their attachments
+  ---
+  duration_ms: 5.5146
+  ...
+# Subtest: Tenant cannot read another user's draft even if a repository returns it
+ok 11 - Tenant cannot read another user's draft even if a repository returns it
+  ---
+  duration_ms: 0.6274
+  ...
+# Subtest: submitTicketDraft includes the authenticated role and request fingerprint
+ok 12 - submitTicketDraft includes the authenticated role and request fingerprint
+  ---
+  duration_ms: 1.4099
+  ...
+# Subtest: submitTicketDraft passes through media and active-Lease failures from storage logic
+ok 13 - submitTicketDraft passes through media and active-Lease failures from storage logic
+  ---
+  duration_ms: 0.7188
+  ...
+# Subtest: discardTicketDraft requires a reason and persists tenant ownership context
+ok 14 - discardTicketDraft requires a reason and persists tenant ownership context
+  ---
+  duration_ms: 1.2589
+  ...
+# Subtest: updateTicket is restricted to Owner and Staff
+ok 15 - updateTicket is restricted to Owner and Staff
+  ---
+  duration_ms: 1.8114
+  ...
+# Subtest: state transition conflicts are returned without exposing persistence details
+ok 16 - state transition conflicts are returned without exposing persistence details
+  ---
+  duration_ms: 0.484
+  ...
+# Subtest: assignTicket permits internal roles and rejects malformed assignee IDs
+ok 17 - assignTicket permits internal roles and rejects malformed assignee IDs
+  ---
+  duration_ms: 1.1996
+  ...
+# Subtest: manual cancellation cannot use the reserved system expiry reason
+ok 18 - manual cancellation cannot use the reserved system expiry reason
+  ---
+  duration_ms: 0.8703
+  ...
+# Subtest: cancelled tickets stay terminal
+ok 19 - cancelled tickets stay terminal
+  ---
+  duration_ms: 0.3484
+  ...
+# Subtest: reopenTicket is Owner-only
+ok 20 - reopenTicket is Owner-only
+  ---
+  duration_ms: 2.1201
+  ...
+# Subtest: Tenant cannot create an internal comment
+ok 21 - Tenant cannot create an internal comment
+  ---
+  duration_ms: 0.8594
+  ...
+# Subtest: Tenant comments are persisted as tenant-visible and include actor identity
+ok 22 - Tenant comments are persisted as tenant-visible and include actor identity
+  ---
+  duration_ms: 1.0653
+  ...
+# Subtest: Tenant comments are rejected after their lease ends
+ok 23 - Tenant comments are rejected after their lease ends
+  ---
+  duration_ms: 0.4918
+  ...
+# Subtest: malformed repository records fail closed
+ok 24 - malformed repository records fail closed
+  ---
+  duration_ms: 0.3572
+  ...
+# Subtest: draft expiry validates counts returned by the internal job
+ok 25 - draft expiry validates counts returned by the internal job
+  ---
+  duration_ms: 0.6676
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 303.1738
 EXIT_CODE=0
 ```
 
