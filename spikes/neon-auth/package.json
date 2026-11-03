@@ -1,0 +1,12 @@
+{
+  "name": "rumakost-neon-auth-spike",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.2.0",
+    "better-auth": "1.6.23"
+  }
+}

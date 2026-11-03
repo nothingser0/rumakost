@@ -5580,17 +5580,42 @@ Verify repair migration, idempotensi, PK/FK, chain sampai WF-04, dan clean chain
 
 ### Evidence M06-AUTH-02 — Review arsitektur autentikasi (2026-11-03)
 
-- Owner menyetujui pembukaan kembali keputusan arsitektur auth. Memo membandingkan Neon Auth managed, Better Auth self-hosted dengan Neon PostgreSQL, dan Clerk berdasarkan kontrak lifecycle akun dan perubahan email target.
+- Memo membandingkan Neon Auth managed, Better Auth self-hosted dengan Neon PostgreSQL, dan Clerk berdasarkan kontrak lifecycle akun dan perubahan email target. Memo juga mencatat perintah user Neon CLI adalah operasi operator dengan akses project, bukan permission in-app Owner/Staff.
 - Rekomendasi dalam memo: lakukan spike Better Auth self-hosted lebih dahulu, dengan bukti invitation tanpa password sementara dan email target tervalidasi. Clerk menjadi fallback yang memerlukan persetujuan eksplisit atas migrasi provider, secret backend, Invite-only, dan biaya/plan.
-- Task M06-BE-18 dan M06-AUTH-01 tetap terbuka/blocked. Tidak ada provider, dependency, konfigurasi, akun, branch, atau database Neon yang diubah.
-- Verify task: source trace memo dan batas scope. Output mentah:
+- Owner menyetujui spike terbatas pada Neon PostgreSQL disposable; ini bukan keputusan mengganti provider produksi. M06-BE-18 dan M06-AUTH-01 tetap terbuka/blocked. Tidak ada provider, dependency, konfigurasi, akun, branch, atau database Neon yang diubah.
+- Verify task: source trace memo dan batas scope. Attempt awal menangkap command Neon CLI yang belum tercantum eksplisit. Output mentah:
 
 ```text
 PASS: Three provider options documented
-PASS: Target-email verification contract retained
-PASS: No provider selected before Owner review
-PASS: Blockers remain open
+PASS: Target email verification retained
+FAIL: Neon CLI control-plane boundary documented
+PASS: Approval limited to disposable Neon PostgreSQL
+PASS: Production provider and active branch remain untouched
+PASS: Lifecycle blockers remain open
+PASS: Next Neon spike task queued, still pending
+EXIT_CODE=1
+```
+
+Memo diperbarui dengan nama command dan batas control-plane. Verify ulang, output mentah:
+
+```text
+PASS: Three provider options documented
+PASS: Target email verification retained
+PASS: Neon CLI control-plane boundary documented
+PASS: Spike approval limited to disposable Neon PostgreSQL
+PASS: No production provider or active Neon project selected
+PASS: Lifecycle blockers remain open
 PASS: Official primary-source links included
-PASS: No implementation or Neon mutation in task scope
+PASS: Raw Verify output recorded
 EXIT_CODE=0
 ```
+
+<a id="evidence-m06-auth-03-verify"></a>
+
+### Evidence M06-AUTH-03 — Spike Better Auth pada Neon disposable (2026-11-03)
+
+- `npm run test -- auth-spike` PASS 13/13 pada Neon PostgreSQL 18 disposable. Teruji: schema provider, invitation tanpa public signup/password sementara, role Owner/Staff/Tenant, magic link, deaktivasi + pencabutan sesi, verifikasi email, subject stabil, dan reconciliation idempotent.
+- Batas yang ditemukan: endpoint bawaan Better Auth hanya mengubah email akun pada sesi saat ini. Owner tidak dapat memulai perubahan email Tenant melalui endpoint itu; alamat Tenant tetap, sementara akun Owner pada sesi berubah setelah verifikasi. M06-AUTH-01 tetap terbuka.
+- User provision tanpa password memakai helper server `internalAdapter.createUser`; plugin Admin bawaan meminta password. Integrasi session-bound endpoint, audit, email delivery nyata dan sinkronisasi AppUser belum dikerjakan. Spike tidak memilih provider produksi atau menyelesaikan M06-BE-18.
+- Project disposable dihapus. Verifikasi daftar Neon sesudah penghapusan hanya menampilkan project `rumakost` (`floral-wind-91503829`). `.env.local` dan project aktif tidak disentuh.
+- Output mentah dan rincian ada di [M06-AUTH-03-VERIFY.md](M06-AUTH-03-VERIFY.md). Status `[ ]`, menunggu review Owner.
