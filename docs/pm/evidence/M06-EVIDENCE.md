@@ -4656,7 +4656,7 @@ EXIT_CODE=0
 - Repository menyimpan mutasi Ticket, AuditEvent, dan IdempotencyKey dalam satu transaksi Neon. Pembacaan Tenant dibatasi ke draft miliknya dan tiket pada lease sendiri. Detail Tenant menyaring komentar internal beserta lampirannya; `object_key` tidak masuk respons.
 - Submit membutuhkan attachment `AVAILABLE`; Tenant harus tetap memiliki lease aktif untuk submit/discard draft dan komentar. Status transisi/cancellation/assignee/resolution tetap dijaga trigger DB. Reopen hanya Owner.
 - `runTicketDraftExpiryJob` disediakan sebagai fungsi internal untuk dispatcher Cron harian M06-INT-03. Job membatalkan draft umur minimal 7 hari dengan actor SYSTEM melalui trigger, mencatat audit, dan mengantre attachment. `AVAILABLE` berpindah ke `DELETE_PENDING`; `PENDING_UPLOAD` tetap pada statusnya dengan `delete_after` segera karena trigger DB saat ini tidak mengizinkan transisi dari `PENDING_UPLOAD` ke `DELETE_PENDING`. M06-BE-12 perlu memproses queue `PENDING_UPLOAD` yang sudah jatuh tempo dan menandainya gagal setelah objek sementara dibersihkan.
-- Verify memakai repository fixture/injected dan tidak menjalankan SQL ke PostgreSQL/Neon. Tidak menjalankan migrasi, Neon CLI/query, atau membaca `.env.local`. M06-DB-55 masih menunggu review Owner.
+- Verify memakai repository fixture/injected dan tidak menjalankan SQL ke PostgreSQL/Neon. Tidak menjalankan migrasi, Neon CLI/query, atau membaca `.env.local`. Pada run awal M06-DB-55 masih menunggu review; rerun setelah persetujuan DB-55 tercatat di bawah.
 
 Verify `npm run test -- tickets`:
 
@@ -4922,7 +4922,7 @@ ok 25 - draft expiry validates counts returned by the internal job
 EXIT_CODE=0
 ```
 
-Rerun unit suite (2026-11-03, HEAD `6678854`) returned 25/25. This is preliminary evidence only: M06-BE-11 depends on M06-DB-55, which remains unapproved. It does not complete or approve M06-BE-11.
+Rerun unit suite (2026-11-03, HEAD `6678854`) returned 25/25 before DB-55 approval. Hasil itu preliminary saat dijalankan dan tidak menyelesaikan atau menyetujui M06-BE-11.
 
 ```text
 > rumakost@0.1.0 test
@@ -5064,6 +5064,153 @@ ok 25 - draft expiry validates counts returned by the internal job
 # todo 0
 # duration_ms 301.3473
 ```
+
+Verify ulang setelah M06-DB-55 disetujui (2026-11-03, HEAD `182a807`): `npm run test -- tickets`.
+
+```text
+
+> rumakost@0.1.0 test
+> node scripts/run-tests.mjs tickets
+
+TAP version 13
+# Subtest: createTicketDraft binds the authenticated actor and stable request fingerprint
+ok 1 - createTicketDraft binds the authenticated actor and stable request fingerprint
+  ---
+  duration_ms: 10.6249
+  ...
+# Subtest: createTicketDraft fingerprints business data independently from its idempotency key
+ok 2 - createTicketDraft fingerprints business data independently from its idempotency key
+  ---
+  duration_ms: 0.9302
+  ...
+# Subtest: idempotent create replay returns one ticket and does not duplicate the audit fixture
+ok 3 - idempotent create replay returns one ticket and does not duplicate the audit fixture
+  ---
+  duration_ms: 1.6836
+  ...
+# Subtest: inactive actors and forced password change cannot create tickets
+ok 4 - inactive actors and forced password change cannot create tickets
+  ---
+  duration_ms: 0.349
+  ...
+# Subtest: invalid draft input is rejected before persistence
+ok 5 - invalid draft input is rejected before persistence
+  ---
+  duration_ms: 1.4581
+  ...
+# Subtest: listTickets requests one extra row and builds a stable next cursor
+ok 6 - listTickets requests one extra row and builds a stable next cursor
+  ---
+  duration_ms: 2.129
+  ...
+# Subtest: listTickets rejects pagination beyond the approved cap
+ok 7 - listTickets rejects pagination beyond the approved cap
+  ---
+  duration_ms: 0.4589
+  ...
+# Subtest: Tenant ticket lists suppress drafts created by other users
+ok 8 - Tenant ticket lists suppress drafts created by other users
+  ---
+  duration_ms: 0.9593
+  ...
+# Subtest: getTicket maps an inaccessible or missing ticket to the non-enumerating error
+ok 9 - getTicket maps an inaccessible or missing ticket to the non-enumerating error
+  ---
+  duration_ms: 1.1221
+  ...
+# Subtest: Tenant details never expose internal comment bodies or their attachments
+ok 10 - Tenant details never expose internal comment bodies or their attachments
+  ---
+  duration_ms: 5.5516
+  ...
+# Subtest: Tenant cannot read another user's draft even if a repository returns it
+ok 11 - Tenant cannot read another user's draft even if a repository returns it
+  ---
+  duration_ms: 0.667
+  ...
+# Subtest: submitTicketDraft includes the authenticated role and request fingerprint
+ok 12 - submitTicketDraft includes the authenticated role and request fingerprint
+  ---
+  duration_ms: 1.5257
+  ...
+# Subtest: submitTicketDraft passes through media and active-Lease failures from storage logic
+ok 13 - submitTicketDraft passes through media and active-Lease failures from storage logic
+  ---
+  duration_ms: 0.7644
+  ...
+# Subtest: discardTicketDraft requires a reason and persists tenant ownership context
+ok 14 - discardTicketDraft requires a reason and persists tenant ownership context
+  ---
+  duration_ms: 1.2961
+  ...
+# Subtest: updateTicket is restricted to Owner and Staff
+ok 15 - updateTicket is restricted to Owner and Staff
+  ---
+  duration_ms: 1.7954
+  ...
+# Subtest: state transition conflicts are returned without exposing persistence details
+ok 16 - state transition conflicts are returned without exposing persistence details
+  ---
+  duration_ms: 0.403
+  ...
+# Subtest: assignTicket permits internal roles and rejects malformed assignee IDs
+ok 17 - assignTicket permits internal roles and rejects malformed assignee IDs
+  ---
+  duration_ms: 1.222
+  ...
+# Subtest: manual cancellation cannot use the reserved system expiry reason
+ok 18 - manual cancellation cannot use the reserved system expiry reason
+  ---
+  duration_ms: 0.99
+  ...
+# Subtest: cancelled tickets stay terminal
+ok 19 - cancelled tickets stay terminal
+  ---
+  duration_ms: 0.426
+  ...
+# Subtest: reopenTicket is Owner-only
+ok 20 - reopenTicket is Owner-only
+  ---
+  duration_ms: 2.196
+  ...
+# Subtest: Tenant cannot create an internal comment
+ok 21 - Tenant cannot create an internal comment
+  ---
+  duration_ms: 0.8873
+  ...
+# Subtest: Tenant comments are persisted as tenant-visible and include actor identity
+ok 22 - Tenant comments are persisted as tenant-visible and include actor identity
+  ---
+  duration_ms: 1.1609
+  ...
+# Subtest: Tenant comments are rejected after their lease ends
+ok 23 - Tenant comments are rejected after their lease ends
+  ---
+  duration_ms: 0.3865
+  ...
+# Subtest: malformed repository records fail closed
+ok 24 - malformed repository records fail closed
+  ---
+  duration_ms: 0.3454
+  ...
+# Subtest: draft expiry validates counts returned by the internal job
+ok 25 - draft expiry validates counts returned by the internal job
+  ---
+  duration_ms: 0.6254
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 344.9812
+EXIT_CODE=0
+```
+
+Verify BE-11 lulus 25/25 setelah DB-55 disetujui. M06-BE-11 tetap `[ ]` dan menunggu review Owner.
 
 <a id="evidence-m06-db-55"></a>
 
