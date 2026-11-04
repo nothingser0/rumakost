@@ -76,6 +76,7 @@
 - [M06-BE-12](#evidence-m06-be-12)
 - [M06-BE-13](#evidence-m06-be-13)
 - [M06-BE-15](#evidence-m06-be-15)
+- [M06-FE-01](#evidence-m06-fe-01)
 - [M06-BE-18 blocker](#evidence-m06-be-18-blocker)
 - [M06-AUTH-01 blocker](#evidence-m06-auth-01-blocker)
 - [M06-AUTH-02 review arsitektur auth](#evidence-m06-auth-02-review-arsitektur-auth)
@@ -5630,7 +5631,7 @@ EXIT_CODE=0
 - Bucket `uploads` pada branch proyek `dev` telah berstatus `private`. Neon CLI menarik environment Storage hanya untuk branch turunan disposable; nilai rahasia tidak ditampilkan. Object Storage Neon menyediakan endpoint S3-compatible, sehingga adapter AWS SDK yang digunakan aplikasi dapat diuji terhadap provider.
 - Provider Verify PASS 1/1 pada branch `int02-verify-64b7b523f9`: signed PUT dan signed GET berhasil; GET anonim ditolak; server-side read mengembalikan bytes yang sama; cache header private; delete dua kali aman dan objek tidak ditemukan setelahnya. Branch dan temporary environment file dihapus. `.env.local` dan branch parent `dev` tidak diubah.
 - Environment aplikasi sekarang memetakan `AWS_REGION` Neon ke `NEON_STORAGE_REGION`; pemilik tetap mengisi kredensial lokal sendiri. Bucket/upload/storage quota dan cleanup domain tetap dibatasi oleh M06-BE-12.
-- `npm run typecheck` saat ini gagal dengan 77 error di modul lain; tidak ada error yang dilaporkan pada file storage/env yang diubah dalam task ini. Status task `[ ]`, menunggu review Owner. Raw output: [M06-INT-02-VERIFY.md](M06-INT-02-VERIFY.md).
+- Pada Verify M06-INT-02 tanggal 2026-11-03, `npm run typecheck` masih melaporkan 77 error di luar file storage/env yang diubah dalam task tersebut. Temuan proyek itu kemudian diperbaiki; `npm run build` pada salinan bersih lulus di Verify M06-FE-01 tanggal 2026-11-04. Raw output historis provider: [M06-INT-02-VERIFY.md](M06-INT-02-VERIFY.md); hasil build terbaru: [M06-FE-01-VERIFY.md](M06-FE-01-VERIFY.md).
 
 <a id="evidence-m06-auth-04"></a>
 
@@ -5671,3 +5672,71 @@ EXIT_CODE=0
 - Feed menggabungkan `AuditEvent` dan `TicketStatusEvent`, menggunakan cursor `(occurredAt, id)`, memfilter Staff ke entitas operasional, dan menghapus duplikasi status yang memiliki audit pasangan. Response tidak membawa metadata audit, alasan bebas, deskripsi tiket, email, atau object key. Event diarahkan ke halaman domain terkait bila ada deep link.
 - `npm run test -- dashboard-activity`: PASS 10/10. Output mentah dan detail pemeriksaan ada di [M06-BE-15-VERIFY.md](M06-BE-15-VERIFY.md).
 - Verifikasi ini memakai fixture sintetis dan pemeriksaan kontrak source SQL; tidak membuka koneksi Neon atau `.env.local` dan tidak membuktikan SQL berjalan pada PostgreSQL hidup. Pemeriksaan integrasi Neon tetap berada pada task integrasi yang sesuai. Task ditutup sesuai delegasi Owner, tanpa mencatat persetujuan terpisah, pada 2026-11-03.
+
+<a id="evidence-m06-fe-01"></a>
+
+### Evidence M06-FE-01 — Token dan fondasi gaya bersama (2026-11-04)
+
+- `src/app/globals.css` dipindahkan ke token light/dark dari `DESIGN.md`, alias token M04, gutter responsif, focus ring keyboard, input minimal 16 px, dan reduced-motion rule.
+- Verify workspace awal terblokir karena shim Prisma hilang. Npm install memulihkan shim, tetapi folder `effect` tetap korup dan `npm run dev` gagal membaca file `tryCommit.js`. Saya memulihkan package `effect` versi 3.20.0 dari salinan bersih dengan versi sama dan mencocokkan hash file yang korup. Setelah itu `npm run dev` mencapai Ready pada Node v26.13.0 (di luar requirement `24.x`). Screenshot Owner menunjukkan `npm install` selesai dengan warning engine dan lifecycle script; percobaan sebelumnya juga sempat memberi cleanup warning `UNKNOWN/-4094`. Detail ada di [M06-FE-01-VERIFY.md](M06-FE-01-VERIFY.md).
+- Build pertama pada salinan bersih menemukan 77 error TypeScript di `src/actions/*` dan `src/lib/*`; semuanya diperbaiki. Build berikutnya dengan Node v24.22.2 lulus: Prisma Client generation, compile, typecheck, dan static generation. Output mentah final ada di [M06-FE-01-VERIFY.md](M06-FE-01-VERIFY.md).
+- `npm run dev` pada salinan bersih dengan nilai environment sintetis mencapai `Ready`; tidak ada koneksi Neon. Probe workspace pertama menemukan `BETTER_AUTH_SECRET` dan `BETTER_AUTH_URL` tidak lolos validasi. Atas permintaan Owner, script lokal menyelaraskan `BETTER_AUTH_URL`/`APP_ORIGIN` ke `http://localhost:3000` dan menulis secret acak 32 byte ke `.env.local`; nilainya tidak ditampilkan atau dicatat. Setelah server dimulai ulang, `/login` merespons 200. Pemeriksaan hydration browser belum dijalankan. Task tetap `[ ]` sampai Verify FE-01 dan review Owner selesai.
+
+Output mentah Verify `npm run build`:
+
+```text
+> rumakost@0.1.0 prebuild
+> npm run db:generate
+
+> rumakost@0.1.0 db:generate
+> prisma generate --config prisma.config.generate.ts
+
+node:internal/modules/cjs/loader:1247
+  throw err;
+  ^
+
+Error: Cannot find module './Arbitrary.js'
+Require stack:
+- D:\Workspace\RumaKost\node_modules\effect\dist\cjs\index.js
+- D:\Workspace\RumaKost\node_modules\@prisma\config\dist\index.js
+- D:\Workspace\RumaKost\node_modules\prisma\build\cli.js
+- D:\Workspace\RumaKost\node_modules\prisma\build\index.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1244:15)
+    at Function._load (node:internal/modules/cjs/loader:1070:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+    at Module.require (node:internal/modules/cjs/loader:1335:12)
+    at require (node:internal/modules/helpers:136:16)
+    at Object.<anonymous> (D:\Workspace\RumaKost\node_modules\effect\dist\cjs\index.js:46:42)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\Workspace\\RumaKost\\node_modules\\effect\\dist\\cjs\\index.js',
+    'D:\\Workspace\\RumaKost\\node_modules\\@prisma\\config\\dist\\index.js',
+    'D:\\Workspace\\RumaKost\\node_modules\\prisma\\build\\cli.js',
+    'D:\\Workspace\\RumaKost\\node_modules\\prisma\\build\\index.js'
+  ]
+}
+
+Node.js v22.13.1
+EXIT_CODE=1
+```
+
+Output mentah pemulihan `npm ci`:
+
+```text
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'rumakost@0.1.0',
+npm warn EBADENGINE   required: { node: '24.x' },
+npm warn EBADENGINE   current: { node: 'v22.13.1', npm: '10.9.2' }
+npm warn EBADENGINE }
+npm error code UNKNOWN
+npm error syscall scandir
+npm error path D:\Workspace\RumaKost\node_modules\effect\dist\cjs
+npm error errno -4094
+npm error UNKNOWN: unknown error, scandir 'D:\Workspace\RumaKost\node_modules\effect\dist\cjs'
+npm error A complete log of this run can be found in: C:\Users\zen\AppData\Local\npm-cache\_logs\2026-11-04T07_51_31_605Z-debug-0.log
+EXIT_CODE=1
+```

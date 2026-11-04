@@ -11,6 +11,8 @@ const globalForPrisma = globalThis as typeof globalThis & {
 function createPrismaClient() {
   const adapter = new PrismaNeon({
     connectionString: getDatabaseEnv().DATABASE_URL,
+    max: 1,
+    connectionTimeoutMillis: 5_000,
   });
 
   return new PrismaClient({ adapter });

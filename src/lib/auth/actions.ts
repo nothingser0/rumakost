@@ -111,7 +111,7 @@ export async function signInAction(
       });
 
       if (!credentials.success) {
-        return { error: "Email atau kata sandi tidak valid." };
+        return { error: "Alamat email atau kata sandi yang Anda masukkan salah. Silakan periksa kembali." };
       }
 
       let authSubject: string | null = null;
@@ -143,7 +143,7 @@ export async function signInAction(
       });
 
       if (loginResult.status === "invalid") {
-        return { error: "Email atau kata sandi tidak valid." };
+        return { error: "Alamat email atau kata sandi yang Anda masukkan salah. Silakan periksa kembali." };
       }
 
       if (loginResult.status === "unavailable") {
@@ -169,7 +169,7 @@ export async function signInAction(
         (loginResult.appUserId !== null && appUser.id !== loginResult.appUserId)
       ) {
         await signOutAfterIncompleteLogin();
-        return { error: "Email atau kata sandi tidak valid." };
+        return { error: "Alamat email atau kata sandi yang Anda masukkan salah. Silakan periksa kembali." };
       }
 
       if (appUser.mustChangePassword) redirect("/aktivasi-sandi");

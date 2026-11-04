@@ -8,7 +8,13 @@ export function isCredentialAuthError(error) {
   if (typeof error !== "object" || error === null) return false;
 
   const authError = error;
-  if (authError.status === 401) return true;
+  if (
+    authError.status === 401 ||
+    authError.statusCode === 401 ||
+    authError.status === "UNAUTHORIZED"
+  ) {
+    return true;
+  }
 
   return (
     typeof authError.code === "string" &&

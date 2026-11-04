@@ -700,7 +700,7 @@ function parseStoredResponse<T>(
 function cents(value: string): bigint {
   if (!/^\d+(?:\.\d{1,2})?$/.test(value)) throw new DomainError("INTERNAL_ERROR");
   const [whole, fraction = ""] = value.split(".");
-  return BigInt(whole) * 100n + BigInt(fraction.padEnd(2, "0"));
+  return BigInt(whole) * BigInt(100) + BigInt(fraction.padEnd(2, "0"));
 }
 
 function mapLedgerPersistenceError(error: unknown): DomainError {
@@ -731,7 +731,7 @@ function mapLedgerPersistenceError(error: unknown): DomainError {
 }
 
 function lockStatements(
-  sql: ReturnType<typeof neon>,
+  sql: ReturnType<typeof getSql>,
   paymentId: string,
   idempotencyKey: string,
 ) {
@@ -780,7 +780,7 @@ function throwVerifyFailure(attempt: z.infer<typeof attemptSchema>, input: {
   const paid = cents(attempt.amountPaid) + cents(attempt.depositApplied);
   if (paid > due) throw new DomainError("INTERNAL_ERROR");
   if (cents(input.amount) > due - paid) throw new DomainError("OVERPAYMENT");
-  if (cents(attempt.allocationTotal) > 0n) throw new DomainError("CONFLICT");
+  if (cents(attempt.allocationTotal) > BigInt(0)) throw new DomainError("CONFLICT");
   throw new DomainError("INTERNAL_ERROR");
 }
 

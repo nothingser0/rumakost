@@ -48,7 +48,7 @@ export function authorizeRoute(user, pathname) {
 
 export function authorizeAction(user, {
   roles,
-  resourceOwnerAppUserId,
+  resourceOwnerAppUserId = "",
   requiresResourceOwnership = false,
   allowForcedPasswordChange = false,
 }) {

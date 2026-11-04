@@ -281,7 +281,7 @@ function parseStoredResponse(row: unknown, requestHash: string): PaymentRecord {
 function moneyToCents(value: string): bigint {
   if (!/^\d+(?:\.\d{1,2})?$/.test(value)) throw new DomainError("INTERNAL_ERROR");
   const [whole, fraction = ""] = value.split(".");
-  return BigInt(whole) * 100n + BigInt(fraction.padEnd(2, "0"));
+  return BigInt(whole) * BigInt(100) + BigInt(fraction.padEnd(2, "0"));
 }
 
 function throwRecordFailure(

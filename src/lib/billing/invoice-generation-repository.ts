@@ -30,6 +30,7 @@ const generationRowSchema = z.object({
   duplicateCount: z.number().int().nonnegative(),
   skippedCount: z.number().int().nonnegative(),
   auditCount: z.number().int().nonnegative(),
+  lineCount: z.number().int().nonnegative(),
 }).strict();
 
 function getSql() {

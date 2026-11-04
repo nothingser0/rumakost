@@ -42,6 +42,13 @@ function actionFailure(error: unknown): ActionFailure {
   return { success: false, error: toPublicError(error) };
 }
 
+function requireOptionsObject(value: unknown): object {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    throw new DomainError("VALIDATION_ERROR");
+  }
+  return value;
+}
+
 export async function listRoomsAction(
   options: unknown = {},
 ): Promise<ActionResult<RoomListResult>> {
@@ -51,7 +58,7 @@ export async function listRoomsAction(
   try {
     const data = await listRooms({
       actor: access.user,
-      options,
+      options: requireOptionsObject(options),
       repository: createRoomRepository(),
     });
     return { success: true, data };

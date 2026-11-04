@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { verifyLoginEmailChangeAction } from "@/actions/users";
 import { isEmailChangeTokenShape } from "@/lib/auth/email-change";
 import styles from "../(auth)/login/page.module.css";
@@ -17,7 +18,21 @@ type VerificationPageProps = {
   }>;
 };
 
-export default async function VerifyEmailPage({ searchParams }: VerificationPageProps) {
+export default function VerifyEmailPage({ searchParams }: VerificationPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <main aria-busy="true" className={styles.sessionFallback}>
+          <p>Memeriksa tautan verifikasi…</p>
+        </main>
+      }
+    >
+      <VerifyEmailContent searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+async function VerifyEmailContent({ searchParams }: VerificationPageProps) {
   const params = await searchParams;
   const status = typeof params.status === "string" ? params.status : "";
   const token = typeof params.token === "string" && isEmailChangeTokenShape(params.token)

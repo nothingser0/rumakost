@@ -18,13 +18,13 @@ export async function requireRouteAccess(pathname: string): Promise<AuthAppUser>
   const decision = authorizeRoute(user, pathname);
   if (!decision.allowed) {
     if (decision.reason === "unauthenticated" || decision.reason === "inactive") {
-      redirect(decision.redirectTo);
+      redirect(decision.redirectTo ?? "/login");
     }
     if (decision.reason === "password-change-required") {
-      redirect(decision.redirectTo);
+      redirect(decision.redirectTo ?? "/aktivasi-sandi");
     }
     if (decision.reason === "activation-not-required") {
-      redirect(decision.redirectTo);
+      redirect(decision.redirectTo ?? "/dashboard");
     }
     notFound();
   }
@@ -45,8 +45,14 @@ export async function authorizeCurrentAction(options: {
     return { allowed: false as const, reason: "session-unavailable" as const, user: null };
   }
 
+  if (!user) {
+    return { allowed: false as const, reason: "unauthenticated" as const, user: null };
+  }
+
   const decision = authorizeAction(user, options);
-  return decision.allowed
-    ? { allowed: true as const, reason: "allowed" as const, user }
-    : { allowed: false as const, reason: decision.reason, user: null };
+  if (!decision.allowed) {
+    return { allowed: false as const, reason: decision.reason, user: null };
+  }
+
+  return { allowed: true as const, reason: "allowed" as const, user };
 }

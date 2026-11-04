@@ -47,7 +47,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-auth-provider
 
 Verifier menolak jika variabel koneksi/auth sudah ada di environment proses, tidak memuat `.env.local`, dan tidak mencetak connection string atau secret. Jangan jalankan `npm run db:migrate` untuk branch aktif sebagai bagian dari verifikasi ini. Perintah migrasi biasa memakai `DIRECT_URL` dari `.env.local` dan mengubah database pada branch yang dituju; perubahan ke branch aktif memerlukan task dan arahan Owner tersendiri.
 
-`npm run db:bootstrap-owner` saat ini hanya menyiapkan identitas Owner berstatus belum terverifikasi dan tanpa kredensial. Akun itu belum dapat login. Jangan jalankan sampai alur aktivasi akun serta pengiriman email diselesaikan pada task lanjutan dan target database dipastikan.
+`npm run db:bootstrap-owner` hanya menyiapkan identitas Owner berstatus belum terverifikasi dan tanpa kredensial. Akun itu belum dapat login. Jangan jalankan sampai alur aktivasi akun serta pengiriman email diselesaikan pada task lanjutan dan target database dipastikan.
+
+Untuk membuat tiga akun awal demo di Neon branch `dev`, pastikan Neon CLI sudah login dan URL pada `.env.local` menunjuk ke branch tersebut. Perintah berikut membandingkan project/branch dengan `DATABASE_URL` pooled dan `DIRECT_URL`; script berhenti bila target tidak cocok:
+
+```powershell
+npm run db:bootstrap-demo -- --project-id floral-wind-91503829 --branch dev
+```
+
+Script membuat satu Owner demo, satu Staff, dan satu Penghuni dengan alamat sintetis `.test`, menandai hanya akun awal demo itu sebagai terverifikasi, lalu menguji login dan mencabut session uji. Password acak ditulis ke variabel `RUMAKOST_DEMO_*_PASSWORD` di `.env.local`; email login ada di variabel `RUMAKOST_DEMO_*_EMAIL`. Buka `.env.local` di mesin sendiri untuk melihatnya. Jangan salin nilai password ke chat atau commit file tersebut.
+
+Akun yang dibuat Owner/Staff melalui aplikasi tetap belum terverifikasi sampai penerima menyelesaikan aktivasi lewat email. Scope MVP memiliki satu Owner: Owner dapat membuat Staff dan Penghuni, sedangkan Staff dapat membuat Penghuni. Pengiriman email live belum dikonfigurasi sampai M07. Signup publik tetap nonaktif.
 
 ## Command yang tersedia
 
@@ -61,5 +71,6 @@ Verifier menolak jika variabel koneksi/auth sudah ada di environment proses, tid
 | `npm run test -- auth-provider` | Suite integrasi; hanya jalankan melalui verifier disposable di atas |
 | `npm run db:migrate` | Menerapkan migration ke database pada `DIRECT_URL`; hanya setelah target branch dipastikan |
 | `npm run db:bootstrap-owner` | Menyiapkan identitas Owner pending; tunggu alur aktivasi dan arahan task lanjutan |
+| `npm run db:bootstrap-demo -- --project-id <project-id> --branch dev` | Membuat akun login sintetis awal pada Neon development branch; password hanya ke `.env.local` |
 | `npm run build` | Build Next.js |
 | `npm run start` | Menjalankan hasil build produksi lokal |

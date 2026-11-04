@@ -191,6 +191,7 @@ test("marks a successful provider login for sign-out when the limiter reset fail
 
 test("counts invalid credentials without treating provider outages as password failures", () => {
   assert.equal(isCredentialAuthError({ status: 401 }), true);
+  assert.equal(isCredentialAuthError({ status: "UNAUTHORIZED", statusCode: 401 }), true);
   assert.equal(isCredentialAuthError({ code: "INVALID_EMAIL_OR_PASSWORD" }), true);
   assert.equal(isCredentialAuthError({ code: "invalid_credentials" }), true);
   assert.equal(isCredentialAuthError({ status: 503 }), false);

@@ -41,7 +41,7 @@ export async function submitPasswordChange(
             currentPassword: string;
             newPassword: string;
           }) => {
-            const result = await auth.api.changePassword({
+            await auth.api.changePassword({
               body: {
                 currentPassword,
                 newPassword,
@@ -49,7 +49,7 @@ export async function submitPasswordChange(
               },
               headers: await headers(),
             });
-            return { success: result.status === true };
+            return { success: true };
           },
           clearForcedPasswordChange,
         });

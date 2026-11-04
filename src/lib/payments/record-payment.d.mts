@@ -81,9 +81,6 @@ export type PaymentReversalRepositoryInput = PaymentReviewRepositoryInput & {
 
 export type PaymentRepository = {
   recordPayment(input: RecordPaymentRepositoryInput): Promise<PaymentRecord>;
-  verifyPayment(input: PaymentReviewRepositoryInput): Promise<PaymentVerification>;
-  rejectPayment(input: PaymentRejectionRepositoryInput): Promise<PaymentRejection>;
-  reversePayment(input: PaymentReversalRepositoryInput): Promise<PaymentReversal>;
 };
 
 export function recordPayment(input: {

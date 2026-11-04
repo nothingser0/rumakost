@@ -558,7 +558,7 @@ export function createTicketRepository(): TicketRepository {
       } catch (error) {
         throw mapTicketPersistenceError(error);
       }
-      const row = firstRow(rows, 0);
+      const row = rows[0];
       const record = z.object({ actorId: uuidSchema.nullable(), actorRole: roleSchema.nullable(), items: z.unknown() }).strict().safeParse(row);
       if (!record.success) throw new DomainError("INTERNAL_ERROR");
       if (!record.data.actorId || !record.data.actorRole) throw new DomainError("UNAUTHENTICATED");
@@ -698,7 +698,7 @@ export function createTicketRepository(): TicketRepository {
         canAccess: z.boolean().nullable(),
         ticket: z.unknown().nullable(),
       }).strict();
-      const parsed = rowSchema.safeParse(firstRow(rows, 0));
+      const parsed = rowSchema.safeParse(rows[0]);
       if (!parsed.success) throw new DomainError("INTERNAL_ERROR");
       if (!parsed.data.actorId || !parsed.data.actorRole) throw new DomainError("UNAUTHENTICATED");
       if (parsed.data.actorRole !== input.role) throw new DomainError("UNAUTHENTICATED");
@@ -1008,6 +1008,15 @@ const commentSql = `
     SELECT ticket.id, ticket.status::text AS status,
            ticket.created_by_id AS "createdById", ticket.lease_id AS "leaseId",
            ticket.created_at AS "createdAt",
+           EXISTS (
+             SELECT 1
+               FROM leases lease
+              WHERE lease.id = ticket.lease_id
+                AND lease.tenant_user_id = actor.id
+                AND lease.status = 'ACTIVE'::"LeaseStatus"
+                AND lease.starts_on <= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Jakarta')::date
+                AND (lease.ends_on IS NULL OR lease.ends_on >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Jakarta')::date)
+           ) AS "leaseCurrent",
            (actor.role IN ('OWNER', 'STAFF') OR (actor.role = 'TENANT' AND (
              (ticket.status = 'DRAFT' AND ticket.created_by_id = actor.id)
              OR (ticket.status <> 'DRAFT' AND EXISTS (
@@ -1024,6 +1033,7 @@ const commentSql = `
       FROM target JOIN actor ON TRUE
      WHERE NOT EXISTS (SELECT 1 FROM existing)
        AND target."canAccess"
+       AND (actor.role <> 'TENANT' OR target."leaseCurrent")
        AND (actor.role IN ('OWNER', 'STAFF') OR $7::"CommentVisibility" = 'TENANT_VISIBLE'::"CommentVisibility")
     RETURNING id, ticket_id AS "ticketId", visibility::text AS visibility, created_at AS "createdAt"
   ),
@@ -1063,7 +1073,7 @@ const commentSql = `
          (SELECT "leaseId" FROM target) AS "targetLeaseId",
          (SELECT "createdAt" FROM target) AS "targetCreatedAt",
          (SELECT "canAccess" FROM target) AS "targetCanAccess",
-         NULL::boolean AS "targetLeaseCurrent",
+         (SELECT "leaseCurrent" FROM target) AS "targetLeaseCurrent",
          NULL::boolean AS "targetHasAvailableMedia",
          NULL::uuid AS "roomId", NULL::text AS "roomCode", NULL::boolean AS "roomArchived",
          NULL::uuid AS "leaseRoomId", NULL::uuid AS "leaseTenantId", NULL::text AS "leaseStatus",
@@ -1096,11 +1106,7 @@ async function runTicketComment(input: CommentInput): Promise<TicketCommentResul
   if (prior) return prior;
   if (!attempt.targetId) throw new DomainError("TICKET_NOT_FOUND");
   if (!attempt.targetCanAccess) throw new DomainError("TICKET_NOT_OWNED");
-  if (
-    attempt.actorRole === "TENANT" &&
-    (operation === "submitTicketDraft" || operation === "discardTicketDraft") &&
-    !attempt.targetLeaseCurrent
-  ) {
+  if (attempt.actorRole === "TENANT" && !attempt.targetLeaseCurrent) {
     throw new DomainError("LEASE_ENDED");
   }
   if (attempt.actorRole === "TENANT" && input.visibility !== "TENANT_VISIBLE") {
