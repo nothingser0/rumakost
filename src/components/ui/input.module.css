@@ -1,0 +1,944 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground, #111111);
+  line-height: 1.3;
+}
+
+.requiredIndicator {
+  color: var(--destructive, #ef4444);
+  margin-left: 3px;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  background-color: #fafafa;
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-md, 12px);
+  outline: none;
+  box-sizing: border-box;
+  transition:
+    border-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
+    background-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.input:hover:not(:disabled):not(:focus):not(.invalid) {
+  background-color: var(--surface, #ffffff);
+  border-color: #cbd5e1;
+}
+
+.input:focus {
+  background-color: var(--surface, #ffffff);
+  border-color: var(--color-primary, #ff7a00);
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
+}
+
+.input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+  opacity: 1;
+}
+
+.input.hasLeftIcon {
+  padding-left: 42px;
+}
+
+.input.hasRightIcon {
+  padding-right: 42px;
+}
+
+.leftIconSlot {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+  transition: color var(--transition-fast, 150ms ease);
+}
+
+.input:focus ~ .leftIconSlot,
+.inputWrapper:focus-within .leftIconSlot {
+  color: var(--color-primary, #ff7a00);
+}
+
+.rightIconSlot {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+/* Eye button for password */
+.eyeButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  color: #9ca3af;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast, 150ms ease), background-color var(--transition-fast, 150ms ease);
+}
+
+.eyeButton:hover {
+  color: var(--foreground, #111111);
+  background-color: var(--border-subtle, #f3f4f6);
+}
+
+.eyeButton:focus-visible {
+  outline: 2px solid var(--color-primary, #ff7a00);
+  outline-offset: 1px;
+}
+
+/* Capsule Search Variant */
+.variant-capsule {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-full, 9999px);
+  background-color: #f4f5f7;
+  border-color: var(--border-subtle, #eceef2);
+}
+
+.variant-capsule:hover:not(:disabled):not(:focus):not(.invalid) {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 3%);
+}
+
+.variant-capsule:focus {
+  background-color: var(--surface, #ffffff);
+  border-color: var(--color-primary, #ff7a00);
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
+}
+
+/* Invalid / Error State */
+.invalid,
+.input:user-invalid {
+  border-color: var(--destructive, #ef4444) !important;
+  background-color: #fff8f8 !important;
+  box-shadow: 0 0 0 3px rgb(239 68 68 / 12%) !important;
+}
+
+.input.invalid:focus {
+  border-color: var(--destructive, #ef4444) !important;
+  box-shadow: 0 0 0 3px rgb(239 68 68 / 15%) !important;
+}
+
+.error {
+  margin: 3px 0 0;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--destructive, #ef4444);
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+}
+
+.error::before {
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+  margin-right: 5px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ef4444' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='12' y1='8' x2='12' y2='12'/%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.hint {
+  margin: 2px 0 0;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 400;
+  color: #6b7280;
+  line-height: 1.3;
+}
+
+/* Disabled State */
+.input:disabled,
+.textarea:disabled,
+.customSelectTrigger:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  border-color: var(--border, #eceef2);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* Textarea */
+.textarea {
+  width: 100%;
+  min-height: 84px;
+  padding: 10px 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  background-color: #fafafa;
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-md, 12px);
+  outline: none;
+  resize: vertical;
+  box-sizing: border-box;
+  transition:
+    border-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
+    background-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.textarea:hover:not(:disabled):not(:focus):not(.invalid) {
+  background-color: var(--surface, #ffffff);
+  border-color: #cbd5e1;
+}
+
+.textarea:focus {
+  background-color: var(--surface, #ffffff);
+  border-color: var(--color-primary, #ff7a00);
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
+}
+
+.textarea::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+  opacity: 1;
+}
+
+/* Checkbox Styles */
+.checkboxWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.checkboxContainer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkboxDisabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.checkboxInput {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border: 1.5px solid var(--border-control, #cbd5e1);
+  border-radius: var(--radius-xs, 6px);
+  background-color: var(--surface, #ffffff);
+  cursor: pointer;
+  margin: 0;
+  display: inline-grid;
+  place-content: center;
+  outline: none;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.checkboxInput:hover:not(:disabled) {
+  border-color: var(--color-primary, #ff7a00);
+}
+
+.checkboxInput:focus-visible {
+  outline: 3px solid rgb(255 122 0 / 20%);
+  outline-offset: 1px;
+}
+
+.checkboxInput:checked {
+  background-color: var(--color-primary, #ff7a00);
+  border-color: var(--color-primary, #ff7a00);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.2 4.8L6.4 10.6L3.8 8' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.checkboxInput:disabled {
+  background-color: #f3f4f6;
+  border-color: var(--border, #eceef2);
+  cursor: not-allowed;
+}
+
+.checkboxLabel {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  line-height: 1.4;
+}
+
+/* Custom Popover Select */
+.customSelectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.customSelectTrigger {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  background-color: #fafafa;
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-md, 12px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  user-select: none;
+  box-sizing: border-box;
+  transition:
+    border-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
+    background-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.customSelectTrigger:hover:not(:disabled):not(.invalid) {
+  background-color: var(--surface, #ffffff);
+  border-color: #cbd5e1;
+}
+
+.customSelectTrigger:focus-visible,
+.customSelectTrigger.isOpen {
+  background-color: var(--surface, #ffffff);
+  border-color: var(--color-primary, #ff7a00);
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
+  outline: none;
+}
+
+.triggerText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.triggerPlaceholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.triggerChevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  flex-shrink: 0;
+  margin-left: 8px;
+  transition: transform var(--transition-fast, 150ms ease), color var(--transition-fast, 150ms ease);
+}
+
+.triggerChevronRotated {
+  transform: rotate(180deg);
+  color: var(--color-primary, #ff7a00);
+}
+
+/* Floating Popover Menu */
+.popoverMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  min-width: 220px;
+  background-color: var(--surface, #ffffff);
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-lg, 16px);
+  padding: 6px;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 8%), 0 2px 6px rgb(0 0 0 / 3%);
+  z-index: 50;
+  max-height: 260px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  animation: dropdownFadeIn 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Popover Item */
+.dropdownItem {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm, 8px);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  user-select: none;
+  box-sizing: border-box;
+  transition:
+    background-color var(--transition-fast, 150ms ease),
+    color var(--transition-fast, 150ms ease);
+}
+
+.dropdownItem:hover,
+.dropdownItem:focus-visible {
+  background-color: var(--border-subtle, #f3f4f6);
+  color: var(--foreground, #111111);
+  outline: none;
+}
+
+.dropdownItemSelected {
+  background-color: var(--color-primary-soft, #fff7ed) !important;
+  color: var(--color-primary-dark, #c25e00) !important;
+  font-weight: 600;
+}
+
+.dropdownItemCheck {
+  color: var(--color-primary, #ff7a00);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dropdownItemDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Hidden native select for form serialization */
+.visuallyHiddenSelect {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+/* ==========================================================================
+   Currency Input Prefix
+   ========================================================================== */
+.currencyPrefix {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted-foreground, #64748b);
+  user-select: none;
+  letter-spacing: -0.2px;
+}
+
+/* ==========================================================================
+   Custom DatePicker Floating Popover (CMP-20 / Zero Native Slop)
+   ========================================================================== */
+.datePickerWrap {
+  position: relative;
+  width: 100%;
+}
+
+.datePickerTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  background-color: #fafafa;
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-md, 12px);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  text-align: left;
+  transition:
+    background-color var(--transition-fast, 150ms ease),
+    border-color var(--transition-fast, 150ms ease),
+    box-shadow var(--transition-fast, 150ms ease);
+}
+
+.datePickerTrigger:hover:not(:disabled) {
+  background-color: var(--surface, #ffffff);
+  border-color: #cbd5e1;
+}
+
+.datePickerTrigger.isOpen,
+.datePickerTrigger:focus-visible {
+  background-color: var(--surface, #ffffff);
+  border-color: var(--color-primary, #ff7a00);
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
+  outline: none;
+}
+
+.datePickerTrigger.invalid {
+  border-color: var(--destructive, #ef4444);
+  background-color: var(--destructive-bg, #fff5f5);
+}
+
+.datePickerTrigger:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.datePickerTriggerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.datePickerTriggerIcon {
+  width: 15px;
+  height: 15px;
+  color: var(--color-primary, #ff7a00);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.datePickerValueText {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foreground, #111111);
+}
+
+.datePickerPlaceholder {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: #9ca3af;
+}
+
+.datePickerPopover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 290px;
+  background-color: var(--surface, #ffffff);
+  border-radius: 16px;
+  border: 1.5px solid var(--border, #eceef2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  padding: 14px 16px;
+  z-index: 100;
+  box-sizing: border-box;
+  animation: dropdownFadeIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rdpHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.rdpNavBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border, #eceef2);
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--foreground, #111111);
+  transition: all 150ms ease;
+  padding: 0;
+}
+
+.rdpNavBtn:hover {
+  background-color: #e2e8f0;
+  transform: scale(1.06);
+}
+
+.rdpTitle {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--foreground, #111111);
+}
+
+.rdpWeekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.rdpDaysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.rdpDayBtn {
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  cursor: pointer;
+  transition: all 120ms ease;
+  padding: 0;
+}
+
+.rdpDayBtn:hover:not(.rdpDayOtherMonth) {
+  background-color: var(--color-primary-soft, #fff7ed);
+  color: var(--color-primary, #ff7a00);
+  font-weight: 700;
+}
+
+.rdpDayToday {
+  border: 1.5px solid var(--color-primary, #ff7a00) !important;
+  color: var(--color-primary, #ff7a00);
+  font-weight: 700;
+}
+
+.rdpDaySelected {
+  background-color: var(--color-primary, #ff7a00) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgb(255 122 0 / 35%);
+}
+
+.rdpDayOtherMonth {
+  color: #cbd5e1;
+  cursor: default;
+  pointer-events: none;
+}
+
+.rdpFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-subtle, #f3f4f6);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.rdpPresetBtn {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-primary, #ff7a00);
+  background-color: var(--color-primary-soft, #fff7ed);
+  border: 1px solid #ffedd5;
+  border-radius: 9999px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.rdpPresetBtn:hover {
+  background-color: var(--color-primary, #ff7a00);
+  color: #ffffff;
+}
+
+.rdpNoteText {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted-foreground, #64748b);
+}
+
+/* ==========================================================================
+   Radio Button (CMP-02 / M04 Prototype)
+   ========================================================================== */
+.radioField {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.radioControl {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong, #cbd5e1);
+  background-color: var(--surface, #ffffff);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  transition:
+    border-color var(--transition-fast, 150ms ease),
+    background-color var(--transition-fast, 150ms ease),
+    box-shadow var(--transition-fast, 150ms ease);
+}
+
+.radioField:hover .radioControl {
+  border-color: var(--color-primary, #ff7a00);
+}
+
+.radioControlChecked {
+  border-color: var(--color-primary, #ff7a00);
+  background-color: var(--surface, #ffffff);
+}
+
+.radioDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-primary, #ff7a00);
+  transform: scale(0);
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.radioControlChecked .radioDot {
+  transform: scale(1);
+}
+
+.radioField:focus-within .radioControl {
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 15%);
+}
+
+.radioTextWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.radioLabel {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  line-height: 1.4;
+}
+
+.radioHint {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  color: var(--muted-foreground, #64748b);
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   Radio Card / Method Selector Box (.method-radio-box from M04 screens)
+   ========================================================================== */
+.radioCard {
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-md, 12px);
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+  background-color: var(--surface, #ffffff);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  user-select: none;
+  position: relative;
+  transition:
+    border-color var(--transition-fast, 150ms ease),
+    background-color var(--transition-fast, 150ms ease),
+    box-shadow var(--transition-fast, 150ms ease),
+    transform var(--transition-fast, 150ms ease);
+}
+
+.radioCard:hover:not(.radioCardDisabled) {
+  border-color: var(--color-primary, #ff7a00);
+  background-color: var(--color-primary-soft, #fffdfa);
+  transform: translateY(-1px);
+}
+
+.radioCardChecked {
+  border-color: var(--color-primary, #ff7a00) !important;
+  background-color: var(--color-primary-soft, #fff7ed) !important;
+  box-shadow: 0 0 0 1px var(--color-primary, #ff7a00);
+}
+
+.radioCardDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.radioCardIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm, 8px);
+  background-color: var(--border-subtle, #f3f4f6);
+  color: var(--foreground, #111111);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.radioCardChecked .radioCardIcon {
+  background-color: #ffedd5;
+  color: var(--color-primary-dark, #c25e00);
+}
+
+.radioCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.radioCardLabel {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foreground, #111111);
+  line-height: 1.3;
+}
+
+.radioCardChecked .radioCardLabel {
+  color: var(--color-primary-dark, #c25e00);
+}
+
+.radioCardDescription {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  color: var(--muted-foreground, #64748b);
+  line-height: 1.3;
+}
+
+.radioCardBadge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background-color: #ffedd5;
+  color: var(--color-primary-dark, #c25e00);
+}
+
+/* ==========================================================================
+   Switch / Toggle Component (M04 / WF-04 / WF-05)
+   ========================================================================== */
+.switchField {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.switchTrack {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  min-width: 44px;
+  border-radius: 9999px;
+  background-color: var(--border-strong, #cbd5e1);
+  box-sizing: border-box;
+  transition: background-color var(--transition-fast, 150ms ease), box-shadow 150ms ease;
+}
+
+.switchTrackChecked {
+  background-color: var(--color-primary, #ff7a00);
+}
+
+.switchThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.switchTrackChecked .switchThumb {
+  transform: translateX(20px);
+}
+
+.switchField:focus-within .switchTrack {
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 15%);
+}
+
+.switchDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+

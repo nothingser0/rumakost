@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumaKost — Reusable Component Showcase (Step 1.5)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --background: #f7f8fa;
+      --surface: #ffffff;
+      --card: #ffffff;
+      --foreground: #111111;
+      --text-body: #4b5563;
+      --muted-foreground: #71717a;
+      --border: #eceef2;
+      --border-subtle: #f3f4f6;
+      --color-primary: #ff7a00;
+      --color-primary-hover: #e06300;
+      --color-primary-dark: #c25e00;
+      --btn-primary-bg: #ff7a00;
+      --btn-primary-border: #eb6e00;
+      --btn-primary-hover-bg: #e06300;
+      --btn-primary-hover-border: #b84e00;
+      --btn-primary-active-bg: #d45a00;
+      --btn-primary-active-border: #a34400;
+      --color-black-pill: #111111;
+      --color-black-hover: #222222;
+      --ring: #ff7a00;
+      --destructive: #ef4444;
+      --destructive-border: #fecaca;
+      --destructive-bg: #fee2e2;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 9999px;
+      --font-sans: 'Poppins', system-ui, -apple-system, sans-serif;
+    }
+
+    body.dark {
+      color-scheme: dark;
+      --background: #09090b;
+      --surface: #18181b;
+      --card: #18181b;
+      --foreground: #f4f4f5;
+      --text-body: #d1d5db;
+      --muted-foreground: #a1a1aa;
+      --border: #27272a;
+      --color-black-pill: #f4f4f5;
+      --color-black-hover: #e4e4e7;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--background);
+      color: var(--foreground);
+      padding: 32px 24px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    h1 { font-size: 24px; font-weight: 700; margin: 0 0 4px; }
+    p.subtitle { margin: 0; color: var(--muted-foreground); font-size: 14px; }
+
+    .theme-toggle {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--foreground);
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgb(0 0 0 / 2%);
+    }
+
+    .section h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section p.desc {
+      color: var(--muted-foreground);
+      font-size: 13px;
+      margin: 0 0 24px;
+    }
+
+    .grid-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .grid-cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .label-tag {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted-foreground);
+      margin-bottom: 8px;
+    }
+
+    /* Button styles matching src/components/ui/button.module.css */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      line-height: 1;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      box-shadow: none;
+      transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+
+    .btn-lg { height: 44px; padding: 0 24px; font-size: 14px; font-weight: 600; }
+    .btn-md { height: 40px; padding: 0 20px; font-size: 13px; font-weight: 600; }
+    .btn-sm { height: 34px; padding: 0 14px; font-size: 12px; font-weight: 600; }
+    .btn-xs { height: 28px; padding: 0 10px; font-size: 11px; font-weight: 600; }
+    .btn-icon { width: 38px; height: 38px; min-width: 38px; min-height: 38px; padding: 0; font-size: 14px; border-radius: 50% !important; }
+
+    .btn-pill { border-radius: var(--radius-full); }
+    .btn-rounded { border-radius: var(--radius-md); }
+    .btn-circle { border-radius: 50%; }
+
+    .btn-primary-black { background: var(--color-black-pill); color: #fff; border-color: var(--color-black-pill); }
+    .btn-primary-black:hover:not(:disabled) { background: #262626; border-color: #262626; transform: translateY(-2px); }
+    .btn-primary-black:active:not(:disabled) { background: #0a0a0a; border-color: #0a0a0a; transform: scale(0.97); }
+
+    .btn-primary-orange { background: var(--btn-primary-bg); color: #fff; border-color: var(--btn-primary-border); }
+    .btn-primary-orange:hover:not(:disabled) { background: var(--btn-primary-hover-bg); border-color: var(--btn-primary-hover-border); transform: translateY(-2px); }
+    .btn-primary-orange:active:not(:disabled) { background: var(--btn-primary-active-bg); border-color: var(--btn-primary-active-border); transform: scale(0.97); }
+
+    .btn-secondary-ghost { background: var(--surface); color: var(--text-body); border-color: var(--border); }
+    .btn-secondary-ghost:hover:not(:disabled) { background: #f8fafc; color: var(--foreground); border-color: #cbd5e1; transform: translateY(-1px); }
+    .btn-secondary-ghost:active:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; transform: scale(0.97); }
+
+    .btn-subtle-danger { background: var(--destructive-bg); color: var(--destructive); border-color: var(--destructive-border); }
+    .btn-subtle-danger:hover:not(:disabled) { background: #fee2e2; color: #dc2626; border-color: #f87171; transform: translateY(-1px); }
+    .btn-subtle-danger:active:not(:disabled) { background: #fecaca; border-color: #ef4444; transform: scale(0.97); }
+
+    .btn-icon-circle { width: 38px; height: 38px; background: var(--background); color: var(--text-body); border: 1.5px solid var(--border); border-radius: 50%; }
+    .btn-icon-circle:hover:not(:disabled) { background: var(--border); border-color: #cbd5e1; color: var(--foreground); transform: translateY(-1px); }
+
+    .btn-translucent-arrow { width: 32px; height: 32px; background: rgba(255,255,255,0.2); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 50%; backdrop-filter: blur(4px); }
+    .btn-translucent-arrow:hover:not(:disabled) { background: rgba(255,255,255,0.35); border-color: rgba(255,255,255,0.5); transform: translateY(-1px) scale(1.05); }
+
+    .btn-pill-arrow { width: 32px; height: 32px; background: #fff; color: #6b7280; border: 1.5px solid var(--border); border-radius: 50%; }
+    .btn-pill-arrow:hover:not(:disabled) { background: var(--color-black-pill); border-color: var(--color-black-pill); color: #fff; transform: translateY(-1px) scale(1.05); }
+
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 750ms linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Input styles matching src/components/ui/input.module.css */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+    .field label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--foreground);
+    }
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .inp {
+      width: 100%;
+      height: 44px;
+      padding: 0 14px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--foreground);
+      background-color: #fafafa;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 150ms ease;
+    }
+    .inp:hover:not(:disabled):not(:focus):not(.inp-invalid) {
+      background-color: #ffffff;
+      border-color: #cbd5e1;
+    }
+    .inp:focus {
+      background-color: #ffffff;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+    }
+    .inp::placeholder {
+      color: #9ca3af;
+      font-weight: 400;
+    }
+    .inp.has-icon { padding-left: 42px; }
+    .inp-icon-slot {
+      position: absolute;
+      left: 14px;
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+      width: 16px;
+      height: 16px;
+    }
+    .inp-capsule {
+      height: 40px;
+      border-radius: 9999px;
+      background-color: #f4f5f7;
+    }
+    .inp-capsule:hover:not(:disabled):not(:focus) {
+      background-color: #ffffff;
+      border-color: #cbd5e1;
+    }
+    .inp-invalid {
+      border-color: var(--destructive) !important;
+      background-color: #fff8f8 !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12) !important;
+    }
+    .inp:disabled {
+      background-color: #f3f4f6;
+      color: #9ca3af;
+      cursor: not-allowed;
+      opacity: 1;
+    }
+    .hint-text {
+      font-size: 12px;
+      color: #6b7280;
+      margin: 2px 0 0;
+    }
+    .error-text {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--destructive);
+      margin: 2px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    textarea.inp {
+      height: auto;
+      min-height: 84px;
+      padding: 10px 14px;
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>RumaKost Design System Showcase</h1>
+        <p class="subtitle">Katalog Komponen UI Primitif (M04 Benchmark Parity / Step 1.5)</p>
+      </div>
+      <button class="theme-toggle" onclick="document.body.classList.toggle('dark')">🌗 Ganti Mode Gelap</button>
+    </header>
+
+    <!-- SECTION 1: BUTTONS -->
+    <section class="section">
+      <h2><span>🔘</span> CMP-01: Button Primitive (`src/components/ui/button.tsx`)</h2>
+      <p class="desc">Tombol interaktif dengan hirarki peran tegas, stepped depth oranye bebas bayangan, dan bentuk adaptif.</p>
+
+      <div class="label-tag">1. Varian Peran (Semantics)</div>
+      <div class="grid-row">
+        <button class="btn btn-md btn-pill btn-primary-black">Primary Black (CTA Utama)</button>
+        <button class="btn btn-md btn-pill btn-primary-orange">+ Terbitkan Invoice</button>
+        <button class="btn btn-md btn-pill btn-secondary-ghost">Secondary Ghost / Batal</button>
+        <button class="btn btn-md btn-pill btn-subtle-danger">Subtle Danger / Akhiri</button>
+        <button class="btn btn-icon btn-icon-circle" title="Pencarian">🔍</button>
+        <div style="background: #111; padding: 6px 12px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 8px;">
+          <span style="color: #fff; font-size: 12px; font-weight: 600;">Dark Context</span>
+          <button class="btn btn-icon btn-translucent-arrow" title="Buka Detail">↗</button>
+        </div>
+      </div>
+
+      <div class="label-tag">2. Skala Ukuran (Sizing Tiers)</div>
+      <div class="grid-row">
+        <button class="btn btn-lg btn-pill btn-primary-orange">Large 48px (.btn-lg)</button>
+        <button class="btn btn-md btn-pill btn-primary-orange">Medium 40px (.btn-md)</button>
+        <button class="btn btn-sm btn-pill btn-primary-orange">Small 34px (.btn-sm)</button>
+        <button class="btn btn-xs btn-pill btn-primary-orange">Extra Small 28px (.btn-xs)</button>
+      </div>
+
+      <div class="label-tag">3. Bentuk (Pill vs Rounded 12px)</div>
+      <div class="grid-row">
+        <button class="btn btn-md btn-pill btn-primary-black">Bentuk Pill (Rounded Full)</button>
+        <button class="btn btn-md btn-rounded btn-primary-black">Bentuk Rounded (12px)</button>
+      </div>
+
+      <div class="label-tag">4. Status (States: Default, Disabled, Loading)</div>
+      <div class="grid-row">
+        <button class="btn btn-md btn-pill btn-primary-orange">Normal Interaktif</button>
+        <button class="btn btn-md btn-pill btn-primary-orange" disabled>Status Disabled</button>
+        <button class="btn btn-md btn-pill btn-primary-orange" style="cursor: wait;">
+          <span class="spinner"></span>
+          <span>Menyimpan data…</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SECTION 2: INPUTS -->
+    <section class="section">
+      <h2><span>📝</span> CMP-02: Input & Form Controls (`src/components/ui/input.tsx`)</h2>
+      <p class="desc">Field formulir satu baris seragam 42px dengan border 1.5px solid #ECEEF2, focus ring oranye halus, dan asosiasi aksesibilitas WCAG 2.2 AA.</p>
+
+      <div class="grid-cols">
+        <!-- Field 1: Normal with Icon -->
+        <div class="field">
+          <label for="inp-email">Email Penghuni <span style="color: var(--destructive);">*</span></label>
+          <div class="input-wrapper">
+            <span class="inp-icon-slot">✉️</span>
+            <input class="inp has-icon" id="inp-email" placeholder="nama@email.com" type="email" value="penghuni@rumakost.test">
+          </div>
+          <p class="hint-text">Gunakan email aktif yang didaftarkan pengelola.</p>
+        </div>
+
+        <!-- Field 2: Capsule Search -->
+        <div class="field">
+          <label for="inp-search">Pencarian Cepat</label>
+          <div class="input-wrapper">
+            <span class="inp-icon-slot">🔍</span>
+            <input class="inp has-icon inp-capsule" id="inp-search" placeholder="Cari nomor kamar, nama penghuni…">
+          </div>
+          <p class="hint-text">Kapsul pencarian 40px rounded-full.</p>
+        </div>
+
+        <!-- Field 3: Error State -->
+        <div class="field">
+          <label for="inp-nominal">Nominal Pembayaran <span style="color: var(--destructive);">*</span></label>
+          <div class="input-wrapper">
+            <span class="inp-icon-slot">💰</span>
+            <input aria-invalid="true" class="inp has-icon inp-invalid" id="inp-nominal" value="0">
+          </div>
+          <p class="error-text" role="alert">Nominal pembayaran harus lebih besar dari Rp 0.</p>
+        </div>
+
+        <!-- Field 4: Disabled State -->
+        <div class="field">
+          <label for="inp-disabled">Status Kamar (Terkunci)</label>
+          <div class="input-wrapper">
+            <input class="inp" disabled id="inp-disabled" value="TERISI (Kontrak Berjalan)">
+          </div>
+          <p class="hint-text">Field tidak dapat disunting manual.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="field">
+          <label for="inp-desc">Catatan Operasional / Deskripsi Tiket</label>
+          <textarea class="inp" id="inp-desc" placeholder="Tuliskan detail perbaikan atau catatan kamar di sini…"></textarea>
+          <p class="hint-text">Textarea multi-line dengan tinggi minimum 84px dan resize vertikal terkontrol.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

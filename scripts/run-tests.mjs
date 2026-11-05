@@ -3,9 +3,19 @@ import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
+import { statSync } from "node:fs";
+
 const requestedSuite = process.argv[2];
 const testRoot = resolve("tests");
-const suites = requestedSuite ? [requestedSuite] : readdirSync(testRoot);
+const suites = requestedSuite
+  ? [requestedSuite]
+  : readdirSync(testRoot).filter((entry) => {
+      try {
+        return statSync(resolve(testRoot, entry)).isDirectory();
+      } catch {
+        return false;
+      }
+    });
 
 if (suites.some((suite) => !/^[a-z0-9-]+$/i.test(suite))) {
   process.stderr.write("Invalid test suite name.\n");
@@ -28,14 +38,14 @@ if (testFiles.length === 0) {
   process.exit(1);
 }
 
+const loaderPath =
+  requestedSuite === "auth-provider"
+    ? resolve("tests/auth-provider/typescript-loader.mjs")
+    : resolve("tests/ui-loader.mjs");
+
 const nodeArguments = [
-  ...(requestedSuite === "auth-provider"
-    ? [
-        "--experimental-strip-types",
-        "--loader",
-        pathToFileURL(resolve("tests/auth-provider/typescript-loader.mjs")).href,
-      ]
-    : []),
+  "--loader",
+  pathToFileURL(loaderPath).href,
   "--test",
   ...testFiles,
 ];

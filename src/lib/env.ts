@@ -37,7 +37,7 @@ const appOrigin = z
     if (!url) return false;
 
     const isLocalDevelopmentOrigin =
-      process.env.NODE_ENV !== "production" &&
+      process.env.VERCEL_ENV !== "production" &&
       (url.hostname === "localhost" ||
         url.hostname === "127.0.0.1" ||
         url.hostname === "[::1]") &&
