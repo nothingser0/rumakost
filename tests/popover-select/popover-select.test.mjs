@@ -68,7 +68,7 @@ test("supports shapes (pill, rounded, and circle)", () => {
   assert.match(circleHtml, /aria-label="Filter Kamar"/);
 });
 
-test("supports sizing tiers (sm 32px and md 40px)", () => {
+test("supports sizing tiers (sm 34px and md 40px)", () => {
   const smHtml = renderToStaticMarkup(
     React.createElement(PopoverSelect, {
       options: sampleOptions,

@@ -1102,7 +1102,7 @@ export default function ComponentsShowcasePage() {
                 value="current"
               />
               <PopoverSelect
-                options={[{ value: "current", label: "Small 32px (Sub-Bar)" }]}
+                options={[{ value: "current", label: "Small 34px (Sub-Bar)" }]}
                 shape="pill"
                 size="sm"
                 triggerIcon={<CalendarIcon />}
@@ -1125,7 +1125,7 @@ export default function ComponentsShowcasePage() {
                 options={[{ value: "1", label: "Filter Opsi" }]}
                 shape="circle"
                 size="sm"
-                title="Circle Filter 32px"
+                title="Circle Filter 34px"
                 triggerIcon={<SlidersIcon />}
               />
               <PopoverSelect
