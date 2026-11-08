@@ -599,7 +599,7 @@
   height: 28px;
   border-radius: 50%;
   border: 1px solid var(--border, #eceef2);
-  background-color: #f8fafc;
+  background-color: var(--border-subtle, #f8fafc);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -610,7 +610,7 @@
 }
 
 .rdpNavBtn:hover {
-  background-color: #e2e8f0;
+  background-color: var(--border, #e2e8f0);
   transform: scale(1.06);
 }
 
@@ -697,7 +697,7 @@
   font-weight: 600;
   color: var(--color-primary, #ff7a00);
   background-color: var(--color-primary-soft, #fff7ed);
-  border: 1px solid #ffedd5;
+  border: 1px solid var(--brand-primary-border, #ffedd5);
   border-radius: 9999px;
   padding: 3px 8px;
   cursor: pointer;

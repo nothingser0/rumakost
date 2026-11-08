@@ -258,6 +258,94 @@
   transform: none !important;
 }
 
+/* ==========================================================================
+   Dark Mode Support (:global(.dark))
+   ========================================================================== */
+:global(.dark) .variant-primary-black {
+  background-color: #000000;
+  border-color: #3f3f46;
+  color: #ffffff;
+}
+
+:global(.dark) .variant-primary-black:hover:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #09090b;
+  border-color: #71717a;
+  color: #ffffff;
+}
+
+:global(.dark) .variant-primary-black:active:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #000000;
+  border-color: #a1a1aa;
+}
+
+:global(.dark) .variant-primary-orange {
+  background-color: var(--btn-primary-bg, #ff8a1e);
+  border-color: var(--btn-primary-border, #ea580c);
+}
+
+:global(.dark) .variant-primary-orange:hover:not(:disabled):not([aria-disabled="true"]) {
+  background-color: var(--btn-primary-hover-bg, #d95f00);
+  border-color: var(--btn-primary-hover-border, #b84e00);
+}
+
+:global(.dark) .variant-secondary-ghost {
+  background-color: var(--surface, #18181b);
+  border-color: var(--border, #27272a);
+  color: var(--text-body, #d1d5db);
+}
+
+:global(.dark) .variant-secondary-ghost:hover:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #27272a;
+  border-color: #3f3f46;
+  color: #f4f4f5;
+}
+
+:global(.dark) .variant-secondary-ghost:active:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #3f3f46;
+  border-color: #52525b;
+}
+
+:global(.dark) .variant-subtle-danger {
+  background-color: var(--destructive-bg, #450a0a);
+  border-color: var(--destructive-border, #991b1b);
+  color: var(--destructive, #fca5a5);
+}
+
+:global(.dark) .variant-subtle-danger:hover:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #5f1515;
+  border-color: #b91c1c;
+  color: #fecaca;
+}
+
+:global(.dark) .variant-subtle-danger:active:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #7f1d1d;
+  border-color: #dc2626;
+}
+
+:global(.dark) .variant-icon-circle {
+  background-color: var(--surface, #18181b);
+  border-color: var(--border, #27272a);
+  color: var(--text-body, #d1d5db);
+}
+
+:global(.dark) .variant-icon-circle:hover:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #27272a;
+  border-color: #3f3f46;
+  color: #f4f4f5;
+}
+
+:global(.dark) .variant-pill-arrow {
+  background-color: var(--surface, #18181b);
+  border-color: var(--border, #27272a);
+  color: var(--text-body, #d1d5db);
+}
+
+:global(.dark) .variant-pill-arrow:hover:not(:disabled):not([aria-disabled="true"]) {
+  background-color: #f4f4f5;
+  border-color: #f4f4f5;
+  color: #09090b;
+}
+
 .loading {
   position: relative;
   cursor: wait;

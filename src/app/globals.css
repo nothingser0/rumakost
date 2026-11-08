@@ -145,8 +145,15 @@
   --color-primary-dark: #ff8a1e;
   --color-primary-soft: #311e08;
   --color-secondary-bar: #7c3e10;
-  --color-black-pill: #f4f4f5;
-  --color-black-hover: #e4e4e7;
+  --btn-primary-bg: #ff8a1e;
+  --btn-primary-border: #ea580c;
+  --btn-primary-hover-bg: #d95f00;
+  --btn-primary-hover-border: #b84e00;
+  --btn-primary-active-bg: #c2410c;
+  --btn-primary-active-border: #9a3412;
+
+  --color-black-pill: #000000;
+  --color-black-hover: #111111;
   --ring: #ff8a1e;
 
   --foreground: #f4f4f5;
@@ -157,6 +164,7 @@
 
   --border: #27272a;
   --border-subtle: #1f1f23;
+  --border-strong: #3f3f46;
   --input: #71717a;
 
   --success: #86efac;

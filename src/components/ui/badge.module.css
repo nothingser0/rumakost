@@ -63,25 +63,25 @@
 .variant-success {
   background-color: var(--status-success-bg, #dcfce7);
   color: var(--status-success-text, #16a34a);
-  border: 1px solid #bbf7d0;
+  border: 1px solid var(--success-border, #bbf7d0);
 }
 
 .variant-warning {
   background-color: var(--status-warning-bg, #fef3c7);
   color: var(--status-warning-text, #d97706);
-  border: 1px solid #fde68a;
+  border: 1px solid var(--warning-border, #fde68a);
 }
 
 .variant-danger {
   background-color: var(--status-danger-bg, #fee2e2);
   color: var(--status-danger-text, #ef4444);
-  border: 1px solid #fecdd3;
+  border: 1px solid var(--destructive-border, #fecdd3);
 }
 
 .variant-neutral {
   background-color: var(--status-info-bg, #f3f4f6);
   color: var(--status-info-text, #4b5563);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border, #e5e7eb);
 }
 
 .variant-brand {
@@ -91,15 +91,21 @@
 }
 
 .variant-info {
-  background-color: #eff6ff;
-  color: #2563eb;
-  border: 1px solid #bfdbfe;
+  background-color: var(--info-bg, #eff6ff);
+  color: var(--info, #2563eb);
+  border: 1px solid var(--info-border, #bfdbfe);
 }
 
 .variant-dark {
   background-color: var(--color-black-pill, #111111);
   color: #ffffff;
   border: 1px solid var(--color-black-pill, #111111);
+}
+
+:global(.dark) .variant-dark {
+  background-color: #27272a;
+  color: #f4f4f5;
+  border-color: #3f3f46;
 }
 
 /* ==========================================================================
