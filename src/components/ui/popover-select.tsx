@@ -79,6 +79,7 @@ export interface PopoverSelectProps {
   searchable?: boolean;
   searchPlaceholder?: string;
   defaultOpen?: boolean;
+  showCheckmark?: boolean;
   triggerIcon?: ReactNode;
   size?: "sm" | "md" | "lg";
   shape?: "pill" | "rounded" | "circle";
@@ -122,6 +123,7 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
       searchable = false,
       searchPlaceholder = "Cari pilihan...",
       shape: propShape,
+      showCheckmark = false,
       size = "md",
       title,
       triggerClassName,
@@ -484,7 +486,7 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
 
                       <div className={styles.itemRight}>
                         {opt.badge ? <span className={styles.badgeSlot}>{opt.badge}</span> : null}
-                        {isSelected ? (
+                        {showCheckmark && isSelected ? (
                           <span className={styles.checkIcon}>
                             <CheckIcon />
                           </span>

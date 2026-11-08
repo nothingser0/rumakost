@@ -182,7 +182,17 @@ test("renders open popover listbox and options when defaultOpen is true", () => 
   assert.match(html, /aria-disabled="true"/); // for lt3
   assert.match(html, /Semua Lantai/);
   assert.match(html, /badgeSlot/); // badge counter inside option
-  assert.match(html, /checkIcon/); // checkmark SVG for selected
+  assert.doesNotMatch(html, /checkIcon/); // no checkmark by default for clean option layout
+
+  const withCheckmarkHtml = renderToStaticMarkup(
+    React.createElement(PopoverSelect, {
+      defaultOpen: true,
+      options: sampleOptions,
+      showCheckmark: true,
+      value: "all",
+    }),
+  );
+  assert.match(withCheckmarkHtml, /checkIcon/);
 });
 
 test("renders search input inside popover when searchable and open", () => {
