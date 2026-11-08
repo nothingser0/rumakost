@@ -5,7 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { PopoverSelect } from "../../src/components/ui/popover-select.tsx";
 
 const sampleOptions = [
-  { value: "all", label: "Semua Lantai" },
+  { value: "all", label: "Semua Lantai", badge: React.createElement("span", null, "15") },
   { value: "lt1", label: "Lantai 1 (Kamar A-01 s/d A-05)" },
   { value: "lt2", label: "Lantai 2 (Kamar B-01 s/d B-05)" },
   { value: "lt3", label: "Lantai 3 (Kamar C-01 s/d C-05)", disabled: true },
@@ -40,22 +40,50 @@ test("renders selected option label on the trigger button", () => {
   assert.match(html, /Lantai 1 \(Kamar A-01 s\/d A-05\)/);
 });
 
-test("supports trigger variants (pill and rounded)", () => {
+test("supports shapes (pill, rounded, and circle)", () => {
   const pillHtml = renderToStaticMarkup(
     React.createElement(PopoverSelect, {
       options: sampleOptions,
-      triggerVariant: "pill",
+      shape: "pill",
     }),
   );
-  assert.doesNotMatch(pillHtml, /trigger-rounded/);
+  assert.match(pillHtml, /shape-pill/);
 
   const roundedHtml = renderToStaticMarkup(
     React.createElement(PopoverSelect, {
       options: sampleOptions,
-      triggerVariant: "rounded",
+      shape: "rounded",
     }),
   );
-  assert.match(roundedHtml, /trigger-rounded/);
+  assert.match(roundedHtml, /shape-rounded/);
+
+  const circleHtml = renderToStaticMarkup(
+    React.createElement(PopoverSelect, {
+      options: sampleOptions,
+      shape: "circle",
+      title: "Filter Kamar",
+    }),
+  );
+  assert.match(circleHtml, /shape-circle/);
+  assert.match(circleHtml, /aria-label="Filter Kamar"/);
+});
+
+test("supports sizing tiers (sm 32px and md 40px)", () => {
+  const smHtml = renderToStaticMarkup(
+    React.createElement(PopoverSelect, {
+      options: sampleOptions,
+      size: "sm",
+    }),
+  );
+  assert.match(smHtml, /size-sm/);
+
+  const mdHtml = renderToStaticMarkup(
+    React.createElement(PopoverSelect, {
+      options: sampleOptions,
+      size: "md",
+    }),
+  );
+  assert.match(mdHtml, /size-md/);
 });
 
 test("associates hint and error with aria-describedby", () => {
@@ -144,7 +172,7 @@ test("renders open popover listbox and options when defaultOpen is true", () => 
     React.createElement(PopoverSelect, {
       defaultOpen: true,
       options: sampleOptions,
-      value: "lt1",
+      value: "all",
     }),
   );
 
@@ -153,8 +181,8 @@ test("renders open popover listbox and options when defaultOpen is true", () => 
   assert.match(html, /aria-selected="true"/);
   assert.match(html, /aria-disabled="true"/); // for lt3
   assert.match(html, /Semua Lantai/);
-  assert.match(html, /Lantai 1 \(Kamar A-01 s\/d A-05\)/);
-  assert.match(html, /checkIcon/); // checkmark SVG for lt1
+  assert.match(html, /badgeSlot/); // badge counter inside option
+  assert.match(html, /checkIcon/); // checkmark SVG for selected
 });
 
 test("renders search input inside popover when searchable and open", () => {
@@ -171,4 +199,3 @@ test("renders search input inside popover when searchable and open", () => {
   assert.match(html, /placeholder="Cari nomor lantai\.\.\."/);
   assert.match(html, /searchInput/);
 });
-

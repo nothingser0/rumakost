@@ -1,5 +1,6 @@
 /* ==========================================================================
    CMP-04: Custom Popover Dropdown (Estify Visual DNA)
+   Acuan: WF-02-dashboard.html, WF-03-kamar.html & COMPONENT_REQUIREMENTS.md
    ========================================================================== */
 
 .container {
@@ -7,11 +8,13 @@
   display: inline-flex;
   flex-direction: column;
   box-sizing: border-box;
+  width: auto;
+  flex-shrink: 0;
 }
 
 .label {
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: var(--foreground, #111111);
   margin-bottom: 6px;
@@ -24,52 +27,99 @@
 }
 
 /* ==========================================================================
-   Trigger Button
+   Trigger Button (.pill-dropdown-trigger & .btn-popover-trigger)
    ========================================================================== */
 
 .trigger {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  height: 40px;
-  padding: 0 16px;
+  gap: 8px;
   font-family: var(--font-sans);
-  font-size: 13px;
   font-weight: 500;
-  color: var(--foreground, #111111);
+  color: var(--text-body, #374151);
   background-color: var(--surface, #ffffff);
   border: 1.5px solid var(--border, #eceef2);
-  border-radius: var(--radius-full, 9999px);
   cursor: pointer;
   user-select: none;
   outline: none;
   box-sizing: border-box;
+  white-space: nowrap;
+  width: auto;
   transition:
     background-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
     border-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
+    color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
     box-shadow var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
     transform var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-.trigger-rounded {
+/* Sizes */
+.size-sm {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 11.5px;
+  gap: 6px;
+}
+
+.size-md {
+  height: 40px;
+  padding: 0 14px;
+  font-size: 12px;
+  gap: 8px;
+}
+
+/* Shapes */
+.shape-pill {
+  border-radius: var(--radius-full, 9999px);
+}
+
+.shape-rounded {
   border-radius: var(--radius-md, 12px);
 }
 
+.shape-circle {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+}
+
+.size-sm.shape-circle {
+  width: 32px;
+  height: 32px;
+}
+
+/* Variants */
+.variant-default {
+  background-color: var(--surface, #ffffff);
+  border-color: var(--border, #eceef2);
+}
+
+.variant-subtle {
+  background-color: #f7f8fa;
+  border-color: var(--border-subtle, #eceef2);
+}
+
+/* Hover & Focus */
 .trigger:hover:not(:disabled) {
-  border-color: var(--border-strong, #cbd5e1);
-  background-color: var(--bg-card-hover, #ffffff);
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: var(--foreground, #111111);
   transform: translateY(-1px);
 }
 
 .trigger:focus-visible {
   border-color: var(--color-primary, #ff7a00);
-  box-shadow: 0 0 0 3px rgb(255 122 0 / 15%);
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
 }
 
 .triggerOpen {
+  background-color: #ffffff !important;
   border-color: var(--color-primary, #ff7a00) !important;
-  box-shadow: 0 0 0 3px rgb(255 122 0 / 15%) !important;
+  box-shadow: 0 0 0 3px rgb(255 122 0 / 12%) !important;
+  color: var(--foreground, #111111) !important;
 }
 
 .trigger:disabled {
@@ -89,7 +139,7 @@
 .triggerContent {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -103,6 +153,10 @@
   flex-shrink: 0;
 }
 
+.trigger:hover:not(:disabled) .triggerIcon {
+  color: var(--foreground, #111111);
+}
+
 .placeholder {
   color: var(--muted-foreground, #9ca3af);
   font-weight: 400;
@@ -114,28 +168,34 @@
   justify-content: center;
   color: var(--muted-foreground, #64748b);
   flex-shrink: 0;
-  transition: transform var(--transition-fast, 150ms ease);
+  transition: transform var(--transition-fast, 150ms ease), color var(--transition-fast, 150ms ease);
+}
+
+.trigger:hover:not(:disabled) .chevronIcon {
+  color: var(--foreground, #111111);
 }
 
 .chevronOpen {
   transform: rotate(180deg);
-  color: var(--color-primary, #ff7a00);
+  color: var(--color-primary, #ff7a00) !important;
 }
 
 /* ==========================================================================
-   Popover Menu Panel
+   Popover Menu Panel (.popover-dropdown-menu)
    ========================================================================== */
 
 .popover {
   position: absolute;
-  top: 100%;
-  margin-top: 6px;
+  top: calc(100% + 8px);
   z-index: 50;
-  min-width: 220px;
+  min-width: 100%;
+  width: max-content;
+  max-width: 320px;
   background-color: var(--surface, #ffffff);
   border: 1px solid var(--border, #eceef2);
-  border-radius: var(--radius-lg, 16px);
-  box-shadow: 0 10px 30px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 4%);
+  border-radius: 16px;
+  padding: 6px;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 10%);
   overflow: hidden;
   box-sizing: border-box;
   animation: popoverFadeIn var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
@@ -162,9 +222,9 @@
 
 /* Search input inside popover */
 .searchWrapper {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border, #eceef2);
-  background-color: var(--bg-card-muted, #fafafa);
+  padding: 4px 6px 8px;
+  border-bottom: 1px solid var(--border-subtle, #f3f4f6);
+  margin-bottom: 4px;
 }
 
 .searchInput {
@@ -172,7 +232,7 @@
   height: 32px;
   padding: 0 10px;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: 11.5px;
   border-radius: var(--radius-sm, 8px);
   border: 1px solid var(--border, #cbd5e1);
   background-color: var(--surface, #ffffff);
@@ -184,21 +244,24 @@
 
 .searchInput:focus {
   border-color: var(--color-primary, #ff7a00);
-  box-shadow: 0 0 0 2px rgb(255 122 0 / 15%);
+  box-shadow: 0 0 0 2px rgb(255 122 0 / 12%);
 }
 
 /* Options List */
 .list {
   list-style: none;
   margin: 0;
-  padding: 6px;
+  padding: 0;
   max-height: 260px;
   overflow-y: auto;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .list::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .list::-webkit-scrollbar-thumb {
@@ -206,20 +269,22 @@
   border-radius: 9999px;
 }
 
-/* Option Item */
+/* Option Item (.popover-item) */
 .item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: var(--radius-sm, 10px);
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
   font-family: var(--font-sans);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--foreground, #111111);
+  color: var(--text-body, #374151);
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
+  box-sizing: border-box;
   transition:
     background-color var(--transition-fast, 120ms ease),
     color var(--transition-fast, 120ms ease);
@@ -227,14 +292,20 @@
 
 .item:hover,
 .itemFocused {
-  background-color: var(--brand-primary-light, #fff7ed);
-  color: var(--brand-primary, #ff7a00);
+  background-color: var(--border-subtle, #f3f4f6);
+  color: var(--foreground, #111111);
 }
 
+/* Selected item: Solid Black Pill DNA khas Estify */
 .itemSelected {
-  background-color: var(--brand-primary-light, #fff7ed);
-  color: var(--brand-primary, #ff7a00);
+  background-color: var(--color-black-pill, #111111) !important;
+  color: #ffffff !important;
   font-weight: 600;
+}
+
+.itemSelected:hover {
+  background-color: var(--color-black-pill, #111111) !important;
+  color: #ffffff !important;
 }
 
 .itemDisabled {
@@ -270,32 +341,56 @@
   font-weight: 400;
 }
 
+.itemSelected .itemDescription {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.itemRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
 .checkIcon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-primary, #ff7a00);
+  color: #ffffff;
   flex-shrink: 0;
 }
 
+.badgeSlot {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Saat item terpilih (#111), badge di dalamnya otomatis kontras putih */
+.itemSelected .badgeSlot span {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
 .emptyMessage {
-  padding: 16px 12px;
+  padding: 14px 12px;
   text-align: center;
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--muted-foreground, #9ca3af);
 }
 
 /* Hint & Error text */
 .hint {
   font-family: var(--font-sans);
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--muted-foreground, #64748b);
   margin-top: 4px;
 }
 
 .error {
   font-family: var(--font-sans);
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--destructive, #ef4444);
   margin-top: 4px;
   display: flex;
@@ -309,12 +404,18 @@
 :global(.dark) .trigger {
   background-color: #18181b;
   border-color: #27272a;
-  color: #f4f4f5;
+  color: #d1d5db;
+}
+
+:global(.dark) .variant-subtle {
+  background-color: #121214;
+  border-color: #27272a;
 }
 
 :global(.dark) .trigger:hover:not(:disabled) {
   border-color: #3f3f46;
   background-color: #27272a;
+  color: #f4f4f5;
 }
 
 :global(.dark) .trigger:disabled {
@@ -330,27 +431,37 @@
 }
 
 :global(.dark) .searchWrapper {
-  background-color: #121214;
   border-bottom-color: #27272a;
 }
 
 :global(.dark) .searchInput {
-  background-color: #18181b;
+  background-color: #121214;
   border-color: #27272a;
   color: #f4f4f5;
 }
 
 :global(.dark) .item {
-  color: #f4f4f5;
+  color: #d1d5db;
 }
 
 :global(.dark) .item:hover,
 :global(.dark) .itemFocused {
   background-color: #27272a;
-  color: #ff8a1e;
+  color: #ffffff;
 }
 
 :global(.dark) .itemSelected {
-  background-color: #311e08;
+  background-color: #27272a !important;
+  border: 1px solid #3f3f46;
+  color: #ff8a1e !important;
+}
+
+:global(.dark) .itemSelected .checkIcon {
   color: #ff8a1e;
+}
+
+:global(.dark) .itemSelected .badgeSlot span {
+  background: rgba(255, 138, 30, 0.18) !important;
+  color: #ff8a1e !important;
+  border-color: rgba(255, 138, 30, 0.3) !important;
 }

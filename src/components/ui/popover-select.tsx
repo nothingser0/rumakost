@@ -20,13 +20,13 @@ function ChevronDownIcon() {
     <svg
       aria-hidden="true"
       fill="none"
-      height="14"
+      height="13"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="2"
+      strokeWidth="2.2"
       viewBox="0 0 24 24"
-      width="14"
+      width="13"
     >
       <polyline points="6 9 12 15 18 9" />
     </svg>
@@ -38,13 +38,13 @@ function CheckIcon() {
     <svg
       aria-hidden="true"
       fill="none"
-      height="14"
+      height="13"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
-      strokeWidth="2.4"
+      strokeWidth="2.5"
       viewBox="0 0 24 24"
-      width="14"
+      width="13"
     >
       <polyline points="20 6 9 17 4 12" />
     </svg>
@@ -59,7 +59,7 @@ export interface PopoverSelectOption {
   value: string;
   label: string;
   description?: string;
-  badge?: string;
+  badge?: ReactNode;
   icon?: ReactNode;
   disabled?: boolean;
 }
@@ -80,13 +80,17 @@ export interface PopoverSelectProps {
   searchPlaceholder?: string;
   defaultOpen?: boolean;
   triggerIcon?: ReactNode;
-  triggerVariant?: "pill" | "rounded";
+  size?: "sm" | "md";
+  shape?: "pill" | "rounded" | "circle";
+  variant?: "default" | "subtle";
+  triggerVariant?: "pill" | "rounded"; // alias for shape
   align?: "left" | "right";
   disabled?: boolean;
   required?: boolean;
   className?: string;
   triggerClassName?: string;
   popoverClassName?: string;
+  title?: string;
 }
 
 /* ==========================================================================
@@ -114,10 +118,14 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
       required = false,
       searchable = false,
       searchPlaceholder = "Cari pilihan...",
+      shape: propShape,
+      size = "md",
+      title,
       triggerClassName,
       triggerIcon,
       triggerVariant = "pill",
       value: controlledValue,
+      variant = "default",
     },
     ref,
   ) => {
@@ -127,6 +135,9 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
     const labelId = label ? `${selectId}-label` : undefined;
     const hintId = hint ? `${selectId}-hint` : undefined;
     const errorId = error ? `${selectId}-error` : undefined;
+
+    const resolvedShape = propShape ?? (triggerVariant === "rounded" ? "rounded" : "pill");
+    const isCircle = resolvedShape === "circle";
 
     // Internal value state for uncontrolled mode
     const [internalValue, setInternalValue] = useState<string | string[]>(() => {
@@ -336,11 +347,14 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
           aria-expanded={isOpen}
           aria-haspopup="listbox"
           aria-invalid={Boolean(error)}
-          aria-labelledby={labelId}
+          aria-label={isCircle ? (title ?? label ?? "Filter") : undefined}
+          aria-labelledby={!isCircle ? labelId : undefined}
           aria-required={required}
           className={[
             styles.trigger,
-            triggerVariant === "rounded" ? styles["trigger-rounded"] : null,
+            styles[`size-${size}`],
+            styles[`shape-${resolvedShape}`],
+            styles[`variant-${variant}`],
             isOpen ? styles.triggerOpen : null,
             error ? styles.triggerInvalid : null,
             triggerClassName,
@@ -359,19 +373,26 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
               ref.current = node;
             }
           }}
+          title={title}
           type="button"
         >
-          <span className={styles.triggerContent}>
-            {triggerIcon ? <span className={styles.triggerIcon}>{triggerIcon}</span> : null}
-            <span>{getTriggerText()}</span>
-          </span>
-          <span
-            className={[styles.chevronIcon, isOpen ? styles.chevronOpen : null]
-              .filter(Boolean)
-              .join(" ")}
-          >
-            <ChevronDownIcon />
-          </span>
+          {isCircle ? (
+            <span className={styles.triggerIcon}>{triggerIcon ?? <ChevronDownIcon />}</span>
+          ) : (
+            <>
+              <span className={styles.triggerContent}>
+                {triggerIcon ? <span className={styles.triggerIcon}>{triggerIcon}</span> : null}
+                <span>{getTriggerText()}</span>
+              </span>
+              <span
+                className={[styles.chevronIcon, isOpen ? styles.chevronOpen : null]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                <ChevronDownIcon />
+              </span>
+            </>
+          )}
         </button>
 
         {isOpen ? (
@@ -450,11 +471,14 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
                         </div>
                       </div>
 
-                      {isSelected ? (
-                        <span className={styles.checkIcon}>
-                          <CheckIcon />
-                        </span>
-                      ) : null}
+                      <div className={styles.itemRight}>
+                        {opt.badge ? <span className={styles.badgeSlot}>{opt.badge}</span> : null}
+                        {isSelected ? (
+                          <span className={styles.checkIcon}>
+                            <CheckIcon />
+                          </span>
+                        ) : null}
+                      </div>
                     </li>
                   );
                 })
