@@ -8,6 +8,7 @@ import {
   TicketStatusBadge,
 } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { PopoverSelect } from "@/components/ui/popover-select";
 import {
   Checkbox,
   CurrencyInput,
@@ -108,6 +109,9 @@ export default function ComponentsShowcasePage() {
   const [exportType, setExportType] = useState("pdf");
   const [autoRenew, setAutoRenew] = useState(true);
   const [currencyDemo, setCurrencyDemo] = useState<number | string>(1500000);
+  const [selectedFloor, setSelectedFloor] = useState("all");
+  const [selectedPeriod, setSelectedPeriod] = useState("current");
+  const [selectedRoomTypes, setSelectedRoomTypes] = useState<string[]>(["deluxe", "vip"]);
 
   const toggleDark = () => {
     setIsDark((prev) => {
@@ -848,6 +852,112 @@ export default function ComponentsShowcasePage() {
                   <TicketStatusBadge status="CANCELLED" />
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 4: POPOVER DROPDOWN (CMP-04) */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1.5px solid var(--border)",
+            borderRadius: 20,
+            padding: "24px 28px",
+            marginBottom: 24,
+            boxShadow: "var(--shadow-card)",
+          }}
+        >
+          <div style={{ marginBottom: 20 }}>
+            <h2
+              style={{
+                fontSize: 16,
+                fontWeight: 700,
+                margin: "0 0 4px",
+                letterSpacing: "-0.2px",
+              }}
+            >
+              CMP-04: Custom Popover Dropdown (`src/components/ui/popover-select.tsx`)
+            </h2>
+            <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Trigger kapsul (pill) melayang pengganti elemen select bawaan untuk filter lantai, periode, dan tipe kamar (Zero Native Select).
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: 20,
+              alignItems: "start",
+            }}
+          >
+            {/* Dropdown 1: Filter Periode (Pill) */}
+            <div>
+              <PopoverSelect
+                hint="Filter ringkasan dasbor dan laporan finansial."
+                id="showcase-period-select"
+                label="Filter Periode (Pill Trigger)"
+                onChange={(val) => setSelectedPeriod(val as string)}
+                options={[
+                  { value: "current", label: "Bulan Ini (November 2026)" },
+                  { value: "prev1", label: "Oktober 2026" },
+                  { value: "prev2", label: "September 2026" },
+                  { value: "q4", label: "Kuartal 4 2026" },
+                  { value: "year", label: "Tahun Berjalan (2026)" },
+                ]}
+                value={selectedPeriod}
+              />
+            </div>
+
+            {/* Dropdown 2: Filter Lantai (Pill dengan Deskripsi) */}
+            <div>
+              <PopoverSelect
+                hint="Katalog 15 unit kamar per lantai."
+                id="showcase-floor-select"
+                label="Filter Lantai (dengan Deskripsi Sub)"
+                onChange={(val) => setSelectedFloor(val as string)}
+                options={[
+                  { value: "all", label: "Semua Lantai" },
+                  { value: "lt1", label: "Lantai 1", description: "5 Unit Kamar (A-01 s/d A-05)" },
+                  { value: "lt2", label: "Lantai 2", description: "5 Unit Kamar (B-01 s/d B-05)" },
+                  { value: "lt3", label: "Lantai 3", description: "5 Unit Kamar (C-01 s/d C-05)" },
+                ]}
+                value={selectedFloor}
+              />
+            </div>
+
+            {/* Dropdown 3: Tipe Kamar (Searchable & Multi-Select) */}
+            <div>
+              <PopoverSelect
+                hint="Dapat memilih beberapa tipe kamar sekaligus."
+                id="showcase-type-select"
+                label="Tipe Kamar (Multi-Select & Searchable)"
+                multiple
+                onChange={(val) => setSelectedRoomTypes(val as string[])}
+                options={[
+                  { value: "standard", label: "Tipe Standard", description: "3x4m, Kamar Mandi Luar" },
+                  { value: "deluxe", label: "Tipe Deluxe", description: "4x4m, KM Dalam, AC" },
+                  { value: "vip", label: "Tipe VIP", description: "4x5m, Water Heater, Smart TV" },
+                  { value: "suite", label: "Tipe Suite", description: "Balkon Pribadi, Kitchenette" },
+                ]}
+                placeholder="Pilih tipe kamar..."
+                searchPlaceholder="Cari tipe kamar..."
+                searchable
+                value={selectedRoomTypes}
+              />
+            </div>
+
+            {/* Dropdown 4: Rounded Shape & Disabled */}
+            <div>
+              <PopoverSelect
+                disabled
+                hint="Trigger terkunci oleh sistem peran."
+                id="showcase-disabled-select"
+                label="Properti Kost (Terkunci / Disabled)"
+                options={[{ value: "kost1", label: "Kost Budi Makmur (Unit Utama)" }]}
+                triggerVariant="rounded"
+                value="kost1"
+              />
             </div>
           </div>
         </section>

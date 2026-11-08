@@ -108,6 +108,17 @@
   border-color: #3f3f46;
 }
 
+:global(.dark) .variant-neutral {
+  background-color: #27272a;
+  color: #d1d5db;
+  border-color: #3f3f46;
+}
+
+:global(.dark) .countPill {
+  background-color: rgb(255 255 255 / 16%);
+  color: inherit;
+}
+
 /* ==========================================================================
    Interactive / Clickable State
    ========================================================================== */
