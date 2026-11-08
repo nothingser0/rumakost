@@ -34,7 +34,7 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--foreground, #111111);
-  background-color: #fafafa;
+  background-color: var(--input-bg, #fafafa);
   border: 1.5px solid var(--border, #eceef2);
   border-radius: var(--radius-md, 12px);
   outline: none;
@@ -46,18 +46,18 @@
 }
 
 .input:hover:not(:disabled):not(:focus):not(.invalid) {
-  background-color: var(--surface, #ffffff);
-  border-color: #cbd5e1;
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
+  border-color: var(--border-strong, #cbd5e1);
 }
 
 .input:focus {
-  background-color: var(--surface, #ffffff);
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
   border-color: var(--color-primary, #ff7a00);
   box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
 }
 
 .input::placeholder {
-  color: #9ca3af;
+  color: var(--muted-foreground, #9ca3af);
   font-weight: 400;
   opacity: 1;
 }
@@ -130,18 +130,18 @@
   height: 40px;
   padding: 0 16px;
   border-radius: var(--radius-full, 9999px);
-  background-color: #f4f5f7;
-  border-color: var(--border-subtle, #eceef2);
+  background-color: var(--input-bg, #f4f5f7);
+  border-color: var(--border, #eceef2);
 }
 
 .variant-capsule:hover:not(:disabled):not(:focus):not(.invalid) {
-  background-color: #ffffff;
-  border-color: #cbd5e1;
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
+  border-color: var(--border-strong, #cbd5e1);
   box-shadow: 0 2px 8px rgb(0 0 0 / 3%);
 }
 
 .variant-capsule:focus {
-  background-color: var(--surface, #ffffff);
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
   border-color: var(--color-primary, #ff7a00);
   box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
 }
@@ -150,7 +150,7 @@
 .invalid,
 .input:user-invalid {
   border-color: var(--destructive, #ef4444) !important;
-  background-color: #fff8f8 !important;
+  background-color: var(--input-invalid-bg, #fff8f8) !important;
   box-shadow: 0 0 0 3px rgb(239 68 68 / 12%) !important;
 }
 
@@ -187,7 +187,7 @@
   font-family: var(--font-sans);
   font-size: 11.5px;
   font-weight: 400;
-  color: #6b7280;
+  color: var(--muted-foreground, #6b7280);
   line-height: 1.3;
 }
 
@@ -195,8 +195,8 @@
 .input:disabled,
 .textarea:disabled,
 .customSelectTrigger:disabled {
-  background-color: #f3f4f6;
-  color: #9ca3af;
+  background-color: var(--input-disabled-bg, #f3f4f6);
+  color: var(--text-disabled, #9ca3af);
   border-color: var(--border, #eceef2);
   cursor: not-allowed;
   opacity: 1;
@@ -211,7 +211,7 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--foreground, #111111);
-  background-color: #fafafa;
+  background-color: var(--input-bg, #fafafa);
   border: 1.5px solid var(--border, #eceef2);
   border-radius: var(--radius-md, 12px);
   outline: none;
@@ -224,18 +224,18 @@
 }
 
 .textarea:hover:not(:disabled):not(:focus):not(.invalid) {
-  background-color: var(--surface, #ffffff);
-  border-color: #cbd5e1;
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
+  border-color: var(--border-strong, #cbd5e1);
 }
 
 .textarea:focus {
-  background-color: var(--surface, #ffffff);
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
   border-color: var(--color-primary, #ff7a00);
   box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
 }
 
 .textarea::placeholder {
-  color: #9ca3af;
+  color: var(--muted-foreground, #9ca3af);
   font-weight: 400;
   opacity: 1;
 }
@@ -323,7 +323,7 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--foreground, #111111);
-  background-color: #fafafa;
+  background-color: var(--input-bg, #fafafa);
   border: 1.5px solid var(--border, #eceef2);
   border-radius: var(--radius-md, 12px);
   cursor: pointer;
@@ -340,13 +340,13 @@
 }
 
 .customSelectTrigger:hover:not(:disabled):not(.invalid) {
-  background-color: var(--surface, #ffffff);
-  border-color: #cbd5e1;
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
+  border-color: var(--border-strong, #cbd5e1);
 }
 
 .customSelectTrigger:focus-visible,
 .customSelectTrigger.isOpen {
-  background-color: var(--surface, #ffffff);
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
   border-color: var(--color-primary, #ff7a00);
   box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
   outline: none;
@@ -501,7 +501,7 @@
   width: 100%;
   height: 44px;
   padding: 0 14px;
-  background-color: #fafafa;
+  background-color: var(--input-bg, #fafafa);
   border: 1.5px solid var(--border, #eceef2);
   border-radius: var(--radius-md, 12px);
   font-family: var(--font-sans);
@@ -519,13 +519,13 @@
 }
 
 .datePickerTrigger:hover:not(:disabled) {
-  background-color: var(--surface, #ffffff);
-  border-color: #cbd5e1;
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
+  border-color: var(--border-strong, #cbd5e1);
 }
 
 .datePickerTrigger.isOpen,
 .datePickerTrigger:focus-visible {
-  background-color: var(--surface, #ffffff);
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
   border-color: var(--color-primary, #ff7a00);
   box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
   outline: none;
@@ -533,12 +533,12 @@
 
 .datePickerTrigger.invalid {
   border-color: var(--destructive, #ef4444);
-  background-color: var(--destructive-bg, #fff5f5);
+  background-color: var(--input-invalid-bg, #fff5f5);
 }
 
 .datePickerTrigger:disabled {
-  background-color: #f3f4f6;
-  color: #9ca3af;
+  background-color: var(--input-disabled-bg, #f3f4f6);
+  color: var(--text-disabled, #9ca3af);
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -941,4 +941,109 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
+/* ==========================================================================
+   Dark Mode Explicit Overrides (:global(.dark))
+   ========================================================================== */
+:global(.dark) .input,
+:global(.dark) .textarea,
+:global(.dark) .customSelectTrigger,
+:global(.dark) .datePickerTrigger {
+  background-color: #09090b;
+  border-color: #27272a;
+  color: #f4f4f5;
+}
+
+:global(.dark) .input:hover:not(:disabled):not(:focus):not(.invalid),
+:global(.dark) .textarea:hover:not(:disabled):not(:focus):not(.invalid),
+:global(.dark) .customSelectTrigger:hover:not(:disabled):not(.invalid),
+:global(.dark) .datePickerTrigger:hover:not(:disabled) {
+  background-color: #0c0c0e;
+  border-color: #3f3f46;
+}
+
+:global(.dark) .input:focus,
+:global(.dark) .textarea:focus,
+:global(.dark) .customSelectTrigger:focus-visible,
+:global(.dark) .customSelectTrigger.isOpen,
+:global(.dark) .datePickerTrigger.isOpen,
+:global(.dark) .datePickerTrigger:focus-visible {
+  background-color: #09090b;
+  border-color: var(--color-primary, #ff8a1e);
+  box-shadow: 0 0 0 3px rgb(255 138 30 / 15%);
+}
+
+:global(.dark) .variant-capsule {
+  background-color: #09090b;
+  border-color: #27272a;
+  color: #f4f4f5;
+}
+
+:global(.dark) .variant-capsule:hover:not(:disabled):not(:focus):not(.invalid) {
+  background-color: #0c0c0e;
+  border-color: #3f3f46;
+}
+
+:global(.dark) .input:disabled,
+:global(.dark) .textarea:disabled,
+:global(.dark) .customSelectTrigger:disabled,
+:global(.dark) .datePickerTrigger:disabled {
+  background-color: #121214 !important;
+  border-color: #1f1f23 !important;
+  color: #71717a !important;
+}
+
+:global(.dark) .invalid,
+:global(.dark) .input:user-invalid,
+:global(.dark) .datePickerTrigger.invalid {
+  background-color: #2a0b0b !important;
+  border-color: var(--destructive, #fca5a5) !important;
+  box-shadow: 0 0 0 3px rgb(252 165 165 / 15%) !important;
+}
+
+:global(.dark) .popoverMenu,
+:global(.dark) .datePickerPopover {
+  background-color: #18181b;
+  border-color: #27272a;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+:global(.dark) .dropdownItem {
+  color: #f4f4f5;
+}
+
+:global(.dark) .dropdownItem:hover,
+:global(.dark) .dropdownItem:focus-visible {
+  background-color: #27272a;
+  color: #ffffff;
+}
+
+:global(.dark) .radioCard {
+  background-color: #18181b;
+  border-color: #27272a;
+}
+
+:global(.dark) .radioCard:hover:not(.radioCardDisabled) {
+  background-color: #24211e;
+  border-color: var(--color-primary, #ff8a1e);
+}
+
+:global(.dark) .radioCardChecked {
+  background-color: #311e08 !important;
+  border-color: var(--color-primary, #ff8a1e) !important;
+}
+
+:global(.dark) .radioCardIcon {
+  background-color: #27272a;
+  color: #f4f4f5;
+}
+
+:global(.dark) .switchTrack {
+  background-color: #3f3f46;
+}
+
+:global(.dark) .switchTrackChecked {
+  background-color: var(--color-primary, #ff8a1e);
+}
+
 

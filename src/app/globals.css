@@ -35,7 +35,12 @@
 
   --border: #eceef2;
   --border-subtle: #f3f4f6;
+  --border-strong: #cbd5e1;
   --input: #71717a;
+  --input-bg: #fafafa;
+  --input-bg-focus: #ffffff;
+  --input-disabled-bg: #f3f4f6;
+  --input-invalid-bg: #fff8f8;
 
   --success: #16a34a;
   --success-border: #bbf7d0;
@@ -166,6 +171,10 @@
   --border-subtle: #1f1f23;
   --border-strong: #3f3f46;
   --input: #71717a;
+  --input-bg: #09090b;
+  --input-bg-focus: #0c0c0e;
+  --input-disabled-bg: #121214;
+  --input-invalid-bg: #2a0b0b;
 
   --success: #86efac;
   --success-border: #065f46;
