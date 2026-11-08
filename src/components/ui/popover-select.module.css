@@ -1,24 +1,31 @@
 /* ==========================================================================
    CMP-04: Custom Popover Dropdown (Estify Visual DNA)
-   Acuan: WF-02-dashboard.html, WF-03-kamar.html & COMPONENT_REQUIREMENTS.md
+   Diselaraskan 100% dengan CMP-02 (Input & Form Controls) & COMPONENT_REQUIREMENTS.md
    ========================================================================== */
 
 .container {
   position: relative;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
+  gap: 6px;
+  width: 100%;
   box-sizing: border-box;
+}
+
+/* Standalone inline variant for toolbars */
+.inlineContainer {
+  display: inline-flex;
   width: auto;
   flex-shrink: 0;
 }
 
 .label {
+  display: block;
   font-family: var(--font-sans);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--foreground, #111111);
-  margin-bottom: 6px;
-  display: block;
+  line-height: 1.3;
 }
 
 .requiredIndicator {
@@ -27,51 +34,45 @@
 }
 
 /* ==========================================================================
-   Trigger Button (.pill-dropdown-trigger & .btn-popover-trigger)
+   Trigger Button (Matches CMP-02 .customSelectTrigger & Capsule)
    ========================================================================== */
 
 .trigger {
-  display: inline-flex;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  background-color: var(--input-bg, #fafafa);
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-md, 12px);
+  cursor: pointer;
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  font-family: var(--font-sans);
-  font-weight: 500;
-  color: var(--text-body, #374151);
-  background-color: var(--surface, #ffffff);
-  border: 1.5px solid var(--border, #eceef2);
-  cursor: pointer;
+  text-align: left;
   user-select: none;
-  outline: none;
   box-sizing: border-box;
-  white-space: nowrap;
-  width: auto;
+  outline: none;
   transition:
-    background-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
     border-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
-    color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
+    background-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
     box-shadow var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
     transform var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-/* Sizes */
-.size-sm {
-  height: 32px;
-  padding: 0 12px;
-  font-size: 11.5px;
-  gap: 6px;
-}
-
-.size-md {
-  height: 40px;
-  padding: 0 14px;
-  font-size: 12px;
-  gap: 8px;
+/* Inline hug content */
+.inlineTrigger {
+  width: auto;
+  white-space: nowrap;
 }
 
 /* Shapes */
 .shape-pill {
   border-radius: var(--radius-full, 9999px);
+  padding: 0 16px;
 }
 
 .shape-rounded {
@@ -79,82 +80,81 @@
 }
 
 .shape-circle {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border-radius: 50%;
   justify-content: center;
 }
 
+/* Sizing Tiers */
+.size-sm {
+  height: 36px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
 .size-sm.shape-circle {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
 }
 
-/* Variants */
-.variant-default {
-  background-color: var(--surface, #ffffff);
-  border-color: var(--border, #eceef2);
+.size-md {
+  height: 44px;
+  font-size: 13px;
 }
 
-.variant-subtle {
-  background-color: #f7f8fa;
-  border-color: var(--border-subtle, #eceef2);
+/* Hover & Focus (Exactly matching CMP-02) */
+.trigger:hover:not(:disabled):not(.triggerInvalid) {
+  background-color: var(--input-bg-focus, var(--surface, #ffffff));
+  border-color: var(--border-strong, #cbd5e1);
 }
 
-/* Hover & Focus */
-.trigger:hover:not(:disabled) {
-  background-color: #f8fafc;
-  border-color: #cbd5e1;
-  color: var(--foreground, #111111);
-  transform: translateY(-1px);
-}
-
-.trigger:focus-visible {
-  border-color: var(--color-primary, #ff7a00);
-  box-shadow: 0 0 0 3px rgb(255 122 0 / 12%);
-}
-
+.trigger:focus-visible,
 .triggerOpen {
-  background-color: #ffffff !important;
+  background-color: var(--input-bg-focus, var(--surface, #ffffff)) !important;
   border-color: var(--color-primary, #ff7a00) !important;
   box-shadow: 0 0 0 3px rgb(255 122 0 / 12%) !important;
-  color: var(--foreground, #111111) !important;
+  outline: none;
 }
 
 .trigger:disabled {
   background-color: var(--input-disabled-bg, #f3f4f6);
   border-color: var(--border, #eceef2);
-  color: var(--text-disabled, #9ca3af);
+  color: var(--muted-foreground, #9ca3af);
   cursor: not-allowed;
-  transform: none;
-  opacity: 0.7;
+  opacity: 1;
 }
 
 .triggerInvalid {
   border-color: var(--destructive, #ef4444) !important;
-  box-shadow: 0 0 0 3px rgb(239 68 68 / 15%) !important;
+  background-color: var(--input-invalid-bg, #fff8f8) !important;
+  box-shadow: 0 0 0 3px rgb(239 68 68 / 12%) !important;
 }
 
 .triggerContent {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1;
 }
 
 .triggerIcon {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--muted-foreground, #64748b);
+  color: var(--muted-foreground, #9ca3af);
   flex-shrink: 0;
+  transition: color var(--transition-fast, 150ms ease);
 }
 
-.trigger:hover:not(:disabled) .triggerIcon {
-  color: var(--foreground, #111111);
+.trigger:hover:not(:disabled) .triggerIcon,
+.triggerOpen .triggerIcon {
+  color: var(--color-primary, #ff7a00);
 }
 
 .placeholder {
@@ -163,11 +163,12 @@
 }
 
 .chevronIcon {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--muted-foreground, #64748b);
+  color: var(--muted-foreground, #9ca3af);
   flex-shrink: 0;
+  margin-left: 8px;
   transition: transform var(--transition-fast, 150ms ease), color var(--transition-fast, 150ms ease);
 }
 
@@ -181,24 +182,24 @@
 }
 
 /* ==========================================================================
-   Popover Menu Panel (.popover-dropdown-menu)
+   Floating Popover Menu (Matches CMP-02 .popoverMenu)
    ========================================================================== */
 
 .popover {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 6px);
   z-index: 50;
-  min-width: 100%;
-  width: max-content;
-  max-width: 320px;
+  width: 100%;
+  min-width: 240px;
   background-color: var(--surface, #ffffff);
-  border: 1px solid var(--border, #eceef2);
-  border-radius: 16px;
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-lg, 16px);
   padding: 6px;
-  box-shadow: 0 12px 32px rgb(0 0 0 / 10%);
-  overflow: hidden;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 8%), 0 2px 6px rgb(0 0 0 / 3%);
+  max-height: 280px;
+  overflow-y: auto;
   box-sizing: border-box;
-  animation: popoverFadeIn var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
+  animation: dropdownFadeIn 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .align-left {
@@ -209,37 +210,37 @@
   right: 0;
 }
 
-@keyframes popoverFadeIn {
+@keyframes dropdownFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-4px) scale(0.98);
+    transform: translateY(-4px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
 /* Search input inside popover */
 .searchWrapper {
   padding: 4px 6px 8px;
-  border-bottom: 1px solid var(--border-subtle, #f3f4f6);
+  border-bottom: 1.5px solid var(--border-subtle, #f3f4f6);
   margin-bottom: 4px;
 }
 
 .searchInput {
   width: 100%;
-  height: 32px;
+  height: 34px;
   padding: 0 10px;
   font-family: var(--font-sans);
-  font-size: 11.5px;
+  font-size: 12px;
   border-radius: var(--radius-sm, 8px);
-  border: 1px solid var(--border, #cbd5e1);
+  border: 1.5px solid var(--border, #cbd5e1);
   background-color: var(--surface, #ffffff);
   color: var(--foreground, #111111);
   outline: none;
   box-sizing: border-box;
-  transition: border-color var(--transition-fast, 150ms ease);
+  transition: border-color var(--transition-fast, 150ms ease), box-shadow var(--transition-fast, 150ms ease);
 }
 
 .searchInput:focus {
@@ -252,7 +253,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 260px;
+  max-height: 220px;
   overflow-y: auto;
   box-sizing: border-box;
   display: flex;
@@ -269,43 +270,47 @@
   border-radius: 9999px;
 }
 
-/* Option Item (.popover-item) */
+/* Option Item (Matches CMP-02 .dropdownItem) */
 .item {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm, 8px);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--foreground, #111111);
+  background: transparent;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-body, #374151);
-  cursor: pointer;
+  gap: 10px;
+  text-align: left;
   user-select: none;
-  white-space: nowrap;
   box-sizing: border-box;
   transition:
-    background-color var(--transition-fast, 120ms ease),
-    color var(--transition-fast, 120ms ease);
+    background-color var(--transition-fast, 150ms ease),
+    color var(--transition-fast, 150ms ease);
 }
 
 .item:hover,
 .itemFocused {
   background-color: var(--border-subtle, #f3f4f6);
   color: var(--foreground, #111111);
+  outline: none;
 }
 
-/* Selected item: Solid Black Pill DNA khas Estify */
+/* Selected: Peach Soft + Dark Orange + Orange Checkmark (Matching CMP-02) */
 .itemSelected {
-  background-color: var(--color-black-pill, #111111) !important;
-  color: #ffffff !important;
+  background-color: var(--color-primary-soft, #fff7ed) !important;
+  color: var(--color-primary-dark, #c25e00) !important;
   font-weight: 600;
 }
 
 .itemSelected:hover {
-  background-color: var(--color-black-pill, #111111) !important;
-  color: #ffffff !important;
+  background-color: var(--color-primary-soft, #fff7ed) !important;
+  color: var(--color-primary-dark, #c25e00) !important;
 }
 
 .itemDisabled {
@@ -323,7 +328,7 @@
 }
 
 .itemIcon {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
@@ -342,92 +347,95 @@
 }
 
 .itemSelected .itemDescription {
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--color-primary-dark, #c25e00);
+  opacity: 0.85;
 }
 
 .itemRight {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
 .checkIcon {
-  display: inline-flex;
+  color: var(--color-primary, #ff7a00);
+  display: flex;
   align-items: center;
-  justify-content: center;
-  color: #ffffff;
   flex-shrink: 0;
 }
 
 .badgeSlot {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   flex-shrink: 0;
-}
-
-/* Saat item terpilih (#111), badge di dalamnya otomatis kontras putih */
-.itemSelected .badgeSlot span {
-  background: rgba(255, 255, 255, 0.2) !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .emptyMessage {
   padding: 14px 12px;
   text-align: center;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--muted-foreground, #9ca3af);
 }
 
-/* Hint & Error text */
+/* Hint & Error text (Matches CMP-02) */
 .hint {
   font-family: var(--font-sans);
-  font-size: 11px;
-  color: var(--muted-foreground, #64748b);
-  margin-top: 4px;
+  font-size: 11.5px;
+  color: var(--muted-foreground, #6b7280);
+  margin: 0;
+  line-height: 1.4;
 }
 
 .error {
   font-family: var(--font-sans);
-  font-size: 11px;
+  font-size: 11.5px;
+  font-weight: 500;
   color: var(--destructive, #ef4444);
-  margin-top: 4px;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 4px;
+  line-height: 1.4;
 }
 
 /* ==========================================================================
-   Dark Mode Overrides
+   Dark Mode Explicit Overrides (Matches CMP-02 Dark Mode in input.module.css)
    ========================================================================== */
 :global(.dark) .trigger {
-  background-color: #18181b;
+  background-color: #09090b;
   border-color: #27272a;
-  color: #d1d5db;
-}
-
-:global(.dark) .variant-subtle {
-  background-color: #121214;
-  border-color: #27272a;
-}
-
-:global(.dark) .trigger:hover:not(:disabled) {
-  border-color: #3f3f46;
-  background-color: #27272a;
   color: #f4f4f5;
 }
 
+:global(.dark) .trigger:hover:not(:disabled):not(.triggerInvalid) {
+  background-color: #0c0c0e;
+  border-color: #3f3f46;
+}
+
+:global(.dark) .trigger:focus-visible,
+:global(.dark) .triggerOpen {
+  background-color: #0c0c0e !important;
+  border-color: var(--color-primary, #ff8a1e) !important;
+  box-shadow: 0 0 0 3px rgb(255 138 30 / 15%) !important;
+}
+
 :global(.dark) .trigger:disabled {
-  background-color: #121214;
-  border-color: #1f1f23;
-  color: #71717a;
+  background-color: #121214 !important;
+  border-color: #1f1f23 !important;
+  color: #71717a !important;
+}
+
+:global(.dark) .triggerInvalid {
+  background-color: #2a0b0b !important;
+  border-color: var(--destructive, #fca5a5) !important;
+  box-shadow: 0 0 0 3px rgb(252 165 165 / 15%) !important;
 }
 
 :global(.dark) .popover {
   background-color: #18181b;
   border-color: #27272a;
-  box-shadow: 0 16px 40px rgb(0 0 0 / 45%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
 }
 
 :global(.dark) .searchWrapper {
@@ -435,13 +443,13 @@
 }
 
 :global(.dark) .searchInput {
-  background-color: #121214;
+  background-color: #09090b;
   border-color: #27272a;
   color: #f4f4f5;
 }
 
 :global(.dark) .item {
-  color: #d1d5db;
+  color: #f4f4f5;
 }
 
 :global(.dark) .item:hover,
@@ -451,17 +459,10 @@
 }
 
 :global(.dark) .itemSelected {
-  background-color: #27272a !important;
-  border: 1px solid #3f3f46;
+  background-color: #311e08 !important;
   color: #ff8a1e !important;
 }
 
 :global(.dark) .itemSelected .checkIcon {
   color: #ff8a1e;
-}
-
-:global(.dark) .itemSelected .badgeSlot span {
-  background: rgba(255, 138, 30, 0.18) !important;
-  color: #ff8a1e !important;
-  border-color: rgba(255, 138, 30, 0.3) !important;
 }

@@ -85,6 +85,7 @@ export interface PopoverSelectProps {
   variant?: "default" | "subtle";
   triggerVariant?: "pill" | "rounded"; // alias for shape
   align?: "left" | "right";
+  inline?: boolean;
   disabled?: boolean;
   required?: boolean;
   className?: string;
@@ -108,6 +109,7 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
       error,
       hint,
       id,
+      inline,
       label,
       multiple = false,
       name,
@@ -138,6 +140,7 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
 
     const resolvedShape = propShape ?? (triggerVariant === "rounded" ? "rounded" : "pill");
     const isCircle = resolvedShape === "circle";
+    const isInline = inline ?? !label;
 
     // Internal value state for uncontrolled mode
     const [internalValue, setInternalValue] = useState<string | string[]>(() => {
@@ -318,7 +321,16 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
     const describedBy = [errorId, hintId].filter(Boolean).join(" ") || undefined;
 
     return (
-      <div className={[styles.container, className].filter(Boolean).join(" ")} ref={containerRef}>
+      <div
+        className={[
+          styles.container,
+          isInline ? styles.inlineContainer : null,
+          className,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        ref={containerRef}
+      >
         {label ? (
           <label className={styles.label} id={labelId}>
             {label}
@@ -352,6 +364,7 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
           aria-required={required}
           className={[
             styles.trigger,
+            isInline ? styles.inlineTrigger : null,
             styles[`size-${size}`],
             styles[`shape-${resolvedShape}`],
             styles[`variant-${variant}`],
