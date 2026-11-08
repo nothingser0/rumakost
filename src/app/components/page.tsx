@@ -935,11 +935,12 @@ export default function ComponentsShowcasePage() {
             >
               {/* Sisi Kiri: Filter Kapsul Mandiri */}
               <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10 }}>
-                {/* Search Capsule Input (CMP-02) */}
-                <div style={{ width: 220 }}>
+                {/* Search Capsule Input (CMP-02) diselaraskan rata 40px */}
+                <div style={{ width: 220, display: "flex", alignItems: "center" }}>
                   <Input
                     onChange={(e) => setSearchValue(e.target.value)}
                     placeholder="Cari kamar..."
+                    style={{ height: 40 }}
                     value={searchValue}
                     variant="capsule"
                   />
@@ -1001,16 +1002,84 @@ export default function ComponentsShowcasePage() {
                 />
               </div>
 
-              {/* Sisi Kanan: Action Button (CMP-01) */}
+              {/* Sisi Kanan: Action Button (CMP-01) diselaraskan rata 40px (size="md") */}
               <div>
-                <Button leftIcon={<PlusIcon />} size="sm" variant="primary-orange">
+                <Button leftIcon={<PlusIcon />} size="md" variant="primary-orange">
                   Tambah Kamar
                 </Button>
               </div>
             </div>
           </div>
 
-          {/* 2. SKALA UKURAN & BENTUK TRIGGER */}
+          {/* 2. PRATINJAU MENU TERBUKA & OPSI BER-BADGE (DEFAULT OPEN STATE) */}
+          <div style={{ marginBottom: 28 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                color: "var(--muted-foreground)",
+                marginBottom: 10,
+              }}
+            >
+              2. Pratinjau Popover Terbuka & Opsi Ber-Badge (Preview Open State)
+            </div>
+            <p style={{ margin: "0 0 14px", color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Panel popover melayang dengan integrasi Badge (CMP-03), centang aktif oranye khas Estify, dan navigasi ramah keyboard.
+            </p>
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 32,
+                padding: "20px 24px 280px",
+                backgroundColor: "var(--background)",
+                borderRadius: 16,
+                border: "1.5px solid var(--border)",
+                position: "relative",
+              }}
+            >
+              <div>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "var(--foreground)", display: "block", marginBottom: 8 }}>
+                  Status Kamar Terbuka (Default Open):
+                </span>
+                <PopoverSelect
+                  defaultOpen
+                  options={[
+                    { value: "all", label: "Semua Unit", badge: <Badge size="sm" variant="dark">15</Badge> },
+                    { value: "terisi", label: "Terisi · Lunas", badge: <Badge size="sm" variant="success">8</Badge> },
+                    { value: "kosong", label: "Kosong · Siap Huni", badge: <Badge size="sm" variant="brand">3</Badge> },
+                    { value: "terlambat", label: "Menunggak Bayar", badge: <Badge size="sm" variant="danger">3</Badge> },
+                    { value: "perbaikan", label: "Dalam Pemeliharaan", badge: <Badge size="sm" variant="warning">1</Badge> },
+                  ]}
+                  triggerIcon={<SlidersIcon />}
+                  value="terisi"
+                />
+              </div>
+
+              <div>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "var(--foreground)", display: "block", marginBottom: 8 }}>
+                  Gedung Kost dengan Mini Search (Default Open):
+                </span>
+                <PopoverSelect
+                  defaultOpen
+                  options={[
+                    { value: "semua", label: "Semua Gedung", badge: <Badge size="sm" variant="neutral">3</Badge> },
+                    { value: "gd-a", label: "Gedung A (Utama)", badge: <Badge size="sm" variant="brand">10</Badge> },
+                    { value: "gd-b", label: "Gedung B (Paviliun)", badge: <Badge size="sm" variant="success">5</Badge> },
+                  ]}
+                  searchable
+                  searchPlaceholder="Cari gedung..."
+                  triggerIcon={<LayersIcon />}
+                  value="gd-a"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 3. SKALA UKURAN & BENTUK TRIGGER */}
           <div style={{ marginBottom: 26 }}>
             <div
               style={{
@@ -1022,7 +1091,7 @@ export default function ComponentsShowcasePage() {
                 marginBottom: 10,
               }}
             >
-              2. Skala Ukuran (Tiers) & Bentuk Trigger Kapsul
+              3. Skala Ukuran (Tiers) & Bentuk Trigger Kapsul
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12 }}>
               <PopoverSelect
@@ -1069,7 +1138,7 @@ export default function ComponentsShowcasePage() {
             </div>
           </div>
 
-          {/* 3. MULTI-SELECT & MINI SEARCH DI DALAM POPOVER */}
+          {/* 4. MULTI-SELECT & MINI SEARCH DI DALAM POPOVER */}
           <div style={{ borderTop: "1.5px solid var(--border)", paddingTop: 18 }}>
             <div
               style={{
@@ -1081,7 +1150,7 @@ export default function ComponentsShowcasePage() {
                 marginBottom: 10,
               }}
             >
-              3. Opsi Multi-Select & Mini Search Dinamis
+              4. Opsi Multi-Select & Mini Search Dinamis
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
               <PopoverSelect
