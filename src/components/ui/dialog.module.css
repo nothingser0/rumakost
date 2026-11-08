@@ -1,0 +1,260 @@
+/* ==========================================================================
+   CMP-05: Modal & Dialog Overlay
+   Acuan: COMPONENT_REQUIREMENTS.md §CMP-05, DESIGN.md §7.3 & §3.1
+   WCAG 2.2 AA Modal Dialog Pattern & Zero Browser Alert Guarantee
+   ========================================================================== */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(17, 17, 17, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: var(--z-modal-backdrop, 40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4, 16px);
+  box-sizing: border-box;
+  overflow-y: auto;
+  animation: backdropFadeIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--surface, #ffffff);
+  border: 1.5px solid var(--border, #eceef2);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.16),
+    0 2px 6px rgba(0, 0, 0, 0.04);
+  z-index: var(--z-modal-dialog, 50);
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 32px);
+  margin: auto;
+  animation: dialogZoomIn 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modal Sizes (DESIGN.md §7.3) */
+.size-sm {
+  max-width: 480px;
+}
+
+.size-md {
+  max-width: 580px;
+}
+
+.size-lg {
+  max-width: 840px;
+}
+
+.size-xl {
+  max-width: 1040px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4, 16px);
+  padding: 20px 24px 16px;
+  border-bottom: 1.5px solid var(--border-subtle, #f3f4f6);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  color: var(--foreground, #111111);
+  margin: 0;
+}
+
+.description {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted-foreground, #71717a);
+  margin: 0;
+}
+
+/* Close button (.btn-circle 34px - Aligned with CMP-01) */
+.closeButton {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface, #ffffff);
+  border: 1.5px solid var(--border, #eceef2);
+  color: var(--muted-foreground, #71717a);
+  cursor: pointer;
+  box-sizing: border-box;
+  outline: none;
+  transition:
+    background-color var(--transition-fast, 150ms ease),
+    border-color var(--transition-fast, 150ms ease),
+    color var(--transition-fast, 150ms ease),
+    transform var(--transition-fast, 150ms ease);
+}
+
+.closeButton:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--foreground, #111111);
+  transform: translateY(-1px);
+}
+
+.closeButton:active {
+  background-color: #e2e8f0;
+  border-color: #94a3b8;
+  transform: scale(0.96);
+}
+
+.closeButton:focus-visible {
+  outline: 3px solid var(--ring, #ff7a00);
+  outline-offset: 2px;
+}
+
+/* Body */
+.body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--text-body, #4b5563);
+  line-height: 1.6;
+}
+
+.body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong, #cbd5e1);
+  border-radius: 9999px;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3, 12px);
+  padding: 16px 24px 20px;
+  border-top: 1.5px solid var(--border-subtle, #f3f4f6);
+  background-color: var(--background, #f7f8fa);
+  border-bottom-left-radius: var(--radius-xl, 20px);
+  border-bottom-right-radius: var(--radius-xl, 20px);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Keyframe Animations */
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialogZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .card,
+  .closeButton {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   Dark Mode Explicit Overrides
+   ========================================================================== */
+:global(.dark) .backdrop,
+:global([data-theme="dark"]) .backdrop {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+:global(.dark) .card,
+:global([data-theme="dark"]) .card {
+  background-color: #18181b;
+  border-color: #27272a;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+}
+
+:global(.dark) .header,
+:global([data-theme="dark"]) .header {
+  border-bottom-color: #27272a;
+}
+
+:global(.dark) .title,
+:global([data-theme="dark"]) .title {
+  color: #f4f4f5;
+}
+
+:global(.dark) .description,
+:global([data-theme="dark"]) .description {
+  color: #a1a1aa;
+}
+
+:global(.dark) .closeButton,
+:global([data-theme="dark"]) .closeButton {
+  background-color: #18181b;
+  border-color: #27272a;
+  color: #a1a1aa;
+}
+
+:global(.dark) .closeButton:hover,
+:global([data-theme="dark"]) .closeButton:hover {
+  background-color: #27272a;
+  border-color: #3f3f46;
+  color: #f4f4f5;
+}
+
+:global(.dark) .body,
+:global([data-theme="dark"]) .body {
+  color: #d1d5db;
+}
+
+:global(.dark) .footer,
+:global([data-theme="dark"]) .footer {
+  background-color: #121214;
+  border-top-color: #27272a;
+}

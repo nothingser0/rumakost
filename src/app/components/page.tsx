@@ -8,6 +8,16 @@ import {
   TicketStatusBadge,
 } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  ConfirmDialog,
+} from "@/components/ui/dialog";
 import { PopoverSelect } from "@/components/ui/popover-select";
 import {
   Checkbox,
@@ -134,6 +144,9 @@ export default function ComponentsShowcasePage() {
   const [selectedPeriod, setSelectedPeriod] = useState("current");
   const [selectedRoomTypes, setSelectedRoomTypes] = useState<string[]>(["deluxe", "vip"]);
   const [selectedRoomStatus, setSelectedRoomStatus] = useState("all");
+  const [isAddRoomModalOpen, setIsAddRoomModalOpen] = useState(false);
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   const toggleDark = () => {
     setIsDark((prev) => {
@@ -1004,7 +1017,12 @@ export default function ComponentsShowcasePage() {
 
               {/* Sisi Kanan: Action Button (CMP-01) diselaraskan rata 40px (size="md") */}
               <div>
-                <Button leftIcon={<PlusIcon />} size="md" variant="primary-orange">
+                <Button
+                  leftIcon={<PlusIcon />}
+                  onClick={() => setIsAddRoomModalOpen(true)}
+                  size="md"
+                  variant="primary-orange"
+                >
                   Tambah Kamar
                 </Button>
               </div>
@@ -1169,6 +1187,174 @@ export default function ComponentsShowcasePage() {
               />
             </div>
           </div>
+        </section>
+
+        {/* SECTION 5: MODAL & DIALOG OVERLAY (CMP-05) */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1.5px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div style={{ marginBottom: 18 }}>
+            <h2
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                margin: "0 0 3px",
+                letterSpacing: "-0.2px",
+              }}
+            >
+              CMP-05: Modal & Dialog Overlay (`src/components/ui/dialog.tsx`)
+            </h2>
+            <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Dialog modal terpusat (Focus Trap, Escape Key, Backdrop Blur, Zero Browser Alert, dan Skala Tiers Baku).
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+            <Button
+              onClick={() => setIsAddRoomModalOpen(true)}
+              variant="primary-orange"
+            >
+              Buka Form Tambah Kamar (580px)
+            </Button>
+
+            <Button
+              onClick={() => setIsConfirmDeleteModalOpen(true)}
+              variant="subtle-danger"
+            >
+              Buka Konfirmasi Hapus (480px)
+            </Button>
+
+            <Button
+              onClick={() => setIsDetailModalOpen(true)}
+              variant="secondary-ghost"
+            >
+              Buka Rincian Komprehensif (840px)
+            </Button>
+          </div>
+
+          {/* Modal 1: Form Tambah Kamar (Size: md - 580px) */}
+          <Dialog
+            onOpenChange={setIsAddRoomModalOpen}
+            open={isAddRoomModalOpen}
+            size="md"
+          >
+            <DialogHeader>
+              <DialogTitle>Tambah Kamar Baru</DialogTitle>
+              <DialogDescription>
+                Daftarkan nomor unit kamar dan tentukan tarif sewa bulanan.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogBody>
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <Input
+                  hint="Contoh: A-101 atau B-205."
+                  label="Nomor Kamar"
+                  placeholder="Kamar A-01"
+                  required
+                />
+                <CurrencyInput
+                  hint="Tarif dasar sebelum biaya fasilitas tambahan."
+                  label="Harga Sewa Bulanan"
+                  onValueChange={() => {}}
+                  value={1500000}
+                />
+                <Select
+                  label="Lantai Gedung"
+                  options={[
+                    { value: "1", label: "Lantai 1 (Blok Utama)" },
+                    { value: "2", label: "Lantai 2 (Sayap Timur)" },
+                    { value: "3", label: "Lantai 3 (Paviliun)" },
+                  ]}
+                  value="1"
+                />
+              </div>
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose>Batal</DialogClose>
+              <Button
+                onClick={() => setIsAddRoomModalOpen(false)}
+                variant="primary-orange"
+              >
+                Simpan Unit
+              </Button>
+            </DialogFooter>
+          </Dialog>
+
+          {/* Modal 2: ConfirmDialog Hapus Unit (Size: sm - 480px) */}
+          <ConfirmDialog
+            cancelText="Batal"
+            confirmText="Ya, Hapus Kamar"
+            description="Kamar A-01 akan dihapus dari sistem. Tindakan ini tidak dapat dibatalkan jika ada riwayat kontrak aktif."
+            onConfirm={() => setIsConfirmDeleteModalOpen(false)}
+            onOpenChange={setIsConfirmDeleteModalOpen}
+            open={isConfirmDeleteModalOpen}
+            title="Hapus Unit Kamar A-01?"
+            variant="danger"
+          />
+
+          {/* Modal 3: Rincian Sewa Komprehensif (Size: lg - 840px) */}
+          <Dialog
+            onOpenChange={setIsDetailModalOpen}
+            open={isDetailModalOpen}
+            size="lg"
+          >
+            <DialogHeader>
+              <DialogTitle>Rincian Kontrak Sewa Unit A-102</DialogTitle>
+              <DialogDescription>
+                Informasi penyewa, masa berlaku kontrak, dan status tagihan berjalan.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogBody>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
+                    Status Kamar
+                  </span>
+                  <div>
+                    <RoomStatusBadge status="terisi" />
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
+                    Status Pembayaran
+                  </span>
+                  <div>
+                    <PaymentStatusBadge status="LUNAS" />
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
+                    Nama Penghuni
+                  </span>
+                  <span style={{ fontSize: 13.5, fontWeight: 600 }}>Budi Santoso</span>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
+                    Periode Kontrak
+                  </span>
+                  <span style={{ fontSize: 13.5, fontWeight: 600 }}>01 Nov 2026 – 31 Okt 2027</span>
+                </div>
+              </div>
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose>Tutup</DialogClose>
+              <Button
+                onClick={() => setIsDetailModalOpen(false)}
+                variant="primary-black"
+              >
+                Cetak Kuitansi
+              </Button>
+            </DialogFooter>
+          </Dialog>
         </section>
       </div>
     </main>
