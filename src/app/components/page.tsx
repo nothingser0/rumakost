@@ -1,6 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import {
+  Badge,
+  PaymentStatusBadge,
+  RoomStatusBadge,
+  TicketStatusBadge,
+} from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Checkbox,
@@ -643,6 +649,204 @@ export default function ComponentsShowcasePage() {
                   name="paymentMethodGroup"
                   onChange={() => setSelectedMethod("deposit")}
                 />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 3: STATUS BADGE & PILL */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1.5px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+          }}
+        >
+          <div style={{ marginBottom: 20 }}>
+            <h2
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                margin: "0 0 3px",
+                letterSpacing: "-0.2px",
+              }}
+            >
+              CMP-03: Status Badge & Pill (`src/components/ui/badge.tsx`)
+            </h2>
+            <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Label visual status semantik dengan ikon Lucide murni (Zero-Emoji), WCAG AA contrast, dan token Estify.
+            </p>
+          </div>
+
+          {/* 1. Varian Semantik Baku */}
+          <div style={{ marginBottom: 24 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                color: "var(--muted-foreground)",
+                marginBottom: 10,
+              }}
+            >
+              1. Varian Semantik Baku (CMP-03 & DESIGN.md §7.4)
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
+              <Badge showDefaultIcon variant="success">
+                Lunas · Terverifikasi
+              </Badge>
+              <Badge showDefaultIcon variant="warning">
+                Jatuh Tempo (7 Hari)
+              </Badge>
+              <Badge showDefaultIcon variant="danger">
+                Tagihan Terlambat
+              </Badge>
+              <Badge showDefaultIcon variant="brand">
+                Kamar Unggulan
+              </Badge>
+              <Badge showDefaultIcon variant="info">
+                Sedang Dikerjakan
+              </Badge>
+              <Badge showDefaultIcon variant="neutral">
+                Kamar Kosong
+              </Badge>
+              <Badge showDefaultIcon variant="dark">
+                Owner Access
+              </Badge>
+            </div>
+          </div>
+
+          {/* 2. Ukuran & Bentuk */}
+          <div style={{ marginBottom: 24 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                color: "var(--muted-foreground)",
+                marginBottom: 10,
+              }}
+            >
+              2. Skala Ukuran (Tiers) & Bentuk (Shapes)
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+              <Badge shape="pill" showDefaultIcon size="lg" variant="success">
+                Large 28px (Hero / Rekap)
+              </Badge>
+              <Badge shape="pill" showDefaultIcon size="md" variant="success">
+                Regular 24px (Default)
+              </Badge>
+              <Badge shape="pill" showDefaultIcon size="sm" variant="success">
+                Micro 20px (Tabel)
+              </Badge>
+              <Badge shape="rounded" showDefaultIcon size="md" variant="brand">
+                Rounded 6px (Urgency Tag)
+              </Badge>
+              <Badge shape="rounded" showDefaultIcon size="sm" variant="danger">
+                Urgent · High
+              </Badge>
+            </div>
+          </div>
+
+          {/* 3. Indikator Dot, Pulsing, Counter & Interaktif */}
+          <div style={{ marginBottom: 24 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                color: "var(--muted-foreground)",
+                marginBottom: 10,
+              }}
+            >
+              3. Indikator Dot, Animasi Berkedip, Counter & Interaktif
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+              <Badge dot variant="neutral">
+                Dot Statis
+              </Badge>
+              <Badge dot pulsing variant="danger">
+                Menunggak (Pulsing)
+              </Badge>
+              <Badge dot pulsing variant="warning">
+                Verifikasi Berjalan
+              </Badge>
+              <Badge count={8} variant="brand">
+                Unit Tersedia
+              </Badge>
+              <Badge count={3} variant="dark">
+                Tiket Tertunda
+              </Badge>
+              <Badge
+                onClick={() => alert("Filter status diklik!")}
+                showDefaultIcon
+                variant="info"
+              >
+                Klik untuk Filter (Interaktif)
+              </Badge>
+            </div>
+          </div>
+
+          {/* 4. Domain Status Helpers (RumaKost Specific) */}
+          <div style={{ borderTop: "1.5px solid var(--border)", paddingTop: 18 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                color: "var(--muted-foreground)",
+                marginBottom: 12,
+              }}
+            >
+              4. Domain Status Helpers (Terstandarisasi untuk Kamar, Pembayaran, Tiket)
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 18 }}>
+              {/* Kamar */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "var(--foreground)" }}>
+                  Status Kamar (`RoomStatusBadge`):
+                </span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  <RoomStatusBadge status="terisi" />
+                  <RoomStatusBadge status="kosong" />
+                  <RoomStatusBadge status="pemeliharaan" />
+                  <RoomStatusBadge status="menunggubayar" />
+                </div>
+              </div>
+
+              {/* Tagihan / Pembayaran */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "var(--foreground)" }}>
+                  Status Pembayaran (`PaymentStatusBadge`):
+                </span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  <PaymentStatusBadge status="LUNAS" />
+                  <PaymentStatusBadge status="PENDING" />
+                  <PaymentStatusBadge status="SEBAGIAN" />
+                  <PaymentStatusBadge status="JATUH_TEMPO" />
+                  <PaymentStatusBadge status="TERLAMBAT" />
+                  <PaymentStatusBadge status="DITOLAK" />
+                </div>
+              </div>
+
+              {/* Tiket */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "var(--foreground)" }}>
+                  Status Tiket (`TicketStatusBadge`):
+                </span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  <TicketStatusBadge status="DRAFT" />
+                  <TicketStatusBadge status="SUBMITTED" />
+                  <TicketStatusBadge status="IN_PROGRESS" />
+                  <TicketStatusBadge status="RESOLVED" />
+                  <TicketStatusBadge status="CANCELLED" />
+                </div>
               </div>
             </div>
           </div>

@@ -1,0 +1,196 @@
+/* ==========================================================================
+   CMP-03: Status Badge & Pill Component (Estify Visual DNA)
+   ========================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+  user-select: none;
+  flex-shrink: 0;
+  transition:
+    background-color var(--transition-fast, 150ms ease),
+    border-color var(--transition-fast, 150ms ease),
+    color var(--transition-fast, 150ms ease),
+    box-shadow var(--transition-fast, 150ms ease),
+    transform var(--transition-fast, 150ms ease);
+}
+
+/* ==========================================================================
+   Sizes (DESIGN.md §7.4)
+   ========================================================================== */
+.size-sm {
+  height: 20px;
+  padding: 2px 8px;
+  font-size: 10px;
+  letter-spacing: -0.1px;
+}
+
+.size-md {
+  height: 24px;
+  padding: 4px 10px;
+  font-size: 11px;
+  letter-spacing: -0.1px;
+}
+
+.size-lg {
+  height: 28px;
+  padding: 6px 14px;
+  font-size: 12px;
+  letter-spacing: -0.15px;
+}
+
+/* ==========================================================================
+   Shapes
+   ========================================================================== */
+.shape-pill {
+  border-radius: var(--radius-full, 9999px);
+}
+
+.shape-rounded {
+  border-radius: var(--radius-sm, 6px);
+}
+
+/* ==========================================================================
+   Semantic Status Variants (COMPONENT_REQUIREMENTS.md CMP-03 & DESIGN.md)
+   ========================================================================== */
+.variant-success {
+  background-color: var(--status-success-bg, #dcfce7);
+  color: var(--status-success-text, #16a34a);
+  border: 1px solid #bbf7d0;
+}
+
+.variant-warning {
+  background-color: var(--status-warning-bg, #fef3c7);
+  color: var(--status-warning-text, #d97706);
+  border: 1px solid #fde68a;
+}
+
+.variant-danger {
+  background-color: var(--status-danger-bg, #fee2e2);
+  color: var(--status-danger-text, #ef4444);
+  border: 1px solid #fecdd3;
+}
+
+.variant-neutral {
+  background-color: var(--status-info-bg, #f3f4f6);
+  color: var(--status-info-text, #4b5563);
+  border: 1px solid #e5e7eb;
+}
+
+.variant-brand {
+  background-color: var(--brand-primary-light, #fff7ed);
+  color: var(--brand-primary, #ff7a00);
+  border: 1px solid var(--brand-primary-border, #ffedd5);
+}
+
+.variant-info {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.variant-dark {
+  background-color: var(--color-black-pill, #111111);
+  color: #ffffff;
+  border: 1px solid var(--color-black-pill, #111111);
+}
+
+/* ==========================================================================
+   Interactive / Clickable State
+   ========================================================================== */
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.97);
+}
+
+.clickable:active {
+  transform: scale(0.97);
+}
+
+.clickable:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(255 122 0 / 30%);
+}
+
+/* ==========================================================================
+   Icon Slot
+   ========================================================================== */
+.iconSlot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.size-sm .iconSlot svg {
+  width: 11px;
+  height: 11px;
+}
+
+.size-md .iconSlot svg {
+  width: 12px;
+  height: 12px;
+}
+
+.size-lg .iconSlot svg {
+  width: 13.5px;
+  height: 13.5px;
+}
+
+/* ==========================================================================
+   Indicator Dot & Pulsing
+   ========================================================================== */
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.pulsingDot {
+  animation: badgeDotPulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes badgeDotPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+/* ==========================================================================
+   Count Counter Pill (inside badge)
+   ========================================================================== */
+.countPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 9999px;
+  background-color: rgb(0 0 0 / 8%);
+  margin-left: 2px;
+}
+
+.variant-dark .countPill {
+  background-color: rgb(255 255 255 / 20%);
+  color: #ffffff;
+}

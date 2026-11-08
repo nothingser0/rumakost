@@ -455,6 +455,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       }
     };
 
+    const handleNativeSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedValue(e.target.value);
+      onChange?.(e);
+      onValueChange?.(e.target.value);
+    };
+
     return (
       <div className={[styles.field, containerClassName].filter(Boolean).join(" ")}>
         {label ? (
@@ -474,11 +480,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             aria-hidden="true"
             className={styles.visuallyHiddenSelect}
-            defaultValue={defaultValue}
             disabled={disabled}
             id={selectId}
             name={name}
-            onChange={onChange ?? (() => {})}
+            onChange={handleNativeSelectChange}
             required={required}
             tabIndex={-1}
             value={value !== undefined ? value : selectedValue}
@@ -699,6 +704,30 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
 
 CurrencyInput.displayName = "CurrencyInput";
 
+function parseIsoDate(str: string): { year: number; month: number; day: number } | null {
+  if (!str) return null;
+  const parts = str.split("-").map(Number);
+  if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) {
+    return { year: parts[0], month: parts[1] - 1, day: parts[2] };
+  }
+  return null;
+}
+
+function getDaysInMonth(year: number, month: number): number {
+  if (month === 1) {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28;
+  }
+  return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month] ?? 31;
+}
+
+function getFirstDayOfWeek(year: number, month: number): number {
+  const t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+  let y = year;
+  const m = month + 1;
+  if (m < 3) y -= 1;
+  return (y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) + t[m - 1] + 1) % 7;
+}
+
 export interface DatePickerProps {
   id?: string;
   name?: string;
@@ -745,34 +774,34 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     const [selectedDateStr, setSelectedDateStr] = useState<string>(initialDateStr);
     const [isOpen, setIsOpen] = useState(false);
 
-    const [viewYear, setViewYear] = useState<number>(() => {
-      if (initialDateStr) {
-        const parts = initialDateStr.split("-").map(Number);
-        if (parts.length === 3 && !isNaN(parts[0])) return parts[0];
-      }
-      return new Date().getFullYear();
-    });
-
-    const [viewMonth, setViewMonth] = useState<number>(() => {
-      if (initialDateStr) {
-        const parts = initialDateStr.split("-").map(Number);
-        if (parts.length === 3 && !isNaN(parts[1])) return parts[1] - 1;
-      }
-      return new Date().getMonth();
-    });
+    const initialParsed = parseIsoDate(initialDateStr);
+    const [viewYear, setViewYear] = useState<number>(() => initialParsed?.year ?? 2026);
+    const [viewMonth, setViewMonth] = useState<number>(() => initialParsed?.month ?? 10);
+    const [todayInfo, setTodayInfo] = useState<{ year: number; month: number; day: number } | null>(null);
 
     const containerRef = useRef<HTMLDivElement>(null);
     const hiddenInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+      const now = new Date();
+      const currentY = now.getFullYear();
+      const currentM = now.getMonth();
+      const currentD = now.getDate();
+      setTodayInfo({ year: currentY, month: currentM, day: currentD });
+
+      if (!initialDateStr) {
+        setViewYear(currentY);
+        setViewMonth(currentM);
+      }
+    }, [initialDateStr]);
+
+    useEffect(() => {
       if (value !== undefined) {
         setSelectedDateStr(value);
-        if (value) {
-          const parts = value.split("-").map(Number);
-          if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-            setViewYear(parts[0]);
-            setViewMonth(parts[1] - 1);
-          }
+        const parsed = parseIsoDate(value);
+        if (parsed) {
+          setViewYear(parsed.year);
+          setViewMonth(parsed.month);
         }
       }
     }, [value]);
@@ -795,11 +824,10 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       };
     }, [isOpen]);
 
-    const activeDate = selectedDateStr ? new Date(`${selectedDateStr}T00:00:00`) : null;
-    const isDateValid = activeDate && !isNaN(activeDate.getTime());
+    const activeParsed = parseIsoDate(selectedDateStr);
 
-    const displayText = isDateValid
-      ? `${activeDate.getDate()} ${RUMA_MONTH_NAMES[activeDate.getMonth()]} ${activeDate.getFullYear()}`
+    const displayText = activeParsed
+      ? `${activeParsed.day} ${RUMA_MONTH_NAMES[activeParsed.month]} ${activeParsed.year}`
       : "";
 
     const handleSelectDate = (y: number, m: number, d: number) => {
@@ -860,17 +888,19 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       }
     };
 
-    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-    const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay();
-    const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+    const daysInMonth = getDaysInMonth(viewYear, viewMonth);
+    const firstDayIndex = getFirstDayOfWeek(viewYear, viewMonth);
+    const prevMonth = viewMonth === 0 ? 11 : viewMonth - 1;
+    const prevYear = viewMonth === 0 ? viewYear - 1 : viewYear;
+    const daysInPrevMonth = getDaysInMonth(prevYear, prevMonth);
 
-    const today = new Date();
-    const isCurrentMonthView = today.getFullYear() === viewYear && today.getMonth() === viewMonth;
-    const todayDate = today.getDate();
+    const isCurrentMonthView =
+      todayInfo !== null && todayInfo.year === viewYear && todayInfo.month === viewMonth;
+    const todayDate = todayInfo ? todayInfo.day : null;
 
-    const selYear = activeDate ? activeDate.getFullYear() : null;
-    const selMonth = activeDate ? activeDate.getMonth() : null;
-    const selDate = activeDate ? activeDate.getDate() : null;
+    const selYear = activeParsed ? activeParsed.year : null;
+    const selMonth = activeParsed ? activeParsed.month : null;
+    const selDate = activeParsed ? activeParsed.day : null;
 
     const prevDays: number[] = [];
     for (let i = firstDayIndex - 1; i >= 0; i--) {
@@ -1049,8 +1079,8 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
                   </button>
                 </div>
                 <span className={styles.rdpNoteText}>
-                  {activeDate
-                    ? `${activeDate.getDate()} ${RUMA_MONTH_SHORT[activeDate.getMonth()]} ${activeDate.getFullYear()}`
+                  {activeParsed
+                    ? `${activeParsed.day} ${RUMA_MONTH_SHORT[activeParsed.month]} ${activeParsed.year}`
                     : ""}
                 </span>
               </div>

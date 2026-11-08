@@ -84,19 +84,19 @@
 .variant-primary-black {
   background-color: var(--color-black-pill, #111111);
   color: #ffffff;
-  border-color: var(--color-black-pill, #111111);
+  border-color: #262626;
 }
 
 .variant-primary-black:hover:not(:disabled):not([aria-disabled="true"]) {
-  background-color: #262626;
-  border-color: #262626;
+  background-color: #000000;
+  border-color: #000000;
   color: #ffffff;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .variant-primary-black:active:not(:disabled):not([aria-disabled="true"]) {
-  background-color: #0a0a0a;
-  border-color: #0a0a0a;
+  background-color: #000000;
+  border-color: #000000;
   transform: scale(0.97);
 }
 
@@ -107,15 +107,15 @@
 }
 
 .variant-primary-orange:hover:not(:disabled):not([aria-disabled="true"]) {
-  background-color: var(--btn-primary-hover-bg, #e06300);
-  border-color: var(--btn-primary-hover-border, #b84e00);
+  background-color: #d95f00;
+  border-color: #b84e00;
   color: #ffffff;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .variant-primary-orange:active:not(:disabled):not([aria-disabled="true"]) {
-  background-color: var(--btn-primary-active-bg, #d45a00);
-  border-color: var(--btn-primary-active-border, #a34400);
+  background-color: #c25300;
+  border-color: #943d00;
   transform: scale(0.97);
 }
 
@@ -126,14 +126,14 @@
 }
 
 .variant-secondary-ghost:hover:not(:disabled):not([aria-disabled="true"]) {
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   color: var(--foreground, #111111);
   border-color: #cbd5e1;
   transform: translateY(-1px);
 }
 
 .variant-secondary-ghost:active:not(:disabled):not([aria-disabled="true"]) {
-  background-color: #f1f5f9;
+  background-color: #e2e8f0;
   border-color: #94a3b8;
   transform: scale(0.97);
 }
@@ -145,14 +145,14 @@
 }
 
 .variant-subtle-danger:hover:not(:disabled):not([aria-disabled="true"]) {
-  background-color: #fee2e2;
+  background-color: #fecaca;
   color: #dc2626;
   border-color: #f87171;
   transform: translateY(-1px);
 }
 
 .variant-subtle-danger:active:not(:disabled):not([aria-disabled="true"]) {
-  background-color: #fecaca;
+  background-color: #fca5a5;
   border-color: #ef4444;
   transform: scale(0.97);
 }
