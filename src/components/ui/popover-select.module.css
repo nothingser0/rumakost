@@ -169,9 +169,12 @@
   transition: color var(--transition-fast, 150ms ease);
 }
 
-.trigger:hover:not(:disabled) .triggerIcon,
+.trigger:hover:not(:disabled) .triggerIcon {
+  color: var(--foreground, #111111);
+}
+
 .triggerOpen .triggerIcon {
-  color: var(--color-primary, #ff7a00);
+  color: var(--foreground, #111111);
 }
 
 .placeholder {
@@ -194,7 +197,7 @@
 
 .chevronOpen {
   transform: rotate(180deg);
-  color: var(--color-primary, #ff7a00) !important;
+  color: var(--foreground, #111111) !important;
 }
 
 /* ==========================================================================
@@ -431,6 +434,17 @@
 :global([data-theme="dark"]) .trigger:hover:not(:disabled):not(.triggerInvalid) {
   background-color: #27272a;
   border-color: #3f3f46;
+}
+
+:global(.dark) .trigger:hover:not(:disabled) .triggerIcon,
+:global([data-theme="dark"]) .trigger:hover:not(:disabled) .triggerIcon,
+:global(.dark) .triggerOpen .triggerIcon,
+:global([data-theme="dark"]) .triggerOpen .triggerIcon,
+:global(.dark) .trigger:hover:not(:disabled) .chevronIcon,
+:global([data-theme="dark"]) .trigger:hover:not(:disabled) .chevronIcon,
+:global(.dark) .chevronOpen,
+:global([data-theme="dark"]) .chevronOpen {
+  color: #f4f4f5 !important;
 }
 
 :global(.dark) .trigger:focus-visible,
