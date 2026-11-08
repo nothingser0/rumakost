@@ -1,22 +1,22 @@
 /* ==========================================================================
-   CMP-04: Custom Popover Dropdown (Estify Visual DNA)
-   Diselaraskan 100% dengan CMP-02 (Input & Form Controls) & COMPONENT_REQUIREMENTS.md
+   CMP-04: Custom Popover Dropdown (Toolbar Filter Pill DNA)
+   Acuan: WF-02-dashboard.html, WF-03-kamar.html & COMPONENT_REQUIREMENTS.md
    ========================================================================== */
 
 .container {
   position: relative;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   gap: 6px;
-  width: 100%;
+  width: auto;
   box-sizing: border-box;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
-/* Standalone inline variant for toolbars */
-.inlineContainer {
-  display: inline-flex;
-  width: auto;
-  flex-shrink: 0;
+.fullWidth {
+  display: flex;
+  width: 100%;
 }
 
 .label {
@@ -34,28 +34,30 @@
 }
 
 /* ==========================================================================
-   Trigger Button (Matches CMP-02 .customSelectTrigger & Capsule)
+   Trigger Button (.pill-dropdown-trigger & .btn-popover-trigger)
    ========================================================================== */
 
 .trigger {
-  width: 100%;
-  height: 44px;
+  width: auto;
+  height: 40px;
   padding: 0 14px;
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
   color: var(--foreground, #111111);
-  background-color: var(--input-bg, #fafafa);
+  background-color: var(--surface, #ffffff);
   border: 1.5px solid var(--border, #eceef2);
-  border-radius: var(--radius-md, 12px);
+  border-radius: var(--radius-full, 9999px);
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   text-align: left;
   user-select: none;
   box-sizing: border-box;
   outline: none;
+  white-space: nowrap;
   transition:
     border-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
     background-color var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1)),
@@ -63,57 +65,71 @@
     transform var(--transition-fast, 150ms cubic-bezier(0.4, 0, 0.2, 1));
 }
 
-/* Inline hug content */
-.inlineTrigger {
-  width: auto;
-  white-space: nowrap;
+.fullWidth .trigger {
+  width: 100%;
 }
 
 /* Shapes */
 .shape-pill {
   border-radius: var(--radius-full, 9999px);
-  padding: 0 16px;
+  padding: 0 15px;
 }
 
 .shape-rounded {
   border-radius: var(--radius-md, 12px);
+  padding: 0 14px;
 }
 
 .shape-circle {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border-radius: 50%;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 /* Sizing Tiers */
 .size-sm {
-  height: 36px;
-  padding: 0 12px;
-  font-size: 12px;
+  height: 32px;
+  padding: 0 11px;
+  font-size: 11.5px;
+  gap: 6px;
 }
 
 .size-sm.shape-circle {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   padding: 0;
 }
 
 .size-md {
+  height: 40px;
+  font-size: 12.5px;
+}
+
+.size-lg {
   height: 44px;
+  padding: 0 16px;
   font-size: 13px;
 }
 
-/* Hover & Focus (Exactly matching CMP-02) */
+.size-lg.shape-circle {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+
+/* Hover & Focus */
 .trigger:hover:not(:disabled):not(.triggerInvalid) {
-  background-color: var(--input-bg-focus, var(--surface, #ffffff));
+  background-color: var(--input-bg-focus, #ffffff);
   border-color: var(--border-strong, #cbd5e1);
+  transform: translateY(-1px);
 }
 
 .trigger:focus-visible,
 .triggerOpen {
-  background-color: var(--input-bg-focus, var(--surface, #ffffff)) !important;
+  background-color: var(--input-bg-focus, #ffffff) !important;
   border-color: var(--color-primary, #ff7a00) !important;
   box-shadow: 0 0 0 3px rgb(255 122 0 / 12%) !important;
   outline: none;
@@ -124,7 +140,8 @@
   border-color: var(--border, #eceef2);
   color: var(--muted-foreground, #9ca3af);
   cursor: not-allowed;
-  opacity: 1;
+  transform: none;
+  opacity: 0.7;
 }
 
 .triggerInvalid {
@@ -134,20 +151,19 @@
 }
 
 .triggerContent {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  flex: 1;
 }
 
 .triggerIcon {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--muted-foreground, #9ca3af);
+  color: var(--muted-foreground, #71717a);
   flex-shrink: 0;
   transition: color var(--transition-fast, 150ms ease);
 }
@@ -163,12 +179,11 @@
 }
 
 .chevronIcon {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--muted-foreground, #9ca3af);
   flex-shrink: 0;
-  margin-left: 8px;
   transition: transform var(--transition-fast, 150ms ease), color var(--transition-fast, 150ms ease);
 }
 
@@ -182,20 +197,21 @@
 }
 
 /* ==========================================================================
-   Floating Popover Menu (Matches CMP-02 .popoverMenu)
+   Floating Popover Menu (Matches Estify Popover Panel)
    ========================================================================== */
 
 .popover {
   position: absolute;
   top: calc(100% + 6px);
   z-index: 50;
-  width: 100%;
-  min-width: 240px;
+  min-width: 200px;
+  width: max-content;
+  max-width: 340px;
   background-color: var(--surface, #ffffff);
   border: 1.5px solid var(--border, #eceef2);
   border-radius: var(--radius-lg, 16px);
   padding: 6px;
-  box-shadow: 0 12px 32px rgb(0 0 0 / 8%), 0 2px 6px rgb(0 0 0 / 3%);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 10%), 0 2px 6px rgb(0 0 0 / 4%);
   max-height: 280px;
   overflow-y: auto;
   box-sizing: border-box;
@@ -230,7 +246,7 @@
 
 .searchInput {
   width: 100%;
-  height: 34px;
+  height: 32px;
   padding: 0 10px;
   font-family: var(--font-sans);
   font-size: 12px;
@@ -270,7 +286,7 @@
   border-radius: 9999px;
 }
 
-/* Option Item (Matches CMP-02 .dropdownItem) */
+/* Option Item */
 .item {
   width: 100%;
   padding: 8px 12px;
@@ -285,10 +301,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   text-align: left;
   user-select: none;
   box-sizing: border-box;
+  white-space: nowrap;
   transition:
     background-color var(--transition-fast, 150ms ease),
     color var(--transition-fast, 150ms ease);
@@ -301,7 +318,7 @@
   outline: none;
 }
 
-/* Selected: Peach Soft + Dark Orange + Orange Checkmark (Matching CMP-02) */
+/* Selected: Peach Soft + Dark Orange + Orange Checkmark (Harmonious with CMP-02) */
 .itemSelected {
   background-color: var(--color-primary-soft, #fff7ed) !important;
   color: var(--color-primary-dark, #c25e00) !important;
@@ -352,7 +369,7 @@
 }
 
 .itemRight {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
@@ -360,13 +377,13 @@
 
 .checkIcon {
   color: var(--color-primary, #ff7a00);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   flex-shrink: 0;
 }
 
 .badgeSlot {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   flex-shrink: 0;
 }
@@ -378,7 +395,7 @@
   color: var(--muted-foreground, #9ca3af);
 }
 
-/* Hint & Error text (Matches CMP-02) */
+/* Hint & Error text */
 .hint {
   font-family: var(--font-sans);
   font-size: 11.5px;
@@ -400,22 +417,22 @@
 }
 
 /* ==========================================================================
-   Dark Mode Explicit Overrides (Matches CMP-02 Dark Mode in input.module.css)
+   Dark Mode Explicit Overrides
    ========================================================================== */
 :global(.dark) .trigger {
-  background-color: #09090b;
+  background-color: #18181b;
   border-color: #27272a;
   color: #f4f4f5;
 }
 
 :global(.dark) .trigger:hover:not(:disabled):not(.triggerInvalid) {
-  background-color: #0c0c0e;
+  background-color: #27272a;
   border-color: #3f3f46;
 }
 
 :global(.dark) .trigger:focus-visible,
 :global(.dark) .triggerOpen {
-  background-color: #0c0c0e !important;
+  background-color: #27272a !important;
   border-color: var(--color-primary, #ff8a1e) !important;
   box-shadow: 0 0 0 3px rgb(255 138 30 / 15%) !important;
 }

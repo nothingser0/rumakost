@@ -80,9 +80,9 @@ export interface PopoverSelectProps {
   searchPlaceholder?: string;
   defaultOpen?: boolean;
   triggerIcon?: ReactNode;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
   shape?: "pill" | "rounded" | "circle";
-  variant?: "default" | "subtle";
+  fullWidth?: boolean;
   triggerVariant?: "pill" | "rounded"; // alias for shape
   align?: "left" | "right";
   inline?: boolean;
@@ -107,6 +107,7 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
       defaultValue,
       disabled = false,
       error,
+      fullWidth,
       hint,
       id,
       inline,
@@ -127,7 +128,6 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
       triggerIcon,
       triggerVariant = "pill",
       value: controlledValue,
-      variant = "default",
     },
     ref,
   ) => {
@@ -140,7 +140,7 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
 
     const resolvedShape = propShape ?? (triggerVariant === "rounded" ? "rounded" : "pill");
     const isCircle = resolvedShape === "circle";
-    const isInline = inline ?? !label;
+    const isFullWidth = fullWidth ?? Boolean(label);
 
     // Internal value state for uncontrolled mode
     const [internalValue, setInternalValue] = useState<string | string[]>(() => {
@@ -324,7 +324,7 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
       <div
         className={[
           styles.container,
-          isInline ? styles.inlineContainer : null,
+          isFullWidth ? styles.fullWidth : null,
           className,
         ]
           .filter(Boolean)
@@ -364,10 +364,8 @@ export const PopoverSelect = forwardRef<HTMLButtonElement, PopoverSelectProps>(
           aria-required={required}
           className={[
             styles.trigger,
-            isInline ? styles.inlineTrigger : null,
             styles[`size-${size}`],
             styles[`shape-${resolvedShape}`],
-            styles[`variant-${variant}`],
             isOpen ? styles.triggerOpen : null,
             error ? styles.triggerInvalid : null,
             triggerClassName,

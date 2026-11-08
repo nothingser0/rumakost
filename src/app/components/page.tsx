@@ -900,119 +900,176 @@ export default function ComponentsShowcasePage() {
               CMP-04: Custom Popover Dropdown (`src/components/ui/popover-select.tsx`)
             </h2>
             <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
-              Pengganti elemen select bawaan browser untuk filter periode, lantai, tipe kamar, dan formulir (Zero Native Select).
+              Tombol kapsul filter bilah alat (Toolbar Filter Pills) dan panel popover melayang khas Estify (Zero Native Select).
             </p>
           </div>
 
-          {/* Form Grid baku 44px selaras CMP-02 */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 20,
-              marginBottom: 24,
-            }}
-          >
-            {/* Field 1: Filter Periode (Capsule Pill 44px) */}
-            <PopoverSelect
-              hint="Pill kapsul 44px dengan ikon kalender."
-              id="showcase-period"
-              label="Filter Periode (Kapsul Toolbar)"
-              onChange={(val) => setSelectedPeriod(val as string)}
-              options={[
-                { value: "current", label: "Bulan Ini (November 2026)" },
-                { value: "prev1", label: "Oktober 2026" },
-                { value: "prev2", label: "September 2026" },
-                { value: "q4", label: "Kuartal 4 2026" },
-                { value: "year", label: "Tahun Berjalan (2026)" },
-              ]}
-              shape="pill"
-              triggerIcon={<CalendarIcon />}
-              value={selectedPeriod}
-            />
+          {/* 1. BILAH FILTER DASBOR & KATALOG KAMAR (LIVE TOOLBAR DEMO) */}
+          <div style={{ marginBottom: 26 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                color: "var(--muted-foreground)",
+                marginBottom: 10,
+              }}
+            >
+              1. Bilah Filter Dasbor & Katalog Kamar (Live Toolbar Demo)
+            </div>
 
-            {/* Field 2: Filter Lantai (Capsule Pill 44px) */}
-            <PopoverSelect
-              hint="Pill kapsul 44px dengan ikon layer lantai."
-              id="showcase-floor"
-              label="Filter Lantai Gedung"
-              onChange={(val) => setSelectedFloor(val as string)}
-              options={[
-                { value: "all", label: "Semua Lantai" },
-                { value: "lt1", label: "Lantai 1 (Blok A)" },
-                { value: "lt2", label: "Lantai 2 (Blok B)" },
-                { value: "lt3", label: "Lantai 3 (Blok C)" },
-              ]}
-              shape="pill"
-              triggerIcon={<LayersIcon />}
-              value={selectedFloor}
-            />
+            {/* Toolbar Strip Mockup */}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
+                padding: "14px 18px",
+                backgroundColor: "var(--background)",
+                borderRadius: 16,
+                border: "1.5px solid var(--border)",
+              }}
+            >
+              {/* Sisi Kiri: Filter Kapsul Mandiri */}
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10 }}>
+                {/* Search Capsule Input (CMP-02) */}
+                <div style={{ width: 220 }}>
+                  <Input
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    placeholder="Cari kamar..."
+                    value={searchValue}
+                    variant="capsule"
+                  />
+                </div>
 
-            {/* Field 3: Status Unit (Dengan Counter Badge CMP-03) */}
-            <PopoverSelect
-              hint="Opsi menu mengintegrasikan badge semantik CMP-03."
-              id="showcase-status"
-              label="Filter Status Unit (Badge Integrasi)"
-              onChange={(val) => setSelectedRoomStatus(val as string)}
-              options={[
-                { value: "all", label: "Semua Unit", badge: <Badge size="sm" variant="dark">15</Badge> },
-                { value: "terisi", label: "Terisi · Lunas", badge: <Badge size="sm" variant="success">8</Badge> },
-                { value: "kosong", label: "Kosong · Siap Huni", badge: <Badge size="sm" variant="brand">3</Badge> },
-                { value: "terlambat", label: "Terlambat / Tempo", badge: <Badge size="sm" variant="danger">3</Badge> },
-                { value: "perbaikan", label: "Perbaikan", badge: <Badge size="sm" variant="warning">1</Badge> },
-              ]}
-              shape="pill"
-              triggerIcon={<SlidersIcon />}
-              value={selectedRoomStatus}
-            />
+                {/* Filter Periode (CMP-04) */}
+                <PopoverSelect
+                  onChange={(val) => setSelectedPeriod(val as string)}
+                  options={[
+                    { value: "current", label: "Bulan Ini (Nov 2026)" },
+                    { value: "prev1", label: "Oktober 2026" },
+                    { value: "prev2", label: "September 2026" },
+                    { value: "q4", label: "Kuartal 4 2026" },
+                    { value: "year", label: "Tahun Berjalan (2026)" },
+                  ]}
+                  triggerIcon={<CalendarIcon />}
+                  value={selectedPeriod}
+                />
 
-            {/* Field 4: Tipe Kamar (Searchable & Multi-Select) */}
-            <PopoverSelect
-              hint="Multi-select dengan mini search input di bagian atas."
-              id="showcase-types"
-              label="Tipe Kamar (Multi-Select & Search)"
-              multiple
-              onChange={(val) => setSelectedRoomTypes(val as string[])}
-              options={[
-                { value: "standard", label: "Tipe Standard", description: "3x4m, KM Luar", badge: <Badge size="sm" variant="neutral">6 Unit</Badge> },
-                { value: "deluxe", label: "Tipe Deluxe", description: "4x4m, KM Dalam, AC", badge: <Badge size="sm" variant="brand">5 Unit</Badge> },
-                { value: "vip", label: "Tipe VIP", description: "4x5m, Water Heater", badge: <Badge size="sm" variant="success">3 Unit</Badge> },
-                { value: "suite", label: "Tipe Suite", description: "Balkon, Kitchenette", badge: <Badge size="sm" variant="dark">1 Unit</Badge> },
-              ]}
-              placeholder="Pilih beberapa tipe kamar..."
-              searchPlaceholder="Cari tipe..."
-              searchable
-              shape="rounded"
-              value={selectedRoomTypes}
-            />
+                {/* Filter Lantai (CMP-04) */}
+                <PopoverSelect
+                  onChange={(val) => setSelectedFloor(val as string)}
+                  options={[
+                    { value: "all", label: "Semua Lantai" },
+                    { value: "lt1", label: "Lantai 1 (Blok A)" },
+                    { value: "lt2", label: "Lantai 2 (Blok B)" },
+                    { value: "lt3", label: "Lantai 3 (Blok C)" },
+                  ]}
+                  triggerIcon={<LayersIcon />}
+                  value={selectedFloor}
+                />
 
-            {/* Field 5: Bentuk Kotak 12px (Form Input Baku) */}
-            <PopoverSelect
-              hint="Bentuk baku sudut 12px untuk modal tambah/edit kamar."
-              id="showcase-rounded"
-              label="Metode Tagihan Sewa (Bentuk Rounded 12px)"
-              options={[
-                { value: "monthly", label: "Sewa Bulanan (Tagihan per Bulan)" },
-                { value: "quarterly", label: "Sewa Triwulan (Tagihan per 3 Bulan)" },
-                { value: "yearly", label: "Sewa Tahunan (Tagihan per Tahun)" },
-              ]}
-              shape="rounded"
-              value="monthly"
-            />
+                {/* Filter Status Kamar dengan Badge (CMP-04 + CMP-03) */}
+                <PopoverSelect
+                  onChange={(val) => setSelectedRoomStatus(val as string)}
+                  options={[
+                    { value: "all", label: "Semua Unit", badge: <Badge size="sm" variant="dark">15</Badge> },
+                    { value: "terisi", label: "Terisi · Lunas", badge: <Badge size="sm" variant="success">8</Badge> },
+                    { value: "kosong", label: "Kosong · Siap Huni", badge: <Badge size="sm" variant="brand">3</Badge> },
+                    { value: "terlambat", label: "Menunggak", badge: <Badge size="sm" variant="danger">3</Badge> },
+                    { value: "perbaikan", label: "Perbaikan", badge: <Badge size="sm" variant="warning">1</Badge> },
+                  ]}
+                  triggerIcon={<SlidersIcon />}
+                  value={selectedRoomStatus}
+                />
 
-            {/* Field 6: Status Disabled */}
-            <PopoverSelect
-              disabled
-              hint="Dropdown terkunci sesuai hak akses pengguna."
-              id="showcase-disabled"
-              label="Properti Kost (Terkunci / Disabled)"
-              options={[{ value: "p1", label: "Kost Budi Makmur (Unit Utama)" }]}
-              shape="rounded"
-              value="p1"
-            />
+                {/* Tombol Circle Filter (CMP-04) */}
+                <PopoverSelect
+                  options={[
+                    { value: "all", label: "Semua Kriteria" },
+                    { value: "ac", label: "Fasilitas AC" },
+                    { value: "km-dalam", label: "Kamar Mandi Dalam" },
+                    { value: "balkon", label: "Balkon Pribadi" },
+                  ]}
+                  shape="circle"
+                  size="md"
+                  title="Filter Cepat Tambahan"
+                  triggerIcon={<SlidersIcon />}
+                />
+              </div>
+
+              {/* Sisi Kanan: Action Button (CMP-01) */}
+              <div>
+                <Button leftIcon={<PlusIcon />} size="sm" variant="primary-orange">
+                  Tambah Kamar
+                </Button>
+              </div>
+            </div>
           </div>
 
-          {/* Baris Pratinjau Toolbar Inline */}
+          {/* 2. SKALA UKURAN & BENTUK TRIGGER */}
+          <div style={{ marginBottom: 26 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                color: "var(--muted-foreground)",
+                marginBottom: 10,
+              }}
+            >
+              2. Skala Ukuran (Tiers) & Bentuk Trigger Kapsul
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12 }}>
+              <PopoverSelect
+                options={[{ value: "current", label: "Medium 40px (Default Pill)" }]}
+                shape="pill"
+                size="md"
+                triggerIcon={<CalendarIcon />}
+                value="current"
+              />
+              <PopoverSelect
+                options={[{ value: "current", label: "Small 32px (Sub-Bar)" }]}
+                shape="pill"
+                size="sm"
+                triggerIcon={<CalendarIcon />}
+                value="current"
+              />
+              <PopoverSelect
+                options={[{ value: "current", label: "Rounded 12px (Modal Context)" }]}
+                shape="rounded"
+                size="md"
+                value="current"
+              />
+              <PopoverSelect
+                options={[{ value: "1", label: "Filter Opsi" }]}
+                shape="circle"
+                size="md"
+                title="Circle Filter 40px"
+                triggerIcon={<SlidersIcon />}
+              />
+              <PopoverSelect
+                options={[{ value: "1", label: "Filter Opsi" }]}
+                shape="circle"
+                size="sm"
+                title="Circle Filter 32px"
+                triggerIcon={<SlidersIcon />}
+              />
+              <PopoverSelect
+                disabled
+                options={[{ value: "locked", label: "Filter Terkunci (Disabled)" }]}
+                shape="pill"
+                size="md"
+                value="locked"
+              />
+            </div>
+          </div>
+
+          {/* 3. MULTI-SELECT & MINI SEARCH DI DALAM POPOVER */}
           <div style={{ borderTop: "1.5px solid var(--border)", paddingTop: 18 }}>
             <div
               style={{
@@ -1021,67 +1078,25 @@ export default function ComponentsShowcasePage() {
                 textTransform: "uppercase",
                 letterSpacing: "0.5px",
                 color: "var(--muted-foreground)",
-                marginBottom: 12,
+                marginBottom: 10,
               }}
             >
-              Pratinjau Bilah Alat (Inline Toolbar Pill Strip):
+              3. Opsi Multi-Select & Mini Search Dinamis
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "center" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 16 }}>
               <PopoverSelect
-                inline
-                onChange={(val) => setSelectedPeriod(val as string)}
+                multiple
+                onChange={(val) => setSelectedRoomTypes(val as string[])}
                 options={[
-                  { value: "current", label: "Bulan Ini (November 2026)" },
-                  { value: "prev1", label: "Oktober 2026" },
-                  { value: "prev2", label: "September 2026" },
+                  { value: "standard", label: "Tipe Standard (KM Luar)", badge: <Badge size="sm" variant="neutral">6 Unit</Badge> },
+                  { value: "deluxe", label: "Tipe Deluxe (KM Dalam, AC)", badge: <Badge size="sm" variant="brand">5 Unit</Badge> },
+                  { value: "vip", label: "Tipe VIP (Water Heater, TV)", badge: <Badge size="sm" variant="success">3 Unit</Badge> },
+                  { value: "suite", label: "Tipe Suite (Balkon Pribadi)", badge: <Badge size="sm" variant="dark">1 Unit</Badge> },
                 ]}
-                shape="pill"
-                triggerIcon={<CalendarIcon />}
-                value={selectedPeriod}
-              />
-              <PopoverSelect
-                inline
-                onChange={(val) => setSelectedFloor(val as string)}
-                options={[
-                  { value: "all", label: "Semua Lantai" },
-                  { value: "lt1", label: "Lantai 1" },
-                  { value: "lt2", label: "Lantai 2" },
-                ]}
-                shape="pill"
-                triggerIcon={<LayersIcon />}
-                value={selectedFloor}
-              />
-              <PopoverSelect
-                inline
-                onChange={(val) => setSelectedRoomStatus(val as string)}
-                options={[
-                  { value: "all", label: "Semua Unit", badge: <Badge size="sm" variant="dark">15</Badge> },
-                  { value: "terisi", label: "Terisi", badge: <Badge size="sm" variant="success">8</Badge> },
-                  { value: "kosong", label: "Kosong", badge: <Badge size="sm" variant="brand">3</Badge> },
-                ]}
-                shape="pill"
-                triggerIcon={<SlidersIcon />}
-                value={selectedRoomStatus}
-              />
-              <PopoverSelect
-                inline
-                options={[
-                  { value: "all", label: "Filter Cepat" },
-                  { value: "terisi", label: "Kamar Terisi" },
-                ]}
-                shape="circle"
-                title="Filter Lingkaran Cepat"
-                triggerIcon={<SlidersIcon />}
-              />
-              <PopoverSelect
-                inline
-                options={[
-                  { value: "all", label: "Filter Cepat Mini" },
-                ]}
-                shape="circle"
-                size="sm"
-                title="Filter Lingkaran Mini 36px"
-                triggerIcon={<SlidersIcon />}
+                placeholder="Pilih tipe kamar..."
+                searchPlaceholder="Cari tipe..."
+                searchable
+                value={selectedRoomTypes}
               />
             </div>
           </div>
