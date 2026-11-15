@@ -1391,7 +1391,7 @@ export default function ComponentsShowcasePage() {
             <Button
               onClick={() => setIsDetailModalOpen(true)}
               rightIcon={<ArrowRightIcon />}
-              variant="primary-orange"
+              variant="primary-black"
             >
               Detail Tiket Kerusakan (1040px - xl)
             </Button>
@@ -1525,7 +1525,7 @@ export default function ComponentsShowcasePage() {
               </div>
             </div>
 
-            {/* Tombol Asli WF-02: .btn-maintenance-full (Pill Oranye Baku #FF7A00) */}
+            {/* Tombol Asli WF-02: .btn-maintenance-full (Pill Hitam Baku #111111 / #0F172A) */}
             <Button
               onClick={() => setIsDetailModalOpen(true)}
               rightIcon={<ArrowRightIcon />}
@@ -1538,7 +1538,7 @@ export default function ComponentsShowcasePage() {
                 fontWeight: 600,
                 fontSize: 13,
               }}
-              variant="primary-orange"
+              variant="primary-black"
             >
               Detail Tiket Kerusakan
             </Button>
