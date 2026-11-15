@@ -41,10 +41,13 @@ export async function load(url, context, nextLoad) {
 
   if (url.endsWith(".tsx") || (url.endsWith(".ts") && !url.includes("node_modules"))) {
     const filePath = fileURLToPath(url);
-    const source = readFileSync(filePath, "utf8");
+    let source = readFileSync(filePath, "utf8");
+    if (!source.match(/import\s+(?:\*\s+as\s+React|React)\s*(?:,|\s+from)/)) {
+      source = 'import React from "react";\n' + source;
+    }
     const transpiled = ts.transpileModule(source, {
       compilerOptions: {
-        jsx: ts.JsxEmit.ReactJSX,
+        jsx: ts.JsxEmit.React,
         module: ts.ModuleKind.ESNext,
         target: ts.ScriptTarget.ES2022,
       },

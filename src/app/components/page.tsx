@@ -131,6 +131,154 @@ function CalendarIcon() {
   );
 }
 
+function WrenchIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="15">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+    </svg>
+  );
+}
+
+function AlertTriangleIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+      <line x1="12" x2="12" y1="9" y2="13" />
+      <line x1="12" x2="12.01" y1="17" y2="17" />
+    </svg>
+  );
+}
+
+function WindIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+      <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2" />
+      <path d="M9.6 4.6A2 2 0 1 1 11 8H2" />
+      <path d="M12.6 19.4A2 2 0 1 0 14 16H2" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
+}
+
+function CameraIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+      <circle cx="12" cy="13" r="3" />
+    </svg>
+  );
+}
+
+function PlayIcon() {
+  return (
+    <svg aria-hidden="true" fill="currentColor" height="14" viewBox="0 0 24 24" width="14">
+      <polygon points="5 3 19 12 5 21 5 3" />
+    </svg>
+  );
+}
+
+function CheckCircle2Icon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+
+function MessageCircleIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+      <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+    </svg>
+  );
+}
+
+function SendIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+      <line x1="22" x2="11" y1="2" y2="13" />
+      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+    </svg>
+  );
+}
+
+function UserIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function DoorClosedIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+      <path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14" />
+      <path d="M2 20h20" />
+      <path d="M14 12v.01" />
+    </svg>
+  );
+}
+
+function WalletIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+      <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+      <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+    </svg>
+  );
+}
+
+function FileTextIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" x2="8" y1="13" y2="13" />
+      <line x1="16" x2="8" y1="17" y2="17" />
+      <line x1="10" x2="8" y1="9" y2="9" />
+    </svg>
+  );
+}
+
+function ImageIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+      <rect height="18" rx="2" ry="2" width="18" x="3" y="3" />
+      <circle cx="9" cy="9" r="2" />
+      <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+    </svg>
+  );
+}
+
+function MessagesSquareIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+      <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v5Z" />
+      <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1" />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" viewBox="0 0 24 24" width="13">
+      <line x1="5" x2="19" y1="12" y2="12" />
+      <polyline points="12 5 19 12 12 19" />
+    </svg>
+  );
+}
+
 export default function ComponentsShowcasePage() {
   const [isDark, setIsDark] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -1220,21 +1368,22 @@ export default function ComponentsShowcasePage() {
               onClick={() => setIsAddRoomModalOpen(true)}
               variant="primary-orange"
             >
-              Buka Form Tambah Kamar (580px)
+              Buka Form Tambah Kamar (580px - md)
             </Button>
 
             <Button
               onClick={() => setIsConfirmDeleteModalOpen(true)}
               variant="subtle-danger"
             >
-              Buka Konfirmasi Hapus (480px)
+              Buka Konfirmasi Hapus (480px - sm)
             </Button>
 
             <Button
+              leftIcon={<WrenchIcon />}
               onClick={() => setIsDetailModalOpen(true)}
-              variant="secondary-ghost"
+              variant="primary-black"
             >
-              Buka Rincian Komprehensif (840px)
+              Detail Tiket Kerusakan (1040px - xl)
             </Button>
           </div>
 
@@ -1298,61 +1447,781 @@ export default function ComponentsShowcasePage() {
             variant="danger"
           />
 
-          {/* Modal 3: Rincian Sewa Komprehensif (Size: lg - 840px) */}
+          {/* Modal 3: Detail Tiket Kerusakan Komprehensif (Size: xl - 1040px - WF-02 & WF-08) */}
           <Dialog
             onOpenChange={setIsDetailModalOpen}
             open={isDetailModalOpen}
-            size="lg"
+            size="xl"
           >
             <DialogHeader>
-              <DialogTitle>Rincian Kontrak Sewa Unit A-102</DialogTitle>
-              <DialogDescription>
-                Informasi penyewa, masa berlaku kontrak, dan status tagihan berjalan.
-              </DialogDescription>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <div
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: 10,
+                    backgroundColor: "#FFF7ED",
+                    color: "#FF7A00",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    border: "1px solid #FFEDD5",
+                  }}
+                >
+                  <WrenchIcon />
+                </div>
+                <div>
+                  <DialogTitle>Detail Tiket Perbaikan</DialogTitle>
+                  <DialogDescription>
+                    Informasi keluhan, progres penanganan teknisi, dan bukti kerusakan
+                  </DialogDescription>
+                </div>
+              </div>
             </DialogHeader>
+
             <DialogBody>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
-                    Status Kamar
-                  </span>
-                  <div>
-                    <RoomStatusBadge status="terisi" />
+              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                {/* GRID 2-KOLOM (Kiri 66%, Kanan 34%) */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                    gap: 20,
+                    alignItems: "start",
+                  }}
+                >
+                  {/* CANVAS KIRI (66% basis) */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    {/* KARTU 1: INFO UTAMA TIKET */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--background)",
+                        border: "1.5px solid var(--border)",
+                        borderRadius: 16,
+                        padding: "16px 18px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 12,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          flexWrap: "wrap",
+                          gap: 10,
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                          <span
+                            style={{
+                              fontFamily: "var(--font-mono, monospace)",
+                              fontSize: 11,
+                              fontWeight: 700,
+                              backgroundColor: "#0F172A",
+                              color: "#FFFFFF",
+                              padding: "2.5px 8px",
+                              borderRadius: 6,
+                              letterSpacing: "0.3px",
+                            }}
+                          >
+                            TKT-202610-04
+                          </span>
+                          <span
+                            style={{
+                              fontSize: 12,
+                              fontWeight: 600,
+                              color: "var(--foreground)",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 4,
+                            }}
+                          >
+                            <DoorClosedIcon />
+                            <span>Kamar B-03 · Lantai 2</span>
+                          </span>
+                          <span style={{ color: "var(--border-strong)" }}>•</span>
+                          <span
+                            style={{
+                              fontSize: 11.5,
+                              color: "var(--muted-foreground)",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 4,
+                            }}
+                          >
+                            <ClockIcon />
+                            <span>Dilaporkan 2 jam lalu</span>
+                          </span>
+                        </div>
+
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                          <Badge shape="pill" size="sm" variant="danger">
+                            Mendesak
+                          </Badge>
+                          <Badge shape="pill" size="sm" variant="brand">
+                            AC & Pendingin
+                          </Badge>
+                          <Badge shape="pill" size="sm" variant="warning">
+                            Tahap 3: Dikerjakan
+                          </Badge>
+                        </div>
+                      </div>
+
+                      <h4
+                        style={{
+                          fontSize: 16,
+                          fontWeight: 700,
+                          color: "var(--foreground)",
+                          margin: 0,
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        AC Kamar Menetes Air Deras Membasahi Kasur
+                      </h4>
+                    </div>
+
+                    {/* KARTU 2: KRONOLOGI MASALAH */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        border: "1.5px solid var(--border)",
+                        borderRadius: 16,
+                        padding: "16px 18px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 10,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                          fontSize: 13,
+                          fontWeight: 700,
+                          color: "var(--foreground)",
+                        }}
+                      >
+                        <span style={{ color: "#FF7A00" }}>
+                          <FileTextIcon />
+                        </span>
+                        <span>Kronologi & Rincian Kerusakan</span>
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 13,
+                          color: "var(--foreground)",
+                          lineHeight: 1.6,
+                          backgroundColor: "var(--background)",
+                          border: "1px solid var(--border)",
+                          padding: "12px 14px",
+                          borderRadius: 12,
+                        }}
+                      >
+                        Air AC di kamar B-03 mulai bocor menetes deras sejak pukul 08:30 pagi setelah dinyalakan selama 1 jam. Tetesan air mengenai kasur dan lantai kamar bagian samping. Suhu pendingin tidak kunjung dingin dan terdengar suara gemericik di unit indoor. Penghuni mematikan AC untuk mencegah korsleting listrik.
+                      </div>
+                    </div>
+
+                    {/* KARTU 3: BUKTI MEDIA (F-07) */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        border: "1.5px solid var(--border)",
+                        borderRadius: 16,
+                        padding: "16px 18px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 12,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: 8,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: "var(--foreground)",
+                          }}
+                        >
+                          <span style={{ color: "#FF7A00" }}>
+                            <ImageIcon />
+                          </span>
+                          <span>Lampiran Bukti Media (Foto & Video)</span>
+                        </div>
+                        <span style={{ fontSize: 11, color: "#16A34A", fontWeight: 600 }}>
+                          Format F-07 Terverifikasi
+                        </span>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                          gap: 12,
+                        }}
+                      >
+                        {/* Box Foto */}
+                        <div
+                          style={{
+                            height: 120,
+                            borderRadius: 12,
+                            border: "1px solid var(--border)",
+                            position: "relative",
+                            overflow: "hidden",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+                          }}
+                        >
+                          <div style={{ textAlign: "center", color: "#94A3B8" }}>
+                            <CameraIcon />
+                            <div style={{ fontSize: 10, marginTop: 4 }}>unit_ac_bocor_b03.jpg</div>
+                          </div>
+                          <div
+                            style={{
+                              position: "absolute",
+                              bottom: 8,
+                              left: 8,
+                              backgroundColor: "rgba(15, 23, 42, 0.88)",
+                              color: "#FFFFFF",
+                              fontSize: 10,
+                              fontWeight: 600,
+                              padding: "3px 8px",
+                              borderRadius: 6,
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 4,
+                            }}
+                          >
+                            <CameraIcon />
+                            <span>Foto Bukti Kerusakan</span>
+                          </div>
+                        </div>
+
+                        {/* Box Video */}
+                        <div
+                          style={{
+                            height: 120,
+                            borderRadius: 12,
+                            backgroundColor: "#0F172A",
+                            color: "#FFFFFF",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            padding: 12,
+                            textAlign: "center",
+                            border: "1px solid #1E293B",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: 36,
+                              height: 36,
+                              borderRadius: "50%",
+                              backgroundColor: "#FF7A00",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              marginBottom: 6,
+                              boxShadow: "0 4px 12px rgba(255, 122, 0, 0.35)",
+                            }}
+                          >
+                            <PlayIcon />
+                          </div>
+                          <div style={{ fontSize: 11.5, fontWeight: 700 }}>video_bukti.mp4</div>
+                          <div style={{ fontSize: 10, color: "#94A3B8", marginTop: 2 }}>
+                            Putar rekaman cuplikan (0:18)
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* SIDEBAR KANAN (34% basis) */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                    {/* KARTU 4: PROGRESS PENANGANAN 5-TAHAP (F-07) */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        border: "1.5px solid var(--border)",
+                        borderRadius: 16,
+                        padding: "16px 18px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 12,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: 8,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: "var(--foreground)",
+                          }}
+                        >
+                          <span style={{ color: "#FF7A00" }}>
+                            <CheckCircle2Icon />
+                          </span>
+                          <span>Progress Penanganan</span>
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#FF7A00" }}>
+                          Tahap 3 dari 5
+                        </span>
+                      </div>
+
+                      {/* 5-Step Segment Track */}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4 }}>
+                        <div style={{ height: 6, borderRadius: 3, backgroundColor: "#FF7A00" }} />
+                        <div style={{ height: 6, borderRadius: 3, backgroundColor: "#FF7A00" }} />
+                        <div style={{ height: 6, borderRadius: 3, backgroundColor: "#FF7A00" }} />
+                        <div style={{ height: 6, borderRadius: 3, backgroundColor: "var(--border)" }} />
+                        <div style={{ height: 6, borderRadius: 3, backgroundColor: "var(--border)" }} />
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          fontSize: 10,
+                          color: "var(--muted-foreground)",
+                          fontWeight: 600,
+                        }}
+                      >
+                        <span>1. Diterima</span>
+                        <span>2. Tugas</span>
+                        <span style={{ color: "#FF7A00", fontWeight: 700 }}>3. Kerja</span>
+                        <span>4. Cek</span>
+                        <span>5. Selesai</span>
+                      </div>
+
+                      <Button
+                        rightIcon={<ArrowRightIcon />}
+                        size="sm"
+                        style={{ width: "100%", justifyContent: "center" }}
+                        variant="primary-orange"
+                      >
+                        Majukan ke Tahap Berikutnya
+                      </Button>
+                    </div>
+
+                    {/* KARTU 5: PENGHUNI PELAPOR */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        border: "1.5px solid var(--border)",
+                        borderRadius: 16,
+                        padding: "14px 16px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 10,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                          fontSize: 12.5,
+                          fontWeight: 700,
+                          color: "var(--foreground)",
+                        }}
+                      >
+                        <span style={{ color: "#FF7A00" }}>
+                          <UserIcon />
+                        </span>
+                        <span>Penghuni Pelapor</span>
+                      </div>
+
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <div
+                            style={{
+                              width: 36,
+                              height: 36,
+                              borderRadius: 10,
+                              backgroundColor: "#0F172A",
+                              color: "#FFFFFF",
+                              fontWeight: 700,
+                              fontSize: 12,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            RP
+                          </div>
+                          <div>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
+                              Reza Pratama
+                            </div>
+                            <div style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
+                              Kamar B-03 · Lantai 2
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          leftIcon={<MessageCircleIcon />}
+                          shape="pill"
+                          size="xs"
+                          variant="secondary-ghost"
+                        >
+                          WA
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* KARTU 6: TEKNISI BERTUGAS */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        border: "1.5px solid var(--border)",
+                        borderRadius: 16,
+                        padding: "14px 16px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 10,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: 8,
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            fontSize: 12.5,
+                            fontWeight: 700,
+                            color: "var(--foreground)",
+                          }}
+                        >
+                          <span style={{ color: "#FF7A00" }}>
+                            <WrenchIcon />
+                          </span>
+                          <span>Teknisi Bertugas</span>
+                        </div>
+                        <button
+                          style={{
+                            background: "none",
+                            border: "none",
+                            fontSize: 11,
+                            color: "#FF7A00",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                            padding: 0,
+                          }}
+                          type="button"
+                        >
+                          Ganti Teknisi
+                        </button>
+                      </div>
+
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <div
+                            style={{
+                              width: 36,
+                              height: 36,
+                              borderRadius: 10,
+                              backgroundColor: "#1E293B",
+                              color: "#FFFFFF",
+                              fontWeight: 700,
+                              fontSize: 12,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            PJ
+                          </div>
+                          <div>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
+                              Pak Joko Santoso
+                            </div>
+                            <div style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
+                              Teknisi AC & Ledeng
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          leftIcon={<MessageCircleIcon />}
+                          shape="pill"
+                          size="xs"
+                          variant="secondary-ghost"
+                        >
+                          WA
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* KARTU 7: ESTIMASI BIAYA & GARANSI */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--surface)",
+                        border: "1.5px solid var(--border)",
+                        borderRadius: 16,
+                        padding: "14px 16px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 10,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 8,
+                          fontSize: 12.5,
+                          fontWeight: 700,
+                          color: "var(--foreground)",
+                        }}
+                      >
+                        <span style={{ color: "#FF7A00" }}>
+                          <WalletIcon />
+                        </span>
+                        <span>Estimasi Operasional</span>
+                      </div>
+
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                        <div
+                          style={{
+                            backgroundColor: "var(--background)",
+                            border: "1px solid var(--border)",
+                            padding: "8px 12px",
+                            borderRadius: 10,
+                          }}
+                        >
+                          <div style={{ fontSize: 10, color: "var(--muted-foreground)", fontWeight: 600, textTransform: "uppercase" }}>
+                            Biaya Servis
+                          </div>
+                          <div style={{ fontSize: 14, fontWeight: 700, color: "#FF7A00", marginTop: 2 }}>
+                            Rp 75.000
+                          </div>
+                        </div>
+                        <div
+                          style={{
+                            backgroundColor: "var(--background)",
+                            border: "1px solid var(--border)",
+                            padding: "8px 12px",
+                            borderRadius: 10,
+                          }}
+                        >
+                          <div style={{ fontSize: 10, color: "var(--muted-foreground)", fontWeight: 600, textTransform: "uppercase" }}>
+                            Garansi
+                          </div>
+                          <div style={{ fontSize: 14, fontWeight: 700, color: "var(--foreground)", marginTop: 2 }}>
+                            30 Hari
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
-                    Status Pembayaran
-                  </span>
-                  <div>
-                    <PaymentStatusBadge status="LUNAS" />
+                {/* FULL-WIDTH SECTION: AKTIVITAS & CATATAN PENANGANAN (CMP-18) */}
+                <div
+                  style={{
+                    backgroundColor: "var(--surface)",
+                    border: "1.5px solid var(--border)",
+                    borderRadius: 16,
+                    padding: "16px 18px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: "var(--foreground)",
+                    }}
+                  >
+                    <span style={{ color: "#FF7A00" }}>
+                      <MessagesSquareIcon />
+                    </span>
+                    <span>Aktivitas & Catatan Penanganan (2)</span>
                   </div>
-                </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
-                    Nama Penghuni
-                  </span>
-                  <span style={{ fontSize: 13.5, fontWeight: 600 }}>Budi Santoso</span>
-                </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {/* Catatan 1 */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--background)",
+                        border: "1px solid var(--border)",
+                        borderRadius: 12,
+                        padding: "10px 14px",
+                        display: "flex",
+                        gap: 10,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: "50%",
+                          backgroundColor: "#0F172A",
+                          color: "#FFFFFF",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        AD
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--foreground)" }}>Admin Kost</span>
+                          <span style={{ fontSize: 11, color: "var(--muted-foreground)" }}>2 jam lalu</span>
+                        </div>
+                        <div style={{ fontSize: 12.5, color: "var(--foreground)", lineHeight: 1.5 }}>
+                          Laporan keluhan diterima dan telah diverifikasi. Menghubungi Pak Joko untuk penanganan unit pendingin AC di Kamar B-03.
+                        </div>
+                      </div>
+                    </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase" }}>
-                    Periode Kontrak
-                  </span>
-                  <span style={{ fontSize: 13.5, fontWeight: 600 }}>01 Nov 2026 – 31 Okt 2027</span>
+                    {/* Catatan 2 */}
+                    <div
+                      style={{
+                        backgroundColor: "var(--background)",
+                        border: "1px solid var(--border)",
+                        borderRadius: 12,
+                        padding: "10px 14px",
+                        display: "flex",
+                        gap: 10,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: "50%",
+                          backgroundColor: "#1E293B",
+                          color: "#FFFFFF",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        PJ
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--foreground)" }}>Pak Joko (Teknisi)</span>
+                          <span style={{ fontSize: 11, color: "var(--muted-foreground)" }}>1 jam lalu</span>
+                        </div>
+                        <div style={{ fontSize: 12.5, color: "var(--foreground)", lineHeight: 1.5 }}>
+                          Sedang dalam perjalanan ke lokasi kost membawa toolkit dan pompa cuci AC. Estimasi tiba di lokasi pukul 11:15.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Input Balasan / Catatan Baru */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 10,
+                      backgroundColor: "var(--background)",
+                      border: "1.5px solid var(--border)",
+                      borderRadius: 12,
+                      padding: "12px 14px",
+                    }}
+                  >
+                    <Textarea
+                      placeholder="Tuliskan catatan tindak lanjut penanganan tiket..."
+                      rows={2}
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: 10,
+                      }}
+                    >
+                      <Checkbox label="Catatan Internal Staf (Privat)" />
+                      <Button
+                        leftIcon={<SendIcon />}
+                        size="sm"
+                        variant="primary-black"
+                      >
+                        Kirim Catatan
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </DialogBody>
+
             <DialogFooter>
-              <DialogClose>Tutup</DialogClose>
-              <Button
-                onClick={() => setIsDetailModalOpen(false)}
-                variant="primary-black"
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                  flexWrap: "wrap",
+                  gap: 12,
+                }}
               >
-                Cetak Kuitansi
-              </Button>
+                <DialogClose>Tutup Dialog</DialogClose>
+                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <Button
+                    onClick={() => setIsDetailModalOpen(false)}
+                    variant="secondary-ghost"
+                  >
+                    Tugaskan Teknisi Lain
+                  </Button>
+                  <Button
+                    onClick={() => setIsDetailModalOpen(false)}
+                    variant="primary-black"
+                  >
+                    Selesaikan Tiket
+                  </Button>
+                </div>
+              </div>
             </DialogFooter>
           </Dialog>
         </section>
