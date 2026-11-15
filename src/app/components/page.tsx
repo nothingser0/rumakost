@@ -279,6 +279,16 @@ function ArrowRightIcon() {
   );
 }
 
+function MoreVerticalIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="15">
+      <circle cx="12" cy="12" r="1.5" />
+      <circle cx="12" cy="5" r="1.5" />
+      <circle cx="12" cy="19" r="1.5" />
+    </svg>
+  );
+}
+
 export default function ComponentsShowcasePage() {
   const [isDark, setIsDark] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -1387,76 +1397,147 @@ export default function ComponentsShowcasePage() {
             </Button>
           </div>
 
-          {/* KARTU PREVIEW KONDISI KAMAR & TIKET DARI WF-02-DASHBOARD (F-07) */}
+          {/* KARTU ASLI WF-02: KONDISI PROPERTI & TOMBOL ORANYE DETAIL TIKET KERUSAKAN */}
           <div
             style={{
-              maxWidth: 380,
-              backgroundColor: "var(--background)",
-              border: "1.5px solid var(--border)",
-              borderRadius: 18,
-              padding: 20,
+              maxWidth: 360,
+              backgroundColor: "var(--surface, #FFFFFF)",
+              border: "1.5px solid var(--border, #ECEEF2)",
+              borderRadius: 20,
+              padding: "22px 24px",
+              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)",
               display: "flex",
               flexDirection: "column",
-              gap: 16,
               marginBottom: 30,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ color: "#FF7A00" }}>
-                  <WrenchIcon />
-                </span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
-                  Kondisi Kamar / Tiket
-                </span>
-              </div>
-              <Badge shape="pill" size="sm" variant="danger">
-                1 Perlu Servis
-              </Badge>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 18,
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: 16,
+                  fontWeight: 700,
+                  margin: 0,
+                  color: "var(--foreground, #111111)",
+                  letterSpacing: "-0.2px",
+                }}
+              >
+                Kondisi Properti
+              </h3>
+              <button
+                aria-label="Opsi menu pemeliharaan"
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  backgroundColor: "transparent",
+                  border: "1.5px solid var(--border, #ECEEF2)",
+                  color: "var(--muted-foreground, #71717A)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+                type="button"
+              >
+                <MoreVerticalIcon />
+              </button>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {/* Segment 1: Perlu Servis Segera */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 5 }}>
-                  <span style={{ color: "var(--muted-foreground)", fontWeight: 600 }}>Perlu Servis Segera</span>
-                  <span style={{ color: "#EF4444", fontWeight: 700 }}>1</span>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+                marginBottom: 22,
+              }}
+            >
+              {/* Item 1: Dalam Pengerjaan */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    fontSize: 13,
+                  }}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 500, color: "var(--foreground, #111111)", letterSpacing: "-0.1px" }}>
+                    Dalam Pengerjaan
+                  </span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--muted-foreground, #71717A)" }}>
+                    2
+                  </span>
                 </div>
-                <div style={{ height: 6, borderRadius: 3, backgroundColor: "var(--border)", overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: "25%", backgroundColor: "#EF4444", borderRadius: 3 }} />
+                <div style={{ height: 7, backgroundColor: "#ECEEF2", borderRadius: 9999, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: "50%", backgroundColor: "#FF7A00", borderRadius: 9999 }} />
                 </div>
               </div>
 
-              {/* Segment 2: Sedang Dikerjakan */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 5 }}>
-                  <span style={{ color: "var(--muted-foreground)", fontWeight: 600 }}>Sedang Dikerjakan</span>
-                  <span style={{ color: "#F59E0B", fontWeight: 700 }}>1</span>
+              {/* Item 2: Menunggu Penugasan */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    fontSize: 13,
+                  }}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 500, color: "var(--foreground, #111111)", letterSpacing: "-0.1px" }}>
+                    Menunggu Penugasan
+                  </span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--muted-foreground, #71717A)" }}>
+                    1
+                  </span>
                 </div>
-                <div style={{ height: 6, borderRadius: 3, backgroundColor: "var(--border)", overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: "25%", backgroundColor: "#F59E0B", borderRadius: 3 }} />
+                <div style={{ height: 7, backgroundColor: "#ECEEF2", borderRadius: 9999, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: "25%", backgroundColor: "#FF7A00", borderRadius: 9999 }} />
                 </div>
               </div>
 
-              {/* Segment 3: Laporan Baru Masuk */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 5 }}>
-                  <span style={{ color: "var(--muted-foreground)", fontWeight: 600 }}>Laporan Baru Masuk</span>
-                  <span style={{ color: "#FF7A00", fontWeight: 700 }}>1</span>
+              {/* Item 3: Laporan Baru Masuk */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    fontSize: 13,
+                  }}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 500, color: "var(--foreground, #111111)", letterSpacing: "-0.1px" }}>
+                    Laporan Baru Masuk
+                  </span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "var(--muted-foreground, #71717A)" }}>
+                    1
+                  </span>
                 </div>
-                <div style={{ height: 6, borderRadius: 3, backgroundColor: "var(--border)", overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: "25%", backgroundColor: "#FF7A00", borderRadius: 3 }} />
+                <div style={{ height: 7, backgroundColor: "#ECEEF2", borderRadius: 9999, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: "25%", backgroundColor: "#FF7A00", borderRadius: 9999 }} />
                 </div>
               </div>
             </div>
 
-            {/* Tombol Pemicu WF-02 Asli: .btn-maintenance-full (Oranye Baku #FF7A00) */}
+            {/* Tombol Asli WF-02: .btn-maintenance-full (Pill Oranye Baku #FF7A00) */}
             <Button
               onClick={() => setIsDetailModalOpen(true)}
               rightIcon={<ArrowRightIcon />}
               shape="pill"
               size="md"
-              style={{ width: "100%", justifyContent: "center" }}
+              style={{
+                width: "100%",
+                height: 44,
+                justifyContent: "center",
+                fontWeight: 600,
+                fontSize: 13,
+              }}
               variant="primary-orange"
             >
               Detail Tiket Kerusakan
