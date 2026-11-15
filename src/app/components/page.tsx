@@ -1363,10 +1363,10 @@ export default function ComponentsShowcasePage() {
             </p>
           </div>
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center", marginBottom: 24 }}>
             <Button
               onClick={() => setIsAddRoomModalOpen(true)}
-              variant="primary-orange"
+              variant="secondary-ghost"
             >
               Buka Form Tambah Kamar (580px - md)
             </Button>
@@ -1379,11 +1379,87 @@ export default function ComponentsShowcasePage() {
             </Button>
 
             <Button
-              leftIcon={<WrenchIcon />}
               onClick={() => setIsDetailModalOpen(true)}
-              variant="primary-black"
+              rightIcon={<ArrowRightIcon />}
+              variant="primary-orange"
             >
               Detail Tiket Kerusakan (1040px - xl)
+            </Button>
+          </div>
+
+          {/* KARTU PREVIEW KONDISI KAMAR & TIKET DARI WF-02-DASHBOARD (F-07) */}
+          <div
+            style={{
+              maxWidth: 380,
+              backgroundColor: "var(--background)",
+              border: "1.5px solid var(--border)",
+              borderRadius: 18,
+              padding: 20,
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+              marginBottom: 30,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ color: "#FF7A00" }}>
+                  <WrenchIcon />
+                </span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
+                  Kondisi Kamar / Tiket
+                </span>
+              </div>
+              <Badge shape="pill" size="sm" variant="danger">
+                1 Perlu Servis
+              </Badge>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {/* Segment 1: Perlu Servis Segera */}
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 5 }}>
+                  <span style={{ color: "var(--muted-foreground)", fontWeight: 600 }}>Perlu Servis Segera</span>
+                  <span style={{ color: "#EF4444", fontWeight: 700 }}>1</span>
+                </div>
+                <div style={{ height: 6, borderRadius: 3, backgroundColor: "var(--border)", overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: "25%", backgroundColor: "#EF4444", borderRadius: 3 }} />
+                </div>
+              </div>
+
+              {/* Segment 2: Sedang Dikerjakan */}
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 5 }}>
+                  <span style={{ color: "var(--muted-foreground)", fontWeight: 600 }}>Sedang Dikerjakan</span>
+                  <span style={{ color: "#F59E0B", fontWeight: 700 }}>1</span>
+                </div>
+                <div style={{ height: 6, borderRadius: 3, backgroundColor: "var(--border)", overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: "25%", backgroundColor: "#F59E0B", borderRadius: 3 }} />
+                </div>
+              </div>
+
+              {/* Segment 3: Laporan Baru Masuk */}
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 5 }}>
+                  <span style={{ color: "var(--muted-foreground)", fontWeight: 600 }}>Laporan Baru Masuk</span>
+                  <span style={{ color: "#FF7A00", fontWeight: 700 }}>1</span>
+                </div>
+                <div style={{ height: 6, borderRadius: 3, backgroundColor: "var(--border)", overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: "25%", backgroundColor: "#FF7A00", borderRadius: 3 }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Tombol Pemicu WF-02 Asli: .btn-maintenance-full (Oranye Baku #FF7A00) */}
+            <Button
+              onClick={() => setIsDetailModalOpen(true)}
+              rightIcon={<ArrowRightIcon />}
+              shape="pill"
+              size="md"
+              style={{ width: "100%", justifyContent: "center" }}
+              variant="primary-orange"
+            >
+              Detail Tiket Kerusakan
             </Button>
           </div>
 
@@ -2185,7 +2261,7 @@ export default function ComponentsShowcasePage() {
                       <Button
                         leftIcon={<SendIcon />}
                         size="sm"
-                        variant="primary-black"
+                        variant="primary-orange"
                       >
                         Kirim Catatan
                       </Button>
