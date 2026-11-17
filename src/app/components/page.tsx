@@ -19,6 +19,7 @@ import {
   ConfirmDialog,
 } from "@/components/ui/dialog";
 import { PopoverSelect } from "@/components/ui/popover-select";
+import { OccupancyGauge } from "@/components/ui/occupancy-gauge";
 import {
   Checkbox,
   CurrencyInput,
@@ -2381,6 +2382,85 @@ export default function ComponentsShowcasePage() {
               </div>
             </DialogFooter>
           </Dialog>
+        </section>
+
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1.5px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div style={{ marginBottom: 18 }}>
+            <h2
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                margin: "0 0 3px",
+                letterSpacing: "-0.2px",
+              }}
+            >
+              CMP-06: Gauge Okupansi (`src/components/ui/occupancy-gauge.tsx`)
+            </h2>
+            <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Gauge setengah lingkaran dengan nilai aksesibel (role meter), tiga tone, tiga ukuran, dan batas nol serta penuh.
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 32, alignItems: "flex-end" }}>
+            {/* WF-02 metric card gauge (104px - size xs) */}
+            <div
+              style={{
+                backgroundColor: "var(--background)",
+                border: "1px solid var(--border)",
+                borderRadius: 16,
+                padding: "16px 20px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                width: 260,
+              }}
+            >
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+                WF-02 Card Gauge (104px)
+              </span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                <div>
+                  <span style={{ fontSize: 11, color: "var(--muted-foreground)" }}>Hunian</span>
+                  <div style={{ fontSize: 20, fontWeight: 700 }}>11 / 15</div>
+                </div>
+                <OccupancyGauge label="Okupansi Kamar WF-02" size="xs" value={73} />
+              </div>
+            </div>
+
+            <OccupancyGauge caption="Terisi" label="Okupansi kamar" size="md" value={73} />
+            <OccupancyGauge caption="Kosong" label="Okupansi kosong" size="md" value={0} />
+            <OccupancyGauge caption="Penuh" label="Okupansi penuh" size="md" value={100} />
+            <OccupancyGauge
+              caption="Tone gelap"
+              label="Okupansi tone gelap"
+              size="sm"
+              tone="dark"
+              value={45}
+            />
+            <OccupancyGauge
+              caption="Pagu terlampaui"
+              label="Pengeluaran terhadap pagu"
+              size="lg"
+              tone="danger"
+              value={92}
+            />
+            <OccupancyGauge
+              caption="Kamar"
+              label="Kamar terisi"
+              max={15}
+              size="md"
+              value={11}
+              valueText="11 dari 15"
+            />
+          </div>
         </section>
       </div>
     </main>
