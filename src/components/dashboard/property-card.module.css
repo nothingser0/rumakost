@@ -1,0 +1,265 @@
+.card {
+  background: var(--color-primary, #ff7a00);
+  border-radius: 24px;
+  padding: 24px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  min-height: 295px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 18px;
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.15);
+  border: none;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px var(--color-primary, #ff7a00);
+}
+
+/* Geometric Dot Grid Motif (0.4 Opacity) */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1.2px, transparent 1.2px);
+  background-size: 15px 15px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+/* Architectural Wave Lines Motif */
+.patternSvg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 1;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  position: relative;
+}
+
+.tagPill {
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+}
+
+.arrowButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: all 150ms ease;
+  outline: none;
+}
+
+.arrowButton:hover,
+.card:hover .arrowButton {
+  background: #ffffff;
+  color: var(--color-primary, #ff7a00);
+}
+
+.arrowButton:focus-visible {
+  background: #ffffff;
+  color: var(--color-primary, #ff7a00);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6);
+}
+
+.mainBody {
+  z-index: 2;
+  position: relative;
+  max-width: 62%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 24px;
+  margin: 0;
+  padding-bottom: 4px;
+}
+
+.headerGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subMeta {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  line-height: 1.35;
+}
+
+.mainTitle {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  color: #ffffff;
+}
+
+/* Emphasis Block */
+.emphasisBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.emphasisLabel {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  line-height: 1.35;
+}
+
+.emphasisValWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.emphasisValHuge {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
+}
+
+.emphasisPillTrend {
+  font-size: 11.5px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 4px 9px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+  color: #ffffff;
+}
+
+.emphasisSubText {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+/* Dual Metric Variant (CMP-10 spec: Total Kamar & Okupansi) */
+.dualMetricsWrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 4px 0 2px;
+}
+
+.dualMetricItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dualMetricLabel {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.dualMetricValue {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+}
+
+/* Perspective Building Image Cutout */
+.buildingImg {
+  position: absolute;
+  right: 0;
+  top: 74px;
+  bottom: 0;
+  height: calc(100% - 74px);
+  width: clamp(135px, 35%, 170px);
+  border-radius: 24px 0 0 0;
+  object-fit: cover;
+  object-position: center bottom;
+  box-shadow: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Fallback Architectural Silhouette if Image Not Available */
+.buildingFallback {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: clamp(135px, 35%, 170px);
+  height: calc(100% - 74px);
+  border-radius: 24px 0 0 0;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .arrowButton {
+    transition: none !important;
+  }
+}

@@ -21,6 +21,23 @@ import {
 import { PopoverSelect } from "@/components/ui/popover-select";
 import { OccupancyGauge } from "@/components/ui/occupancy-gauge";
 import {
+  SegmentedProgress,
+  ContinuousProgress,
+  TicketStepTracker,
+} from "@/components/ui/segmented-progress";
+import { Topbar, BottomNav, type UserRole } from "@/components/layout/topbar";
+import {
+  MetricCard,
+  OccupancyMetricCard,
+  CollectionMetricCard,
+  ExpenseBudgetMetricCard,
+  StaffTicketsMetricCard,
+  StaffCashDepositMetricCard,
+  DashboardMetricsRow,
+} from "@/components/dashboard/metric-card";
+import { PropertyHighlightCard } from "@/components/dashboard/property-card";
+import { CashflowChart, DEFAULT_CASHFLOW_DATA } from "@/components/dashboard/cashflow-chart";
+import {
   Checkbox,
   CurrencyInput,
   DatePicker,
@@ -306,6 +323,12 @@ export default function ComponentsShowcasePage() {
   const [isAddRoomModalOpen, setIsAddRoomModalOpen] = useState(false);
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [demoProgressStep, setDemoProgressStep] = useState(3);
+  const [demoRole, setDemoRole] = useState<"OWNER" | "STAFF">("OWNER");
+  const [demoBudgetSet, setDemoBudgetSet] = useState(true);
+  const [topbarPreviewRole, setTopbarPreviewRole] = useState<UserRole>("OWNER");
+  const [chartYear, setChartYear] = useState("2026");
+  const [chartState, setChartState] = useState<"default" | "target" | "empty" | "error" | "loading">("default");
 
   const toggleDark = () => {
     setIsDark((prev) => {
@@ -2460,6 +2483,658 @@ export default function ComponentsShowcasePage() {
               value={11}
               valueText="11 dari 15"
             />
+          </div>
+        </section>
+
+        {/* CMP-07: Segmented Progress Indicator */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div style={{ marginBottom: 18 }}>
+            <h2
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                margin: "0 0 3px",
+                letterSpacing: "-0.2px",
+                color: "var(--foreground)",
+              }}
+            >
+              CMP-07: Segmented Progress Indicator (`src/components/ui/segmented-progress.tsx`)
+            </h2>
+            <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Indikator tahapan tiket 5-langkah (Diterima &rarr; Ditugaskan &rarr; Dikerjakan &rarr; Diperiksa &rarr; Selesai) dan continuous progress bar untuk kondisi bangunan.
+            </p>
+          </div>
+
+          {/* Interactive Stepper Control */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              padding: "10px 14px",
+              backgroundColor: "var(--background)",
+              borderRadius: 12,
+              border: "1px solid var(--border)",
+              width: "fit-content",
+              marginBottom: 20,
+            }}
+          >
+            <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+              Uji Coba Tahap Interaktif:
+            </span>
+            <div style={{ display: "flex", gap: 6 }}>
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Button
+                  key={s}
+                  size="xs"
+                  variant={demoProgressStep === s ? "primary-orange" : "secondary-ghost"}
+                  onClick={() => setDemoProgressStep(s)}
+                >
+                  Tahap {s}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+              gap: 20,
+              marginBottom: 20,
+            }}
+          >
+            {/* 1. Modal Stepper Variant (WF-08 Detail Tiket) */}
+            <div
+              style={{
+                backgroundColor: "var(--background)",
+                border: "1px solid var(--border)",
+                borderRadius: 16,
+                padding: "20px 24px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+              }}
+            >
+              <span style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
+                Varian 2A: Modal Stepper (WF-08 Detail Tiket)
+              </span>
+              <TicketStepTracker status={demoProgressStep} variant="modal" />
+              <div style={{ fontSize: 12, color: "var(--muted-foreground)" }}>
+                Dash 7px lebar penuh untuk dialog/modal penanganan kerusakan dengan status tahapan dinamis.
+              </div>
+            </div>
+
+            {/* 2. Varian 1: Continuous Thick Bar (WF-02 Building Condition) */}
+            <div
+              style={{
+                backgroundColor: "var(--background)",
+                border: "1px solid var(--border)",
+                borderRadius: 16,
+                padding: "20px 24px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 16,
+              }}
+            >
+              <span style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
+                Varian 1: Continuous Thick Bar (WF-02 Kondisi Bangunan)
+              </span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                <ContinuousProgress
+                  label="Dalam Pengerjaan"
+                  showValue
+                  value={50}
+                  valueText="2 tiket (50%)"
+                />
+                <ContinuousProgress
+                  label="Menunggu Penugasan"
+                  showValue
+                  value={25}
+                  valueText="1 tiket (25%)"
+                />
+                <ContinuousProgress
+                  label="Laporan Baru Masuk"
+                  showValue
+                  value={25}
+                  valueText="1 tiket (25%)"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Varian 2B: Mini Dash Tracker dalam Baris Feed Tiket WF-08 (Lebar Penuh & Rapi) */}
+          <div
+            style={{
+              backgroundColor: "var(--background)",
+              border: "1px solid var(--border)",
+              borderRadius: 16,
+              padding: "20px 24px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+            }}
+          >
+            <span style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
+              Varian 2B: Mini Dash Tracker (WF-08 Baris Tabel &amp; Feed Tiket)
+            </span>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: 16,
+                padding: "16px 20px",
+                backgroundColor: "var(--card)",
+                borderRadius: 14,
+                border: "1px solid var(--border)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 200 }}>
+                <div
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: 10,
+                    backgroundColor: "#fff7ed",
+                    color: "#ff7a00",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    border: "1px solid #ffedd5",
+                  }}
+                >
+                  <WrenchIcon />
+                </div>
+                <div>
+                  <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--foreground)" }}>
+                    Pipa Wastafel Kamar Bocor
+                  </div>
+                  <div style={{ fontSize: 11.5, color: "var(--muted-foreground)", marginTop: 2 }}>
+                    Kamar B-02 &middot; Rini Marlina &middot; Mendesak (Urgent)
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 16, marginLeft: "auto" }}>
+                <TicketStepTracker status={demoProgressStep} variant="mini" />
+                <Button size="xs" variant="secondary-outline">
+                  Buka Detail
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 8: TOPBAR NAVIGATION SHELL (CMP-08) */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div style={{ marginBottom: 18 }}>
+            <h2
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                margin: "0 0 3px",
+                letterSpacing: "-0.2px",
+                color: "var(--foreground)",
+              }}
+            >
+              CMP-08: Topbar &amp; Navigasi 3 Peran (`src/components/layout/topbar.tsx`)
+            </h2>
+            <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Bilah navigasi mengambang (desktop) dan bilah navigasi bawah ergonomis (mobile) yang merefleksikan izin server secara presisi untuk Owner, Staff, dan Tenant.
+            </p>
+          </div>
+
+          {/* Interactive Role Switcher for Preview */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              flexWrap: "wrap",
+              padding: "10px 14px",
+              backgroundColor: "var(--background)",
+              borderRadius: 12,
+              border: "1px solid var(--border)",
+              width: "fit-content",
+              marginBottom: 20,
+            }}
+          >
+            <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+              Pratinjau Peran:
+            </span>
+            <Button
+              size="xs"
+              variant={topbarPreviewRole === "OWNER" ? "primary-orange" : "secondary-ghost"}
+              onClick={() => setTopbarPreviewRole("OWNER")}
+            >
+              Pemilik (Owner) &middot; 7 Rute
+            </Button>
+            <Button
+              size="xs"
+              variant={topbarPreviewRole === "STAFF" ? "primary-orange" : "secondary-ghost"}
+              onClick={() => setTopbarPreviewRole("STAFF")}
+            >
+              Staf Operasional &middot; 5 Rute
+            </Button>
+            <Button
+              size="xs"
+              variant={topbarPreviewRole === "TENANT" ? "primary-orange" : "secondary-ghost"}
+              onClick={() => setTopbarPreviewRole("TENANT")}
+            >
+              Penghuni Kost &middot; Portal
+            </Button>
+          </div>
+
+          {/* Preview Container for Desktop Topbar */}
+          <div
+            style={{
+              backgroundColor: "var(--background)",
+              border: "1px solid var(--border)",
+              borderRadius: 20,
+              padding: "20px 16px 28px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
+                Pratinjau Desktop Topbar ({topbarPreviewRole})
+              </span>
+              <span style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
+                Tinggi 70px &middot; Radius 24px &middot; Estify Floating Bar
+              </span>
+            </div>
+
+            <div style={{ width: "100%", padding: "4px 0" }}>
+              <Topbar
+                role={topbarPreviewRole}
+                user={{
+                  name:
+                    topbarPreviewRole === "OWNER"
+                      ? "Budi Santoso"
+                      : topbarPreviewRole === "STAFF"
+                        ? "Rini Setiawati"
+                        : "Budi Santoso",
+                  email:
+                    topbarPreviewRole === "OWNER"
+                      ? "budi.santoso@kostmakmur.com"
+                      : topbarPreviewRole === "STAFF"
+                        ? "staf.operasional@kostmakmur.com"
+                        : "penghuni.a04@kostmakmur.com",
+                  role: topbarPreviewRole,
+                }}
+                currentPath={
+                  topbarPreviewRole === "TENANT"
+                    ? "/portal"
+                    : "/dashboard"
+                }
+                unreadNotifications={topbarPreviewRole === "TENANT" ? 0 : 3}
+                showMobileBottomNav={false}
+                style={{ width: "100%", margin: 0, position: "relative", top: 0 }}
+              />
+            </div>
+          </div>
+
+          {/* Preview Container for Mobile Bottom Nav */}
+          <div
+            style={{
+              backgroundColor: "var(--background)",
+              border: "1px solid var(--border)",
+              borderRadius: 20,
+              padding: "20px 24px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "var(--foreground)" }}>
+                Pratinjau Navigasi Bawah Mobile (Ergonomic Bottom Bar &middot; Target Ketuk &ge; 44px)
+              </span>
+              <span style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
+                Maks 5 Tombol Jempol
+              </span>
+            </div>
+
+            <div
+              style={{
+                position: "relative",
+                height: 64,
+                borderRadius: 16,
+                border: "1px solid var(--border)",
+                overflow: "hidden",
+                backgroundColor: "var(--surface, #ffffff)",
+              }}
+            >
+              <BottomNav
+                role={topbarPreviewRole}
+                currentPath={
+                  topbarPreviewRole === "TENANT" ? "/portal" : "/dashboard"
+                }
+                inline
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* CMP-09: Metric Summary Card */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div style={{ marginBottom: 18 }}>
+            <h2
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                margin: "0 0 3px",
+                letterSpacing: "-0.2px",
+                color: "var(--foreground)",
+              }}
+            >
+              CMP-09: Metric Summary Card (`src/components/dashboard/metric-card.tsx`)
+            </h2>
+            <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Trio kartu ringkasan metrik dashboard (WF-02) berbasis role: Owner (Finansial + Pagu bulanan CR-2026-001) dan Staff (Operasional tiket &amp; setoran kas tanpa bocor data finansial).
+            </p>
+          </div>
+
+          {/* Interactive Role Switcher for Showcase */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: 16,
+              padding: "10px 14px",
+              backgroundColor: "var(--background)",
+              borderRadius: 12,
+              border: "1px solid var(--border)",
+              width: "fit-content",
+              marginBottom: 20,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+                Simulasi Role:
+              </span>
+              <Button
+                size="xs"
+                variant={demoRole === "OWNER" ? "primary-orange" : "secondary-ghost"}
+                onClick={() => setDemoRole("OWNER")}
+              >
+                Owner (Finansial &amp; Pagu)
+              </Button>
+              <Button
+                size="xs"
+                variant={demoRole === "STAFF" ? "primary-orange" : "secondary-ghost"}
+                onClick={() => setDemoRole("STAFF")}
+              >
+                Staff (Operasional Murni)
+              </Button>
+            </div>
+
+            {demoRole === "OWNER" ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+                  Status Pagu:
+                </span>
+                <Button
+                  size="xs"
+                  variant="secondary-outline"
+                  onClick={() => setDemoBudgetSet(!demoBudgetSet)}
+                >
+                  {demoBudgetSet ? "Ubah ke: Pagu Belum Diatur (CR-2026-001)" : "Ubah ke: Pagu Diatur (Rp 5 Jt)"}
+                </Button>
+              </div>
+            ) : null}
+          </div>
+
+          {/* Render DashboardMetricsRow with simulated snapshot */}
+          {demoRole === "OWNER" ? (
+            <DashboardMetricsRow
+              snapshot={{
+                role: "OWNER",
+                period: { month: "2026-10", startDate: "2026-10-01", endDate: "2026-10-31" },
+                occupancy: { occupiedRooms: 11, totalRooms: 15, percentage: 73, asOfDate: "2026-10-15" },
+                tickets: { openCount: 3, byStatus: { RECEIVED: 1, IN_PROGRESS: 2 } as never },
+                finance: {
+                  collection: {
+                    issuedRentAmount: "20100000",
+                    collectedRentAmount: "16500000",
+                    percentage: 82,
+                  },
+                  cashFlow: {
+                    verifiedRentIncome: "16500000",
+                    reversedRentPayments: "0",
+                    netRentIncome: "16500000",
+                    grossExpenses: "4200000",
+                    expenseReversals: "0",
+                    netExpenses: "4200000",
+                    netOperatingCashFlow: "12300000",
+                  },
+                  budget: demoBudgetSet
+                    ? {
+                        month: "2026-10",
+                        status: "SET",
+                        budgetAmount: "5000000",
+                        actualAmount: "4200000",
+                        remainingAmount: "800000",
+                      }
+                    : {
+                        month: "2026-10",
+                        status: "NOT_SET",
+                        budgetAmount: null,
+                        actualAmount: "4200000",
+                        remainingAmount: null,
+                      },
+                },
+              }}
+              onSetBudget={() => setDemoBudgetSet(true)}
+            />
+          ) : (
+            <DashboardMetricsRow
+              snapshot={{
+                role: "STAFF",
+                period: { month: "2026-10", startDate: "2026-10-01", endDate: "2026-10-31" },
+                occupancy: { occupiedRooms: 11, totalRooms: 15, percentage: 73, asOfDate: "2026-10-15" },
+                tickets: { openCount: 3, byStatus: { RECEIVED: 1, IN_PROGRESS: 2 } as never },
+              }}
+            />
+          )}
+        </section>
+
+        {/* CMP-10: Property Highlight Card */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div style={{ marginBottom: 18 }}>
+            <h2
+              style={{
+                fontSize: 16,
+                fontWeight: 600,
+                margin: "0 0 3px",
+                letterSpacing: "-0.2px",
+                color: "var(--foreground)",
+              }}
+            >
+              CMP-10: Property Highlight Card (`src/components/dashboard/property-card.tsx`)
+            </h2>
+            <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+              Kartu sorotan properti tunggal berlatar oranye khas Estify (WF-02) dengan motif gelombang arsitektural, dot grid, dan gambar gedung modern.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))",
+              gap: 24,
+            }}
+          >
+            {/* Owner View (Finance: Pemasukan Bersih) */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+                Varian 1: Owner View (Finansial Pemasukan Bersih)
+              </span>
+              <PropertyHighlightCard
+                role="OWNER"
+                variant="finance"
+                propertyName="Kost Budi Makmur"
+                address="Jl. Flamboyan No. 12"
+                totalRooms={15}
+                netIncome={12300000}
+                netIncomeDelta="+15%"
+              />
+            </div>
+
+            {/* Staff View (Operational: Total Kamar & Okupansi) */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+                Varian 2: Staff View (Operasional Okupansi &amp; Kamar)
+              </span>
+              <PropertyHighlightCard
+                role="STAFF"
+                variant="operational"
+                propertyName="Kost Budi Makmur"
+                address="Jl. Flamboyan No. 12"
+                totalRooms={15}
+                occupiedRooms={11}
+                occupancyRate={73}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* CMP-11: Double Bar Chart Widget */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 12,
+              marginBottom: 18,
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  margin: "0 0 3px",
+                  letterSpacing: "-0.2px",
+                  color: "var(--foreground)",
+                }}
+              >
+                CMP-11: Double Bar Chart Widget (`src/components/dashboard/cashflow-chart.tsx`)
+              </h2>
+              <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+                Grafik batang ganda Estify untuk Arus Kas &amp; Operasional (WF-02) dengan sumbu Y dinamis, garis grid putus-putus, target indicator, tooltip hover/keyboard, serta empty/error/loading states.
+              </p>
+            </div>
+
+            {/* State Switcher Buttons */}
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+                Mode:
+              </span>
+              {[
+                { id: "default", label: "Default (6 Bulan)" },
+                { id: "target", label: "+ Pagu Target (18 Jt)" },
+                { id: "empty", label: "Empty State" },
+                { id: "error", label: "Error State" },
+                { id: "loading", label: "Loading State" },
+              ].map((m) => (
+                <Button
+                  key={m.id}
+                  size="xs"
+                  variant={chartState === m.id ? "primary-orange" : "secondary-ghost"}
+                  onClick={() => setChartState(m.id as "default" | "target" | "empty" | "error" | "loading")}
+                >
+                  {m.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ width: "100%", maxWidth: 680 }}>
+            {chartState === "default" && (
+              <CashflowChart
+                selectedYear={chartYear}
+                onYearChange={setChartYear}
+              />
+            )}
+            {chartState === "target" && (
+              <CashflowChart
+                selectedYear={chartYear}
+                onYearChange={setChartYear}
+                targetIncome={18000000}
+                targetLabel="Pagu Target"
+              />
+            )}
+            {chartState === "empty" && (
+              <CashflowChart
+                data={[]}
+                selectedYear={chartYear}
+                onYearChange={setChartYear}
+              />
+            )}
+            {chartState === "error" && (
+              <CashflowChart
+                error="Gagal mengambil data pembukuan dari server akuntansi."
+                onRetry={() => setChartState("default")}
+                selectedYear={chartYear}
+                onYearChange={setChartYear}
+              />
+            )}
+            {chartState === "loading" && (
+              <CashflowChart
+                isLoading
+                selectedYear={chartYear}
+                onYearChange={setChartYear}
+              />
+            )}
           </div>
         </section>
       </div>

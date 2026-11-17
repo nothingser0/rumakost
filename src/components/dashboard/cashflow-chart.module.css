@@ -1,0 +1,770 @@
+/* ==========================================================================
+   Double Bar Chart Component Styles (CMP-11 · Estify Design System)
+   Tokens from DESIGN.md:
+   - Card container: radius-xl (20px) / radius-2xl (24px), border-subtle (#ECEEF2)
+   - Primary bar (Income): #FF7A00, inactive #FED7AA
+   - Secondary bar (Expense): #111111 / #FDBA74, inactive #E2E8F0
+   - Target line: #FF7A00 dashed
+   - Gridlines: #F3F4F6 / #ECEEF2 horizontal dashed
+   - Zero-Emoji, WCAG 2.2 AA compliance, Dark Mode support
+   ========================================================================== */
+
+.chartCardBox {
+  background: var(--bg-surface, #ffffff);
+  border-radius: var(--radius-2xl, 24px);
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-subtle, #eceef2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 295px;
+  box-sizing: border-box;
+  position: relative;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+/* Card Header */
+.cardTopHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.titleAndLegend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cardTitleText {
+  font-family: var(--font-display, inherit);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main, #111111);
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.legendGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-secondary, #71717a);
+  font-weight: 500;
+}
+
+.legendDotIncome {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-primary, #ff7a00);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.legendDotExpense {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dark-pill, #111111);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Header Controls */
+.headerCtrlGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Popover Year Dropdown Trigger */
+.customPopoverWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.pillDropdownTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  height: 32px;
+  background: var(--bg-canvas, #f7f8fa);
+  border: 1px solid var(--border-subtle, #eceef2);
+  border-radius: var(--radius-full, 9999px);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, #71717a);
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  user-select: none;
+  outline: none;
+  font-family: inherit;
+}
+
+.pillDropdownTrigger:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--text-main, #111111);
+  transform: translateY(-1px);
+}
+
+.pillDropdownTrigger:active:not(:disabled) {
+  background-color: #e2e8f0;
+  border-color: #94a3b8;
+  transform: scale(0.97);
+}
+
+.pillDropdownTriggerOpen {
+  background-color: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: var(--text-main, #111111) !important;
+  transform: none !important;
+}
+
+.pillDropdownTrigger:focus-visible {
+  outline: 2px solid var(--ring, #ff7a00);
+  outline-offset: 2px;
+}
+
+.popoverDropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: max-content;
+  min-width: 140px;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-subtle, #eceef2);
+  border-radius: var(--radius-lg, 16px);
+  padding: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 50;
+  box-sizing: border-box;
+}
+
+.popoverItem {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm, 8px);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, #71717a);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: background-color 150ms ease, color 150ms ease;
+  white-space: nowrap;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.popoverItem:hover,
+.popoverItem:focus-visible {
+  background: var(--bg-canvas, #f3f4f6);
+  color: var(--text-main, #111111);
+}
+
+.popoverItemSelected {
+  background: var(--dark-pill, #111111) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* Floating Arrow Navigation Link */
+.pillArrowBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-canvas, #f7f8fa);
+  border: 1px solid var(--border-subtle, #eceef2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary, #71717a);
+  text-decoration: none;
+  transition: all 150ms ease;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.pillArrowBtn:hover {
+  background: var(--dark-pill, #111111) !important;
+  color: #ffffff !important;
+  border-color: var(--dark-pill, #111111) !important;
+}
+
+.pillArrowBtn:focus-visible {
+  outline: 2px solid var(--ring, #ff7a00);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Chart Viewport & Canvas
+   ========================================================================== */
+.barChartViewport {
+  position: relative;
+  height: 204px;
+  padding-top: 10px;
+  padding-bottom: 28px;
+  box-sizing: border-box;
+}
+
+.chartYNumbers {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 38px;
+  height: 160px;
+  pointer-events: none;
+}
+
+.chartYVal {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted, #71717a);
+  text-align: right;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chartBarsTrack {
+  margin-left: 48px;
+  height: 160px;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 12px;
+  align-items: flex-end;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Horizontal Gridlines */
+.chartGridLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--border-subtle, #eceef2);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.chartGridLineBase {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 160px;
+  border-top: 1.5px solid var(--border-control, #e2e8f0);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Target dashed horizontal line */
+.chartTargetLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1.5px dashed var(--brand-primary, #ff7a00);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.targetBadge {
+  position: absolute;
+  right: 6px;
+  transform: translateY(-100%);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--brand-primary, #ff7a00);
+  background: var(--bg-surface, #ffffff);
+  padding: 1px 6px;
+  border-radius: var(--radius-full, 9999px);
+  border: 1px solid rgba(255, 122, 0, 0.25);
+  white-space: nowrap;
+}
+
+/* Column Pair */
+.barsPairColumn {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+  z-index: 3;
+  cursor: pointer;
+  outline: none;
+  padding: 0 6px;
+  border-radius: var(--radius-sm, 8px);
+  transition: background-color 150ms ease;
+}
+
+.barsPairColumn:focus-visible {
+  outline: 2px solid var(--ring, #ff7a00);
+  outline-offset: 4px;
+}
+
+.barsDuo {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+/* Pill / Capsule Bar */
+.estifyBarCapsule {
+  width: 18px;
+  border-radius: var(--radius-full, 9999px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  transition: transform 150ms ease, height 250ms ease;
+  cursor: pointer;
+  min-height: 4px;
+}
+
+.barFillSolid {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full, 9999px);
+  transition: all 150ms ease;
+}
+
+/* Inactive bar soft tones */
+.isPengeluaran {
+  background: var(--border-control, #e2e8f0);
+}
+
+.isPemasukan {
+  background: var(--brand-peach-light, #fed7aa);
+}
+
+/* Active Month (Current/Selected) */
+.isOrangeActive {
+  background: var(--brand-primary, #ff7a00) !important;
+  box-shadow: 0 2px 10px rgba(255, 122, 0, 0.4);
+}
+
+.isDarkActive {
+  background: var(--dark-pill, #111111) !important;
+  box-shadow: 0 2px 10px rgba(17, 17, 17, 0.4);
+}
+
+/* Hover or Keyboard-Focus Activation on Pair Column */
+.barsPairColumn:hover .isPemasukan,
+.barsPairColumn:hover .isOrangeActive,
+.barsPairColumn:focus-visible .isPemasukan,
+.barsPairColumn:focus-visible .isOrangeActive {
+  background: var(--brand-primary, #ff7a00) !important;
+  box-shadow: 0 3px 10px rgba(255, 122, 0, 0.45) !important;
+}
+
+.barsPairColumn:hover .isPengeluaran,
+.barsPairColumn:hover .isDarkActive,
+.barsPairColumn:focus-visible .isPengeluaran,
+.barsPairColumn:focus-visible .isDarkActive {
+  background: var(--dark-pill, #111111) !important;
+  box-shadow: 0 3px 10px rgba(17, 17, 17, 0.35) !important;
+}
+
+.barsPairColumn:hover .estifyBarCapsule,
+.barsPairColumn:focus-visible .estifyBarCapsule {
+  transform: scaleY(1.04);
+  transform-origin: bottom;
+}
+
+/* Month X-Axis Label */
+.barXTxt {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted, #71717a);
+  white-space: nowrap;
+  transition: color 150ms ease, font-weight 150ms ease;
+}
+
+.barXTxtActive,
+.barsPairColumn:hover .barXTxt,
+.barsPairColumn:focus-visible .barXTxt {
+  font-weight: 700;
+  color: var(--text-main, #111111);
+}
+
+/* Floating Tooltip (Hidden by default · Pops up on hover/focus only) */
+.barHoverTooltip {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--bg-surface, #ffffff);
+  padding: 8px 12px;
+  border-radius: var(--radius-md, 12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--border-subtle, #eceef2);
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1), transform 160ms cubic-bezier(0.16, 1, 0.3, 1), visibility 160ms;
+}
+
+.barsPairColumn:hover .barHoverTooltip,
+.barsPairColumn:focus-visible .barHoverTooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tooltipTitle {
+  font-weight: 700;
+  color: var(--text-main, #111111);
+  margin-bottom: 2px;
+}
+
+.tooltipRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary, #71717a);
+}
+
+.tooltipRow strong {
+  color: var(--text-main, #111111);
+}
+
+.tooltipDotOrange {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-primary, #ff7a00);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.tooltipDotDark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dark-pill, #111111);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
+.emptyStateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 204px;
+  padding: 20px;
+  text-align: center;
+  border: 1.5px dashed var(--border-subtle, #eceef2);
+  border-radius: var(--radius-xl, 20px);
+  background: var(--bg-canvas, #f7f8fa);
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.emptyStateIconWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-subtle, #eceef2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #71717a);
+  margin-bottom: 2px;
+}
+
+.emptyStateTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main, #111111);
+  margin: 0;
+}
+
+.emptyStateDescription {
+  font-size: 11px;
+  color: var(--text-secondary, #71717a);
+  max-width: 280px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   Error State
+   ========================================================================== */
+.errorStateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 204px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-xl, 20px);
+  background: #fef2f2;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.errorStateIconWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fee2e2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  margin-bottom: 2px;
+}
+
+.errorStateTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #991b1b;
+  margin: 0;
+}
+
+.errorStateDescription {
+  font-size: 11px;
+  color: #b91c1c;
+  max-width: 280px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.errorRetryBtn {
+  margin-top: 4px;
+  padding: 5px 14px;
+  border-radius: var(--radius-full, 9999px);
+  border: 1px solid #f87171;
+  background: #ffffff;
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.errorRetryBtn:hover {
+  background: #b91c1c;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.errorRetryBtn:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   Skeleton Shimmer State
+   ========================================================================== */
+.skeletonViewport {
+  height: 204px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 10px 12px 28px 48px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.skeletonPair {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.skeletonBar {
+  width: 18px;
+  border-radius: var(--radius-full, 9999px);
+  background: linear-gradient(
+    90deg,
+    var(--bg-canvas, #f3f4f6) 25%,
+    var(--border-subtle, #e5e7eb) 50%,
+    var(--bg-canvas, #f3f4f6) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==========================================================================
+   Screen Reader Only
+   ========================================================================== */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Dark Mode Support
+   ========================================================================== */
+:global([data-theme="dark"]) .chartCardBox {
+  background: var(--bg-surface, #1e2024);
+  border-color: var(--border-subtle, #2e3238);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+:global([data-theme="dark"]) .pillDropdownTrigger {
+  background: var(--bg-canvas, #15171a);
+  border-color: var(--border-subtle, #2e3238);
+  color: #a1a1aa;
+}
+
+:global([data-theme="dark"]) .pillDropdownTrigger:hover,
+:global([data-theme="dark"]) .pillDropdownTriggerOpen {
+  background: #27272a;
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .popoverDropdownMenu {
+  background: var(--bg-surface, #1e2024);
+  border-color: var(--border-subtle, #2e3238);
+}
+
+:global([data-theme="dark"]) .popoverItem {
+  color: #a1a1aa;
+}
+
+:global([data-theme="dark"]) .popoverItem:hover,
+:global([data-theme="dark"]) .popoverItem:focus-visible {
+  background: #27272a;
+  color: #ffffff;
+}
+
+:global([data-theme="dark"]) .pillArrowBtn {
+  background: var(--bg-canvas, #15171a);
+  border-color: var(--border-subtle, #2e3238);
+  color: #a1a1aa;
+}
+
+:global([data-theme="dark"]) .chartGridLine {
+  border-color: #27272a;
+}
+
+:global([data-theme="dark"]) .chartGridLineBase {
+  border-color: #3f3f46;
+}
+
+:global([data-theme="dark"]) .isPengeluaran {
+  background: #3f3f46;
+}
+
+:global([data-theme="dark"]) .isPemasukan {
+  background: #7c2d12;
+}
+
+:global([data-theme="dark"]) .barHoverTooltip {
+  background: var(--bg-surface, #1e2024);
+  border-color: var(--border-subtle, #2e3238);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+:global([data-theme="dark"]) .emptyStateContainer {
+  background: var(--bg-canvas, #15171a);
+  border-color: var(--border-subtle, #2e3238);
+}
+
+:global([data-theme="dark"]) .emptyStateIconWrap {
+  background: var(--bg-surface, #1e2024);
+  border-color: var(--border-subtle, #2e3238);
+}
+
+:global([data-theme="dark"]) .errorStateContainer {
+  background: #450a0a;
+  border-color: #7f1d1d;
+}
+
+:global([data-theme="dark"]) .errorStateIconWrap {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+:global([data-theme="dark"]) .errorStateTitle {
+  color: #fecaca;
+}
+
+:global([data-theme="dark"]) .errorStateDescription {
+  color: #fca5a5;
+}
+
+:global([data-theme="dark"]) .errorRetryBtn {
+  background: #1e2024;
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+:global([data-theme="dark"]) .errorRetryBtn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+  .estifyBarCapsule,
+  .barFillSolid,
+  .barHoverTooltip,
+  .pillDropdownTrigger,
+  .pillArrowBtn,
+  .skeletonBar {
+    transition: none !important;
+    animation: none !important;
+  }
+}

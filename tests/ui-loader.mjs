@@ -9,6 +9,10 @@ const extensions = [".tsx", ".ts", ".jsx", ".js", ".mjs", ".cjs"];
 export async function resolve(specifier, context, nextResolve) {
   let target = specifier;
 
+  if (target === "next/link") {
+    target = "next/link.js";
+  }
+
   if (target.startsWith("@/")) {
     const localPath = pathResolve(root, "src", target.slice(2));
     target = pathToFileURL(localPath).href;
