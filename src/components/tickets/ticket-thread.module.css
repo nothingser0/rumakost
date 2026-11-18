@@ -1,0 +1,363 @@
+/* ==========================================================================
+   CMP-18: Ticket Timeline & Comment Thread (M06-UI-COMMENT-THREAD)
+   Collaborative timeline, status transitions, and role-scoped comments
+   ========================================================================== */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+/* Stepper & Status Banner */
+.stepperCard {
+  background: var(--surface, #FFFFFF);
+  border: 1px solid var(--border, #E2E8F0);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.stepperHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.stepperTitle {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-main, #111111);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cancelledAlert {
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  color: #991B1B;
+  font-weight: 500;
+}
+
+/* Timeline & Comments Stream */
+.streamSection {
+  background: var(--surface, #FFFFFF);
+  border: 1px solid var(--border, #E2E8F0);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.streamHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border, #E2E8F0);
+}
+
+.streamTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main, #111111);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.streamCount {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted, #64748B);
+}
+
+.timelineList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Status Event Divider */
+.statusEventRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 11.5px;
+  color: var(--text-muted, #64748B);
+}
+
+.statusEventLine {
+  flex: 1;
+  height: 1px;
+  background: var(--border, #E2E8F0);
+}
+
+.statusEventBadge {
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: 9999px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary, #475569);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Comment Bubble */
+.bubble {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 150ms ease;
+}
+
+.bubble:hover {
+  border-color: #CBD5E1;
+}
+
+.bubbleInternal {
+  background: #FFFBEB;
+  border: 1px dashed #F59E0B;
+}
+
+.bubbleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.authorGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.authorAvatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #E2E8F0;
+  color: #334155;
+  font-size: 10.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.authorName {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main, #111111);
+}
+
+.timestamp {
+  font-size: 11px;
+  color: var(--text-muted, #64748B);
+}
+
+.commentBody {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-secondary, #334155);
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.attachmentList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.attachmentThumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--brand-primary, #FF7A00);
+  text-decoration: none;
+}
+
+.attachmentThumb:hover {
+  border-color: var(--brand-primary, #FF7A00);
+  background: #FFF7ED;
+}
+
+/* Empty Stream */
+.emptyStream {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 12px;
+  color: var(--text-muted, #94A3B8);
+}
+
+/* Composer Section */
+.composer {
+  background: #F8FAFC;
+  border: 1px solid var(--border, #E2E8F0);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.composerLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main, #111111);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 76px;
+  border: 1px solid #CBD5E1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: var(--text-main, #111111);
+  background: #FFFFFF;
+  resize: vertical;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  border-color: var(--brand-primary, #FF7A00);
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.12);
+}
+
+.textarea:disabled {
+  background: #F1F5F9;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.composerFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.visibilityCheckbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #B45309;
+  cursor: pointer;
+  user-select: none;
+}
+
+.visibilityCheckbox input {
+  accent-color: #D97706;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.closedNotice {
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text-muted, #64748B);
+  text-align: center;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :global([data-theme="dark"]) .stepperCard,
+  :global(.dark) .stepperCard,
+  :global([data-theme="dark"]) .streamSection,
+  :global(.dark) .streamSection {
+    background: #1E293B;
+    border-color: #334155;
+  }
+
+  :global([data-theme="dark"]) .bubble,
+  :global(.dark) .bubble,
+  :global([data-theme="dark"]) .composer,
+  :global(.dark) .composer {
+    background: #0F172A;
+    border-color: #334155;
+  }
+
+  :global([data-theme="dark"]) .bubbleInternal,
+  :global(.dark) .bubbleInternal {
+    background: #2D2312;
+    border-color: #B45309;
+  }
+
+  :global([data-theme="dark"]) .textarea,
+  :global(.dark) .textarea {
+    background: #1E293B;
+    border-color: #475569;
+    color: #F8FAFC;
+  }
+
+  :global([data-theme="dark"]) .authorName,
+  :global(.dark) .authorName,
+  :global([data-theme="dark"]) .stepperTitle,
+  :global(.dark) .stepperTitle,
+  :global([data-theme="dark"]) .streamTitle,
+  :global(.dark) .streamTitle,
+  :global([data-theme="dark"]) .composerLabel,
+  :global(.dark) .composerLabel {
+    color: #F8FAFC;
+  }
+
+  :global([data-theme="dark"]) .commentBody,
+  :global(.dark) .commentBody {
+    color: #E2E8F0;
+  }
+
+  :global([data-theme="dark"]) .authorAvatar,
+  :global(.dark) .authorAvatar {
+    background: #334155;
+    color: #F8FAFC;
+  }
+}

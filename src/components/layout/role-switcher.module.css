@@ -1,0 +1,97 @@
+/* ==========================================================================
+   CMP-19: Role Switcher Pill Bar (M06-UI-ROLE-SWITCHER)
+   Pill bar selector for role selection and server-reflected role status
+   ========================================================================== */
+
+.pillBar {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface-muted, #F1F5F9);
+  border: 1px solid var(--border, #E2E8F0);
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 3px;
+  user-select: none;
+}
+
+.pillItem {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted, #64748B);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  outline: none;
+  transition: all 150ms ease;
+  white-space: nowrap;
+}
+
+.pillItem:hover:not(.pillItemActive):not(:disabled) {
+  color: var(--text-main, #111111);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.pillItem:focus-visible {
+  outline: 2px solid var(--brand-primary, #FF7A00);
+  outline-offset: 1px;
+}
+
+.pillItemActive {
+  background: #111111 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.pillItem:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.roleTag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :global([data-theme="dark"]) .pillBar,
+  :global(.dark) .pillBar {
+    background: #1E293B;
+    border-color: #334155;
+  }
+
+  :global([data-theme="dark"]) .pillItem,
+  :global(.dark) .pillItem {
+    color: #94A3B8;
+  }
+
+  :global([data-theme="dark"]) .pillItem:hover:not(.pillItemActive):not(:disabled),
+  :global(.dark) .pillItem:hover:not(.pillItemActive):not(:disabled) {
+    color: #F8FAFC;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  :global([data-theme="dark"]) .pillItemActive,
+  :global(.dark) .pillItemActive {
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border: 1px solid #475569;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .pillItem {
+    transition: none;
+  }
+}

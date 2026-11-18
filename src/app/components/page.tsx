@@ -43,6 +43,13 @@ import { RoomCard } from "@/components/rooms/room-card";
 import { DataTable, RowActionLink } from "@/components/ui/data-table";
 import { MediaUpload, type MediaUploadItem } from "@/components/tickets/media-upload";
 import { RentSummaryBanner, type TenantInvoiceStatus } from "@/components/portal/rent-summary";
+import {
+  TicketThread,
+  type TicketStatus,
+  type TicketRole,
+  type TicketCommentItem,
+} from "@/components/tickets/ticket-thread";
+import { RoleSwitcherPillBar } from "@/components/layout/role-context";
 
 const DEMO_TABLE_ROWS = Array.from({ length: 47 }, (_, index) => {
   const number = index + 1;
@@ -417,6 +424,39 @@ export default function ComponentsShowcasePage() {
   ]);
   const [mediaUploadMode, setMediaUploadMode] = useState<"interactive" | "empty" | "error">("interactive");
   const [rentBannerStatus, setRentBannerStatus] = useState<TenantInvoiceStatus>("UNPAID");
+  const [threadRole, setThreadRole] = useState<TicketRole>("STAFF");
+  const [threadStatus, setThreadStatus] = useState<TicketStatus>("IN_PROGRESS");
+  const [activePillRole, setActivePillRole] = useState<UserRole>("OWNER");
+  const [threadComments, setThreadComments] = useState<TicketCommentItem[]>([
+    {
+      id: "tc-1",
+      authorId: "u-tenant",
+      authorName: "Reza Pratama",
+      authorRole: "TENANT",
+      body: "Laporan kerusakan AC: pipa indoor meneteskan air deras membasahi kasur.",
+      visibility: "TENANT_VISIBLE",
+      createdAt: "2026-10-24T07:15:00.000Z",
+      attachments: [{ id: "att-1", fileName: "bukti_tetesan_ac.jpg" }],
+    },
+    {
+      id: "tc-2",
+      authorId: "u-staff",
+      authorName: "Rini Setiawati",
+      authorRole: "STAFF",
+      body: "Laporan telah diverifikasi staf operasional. Teknisi internal dijadwalkan tiba pukul 10.00 WIB.",
+      visibility: "TENANT_VISIBLE",
+      createdAt: "2026-10-24T07:35:00.000Z",
+    },
+    {
+      id: "tc-3",
+      authorId: "u-staff",
+      authorName: "Rini Setiawati",
+      authorRole: "STAFF",
+      body: "Catatan internal: pipa drainase tersumbat lumut tebal, butuh flushing kimiawi.",
+      visibility: "INTERNAL",
+      createdAt: "2026-10-24T07:40:00.000Z",
+    },
+  ]);
 
   const toggleDark = () => {
     setIsDark((prev) => {
@@ -3778,6 +3818,205 @@ export default function ComponentsShowcasePage() {
               status={rentBannerStatus}
               payHref="/portal/tagihan"
             />
+          </div>
+        </section>
+
+        {/* CMP-18: Ticket Timeline & Comment Thread */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 12,
+              marginBottom: 18,
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <h2
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 600,
+                    margin: 0,
+                    letterSpacing: "-0.2px",
+                    color: "var(--foreground)",
+                  }}
+                >
+                  CMP-18: Ticket Timeline &amp; Comment Thread (`src/components/tickets/ticket-thread.tsx`)
+                </h2>
+                <Badge size="sm" variant="brand">
+                  Role-Scoped
+                </Badge>
+              </div>
+              <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+                Diskusi penanganan tiket dan stepper 5-status (WF-08 / WF-12). Komentar internal bertanda khusus dan otomatis disembunyikan jika dilihat sebagai Penghuni (Zero-Leak).
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>Peran:</span>
+                {(["OWNER", "STAFF", "TENANT"] as const).map((role) => (
+                  <Button
+                    key={role}
+                    size="xs"
+                    variant={threadRole === role ? "primary-orange" : "secondary-ghost"}
+                    onClick={() => setThreadRole(role)}
+                  >
+                    {role === "OWNER" ? "Owner" : role === "STAFF" ? "Staff" : "Penghuni"}
+                  </Button>
+                ))}
+              </div>
+
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>Status:</span>
+                {(["RECEIVED", "ASSIGNED", "IN_PROGRESS", "INSPECTION", "RESOLVED", "CANCELLED"] as const).map(
+                  (st) => (
+                    <Button
+                      key={st}
+                      size="xs"
+                      variant={threadStatus === st ? "primary-black" : "secondary-ghost"}
+                      onClick={() => setThreadStatus(st)}
+                    >
+                      {st === "RECEIVED"
+                        ? "Diterima"
+                        : st === "ASSIGNED"
+                          ? "Ditugaskan"
+                          : st === "IN_PROGRESS"
+                            ? "Dikerjakan"
+                            : st === "INSPECTION"
+                              ? "Diperiksa"
+                              : st === "RESOLVED"
+                                ? "Selesai"
+                                : "Batal"}
+                    </Button>
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ maxWidth: 780 }}>
+            <TicketThread
+              currentStatus={threadStatus}
+              viewerRole={threadRole}
+              comments={threadComments}
+              cancellationReason={
+                threadStatus === "CANCELLED"
+                  ? "Dibatalkan penghuni karena kebocoran telah teratasi mandiri."
+                  : null
+              }
+              statusEvents={[
+                {
+                  id: "demo-event-1",
+                  fromStatus: "RECEIVED",
+                  toStatus: "ASSIGNED",
+                  actorName: "Rini Setiawati",
+                  actorRole: "STAFF",
+                  occurredAt: "2026-10-24T07:20:00.000Z",
+                },
+              ]}
+              onSubmitComment={(newComment) => {
+                setThreadComments((prev) => [
+                  ...prev,
+                  {
+                    id: `tc-${Date.now()}`,
+                    authorId: `u-${threadRole.toLowerCase()}`,
+                    authorName:
+                      threadRole === "OWNER"
+                        ? "Budi Makmur (Owner)"
+                        : threadRole === "STAFF"
+                          ? "Rini Setiawati"
+                          : "Reza Pratama",
+                    authorRole: threadRole,
+                    body: newComment.body,
+                    visibility: newComment.visibility,
+                    createdAt: new Date().toISOString(),
+                  },
+                ]);
+              }}
+            />
+          </div>
+        </section>
+
+        {/* CMP-19: Role Switcher Pill Bar */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 12,
+              marginBottom: 18,
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <h2
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 600,
+                    margin: 0,
+                    letterSpacing: "-0.2px",
+                    color: "var(--foreground)",
+                  }}
+                >
+                  CMP-19: Role Switcher Pill Bar (`src/components/layout/role-context.tsx`)
+                </h2>
+                <Badge size="sm" variant="brand">
+                  Server-Bound Session
+                </Badge>
+              </div>
+              <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+                Bar kapsul pemilih peran 3 arah (Pemilik, Staf Pengelola, Penghuni) pada login dan showcase. Otorisasi sesungguhnya mengikat sesi server (immutable), menolak pengubahan peran via query string atau client state tampering (FSD §7).
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 12, color: "var(--muted-foreground)" }}>Peran Terpilih:</span>
+              <Badge size="sm" variant={activePillRole === "OWNER" ? "brand" : activePillRole === "STAFF" ? "neutral" : "dark"}>
+                {activePillRole}
+              </Badge>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 640 }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--muted-foreground)", marginBottom: 8, textTransform: "uppercase" }}>
+                1. Mode Interaktif (Pill Bar)
+              </div>
+              <RoleSwitcherPillBar
+                selectedRole={activePillRole}
+                onChange={setActivePillRole}
+              />
+            </div>
+
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--muted-foreground)", marginBottom: 8, textTransform: "uppercase" }}>
+                2. Mode Read-Only / Sesi Server Terkunci
+              </div>
+              <RoleSwitcherPillBar
+                selectedRole="OWNER"
+                readOnly
+              />
+            </div>
           </div>
         </section>
       </div>
