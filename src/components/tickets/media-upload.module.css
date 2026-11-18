@@ -126,17 +126,26 @@
 }
 
 .chooseBtn {
-  height: 32px;
-  padding: 0 14px;
+  height: 34px;
+  padding: 0 16px;
   border-radius: 9999px;
   background: #FFFFFF;
   border: 1px solid #CBD5E1;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary, #334155);
   flex-shrink: 0;
   cursor: pointer;
-  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.chooseBtn:hover {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+  color: var(--text-main, #111111);
 }
 
 .chooseBtn:hover:not(:disabled) {
