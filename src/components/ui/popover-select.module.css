@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    CMP-04: Custom Popover Dropdown (Toolbar Filter Pill DNA)
    Acuan: WF-02-dashboard.html, WF-03-kamar.html & COMPONENT_REQUIREMENTS.md
    ========================================================================== */
@@ -332,16 +332,16 @@
   outline: none;
 }
 
-/* Selected: Peach Soft + Dark Orange + Orange Checkmark (Harmonious with CMP-02) */
+/* Selected: solid dark pill (konsisten dengan WF-02 .popover-item.selected dan filter tahun CMP-11) */
 .itemSelected {
-  background-color: var(--color-primary-soft, #fff7ed) !important;
-  color: var(--color-primary-dark, #c25e00) !important;
+  background-color: var(--dark-pill, #111111) !important;
+  color: #ffffff !important;
   font-weight: 600;
 }
 
 .itemSelected:hover {
-  background-color: var(--color-primary-soft, #fff7ed) !important;
-  color: var(--color-primary-dark, #c25e00) !important;
+  background-color: var(--dark-pill, #111111) !important;
+  color: #ffffff !important;
 }
 
 .itemDisabled {
@@ -378,8 +378,8 @@
 }
 
 .itemSelected .itemDescription {
-  color: var(--color-primary-dark, #c25e00);
-  opacity: 0.85;
+  color: #ffffff;
+  opacity: 0.75;
 }
 
 .itemRight {
@@ -390,7 +390,7 @@
 }
 
 .checkIcon {
-  color: var(--color-primary, #ff7a00);
+  color: #ffffff;
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
@@ -517,11 +517,11 @@
 
 :global(.dark) .itemSelected,
 :global([data-theme="dark"]) .itemSelected {
-  background-color: #311e08 !important;
-  color: #ff8a1e !important;
+  background-color: #f4f4f5 !important;
+  color: #111111 !important;
 }
 
 :global(.dark) .itemSelected .checkIcon,
 :global([data-theme="dark"]) .itemSelected .checkIcon {
-  color: #ff8a1e;
+  color: #111111;
 }

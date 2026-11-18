@@ -1,0 +1,267 @@
+/* ==========================================================================
+   CMP-17: Tenant Rent Summary Banner (M06-UI-RENT-BANNER)
+   Gradient card for tenant portal home displaying rent & invoice summary
+   ========================================================================== */
+
+.card {
+  position: relative;
+  background: linear-gradient(135deg, #FF7A00 0%, #EA580C 100%);
+  border-radius: 24px;
+  padding: 24px;
+  color: #FFFFFF;
+  box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.3), 0 8px 10px -6px rgba(234, 88, 12, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Background architectural wave / contour accents */
+.bgPattern {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.12;
+}
+
+.topRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  z-index: 1;
+}
+
+.chipGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.roomPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.3px;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.statusPaid {
+  background: rgba(255, 255, 255, 0.95);
+  color: #166534;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.statusUnpaid {
+  background: rgba(254, 240, 138, 0.95);
+  color: #854D0E;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.statusPartial {
+  background: rgba(224, 231, 255, 0.95);
+  color: #3730A3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.statusOverdue {
+  background: rgba(254, 226, 226, 0.95);
+  color: #991B1B;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.greetingSection {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tenantGreeting {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.roomTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+.roomSub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+/* Bottom Billing & CTA Container */
+.bottomSection {
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.billingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.actionContainer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.billingLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.billingAmount {
+  font-size: 22px;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.billingMeta {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.85);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.actionBtn {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 9999px;
+  background: #FFFFFF;
+  border: none;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #111111;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+  flex-shrink: 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.actionBtn:hover {
+  background: #F8FAFC;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+}
+
+.actionBtn:focus-visible {
+  outline: 3px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.actionBtnSecondary {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFFFFF;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 150ms ease, border-color 150ms ease;
+  flex-shrink: 0;
+}
+
+.actionBtnSecondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.actionBtnSecondary:focus-visible {
+  outline: 3px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 580px) {
+  .bottomSection {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .actionContainer {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .actionBtn,
+  .actionBtnSecondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .actionBtn,
+  .actionBtnSecondary {
+    transition: none;
+    transform: none !important;
+  }
+}

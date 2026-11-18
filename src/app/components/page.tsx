@@ -37,6 +37,68 @@ import {
 } from "@/components/dashboard/metric-card";
 import { PropertyHighlightCard } from "@/components/dashboard/property-card";
 import { CashflowChart, DEFAULT_CASHFLOW_DATA } from "@/components/dashboard/cashflow-chart";
+import { MaintenanceConditionPanel } from "@/components/tickets/condition-panel";
+import { ActivityFeed, type ActivityFeedItem } from "@/components/activity/activity-feed";
+import { RoomCard } from "@/components/rooms/room-card";
+import { DataTable, RowActionLink } from "@/components/ui/data-table";
+import { MediaUpload, type MediaUploadItem } from "@/components/tickets/media-upload";
+import { RentSummaryBanner, type TenantInvoiceStatus } from "@/components/portal/rent-summary";
+
+const DEMO_TABLE_ROWS = Array.from({ length: 47 }, (_, index) => {
+  const number = index + 1;
+  const floor = number <= 24 ? "1" : "2";
+  return {
+    id: `row-${number}`,
+    tenant: `Penghuni Contoh ${number}`,
+    room: `${floor === "1" ? "A" : "B"}-${String(((number - 1) % 24) + 1).padStart(2, "0")}`,
+    floor,
+    paid: number % 5 !== 0,
+  };
+});
+
+const DEMO_ACTIVITY_NOW = new Date("2026-11-18T10:00:00.000Z");
+const DEMO_ACTIVITY_ITEMS: ActivityFeedItem[] = [
+  {
+    id: "demo-1",
+    source: "TICKET_STATUS",
+    action: "STATUS_CHANGED",
+    occurredAt: "2026-11-18T09:38:00.000Z",
+    actor: { id: "u1", name: "Rini Marlina", role: "STAFF", type: "USER" },
+    entity: { type: "TICKET", id: "t1" },
+    statusChange: { fromStatus: "RECEIVED", toStatus: "ASSIGNED" },
+    href: "/tiket/t1",
+  },
+  {
+    id: "demo-2",
+    source: "AUDIT",
+    action: "CREATED",
+    occurredAt: "2026-11-18T09:00:00.000Z",
+    actor: { id: "u2", name: "Rini Setiawati", role: "STAFF", type: "USER" },
+    entity: { type: "EXPENSE", id: "x1" },
+    statusChange: null,
+    href: null,
+  },
+  {
+    id: "demo-3",
+    source: "AUDIT",
+    action: "UPDATED",
+    occurredAt: "2026-11-18T07:00:00.000Z",
+    actor: { id: "u3", name: "Pemilik Kost", role: "OWNER", type: "USER" },
+    entity: { type: "LEASE", id: "l1" },
+    statusChange: null,
+    href: "/kontrak/l1",
+  },
+  {
+    id: "demo-4",
+    source: "AUDIT",
+    action: "INVOICE_GENERATED",
+    occurredAt: "2026-11-18T05:00:00.000Z",
+    actor: { id: null, name: null, role: null, type: "SYSTEM" },
+    entity: { type: "INVOICE", id: "i1" },
+    statusChange: null,
+    href: "/tagihan/i1",
+  },
+];
 import {
   Checkbox,
   CurrencyInput,
@@ -329,6 +391,32 @@ export default function ComponentsShowcasePage() {
   const [topbarPreviewRole, setTopbarPreviewRole] = useState<UserRole>("OWNER");
   const [chartYear, setChartYear] = useState("2026");
   const [chartState, setChartState] = useState<"default" | "target" | "empty" | "error" | "loading">("default");
+  const [conditionState, setConditionState] = useState<"default" | "heavy" | "empty">("default");
+  const [conditionFeedback, setConditionFeedback] = useState<string | null>(null);
+  const [selectedRoomNo, setSelectedRoomNo] = useState<string>("A-01");
+  const [tableState, setTableState] = useState<"default" | "loading" | "error" | "empty">("default");
+  const [tableFloor, setTableFloor] = useState("all");
+  const [tablePage, setTablePage] = useState(1);
+  const [tablePageSize, setTablePageSize] = useState(10);
+  const [mediaUploadItems, setMediaUploadItems] = useState<MediaUploadItem[]>([
+    {
+      id: "demo-media-1",
+      fileName: "bukti_kerusakan_kamar.jpg",
+      fileSize: 3.2 * 1024 * 1024,
+      mimeType: "image/jpeg",
+      status: "available",
+      previewUrl: "/login-showcase.png",
+    },
+    {
+      id: "demo-media-2",
+      fileName: "video_pipa_bocor.mp4",
+      fileSize: 8.5 * 1024 * 1024,
+      mimeType: "video/mp4",
+      status: "uploading",
+    },
+  ]);
+  const [mediaUploadMode, setMediaUploadMode] = useState<"interactive" | "empty" | "error">("interactive");
+  const [rentBannerStatus, setRentBannerStatus] = useState<TenantInvoiceStatus>("UNPAID");
 
   const toggleDark = () => {
     setIsDark((prev) => {
@@ -3135,6 +3223,561 @@ export default function ComponentsShowcasePage() {
                 onYearChange={setChartYear}
               />
             )}
+          </div>
+        </section>
+
+        {/* CMP-12: Maintenance Condition Panel */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 12,
+              marginBottom: 18,
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  margin: "0 0 3px",
+                  letterSpacing: "-0.2px",
+                  color: "var(--foreground)",
+                }}
+              >
+                CMP-12: Maintenance Condition Panel (`src/components/tickets/condition-panel.tsx`)
+              </h2>
+              <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+                Panel status kondisi pemeliharaan kamar dan fasilitas kost (WF-02) dengan bilah kapsul oranye, dropdown menu opsi (Sinkron/Buat Tiket), semantik ARIA progressbar, dan tombol pil hitam full-width.
+              </p>
+            </div>
+
+            {/* State Switcher Buttons */}
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>
+                Mode:
+              </span>
+              {[
+                { id: "default", label: "Default WF-02 (4 Tiket Aktif)" },
+                { id: "heavy", label: "Beban Tinggi (11 Tiket + Diperiksa)" },
+                { id: "empty", label: "Empty State (0 Tiket)" },
+              ].map((m) => (
+                <Button
+                  key={m.id}
+                  size="xs"
+                  variant={conditionState === m.id ? "primary-orange" : "secondary-ghost"}
+                  onClick={() => {
+                    setConditionState(m.id as "default" | "heavy" | "empty");
+                    setConditionFeedback(null);
+                  }}
+                >
+                  {m.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {conditionFeedback && (
+            <div
+              style={{
+                marginBottom: 16,
+                padding: "8px 14px",
+                borderRadius: 8,
+                backgroundColor: "var(--surface-hover, #F4F4F5)",
+                border: "1px solid var(--border)",
+                fontSize: 12.5,
+                color: "var(--foreground)",
+                display: "inline-block",
+              }}
+            >
+              Aksi: <strong>{conditionFeedback}</strong>
+            </div>
+          )}
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 360px))",
+              gap: 24,
+            }}
+          >
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "var(--muted-foreground)", marginBottom: 8 }}>
+                Varian 1: Sidebar Dashboard Utama (WF-02)
+              </div>
+              {conditionState === "default" && (
+                <MaintenanceConditionPanel
+                  title="Kondisi Properti"
+                  ticketCounts={{
+                    openCount: 4,
+                    byStatus: {
+                      IN_PROGRESS: 2,
+                      ASSIGNED: 1,
+                      RECEIVED: 1,
+                    },
+                  }}
+                  onActionClick={(actionKey) =>
+                    setConditionFeedback(`Menu "${actionKey === "sync" ? "Sinkron Status" : "Buat Tiket Baru"}" diklik`)
+                  }
+                  onCtaClick={() => setConditionFeedback("Tombol 'Detail Tiket Kerusakan' diklik")}
+                />
+              )}
+              {conditionState === "heavy" && (
+                <MaintenanceConditionPanel
+                  title="Kondisi Properti"
+                  ticketCounts={{
+                    openCount: 11,
+                    byStatus: {
+                      IN_PROGRESS: 5,
+                      ASSIGNED: 3,
+                      RECEIVED: 2,
+                      INSPECTION: 1,
+                    },
+                  }}
+                  onActionClick={(actionKey) =>
+                    setConditionFeedback(`Menu "${actionKey === "sync" ? "Sinkron Status" : "Buat Tiket Baru"}" diklik`)
+                  }
+                  onCtaClick={() => setConditionFeedback("Tombol 'Detail Tiket Kerusakan' diklik")}
+                />
+              )}
+              {conditionState === "empty" && (
+                <MaintenanceConditionPanel
+                  title="Kondisi Properti"
+                  ticketCounts={{
+                    openCount: 0,
+                    byStatus: {
+                      IN_PROGRESS: 0,
+                      ASSIGNED: 0,
+                      RECEIVED: 0,
+                    },
+                  }}
+                  emptyText="Semua kamar dan fasilitas dalam kondisi baik. Tidak ada tiket kerusakan aktif."
+                  onActionClick={(actionKey) =>
+                    setConditionFeedback(`Menu "${actionKey === "sync" ? "Sinkron Status" : "Buat Tiket Baru"}" diklik`)
+                  }
+                  onCtaClick={() => setConditionFeedback("Tombol 'Detail Tiket Kerusakan' diklik")}
+                />
+              )}
+            </div>
+
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "var(--muted-foreground)", marginBottom: 8 }}>
+                Varian 2: Judul Custom &amp; Tanpa Menu Opsi
+              </div>
+              <MaintenanceConditionPanel
+                title="Kondisi Kamar / Tiket"
+                showMenu={false}
+                items={[
+                  { label: "Dalam Pengerjaan", count: 3, percentage: 60 },
+                  { label: "Menunggu Penugasan", count: 2, percentage: 40 },
+                ]}
+                ctaText="Buka Modul Tiket"
+                onCtaClick={() => setConditionFeedback("Tombol 'Buka Modul Tiket' diklik")}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* CMP-13: Activity Feed */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 16,
+              fontWeight: 600,
+              margin: "0 0 3px",
+              letterSpacing: "-0.2px",
+              color: "var(--foreground)",
+            }}
+          >
+            CMP-13: Activity Feed (`src/components/activity/activity-feed.tsx`)
+          </h2>
+          <p style={{ margin: "0 0 18px", color: "var(--muted-foreground)", fontSize: 12.5 }}>
+            Feed aktivitas audit dan status tiket. Baris dibatasi role: Staff tidak melihat entitas finansial (Pengeluaran), Penghuni tidak menerima baris sama sekali.
+          </p>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 380px))",
+              gap: 24,
+            }}
+          >
+            {(["OWNER", "STAFF", "TENANT"] as const).map((viewer) => (
+              <div key={viewer}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "var(--muted-foreground)", marginBottom: 8 }}>
+                  Tampilan {viewer === "OWNER" ? "Owner" : viewer === "STAFF" ? "Staff" : "Penghuni"}
+                </div>
+                <ActivityFeed
+                  role={viewer}
+                  items={DEMO_ACTIVITY_ITEMS}
+                  now={DEMO_ACTIVITY_NOW}
+                  viewAllHref="/dashboard"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CMP-14: Room Card */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 16,
+              fontWeight: 600,
+              margin: "0 0 3px",
+              letterSpacing: "-0.2px",
+              color: "var(--foreground)",
+            }}
+          >
+            CMP-14: Room Card (`src/components/rooms/room-card.tsx`)
+          </h2>
+          <p style={{ margin: "0 0 18px", color: "var(--muted-foreground)", fontSize: 12.5 }}>
+            Okupansi (Terisi/Kosong) dan status fisik (Siap, Dibersihkan, Perbaikan) adalah dua dimensi terpisah. Kamar terisi menampilkan kondisi tagihan, kamar kosong menampilkan status fisik. Klik kartu untuk memilih.
+          </p>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+              gap: 16,
+              maxWidth: 760,
+            }}
+          >
+            {[
+              { no: "A-01", occupancy: "OCCUPIED", physical: "READY", billing: "PAID", tenant: "Siti Aminah", rent: 1200000 },
+              { no: "A-02", occupancy: "OCCUPIED", physical: "READY", billing: "DUE_SOON", due: 3, tenant: "Dimas Prasetyo", rent: 1200000 },
+              { no: "B-01", occupancy: "OCCUPIED", physical: "READY", billing: "OVERDUE", tenant: "Dodi Firmansyah", rent: 1200000 },
+              { no: "A-03", occupancy: "VACANT", physical: "READY", type: "Standar", rent: 1100000 },
+              { no: "B-03", occupancy: "VACANT", physical: "CLEANING", type: "Standar", rent: 1100000 },
+              { no: "B-05", occupancy: "VACANT", physical: "MAINTENANCE", type: "Standar", rent: 1100000 },
+            ].map((room) => (
+              <RoomCard
+                key={room.no}
+                roomNumber={room.no}
+                occupancy={room.occupancy as "OCCUPIED" | "VACANT"}
+                physicalStatus={room.physical as "READY" | "CLEANING" | "MAINTENANCE"}
+                billingState={room.billing as "PAID" | "DUE_SOON" | "OVERDUE" | undefined}
+                dueInDays={room.due}
+                floorLabel="Lantai 1"
+                tenantName={room.tenant}
+                roomType={room.type}
+                monthlyRent={room.rent}
+                selected={selectedRoomNo === room.no}
+                onSelect={() => setSelectedRoomNo(room.no)}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* CMP-15: Data Table */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 12,
+              marginBottom: 18,
+            }}
+          >
+            <div>
+              <h2
+                style={{
+                  fontSize: 16,
+                  fontWeight: 600,
+                  margin: "0 0 3px",
+                  letterSpacing: "-0.2px",
+                  color: "var(--foreground)",
+                }}
+              >
+                CMP-15: Data Table (`src/components/ui/data-table.tsx`)
+              </h2>
+              <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+                Tabel dengan slot filter, state loading, error, dan kosong, aksi baris oranye, serta paginasi dengan ukuran halaman maksimal 100.
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>Mode:</span>
+              {[
+                { id: "default", label: "Default (47 Baris)" },
+                { id: "loading", label: "Loading State" },
+                { id: "error", label: "Error State" },
+                { id: "empty", label: "Empty State" },
+              ].map((m) => (
+                <Button
+                  key={m.id}
+                  size="xs"
+                  variant={tableState === m.id ? "primary-orange" : "secondary-ghost"}
+                  onClick={() => setTableState(m.id as "default" | "loading" | "error" | "empty")}
+                >
+                  {m.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <DataTable
+            caption="Daftar penghuni contoh"
+            getRowKey={(row) => row.id}
+            rows={
+              tableState === "empty"
+                ? []
+                : DEMO_TABLE_ROWS.filter((row) => tableFloor === "all" || row.floor === tableFloor)
+            }
+            loading={tableState === "loading"}
+            error={tableState === "error" ? "Server tidak merespons. Periksa koneksi lalu coba lagi." : null}
+            onRetry={() => setTableState("default")}
+            emptyTitle="Belum ada penghuni"
+            emptyText="Penghuni yang terdaftar akan muncul di sini."
+            page={tablePage}
+            pageSize={tablePageSize}
+            onPageChange={setTablePage}
+            onPageSizeChange={setTablePageSize}
+            toolbar={
+              <PopoverSelect
+                title="Filter lantai"
+                size="sm"
+                shape="pill"
+                inline
+                options={[
+                  { value: "all", label: "Semua Lantai" },
+                  { value: "1", label: "Lantai 1" },
+                  { value: "2", label: "Lantai 2" },
+                ]}
+                value={tableFloor}
+                onChange={(value) => {
+                  setTableFloor(value as string);
+                  setTablePage(1);
+                }}
+              />
+            }
+            columns={[
+              { key: "tenant", header: "Penghuni", cell: (row) => <strong>{row.tenant}</strong> },
+              { key: "room", header: "Kamar", cell: (row) => row.room },
+              {
+                key: "status",
+                header: "Tagihan",
+                cell: (row) => (
+                  <Badge size="sm" variant={row.paid ? "success" : "warning"}>
+                    {row.paid ? "Lunas" : "Menunggu"}
+                  </Badge>
+                ),
+              },
+              {
+                key: "action",
+                header: "Aksi",
+                hideHeader: true,
+                align: "right",
+                cell: (row) => <RowActionLink href="/components" label="Detail" ariaLabel={`Detail ${row.tenant}`} />,
+              },
+            ]}
+          />
+        </section>
+
+        {/* CMP-16: Mandatory Media Upload Zone */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 12,
+              marginBottom: 18,
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <h2
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 600,
+                    margin: 0,
+                    letterSpacing: "-0.2px",
+                    color: "var(--foreground)",
+                  }}
+                >
+                  CMP-16: Mandatory Media Upload Zone (`src/components/tickets/media-upload.tsx`)
+                </h2>
+                <Badge size="sm" variant="brand">
+                  F-07 Mandatory
+                </Badge>
+              </div>
+              <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+                Dropzone wajib minimal 1 foto/video kerusakan tiket komplain (FSD §2.2 / SEC-05). Validasi foto maks 4MB, video maks 12MB, kuota maks 4 foto + 1 video, dan batas agregat 40MB.
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>Mode:</span>
+              {[
+                { id: "interactive", label: "Terlampir (2 Berkas)" },
+                { id: "empty", label: "Kosong (Wajib)" },
+                { id: "error", label: "Error State" },
+              ].map((m) => (
+                <Button
+                  key={m.id}
+                  size="xs"
+                  variant={mediaUploadMode === m.id ? "primary-orange" : "secondary-ghost"}
+                  onClick={() => {
+                    setMediaUploadMode(m.id as "interactive" | "empty" | "error");
+                    if (m.id === "empty") setMediaUploadItems([]);
+                    if (m.id === "interactive" && mediaUploadItems.length === 0) {
+                      setMediaUploadItems([
+                        {
+                          id: "demo-media-1",
+                          fileName: "bukti_kerusakan_kamar.jpg",
+                          fileSize: 3.2 * 1024 * 1024,
+                          mimeType: "image/jpeg",
+                          status: "available",
+                          previewUrl: "/login-showcase.png",
+                        },
+                        {
+                          id: "demo-media-2",
+                          fileName: "video_pipa_bocor.mp4",
+                          fileSize: 8.5 * 1024 * 1024,
+                          mimeType: "video/mp4",
+                          status: "uploading",
+                        },
+                      ]);
+                    }
+                  }}
+                >
+                  {m.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <MediaUpload
+            items={mediaUploadMode === "empty" ? [] : mediaUploadItems}
+            onChange={setMediaUploadItems}
+            required
+            error={
+              mediaUploadMode === "error"
+                ? "Gagal mengunggah berkas ke Object Storage. Periksa jaringan Anda dan coba lagi."
+                : null
+            }
+          />
+        </section>
+
+        {/* CMP-17: Tenant Rent Summary Banner */}
+        <section
+          style={{
+            backgroundColor: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 18,
+            padding: 22,
+            marginBottom: 40,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 12,
+              marginBottom: 18,
+            }}
+          >
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <h2
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 600,
+                    margin: 0,
+                    letterSpacing: "-0.2px",
+                    color: "var(--foreground)",
+                  }}
+                >
+                  CMP-17: Tenant Rent Summary Banner (`src/components/portal/rent-summary.tsx`)
+                </h2>
+                <Badge size="sm" variant="brand">
+                  Portal Tenant
+                </Badge>
+              </div>
+              <p style={{ margin: 0, color: "var(--muted-foreground)", fontSize: 12.5 }}>
+                Banner gradien oranye-peach kartu utama beranda penghuni (WF-10 / SCR-P01). Menampilkan nomor kamar, nama penyewa, jatuh tempo, nominal sewa, dan tombol CTA bayar tanpa bocor data penghuni lain (zero cross-tenant leak).
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--foreground)" }}>Status Tagihan:</span>
+              {[
+                { id: "UNPAID", label: "Menunggu (Unpaid)" },
+                { id: "PARTIAL", label: "Sebagian (Partial)" },
+                { id: "PAID", label: "Lunas (Paid)" },
+                { id: "OVERDUE", label: "Menunggak (Overdue)" },
+              ].map((m) => (
+                <Button
+                  key={m.id}
+                  size="xs"
+                  variant={rentBannerStatus === m.id ? "primary-orange" : "secondary-ghost"}
+                  onClick={() => setRentBannerStatus(m.id as TenantInvoiceStatus)}
+                >
+                  {m.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ maxWidth: 680 }}>
+            <RentSummaryBanner
+              tenantName="Budi Santoso"
+              roomNumber="Kamar A-04"
+              roomType="Deluxe AC"
+              invoiceNumber="INV-202611-A04"
+              billingPeriodLabel="10 Nov - 10 Des 2026"
+              dueDateLabel="10 November 2026"
+              daysOverdue={rentBannerStatus === "OVERDUE" ? 4 : undefined}
+              totalAmount={1500000}
+              paidAmount={rentBannerStatus === "PARTIAL" ? 1000000 : rentBannerStatus === "PAID" ? 1500000 : 0}
+              remainingAmount={rentBannerStatus === "PARTIAL" ? 500000 : undefined}
+              status={rentBannerStatus}
+              payHref="/portal/tagihan"
+            />
           </div>
         </section>
       </div>
