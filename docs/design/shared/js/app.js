@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initForms();
   initDropdowns();
   initDatepickers();
+  initSelects();
 });
 
 function initModals() {
@@ -149,6 +150,16 @@ function initDropdowns() {
       const wrapper = trigger.closest('.dropdown-wrapper');
       const wasOpen = wrapper.classList.contains('is-open');
       openDropdowns.forEach(d => d.classList.remove('is-open'));
+      document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
+        w.classList.remove('is-open');
+        const t = w.querySelector('.select-trigger');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+      document.querySelectorAll('.datepicker-container.is-open').forEach(d => {
+        d.classList.remove('is-open');
+        const t = d.querySelector('.datepicker-trigger');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
       if (!wasOpen) wrapper.classList.add('is-open');
     } else if (!e.target.closest('.dropdown-menu-floating')) {
       openDropdowns.forEach(d => d.classList.remove('is-open'));
@@ -409,6 +420,175 @@ function initDatepickers() {
       document.querySelectorAll('.datepicker-container.is-open').forEach(c => {
         c.classList.remove('is-open');
         const trigger = c.querySelector('.datepicker-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+}
+
+// 6. Custom Select / PopoverMenu Engine (CMP-04 — Zero Raw Native Select)
+function initSelects() {
+  const wrappers = document.querySelectorAll('.custom-select-wrapper:not([data-initialized])');
+  wrappers.forEach(wrapper => {
+    wrapper.setAttribute('data-initialized', 'true');
+    const trigger = wrapper.querySelector('.select-trigger');
+    const popover = wrapper.querySelector('.select-popover');
+    const hiddenInput = wrapper.querySelector('.select-value');
+    const displayInput = wrapper.querySelector('.select-display');
+    const labelDisplay = wrapper.querySelector('.select-label-text');
+    const options = Array.from(wrapper.querySelectorAll('.select-option'));
+    if (!trigger || !popover) return;
+
+    let highlightedIndex = -1;
+
+    function updateHighlight() {
+      options.forEach((opt, idx) => {
+        if (idx === highlightedIndex) {
+          opt.classList.add('is-highlighted');
+          opt.scrollIntoView({ block: 'nearest' });
+        } else {
+          opt.classList.remove('is-highlighted');
+        }
+      });
+    }
+
+    function openSelect() {
+      document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
+        if (w !== wrapper) {
+          w.classList.remove('is-open');
+          const t = w.querySelector('.select-trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.querySelectorAll('.datepicker-container.is-open').forEach(d => {
+        d.classList.remove('is-open');
+        const t = d.querySelector('.datepicker-trigger');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+      document.querySelectorAll('.dropdown-wrapper.is-open').forEach(d => d.classList.remove('is-open'));
+
+      wrapper.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+
+      // Set initial keyboard highlight to current selected option or first option
+      const selectedIdx = options.findIndex(o => o.classList.contains('is-selected'));
+      highlightedIndex = selectedIdx >= 0 ? selectedIdx : 0;
+      updateHighlight();
+    }
+
+    function closeSelect() {
+      wrapper.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      options.forEach(o => o.classList.remove('is-highlighted'));
+      highlightedIndex = -1;
+    }
+
+    function toggleSelect() {
+      if (trigger.hasAttribute('disabled') || trigger.classList.contains('is-disabled') || (displayInput && displayInput.hasAttribute('disabled'))) return;
+      if (wrapper.classList.contains('is-open')) {
+        closeSelect();
+      } else {
+        openSelect();
+      }
+    }
+
+    function selectOption(opt) {
+      if (!opt) return;
+      const val = opt.getAttribute('data-value') || opt.textContent.trim();
+      const titleSpan = opt.querySelector('.option-title');
+      const text = titleSpan ? titleSpan.textContent.trim() : opt.textContent.trim();
+
+      if (hiddenInput) {
+        hiddenInput.value = val;
+        hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      if (displayInput) {
+        displayInput.value = text;
+        displayInput.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      if (labelDisplay) {
+        labelDisplay.textContent = text;
+        labelDisplay.classList.remove('text-muted');
+      }
+
+      // Clear has-error styling on trigger upon valid selection
+      if (val) {
+        trigger.classList.remove('has-error');
+      }
+
+      options.forEach(o => {
+        o.classList.remove('is-selected');
+        o.setAttribute('aria-selected', 'false');
+      });
+      opt.classList.add('is-selected');
+      opt.setAttribute('aria-selected', 'true');
+
+      closeSelect();
+      trigger.focus();
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleSelect();
+    });
+
+    trigger.addEventListener('keydown', (e) => {
+      if (trigger.hasAttribute('disabled') || trigger.classList.contains('is-disabled') || (displayInput && displayInput.hasAttribute('disabled'))) return;
+      const isOpen = wrapper.classList.contains('is-open');
+
+      if (!isOpen) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          openSelect();
+        }
+      } else {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          highlightedIndex = (highlightedIndex + 1) % options.length;
+          updateHighlight();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          highlightedIndex = (highlightedIndex - 1 + options.length) % options.length;
+          updateHighlight();
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (highlightedIndex >= 0 && highlightedIndex < options.length) {
+            selectOption(options[highlightedIndex]);
+          }
+        } else if (e.key === 'Escape' || e.key === 'Tab') {
+          closeSelect();
+        }
+      }
+    });
+
+    options.forEach((opt, idx) => {
+      opt.addEventListener('mouseenter', () => {
+        highlightedIndex = idx;
+        updateHighlight();
+      });
+
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectOption(opt);
+      });
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.custom-select-wrapper')) {
+      document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
+        w.classList.remove('is-open');
+        const trigger = w.querySelector('.select-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
+        w.classList.remove('is-open');
+        const trigger = w.querySelector('.select-trigger');
         if (trigger) trigger.setAttribute('aria-expanded', 'false');
       });
     }

@@ -257,7 +257,7 @@
         <div class="dropdown-wrapper">
           <button class="filter-dropdown-pill" data-dropdown-toggle aria-label="Pilih Periode">
             <span class="dropdown-label">Monthly</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="dropdown-menu-floating">
             <div class="dropdown-item">Daily</div>
@@ -271,7 +271,7 @@
         <div class="dropdown-wrapper">
           <button class="filter-dropdown-pill" data-dropdown-toggle aria-label="Pilih Rentang Waktu">
             <span class="dropdown-label">Today</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="dropdown-menu-floating">
             <div class="dropdown-item active">Today</div>
@@ -494,17 +494,171 @@
     <!-- CMP-04: Select / PopoverMenu -->
     <div class="cmp-card" id="cmp-04">
       <span class="cmp-badge">CMP-04</span>
-      <h2 class="cmp-title">Select / PopoverMenu</h2>
-      <p class="cmp-desc">Dropdown pemilihan opsi cabang dengan border Slate 300 dan sudut melengkung 12px.</p>
+      <h2 class="cmp-title">Select / PopoverMenu System</h2>
 
-      <div class="input-wrapper" style="max-width:400px">
-        <label for="sel-branch-demo">Pilihan Cabang Properti *</label>
-        <select id="sel-branch-demo" class="select">
-          <option value="">Pilih Cabang Properti...</option>
-          <option value="1">Rumakost Cilandak Executive</option>
-          <option value="2">Rumakost Setiabudi Residence</option>
-          <option value="3">Rumakost BSD City Park</option>
-        </select>
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem">
+        <!-- Variant 1: Form Property Branch Select (Pristine / Placeholder State) -->
+        <div class="input-wrapper">
+          <label for="sel-branch-display">Pilihan Cabang Properti <span class="required">*</span></label>
+          <div class="custom-select-wrapper" id="branch-select">
+            <div class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="Pilih Cabang Properti">
+              <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+              <input id="sel-branch-display" class="select-display" type="text" placeholder="Pilih Cabang Properti..." readonly style="cursor:pointer">
+              <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <input type="hidden" name="branch_id" class="select-value" value="">
+
+            <!-- Floating Popover Container (rounded-2xl & shadow-dropdown) -->
+            <div class="select-popover" role="listbox">
+              <div class="select-option" data-value="1" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <div class="select-option-icon-box">
+                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <span class="option-title">Rumakost Cilandak Executive</span>
+                    <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
+                  </div>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+
+              <div class="select-option" data-value="2" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <div class="select-option-icon-box">
+                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <span class="option-title">Rumakost Setiabudi Residence</span>
+                    <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
+                  </div>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+
+              <div class="select-option" data-value="3" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <div class="select-option-icon-box">
+                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:2px">
+                    <span class="option-title">Rumakost BSD City Park</span>
+                    <span class="text-caption text-muted">Tangerang Selatan • 18 Kamar Siap Huni</span>
+                  </div>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+          </div>
+          <span class="input-hint">Pilih lokasi cabang untuk memfilter data unit kamar operasional.</span>
+        </div>
+
+        <!-- Variant 2: Floor Level Filter Popover (Selected Filter State) -->
+        <div class="input-wrapper">
+          <label for="sel-floor-display">Filter Lantai Unit (PopoverMenu) <span class="required">*</span></label>
+          <div class="custom-select-wrapper" id="floor-select">
+            <div class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter Lantai Unit">
+              <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <input id="sel-floor-display" class="select-display" type="text" value="Semua Lantai" readonly style="cursor:pointer">
+              <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <input type="hidden" name="floor_level" class="select-value" value="all">
+
+            <div class="select-popover" role="listbox">
+              <div class="select-option is-selected" data-value="all" role="option" aria-selected="true">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                  <span class="option-title">Semua Lantai</span>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="select-option" data-value="1" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                  <span class="option-title">Lantai 1</span>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="select-option" data-value="2" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                  <span class="option-title">Lantai 2</span>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="select-option" data-value="3" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                  <span class="option-title">Lantai 3</span>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+          </div>
+          <span class="input-hint">Filter denah unit kamar berdasarkan lantai gedung.</span>
+        </div>
+      </div>
+
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem">
+        <!-- Variant 3: Validation Error State -->
+        <div class="input-wrapper">
+          <label for="sel-type-display">Tipe Unit Hunian (Contoh Status Validasi Error) <span class="required">*</span></label>
+          <div class="custom-select-wrapper" id="room-type-select">
+            <div class="pill-input-box select-trigger has-error" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-invalid="true" aria-describedby="err-select-demo" aria-label="Pilih Tipe Unit Hunian">
+              <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+              <input id="sel-type-display" class="select-display" type="text" placeholder="Pilih tipe unit kamar..." readonly style="cursor:pointer">
+              <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <input type="hidden" name="room_type" class="select-value" value="">
+
+            <div class="select-popover" role="listbox">
+              <div class="select-option" data-value="deluxe" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <div class="select-option-icon-box">
+                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  </div>
+                  <span class="option-title">Deluxe Room (Kamar Mandi Dalam + AC)</span>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="select-option" data-value="standard" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <div class="select-option-icon-box">
+                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+                  </div>
+                  <span class="option-title">Standard Room (Kamar Mandi Luar)</span>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="select-option" data-value="suite" role="option" aria-selected="false">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                  <div class="select-option-icon-box">
+                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5 2 7-6.5-4.5-6.5 4.5 2-7L1 9h7l3-7z"/></svg>
+                  </div>
+                  <span class="option-title">Suite Executive (Balkon Pribadi)</span>
+                </div>
+                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+          </div>
+          <span id="err-select-demo" class="error-message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Wajib memilih tipe unit kamar sebelum menyimpan data sewa.
+          </span>
+        </div>
+
+        <!-- Variant 4: Disabled State -->
+        <div class="input-wrapper">
+          <label for="sel-locked-display">Wilayah Regional Bisnis (Terkunci Sesuai Hak Akses)</label>
+          <div class="custom-select-wrapper">
+            <div class="pill-input-box select-trigger is-disabled" role="combobox" aria-disabled="true" aria-label="Regional Terkunci">
+              <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+              <input id="sel-locked-display" class="select-display" type="text" value="DKI Jakarta (Otoritas Wilayah I)" disabled readonly>
+              <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <span class="input-hint">Akun Branch Manager dibatasi hanya pada wilayah kerja operasional terdaftar.</span>
+        </div>
       </div>
     </div>
 
