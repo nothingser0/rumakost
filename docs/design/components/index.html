@@ -324,31 +324,62 @@
           <label for="inp-pass-demo">Kata Sandi Akun <span class="required">*</span></label>
           <div class="pill-input-box" style="padding-right:0.75rem">
             <input id="inp-pass-demo" type="password" value="secretPass123">
-            <button type="button" aria-label="Toggle password" onclick="
+            <button type="button" id="pass-toggle-btn" aria-label="Tampilkan kata sandi" onclick="
               const f = document.getElementById('inp-pass-demo');
-              f.type = f.type === 'password' ? 'text' : 'password';
+              const isPass = f.type === 'password';
+              f.type = isPass ? 'text' : 'password';
+              this.setAttribute('aria-label', isPass ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+              this.innerHTML = isPass
+                ? '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24\'/><line x1=\'1\' y1=\'1\' x2=\'23\' y2=\'23\'/></svg>'
+                : '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z\'/><circle cx=\'12\' cy=\'12\' r=\'3\'/></svg>';
             " style="background:none;border:none;cursor:pointer;color:#64748B;display:flex;align-items:center">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
         </div>
 
-        <!-- Date Picker Input with Interactive Calendar Trigger -->
+        <!-- Date Picker Input with Custom Floating Calendar Popover (CMP-02 / Estify Signature) -->
         <div class="input-wrapper">
           <label for="inp-date-demo">Tanggal Jatuh Tempo <span class="required">*</span></label>
-          <div class="pill-input-box" style="padding-right:0.75rem;cursor:pointer" onclick="document.getElementById('native-date-input').showPicker();">
-            <input id="inp-date-demo" type="text" placeholder="Pilih tanggal jatuh tempo..." value="Rabu, 25 Nov 2026" class="tabular" readonly style="cursor:pointer">
-            <input id="native-date-input" type="date" value="2026-11-25" style="position:absolute;opacity:0;pointer-events:none;width:0;height:0" onchange="
-              if (this.value) {
-                const d = new Date(this.value);
-                const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-                const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-                document.getElementById('inp-date-demo').value = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-              }
-            ">
-            <button type="button" aria-label="Buka kalender" style="background:none;border:none;cursor:pointer;color:var(--color-brand);display:flex;align-items:center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            </button>
+          <div class="datepicker-container" id="due-date-picker">
+            <div class="pill-input-box datepicker-trigger" tabindex="0" role="combobox" aria-haspopup="dialog" aria-expanded="false" style="padding-right:0.75rem;cursor:pointer">
+              <input id="inp-date-demo" class="datepicker-display tabular" type="text" placeholder="Pilih tanggal jatuh tempo..." value="Rabu, 25 Nov 2026" readonly style="cursor:pointer">
+              <input id="native-date-input" class="datepicker-value" type="hidden" value="2026-11-25">
+              <button type="button" aria-label="Buka kalender" style="background:none;border:none;cursor:pointer;color:var(--color-brand);display:flex;align-items:center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </button>
+            </div>
+
+            <!-- Custom Styled Floating Calendar Popover -->
+            <div class="datepicker-popover" role="dialog" aria-modal="false" aria-label="Kalender Tanggal Jatuh Tempo">
+              <div class="datepicker-header">
+                <span class="datepicker-title tabular">November 2026</span>
+                <div class="datepicker-nav-buttons">
+                  <button type="button" class="datepicker-nav-btn prev-month" aria-label="Bulan sebelumnya">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                  </button>
+                  <button type="button" class="datepicker-nav-btn next-month" aria-label="Bulan berikutnya">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="datepicker-weekdays">
+                <span>Min</span>
+                <span>Sen</span>
+                <span>Sel</span>
+                <span>Rab</span>
+                <span>Kam</span>
+                <span>Jum</span>
+                <span>Sab</span>
+              </div>
+              <div class="datepicker-days">
+                <!-- Rendered dynamically by initDatepickers() -->
+              </div>
+              <div class="datepicker-footer">
+                <button type="button" class="datepicker-today-btn">Hari Ini</button>
+                <button type="button" class="datepicker-clear-btn">Reset</button>
+              </div>
+            </div>
           </div>
           <span class="input-hint">Klik kolom atau icon kalender untuk memilih tanggal interaktif.</span>
         </div>
@@ -419,11 +450,11 @@
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1.5fr; gap: 1.25rem; margin-bottom: 1.5rem">
         <!-- Compact File Upload Pill (Orange Primary Button) -->
         <div class="input-wrapper">
-          <label>Unggah Bukti Cepat (Compact Pill)</label>
+          <label for="compact-file-input">Unggah Bukti Cepat (Compact Pill)</label>
           <div class="compact-file-upload">
-            <label class="btn btn-primary btn-sm">
+            <label class="btn btn-primary btn-sm" for="compact-file-input">
               Pilih Berkas
-              <input type="file" style="display:none" onchange="document.getElementById('file-chosen-name').textContent = this.files[0]?.name || 'Belum ada file terpilih'">
+              <input id="compact-file-input" type="file" style="display:none" onchange="document.getElementById('file-chosen-name').textContent = this.files[0]?.name || 'Belum ada file terpilih'">
             </label>
             <span id="file-chosen-name" class="text-caption text-muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">bukti-transfer-bca.jpg</span>
           </div>
