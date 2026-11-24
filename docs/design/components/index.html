@@ -125,7 +125,6 @@
     <div class="cmp-card" id="cmp-01">
       <span class="cmp-badge">CMP-01</span>
       <h2 class="cmp-title">Button & Interactive Actions</h2>
-      <p class="cmp-desc">Sistem tombol 100% borderless, polos, dan konsisten (Estify DNA): Primary Solid Orange (#F97316), Secondary Solid White (#FFFFFF), Secondary Solid Black (#000000), Subtle Tone (#FFF7ED), Ghost, serta Destructive Action — seluruhnya tanpa garis tepi (no border) seperti gaya subtle tone.</p>
       
       <!-- Sub 1: Varian Utama (100% Borderless & Flat Solid) -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN UTAMA (100% BORDERLESS & FLAT SOLID)</div>
@@ -287,85 +286,177 @@
     <!-- CMP-02 & CMP-03: Input & Textarea -->
     <div class="cmp-card" id="cmp-02-03">
       <span class="cmp-badge">CMP-02 & CMP-03</span>
-      <h2 class="cmp-title">Input Fields, CurrencyInput & Textarea System</h2>
-      <p class="cmp-desc">Sistem input formulir lengkap: touch-target 44px, base font 16px (mencegah auto-zoom iOS Safari), CurrencyInput numerik, prefix groups, serta status interaksi (Default, Focused, Error inline ≥13px, dan Disabled).</p>
+      <h2 class="cmp-title">Input Fields, CurrencyInput, Upload & Textarea System</h2>
 
-      <!-- 1. Varian Jenis Input Data -->
+      <!-- Sub 1: Varian Jenis Input Data -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN JENIS INPUT DATA (CMP-02)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem">
-        <!-- Text Input -->
+        <!-- Text Input Pill -->
         <div class="input-wrapper">
-          <label for="inp-text-demo">Nama Lengkap Penghuni *</label>
-          <input id="inp-text-demo" class="input" type="text" placeholder="Masukkan nama sesuai KTP...">
+          <label for="inp-text-demo">Nama Lengkap Penghuni <span class="required">*</span></label>
+          <input id="inp-text-demo" class="input-pill" type="text" placeholder="Masukkan nama sesuai KTP...">
         </div>
 
-        <!-- CurrencyInput with Prefix Pill -->
+        <!-- CurrencyInput with Live Numeric Formatter & Suffix -->
         <div class="input-wrapper">
-          <label for="inp-curr-demo">Tarif Sewa Bulanan (CurrencyInput) *</label>
-          <div class="input-group">
-            <span class="input-prefix-pill">Rp</span>
-            <input id="inp-curr-demo" class="input tabular" inputmode="numeric" placeholder="1.850.000">
+          <label for="inp-curr-demo">Tarif Sewa Bulanan (CurrencyInput) <span class="required">*</span></label>
+          <div class="pill-input-box">
+            <span class="pill-prefix-badge">Rp</span>
+            <input id="inp-curr-demo" class="tabular" inputmode="numeric" placeholder="1.850.000" oninput="
+              let val = this.value.replace(/[^0-9]/g, '');
+              this.value = val ? new Intl.NumberFormat('id-ID').format(val) : '';
+            ">
+            <span class="pill-suffix-badge" style="background:transparent;color:#94A3B8;font-size:0.75rem">/ bln</span>
           </div>
         </div>
 
-        <!-- Phone / WA Input with Prefix Pill -->
+        <!-- Phone / WA Input with Inset Prefix Badge -->
         <div class="input-wrapper">
-          <label for="inp-phone-demo">Nomor WhatsApp Aktif *</label>
-          <div class="input-group">
-            <span class="input-prefix-pill">+62</span>
-            <input id="inp-phone-demo" class="input tabular" type="tel" placeholder="812-3456-7890">
+          <label for="inp-phone-demo">Nomor WhatsApp Aktif <span class="required">*</span></label>
+          <div class="pill-input-box">
+            <span class="pill-prefix-badge">+62</span>
+            <input id="inp-phone-demo" class="tabular" type="tel" placeholder="812-3456-7890">
           </div>
         </div>
 
-        <!-- Password Input with Toggle -->
+        <!-- Password Input with Inset Eye Toggle -->
         <div class="input-wrapper">
-          <label for="inp-pass-demo">Kata Sandi Akun *</label>
-          <div style="position:relative">
-            <input id="inp-pass-demo" class="input" type="password" value="secretPass123" style="padding-right:2.5rem">
+          <label for="inp-pass-demo">Kata Sandi Akun <span class="required">*</span></label>
+          <div class="pill-input-box" style="padding-right:0.75rem">
+            <input id="inp-pass-demo" type="password" value="secretPass123">
             <button type="button" aria-label="Toggle password" onclick="
               const f = document.getElementById('inp-pass-demo');
               f.type = f.type === 'password' ? 'text' : 'password';
-            " style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748B">
+            " style="background:none;border:none;cursor:pointer;color:#64748B;display:flex;align-items:center">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- Search Input with Icon -->
-      <div class="input-wrapper mb-4">
-        <label for="inp-search-demo">Pencarian Unit Kamar (Search Input) *</label>
-        <div style="position:relative">
-          <input id="inp-search-demo" class="input" type="search" placeholder="Cari nomor kamar, tipe, lantai, atau nama penghuni..." style="padding-left:2.75rem">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <!-- Date Picker Input with Interactive Calendar Trigger -->
+        <div class="input-wrapper">
+          <label for="inp-date-demo">Tanggal Jatuh Tempo <span class="required">*</span></label>
+          <div class="pill-input-box" style="padding-right:0.75rem;cursor:pointer" onclick="document.getElementById('native-date-input').showPicker();">
+            <input id="inp-date-demo" type="text" placeholder="Pilih tanggal jatuh tempo..." value="Rabu, 25 Nov 2026" class="tabular" readonly style="cursor:pointer">
+            <input id="native-date-input" type="date" value="2026-11-25" style="position:absolute;opacity:0;pointer-events:none;width:0;height:0" onchange="
+              if (this.value) {
+                const d = new Date(this.value);
+                const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+                const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+                document.getElementById('inp-date-demo').value = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+              }
+            ">
+            <button type="button" aria-label="Buka kalender" style="background:none;border:none;cursor:pointer;color:var(--color-brand);display:flex;align-items:center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </button>
+          </div>
+          <span class="input-hint">Klik kolom atau icon kalender untuk memilih tanggal interaktif.</span>
+        </div>
+
+        <!-- Number Stepper Input (Maks. 3 Terkunci) -->
+        <div class="input-wrapper">
+          <label for="inp-stepper-val">Jumlah Tamu Menginap <span class="required">*</span></label>
+          <div class="number-stepper">
+            <button type="button" class="stepper-btn" onclick="const v=document.getElementById('inp-stepper-val'); if(parseInt(v.textContent)>1) v.textContent=parseInt(v.textContent)-1;">−</button>
+            <span id="inp-stepper-val" class="stepper-value tabular">2</span>
+            <button type="button" class="stepper-btn" onclick="const v=document.getElementById('inp-stepper-val'); if(parseInt(v.textContent)<3) v.textContent=parseInt(v.textContent)+1;">+</button>
+            <span class="text-caption text-muted" style="margin-left:0.5rem">Orang (Maks. 3)</span>
+          </div>
         </div>
       </div>
 
-      <!-- 2. Status Interaktif Input (States) -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. STATUS VALIDASI & KONTROL (FOCUSED, ERROR INLINE, DISABLED)</div>
+      <!-- Search Input Pill with Leading Icon & Clear Button -->
+      <div class="input-wrapper mb-4">
+        <label for="inp-search-demo">Pencarian Unit Kamar (Estify Pill Search) <span class="required">*</span></label>
+        <div class="pill-input-box" style="padding-left:1rem;padding-right:0.75rem">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="inp-search-demo" type="search" placeholder="Search any unit kamar, nomor, atau fasilitas..." oninput="document.getElementById('search-clear-btn').style.display = this.value ? 'block' : 'none'">
+          <button id="search-clear-btn" type="button" aria-label="Clear search" style="display:none;background:none;border:none;cursor:pointer;color:#94A3B8" onclick="document.getElementById('inp-search-demo').value=''; this.style.display='none';">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Sub 2: Skala Ukuran Input -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SKALA UKURAN INPUT (SM 36px, DEFAULT 44px, LG 48px)</div>
+      <div class="flex items-center gap-4 mb-4" style="flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <input class="input-pill input-pill-sm" type="text" placeholder="Small Input (36px)">
+        </div>
+        <div style="flex:1;min-width:200px">
+          <input class="input-pill" type="text" placeholder="Default Input (44px)">
+        </div>
+        <div style="flex:1;min-width:200px">
+          <input class="input-pill input-pill-lg" type="text" placeholder="Large Input (48px)">
+        </div>
+      </div>
+
+      <!-- Sub 3: Status Interaktif & Validasi -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. STATUS VALIDASI (FOCUSED, ERROR INLINE, DISABLED)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem">
-        <!-- Error State with Inline Message (>=13px, >=4.5:1) -->
-        <div class="input-wrapper has-error">
-          <label for="inp-err-demo">Email Penagihan Resmi *</label>
-          <input id="inp-err-demo" class="input" type="email" value="invalid-email-format" aria-invalid="true" aria-describedby="err-msg-demo">
+        <!-- Error State with Concise Inline Message -->
+        <div class="input-wrapper">
+          <label for="inp-err-demo">Email Penagihan Resmi <span class="required">*</span></label>
+          <div class="pill-input-box has-error">
+            <input id="inp-err-demo" type="email" value="budi.santoso@gmail" aria-invalid="true" aria-describedby="err-msg-demo">
+          </div>
           <span id="err-msg-demo" class="error-message">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Format alamat email tidak valid (wajib memuat @ dan domain).
+            Alamat email wajib memuat '@' dan nama domain (.com).
           </span>
         </div>
 
         <!-- Disabled State -->
         <div class="input-wrapper">
-          <label for="inp-dis-demo">Nomor Induk Kependudukan (Terkunci Sesuai KYC) *</label>
-          <input id="inp-dis-demo" class="input tabular" type="text" value="3171012345670001" disabled>
+          <label for="inp-dis-demo">Nomor Induk Kependudukan (Terkunci Sesuai KYC) <span class="required">*</span></label>
+          <input id="inp-dis-demo" class="input-pill tabular" type="text" value="3171012345670001" disabled>
+          <span class="input-hint">Data NIK telah diverifikasi sistem dan tidak dapat diubah tanpa otorisasi owner.</span>
         </div>
       </div>
 
-      <!-- 3. Textarea System (CMP-03) -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. TEXTAREA MULTI-BARIS (CMP-03)</div>
+      <!-- Sub 4: File Upload & Interactive Dropzone -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. FILE UPLOAD & DROPZONE (FOTO KTP, METERAN PLN, BUKTI TRANSFER)</div>
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1.5fr; gap: 1.25rem; margin-bottom: 1.5rem">
+        <!-- Compact File Upload Pill (Orange Primary Button) -->
+        <div class="input-wrapper">
+          <label>Unggah Bukti Cepat (Compact Pill)</label>
+          <div class="compact-file-upload">
+            <label class="btn btn-primary btn-sm">
+              Pilih Berkas
+              <input type="file" style="display:none" onchange="document.getElementById('file-chosen-name').textContent = this.files[0]?.name || 'Belum ada file terpilih'">
+            </label>
+            <span id="file-chosen-name" class="text-caption text-muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">bukti-transfer-bca.jpg</span>
+          </div>
+          <span class="input-hint">Format JPG, PNG maks. 5MB.</span>
+        </div>
+
+        <!-- Drag-and-Drop Dropzone (Clean Card Surface 24px — Tanpa Border Kasar) -->
+        <div class="dropzone-card" onclick="document.getElementById('dropzone-file-input').click();">
+          <input id="dropzone-file-input" type="file" style="display:none" onchange="alert(`Berkas terpilih: ${this.files[0]?.name}`);">
+          <div class="dropzone-icon-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div style="font-weight:700;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:0.375rem">
+            Tarik foto ke sini atau <span style="color:var(--color-brand);text-decoration:underline;cursor:pointer">telusuri berkas</span>
+          </div>
+          <p class="text-caption text-muted mb-3" style="max-width:320px;line-height:1.4">
+            Mendukung dokumen foto KTP (KYC penghuni), foto meteran kWh fisik, atau slip transfer bank
+          </p>
+          <div class="flex gap-2 items-center">
+            <span class="badge badge-neutral">JPG / PNG</span>
+            <span class="badge badge-neutral">Maks. 5 MB</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub 5: Textarea System (CMP-03) with Live Character Counter -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">5. TEXTAREA MULTI-BARIS (CMP-03 — SOFT ROUNDED 20px DENGAN COUNTER)</div>
       <div class="input-wrapper">
-        <label for="inp-area-demo">Catatan Khusus Handover Fasilitas Kamar</label>
-        <textarea id="inp-area-demo" class="textarea" rows="3" placeholder="Deskripsikan kondisi fisik fasilitas kamar saat serah terima kunci (AC dingin, remote lengkap, kasur bersih)..."></textarea>
+        <div class="flex justify-between items-center input-header-row">
+          <label for="inp-area-demo" class="input-label" style="margin-bottom:0">Catatan Khusus Handover Fasilitas Kamar</label>
+          <span id="char-counter" class="text-caption text-muted tabular">0 / 250 karakter</span>
+        </div>
+        <textarea id="inp-area-demo" class="textarea-rounded" rows="3" maxlength="250" placeholder="Deskripsikan kondisi fisik fasilitas kamar saat serah terima kunci (AC dingin, remote lengkap, kasur bersih)..." oninput="document.getElementById('char-counter').textContent = `${this.value.length} / 250 karakter`;"></textarea>
       </div>
     </div>
 
