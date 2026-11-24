@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RumaKost Design System Showcase — Tier 1: Primitives (CMP-01 to CMP-09)">
+  <title>RumaKost — Component Showcase (Tier 1: Primitives)</title>
+  <link rel="icon" href="../../../assets/logo/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/css/styles.css">
+  <style>
+    .tier-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem 4rem;
+    }
+    .tier-header {
+      background: #FFFFFF;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--color-border);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cmp-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--color-border);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-card);
+    }
+    .cmp-badge {
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #F1F5F9;
+      color: #0F172A;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .cmp-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 0.25rem;
+    }
+    .cmp-desc {
+      font-size: var(--font-size-small);
+      color: var(--color-text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    .demo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+    }
+    .custom-checkbox, .custom-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: var(--font-size-small);
+      user-select: none;
+    }
+    .custom-checkbox input, .custom-radio input {
+      accent-color: var(--color-brand);
+      width: 18px;
+      height: 18px;
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #CBD5E1;
+      border-radius: 9999px;
+      transition: 200ms;
+    }
+    .toggle-slider::before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 200ms;
+    }
+    .toggle-switch input:checked + .toggle-slider { background-color: var(--color-brand); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
+  </style>
+</head>
+<body>
+
+  <div class="tier-container">
+
+    <!-- Header Tier 1 -->
+    <div class="tier-header">
+      <div class="flex items-center gap-4">
+        <img src="../../../assets/logo/logo-horizontal.svg" alt="RumaKost Logo" style="height:36px">
+        <div>
+          <h1 class="text-h2" style="font-size:1.5rem">Component Showcase — Tier 1: Primitives</h1>
+          <p class="text-small text-muted">Verifikasi Komponen Atomik CMP-01 s/d CMP-09 (Estify DNA & WCAG 2.2 AA)</p>
+        </div>
+      </div>
+      <div>
+        <span class="badge badge-warning">Tier 1: Menunggu Human ACC</span>
+      </div>
+    </div>
+
+    <!-- CMP-01: Button System -->
+    <div class="cmp-card" id="cmp-01">
+      <span class="cmp-badge">CMP-01</span>
+      <h2 class="cmp-title">Button & Interactive Actions</h2>
+      <p class="cmp-desc">Sistem tombol 100% borderless, polos, dan konsisten (Estify DNA): Primary Solid Orange (#F97316), Secondary Solid White (#FFFFFF), Secondary Solid Black (#000000), Subtle Tone (#FFF7ED), Ghost, serta Destructive Action — seluruhnya tanpa garis tepi (no border) seperti gaya subtle tone.</p>
+      
+      <!-- Sub 1: Varian Utama (100% Borderless & Flat Solid) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN UTAMA (100% BORDERLESS & FLAT SOLID)</div>
+      <div class="demo-grid mb-4">
+        <!-- Primary: Solid Warm Orange (#F97316) -->
+        <button class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Primary (Solid Orange)
+        </button>
+        <!-- Secondary: Solid White on Card (No Border) -->
+        <button class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Secondary (Solid White)
+        </button>
+        <!-- Secondary: Solid Black (#000000) -->
+        <button class="btn btn-black">
+          Secondary (Solid Black)
+        </button>
+        <!-- Subtle Tone: Soft Orange (No Border) -->
+        <button class="btn btn-subtle">Subtle Tone</button>
+        <!-- Ghost Button (No Border) -->
+        <button class="btn btn-ghost">Ghost Button</button>
+        <!-- Destructive Action (Keamanan / Void) -->
+        <button class="btn btn-destructive">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Destructive (Void)
+        </button>
+      </div>
+
+      <!-- Sub 2: Skala Ukuran (Perbandingan Nyata: 36px, 44px, 48px) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SKALA UKURAN (SM 36px, DEFAULT 44px, LG 48px)</div>
+      <div class="demo-grid mb-4">
+        <!-- Small 36px -->
+        <button class="btn btn-primary btn-sm">Small (36px)</button>
+        <button class="btn btn-secondary btn-sm">Secondary (36px)</button>
+        <button class="btn btn-black btn-sm">Black (36px)</button>
+
+        <span style="color:#CBD5E1">|</span>
+
+        <!-- Default 44px -->
+        <button class="btn btn-primary">Default (44px)</button>
+        <button class="btn btn-secondary">Secondary (44px)</button>
+        <button class="btn btn-black">Black (44px)</button>
+
+        <span style="color:#CBD5E1">|</span>
+
+        <!-- Large 48px -->
+        <button class="btn btn-primary btn-lg">Large (48px)</button>
+        <button class="btn btn-secondary btn-lg">Secondary (48px)</button>
+        <button class="btn btn-black btn-lg">Black (48px)</button>
+      </div>
+
+      <!-- Sub 3: Penempatan Ikon & Arrow ↗ -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. PENEMPATAN IKON & FLOATING CIRCLE ARROW (32px ESTIFY ↗)</div>
+      <div class="demo-grid mb-4">
+        <button class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Icon di Kiri
+        </button>
+        <button class="btn btn-secondary">
+          Icon di Kanan
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <button class="action-circle-btn" aria-label="Icon Action Circle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+
+        <!-- Notification Circle Button with Red Badge 7 -->
+        <button class="action-circle-btn" aria-label="Notifikasi">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notification-badge">7</span>
+        </button>
+
+        <!-- Varian Arrow Up-Right 32px: Inverted Hover Interactivity (100% Borderless) -->
+        <div style="display:inline-flex;align-items:center;gap:1rem;padding:0.5rem 1.25rem;background:#F1F5F9;border-radius:9999px">
+          <!-- Varian Putih (Hover -> Hitam) -->
+          <div class="flex items-center gap-2">
+            <span class="text-caption text-muted">Putih (Hover ➔ Hitam):</span>
+            <button class="circle-arrow-btn arrow-white" title="Putih ke Hitam saat Hover" aria-label="Arrow Putih">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </button>
+          </div>
+
+          <span style="color:#CBD5E1">|</span>
+
+          <!-- Varian Hitam (Hover -> Putih) -->
+          <div class="flex items-center gap-2">
+            <span class="text-caption text-muted">Hitam (Hover ➔ Putih):</span>
+            <button class="circle-arrow-btn arrow-black" title="Hitam ke Putih saat Hover" aria-label="Arrow Hitam">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </button>
+          </div>
+
+          <span style="color:#CBD5E1">|</span>
+
+          <!-- Varian Oranye (Primary Orange -> Hover Dark Orange) -->
+          <div class="flex items-center gap-2">
+            <span class="text-caption text-muted">Oranye (Hover ➔ #EA580C):</span>
+            <button class="circle-arrow-btn arrow-orange" title="Oranye Primary (Hover: #EA580C)" aria-label="Arrow Oranye">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub 4: Status Interaksi & Loading -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. STATUS KHUSUS: DISABLED & DEBOUNCED LOADING SPINNER</div>
+      <div class="demo-grid mb-4">
+        <button class="btn btn-primary" disabled>Disabled Primary</button>
+        <button class="btn btn-secondary" disabled>Disabled Secondary</button>
+        <button class="btn btn-primary" onclick="const b=this; b.classList.add('is-loading'); setTimeout(()=>b.classList.remove('is-loading'), 2000);">
+          Klik untuk Test Spinner (2 Detik)
+        </button>
+      </div>
+
+      <!-- Sub 5: Segmented Pill Button Group & Interactive Filter Dropdown -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">5. SEGMENTED PILL & INTERACTIVE FILTER DROPDOWN (KLIK UNTUK MEMBUKA)</div>
+      <div class="flex items-center gap-4" style="flex-wrap:wrap">
+        <!-- Segmented Pill Control in One Soft Container -->
+        <div class="btn-group">
+          <button class="btn-group-item active" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Semua Kamar</button>
+          <button class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Terisi</button>
+          <button class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Kosong</button>
+          <button class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Maintenance</button>
+        </div>
+
+        <span style="color:#CBD5E1">|</span>
+
+        <!-- Interactive Clickable Dropdown 1: Monthly -->
+        <div class="dropdown-wrapper">
+          <button class="filter-dropdown-pill" data-dropdown-toggle aria-label="Pilih Periode">
+            <span class="dropdown-label">Monthly</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown-menu-floating">
+            <div class="dropdown-item">Daily</div>
+            <div class="dropdown-item">Weekly</div>
+            <div class="dropdown-item active">Monthly</div>
+            <div class="dropdown-item">Yearly</div>
+          </div>
+        </div>
+
+        <!-- Interactive Clickable Dropdown 2: Today -->
+        <div class="dropdown-wrapper">
+          <button class="filter-dropdown-pill" data-dropdown-toggle aria-label="Pilih Rentang Waktu">
+            <span class="dropdown-label">Today</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="dropdown-menu-floating">
+            <div class="dropdown-item active">Today</div>
+            <div class="dropdown-item">Yesterday</div>
+            <div class="dropdown-item">Last 7 Days</div>
+            <div class="dropdown-item">This Month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CMP-02 & CMP-03: Input & Textarea -->
+    <div class="cmp-card" id="cmp-02-03">
+      <span class="cmp-badge">CMP-02 & CMP-03</span>
+      <h2 class="cmp-title">Input Fields, CurrencyInput & Textarea System</h2>
+      <p class="cmp-desc">Sistem input formulir lengkap: touch-target 44px, base font 16px (mencegah auto-zoom iOS Safari), CurrencyInput numerik, prefix groups, serta status interaksi (Default, Focused, Error inline ≥13px, dan Disabled).</p>
+
+      <!-- 1. Varian Jenis Input Data -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN JENIS INPUT DATA (CMP-02)</div>
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem">
+        <!-- Text Input -->
+        <div class="input-wrapper">
+          <label for="inp-text-demo">Nama Lengkap Penghuni *</label>
+          <input id="inp-text-demo" class="input" type="text" placeholder="Masukkan nama sesuai KTP...">
+        </div>
+
+        <!-- CurrencyInput with Prefix Pill -->
+        <div class="input-wrapper">
+          <label for="inp-curr-demo">Tarif Sewa Bulanan (CurrencyInput) *</label>
+          <div class="input-group">
+            <span class="input-prefix-pill">Rp</span>
+            <input id="inp-curr-demo" class="input tabular" inputmode="numeric" placeholder="1.850.000">
+          </div>
+        </div>
+
+        <!-- Phone / WA Input with Prefix Pill -->
+        <div class="input-wrapper">
+          <label for="inp-phone-demo">Nomor WhatsApp Aktif *</label>
+          <div class="input-group">
+            <span class="input-prefix-pill">+62</span>
+            <input id="inp-phone-demo" class="input tabular" type="tel" placeholder="812-3456-7890">
+          </div>
+        </div>
+
+        <!-- Password Input with Toggle -->
+        <div class="input-wrapper">
+          <label for="inp-pass-demo">Kata Sandi Akun *</label>
+          <div style="position:relative">
+            <input id="inp-pass-demo" class="input" type="password" value="secretPass123" style="padding-right:2.5rem">
+            <button type="button" aria-label="Toggle password" onclick="
+              const f = document.getElementById('inp-pass-demo');
+              f.type = f.type === 'password' ? 'text' : 'password';
+            " style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#64748B">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Input with Icon -->
+      <div class="input-wrapper mb-4">
+        <label for="inp-search-demo">Pencarian Unit Kamar (Search Input) *</label>
+        <div style="position:relative">
+          <input id="inp-search-demo" class="input" type="search" placeholder="Cari nomor kamar, tipe, lantai, atau nama penghuni..." style="padding-left:2.75rem">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+      </div>
+
+      <!-- 2. Status Interaktif Input (States) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. STATUS VALIDASI & KONTROL (FOCUSED, ERROR INLINE, DISABLED)</div>
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem">
+        <!-- Error State with Inline Message (>=13px, >=4.5:1) -->
+        <div class="input-wrapper has-error">
+          <label for="inp-err-demo">Email Penagihan Resmi *</label>
+          <input id="inp-err-demo" class="input" type="email" value="invalid-email-format" aria-invalid="true" aria-describedby="err-msg-demo">
+          <span id="err-msg-demo" class="error-message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Format alamat email tidak valid (wajib memuat @ dan domain).
+          </span>
+        </div>
+
+        <!-- Disabled State -->
+        <div class="input-wrapper">
+          <label for="inp-dis-demo">Nomor Induk Kependudukan (Terkunci Sesuai KYC) *</label>
+          <input id="inp-dis-demo" class="input tabular" type="text" value="3171012345670001" disabled>
+        </div>
+      </div>
+
+      <!-- 3. Textarea System (CMP-03) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. TEXTAREA MULTI-BARIS (CMP-03)</div>
+      <div class="input-wrapper">
+        <label for="inp-area-demo">Catatan Khusus Handover Fasilitas Kamar</label>
+        <textarea id="inp-area-demo" class="textarea" rows="3" placeholder="Deskripsikan kondisi fisik fasilitas kamar saat serah terima kunci (AC dingin, remote lengkap, kasur bersih)..."></textarea>
+      </div>
+    </div>
+
+    <!-- CMP-04: Select / PopoverMenu -->
+    <div class="cmp-card" id="cmp-04">
+      <span class="cmp-badge">CMP-04</span>
+      <h2 class="cmp-title">Select / PopoverMenu</h2>
+      <p class="cmp-desc">Dropdown pemilihan opsi cabang dengan border Slate 300 dan sudut melengkung 12px.</p>
+
+      <div class="input-wrapper" style="max-width:400px">
+        <label for="sel-branch-demo">Pilihan Cabang Properti *</label>
+        <select id="sel-branch-demo" class="select">
+          <option value="">Pilih Cabang Properti...</option>
+          <option value="1">Rumakost Cilandak Executive</option>
+          <option value="2">Rumakost Setiabudi Residence</option>
+          <option value="3">Rumakost BSD City Park</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- CMP-05: Badges -->
+    <div class="cmp-card" id="cmp-05">
+      <span class="cmp-badge">CMP-05</span>
+      <h2 class="cmp-title">Operational Badges</h2>
+      <p class="cmp-desc">Badge status operasional dengan kontras tinggi (>=4.5:1) dan label teks eksplisit tanpa dependensi warna semata.</p>
+
+      <div class="demo-grid">
+        <span class="badge badge-success">● Lunas Terverifikasi</span>
+        <span class="badge badge-warning">● Menunggu Otorisasi</span>
+        <span class="badge badge-error">● Terlambat Jatuh Tempo</span>
+        <span class="badge badge-info">● Pengerjaan Servis SLA</span>
+        <span class="badge badge-neutral">● Siap Huni</span>
+      </div>
+    </div>
+
+    <!-- CMP-06: Checkbox, Radio, Switch -->
+    <div class="cmp-card" id="cmp-06">
+      <span class="cmp-badge">CMP-06</span>
+      <h2 class="cmp-title">Checkbox, Radio & Toggle Switch</h2>
+      <p class="cmp-desc">Kontrol boolean interaktif dengan aksen oranye dan touch target memadai.</p>
+
+      <div class="demo-grid">
+        <label class="custom-checkbox">
+          <input type="checkbox" checked>
+          <span>Kirim Notifikasi via WhatsApp Outbox</span>
+        </label>
+        <label class="custom-radio">
+          <input type="radio" name="pay-method" checked>
+          <span>Transfer Bank</span>
+        </label>
+        <label class="custom-radio">
+          <input type="radio" name="pay-method">
+          <span>Tunai</span>
+        </label>
+        <div class="flex items-center gap-2" style="margin-left:1.5rem">
+          <span class="text-small text-muted">Auto-Billing Cron:</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- CMP-07 & CMP-08: LoadingSpinner & Icons -->
+    <div class="cmp-card" id="cmp-07-08">
+      <span class="cmp-badge">CMP-07 & CMP-08</span>
+      <h2 class="cmp-title">Loading Spinner & Semantic Icons</h2>
+      <p class="cmp-desc">Spinner SVG berputar mulus dan ikon semantik Lucide (stroke 1.75 / 2.0). Zero emoji.</p>
+
+      <div class="demo-grid">
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <div style="width:20px;height:20px;border:2px solid var(--color-brand);border-top-color:transparent;border-radius:50%;animation:spin 600ms linear infinite"></div>
+          <span class="text-small text-muted">Async Spinner (CMP-07)</span>
+        </div>
+        <div class="flex gap-3 items-center ml-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="20 6 9 17 4 12"/></svg>
+          <span class="text-small text-muted">(Lucide SVG CMP-08)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CMP-09: Avatars -->
+    <div class="cmp-card" id="cmp-09">
+      <span class="cmp-badge">CMP-09</span>
+      <h2 class="cmp-title">Avatar System & Counter Badges</h2>
+      <p class="cmp-desc">Avatar profil foto bulat sempurna dalam ukuran 32px, 40px, 52px, inisial fallback, dan counter badge +N.</p>
+
+      <div class="demo-grid">
+        <div class="avatar" style="width:32px;height:32px">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" alt="Avatar SM">
+        </div>
+        <div class="avatar" style="width:40px;height:40px">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop" alt="Avatar MD">
+        </div>
+        <div class="avatar" style="width:52px;height:52px">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop" alt="Avatar LG">
+        </div>
+        <div class="avatar" style="width:40px;height:40px;background:#111827;color:#fff;font-weight:700">BS</div>
+        <span class="badge badge-neutral">+3 Penghuni Lainnya</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../shared/js/app.js"></script>
+</body>
+</html>

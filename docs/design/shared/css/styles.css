@@ -1,0 +1,709 @@
+/* ==========================================================================
+   RumaKost Design System Stylesheet — Estify Visual Benchmark
+   Architecture: Component-Based Architecture (WCAG 2.2 AA Compliant)
+   Benchmark: Estify Real Estate Dashboard (01-dashboard-flat.png & 03-mobile-view.png)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Brand Palette (ref-03 Kunci Rumah) */
+  --color-brand: #F97316;
+  --color-brand-hover: #EA580C;
+  --color-brand-gradient: linear-gradient(135deg, #FF8A24 0%, #F97316 100%);
+  --color-brand-subtle: #FFF7ED;
+
+  /* Estify Canvas & Neutral Surfaces (01-dashboard-flat.png) */
+  --color-canvas: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F8FAFC;
+  --color-border: #ECEEF2;
+  --color-border-interactive: #CBD5E1;
+
+  /* Dark Neutral for Pill Tabs & Actions (Pure Black #000000) */
+  --color-dark-solid: #000000;
+  --color-dark-hover: #1A1A1A;
+
+  /* Typography Colors (04-typography-sheet.png) */
+  --color-text-primary: #000000;
+  --color-text-secondary: #64748B;
+  --color-text-muted: #94A3B8;
+  --color-text-inverse: #FFFFFF;
+
+  /* Semantic Feedback Triad */
+  --color-success: #15803D;
+  --color-success-bg: #F0FDF4;
+  --color-success-border: #BBF7D0;
+
+  --color-warning: #B45309;
+  --color-warning-bg: #FFFBEB;
+  --color-warning-border: #FDE68A;
+
+  --color-error: #B91C1C;
+  --color-error-bg: #FEF2F2;
+  --color-error-border: #FECACA;
+
+  --color-info: #1D4ED8;
+  --color-info-bg: #EFF6FF;
+  --color-info-border: #BFDBFE;
+
+  /* Typography Scale */
+  --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-h1: 2rem;       /* 32px - Heading */
+  --font-size-h2: 1.5rem;     /* 24px - Subheading */
+  --font-size-h3: 1.125rem;   /* 18px - Section Header */
+  --font-size-body: 1rem;     /* 16px - Standard Body */
+  --font-size-small: 0.875rem;/* 14px - Compact Body / Form Labels */
+  --font-size-caption: 0.75rem; /* 12px - Caption / Table Header */
+
+  /* Estify Signature Radii */
+  --radius-card: 1.5rem;      /* 24px - Generous Card Corners */
+  --radius-inner: 1rem;       /* 16px - Inset Elements */
+  --radius-md: 0.75rem;       /* 12px - Buttons / Inputs */
+  --radius-pill: 9999px;      /* Full Pill Navigation & Badges */
+
+  /* Restrained Soft Shadows */
+  --shadow-card: 0 2px 4px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
+  --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-dropdown: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-Index Layers */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-header: 20;
+  --z-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 55;
+  --z-toast: 60;
+}
+
+/* Base Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background-color: var(--color-canvas);
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  scroll-padding-bottom: 96px;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Tabular Numerals for Currency & Dates */
+.tabular, .numeral, .price, .kpi-value {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Accessible Visible Focus */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Top Navigation Bar */
+.top-nav {
+  height: 80px;
+  background-color: var(--color-canvas);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+}
+
+.nav-brand img {
+  height: 38px;
+  width: auto;
+}
+
+.nav-pill-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-pill {
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-pill);
+  transition: all var(--transition-fast);
+}
+
+.nav-pill:hover {
+  color: var(--color-text-primary);
+}
+
+.nav-pill.active {
+  background-color: var(--color-dark-solid);
+  color: var(--color-text-inverse);
+  font-weight: 600;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.action-circle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface);
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.action-circle-btn:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.action-circle-btn .notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: var(--color-error);
+  color: #FFFFFF;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-canvas);
+}
+
+.user-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.875rem 0.375rem 0.375rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.user-profile-pill .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.user-profile-pill .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-profile-info {
+  line-height: 1.2;
+}
+
+.user-profile-name {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+}
+
+.user-profile-role {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+}
+
+/* Container */
+.main-container {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 4rem;
+}
+
+.card-estify {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-fast);
+}
+
+.card-estify:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* Button Primitives */
+/* ==========================================================================
+   Button System — 100% Flat, Polos, Solid & Konsisten (Estify DNA)
+   ========================================================================== */
+/* Button Primitives — 100% Borderless, Flat & Konsisten */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 1.5rem;
+  font-family: inherit;
+  font-size: var(--font-size-small); /* 14px */
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  border: none; /* NO BORDER across all buttons */
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast), box-shadow var(--transition-fast);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn:active { transform: scale(0.98); }
+
+/* Explicit Sizing Steps: SM 36px, DEFAULT 44px, LG 48px */
+.btn-sm {
+  height: 36px;
+  min-height: 36px;
+  padding: 0 1rem;
+  font-size: var(--font-size-caption); /* 12px */
+}
+
+.btn-lg {
+  height: 48px;
+  min-height: 48px;
+  padding: 0 1.875rem;
+  font-size: var(--font-size-body); /* 16px */
+  font-weight: 600;
+}
+
+.btn:disabled, .btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 1. Primary Action: Flat Solid Warm Orange (No Border) */
+.btn-primary {
+  background-color: var(--color-brand);
+  color: #FFFFFF;
+  border: none;
+}
+.btn-primary:hover {
+  background-color: var(--color-brand-hover);
+}
+
+/* 2. Secondary Action: Flat Solid White (No Border, Clean Floating) */
+.btn-secondary {
+  background-color: #FFFFFF;
+  color: #000000;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.btn-secondary:hover {
+  background-color: var(--color-surface-hover);
+}
+
+/* 3. Secondary Black: Flat Solid Pure Black (Hover: Soft Opacity 0.85) */
+.btn-black {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+}
+.btn-black:hover {
+  background-color: #000000;
+  opacity: 0.85;
+}
+
+/* 4. Subtle Tone: Flat Soft Orange Tint (No Border) */
+.btn-subtle {
+  background-color: var(--color-brand-subtle);
+  color: var(--color-brand-hover);
+  border: none;
+}
+.btn-subtle:hover {
+  background-color: #FFEDD5;
+}
+
+/* 5. Ghost Button: Flat Transparent (No Border) */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border: none;
+}
+.btn-ghost:hover {
+  background-color: #F1F5F9;
+  color: #000000;
+}
+
+/* 5. Destructive / Void Action: Subtle Tone Red (No Border) */
+.btn-destructive {
+  background-color: var(--color-error-bg); /* #FEF2F2 */
+  color: var(--color-error); /* #B91C1C */
+  border: none;
+  font-weight: 600;
+}
+.btn-destructive:hover {
+  background-color: #FEE2E2;
+}
+
+/* Circle Arrow Button (32px Signature Estify Element — 100% Borderless) */
+.circle-arrow-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+/* 1. Arrow Putih: Default Putih ➔ Hover Hitam Pekat (#000000) */
+.circle-arrow-btn.arrow-white,
+.circle-arrow-btn.on-photo,
+.circle-arrow-btn.on-header {
+  background-color: #FFFFFF;
+  color: #000000;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.circle-arrow-btn.arrow-white:hover,
+.circle-arrow-btn.on-photo:hover,
+.circle-arrow-btn.on-header:hover {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+}
+
+/* 2. Arrow Hitam: Default Hitam (#000000) ➔ Hover Putih (#FFFFFF) */
+.circle-arrow-btn.arrow-black {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+.circle-arrow-btn.arrow-black:hover {
+  background-color: #FFFFFF;
+  color: #000000;
+  border: none;
+}
+
+/* 3. Arrow Oranye: Default Oranye (#F97316) ➔ Hover Oranye Gelap (#EA580C) */
+.circle-arrow-btn.arrow-orange,
+.circle-arrow-btn.on-orange {
+  background-color: var(--color-brand);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 1px 3px rgba(249, 115, 22, 0.25);
+}
+.circle-arrow-btn.arrow-orange:hover,
+.circle-arrow-btn.on-orange:hover {
+  background-color: var(--color-brand-hover);
+  border: none;
+}
+
+/* Segmented Pill Group (Container Halus Terintegrasi — 100% Borderless) */
+.btn-group {
+  display: inline-flex;
+  align-items: center;
+  background-color: #F1F5F9;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 2px;
+}
+.btn-group .btn-group-item {
+  padding: 0.375rem 1rem;
+  font-family: inherit;
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.btn-group .btn-group-item:hover {
+  color: #000000;
+}
+.btn-group .btn-group-item.active {
+  background-color: #FFFFFF;
+  color: #000000;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Filter Dropdown Pill (Like Estify "Monthly ▾" & "Today ▾" — 100% Borderless) */
+.filter-dropdown-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.filter-dropdown-pill:hover {
+  background-color: var(--color-surface-hover);
+}
+
+/* Floating Popover Dropdown Menu (Kompak & Pas Tanpa Ruang Kosong Berlebih) */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu-floating {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  width: max-content;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 4px;
+  z-index: 55;
+  display: none;
+}
+
+.dropdown-wrapper.is-open .dropdown-menu-floating {
+  display: block;
+  animation: fadeInDown 120ms ease-out;
+}
+
+.dropdown-item {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background-color: #F8FAFC;
+  color: var(--color-brand);
+}
+
+.dropdown-item.active {
+  background-color: #FFF7ED;
+  color: var(--color-brand);
+  font-weight: 600;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn.is-loading {
+  position: relative;
+  pointer-events: none;
+  color: transparent !important;
+}
+
+.btn.is-loading::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-top: -10px;
+  margin-left: -10px;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 600ms linear infinite;
+}
+
+.btn-secondary.is-loading::after,
+.btn-ghost.is-loading::after {
+  border: 2.5px solid rgba(249, 115, 22, 0.25);
+  border-top-color: var(--color-brand);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: var(--font-size-caption);
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+}
+
+.badge-success { background-color: var(--color-success-bg); color: var(--color-success); }
+.badge-warning { background-color: var(--color-warning-bg); color: var(--color-warning); }
+.badge-error   { background-color: var(--color-error-bg); color: var(--color-error); }
+.badge-info    { background-color: var(--color-info-bg); color: var(--color-info); }
+.badge-neutral { background-color: #F1F5F9; color: var(--color-text-secondary); }
+
+/* Form Inputs */
+.input, .select, .textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.625rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input::placeholder, .textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input:focus, .select:focus, .textarea:focus {
+  border-color: var(--color-brand);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.input:disabled, .textarea:disabled, .select:disabled {
+  background-color: #F8FAFC;
+  color: #94A3B8;
+  cursor: not-allowed;
+  border-color: #E2E8F0;
+}
+
+.input-group {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  width: 100%;
+}
+
+.input-prefix-pill {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: #F1F5F9;
+  border: 1px solid var(--color-border-interactive);
+  border-right: none;
+  border-top-left-radius: var(--radius-md);
+  border-bottom-left-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.input-group .input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.input-wrapper.has-error .input,
+.input-wrapper.has-error .textarea {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
+}
+
+.error-message {
+  font-size: var(--font-size-small);
+  color: var(--color-error);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.25rem;
+}
+
+/* Avatars */
+.avatar {
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #E2E8F0;
+  color: var(--color-text-primary);
+  flex-shrink: 0;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Utilities */
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.w-full { width: 100%; }
+.mt-4 { margin-top: 1rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.text-muted { color: var(--color-text-secondary); }
+.text-h1 { font-size: var(--font-size-h1); font-weight: 700; }
+.text-h2 { font-size: var(--font-size-h2); font-weight: 600; }
+.text-h3 { font-size: var(--font-size-h3); font-weight: 600; }
+.text-body { font-size: var(--font-size-body); }
+.text-small { font-size: var(--font-size-small); }
+.text-caption { font-size: var(--font-size-caption); }
+.mid-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
