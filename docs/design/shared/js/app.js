@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initDropdowns();
   initDatepickers();
   initSelects();
+  
+  // CMP-06 Indeterminate Checkbox Demo Initialization
+  const indetChk = document.getElementById('chk-indeterminate-demo');
+  if (indetChk) indetChk.indeterminate = true;
 });
 
 function initModals() {

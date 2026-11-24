@@ -117,7 +117,7 @@
         </div>
       </div>
       <div>
-        <span class="badge badge-warning">Tier 1: Menunggu Human ACC</span>
+        <span class="badge badge-brand"><span class="badge-dot"></span> Tier 1: Sedang Review Primitif</span>
       </div>
     </div>
 
@@ -665,44 +665,274 @@
     <!-- CMP-05: Badges -->
     <div class="cmp-card" id="cmp-05">
       <span class="cmp-badge">CMP-05</span>
-      <h2 class="cmp-title">Operational Badges</h2>
-      <p class="cmp-desc">Badge status operasional dengan kontras tinggi (>=4.5:1) dan label teks eksplisit tanpa dependensi warna semata.</p>
+      <h2 class="cmp-title">Operational Badges (Pure 4-Color Architecture)</h2>
+      <p class="cmp-desc">Badge status operasional murni 4 warna: Oranye Brand (Lunas / Beres), Merah (Void / Terlambat), Abu-abu Netral (Menunggu / Siap Huni), dan Hitam Solid (Counter / Prioritas).</p>
 
-      <div class="demo-grid">
-        <span class="badge badge-success">● Lunas Terverifikasi</span>
-        <span class="badge badge-warning">● Menunggu Otorisasi</span>
-        <span class="badge badge-error">● Terlambat Jatuh Tempo</span>
-        <span class="badge badge-info">● Pengerjaan Servis SLA</span>
-        <span class="badge badge-neutral">● Siap Huni</span>
+      <!-- Sub 1: 4 Warna Utama -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. EMPAT WARNA STATUS UTAMA (ORANYE, MERAH VOID, NETRAL, HITAM)</div>
+      <div class="flex gap-3 items-center mb-4" style="flex-wrap:wrap">
+        <span class="badge badge-brand"><span class="badge-dot"></span> Lunas Terverifikasi</span>
+        <span class="badge badge-neutral"><span class="badge-dot"></span> Menunggu Pembayaran</span>
+        <span class="badge badge-error"><span class="badge-dot"></span> Terlambat Jatuh Tempo</span>
+        <span class="badge badge-error"><span class="badge-dot"></span> Dibatalkan / Void</span>
+        <span class="badge badge-neutral"><span class="badge-dot"></span> Siap Huni</span>
+        <span class="badge badge-dark"><span class="badge-dot"></span> 24 Kamar</span>
+      </div>
+
+      <!-- Sub 2: Penerapan Sesuai Modul Properti -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. PENERAPAN STATUS PADA MODUL BISNIS KOS</div>
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem">
+        <!-- Card 1: Okupansi & Kamar -->
+        <div style="background-color:#F8FAFC;border:1px solid var(--color-border);border-radius:16px;padding:1rem">
+          <div style="font-weight:600;font-size:0.875rem;margin-bottom:0.75rem;color:#000000">Status Fisik & Okupansi Kamar</div>
+          <div class="flex gap-2 items-center" style="flex-wrap:wrap">
+            <span class="badge badge-neutral"><span class="badge-dot"></span> Siap Huni</span>
+            <span class="badge badge-brand"><span class="badge-dot"></span> Terisi (Aktif Sewa)</span>
+            <span class="badge badge-neutral"><span class="badge-dot"></span> Pembersihan Rutin</span>
+            <span class="badge badge-error"><span class="badge-dot"></span> Rusak / Void Fisik</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Tiket Komplain & Servis SLA -->
+        <div style="background-color:#F8FAFC;border:1px solid var(--color-border);border-radius:16px;padding:1rem">
+          <div style="font-weight:600;font-size:0.875rem;margin-bottom:0.75rem;color:#000000">Tiket Komplain Penghuni (SLA)</div>
+          <div class="flex gap-2 items-center" style="flex-wrap:wrap">
+            <span class="badge badge-brand"><span class="badge-dot"></span> Dalam Pengerjaan</span>
+            <span class="badge badge-brand"><span class="badge-dot"></span> Servis Selesai</span>
+            <span class="badge badge-neutral"><span class="badge-dot"></span> Menunggu Jadwal</span>
+            <span class="badge badge-error"><span class="badge-dot"></span> Eskalasi Urgent (24 Jam)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub 3: Varian Ukuran Badge (Default & Compact Table Cell) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. VARIAN UKURAN: REGULAR (12px) & COMPACT TABLE CELL (11px)</div>
+      <div class="flex gap-3 items-center mb-4" style="flex-wrap:wrap">
+        <span class="badge badge-brand"><span class="badge-dot"></span> Regular Lunas (12px)</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Compact Lunas (11px)</span>
+        <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Compact Menunggu</span>
+        <span class="badge badge-error badge-sm"><span class="badge-dot"></span> Compact Void</span>
+        <span class="badge badge-dark badge-sm"><span class="badge-dot"></span> VIP Properti</span>
+      </div>
+
+      <!-- Sub 4: Varian Khusus Signature Estify (Trend KPI, Filter Dismissible, Overlay Foto, Counter) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. VARIAN KHUSUS SIGNATURE ESTIFY (TREND KPI, FILTER TAG, OVERLAY FOTO, COUNTER)</div>
+      <div class="demo-grid" style="gap:1rem;flex-wrap:wrap">
+        <!-- 1. Trend KPI Metric Badge -->
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <span class="badge badge-brand badge-trend">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+            +14.8% MoM
+          </span>
+          <span class="badge badge-error badge-trend">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            -2.4% Tunggakan
+          </span>
+        </div>
+
+        <!-- 2. Dismissible Filter Tags -->
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <span class="badge badge-neutral badge-dismissible">
+            Lantai 1
+            <button type="button" class="badge-close-btn" aria-label="Hapus filter Lantai 1" onclick="this.parentElement.style.display='none'">&times;</button>
+          </span>
+          <span class="badge badge-brand badge-dismissible">
+            Cabang Cilandak
+            <button type="button" class="badge-close-btn" aria-label="Hapus filter Cabang Cilandak" onclick="this.parentElement.style.display='none'">&times;</button>
+          </span>
+        </div>
+
+        <!-- 3. Photo Overlay Badge (Simulasi di atas foto properti 16:10) -->
+        <div style="position:relative;width:180px;height:90px;border-radius:14px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.08);flex-shrink:0">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=360&h=180&fit=crop" alt="Foto Kamar" style="width:100%;height:100%;object-fit:cover">
+          <div style="position:absolute;top:8px;left:8px">
+            <span class="badge badge-overlay">
+              <span class="badge-dot" style="background-color:var(--color-brand)"></span>
+              Siap Huni
+            </span>
+          </div>
+        </div>
+
+        <!-- 4. Counter / Numeric Badges -->
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <span class="badge-counter badge-error">3</span>
+          <span class="text-caption text-muted">Tiket Urgent</span>
+          <span class="badge-counter badge-dark">12</span>
+          <span class="text-caption text-muted">Kamar Terisi</span>
+          <span class="badge-counter badge-brand">5</span>
+          <span class="text-caption text-muted">Menunggu Otorisasi</span>
+        </div>
       </div>
     </div>
 
     <!-- CMP-06: Checkbox, Radio, Switch -->
     <div class="cmp-card" id="cmp-06">
       <span class="cmp-badge">CMP-06</span>
-      <h2 class="cmp-title">Checkbox, Radio & Toggle Switch</h2>
-      <p class="cmp-desc">Kontrol boolean interaktif dengan aksen oranye dan touch target memadai.</p>
+      <h2 class="cmp-title">Checkbox, Radio & Toggle Switch System</h2>
+      <p class="cmp-desc">Kontrol boolean interaktif dan seleksi pilihan tunggal dengan aksen Oranye Brand, touch target memadai (&gt;=44px), status aksesibilitas lengkap (checked, unchecked, indeterminate, disabled), dan format kartu pilihan (Choice Card) serta Settings Row preferensi.</p>
 
-      <div class="demo-grid">
+      <!-- Sub 1: Custom Checkbox (Interaktif & Indeterminate) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. CUSTOM CHECKBOX (INTERAKTIF, INDETERMINATE & DISABLED)</div>
+      <div class="flex gap-4 items-center mb-4" style="flex-wrap:wrap">
+        <!-- Checked State -->
         <label class="custom-checkbox">
           <input type="checkbox" checked>
-          <span>Kirim Notifikasi via WhatsApp Outbox</span>
+          <span class="checkbox-box"></span>
+          <span>Kirim Notifikasi Penagihan via WhatsApp Outbox</span>
+        </label>
+
+        <!-- Unchecked State -->
+        <label class="custom-checkbox">
+          <input type="checkbox">
+          <span class="checkbox-box"></span>
+          <span>Kirim Salinan Rekapitulasi via Email Pemilik</span>
+        </label>
+
+        <!-- Indeterminate State -->
+        <label class="custom-checkbox">
+          <input type="checkbox" id="chk-indeterminate-demo">
+          <span class="checkbox-box"></span>
+          <span>Pilih Semua Kamar Terisi (8 dari 12 Terpilih)</span>
+        </label>
+
+        <!-- Disabled Checked State -->
+        <label class="custom-checkbox is-disabled">
+          <input type="checkbox" disabled checked>
+          <span class="checkbox-box"></span>
+          <span>Integrasi Webhook PLN Terkunci (SLA Aktif)</span>
+        </label>
+
+        <!-- Disabled Unchecked State -->
+        <label class="custom-checkbox is-disabled">
+          <input type="checkbox" disabled>
+          <span class="checkbox-box"></span>
+          <span>Addon SMS OTP Gateway (Paket Tidak Aktif)</span>
+        </label>
+      </div>
+
+      <!-- Sub 2: Radio Button Standar & Choice Card Estify -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. RADIO SELECTION CARDS (METODE PEMBAYARAN OPERASIONAL DENGAN CUSTOM RADIO & ICON BOX)</div>
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem">
+        <!-- Choice Card 1: Virtual Account (Selected) -->
+        <label class="choice-card">
+          <input type="radio" name="pay-method-card" value="va" checked>
+          <span class="radio-circle"></span>
+          <div class="choice-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+          </div>
+          <div style="flex:1">
+            <div class="flex items-center justify-between mb-1">
+              <span class="choice-title" style="font-weight:600;font-size:0.9375rem">Transfer Virtual Account Otomatis</span>
+              <span class="badge badge-brand badge-sm">Rekomendasi</span>
+            </div>
+            <p class="text-caption text-muted" style="line-height:1.4">Verifikasi instan 24/7 (BCA, Mandiri, BRI) tanpa perlu upload bukti transfer manual.</p>
+          </div>
+        </label>
+
+        <!-- Choice Card 2: Manual Tunai -->
+        <label class="choice-card">
+          <input type="radio" name="pay-method-card" value="cash">
+          <span class="radio-circle"></span>
+          <div class="choice-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+          </div>
+          <div style="flex:1">
+            <div class="flex items-center justify-between mb-1">
+              <span class="choice-title" style="font-weight:600;font-size:0.9375rem">Pembayaran Tunai ke Caretaker</span>
+              <span class="badge badge-neutral badge-sm">Manual</span>
+            </div>
+            <p class="text-caption text-muted" style="line-height:1.4">Wajib meminta kwitansi fisik bernomor seri dan foto serah terima uang tunai.</p>
+          </div>
+        </label>
+      </div>
+
+      <!-- Standar Inline Radios -->
+      <div class="flex gap-4 items-center mb-4" style="flex-wrap:wrap">
+        <span class="text-caption text-muted" style="font-weight:600">Frekuensi Penagihan:</span>
+        <label class="custom-radio">
+          <input type="radio" name="billing-freq" value="monthly" checked>
+          <span class="radio-circle"></span>
+          <span>Bulanan (Standar)</span>
         </label>
         <label class="custom-radio">
-          <input type="radio" name="pay-method" checked>
-          <span>Transfer Bank</span>
+          <input type="radio" name="billing-freq" value="quarterly">
+          <span class="radio-circle"></span>
+          <span>Per 3 Bulan (Diskon 5%)</span>
         </label>
         <label class="custom-radio">
-          <input type="radio" name="pay-method">
-          <span>Tunai</span>
+          <input type="radio" name="billing-freq" value="annually">
+          <span class="radio-circle"></span>
+          <span>Tahunan (Diskon 10%)</span>
         </label>
-        <div class="flex items-center gap-2" style="margin-left:1.5rem">
-          <span class="text-small text-muted">Auto-Billing Cron:</span>
-          <label class="toggle-switch">
+        <label class="custom-radio is-disabled">
+          <input type="radio" name="billing-freq" value="locked" disabled>
+          <span class="radio-circle"></span>
+          <span>Kustom Harian (Terkunci)</span>
+        </label>
+      </div>
+
+      <!-- Sub 3: Interactive Toggle Switch & Settings Rows -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. TOGGLE SWITCH SYSTEM (ESTIFY PREFERENCE SETTINGS ROW & INLINE)</div>
+
+      <!-- 3.1 Settings Row Variant (Signature Estify PMS Preference Panels) -->
+      <div class="flex flex-col gap-3 mb-4" style="display:flex;flex-direction:column;gap:0.75rem">
+        <!-- Setting Row 1: Auto-Billing (Active) -->
+        <label class="settings-row">
+          <div>
+            <div style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:2px">Auto-Billing Cron Otomatis</div>
+            <div class="text-caption text-muted">Kirim invoice dan tautan pembayaran WhatsApp H-7 sebelum jatuh tempo sewa kamar</div>
+          </div>
+          <span class="toggle-switch">
+            <input type="checkbox" checked id="sw-auto-billing">
+            <span class="toggle-slider"></span>
+          </span>
+        </label>
+
+        <!-- Setting Row 2: Denda Keterlambatan (Inactive) -->
+        <label class="settings-row">
+          <div>
+            <div style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:2px">Denda Keterlambatan Harian Otomatis</div>
+            <div class="text-caption text-muted">Bebankan denda Rp 25.000 / hari jika melewati masa tenggang (grace period) 3 hari kalender</div>
+          </div>
+          <span class="toggle-switch">
+            <input type="checkbox" id="sw-late-fee">
+            <span class="toggle-slider"></span>
+          </span>
+        </label>
+
+        <!-- Setting Row 3: Koneksi Meteran IoT (Disabled/Enterprise) -->
+        <label class="settings-row is-disabled">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary)">Sinkronisasi Meteran Listrik kWh Smart-IoT</span>
+              <span class="badge badge-dark badge-sm">Enterprise Addon</span>
+            </div>
+            <div class="text-caption text-muted">Fitur pembacaan sensor kWh otomatis terlisensi terpisah pada modul fasilitas IoT</div>
+          </div>
+          <span class="toggle-switch">
+            <input type="checkbox" disabled checked id="sw-webhook-lock">
+            <span class="toggle-slider"></span>
+          </span>
+        </label>
+      </div>
+
+      <!-- 3.2 Compact Inline Switches (Untuk Filter / Toolbar Cepat) -->
+      <div class="flex gap-4 items-center" style="flex-wrap:wrap">
+        <span class="text-caption text-muted" style="font-weight:600">Sakelar Inline:</span>
+        <label class="toggle-switch-wrapper">
+          <span class="toggle-switch">
             <input type="checkbox" checked>
             <span class="toggle-slider"></span>
-          </label>
-        </div>
+          </span>
+          <span style="font-weight:500;font-size:0.875rem">Tampilkan Kamar Kosong Saja</span>
+        </label>
+        <label class="toggle-switch-wrapper">
+          <span class="toggle-switch">
+            <input type="checkbox">
+            <span class="toggle-slider"></span>
+          </span>
+          <span style="font-weight:500;font-size:0.875rem">Filter Tunggakan &gt; 30 Hari</span>
+        </label>
       </div>
     </div>
 
