@@ -118,10 +118,10 @@
 
 ## 6. Immediate Next Action for Resuming Session
 
-- **Next-Action**: Memulai M04 dari awal — semua artefak M04 sebelumnya telah dihapus total. Langkah pertama: Step 0.5 Inspiration Analysis — human menempatkan referensi di `docs/design/inspiration/` (sudah ada 3 referensi dari sesi sebelumnya), lalu agent menganalisis dan membuat `docs/design/inspiration/notes.md`.
-- **Open-Decisions**: Konfirmasi arahan desain dari user untuk memulai Step 0.5.
+- **Next-Action**: M04 di-reset total dari awal (anti-slop). Memulai Stage 1 (Inspiration Analysis, Vector Logo Suite, SITEMAP, COMPONENT_REQUIREMENTS, DESIGN.md).
+- **Open-Decisions**: Alignment per-stage dan konfirmasi arahan visual.
 
-1. **Current Step**: Step 0.5 Inspiration Intake & Analysis — siap dimulai.
-2. **Target Deliverable**: `docs/design/inspiration/notes.md`, lalu `docs/specs/LOGO_DESIGN_BRIEF.md`, `docs/specs/SITEMAP.md`, `docs/harness-root/DESIGN.md`, `docs/design/components/index.html`.
+1. **Current Step**: M04 Stage 1 — Inspiration Intake & Brand Foundation.
+2. **Target Deliverable**: `docs/design/inspiration/notes.md`, `assets/logo/` SVG suite, `docs/specs/LOGO_DESIGN_BRIEF.md`, `docs/specs/SITEMAP.md`, `docs/specs/COMPONENT_REQUIREMENTS.md`, `docs/harness-root/DESIGN.md`.
 3. **Turn-Stopping Confirmation Prompt**:
-   > *"Semua artefak M04 lama telah dibersihkan. Ruang kerja siap untuk memulai ulang M04 · UI/UX & Prototyping dari awal. Perintahkan untuk memulai Step 0.5."*
+   > *"Seluruh artefak M04 telah dibersihkan. Memulai eksekusi Stage 1 dari awal secara terstruktur dan bespoke."*
