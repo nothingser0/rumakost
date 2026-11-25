@@ -443,6 +443,18 @@ function initSelects() {
     const options = Array.from(wrapper.querySelectorAll('.select-option'));
     if (!trigger || !popover) return;
 
+    // Initial check for pre-selected value
+    const hasInitialVal = Boolean(
+      (hiddenInput && hiddenInput.value && hiddenInput.value.trim() !== '') ||
+      (displayInput && displayInput.value && displayInput.value.trim() !== '')
+    );
+    if (hasInitialVal && !trigger.classList.contains('is-disabled') && !trigger.hasAttribute('disabled')) {
+      trigger.classList.add('has-value');
+      wrapper.classList.add('has-value');
+      const prefixIcon = trigger.querySelector('.select-prefix-icon');
+      if (prefixIcon) prefixIcon.classList.remove('text-muted');
+    }
+
     let highlightedIndex = -1;
 
     function updateHighlight() {
@@ -515,9 +527,17 @@ function initSelects() {
         labelDisplay.classList.remove('text-muted');
       }
 
-      // Clear has-error styling on trigger upon valid selection
+      // Clear has-error styling and update has-value on trigger upon valid selection
+      const prefixIcon = trigger.querySelector('.select-prefix-icon');
       if (val) {
         trigger.classList.remove('has-error');
+        trigger.classList.add('has-value');
+        wrapper.classList.add('has-value');
+        if (prefixIcon) prefixIcon.classList.remove('text-muted');
+      } else {
+        trigger.classList.remove('has-value');
+        wrapper.classList.remove('has-value');
+        if (prefixIcon) prefixIcon.classList.add('text-muted');
       }
 
       options.forEach(o => {

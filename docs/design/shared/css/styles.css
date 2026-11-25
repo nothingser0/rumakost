@@ -565,8 +565,15 @@ a {
   transition: color var(--transition-fast);
 }
 
-.custom-select-wrapper.is-open .select-prefix-icon {
-  color: var(--color-brand);
+.custom-select-wrapper.is-open .select-prefix-icon,
+.pill-input-box.select-trigger.has-value .select-prefix-icon,
+.custom-select-wrapper.has-value .select-prefix-icon {
+  color: var(--color-brand) !important;
+}
+
+.pill-input-box.select-trigger.is-disabled .select-prefix-icon,
+.pill-input-box.select-trigger:has(input:disabled) .select-prefix-icon {
+  color: #94A3B8 !important;
 }
 
 .pill-input-box.select-trigger input.select-display {
@@ -1251,6 +1258,7 @@ input[type="search"]::-webkit-search-decoration {
   letter-spacing: -0.01em;
   white-space: nowrap;
   user-select: none;
+  cursor: default; /* Read-only status indicator by default */
   transition: all var(--transition-fast);
 }
 
@@ -1280,10 +1288,6 @@ input[type="search"]::-webkit-search-decoration {
   color: #C2410C;
   border: 1px solid #FFEDD5;
 }
-.badge-brand:hover,
-.badge-success:hover {
-  background-color: #FFEDD5;
-}
 
 /* 2. Merah Void (Dibatalkan, Terlambat, Masalah/Error — WCAG AA 6.7:1) */
 .badge-error,
@@ -1291,10 +1295,6 @@ input[type="search"]::-webkit-search-decoration {
   background-color: #FEF2F2;
   color: #B91C1C;
   border: 1px solid #FECACA;
-}
-.badge-error:hover,
-.badge-destructive:hover {
-  background-color: #FEE2E2;
 }
 
 /* 3. Abu-abu / Putih Netral (Menunggu, Siap Huni, Draft, Standar) */
@@ -1305,11 +1305,6 @@ input[type="search"]::-webkit-search-decoration {
   color: #334155;
   border: 1px solid #E2E8F0;
 }
-.badge-neutral:hover,
-.badge-warning:hover,
-.badge-info:hover {
-  background-color: #E2E8F0;
-}
 
 /* 4. Hitam Solid (Counter, Kategori, Prioritas) */
 .badge-dark {
@@ -1317,8 +1312,17 @@ input[type="search"]::-webkit-search-decoration {
   color: #FFFFFF;
   border: 1px solid #000000;
 }
-.badge-dark:hover {
-  background-color: #1A1A1A;
+
+/* Optional: Only genuinely interactive badges (links, buttons, or filter chips) get hover */
+a.badge,
+button.badge,
+.badge.is-interactive {
+  cursor: pointer;
+}
+a.badge:hover,
+button.badge:hover,
+.badge.is-interactive:hover {
+  filter: brightness(0.96);
 }
 
 /* 5. Special Estify Badge Extensions */

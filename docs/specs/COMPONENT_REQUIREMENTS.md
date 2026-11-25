@@ -16,7 +16,7 @@ Komponen tingkat dasar (primitives) bertindak sebagai blok pembangun atomik anta
 | `CMP-02` | `Input` | text, tel, password, search | default, hover, focus (`ring-2`), error, disabled | Input data entry teks di seluruh formulir; font 16px mencegah iOS auto-zoom |
 | `CMP-03` | `Textarea` | standard | default, hover, focus, error, disabled | Catatan handover kamar, deskripsi tiket SLA, instruksi khusus |
 | `CMP-04` | `Select / PopoverMenu` | custom styled floating popover (zero raw native select) | closed, open, focused, selected, disabled | Pemilihan cabang properti, filter lantai; kontainer rounded-2xl & shadow-dropdown |
-| `CMP-05` | `Badge` | neutral, success, warning, destructive, info | default, interactive hover | Flag status tagihan (Lunas), kamar (Siap Huni), dan tiket SLA |
+| `CMP-05` | `Badge` | neutral, success, warning, destructive, info | default (read-only), hover (khusus interactive/dismissible) | Flag status tagihan (Lunas), kamar (Siap Huni), dan tiket SLA |
 | `CMP-06` | `Checkbox / Switch` | custom checkbox, custom radio, toggle switch | unchecked, checked, indeterminate, disabled | Notifikasi WA outbox, auto-billing cron toggle, pilihan metode bayar |
 | `CMP-07` | `LoadingSpinner`| sm (16px), md (24px), lg (32px) | animated spin | Indikator proses async pada tombol submit form |
 | `CMP-08` | `Icon` | Lucide SVG (stroke-1.75 / 2.0) | default | Petunjuk visual semantik pendamping teks (zero unicode emoji) |
