@@ -888,7 +888,10 @@ input[type="search"]::-webkit-search-decoration {
 .pill-input-box.has-error,
 .input-pill.has-error,
 .textarea-rounded.has-error,
-.select-trigger.has-error {
+.select-trigger.has-error,
+.input-wrapper.has-error .pill-input-box,
+.input-wrapper.has-error .input-pill,
+.input-wrapper.has-error .textarea-rounded {
   background-color: #FEF2F2;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04); /* Polos tanpa border */
 }
@@ -1931,8 +1934,12 @@ button.badge:hover,
 /* Utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
+.items-start { align-items: flex-start; }
 .items-center { align-items: center; }
+.items-end { align-items: flex-end; }
+.items-baseline { align-items: baseline; }
 .justify-between { justify-content: space-between; }
+.gap-1 { gap: 0.25rem; }
 .gap-2 { gap: 0.5rem; }
 .gap-3 { gap: 0.75rem; }
 .gap-4 { gap: 1rem; }
@@ -2136,4 +2143,524 @@ button.badge:hover,
 
 .icon-tile:hover {
   background-color: #F8FAFC;
+}
+
+/* ==========================================================================
+   Tier 2: Standard Composites (CMP-11 to CMP-15) — Estify DNA & Pure 4-Color
+   ========================================================================== */
+
+/* CMP-11: Card (Estify Seamless Pure White 24px Surface) */
+.card-estify {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Estify Orange Hero Card (01-dashboard-flat.png: Sunset Valley pattern) */
+.card-orange-gradient {
+  background: linear-gradient(135deg, #FF8A24 0%, #F97316 100%);
+  border: none;
+  color: #FFFFFF;
+  box-shadow: 0 10px 26px rgba(249, 115, 22, 0.22);
+  position: relative;
+  min-height: 260px;
+}
+
+.card-orange-gradient .card-title,
+.card-orange-gradient .card-subtitle {
+  color: #FFFFFF;
+}
+
+.card-orange-hero-photo {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 52%;
+  height: 62%;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  pointer-events: none;
+}
+
+/* Estify Thin Progress Bar (Building Condition pattern) */
+.estify-progress-track {
+  width: 100%;
+  height: 4px;
+  background-color: #F1F5F9;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 0.375rem;
+}
+
+.estify-progress-fill {
+  height: 100%;
+  background-color: var(--color-brand);
+  border-radius: 9999px;
+}
+
+/* ==========================================================================
+   CMP-11: Light-Mode Estify Card Archetypes (Room, KPI Gauge, Activity, Summary)
+   ========================================================================== */
+
+/* 1. Room / Property Photo Card (Ref: Loseva.pro Clean Light Card) */
+.room-photo-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 26px;
+  padding: 0.625rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+}
+
+.room-photo-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #F1F5F9;
+}
+
+.room-photo-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.room-carousel-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.28);
+  backdrop-filter: blur(4px);
+}
+
+.room-carousel-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+.room-carousel-dot.is-active {
+  width: 20px;
+  background-color: #FFFFFF;
+}
+
+.room-photo-body {
+  padding: 1.125rem 0.75rem 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.room-amenity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem 1.125rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #F1F5F9;
+}
+
+.room-amenity-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: #64748B;
+  font-weight: 500;
+}
+
+/* 2. KPI Radial Ray Gauge Widget */
+.kpi-gauge-wrap {
+  position: relative;
+  width: 124px;
+  height: 70px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.kpi-gauge-pill {
+  position: relative;
+  z-index: 1;
+  background-color: #FFF7ED;
+  color: #C2410C;
+  border: 1px solid #FFEDD5;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.1875rem 0.5rem;
+  border-radius: 9999px;
+  margin-bottom: 2px;
+}
+
+/* 3. Activity List Row (Zero Nested Boxes) */
+.activity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.activity-row:first-child {
+  padding-top: 0;
+}
+
+.activity-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.activity-unread-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-brand);
+  flex-shrink: 0;
+}
+
+.property-card-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #F1F5F9;
+}
+
+.property-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-header {
+  padding: 1.75rem 1.75rem 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.card-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.35;
+}
+
+.card-subtitle {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary);
+  margin-top: 0.25rem;
+}
+
+.card-content {
+  padding: 0.75rem 1.75rem 1.5rem;
+  flex: 1;
+}
+
+.card-footer {
+  padding: 1rem 1.75rem 1.5rem;
+  border-top: 1px solid #F1F5F9;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* CMP-12: Table & Mobile Reflow (<640px) */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  background-color: #FFFFFF;
+}
+
+.table-estify {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: var(--font-size-small);
+}
+
+.table-estify th {
+  padding: 0.875rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748B;
+  background-color: #F8FAFC;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.table-estify td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #F1F5F9;
+  color: #0F172A;
+  vertical-align: middle;
+}
+
+.table-estify tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-estify tbody tr:hover td {
+  background-color: #FAFAFA;
+}
+
+.table-estify .align-right {
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .table-estify thead {
+    display: none;
+  }
+  .table-estify,
+  .table-estify tbody,
+  .table-estify tr,
+  .table-estify td {
+    display: block;
+    width: 100%;
+  }
+  .table-estify tr {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .table-estify tr:last-child {
+    border-bottom: none;
+  }
+  .table-estify td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4375rem 0;
+    border-bottom: none;
+    text-align: right;
+  }
+  .table-estify td::before {
+    content: attr(data-label);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #64748B;
+    text-align: left;
+    margin-right: 1rem;
+  }
+}
+
+/* CMP-13 & CMP-14: Modal & ConfirmDialog */
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScaleIn {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: var(--z-modal);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-backdrop.is-open {
+  display: flex;
+  animation: modalFadeIn 150ms ease-out;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 520px;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.16);
+  overflow: hidden;
+  animation: modalScaleIn 160ms ease-out;
+}
+
+.modal-header {
+  padding: 1.5rem 1.75rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.modal-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: none;
+  background: #F8FAFC;
+  color: #64748B;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  background-color: #F1F5F9;
+  color: #0F172A;
+}
+
+.modal-body {
+  padding: 1.5rem 1.75rem;
+}
+
+.modal-footer {
+  padding: 1rem 1.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid #F1F5F9;
+  background-color: #FAFAFA;
+}
+
+/* CMP-15: Toast Notifications (z-60, Pure 4-Color) */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 380px;
+  width: calc(100vw - 3rem);
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-left: 4px solid #0F172A;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-dropdown);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  animation: modalScaleIn 160ms ease-out;
+}
+
+.toast-success,
+.toast-brand {
+  border-left-color: var(--color-brand);
+}
+
+.toast-error {
+  border-left-color: #B91C1C;
+  background-color: #FEF2F2;
+  border-color: #FECACA;
+}
+
+.toast-info,
+.toast-neutral {
+  border-left-color: #334155;
+}
+
+/* CMP-16: EmptyState */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.75rem 1.5rem;
+  background-color: #FAFAFA;
+  border: 1px dashed #CBD5E1;
+  border-radius: 20px;
+}
+
+/* CMP-20: AuditActionBadge & Floating Tooltip */
+.audit-badge-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.audit-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: 260px;
+  background-color: #0F172A;
+  color: #FFFFFF;
+  border-radius: 14px;
+  padding: 0.875rem 1rem;
+  box-shadow: var(--shadow-dropdown);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  z-index: 55;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
+}
+
+.audit-badge-wrapper:hover .audit-tooltip,
+.audit-badge-wrapper:focus-within .audit-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.audit-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.1875rem 0;
+}
+
+.audit-tooltip-label {
+  color: #94A3B8;
+}
+
+.audit-tooltip-value {
+  color: #FFFFFF;
+  font-weight: 600;
+  text-align: right;
 }

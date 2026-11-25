@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RumaKost Design System Showcase — Tier 2: Standard Composites (CMP-10 to CMP-15)">
+  <title>RumaKost — Component Showcase (Tier 2: Standard Composites)</title>
+  <link rel="icon" href="../../../assets/logo/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../shared/css/styles.css">
+  <style>
+    .tier-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    .tier-header {
+      background: #FFFFFF;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--color-border);
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+    .cmp-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--color-border);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-card);
+    }
+    .cmp-card:last-child {
+      margin-bottom: 0;
+    }
+    .cmp-badge {
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #F1F5F9;
+      color: #0F172A;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .cmp-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 0.375rem;
+    }
+    .cmp-desc {
+      font-size: var(--font-size-small);
+      color: var(--color-text-secondary);
+      line-height: 1.55;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tier-container">
+
+    <!-- Header Tier 2 -->
+    <div class="tier-header">
+      <div class="flex items-center gap-4">
+        <a href="../components/index.html" class="flex items-center gap-3" aria-label="RumaKost" style="text-decoration:none;flex-shrink:0">
+          <img src="../../../assets/logo/favicon.svg" alt="" style="width:38px;height:38px;display:block">
+          <span style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#0F172A">Ruma<span style="color:#F97316">Kost</span></span>
+        </a>
+        <div style="width:1px;height:32px;background:#E2E8F0;flex-shrink:0"></div>
+        <div>
+          <h1 class="text-h2" style="font-size:1.5rem">Component Showcase — Tier 2: Standard Composites</h1>
+          <p class="text-small text-muted">Verifikasi Komponen Komposit CMP-10 s/d CMP-20 (Estify DNA, Pure 4-Color & WCAG 2.2 AA)</p>
+        </div>
+      </div>
+      <div class="btn-group" aria-label="Navigasi Tier Design System">
+        <a href="../components/index.html" class="btn-group-item">Tier 1: Primitives (01–09)</a>
+        <a href="index.html" class="btn-group-item active">Tier 2: Composites (10–20)</a>
+      </div>
+    </div>
+
+    <!-- CMP-10: FormField -->
+    <div class="cmp-card" id="cmp-10">
+      <span class="cmp-badge">CMP-10</span>
+      <h2 class="cmp-title">FormField Wrapper & Validasi Terintegrasi</h2>
+      <p class="cmp-desc">Komposisi Label + Input/Select/Textarea (gaya pill &amp; soft rounded 20px CMP-02/03) + Error Message (&ge;13px) + Hint yang terhubung atribut <code>aria-describedby</code> &amp; <code>aria-invalid</code>. Mengikuti SubmitButton Rule: tombol simpan tidak pernah disabled saat awal.</p>
+
+      <form data-validate novalidate>
+        <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem">
+          <div class="input-wrapper" style="margin-bottom:0">
+            <label for="ff-tenant-name">Nama Lengkap Penghuni <span class="required">*</span></label>
+            <input id="ff-tenant-name" class="input-pill" type="text" placeholder="Contoh: Budi Santoso" required data-error-msg="Nama penghuni wajib diisi sesuai KTP." aria-describedby="ff-tenant-hint">
+            <span id="ff-tenant-hint" class="input-hint">Gunakan nama lengkap sesuai kartu identitas resmi.</span>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:0">
+            <label for="ff-tenant-phone">Nomor WhatsApp Aktif <span class="required">*</span></label>
+            <div class="pill-input-box">
+              <span class="pill-prefix-badge">+62</span>
+              <input id="ff-tenant-phone" type="tel" inputmode="numeric" class="tabular" placeholder="812-3456-7890" required data-error-msg="Nomor WhatsApp wajib diisi untuk pengiriman invoice." aria-describedby="ff-phone-hint" oninput="let d=this.value.replace(/[^0-9]/g,'').slice(0,12); this.value = d ? d.replace(/(\d{1,3})(\d{0,4})(\d{0,5})/, (_,a,b,c)=> a + (b?'-'+b:'') + (c?'-'+c:'')) : '';">
+            </div>
+            <span id="ff-phone-hint" class="input-hint">Hanya angka (0–9); otomatis terformat untuk pengingat tagihan H-7.</span>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:0">
+            <label for="ff-branch-select">Cabang Properti Penempatan (Select) <span class="required">*</span></label>
+            <div class="custom-select-wrapper" id="ff-branch-select-wrap">
+              <div class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-describedby="ff-branch-hint">
+                <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                <input id="ff-branch-select" class="select-display" type="text" placeholder="Pilih cabang properti..." readonly style="cursor:pointer">
+                <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <input type="hidden" name="ff_branch" class="select-value" value="">
+              <div class="select-popover" role="listbox">
+                <div class="select-option" data-value="cilandak" role="option" aria-selected="false">
+                  <div style="display:flex;align-items:center;gap:0.75rem">
+                    <div class="select-option-icon-box">
+                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:2px">
+                      <span class="option-title">Rumakost Cilandak Executive</span>
+                      <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
+                    </div>
+                  </div>
+                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="select-option" data-value="setiabudi" role="option" aria-selected="false">
+                  <div style="display:flex;align-items:center;gap:0.75rem">
+                    <div class="select-option-icon-box">
+                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:2px">
+                      <span class="option-title">Rumakost Setiabudi Residence</span>
+                      <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
+                    </div>
+                  </div>
+                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+              </div>
+            </div>
+            <span id="ff-branch-hint" class="input-hint">Menentukan tarif sewa &amp; rekening penagihan cabang.</span>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:0">
+            <label for="ff-rent-amount">Tarif Sewa Bulanan (CurrencyInput) <span class="required">*</span></label>
+            <div class="pill-input-box">
+              <span class="pill-prefix-badge">Rp</span>
+              <input id="ff-rent-amount" class="tabular" inputmode="numeric" placeholder="2.200.000" aria-describedby="ff-rent-hint" oninput="let val=this.value.replace(/[^0-9]/g,''); this.value = val ? new Intl.NumberFormat('id-ID').format(val) : '';">
+              <span class="pill-suffix-badge" style="background:transparent;color:#94A3B8;font-size:0.75rem">/ bln</span>
+            </div>
+            <span id="ff-rent-hint" class="input-hint">Format otomatis pemisah ribuan IDR (hanya angka).</span>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:0">
+            <label for="ff-email-err">Email Penagihan Resmi (Error State) <span class="required">*</span></label>
+            <div class="pill-input-box has-error" id="ff-email-box">
+              <input id="ff-email-err" type="email" value="budi.santoso@gmail" aria-invalid="true" aria-describedby="ff-email-err-msg" oninput="const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value); document.getElementById('ff-email-box').classList.toggle('has-error', !ok); this.setAttribute('aria-invalid', String(!ok)); document.getElementById('ff-email-err-msg').style.display = ok ? 'none' : 'flex';">
+            </div>
+            <span id="ff-email-err-msg" class="error-message">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Alamat email wajib memuat '@' dan nama domain (.com).
+            </span>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:0">
+            <label for="ff-kyc-locked">Status Verifikasi KYC (Disabled)</label>
+            <input id="ff-kyc-locked" class="input-pill tabular" type="text" value="3171012345670001 — Terverifikasi" disabled aria-describedby="ff-kyc-hint">
+            <span id="ff-kyc-hint" class="input-hint">NIK terkunci setelah verifikasi KTP disetujui pengelola.</span>
+          </div>
+        </div>
+
+        <div class="input-wrapper" style="margin-bottom:1.5rem">
+          <div class="flex justify-between items-center input-header-row">
+            <label for="ff-handover-note" class="input-label" style="margin-bottom:0">Catatan Handover Kamar (Textarea CMP-03)</label>
+            <span id="ff-char-counter" class="text-caption text-muted tabular">0 / 250 karakter</span>
+          </div>
+          <textarea id="ff-handover-note" class="textarea-rounded" rows="2" maxlength="250" placeholder="Kondisi AC, kunci duplikat, dan pembacaan kWh awal..." aria-describedby="ff-note-hint" oninput="document.getElementById('ff-char-counter').textContent = `${this.value.length} / 250 karakter`;"></textarea>
+          <span id="ff-note-hint" class="input-hint">Tercatat otomatis pada berita acara serah terima kunci.</span>
+        </div>
+
+        <div class="flex items-center justify-between" style="flex-wrap:wrap;gap:1rem">
+          <span class="text-caption text-muted">Klik tombol simpan dalam keadaan kosong untuk melihat validasi instan + fokus otomatis ke kolom pertama yang salah.</span>
+          <button type="submit" class="btn btn-primary" data-submit-btn>
+            Simpan Data Penghuni
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- CMP-11: Card -->
+    <div class="cmp-card" id="cmp-11">
+      <span class="cmp-badge">CMP-11</span>
+      <h2 class="cmp-title">Card System (4 Arketipe Operasional Rumakost)</h2>
+      <p class="cmp-desc">Empat arketipe kartu bersih ber-tema terang (Light Mode Estify &amp; Pure 4-Color): Room Property Card, KPI Radial Gauge Card, Activity List Card, dan Billing Summary Card.</p>
+
+      <div style="background-color:#F4F5F7;padding:1.75rem;border-radius:20px">
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.75rem; align-items: start">
+        <!-- 1. Room Property Card (Ref: Loseva.pro Light Mode) -->
+        <div class="room-photo-card">
+          <div class="room-photo-media">
+            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=720&h=450&fit=crop" alt="Unit 102 Deluxe Queen">
+            <div class="room-carousel-dots" aria-hidden="true">
+              <span class="room-carousel-dot is-active"></span>
+              <span class="room-carousel-dot"></span>
+              <span class="room-carousel-dot"></span>
+              <span class="room-carousel-dot"></span>
+            </div>
+          </div>
+          <div class="room-photo-body">
+            <div>
+              <div class="flex items-center justify-between gap-2" style="margin-bottom:0.25rem">
+                <h3 style="font-size:1.125rem;font-weight:700;color:#0F172A">Unit 102 • Deluxe Queen</h3>
+                <span class="badge badge-neutral badge-sm tabular">24 m²</span>
+              </div>
+              <div class="flex items-center gap-1 text-caption text-muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Rumakost Cilandak • Lantai 1</span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-2">
+              <div class="tabular" style="font-size:1.375rem;font-weight:700;color:#0F172A">
+                Rp 2.200.000<span class="text-caption text-muted" style="font-weight:500"> / bln</span>
+              </div>
+              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Siap Huni</span>
+            </div>
+
+            <div class="room-amenity-list">
+              <span class="room-amenity-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                WiFi 100Mbps
+              </span>
+              <span class="room-amenity-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg>
+                Kasur Queen
+              </span>
+              <span class="room-amenity-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Meteran IoT
+              </span>
+              <span class="room-amenity-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Akses RFID
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column Right: KPI Gauge + Summary Stacked -->
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          <!-- 2. KPI Metric Card with Radial Ray Gauge -->
+          <div class="card-estify" style="padding:1.5rem 1.75rem">
+            <div class="flex items-center justify-between" style="margin-bottom:1.25rem">
+              <div class="flex items-center gap-3">
+                <div class="icon-box icon-box-sm icon-box-brand">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M9 21V3h6v18"/></svg>
+                </div>
+                <span style="font-weight:600;font-size:0.9375rem;color:#0F172A">Okupansi Kamar</span>
+              </div>
+              <span class="text-caption text-muted">3 Cabang</span>
+            </div>
+
+            <div class="flex items-end justify-between gap-3">
+              <div>
+                <div class="text-caption text-muted" style="margin-bottom:0.25rem">Bulan ini</div>
+                <div class="tabular" style="font-size:1.875rem;font-weight:700;color:#0F172A;line-height:1.1">22 / 24</div>
+              </div>
+
+              <!-- Semi-Circular Radial Ray Gauge (SVG) -->
+              <div class="kpi-gauge-wrap">
+                <svg viewBox="0 0 120 68" width="124" height="70" style="position:absolute;inset:0;overflow:visible" aria-hidden="true">
+                  <g transform="translate(60,62)" stroke-linecap="round" stroke-width="2.5">
+                    <line x1="-50" y1="0" x2="-40" y2="0" stroke="#F97316"/>
+                    <line x1="-49" y1="-11" x2="-39" y2="-9" stroke="#F97316"/>
+                    <line x1="-46" y1="-22" x2="-37" y2="-17" stroke="#F97316"/>
+                    <line x1="-40" y1="-31" x2="-32" y2="-25" stroke="#F97316"/>
+                    <line x1="-32" y1="-39" x2="-26" y2="-31" stroke="#F97316"/>
+                    <line x1="-22" y1="-45" x2="-18" y2="-36" stroke="#F97316"/>
+                    <line x1="-11" y1="-49" x2="-9" y2="-39" stroke="#F97316"/>
+                    <line x1="0" y1="-50" x2="0" y2="-40" stroke="#F97316"/>
+                    <line x1="11" y1="-49" x2="9" y2="-39" stroke="#F97316"/>
+                    <line x1="22" y1="-45" x2="18" y2="-36" stroke="#F97316"/>
+                    <line x1="32" y1="-39" x2="26" y2="-31" stroke="#F97316"/>
+                    <line x1="40" y1="-31" x2="32" y2="-25" stroke="#F97316"/>
+                    <line x1="46" y1="-22" x2="37" y2="-17" stroke="#E2E8F0"/>
+                    <line x1="49" y1="-11" x2="39" y2="-9" stroke="#E2E8F0"/>
+                    <line x1="50" y1="0" x2="40" y2="0" stroke="#E2E8F0"/>
+                  </g>
+                </svg>
+                <span class="kpi-gauge-pill tabular">+12% ↑</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Billing Summary Card (Clean Highlight + 1 Black CTA) -->
+          <div class="card-estify" style="padding:1.5rem 1.75rem;gap:1.125rem">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="card-title">Ringkasan Tagihan Nov</h3>
+                <p class="card-subtitle">Periode 01–30 Nov 2026</p>
+              </div>
+              <span class="badge badge-neutral badge-sm">Auto-Billing</span>
+            </div>
+
+            <div style="background:#F8FAFC;border-radius:16px;padding:1rem 1.125rem">
+              <div class="flex items-center justify-between" style="margin-bottom:0.375rem">
+                <span class="text-caption text-muted">Total Terkumpul (18/20 Lunas)</span>
+                <span class="tabular" style="font-size:0.75rem;font-weight:700;color:#C2410C">90%</span>
+              </div>
+              <div class="tabular" style="font-size:1.375rem;font-weight:700;color:#0F172A;margin-bottom:0.625rem">Rp 39.600.000</div>
+              <div class="estify-progress-track" style="background:#E2E8F0;height:6px;margin-top:0">
+                <div class="estify-progress-fill" style="width:90%"></div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-small">
+              <span class="text-muted">Tunggakan Jatuh Tempo</span>
+              <span class="badge badge-error badge-sm">2 Tagihan • Rp 4,4 jt</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button type="button" class="btn btn-black w-full">Kirim Pengingat Tagihan</button>
+              <button type="button" class="btn btn-secondary" style="flex-shrink:0">Unduh</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Activity & Message List Card (Full-width clean Estify list) -->
+      <div class="card-estify" style="margin-top:1.75rem;padding:1.5rem 1.75rem">
+        <div class="flex items-center justify-between" style="margin-bottom:1rem">
+          <div>
+            <h3 class="card-title">Aktivitas &amp; Komplain Terbaru</h3>
+            <p class="card-subtitle">Pembaruan pembayaran dan tiket SLA penghuni hari ini</p>
+          </div>
+          <span class="badge badge-neutral badge-sm">Hari Ini</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column">
+          <div class="activity-row">
+            <div class="flex items-center gap-3">
+              <div class="avatar avatar-md">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Budi Santoso">
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Budi Santoso • Unit 101</div>
+                <div class="text-caption text-muted">Pembayaran sewa bulan November sebesar Rp 2.200.000 berhasil terverifikasi via VA BCA.</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3" style="flex-shrink:0">
+              <span class="badge badge-brand badge-sm">Lunas</span>
+              <span class="text-caption text-muted tabular">10 mnt lalu</span>
+              <span class="activity-unread-dot" title="Belum dibaca"></span>
+            </div>
+          </div>
+
+          <div class="activity-row">
+            <div class="flex items-center gap-3">
+              <div class="avatar avatar-md avatar-initials-dark">DP</div>
+              <div>
+                <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Dimas Pratama • Unit 201</div>
+                <div class="text-caption text-muted">Melaporkan AC kamar tidak dingin sejak semalam — membutuhkan pengecekan teknisi SLA.</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3" style="flex-shrink:0">
+              <span class="badge badge-error badge-sm">Urgent SLA</span>
+              <span class="text-caption text-muted tabular">34 mnt lalu</span>
+              <span class="activity-unread-dot" title="Belum dibaca"></span>
+            </div>
+          </div>
+
+          <div class="activity-row">
+            <div class="flex items-center gap-3">
+              <div class="avatar avatar-md">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop" alt="Siti Rahmawati">
+              </div>
+              <div>
+                <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Siti Rahmawati • Unit 102</div>
+                <div class="text-caption text-muted">Menunggu konfirmasi serah terima kunci dan pembacaan awal meteran kWh Smart-IoT.</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3" style="flex-shrink:0">
+              <span class="badge badge-neutral badge-sm">Menunggu</span>
+              <span class="text-caption text-muted tabular">2 jam lalu</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- CMP-12: Table -->
+    <div class="cmp-card" id="cmp-12">
+      <span class="cmp-badge">CMP-12</span>
+      <h2 class="cmp-title">Data Table & Mobile Reflow (&lt;640px)</h2>
+      <p class="cmp-desc">Tabel data kamar dan tagihan sewa dengan angka tabular rata kanan (<code>tabular-nums</code>), border horizontal halus, dan reflow otomatis menjadi tumpukan kartu pada layar ponsel &lt;640px.</p>
+
+      <div class="table-wrapper">
+        <table class="table-estify">
+          <thead>
+            <tr>
+              <th>Unit Kamar</th>
+              <th>Penghuni</th>
+              <th>Jatuh Tempo</th>
+              <th class="align-right">Nominal Sewa</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Unit Kamar"><span style="font-weight:600">101 • Deluxe</span></td>
+              <td data-label="Penghuni">Budi Santoso</td>
+              <td data-label="Jatuh Tempo" class="tabular">05 Nov 2026</td>
+              <td data-label="Nominal Sewa" class="align-right tabular" style="font-weight:600">Rp 2.200.000</td>
+              <td data-label="Status"><span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Lunas</span></td>
+            </tr>
+            <tr>
+              <td data-label="Unit Kamar"><span style="font-weight:600">102 • Standard</span></td>
+              <td data-label="Penghuni">Siti Rahmawati</td>
+              <td data-label="Jatuh Tempo" class="tabular">10 Nov 2026</td>
+              <td data-label="Nominal Sewa" class="align-right tabular" style="font-weight:600">Rp 1.500.000</td>
+              <td data-label="Status"><span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Menunggu</span></td>
+            </tr>
+            <tr>
+              <td data-label="Unit Kamar"><span style="font-weight:600">201 • Suite Executive</span></td>
+              <td data-label="Penghuni">Dimas Pratama</td>
+              <td data-label="Jatuh Tempo" class="tabular">01 Nov 2026</td>
+              <td data-label="Nominal Sewa" class="align-right tabular" style="font-weight:600">Rp 3.500.000</td>
+              <td data-label="Status"><span class="badge badge-error badge-sm"><span class="badge-dot"></span> Terlambat</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CMP-13 & CMP-14: Modal & ConfirmDialog -->
+    <div class="cmp-card" id="cmp-13-14">
+      <span class="cmp-badge">CMP-13 & CMP-14</span>
+      <h2 class="cmp-title">Modal & Destructive ConfirmDialog</h2>
+      <p class="cmp-desc">Overlay dialog dengan backdrop blur (<code>z-50</code>), focus management, tombol <code>ESC</code> untuk menutup, serta guard konfirmasi destruktif wajib ketik <code>HAPUS</code> dan isi alasan audit.</p>
+
+      <div class="flex items-center gap-3" style="flex-wrap:wrap">
+        <button type="button" class="btn btn-primary" data-modal-open="modal-standard-demo">
+          Buka Modal Tambah Pengeluaran (CMP-13)
+        </button>
+        <button type="button" class="btn btn-destructive" data-modal-open="modal-confirm-demo">
+          Buka ConfirmDialog Void Transaksi (CMP-14)
+        </button>
+      </div>
+    </div>
+
+    <!-- CMP-15: Toast -->
+    <div class="cmp-card" id="cmp-15">
+      <span class="cmp-badge">CMP-15</span>
+      <h2 class="cmp-title">Toast Notification System (z-60)</h2>
+      <p class="cmp-desc">Umpan balik status real-time. Toast sukses dan info otomatis menghilang setelah 4.5 detik, sedangkan toast error <strong>tidak pernah auto-dismiss</strong> hingga ditutup manual oleh pengguna.</p>
+
+      <div class="flex items-center gap-3" style="flex-wrap:wrap">
+        <button type="button" class="btn btn-primary" onclick="showToast('Pembayaran sewa Kamar 101 sebesar Rp 2.200.000 berhasil diverifikasi.', 'brand', false)">
+          Trigger Toast Sukses (Oranye)
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="showToast('Jadwal pembersihan unit 103 dipindahkan ke pukul 14:00 WIB.', 'neutral', false)">
+          Trigger Toast Info (Netral)
+        </button>
+        <button type="button" class="btn btn-destructive" onclick="showToast('Gagal terhubung ke gateway pembayaran VA. Periksa koneksi jaringan Anda.', 'error', true)">
+          Trigger Toast Error (Persisten)
+        </button>
+      </div>
+    </div>
+
+    <!-- CMP-16: EmptyState -->
+    <div class="cmp-card" id="cmp-16">
+      <span class="cmp-badge">CMP-16</span>
+      <h2 class="cmp-title">EmptyState (Data Kosong & Filter 0 Hasil)</h2>
+      <p class="cmp-desc">Tampilan informatif saat koleksi data belum tersedia atau pencarian tidak menemukan hasil, menggunakan Lucide SVG (zero emoji) dan tombol aksi pemulihan.</p>
+
+      <div class="empty-state">
+        <div class="icon-box icon-box-lg icon-box-neutral mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        </div>
+        <h3 style="font-size:1.0625rem;font-weight:700;color:#0F172A;margin-bottom:0.375rem">Tidak Ada Kamar yang Sesuai Filter</h3>
+        <p class="text-small text-muted" style="max-width:420px;line-height:1.5;margin-bottom:1.25rem">Pencarian untuk kriteria lantai dan status saat ini tidak menemukan unit kamar. Coba atur ulang filter atau tambahkan unit baru.</p>
+        <div class="flex items-center gap-3" style="flex-wrap:wrap;justify-content:center">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="showToast('Filter pencarian telah diatur ulang.', 'neutral', false)">Reset Filter</button>
+          <button type="button" class="btn btn-primary btn-sm">+ Tambah Unit Kamar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CMP-17: SearchInput -->
+    <div class="cmp-card" id="cmp-17">
+      <span class="cmp-badge">CMP-17</span>
+      <h2 class="cmp-title">SearchInput (Live Pill Search & Clear Action)</h2>
+      <p class="cmp-desc">Kolom pencarian unit kamar dan direktori penghuni ber-radius pill (9999px) dengan tombol hapus cepat (ClearButton) dan penyaringan langsung.</p>
+
+      <div class="input-wrapper" style="margin-bottom:1.25rem">
+        <label for="cmp17-search-input">Cari Unit Kamar atau Nama Penghuni</label>
+        <div class="pill-input-box" style="padding-left:1rem;padding-right:0.75rem">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="cmp17-search-input" type="search" placeholder="Ketik nomor kamar atau nama (misal: 101, Budi, Suite)...">
+          <button id="cmp17-clear-btn" type="button" aria-label="Bersihkan pencarian" style="display:none;background:none;border:none;cursor:pointer;color:#94A3B8;padding:0.25rem;align-items:center;justify-content:center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column">
+        <div data-search-item="Kamar 101 Deluxe Budi Santoso" style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
+          <span class="text-small" style="font-weight:500">Kamar 101 • Deluxe — Budi Santoso</span>
+          <span class="badge badge-brand badge-sm">Terisi</span>
+        </div>
+        <div data-search-item="Kamar 102 Standard Siti Rahmawati" style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
+          <span class="text-small" style="font-weight:500">Kamar 102 • Standard — Siti Rahmawati</span>
+          <span class="badge badge-neutral badge-sm">Menunggu</span>
+        </div>
+        <div data-search-item="Kamar 201 Suite Executive Dimas Pratama" style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0">
+          <span class="text-small" style="font-weight:500">Kamar 201 • Suite Executive — Dimas Pratama</span>
+          <span class="badge badge-error badge-sm">Terlambat</span>
+        </div>
+        <div id="cmp17-empty" class="text-small text-muted" style="display:none;padding:1rem 0;text-align:center">Tidak ada hasil yang cocok dengan kata kunci pencarian.</div>
+      </div>
+    </div>
+
+    <!-- CMP-18: PermissionGate -->
+    <div class="cmp-card" id="cmp-18">
+      <span class="cmp-badge">CMP-18</span>
+      <h2 class="cmp-title">PermissionGate (Proteksi Visual 6-Role RBAC)</h2>
+      <p class="cmp-desc">Pembungkus kontrol akses berbasis peran RBAC. Pilih simulasi peran di bawah untuk melihat bagaimana aksi finansial sensitif (Void Kas &amp; Ubah Tarif) diproteksi.</p>
+
+      <div class="flex items-center justify-between mb-4" style="flex-wrap:wrap;gap:1rem">
+        <div class="btn-group">
+          <button type="button" class="btn-group-item active" data-role-switch="owner">Owner</button>
+          <button type="button" class="btn-group-item" data-role-switch="branch_manager">Branch Manager</button>
+          <button type="button" class="btn-group-item" data-role-switch="finance">Finance</button>
+          <button type="button" class="btn-group-item" data-role-switch="caretaker">Caretaker</button>
+          <button type="button" class="btn-group-item" data-role-switch="maintenance">Maintenance</button>
+          <button type="button" class="btn-group-item" data-role-switch="tenant">Tenant</button>
+        </div>
+        <span class="text-caption text-muted">Peran Aktif: <strong id="rbac-active-role" style="color:#0F172A">Owner</strong></span>
+      </div>
+
+      <div id="rbac-protected-actions" class="flex items-center gap-3" style="flex-wrap:wrap;padding:1rem 1.25rem;background:#FFF7ED;border:1px solid #FFEDD5;border-radius:16px">
+        <span class="badge badge-brand badge-sm">Akses Finansial Diberikan</span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="showToast('Membuka pengaturan tarif sewa cabang.', 'neutral', false)">Ubah Tarif Kamar</button>
+        <button type="button" class="btn btn-destructive btn-sm" data-modal-open="modal-override-demo">Void Transaksi Kas</button>
+      </div>
+
+      <div id="rbac-locked-notice" class="items-center justify-between" style="display:none;flex-wrap:wrap;gap:1rem;padding:1rem 1.25rem;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px">
+        <div class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span class="text-small" style="color:#475569;font-weight:500">Aksi finansial sensitif (Ubah Tarif &amp; Void Kas) disembunyikan oleh PermissionGate untuk peran ini.</span>
+        </div>
+        <span class="badge badge-neutral badge-sm">RBAC Protected</span>
+      </div>
+    </div>
+
+    <!-- CMP-19: SupervisorOverrideModal -->
+    <div class="cmp-card" id="cmp-19">
+      <span class="cmp-badge">CMP-19</span>
+      <h2 class="cmp-title">SupervisorOverrideModal (Otorisasi PIN Pemilik)</h2>
+      <p class="cmp-desc">Dialog otorisasi ber-PIN 6 digit milik Owner beserta catatan alasan wajib untuk tindakan berisiko tinggi seperti void transaksi kas atau penghapusan piutang macet.</p>
+
+      <button type="button" class="btn btn-black" data-modal-open="modal-override-demo">
+        Buka SupervisorOverrideModal (CMP-19)
+      </button>
+    </div>
+
+    <!-- CMP-20: AuditActionBadge -->
+    <div class="cmp-card" id="cmp-20">
+      <span class="cmp-badge">CMP-20</span>
+      <h2 class="cmp-title">AuditActionBadge (Keabadian Audit Trail UU PDP)</h2>
+      <p class="cmp-desc">Badge status terhubung tooltip metadata jejak audit (Author, Timestamp, dan IP Address) saat di-hover atau difokuskan via keyboard.</p>
+
+      <div class="flex items-center gap-4" style="flex-wrap:wrap">
+        <div class="audit-badge-wrapper" tabindex="0">
+          <span class="badge badge-brand is-interactive">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            Diverifikasi • Budi S.
+          </span>
+          <div class="audit-tooltip" role="tooltip">
+            <div style="font-weight:700;margin-bottom:0.375rem;color:#F97316">Audit Trail #AUD-2026-0941</div>
+            <div class="audit-tooltip-row"><span class="audit-tooltip-label">Staf</span><span class="audit-tooltip-value">Budi Santoso</span></div>
+            <div class="audit-tooltip-row"><span class="audit-tooltip-label">Waktu</span><span class="audit-tooltip-value tabular">25 Nov 2026, 09:42 WIB</span></div>
+            <div class="audit-tooltip-row"><span class="audit-tooltip-label">IP Address</span><span class="audit-tooltip-value tabular">103.147.22.19</span></div>
+          </div>
+        </div>
+
+        <div class="audit-badge-wrapper" tabindex="0">
+          <span class="badge badge-neutral is-interactive">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Diubah • Rina A.
+          </span>
+          <div class="audit-tooltip" role="tooltip">
+            <div style="font-weight:700;margin-bottom:0.375rem;color:#FFFFFF">Audit Trail #AUD-2026-0938</div>
+            <div class="audit-tooltip-row"><span class="audit-tooltip-label">Staf</span><span class="audit-tooltip-value">Rina Agustina</span></div>
+            <div class="audit-tooltip-row"><span class="audit-tooltip-label">Waktu</span><span class="audit-tooltip-value tabular">24 Nov 2026, 17:15 WIB</span></div>
+            <div class="audit-tooltip-row"><span class="audit-tooltip-label">IP Address</span><span class="audit-tooltip-value tabular">103.147.22.44</span></div>
+          </div>
+        </div>
+
+        <span class="text-caption text-muted">Arahkan kursor atau tekan Tab pada badge untuk melihat detail audit trail.</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Live Modal: CMP-13 Standard Modal -->
+  <div class="modal-backdrop" id="modal-standard-demo" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-std-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3 id="modal-std-title" class="modal-title">Catat Pengeluaran Operasional</h3>
+          <p class="text-caption text-muted">Tambahkan biaya perawatan fasilitas ke buku kas cabang.</p>
+        </div>
+        <button type="button" class="modal-close-btn" data-modal-close aria-label="Tutup dialog">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-wrapper">
+          <label for="mdl-exp-title">Deskripsi Pengeluaran <span class="required">*</span></label>
+          <input id="mdl-exp-title" class="input-pill" type="text" placeholder="Contoh: Servis cuci AC Kamar 101 & 102">
+        </div>
+        <div class="input-wrapper" style="margin-bottom:0">
+          <label for="mdl-exp-amount">Nominal Biaya (IDR) <span class="required">*</span></label>
+          <div class="pill-input-box">
+            <span class="pill-prefix-badge">Rp</span>
+            <input id="mdl-exp-amount" type="text" inputmode="numeric" class="tabular" placeholder="250.000" oninput="let v=this.value.replace(/[^0-9]/g,''); this.value = v ? new Intl.NumberFormat('id-ID').format(v) : '';">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
+        <button type="button" class="btn btn-primary" data-modal-close onclick="showToast('Pengeluaran operasional berhasil dicatat.', 'brand', false)">Simpan Pengeluaran</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Modal: CMP-14 ConfirmDialog -->
+  <div class="modal-backdrop" id="modal-confirm-demo" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-confirm-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex items-center gap-3">
+          <div class="icon-box icon-box-md icon-box-error">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <div>
+            <h3 id="modal-confirm-title" class="modal-title">Void Transaksi Kas #INV-2026-089</h3>
+            <p class="text-caption text-muted">Tindakan permanen ini akan dicatat ke log audit trail.</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" data-modal-close aria-label="Tutup dialog">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-wrapper">
+          <label for="confirm-keyword-input">Ketik <strong>HAPUS</strong> untuk konfirmasi <span class="required">*</span></label>
+          <input id="confirm-keyword-input" class="input-pill" type="text" placeholder="Ketik HAPUS dengan huruf kapital">
+        </div>
+        <div class="input-wrapper" style="margin-bottom:0">
+          <label for="confirm-reason-input">Alasan Audit (Min. 5 karakter) <span class="required">*</span></label>
+          <textarea id="confirm-reason-input" class="textarea-rounded" rows="2" placeholder="Contoh: Salah input nominal transfer ganda dari penghuni..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
+        <button type="button" class="btn btn-destructive" id="confirm-destructive-btn" disabled>Void Permanen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Modal: CMP-19 SupervisorOverrideModal -->
+  <div class="modal-backdrop" id="modal-override-demo" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-override-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="flex items-center gap-3">
+          <div class="icon-box icon-box-md icon-box-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div>
+            <h3 id="modal-override-title" class="modal-title">Otorisasi Supervisor (Owner PIN)</h3>
+            <p class="text-caption text-muted">Diperlukan untuk penghapusan piutang macet atau void kas.</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" data-modal-close aria-label="Tutup dialog">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-wrapper">
+          <label for="override-pin-input">PIN 6-Digit Owner <span class="required">*</span></label>
+          <input id="override-pin-input" class="input-pill tabular" type="password" inputmode="numeric" maxlength="6" placeholder="Masukkan 6 digit PIN (demo: 123456)">
+        </div>
+        <div class="input-wrapper" style="margin-bottom:0">
+          <label for="override-reason-input">Alasan Otorisasi Audit <span class="required">*</span></label>
+          <textarea id="override-reason-input" class="textarea-rounded" rows="2" placeholder="Jelaskan alasan penghapusan atau koreksi kas..."></textarea>
+        </div>
+        <span id="override-error-msg" class="error-message" style="display:none;margin-top:0.75rem"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-modal-close>Batal</button>
+        <button type="button" class="btn btn-black" id="override-submit-btn">Setujui Otorisasi</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../shared/js/app.js"></script>
+</body>
+</html>

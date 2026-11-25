@@ -33,7 +33,132 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 2000);
     });
   }
+
+  // CMP-14 ConfirmDialog Destructive Guard (Wajib ketik HAPUS & isi alasan audit)
+  initConfirmDialog();
+
+  // CMP-17 SearchInput Live Filter Demo
+  initSearchDemo();
+
+  // CMP-18 PermissionGate RBAC Switcher Demo
+  initPermissionGateDemo();
+
+  // CMP-19 SupervisorOverrideModal Demo
+  initSupervisorOverride();
 });
+
+function initSearchDemo() {
+  const input = document.getElementById('cmp17-search-input');
+  const clearBtn = document.getElementById('cmp17-clear-btn');
+  const rows = document.querySelectorAll('[data-search-item]');
+  const emptyBox = document.getElementById('cmp17-empty');
+  if (!input || !clearBtn) return;
+
+  function applyFilter() {
+    const q = input.value.trim().toLowerCase();
+    clearBtn.style.display = q ? 'inline-flex' : 'none';
+    let visible = 0;
+    rows.forEach(row => {
+      const text = row.getAttribute('data-search-item').toLowerCase();
+      const match = !q || text.includes(q);
+      row.style.display = match ? 'flex' : 'none';
+      if (match) visible++;
+    });
+    if (emptyBox) emptyBox.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  input.addEventListener('input', applyFilter);
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    applyFilter();
+    input.focus();
+  });
+}
+
+function initPermissionGateDemo() {
+  const buttons = document.querySelectorAll('[data-role-switch]');
+  const protectedArea = document.getElementById('rbac-protected-actions');
+  const lockedNotice = document.getElementById('rbac-locked-notice');
+  const roleBadge = document.getElementById('rbac-active-role');
+  if (!buttons.length || !protectedArea || !lockedNotice) return;
+
+  const allowedRoles = ['owner', 'finance'];
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const role = btn.getAttribute('data-role-switch');
+      if (roleBadge) roleBadge.textContent = btn.textContent.trim();
+      const canAccess = allowedRoles.includes(role);
+      protectedArea.style.display = canAccess ? 'flex' : 'none';
+      lockedNotice.style.display = canAccess ? 'none' : 'flex';
+    });
+  });
+}
+
+function initSupervisorOverride() {
+  const pinInput = document.getElementById('override-pin-input');
+  const reasonInput = document.getElementById('override-reason-input');
+  const submitBtn = document.getElementById('override-submit-btn');
+  const errorBox = document.getElementById('override-error-msg');
+  if (!pinInput || !reasonInput || !submitBtn) return;
+
+  submitBtn.addEventListener('click', () => {
+    const pin = pinInput.value.trim();
+    const reason = reasonInput.value.trim();
+    if (!/^\d{6}$/.test(pin)) {
+      if (errorBox) {
+        errorBox.textContent = 'PIN Otorisasi Owner harus 6 digit angka (contoh demo: 123456).';
+        errorBox.style.display = 'flex';
+      }
+      pinInput.focus();
+      return;
+    }
+    if (reason.length < 5) {
+      if (errorBox) {
+        errorBox.textContent = 'Alasan otorisasi wajib diisi minimal 5 karakter.';
+        errorBox.style.display = 'flex';
+      }
+      reasonInput.focus();
+      return;
+    }
+    if (errorBox) errorBox.style.display = 'none';
+    const modal = submitBtn.closest('.modal-backdrop');
+    if (modal) modal.classList.remove('is-open');
+    pinInput.value = '';
+    reasonInput.value = '';
+    if (window.showToast) {
+      window.showToast('Otorisasi Supervisor disetujui dan tercatat di audit trail.', 'brand', false);
+    }
+  });
+}
+
+function initConfirmDialog() {
+  const keywordInput = document.getElementById('confirm-keyword-input');
+  const reasonInput = document.getElementById('confirm-reason-input');
+  const submitBtn = document.getElementById('confirm-destructive-btn');
+  if (!keywordInput || !reasonInput || !submitBtn) return;
+
+  function syncConfirmState() {
+    const keywordOk = keywordInput.value.trim() === 'HAPUS';
+    const reasonOk = reasonInput.value.trim().length >= 5;
+    submitBtn.disabled = !(keywordOk && reasonOk);
+  }
+
+  keywordInput.addEventListener('input', syncConfirmState);
+  reasonInput.addEventListener('input', syncConfirmState);
+
+  submitBtn.addEventListener('click', () => {
+    const modal = submitBtn.closest('.modal-backdrop');
+    if (modal) modal.classList.remove('is-open');
+    keywordInput.value = '';
+    reasonInput.value = '';
+    syncConfirmState();
+    if (window.showToast) {
+      window.showToast('Transaksi #INV-2026-089 berhasil di-void dan dicatat ke audit trail.', 'brand', false);
+    }
+  });
+}
 
 function initModals() {
   const openButtons = document.querySelectorAll('[data-modal-open]');
