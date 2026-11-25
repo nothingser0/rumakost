@@ -14,6 +14,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // CMP-06 Indeterminate Checkbox Demo Initialization
   const indetChk = document.getElementById('chk-indeterminate-demo');
   if (indetChk) indetChk.indeterminate = true;
+
+  // CMP-07 Interactive Loading Button Demo
+  const btnDemoLoading = document.getElementById('btn-demo-loading');
+  if (btnDemoLoading) {
+    btnDemoLoading.addEventListener('click', () => {
+      const origContent = btnDemoLoading.innerHTML;
+      btnDemoLoading.classList.add('is-loading');
+      btnDemoLoading.setAttribute('aria-busy', 'true');
+      btnDemoLoading.innerHTML = '<span class="spinner spinner-sm spinner-brand" style="margin-right:0.5rem"></span> Menyimpan Kontrak...';
+      setTimeout(() => {
+        btnDemoLoading.classList.remove('is-loading');
+        btnDemoLoading.removeAttribute('aria-busy');
+        btnDemoLoading.innerHTML = origContent;
+        if (window.showToast) {
+          window.showToast('Data kontrak sewa berhasil disimpan! (Async 2s Selesai)', 'success', false);
+        }
+      }, 2000);
+    });
+  }
 });
 
 function initModals() {

@@ -638,6 +638,18 @@ a {
   animation: fadeInDown 120ms ease-out;
 }
 
+.select-popover-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-dropdown);
+  padding: 8px;
+  user-select: none;
+}
+
 .select-option {
   display: flex;
   align-items: center;
@@ -667,12 +679,12 @@ a {
 
 .select-option.is-selected {
   background-color: #FFF7ED;
-  color: var(--color-brand) !important;
+  color: #0F172A !important;
   font-weight: 600 !important;
 }
 
 .select-option.is-selected .option-title {
-  color: var(--color-brand) !important;
+  color: #0F172A !important;
   font-weight: 600 !important;
 }
 
@@ -1233,15 +1245,110 @@ input[type="search"]::-webkit-search-decoration {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #E2E8F0;
-  color: var(--color-text-primary);
+  background-color: #F1F5F9;
+  color: #334155;
+  font-weight: 700;
   flex-shrink: 0;
+  position: relative;
+  user-select: none;
 }
 
 .avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+
+.avatar-md {
+  width: 40px;
+  height: 40px;
+  font-size: 0.875rem;
+}
+
+.avatar-lg {
+  width: 52px;
+  height: 52px;
+  font-size: 1rem;
+}
+
+.avatar-initials-dark {
+  background-color: #0F172A;
+  color: #FFFFFF;
+}
+
+.avatar-initials-brand {
+  background-color: #FFF7ED;
+  color: #C2410C;
+  border: 1px solid #FFEDD5;
+}
+
+.avatar-initials-neutral {
+  background-color: #F1F5F9;
+  color: #334155;
+  border: 1px solid #E2E8F0;
+}
+
+.avatar-wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.avatar-status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+}
+
+.avatar-status.is-online {
+  background-color: var(--color-brand);
+}
+
+.avatar-status.is-away {
+  background-color: #94A3B8;
+}
+
+.avatar-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.avatar-group .avatar {
+  border: 2px solid #FFFFFF;
+  margin-left: -10px;
+  transition: transform var(--transition-fast);
+}
+
+.avatar-group .avatar-sm {
+  margin-left: -6px;
+}
+
+.avatar-group .avatar:first-child {
+  margin-left: 0;
+}
+
+.avatar-group .avatar:hover {
+  transform: translateY(-2px);
+  z-index: 2;
+}
+
+.avatar-counter {
+  background-color: #F1F5F9;
+  color: #0F172A;
+  border: 2px solid #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 /* Badges System (CMP-05 — Pure 4-Color Palette: Orange, Black, White/Neutral, Red Void) */
@@ -1371,11 +1478,11 @@ button.badge:hover,
 }
 
 .badge-counter {
-  min-width: 22px;
-  height: 22px;
-  padding: 0 0.4rem;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 0.5rem;
   border-radius: var(--radius-pill);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -1384,25 +1491,65 @@ button.badge:hover,
   font-variant-numeric: tabular-nums;
 }
 
+.showcase-tile {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 1.25rem 1.5rem;
+}
+
+.mini-op-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 0.875rem;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  margin-bottom: 0.5rem;
+  transition: all var(--transition-fast);
+}
+
+.mini-op-row:last-child {
+  margin-bottom: 0;
+}
+
 /* ==========================================================================
    Boolean Controls System (CMP-06) — Estify Brand Orange DNA & WCAG AA
    ========================================================================== */
 
-/* 1. Custom Checkbox */
+/* 1. Custom Checkbox — Estify Clean Primitive Checkbox (Unboxed Standard) */
 .custom-checkbox {
-  display: inline-flex;
-  align-items: center;
+  display: flex;
+  align-items: flex-start;
   gap: 0.75rem;
-  min-height: 44px; /* WCAG 2.2 AA Minimum Touch Target */
-  padding: 0.25rem 0;
+  min-height: 38px;
+  padding: 0.375rem 0.625rem;
+  border-radius: 8px;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: var(--font-size-small); /* 14px */
   font-weight: 500;
-  color: #000000;
+  line-height: 1.45;
+  color: #0F172A;
   cursor: pointer;
   user-select: none;
-  line-height: 1.4;
+  transition: background-color var(--transition-fast);
   position: relative;
+}
+
+.custom-checkbox:hover:not(.is-disabled) {
+  background-color: #F8FAFC;
+}
+
+.custom-checkbox:has(input[type="checkbox"]:focus-visible) .checkbox-box {
+  box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--color-brand);
+}
+
+.custom-checkbox.is-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .custom-checkbox input[type="checkbox"] {
@@ -1425,6 +1572,7 @@ button.badge:hover,
   flex-shrink: 0;
   transition: all var(--transition-fast);
   color: #FFFFFF;
+  margin-top: 1px;
 }
 
 .custom-checkbox:hover .checkbox-box {
@@ -1472,6 +1620,25 @@ button.badge:hover,
   cursor: not-allowed;
 }
 
+/* Disabled Checked & Indeterminate states: High contrast visible checkmark/bar */
+.custom-checkbox input[type="checkbox"]:disabled:checked ~ .checkbox-box {
+  background-color: #E2E8F0;
+  border-color: #CBD5E1;
+}
+
+.custom-checkbox input[type="checkbox"]:disabled:checked ~ .checkbox-box::after {
+  border-color: #64748B;
+}
+
+.custom-checkbox input[type="checkbox"]:disabled:indeterminate ~ .checkbox-box {
+  background-color: #E2E8F0;
+  border-color: #CBD5E1;
+}
+
+.custom-checkbox input[type="checkbox"]:disabled:indeterminate ~ .checkbox-box::after {
+  background-color: #64748B;
+}
+
 .custom-checkbox input[type="checkbox"]:disabled ~ span:last-child {
   color: #94A3B8;
   cursor: not-allowed;
@@ -1480,7 +1647,7 @@ button.badge:hover,
 /* 2. Custom Radio */
 .custom-radio {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
   min-height: 44px; /* WCAG 2.2 AA Minimum Touch Target */
   padding: 0.25rem 0;
@@ -1490,7 +1657,7 @@ button.badge:hover,
   color: #000000;
   cursor: pointer;
   user-select: none;
-  line-height: 1.4;
+  line-height: 1.45;
   position: relative;
 }
 
@@ -1513,6 +1680,8 @@ button.badge:hover,
   justify-content: center;
   flex-shrink: 0;
   transition: all var(--transition-fast);
+  margin-top: 1px;
+}
 }
 
 .custom-radio:hover .radio-circle {
@@ -1541,6 +1710,15 @@ button.badge:hover,
   cursor: not-allowed;
 }
 
+.custom-radio input[type="radio"]:disabled:checked ~ .radio-circle {
+  border-color: #CBD5E1;
+  background-color: #F1F5F9;
+}
+
+.custom-radio input[type="radio"]:disabled:checked ~ .radio-circle::after {
+  background-color: #94A3B8;
+}
+
 .custom-radio input[type="radio"]:disabled ~ span:last-child {
   color: #94A3B8;
   cursor: not-allowed;
@@ -1549,15 +1727,21 @@ button.badge:hover,
 /* Choice Card (Estify Signature Choice Selection Card) */
 .choice-card {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.125rem 1.25rem;
-  border: 1.5px solid var(--color-border);
-  border-radius: 16px;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #ECEEF2;
+  border-radius: 20px;
   background-color: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   cursor: pointer;
   transition: all var(--transition-fast);
   position: relative;
+}
+
+.choice-card .radio-circle {
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .choice-card input[type="radio"] {
@@ -1570,10 +1754,9 @@ button.badge:hover,
 
 .choice-card:hover {
   background-color: #FAFAFA;
-  border-color: #CBD5E1;
 }
 
-.choice-card:focus-within {
+.choice-card:has(input[type="radio"]:focus-visible) {
   outline: none;
   box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--color-brand);
 }
@@ -1581,10 +1764,11 @@ button.badge:hover,
 .choice-card:has(input[type="radio"]:checked) {
   border-color: var(--color-brand);
   background-color: #FFF7ED;
+  box-shadow: 0 0 0 1.5px var(--color-brand);
 }
 
 .choice-card:has(input[type="radio"]:checked) .choice-title {
-  color: var(--color-brand);
+  color: #0F172A; /* High contrast dark text (16.5:1), avoiding low-contrast orange-on-orange */
 }
 
 .choice-card:has(input[type="radio"]:checked) .radio-circle {
@@ -1600,11 +1784,11 @@ button.badge:hover,
 }
 
 .choice-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   background-color: #F8FAFC;
-  border: 1px solid var(--color-border);
+  border: 1px solid #ECEEF2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1702,38 +1886,51 @@ button.badge:hover,
   background-color: #F1F5F9;
 }
 
+/* Distinct visual feedback for active but locked switch */
+.toggle-switch input[type="checkbox"]:disabled:checked ~ .toggle-slider {
+  background-color: #FED7AA; /* Muted brand tint indicating active state */
+  cursor: not-allowed;
+}
+
+.toggle-switch input[type="checkbox"]:disabled:checked ~ .toggle-slider::before {
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 /* Estify Signature Settings Row Container */
 .settings-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
-  padding: 1rem 1.25rem;
-  background-color: #F8FAFC;
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
+  padding: 1.125rem 1.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid #ECEEF2;
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all var(--transition-fast);
   cursor: pointer;
   user-select: none;
 }
 
 .settings-row:hover:not(.is-disabled) {
-  background-color: #F1F5F9;
-  border-color: #CBD5E1;
+  background-color: #FAFAFA;
 }
 
-.settings-row:focus-within {
-  box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--color-brand);
+.settings-row:has(input:focus-visible) {
+  box-shadow: 0 0 0 2px var(--color-brand);
 }
 
 .settings-row.is-disabled {
-  opacity: 0.6;
+  opacity: 0.65;
   cursor: not-allowed;
   background-color: #F8FAFC;
+  box-shadow: none;
 }
 
 /* Utilities */
 .flex { display: flex; }
+.flex-col { flex-direction: column; }
 .items-center { align-items: center; }
 .justify-between { justify-content: space-between; }
 .gap-2 { gap: 0.5rem; }
@@ -1741,8 +1938,11 @@ button.badge:hover,
 .gap-4 { gap: 1rem; }
 .w-full { width: 100%; }
 .mt-4 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 0.25rem; }
 .mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
 .mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
 .text-muted { color: var(--color-text-secondary); }
 .text-h1 { font-size: var(--font-size-h1); font-weight: 700; }
 .text-h2 { font-size: var(--font-size-h2); font-weight: 600; }
@@ -1751,3 +1951,189 @@ button.badge:hover,
 .text-small { font-size: var(--font-size-small); }
 .text-caption { font-size: var(--font-size-caption); }
 .mid-subgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+/* ==========================================================================
+   Loading Spinner System (CMP-07) — Estify Async Indicator
+   ========================================================================== */
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  display: inline-block;
+  border-radius: 50%;
+  border: 2.5px solid rgba(0, 0, 0, 0.08);
+  border-top-color: currentColor;
+  animation: spin 600ms linear infinite;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* Spinner Sizes */
+.spinner-sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.spinner-md {
+  width: 24px;
+  height: 24px;
+  border-width: 2.5px;
+}
+
+.spinner-lg {
+  width: 36px;
+  height: 36px;
+  border-width: 3px;
+}
+
+.spinner-xl {
+  width: 48px;
+  height: 48px;
+  border-width: 3.5px;
+}
+
+/* Spinner Colors */
+.spinner-brand {
+  color: var(--color-brand);
+  border-color: rgba(249, 115, 22, 0.15);
+  border-top-color: var(--color-brand);
+}
+
+.spinner-white {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.25);
+  border-top-color: #FFFFFF;
+}
+
+.spinner-neutral {
+  color: #64748B;
+  border-color: rgba(100, 116, 139, 0.15);
+  border-top-color: #64748B;
+}
+
+.spinner-dark {
+  color: #0F172A;
+  border-color: rgba(15, 23, 42, 0.15);
+  border-top-color: #0F172A;
+}
+
+/* Button Loading State */
+.btn.is-loading {
+  position: relative;
+  pointer-events: none;
+  cursor: wait;
+}
+
+/* Loading Card Container */
+.card-loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background-color: #FAFAFA;
+  border: 1px dashed #CBD5E1;
+  border-radius: 20px;
+}
+
+/* ==========================================================================
+   Semantic Iconography System (CMP-08) — Lucide SVG & Estify Icon Boxes
+   ========================================================================== */
+
+.icon-sm {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-md {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-lg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-xl {
+  width: 32px;
+  height: 32px;
+}
+
+/* Estify Signature Icon Box Containers */
+.icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.icon-box-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.icon-box-md {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.icon-box-lg {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+}
+
+/* Icon Box Themes */
+.icon-box-brand,
+.icon-box-success {
+  background-color: #FFF7ED;
+  border: 1px solid #FFEDD5;
+  color: var(--color-brand);
+}
+
+.icon-box-neutral {
+  background-color: #F8FAFC;
+  border: 1px solid #ECEEF2;
+  color: #475569;
+}
+
+.icon-box-error {
+  background-color: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #DC2626;
+}
+
+.icon-box-dark {
+  background-color: #0F172A;
+  border: 1px solid #0F172A;
+  color: #FFFFFF;
+}
+
+/* Clean Icon Row Item (Zero Box-in-a-Box) */
+.icon-tile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background-color: transparent;
+  transition: background-color var(--transition-fast);
+}
+
+.icon-tile:hover {
+  background-color: #F8FAFC;
+}

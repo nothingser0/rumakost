@@ -9,7 +9,7 @@
   -->
 
   <!-- Orange background -->
-  <rect width="52" height="52" rx="13" fill="#F97316"/>
+  <rect width="52" height="52" rx="14" fill="#F97316"/>
 
   <!-- Key bow: house-shaped pentagon (white) -->
   <polygon
