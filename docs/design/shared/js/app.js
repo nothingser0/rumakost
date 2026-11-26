@@ -15,7 +15,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const indetChk = document.getElementById('chk-indeterminate-demo');
   if (indetChk) indetChk.indeterminate = true;
 
-  // CMP-07 Interactive Loading Button Demo
+  // CMP-01 & CMP-07 Debounced Loading Button Demos
+  document.querySelectorAll('[data-loading-demo]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('is-loading')) return;
+      const origContent = btn.innerHTML;
+      const loadingText = btn.getAttribute('data-loading-text') || 'Memproses...';
+      const spinnerTheme = btn.classList.contains('btn-secondary') ? 'spinner-brand' : 'spinner-white';
+      btn.classList.add('is-loading');
+      btn.setAttribute('aria-busy', 'true');
+      btn.innerHTML = `<span class="spinner spinner-sm ${spinnerTheme}" aria-hidden="true"></span><span>${loadingText}</span>`;
+      setTimeout(() => {
+        btn.classList.remove('is-loading');
+        btn.removeAttribute('aria-busy');
+        btn.innerHTML = origContent;
+      }, 2000);
+    });
+  });
+
   const btnDemoLoading = document.getElementById('btn-demo-loading');
   if (btnDemoLoading) {
     btnDemoLoading.addEventListener('click', () => {
@@ -45,7 +62,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // CMP-19 SupervisorOverrideModal Demo
   initSupervisorOverride();
+
+  // CMP-02 Keyboard-accessible Dropzone
+  initDropzones();
 });
+
+function initDropzones() {
+  document.querySelectorAll('[data-dropzone]').forEach(zone => {
+    const inputId = zone.getAttribute('data-dropzone');
+    const fileInput = document.getElementById(inputId);
+    const statusEl = zone.querySelector('[data-dropzone-status]');
+    if (!fileInput) return;
+
+    zone.addEventListener('click', (e) => {
+      if (e.target !== fileInput) fileInput.click();
+    });
+
+    zone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) return;
+      if (statusEl) {
+        statusEl.textContent = `Berkas terpilih: ${file.name}`;
+      }
+      if (window.showToast) {
+        window.showToast(`Berkas "${file.name}" siap diunggah.`, 'success', false);
+      }
+    });
+  });
+}
 
 function initSearchDemo() {
   const input = document.getElementById('cmp17-search-input');
@@ -288,45 +339,117 @@ function initForms() {
   });
 }
 
-// 4. Interactive Dropdown Popover Engine
+// 4. Interactive Dropdown Popover Engine (Keyboard & ARIA Compliant)
 function initDropdowns() {
+  function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-wrapper.is-open').forEach(d => {
+      d.classList.remove('is-open');
+      const t = d.querySelector('[data-dropdown-toggle]');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function openDropdown(wrapper, focusFirst = false) {
+    closeAllDropdowns();
+    document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
+      w.classList.remove('is-open');
+      const t = w.querySelector('.select-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+    document.querySelectorAll('.datepicker-container.is-open').forEach(d => {
+      d.classList.remove('is-open');
+      const t = d.querySelector('.datepicker-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+    wrapper.classList.add('is-open');
+    const trigger = wrapper.querySelector('[data-dropdown-toggle]');
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    if (focusFirst) {
+      const activeItem = wrapper.querySelector('.dropdown-item.active') || wrapper.querySelector('.dropdown-item');
+      if (activeItem) activeItem.focus();
+    }
+  }
+
+  function selectDropdownItem(item) {
+    const wrapper = item.closest('.dropdown-wrapper');
+    const label = wrapper.querySelector('.dropdown-label');
+    if (label) label.textContent = item.textContent.trim();
+    wrapper.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    wrapper.classList.remove('is-open');
+    const trigger = wrapper.querySelector('[data-dropdown-toggle]');
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.focus();
+    }
+  }
+
   document.addEventListener('click', (e) => {
     const trigger = e.target.closest('[data-dropdown-toggle]');
-    const openDropdowns = document.querySelectorAll('.dropdown-wrapper.is-open');
-
     if (trigger) {
       const wrapper = trigger.closest('.dropdown-wrapper');
       const wasOpen = wrapper.classList.contains('is-open');
-      openDropdowns.forEach(d => d.classList.remove('is-open'));
-      document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
-        w.classList.remove('is-open');
-        const t = w.querySelector('.select-trigger');
-        if (t) t.setAttribute('aria-expanded', 'false');
-      });
-      document.querySelectorAll('.datepicker-container.is-open').forEach(d => {
-        d.classList.remove('is-open');
-        const t = d.querySelector('.datepicker-trigger');
-        if (t) t.setAttribute('aria-expanded', 'false');
-      });
-      if (!wasOpen) wrapper.classList.add('is-open');
-    } else if (!e.target.closest('.dropdown-menu-floating')) {
-      openDropdowns.forEach(d => d.classList.remove('is-open'));
+      if (wasOpen) {
+        closeAllDropdowns();
+      } else {
+        openDropdown(wrapper, false);
+      }
+      return;
+    }
+
+    const item = e.target.closest('.dropdown-item');
+    if (item) {
+      selectDropdownItem(item);
+      return;
+    }
+
+    if (!e.target.closest('.dropdown-menu-floating')) {
+      closeAllDropdowns();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    const trigger = e.target.closest('[data-dropdown-toggle]');
+    if (trigger) {
+      const wrapper = trigger.closest('.dropdown-wrapper');
+      const isOpen = wrapper.classList.contains('is-open');
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        openDropdown(wrapper, true);
+      } else if ((e.key === 'Enter' || e.key === ' ') && !isOpen) {
+        e.preventDefault();
+        openDropdown(wrapper, true);
+      }
+      return;
     }
 
     const item = e.target.closest('.dropdown-item');
     if (item) {
       const wrapper = item.closest('.dropdown-wrapper');
-      const label = wrapper.querySelector('.dropdown-label');
-      if (label) label.textContent = item.textContent.trim();
-      wrapper.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      wrapper.classList.remove('is-open');
+      const items = Array.from(wrapper.querySelectorAll('.dropdown-item'));
+      const idx = items.indexOf(item);
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        items[(idx + 1) % items.length].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        items[(idx - 1 + items.length) % items.length].focus();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        selectDropdownItem(item);
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeAllDropdowns();
+        const t = wrapper.querySelector('[data-dropdown-toggle]');
+        if (t) t.focus();
+      } else if (e.key === 'Tab') {
+        closeAllDropdowns();
+      }
+      return;
     }
-  });
 
-  window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      document.querySelectorAll('.dropdown-wrapper.is-open').forEach(d => d.classList.remove('is-open'));
+      closeAllDropdowns();
     }
   });
 }

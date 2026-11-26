@@ -226,5 +226,5 @@ box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 
 **Micro-Interactions**:
 - Button Hover: Brightness naik halus `duration-150`
 - Button Active: Menyusut taktil `scale-[0.98]`
-- Card Hover: Sedikit melayang `translate-y-[-4px]` dengan transisi `shadow-md`
+- Card Hover: **Zero Hover Translate** — dilarang menggunakan `translateY` atau pergeseran posisi saat hover kartu; gunakan transisi `border-color` dan `box-shadow` halus `150ms` agar posisi elemen tetap stabil.
 - Focus State: Cincin fokus oranye terlihat `focus-visible:ring-2 ring-primary ring-offset-2`

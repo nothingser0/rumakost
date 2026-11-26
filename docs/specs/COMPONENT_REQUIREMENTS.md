@@ -10,19 +10,20 @@ Komponen tingkat dasar (primitives) bertindak sebagai blok pembangun atomik anta
 
 ### 3.1 Primitives (Atomic Components)
 
-| CMP ID | Component Name | Variants | Interactive States | Usage Justification |
-|:------:|:---------------|:---------|:-------------------|:--------------------|
-| `CMP-01` | `Button` | primary, secondary, destructive, ghost, solid-dark | default, hover (150ms), active (`scale-[0.98]`), focus (`ring-2`), disabled, loading | Aksi formulir, trigger dialog, dan submission transaksi |
-| `CMP-02` | `Input` | text, tel, password, search | default, hover, focus (`ring-2`), error, disabled | Input data entry teks di seluruh formulir; font 16px mencegah iOS auto-zoom |
-| `CMP-03` | `Textarea` | standard | default, hover, focus, error, disabled | Catatan handover kamar, deskripsi tiket SLA, instruksi khusus |
-| `CMP-04` | `Select / PopoverMenu` | custom styled floating popover (zero raw native select) | closed, open, focused, selected, disabled | Pemilihan cabang properti, filter lantai; kontainer rounded-2xl & shadow-dropdown |
-| `CMP-05` | `Badge` | neutral, success, warning, destructive, info | default (read-only), hover (khusus interactive/dismissible) | Flag status tagihan (Lunas), kamar (Siap Huni), dan tiket SLA |
-| `CMP-06` | `Checkbox / Switch` | custom checkbox, custom radio, toggle switch | unchecked, checked, indeterminate, disabled | Notifikasi WA outbox, auto-billing cron toggle, pilihan metode bayar |
-| `CMP-07` | `LoadingSpinner`| sm (16px), md (24px), lg (32px) | animated spin | Indikator proses async pada tombol submit form |
-| `CMP-08` | `Icon` | Lucide SVG (stroke-1.75 / 2.0) | default | Petunjuk visual semantik pendamping teks (zero unicode emoji) |
-| `CMP-09` | `Avatar` | sm (32px), md (40px), lg (52px), counter badge | default, with image, with initials | Foto profil staf, avatar penghuni di chat thread, counter +N |
+| CMP ID | Component Name | Variants | Interactive States | Usage Justification | Sign-off Status |
+|:------:|:---------------|:---------|:-------------------|:--------------------|:---------------:|
+| `CMP-01` | `Button` | primary, secondary, destructive, ghost, solid-dark | default, hover (150ms), active (`scale-[0.98]`), focus-visible (`#EA580C` / `#B91C1C` Void), disabled, loading | Aksi formulir, trigger dialog, dan submission transaksi | **LOCKED** (2026-11-26) |
+| `CMP-02` | `Input` | text, tel, password, search | default, hover, focus (`ring-2`), error, disabled | Input data entry teks di seluruh formulir; font 16px mencegah iOS auto-zoom | - |
+| `CMP-03` | `Textarea` | standard | default, hover, focus, error, disabled | Catatan handover kamar, deskripsi tiket SLA, instruksi khusus | - |
+| `CMP-04` | `Select / PopoverMenu` | custom styled floating popover (zero raw native select) | closed, open, focused, selected, disabled | Pemilihan cabang properti, filter lantai; kontainer rounded-2xl & shadow-dropdown | - |
+| `CMP-05` | `Badge` | neutral, success, warning, destructive, info | default (read-only), hover (khusus interactive/dismissible) | Flag status tagihan (Lunas), kamar (Siap Huni), dan tiket SLA | - |
+| `CMP-06` | `Checkbox / Switch` | custom checkbox, custom radio, toggle switch | unchecked, checked, indeterminate, disabled | Notifikasi WA outbox, auto-billing cron toggle, pilihan metode bayar | - |
+| `CMP-07` | `LoadingSpinner`| sm (16px), md (24px), lg (32px) | animated spin | Indikator proses async pada tombol submit form | - |
+| `CMP-08` | `Icon` | Lucide SVG (stroke-1.75 / 2.0) | default | Petunjuk visual semantik pendamping teks (zero unicode emoji) | - |
+| `CMP-09` | `Avatar` | sm (32px), md (40px), lg (52px), counter badge | default, with image, with initials | Foto profil staf, avatar penghuni di chat thread, counter +N | - |
 
 - **SubmitButton Rule**: Tombol submit formulir **TIDAK PERNAH** dinonaktifkan dalam kondisi awal (pristine). Tombol tetap dapat diklik untuk memicu validasi instan dan memfokuskan kursor ke input pertama yang bermasalah. Ketika formulir sedang dalam status pengiriman (`isSubmitting`), tombol menampilkan indikator pemuatan spinner berputar dengan debounce untuk mencegah submit ganda.
+- **CMP-01 Locked Contract (2026-11-26)**: Bentuk wajib **full-pill (`9999px`)**, *borderless* & *flat solid* (tanpa gradien 3D atau kapsul dual-tone) dengan 5 varian (`primary`, `secondary`, `solid-dark`, `ghost`, `destructive`), hit-area sentuh minimum `44px`, State Matrix terverifikasi (`Default`, `Hover`, `Pressed`, `Focus Ring`, `Disabled`), serta cincin `:focus-visible` kontras WCAG 2.2 AA (`#EA580C` untuk aksi umum, `#B91C1C` untuk `destructive` Void). Perubahan kontrak visual memerlukan persetujuan ulang pengguna.
 
 ---
 
@@ -35,7 +36,7 @@ Komponen komposit menggabungkan beberapa komponen primitif menjadi pola interaks
 | CMP ID | Component Name | Composition Structure | Usage Justification |
 |:------:|:---------------|:----------------------|:--------------------|
 | `CMP-10` | `FormField` | Label + Input/Select/Textarea + Error Message (≥13px) + Hint | Wrapper formulir standar terhubung atribut aria-describedby & aria-invalid |
-| `CMP-11` | `Card` | CardHeader + CardTitle + CardContent + CardFooter | Kontainer konten kartu ber-radius 24px (`--radius-card`) dan ambient shadow lembut |
+| `CMP-11` | `Card` | CardHeader + CardTitle + CardContent + CardFooter | Kontainer konten kartu ber-radius 24px (`--radius-card`) dan ambient shadow lembut; mencakup KPI, Standard Content Card (`SCR-006`), dan Room Status Tile (`SCR-015`, `SCR-041`) |
 | `CMP-12` | `Table` | TableHeader + TableBody + TableRow + TableCell + MobileReflow | Tabel data tabular kamar & invoice; reflow otomatis jadi tumpukan kartu pada <640px |
 | `CMP-13` | `Modal` | DialogBackdrop (z-40) + DialogContent (z-50) + DialogClose | Overlay dialog fokus keyboard (focus-trap), tombol ESC, dan backdrop blur |
 | `CMP-14` | `ConfirmDialog`| Modal + Icon + Title + Description + Cancel/Confirm Action | Dialog konfirmasi destruktif permanen (wajib ketik HAPUS & isi alasan audit) |
@@ -57,7 +58,7 @@ Berikut adalah 6 organisme visual signature dan domain composites yang diadaptas
 | CMP ID | Component Name | Source / Benchmark Organism | Composition Structure & Interaction |
 |:------:|:---------------|:----------------------------|:------------------------------------|
 | `CMP-21` | `HeroOrangePropertyCard` | `notes.md` §4 Organism 2 (`01-dashboard-flat.png`) | Kartu hero gradien oranye (`#FF8A24`–`#F97316`) + foto gedung arsitektur asli + statistik okupansi + circle arrow `↗` |
-| `CMP-22` | `RadialTachometerGauge` | `notes.md` §4 Organism 1 (`01-dashboard-flat.png`) | Gauge setengah lingkaran 25 garis jarum memancar (*radial ray ticks*) + pill persentase di tengah (`+12%`, `+15%`, `+40%`) |
+| `CMP-22` | `RadialTachometerGauge` | `notes.md` §4 Organism 1 (`01-dashboard-flat.png`) | Gauge setengah lingkaran 25 garis jarum memancar (*radial ray ticks*) + pill persentase di tengah; khusus highlight/hero gauge (default KPI memakai smooth capsule track di `CMP-11`) |
 | `CMP-23` | `PillNavGroup` | `notes.md` §4 Organism 3 (`01-dashboard-flat.png`) | Topbar navigation pills melayang dengan active dark solid pill Carbon (`#111827`) ber-radius penuh (`9999px`) |
 | `CMP-24` | `MediaPropertyCard` | `notes.md` §4 Organism 7 (`01-dashboard-flat.png`) | Kartu kamar berfoto arsitektur asli 16:10 + floating circle arrow button `↗` + status badge + harga sewa IDR |
 | `CMP-25` | `BuildingConditionMeters` | `notes.md` §4 Organism 5 (`01-dashboard-flat.png`) | 3 progress bar horizontal bertahap pemantauan kondisi fasilitas + tombol pil hitam solid `[ Maintenance Details ]` |
@@ -76,7 +77,7 @@ Standar aksesibilitas Rumakost mematuhi pedoman WCAG 2.2 Level AA secara ketat u
 
 ### 2. Navigasi Keyboard & Indikator Fokus
 - Seluruh elemen interaktif dapat dijangkau dan dioperasikan sepenuhnya melalui navigasi tombol Tab dan Enter/Space.
-- Dilarang menghilangkan garis fokus tanpa pengganti (`outline: none` dilarang keras). Semua tombol dan input menggunakan cincin fokus kontras tinggi `focus-visible:ring-2 ring-primary ring-offset-2`.
+- Dilarang menghilangkan garis fokus tanpa pengganti (`outline: none` dilarang keras). Semua elemen interaktif wajib menampilkan cincin fokus `:focus-visible` dengan `outline-offset: 2px` dan kontras non-teks WCAG 2.2 AA (>= 3.0:1): `#EA580C` untuk aksi umum dan `#B91C1C` untuk varian `destructive` / state error.
 
 ### 3. Target Sentuh & Viewport Seluler
 - Target sentuh minimum berukuran 44px x 44px pada layar sentuh.

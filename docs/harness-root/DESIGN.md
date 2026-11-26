@@ -139,7 +139,7 @@ Skala kelipatan 4px baku untuk menjaga konsistensi vertikal dan horizontal:
    - Card Shadow: `0 2px 4px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.03)`
    - Floating Dropdown Shadow: `0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04)`
 4. **Authentic Domain Values**: Seluruh data dan label antarmuka menggunakan data riil operasional kos Indonesia (e.g. `Kamar Deluxe A-101`, `Token PLN Prabayar`, `Sewa Pro-Rata`, `Deposit Garansi`).
-5. **Tactile Micro-Interactions**: Seluruh elemen interaktif wajib memiliki feedback taktil fisik: tombol menyusut halus saat ditekan (`active:scale-[0.98] duration-150`), fokus keyboard kontras (`focus-visible:ring-2 ring-primary ring-offset-2`).
+5. **Tactile Micro-Interactions**: Seluruh elemen interaktif wajib memiliki feedback taktil fisik: tombol menyusut halus saat ditekan (`active:scale-[0.98] duration-150`), fokus keyboard `:focus-visible` dengan `outline-offset: 2px` (`#EA580C` untuk aksi umum, `#B91C1C` untuk `Destructive / Void`).
 
 ---
 
@@ -153,10 +153,12 @@ Setiap komponen yang diimplementasikan pada `docs/design/components/index.html` 
 - **Nav Pills (`.nav-pill`)**: Pil navigasi melayang berbentuk kapsul bulat (`border-radius: 9999px`, padding `0.625rem 1.25rem`). State aktif berwujud pil hitam solid Carbon (`#111827`) dengan teks putih; state inaktif teks abu-abu bersih (`#64748B`).
 - **Cluster Aksi & Profil**: Tombol lingkaran 44px (Search, Message, Bell dengan dot merah "7") + user profile pill (avatar foto, nama Budi Santoso, role Branch Manager).
 
-### 7.2 Button & Action System (`.btn`)
-- **Primary Button (`.btn-primary`)**: `min-height: 44px`, padding `0.625rem 1.25rem`, `background: #F97316`, `color: #FFFFFF`, `border-radius: 9999px`, `active:scale-[0.98] duration-150`.
-- **Solid Dark Pill (`.btn-solid-dark`)**: `min-height: 44px`, `background: #111827`, `color: #FFFFFF`, `border-radius: 9999px`, font-weight 600.
-- **Button Loading State**: Spinner berputar debounced berpasangan dengan teks saat submit form.
+### 7.2 Button & Action System (`.btn`) — [LOCKED 2026-11-26]
+- **Bentuk & Gaya (Terkunci)**: Seluruh varian wajib **borderless & flat solid** ber-radius penuh (`9999px`), target sentuh minimum `44px` (`btn-sm` visual `36px` dengan pseudo hit-area `44px`), dan transisi `active:scale-[0.98] duration-150`.
+- **Primary Button (`.btn-primary`)**: `min-height: 44px`, padding `0.625rem 1.25rem`, `background: #F97316` (hover `#EA580C`), `color: #FFFFFF`, `border-radius: 9999px`.
+- **Secondary / Solid Dark / Ghost / Destructive**: `.btn-secondary` (`#FFFFFF` + shadow lembut), `.btn-solid-dark` (`#111827`, hover `#1F2937`), `.btn-ghost` (transparan, teks `#475569`), `.btn-destructive` (`#FEF2F2`, teks `#B91C1C`).
+- **Focus Ring (`:focus-visible`, WCAG 2.2 AA >= 3.0:1)**: `outline-offset: 2px`; aksi umum `#EA580C` (`--color-brand-hover`, 3.4:1–3.56:1), sedangkan `Destructive / Void` menggunakan `#B91C1C` (`--color-error`, 6.18:1–6.47:1).
+- **Button Loading State**: Spinner berputar debounced berpasangan dengan teks saat submit form; State Matrix (`Default`, `Hover`, `Pressed`, `Focus Ring`, `Disabled`) terverifikasi di showcase.
 
 ### 7.3 Form Input & Data Entry System
 - **Input & Select (`.input`, `.select`, `.textarea`)**: Tinggi minimum 44px (touch target), font-size 16px (1rem, anti-zoom iOS Safari), `border: 1px solid #CBD5E1`, `border-radius: 12px`.

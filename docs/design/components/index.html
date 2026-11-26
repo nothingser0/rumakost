@@ -7,65 +7,6 @@
   <title>RumaKost — Component Showcase (Tier 1: Primitives)</title>
   <link rel="icon" href="../../../assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../shared/css/styles.css">
-  <style>
-    .tier-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-    }
-    .tier-header {
-      background: #FFFFFF;
-      border-radius: var(--radius-card);
-      border: 1px solid var(--color-border);
-      padding: 1.75rem 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow-card);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.25rem;
-    }
-    .cmp-card {
-      background: #FFFFFF;
-      border-radius: var(--radius-card);
-      border: 1px solid var(--color-border);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: var(--shadow-card);
-    }
-    .cmp-card:last-child {
-      margin-bottom: 0;
-    }
-    .cmp-badge {
-      font-family: monospace;
-      font-size: 0.75rem;
-      font-weight: 700;
-      background: #F1F5F9;
-      color: #0F172A;
-      padding: 0.25rem 0.5rem;
-      border-radius: 6px;
-      display: inline-block;
-      margin-bottom: 0.5rem;
-    }
-    .cmp-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--color-text-primary);
-      margin-bottom: 0.375rem;
-    }
-    .cmp-desc {
-      font-size: var(--font-size-small);
-      color: var(--color-text-secondary);
-      line-height: 1.55;
-      margin-bottom: 2rem;
-    }
-    .demo-grid {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 1rem;
-    }
-  </style>
 </head>
 <body>
 
@@ -90,91 +31,92 @@
       </div>
     </div>
 
-    <!-- CMP-01: Button System -->
+    <!-- CMP-01: Button System (LOCKED 2026-11-26) -->
     <div class="cmp-card" id="cmp-01">
-      <span class="cmp-badge">CMP-01</span>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-01</span>
+        <span class="badge badge-success badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
       <h2 class="cmp-title">Button & Interactive Actions</h2>
-      <p class="cmp-desc">Sistem aksi interaktif full-pill (9999px) dengan feedback taktil scale(0.98), animasi loading debounced, dan aturan submit button tidak pernah disabled saat pristine.</p>
+      <p class="cmp-desc">Sistem aksi interaktif full-pill (9999px) dengan feedback taktil scale(0.98) 150ms, animasi loading debounced, target sentuh minimum 44px, dan aturan submit button tidak pernah disabled saat pristine.</p>
       
-      <!-- Sub 1: Varian Utama (100% Borderless & Flat Solid) -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN UTAMA (100% BORDERLESS & FLAT SOLID)</div>
+      <!-- Sub 1: Varian Utama (5 Varian Resmi Spec CMP-01, Borderless & Flat Solid) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN UTAMA (BORDERLESS & FLAT SOLID)</div>
       <div class="demo-grid" style="margin-bottom: 2rem">
         <!-- Primary: Solid Warm Orange (#F97316) -->
-        <button class="btn btn-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Primary (Solid Orange)
+        <button type="button" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Primary (Oranye)
         </button>
         <!-- Secondary: Solid White on Card (No Border) -->
-        <button class="btn btn-secondary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Secondary (Solid White)
+        <button type="button" class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Secondary (Putih)
         </button>
-        <!-- Secondary: Solid Black (#000000) -->
-        <button class="btn btn-black">
-          Secondary (Solid Black)
+        <!-- Solid Dark: Carbon Black (#111827) -->
+        <button type="button" class="btn btn-solid-dark">
+          Solid Dark (Carbon)
         </button>
-        <!-- Subtle Tone: Soft Orange (No Border) -->
-        <button class="btn btn-subtle">Subtle Tone</button>
         <!-- Ghost Button (No Border) -->
-        <button class="btn btn-ghost">Ghost Button</button>
+        <button type="button" class="btn btn-ghost">Ghost Button</button>
         <!-- Destructive Action (Keamanan / Void) -->
-        <button class="btn btn-destructive">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        <button type="button" class="btn btn-destructive">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           Destructive (Void)
         </button>
       </div>
 
-      <!-- Sub 2: Skala Ukuran (Perbandingan Nyata: 36px, 44px, 48px) -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SKALA UKURAN (SM 36px, DEFAULT 44px, LG 48px)</div>
+      <!-- Sub 2: Skala Ukuran (Visual 36px/44px/48px dengan Hit Area >= 44px) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SKALA UKURAN (SM 36px / HIT-AREA 44px, DEFAULT 44px, LG 48px)</div>
       <div class="demo-grid" style="margin-bottom: 2rem">
-        <!-- Small 36px -->
-        <button class="btn btn-primary btn-sm">Small (36px)</button>
-        <button class="btn btn-secondary btn-sm">Secondary (36px)</button>
-        <button class="btn btn-black btn-sm">Black (36px)</button>
+        <!-- Small 36px (44px touch target via pseudo-element) -->
+        <button type="button" class="btn btn-primary btn-sm">Small (36px)</button>
+        <button type="button" class="btn btn-secondary btn-sm">Secondary (36px)</button>
+        <button type="button" class="btn btn-solid-dark btn-sm">Solid Dark (36px)</button>
 
         <span style="color:#CBD5E1">|</span>
 
         <!-- Default 44px -->
-        <button class="btn btn-primary">Default (44px)</button>
-        <button class="btn btn-secondary">Secondary (44px)</button>
-        <button class="btn btn-black">Black (44px)</button>
+        <button type="button" class="btn btn-primary">Default (44px)</button>
+        <button type="button" class="btn btn-secondary">Secondary (44px)</button>
+        <button type="button" class="btn btn-solid-dark">Solid Dark (44px)</button>
 
         <span style="color:#CBD5E1">|</span>
 
         <!-- Large 48px -->
-        <button class="btn btn-primary btn-lg">Large (48px)</button>
-        <button class="btn btn-secondary btn-lg">Secondary (48px)</button>
-        <button class="btn btn-black btn-lg">Black (48px)</button>
+        <button type="button" class="btn btn-primary btn-lg">Large (48px)</button>
+        <button type="button" class="btn btn-secondary btn-lg">Secondary (48px)</button>
+        <button type="button" class="btn btn-solid-dark btn-lg">Solid Dark (48px)</button>
       </div>
 
       <!-- Sub 3: Penempatan Ikon & Arrow ↗ -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. PENEMPATAN IKON & FLOATING CIRCLE ARROW (32px ESTIFY ↗)</div>
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. PENEMPATAN IKON & FLOATING CIRCLE ARROW (32px / HIT-AREA 44px ESTIFY ↗)</div>
       <div class="demo-grid" style="margin-bottom: 2rem">
-        <button class="btn btn-primary">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <button type="button" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Icon di Kiri
         </button>
-        <button class="btn btn-secondary">
+        <button type="button" class="btn btn-secondary">
           Icon di Kanan
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
-        <button class="action-circle-btn" aria-label="Icon Action Circle">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <button type="button" class="action-circle-btn" aria-label="Icon Action Circle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
 
         <!-- Notification Circle Button with Red Badge 7 -->
-        <button class="action-circle-btn" aria-label="Notifikasi">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <button type="button" class="action-circle-btn" aria-label="Notifikasi">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           <span class="notification-badge">7</span>
         </button>
 
-        <!-- Varian Arrow Up-Right 32px: Inverted Hover Interactivity (100% Borderless) -->
+        <!-- Varian Arrow Up-Right 32px: Inverted Hover Interactivity (Hit-Area 44px) -->
         <div style="display:inline-flex;align-items:center;gap:1rem;padding:0.5rem 1.25rem;background:#F1F5F9;border-radius:9999px">
-          <!-- Varian Putih (Hover -> Hitam) -->
+          <!-- Varian Putih (Hover -> Carbon) -->
           <div class="flex items-center gap-2">
-            <span class="text-caption text-muted">Putih (Hover ➔ Hitam):</span>
-            <button class="circle-arrow-btn arrow-white" title="Putih ke Hitam saat Hover" aria-label="Arrow Putih">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            <span class="text-caption text-muted">Putih (Hover ➔ Carbon):</span>
+            <button type="button" class="circle-arrow-btn arrow-white" title="Putih ke Carbon saat Hover" aria-label="Arrow Putih">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
             </button>
           </div>
 
@@ -182,9 +124,9 @@
 
           <!-- Varian Hitam (Hover -> Putih) -->
           <div class="flex items-center gap-2">
-            <span class="text-caption text-muted">Hitam (Hover ➔ Putih):</span>
-            <button class="circle-arrow-btn arrow-black" title="Hitam ke Putih saat Hover" aria-label="Arrow Hitam">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            <span class="text-caption text-muted">Carbon (Hover ➔ Putih):</span>
+            <button type="button" class="circle-arrow-btn arrow-black" title="Carbon ke Putih saat Hover" aria-label="Arrow Carbon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
             </button>
           </div>
 
@@ -193,61 +135,122 @@
           <!-- Varian Oranye (Primary Orange -> Hover Dark Orange) -->
           <div class="flex items-center gap-2">
             <span class="text-caption text-muted">Oranye (Hover ➔ #EA580C):</span>
-            <button class="circle-arrow-btn arrow-orange" title="Oranye Primary (Hover: #EA580C)" aria-label="Arrow Oranye">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+            <button type="button" class="circle-arrow-btn arrow-orange" title="Oranye Primary (Hover: #EA580C)" aria-label="Arrow Oranye">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Sub 4: Status Interaksi & Loading -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. STATUS KHUSUS: DISABLED & DEBOUNCED LOADING SPINNER</div>
+      <!-- Sub 4: Matriks State Interaktif (Default, Hover, Pressed, Focus & Disabled) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. MATRIKS STATE INTERAKTIF (DEFAULT, HOVER, PRESSED, FOCUS &amp; DISABLED)</div>
+      <div class="state-matrix-wrap" style="margin-bottom: 2rem">
+        <table class="state-matrix">
+          <thead>
+            <tr>
+              <th>Varian</th>
+              <th>Default</th>
+              <th>Hover (150ms)</th>
+              <th>Pressed (scale 0.98)</th>
+              <th>Focus Ring</th>
+              <th>Disabled</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="matrix-row-label">Primary</td>
+              <td><button type="button" class="btn btn-primary btn-sm">Simpan</button></td>
+              <td><button type="button" class="btn btn-primary btn-sm is-hover-preview">Simpan</button></td>
+              <td><button type="button" class="btn btn-primary btn-sm is-active-preview">Simpan</button></td>
+              <td><button type="button" class="btn btn-primary btn-sm is-focus-preview">Simpan</button></td>
+              <td><button type="button" class="btn btn-primary btn-sm" disabled>Simpan</button></td>
+            </tr>
+            <tr>
+              <td class="matrix-row-label">Secondary</td>
+              <td><button type="button" class="btn btn-secondary btn-sm">Batal</button></td>
+              <td><button type="button" class="btn btn-secondary btn-sm is-hover-preview">Batal</button></td>
+              <td><button type="button" class="btn btn-secondary btn-sm is-active-preview">Batal</button></td>
+              <td><button type="button" class="btn btn-secondary btn-sm is-focus-preview">Batal</button></td>
+              <td><button type="button" class="btn btn-secondary btn-sm" disabled>Batal</button></td>
+            </tr>
+            <tr>
+              <td class="matrix-row-label">Solid Dark</td>
+              <td><button type="button" class="btn btn-solid-dark btn-sm">Detail</button></td>
+              <td><button type="button" class="btn btn-solid-dark btn-sm is-hover-preview">Detail</button></td>
+              <td><button type="button" class="btn btn-solid-dark btn-sm is-active-preview">Detail</button></td>
+              <td><button type="button" class="btn btn-solid-dark btn-sm is-focus-preview">Detail</button></td>
+              <td><button type="button" class="btn btn-solid-dark btn-sm" disabled>Detail</button></td>
+            </tr>
+            <tr>
+              <td class="matrix-row-label">Ghost</td>
+              <td><button type="button" class="btn btn-ghost btn-sm">Lewati</button></td>
+              <td><button type="button" class="btn btn-ghost btn-sm is-hover-preview">Lewati</button></td>
+              <td><button type="button" class="btn btn-ghost btn-sm is-active-preview">Lewati</button></td>
+              <td><button type="button" class="btn btn-ghost btn-sm is-focus-preview">Lewati</button></td>
+              <td><button type="button" class="btn btn-ghost btn-sm" disabled>Lewati</button></td>
+            </tr>
+            <tr>
+              <td class="matrix-row-label">Destructive</td>
+              <td><button type="button" class="btn btn-destructive btn-sm">Void</button></td>
+              <td><button type="button" class="btn btn-destructive btn-sm is-hover-preview">Void</button></td>
+              <td><button type="button" class="btn btn-destructive btn-sm is-active-preview">Void</button></td>
+              <td><button type="button" class="btn btn-destructive btn-sm is-focus-preview">Void</button></td>
+              <td><button type="button" class="btn btn-destructive btn-sm" disabled>Void</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sub 5: Submit Pristine & Debounced Loading Spinner -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">5. SUBMIT PRISTINE &amp; DEBOUNCED LOADING SPINNER</div>
       <div class="demo-grid" style="margin-bottom: 2rem">
-        <button class="btn btn-primary" disabled>Disabled Primary</button>
-        <button class="btn btn-secondary" disabled>Disabled Secondary</button>
-        <button class="btn btn-primary" onclick="const b=this; b.classList.add('is-loading'); setTimeout(()=>b.classList.remove('is-loading'), 2000);">
+        <button type="button" class="btn btn-primary is-loading" aria-busy="true">
+          <span class="spinner spinner-sm spinner-white" aria-hidden="true"></span>
+          <span>Sedang Memproses...</span>
+        </button>
+        <button type="button" class="btn btn-primary" data-loading-demo data-loading-text="Menyimpan Data...">
           Klik untuk Test Spinner (2 Detik)
         </button>
       </div>
 
-      <!-- Sub 5: Segmented Pill Button Group & Interactive Filter Dropdown -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">5. SEGMENTED PILL & INTERACTIVE FILTER DROPDOWN (KLIK UNTUK MEMBUKA)</div>
+      <!-- Sub 6: Segmented Pill Button Group & Interactive Filter Dropdown -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">6. SEGMENTED PILL &amp; INTERACTIVE FILTER DROPDOWN (KLIK ATAU NAVIGASI KEYBOARD)</div>
       <div class="flex items-center gap-4" style="flex-wrap:wrap">
         <!-- Segmented Pill Control in One Soft Container -->
-        <div class="btn-group">
-          <button class="btn-group-item active" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Semua Kamar</button>
-          <button class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Terisi</button>
-          <button class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Kosong</button>
-          <button class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Maintenance</button>
+        <div class="btn-group" role="group" aria-label="Filter Status Kamar">
+          <button type="button" class="btn-group-item active" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Semua Kamar</button>
+          <button type="button" class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Terisi</button>
+          <button type="button" class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Kosong</button>
+          <button type="button" class="btn-group-item" onclick="this.parentElement.querySelectorAll('.btn-group-item').forEach(b=>b.classList.remove('active')); this.classList.add('active');">Maintenance</button>
         </div>
 
         <span style="color:#CBD5E1">|</span>
 
-        <!-- Interactive Clickable Dropdown 1: Monthly -->
+        <!-- Interactive Clickable Dropdown 1: Periode -->
         <div class="dropdown-wrapper">
-          <button class="filter-dropdown-pill" data-dropdown-toggle aria-label="Pilih Periode">
-            <span class="dropdown-label">Monthly</span>
-            <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <button type="button" class="filter-dropdown-pill" data-dropdown-toggle aria-haspopup="menu" aria-expanded="false" aria-label="Pilih Periode">
+            <span class="dropdown-label">Bulanan</span>
+            <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="dropdown-menu-floating">
-            <div class="dropdown-item">Daily</div>
-            <div class="dropdown-item">Weekly</div>
-            <div class="dropdown-item active">Monthly</div>
-            <div class="dropdown-item">Yearly</div>
+          <div class="dropdown-menu-floating" role="menu">
+            <button type="button" class="dropdown-item" role="menuitem">Harian</button>
+            <button type="button" class="dropdown-item" role="menuitem">Mingguan</button>
+            <button type="button" class="dropdown-item active" role="menuitem">Bulanan</button>
+            <button type="button" class="dropdown-item" role="menuitem">Tahunan</button>
           </div>
         </div>
 
-        <!-- Interactive Clickable Dropdown 2: Today -->
+        <!-- Interactive Clickable Dropdown 2: Rentang Waktu -->
         <div class="dropdown-wrapper">
-          <button class="filter-dropdown-pill" data-dropdown-toggle aria-label="Pilih Rentang Waktu">
-            <span class="dropdown-label">Today</span>
-            <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          <button type="button" class="filter-dropdown-pill" data-dropdown-toggle aria-haspopup="menu" aria-expanded="false" aria-label="Pilih Rentang Waktu">
+            <span class="dropdown-label">Hari Ini</span>
+            <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="dropdown-menu-floating">
-            <div class="dropdown-item active">Today</div>
-            <div class="dropdown-item">Yesterday</div>
-            <div class="dropdown-item">Last 7 Days</div>
-            <div class="dropdown-item">This Month</div>
+          <div class="dropdown-menu-floating" role="menu">
+            <button type="button" class="dropdown-item active" role="menuitem">Hari Ini</button>
+            <button type="button" class="dropdown-item" role="menuitem">Kemarin</button>
+            <button type="button" class="dropdown-item" role="menuitem">7 Hari Terakhir</button>
+            <button type="button" class="dropdown-item" role="menuitem">Bulan Ini</button>
           </div>
         </div>
       </div>
@@ -257,12 +260,12 @@
     <div class="cmp-card" id="cmp-02-03">
       <span class="cmp-badge">CMP-02 & CMP-03</span>
       <h2 class="cmp-title">Input Fields, CurrencyInput, Upload & Textarea System</h2>
-      <p class="cmp-desc">Input data entry teks, CurrencyInput numerik IDR, phone mask +62, calendar popover, dan file upload dropzone dengan font 16px standar anti-zoom iOS Safari.</p>
+      <p class="cmp-desc">Input data entry teks, CurrencyInput numerik IDR, phone mask +62, calendar popover, dan file upload dropzone tanpa border (clean surface), font 14px desktop (otomatis 16px di layar sentuh/mobile anti-zoom iOS Safari), dan radius 12px (pill khusus pencarian).</p>
 
       <!-- Sub 1: Varian Jenis Input Data -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN JENIS INPUT DATA (CMP-02)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem">
-        <!-- Text Input Pill -->
+        <!-- Text Input -->
         <div class="input-wrapper">
           <label for="inp-text-demo">Nama Lengkap Penghuni <span class="required">*</span></label>
           <input id="inp-text-demo" class="input-pill" type="text" placeholder="Masukkan nama sesuai KTP...">
@@ -275,9 +278,9 @@
             <span class="pill-prefix-badge">Rp</span>
             <input id="inp-curr-demo" class="tabular" inputmode="numeric" placeholder="1.850.000" oninput="
               let val = this.value.replace(/[^0-9]/g, '');
-              this.value = val ? new Intl.NumberFormat('id-ID').format(val) : '';
+              this.value = val ? new Intl.NumberFormat('id-ID').format(Number(val)) : '';
             ">
-            <span class="pill-suffix-badge" style="background:transparent;color:#94A3B8;font-size:0.75rem">/ bln</span>
+            <span class="pill-suffix-badge" style="background:transparent;color:#475569;font-size:0.75rem">/ bln</span>
           </div>
         </div>
 
@@ -293,18 +296,18 @@
         <!-- Password Input with Inset Eye Toggle -->
         <div class="input-wrapper">
           <label for="inp-pass-demo">Kata Sandi Akun <span class="required">*</span></label>
-          <div class="pill-input-box" style="padding-right:0.75rem">
+          <div class="pill-input-box" style="padding-right:0.25rem">
             <input id="inp-pass-demo" type="password" value="secretPass123">
-            <button type="button" id="pass-toggle-btn" aria-label="Tampilkan kata sandi" onclick="
+            <button type="button" id="pass-toggle-btn" class="input-icon-btn" aria-label="Tampilkan kata sandi" onclick="
               const f = document.getElementById('inp-pass-demo');
               const isPass = f.type === 'password';
               f.type = isPass ? 'text' : 'password';
               this.setAttribute('aria-label', isPass ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
               this.innerHTML = isPass
-                ? '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24\'/><line x1=\'1\' y1=\'1\' x2=\'23\' y2=\'23\'/></svg>'
-                : '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z\'/><circle cx=\'12\' cy=\'12\' r=\'3\'/></svg>';
-            " style="background:none;border:none;cursor:pointer;color:#64748B;display:flex;align-items:center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                ? '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.75\'><path d=\'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24\'/><line x1=\'1\' y1=\'1\' x2=\'23\' y2=\'23\'/></svg>'
+                : '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.75\'><path d=\'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z\'/><circle cx=\'12\' cy=\'12\' r=\'3\'/></svg>';
+            ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
         </div>
@@ -313,12 +316,12 @@
         <div class="input-wrapper">
           <label for="inp-date-demo">Tanggal Jatuh Tempo <span class="required">*</span></label>
           <div class="datepicker-container" id="due-date-picker">
-            <div class="pill-input-box datepicker-trigger" tabindex="0" role="combobox" aria-haspopup="dialog" aria-expanded="false" style="padding-right:0.75rem;cursor:pointer">
-              <input id="inp-date-demo" class="datepicker-display tabular" type="text" placeholder="Pilih tanggal jatuh tempo..." value="Rabu, 25 Nov 2026" readonly style="cursor:pointer">
+            <div class="pill-input-box datepicker-trigger" tabindex="0" role="combobox" aria-haspopup="dialog" aria-expanded="false" aria-label="Pilih tanggal jatuh tempo" style="padding-right:0.75rem;cursor:pointer">
+              <input id="inp-date-demo" class="datepicker-display tabular" type="text" placeholder="Pilih tanggal jatuh tempo..." value="Rabu, 25 Nov 2026" readonly tabindex="-1" style="cursor:pointer">
               <input id="native-date-input" class="datepicker-value" type="hidden" value="2026-11-25">
-              <button type="button" aria-label="Buka kalender" style="background:none;border:none;cursor:pointer;color:var(--color-brand);display:flex;align-items:center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              </button>
+              <span aria-hidden="true" style="color:var(--color-brand);display:flex;align-items:center;flex-shrink:0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </span>
             </div>
 
             <!-- Custom Styled Floating Calendar Popover -->
@@ -327,10 +330,10 @@
                 <span class="datepicker-title tabular">November 2026</span>
                 <div class="datepicker-nav-buttons">
                   <button type="button" class="datepicker-nav-btn prev-month" aria-label="Bulan sebelumnya">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="15 18 9 12 15 6"/></svg>
                   </button>
                   <button type="button" class="datepicker-nav-btn next-month" aria-label="Bulan berikutnya">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="9 18 15 12 9 6"/></svg>
                   </button>
                 </div>
               </div>
@@ -352,16 +355,16 @@
               </div>
             </div>
           </div>
-          <span class="input-hint">Klik kolom atau icon kalender untuk memilih tanggal interaktif.</span>
+          <span class="input-hint">Klik kolom atau tekan Enter/Spasi untuk memilih tanggal interaktif.</span>
         </div>
 
         <!-- Number Stepper Input (Maks. 3 Terkunci) -->
         <div class="input-wrapper">
-          <label for="inp-stepper-val">Jumlah Tamu Menginap <span class="required">*</span></label>
-          <div class="number-stepper">
-            <button type="button" class="stepper-btn" onclick="const v=document.getElementById('inp-stepper-val'); if(parseInt(v.textContent)>1) v.textContent=parseInt(v.textContent)-1;">−</button>
-            <span id="inp-stepper-val" class="stepper-value tabular">2</span>
-            <button type="button" class="stepper-btn" onclick="const v=document.getElementById('inp-stepper-val'); if(parseInt(v.textContent)<3) v.textContent=parseInt(v.textContent)+1;">+</button>
+          <span id="stepper-label" class="input-label">Jumlah Tamu Menginap <span class="required">*</span></span>
+          <div class="number-stepper" role="group" aria-labelledby="stepper-label">
+            <button type="button" class="stepper-btn" aria-label="Kurangi jumlah tamu" onclick="const v=document.getElementById('inp-stepper-val'); if(parseInt(v.textContent,10)>1) v.textContent=parseInt(v.textContent,10)-1;">−</button>
+            <span id="inp-stepper-val" class="stepper-value tabular" aria-live="polite">2</span>
+            <button type="button" class="stepper-btn" aria-label="Tambah jumlah tamu" onclick="const v=document.getElementById('inp-stepper-val'); if(parseInt(v.textContent,10)<3) v.textContent=parseInt(v.textContent,10)+1;">+</button>
             <span class="text-caption text-muted" style="margin-left:0.5rem">Orang (Maks. 3)</span>
           </div>
         </div>
@@ -370,26 +373,26 @@
       <!-- Search Input Pill with Leading Icon & Clear Button -->
       <div class="input-wrapper" style="margin-bottom: 2rem">
         <label for="inp-search-demo">Pencarian Unit Kamar (Estify Pill Search) <span class="required">*</span></label>
-        <div class="pill-input-box" style="padding-left:1rem;padding-right:0.75rem">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input id="inp-search-demo" type="search" placeholder="Search any unit kamar, nomor, atau fasilitas..." oninput="document.getElementById('search-clear-btn').style.display = this.value ? 'block' : 'none'">
-          <button id="search-clear-btn" type="button" aria-label="Clear search" style="display:none;background:none;border:none;cursor:pointer;color:#94A3B8" onclick="document.getElementById('inp-search-demo').value=''; this.style.display='none';">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <div class="pill-input-box is-search" style="padding-left:1rem;padding-right:0.25rem">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="inp-search-demo" type="search" placeholder="Cari unit kamar, nomor, atau fasilitas..." oninput="document.getElementById('search-clear-btn').style.display = this.value ? 'inline-flex' : 'none'">
+          <button id="search-clear-btn" type="button" class="input-icon-btn" aria-label="Hapus pencarian" style="display:none;color:#64748B" onclick="const i=document.getElementById('inp-search-demo'); i.value=''; this.style.display='none'; i.focus();">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
       </div>
 
       <!-- Sub 2: Skala Ukuran Input -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SKALA UKURAN INPUT (SM 36px, DEFAULT 44px, LG 48px)</div>
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SKALA UKURAN INPUT (COMPACT 36px / 44px SENTUH, DEFAULT 44px, LG 48px)</div>
       <div class="flex items-center gap-4" style="flex-wrap:wrap; margin-bottom: 2rem">
         <div style="flex:1;min-width:200px">
-          <input class="input-pill input-pill-sm" type="text" placeholder="Small Input (36px)">
+          <input class="input-pill input-pill-sm" type="text" aria-label="Compact Input" placeholder="Compact Desktop (36px)">
         </div>
         <div style="flex:1;min-width:200px">
-          <input class="input-pill" type="text" placeholder="Default Input (44px)">
+          <input class="input-pill" type="text" aria-label="Default Input" placeholder="Default Input (44px)">
         </div>
         <div style="flex:1;min-width:200px">
-          <input class="input-pill input-pill-lg" type="text" placeholder="Large Input (48px)">
+          <input class="input-pill input-pill-lg" type="text" aria-label="Large Input" placeholder="Large Input (48px)">
         </div>
       </div>
 
@@ -403,7 +406,7 @@
             <input id="inp-err-demo" type="email" value="budi.santoso@gmail" aria-invalid="true" aria-describedby="err-msg-demo">
           </div>
           <span id="err-msg-demo" class="error-message">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Alamat email wajib memuat '@' dan nama domain (.com).
           </span>
         </div>
@@ -419,29 +422,29 @@
       <!-- Sub 4: File Upload & Interactive Dropzone -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. FILE UPLOAD & DROPZONE (FOTO KTP, METERAN PLN, BUKTI TRANSFER)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1.5fr; gap: 1.25rem; margin-bottom: 2rem">
-        <!-- Compact File Upload Pill (Orange Primary Button) -->
+        <!-- Compact File Upload Box (Tab-Focusable) -->
         <div class="input-wrapper">
-          <label for="compact-file-input">Unggah Bukti Cepat (Compact Pill)</label>
+          <label for="compact-file-input">Unggah Bukti Cepat (Compact Upload)</label>
           <div class="compact-file-upload">
+            <input id="compact-file-input" class="sr-only" type="file" onchange="document.getElementById('file-chosen-name').textContent = this.files[0]?.name || 'Belum ada berkas terpilih'">
             <label class="btn btn-primary btn-sm" for="compact-file-input">
               Pilih Berkas
-              <input id="compact-file-input" type="file" style="display:none" onchange="document.getElementById('file-chosen-name').textContent = this.files[0]?.name || 'Belum ada file terpilih'">
             </label>
             <span id="file-chosen-name" class="text-caption text-muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">bukti-transfer-bca.jpg</span>
           </div>
           <span class="input-hint">Format JPG, PNG maks. 5MB.</span>
         </div>
 
-        <!-- Drag-and-Drop Dropzone (Clean Card Surface 24px — Tanpa Border Kasar) -->
-        <div class="dropzone-card" onclick="document.getElementById('dropzone-file-input').click();">
-          <input id="dropzone-file-input" type="file" style="display:none" onchange="alert(`Berkas terpilih: ${this.files[0]?.name}`);">
+        <!-- Drag-and-Drop Dropzone (Keyboard Accessible & Toast Feedback) -->
+        <div class="dropzone-card" role="button" tabindex="0" aria-label="Unggah foto dokumen KTP, meteran PLN, atau bukti transfer" data-dropzone="dropzone-file-input">
+          <input id="dropzone-file-input" class="sr-only" type="file" tabindex="-1">
           <div class="dropzone-icon-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           </div>
           <div style="font-weight:700;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:0.375rem">
-            Tarik foto ke sini atau <span style="color:var(--color-brand);text-decoration:underline;cursor:pointer">telusuri berkas</span>
+            Tarik foto ke sini atau <span style="color:var(--color-brand);text-decoration:underline">telusuri berkas</span>
           </div>
-          <p class="text-caption text-muted mb-3" style="max-width:320px;line-height:1.4">
+          <p class="text-caption text-muted mb-3" data-dropzone-status style="max-width:320px;line-height:1.4">
             Mendukung dokumen foto KTP (KYC penghuni), foto meteran kWh fisik, atau slip transfer bank
           </p>
           <div class="flex gap-2 items-center">
@@ -451,14 +454,33 @@
         </div>
       </div>
 
-      <!-- Sub 5: Textarea System (CMP-03) with Live Character Counter -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">5. TEXTAREA MULTI-BARIS (CMP-03 — SOFT ROUNDED 20px DENGAN COUNTER)</div>
+      <!-- Sub 5: Textarea System (CMP-03) with Live Character Counter & Validation States -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">5. TEXTAREA MULTI-BARIS (CMP-03 — RADIUS 12px, COUNTER & VALIDASI)</div>
       <div class="input-wrapper">
         <div class="flex justify-between items-center input-header-row">
           <label for="inp-area-demo" class="input-label" style="margin-bottom:0">Catatan Khusus Handover Fasilitas Kamar</label>
           <span id="char-counter" class="text-caption text-muted tabular">0 / 250 karakter</span>
         </div>
         <textarea id="inp-area-demo" class="textarea-rounded" rows="3" maxlength="250" placeholder="Deskripsikan kondisi fisik fasilitas kamar saat serah terima kunci (AC dingin, remote lengkap, kasur bersih)..." oninput="document.getElementById('char-counter').textContent = `${this.value.length} / 250 karakter`;"></textarea>
+      </div>
+
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem">
+        <!-- Textarea Error State -->
+        <div class="input-wrapper" style="margin-bottom:0">
+          <label for="inp-area-err">Alasan Void / Penolakan Bukti Transfer <span class="required">*</span></label>
+          <textarea id="inp-area-err" class="textarea-rounded has-error" rows="2" aria-invalid="true" aria-describedby="area-err-msg">Salah</textarea>
+          <span id="area-err-msg" class="error-message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Alasan audit wajib diisi minimal 10 karakter.
+          </span>
+        </div>
+
+        <!-- Textarea Disabled State -->
+        <div class="input-wrapper" style="margin-bottom:0">
+          <label for="inp-area-dis">Catatan Kontrak Terkunci (Arsip Final)</label>
+          <textarea id="inp-area-dis" class="textarea-rounded" rows="2" disabled>Deposit garansi Rp 1.500.000 telah diverifikasi saat serah terima kunci awal.</textarea>
+          <span class="input-hint">Arsip catatan handover tidak dapat diubah setelah kontrak disetujui.</span>
+        </div>
       </div>
     </div>
 
@@ -477,15 +499,15 @@
           <div class="input-wrapper" style="margin-bottom:0">
             <label for="sel-branch-display">Pilihan Cabang Properti <span class="required">*</span></label>
             <div class="custom-select-wrapper" id="branch-select">
-              <div class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="Pilih Cabang Properti">
+              <div class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="branch-listbox" aria-label="Pilih Cabang Properti">
                 <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                <input id="sel-branch-display" class="select-display" type="text" placeholder="Pilih Cabang Properti..." readonly style="cursor:pointer">
+                <input id="sel-branch-display" class="select-display" type="text" placeholder="Pilih Cabang Properti..." readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
                 <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </div>
               <input type="hidden" name="branch_id" class="select-value" value="">
 
               <!-- Floating Popover Container -->
-              <div class="select-popover" role="listbox">
+              <div id="branch-listbox" class="select-popover" role="listbox">
                 <div class="select-option" data-value="1" role="option" aria-selected="false">
                   <div style="display:flex;align-items:center;gap:0.75rem">
                     <div class="select-option-icon-box">
@@ -519,29 +541,49 @@
           <div class="input-wrapper" style="margin-bottom:0">
             <label for="sel-floor-display">Filter Lantai Unit (Nilai Terpilih) <span class="required">*</span></label>
             <div class="custom-select-wrapper has-value" id="floor-select">
-              <div class="pill-input-box select-trigger has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter Lantai Unit">
+              <div class="pill-input-box select-trigger has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="floor-listbox" aria-label="Filter Lantai Unit">
                 <svg class="select-prefix-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                <input id="sel-floor-display" class="select-display" type="text" value="Semua Lantai" readonly style="cursor:pointer">
+                <input id="sel-floor-display" class="select-display" type="text" value="Semua Lantai" readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
                 <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
               </div>
               <input type="hidden" name="floor_level" class="select-value" value="all">
 
               <!-- Floating Popover Container -->
-              <div class="select-popover" role="listbox">
+              <div id="floor-listbox" class="select-popover" role="listbox">
                 <div class="select-option is-selected" data-value="all" role="option" aria-selected="true">
-                  <span class="option-title">Semua Lantai</span>
+                  <div style="display:flex;align-items:center;gap:0.75rem">
+                    <div class="select-option-icon-box">
+                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <span class="option-title">Semua Lantai</span>
+                  </div>
                   <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="select-option" data-value="1" role="option" aria-selected="false">
-                  <span class="option-title">Lantai 1 (Kamar 101 - 112)</span>
+                  <div style="display:flex;align-items:center;gap:0.75rem">
+                    <div class="select-option-icon-box">
+                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <span class="option-title">Lantai 1 (Kamar 101 - 112)</span>
+                  </div>
                   <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="select-option" data-value="2" role="option" aria-selected="false">
-                  <span class="option-title">Lantai 2 (Kamar 201 - 212)</span>
+                  <div style="display:flex;align-items:center;gap:0.75rem">
+                    <div class="select-option-icon-box">
+                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <span class="option-title">Lantai 2 (Kamar 201 - 212)</span>
+                  </div>
                   <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="select-option" data-value="3" role="option" aria-selected="false">
-                  <span class="option-title">Lantai 3 (Rooftop & Kamar 301 - 308)</span>
+                  <div style="display:flex;align-items:center;gap:0.75rem">
+                    <div class="select-option-icon-box">
+                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <span class="option-title">Lantai 3 (Rooftop & Kamar 301 - 308)</span>
+                  </div>
                   <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
               </div>
@@ -553,7 +595,7 @@
         <!-- Kolom Kanan: Pratinjau Menu Popover Terbuka (Anatomi Estify 20px rounded) -->
         <div class="input-wrapper" style="margin-bottom:0">
           <label>Anatomi Floating Popover Menu (Status Terbuka Langsung)</label>
-          <div class="select-popover-preview">
+          <div class="select-popover-preview" role="listbox" aria-label="Pratinjau Pilihan Cabang">
             <!-- Option 1: Selected -->
             <div class="select-option is-selected" role="option" aria-selected="true">
               <div style="display:flex;align-items:center;gap:0.75rem">
@@ -605,15 +647,15 @@
         <div class="input-wrapper" style="margin-bottom:0">
           <label for="sel-type-display">Tipe Unit Hunian (Contoh Status Validasi Error) <span class="required">*</span></label>
           <div class="custom-select-wrapper" id="room-type-select">
-            <div class="pill-input-box select-trigger has-error" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-invalid="true" aria-describedby="err-select-demo" aria-label="Pilih Tipe Unit Hunian">
+            <div class="pill-input-box select-trigger has-error" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="room-type-listbox" aria-invalid="true" aria-describedby="err-select-demo" aria-label="Pilih Tipe Unit Hunian">
               <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
-              <input id="sel-type-display" class="select-display" type="text" placeholder="Pilih tipe unit kamar..." readonly style="cursor:pointer">
+              <input id="sel-type-display" class="select-display" type="text" placeholder="Pilih tipe unit kamar..." readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
               <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
             <input type="hidden" name="room_type" class="select-value" value="">
 
             <!-- Floating Popover Container -->
-            <div class="select-popover" role="listbox">
+            <div id="room-type-listbox" class="select-popover" role="listbox">
               <div class="select-option" data-value="std" role="option" aria-selected="false">
                 <div style="display:flex;align-items:center;gap:0.75rem">
                   <div class="select-option-icon-box">
@@ -676,31 +718,61 @@
     <!-- CMP-05: Badges -->
     <div class="cmp-card" id="cmp-05">
       <span class="cmp-badge">CMP-05</span>
-      <h2 class="cmp-title">Operational Badges (Pure 4-Color Architecture)</h2>
-      <p class="cmp-desc">Badge status operasional murni 4 warna: Oranye Brand (Lunas / Beres), Merah (Void / Terlambat), Abu-abu Netral (Menunggu / Siap Huni), dan Hitam Solid (Counter / Prioritas).</p>
+      <h2 class="cmp-title">Operational Badges (Borderless Semantic Tint)</h2>
+      <p class="cmp-desc">Badge status operasional <em>borderless</em> dengan tint semantik sesuai <code>DESIGN.md</code>: Success Hijau (<code>#15803D</code> pada <code>#F0FDF4</code>), Warning Amber (<code>#B45309</code> pada <code>#FFFBEB</code>), Destructive Merah (<code>#B91C1C</code> pada <code>#FEF2F2</code>), Info Biru (<code>#1D4ED8</code> pada <code>#EFF6FF</code>), Netral Slate, serta Oranye Brand &amp; Carbon Dark.</p>
 
-      <!-- Sub 1: 4 Warna Utama Status -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. EMPAT WARNA STATUS UTAMA (ORANYE BRAND, ABU-ABU NETRAL, MERAH VOID, HITAM)</div>
+      <!-- Sub 1: Varian Inti & Identitas -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN STATUS &amp; IDENTITAS UTAMA (SUCCESS, NEUTRAL, DESTRUCTIVE, CARBON)</div>
       <div class="mid-subgrid" style="grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 2rem">
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Sukses & Aktif (5.8:1)</span>
-          <div><span class="badge badge-brand"><span class="badge-dot"></span> Lunas Terverifikasi</span></div>
-          <span class="text-caption text-muted">Aksen utama oranye</span>
+          <span class="text-caption text-muted" style="font-weight:600">Success Hijau (5.1:1)</span>
+          <div><span class="badge badge-success"><span class="badge-dot"></span> Lunas Terverifikasi</span></div>
+          <span class="text-caption text-muted">Status berhasil &amp; aman</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Antrean & Standar (9.5:1)</span>
+          <span class="text-caption text-muted" style="font-weight:600">Neutral Slate (9.5:1)</span>
           <div><span class="badge badge-neutral"><span class="badge-dot"></span> Menunggu Pembayaran</span></div>
-          <span class="text-caption text-muted">Netral slate lembut</span>
+          <span class="text-caption text-muted">Antrean &amp; status standar</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Tindakan & Void (6.7:1)</span>
+          <span class="text-caption text-muted" style="font-weight:600">Destructive Merah (5.4:1)</span>
           <div><span class="badge badge-error"><span class="badge-dot"></span> Terlambat Jatuh Tempo</span></div>
-          <span class="text-caption text-muted">Merah peringatan</span>
+          <span class="text-caption text-muted">Tunggakan, void &amp; urgent</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Counter & Prioritas (21:1)</span>
+          <span class="text-caption text-muted" style="font-weight:600">Carbon Dark (17.2:1)</span>
           <div><span class="badge badge-dark"><span class="badge-dot"></span> 24 Kamar Terisi</span></div>
-          <span class="text-caption text-muted">Hitam Carbon solid</span>
+          <span class="text-caption text-muted">Counter &amp; prioritas tinggi</span>
+        </div>
+      </div>
+
+      <!-- Sub 1B: Varian Semantik Pelengkap (Warning, Info, Brand) & Interactive -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1B. VARIAN SEMANTIK PELENGKAP (WARNING, INFO, BRAND) &amp; INTERACTIVE/DISMISSIBLE</div>
+      <div class="mid-subgrid" style="grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 2rem">
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <span class="text-caption text-muted" style="font-weight:600">Warning Amber (4.8:1)</span>
+          <div><span class="badge badge-warning"><span class="badge-dot"></span> Perbaikan / Tempo</span></div>
+          <span class="text-caption text-muted">Peringatan &amp; pemeliharaan</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <span class="text-caption text-muted" style="font-weight:600">Info Biru (5.6:1)</span>
+          <div><span class="badge badge-info"><span class="badge-dot"></span> Dipesan / Booking</span></div>
+          <span class="text-caption text-muted">Informasi reservasi aktif</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <span class="text-caption text-muted" style="font-weight:600">Brand Oranye (5.8:1)</span>
+          <div><span class="badge badge-brand"><span class="badge-dot"></span> Cabang Unggulan</span></div>
+          <span class="text-caption text-muted">Label kategori &amp; unggulan</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <span class="text-caption text-muted" style="font-weight:600">Interactive / Dismissible</span>
+          <div>
+            <button type="button" class="badge badge-neutral" onclick="showToast('Filter Lantai 1 dihapus.', 'neutral', false)" aria-label="Hapus filter Lantai 1">
+              Lantai 1
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <span class="text-caption text-muted">Hover &amp; focus ring keyboard</span>
         </div>
       </div>
 
@@ -709,45 +781,45 @@
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem">
         <!-- Kolom Kiri: Okupansi & Kamar -->
         <div>
-          <div style="font-weight:600;font-size:0.875rem;margin-bottom:0.75rem;color:#0F172A">Status Fisik & Okupansi Kamar</div>
+          <div style="font-weight:600;font-size:0.875rem;margin-bottom:0.75rem;color:var(--color-text-primary)">Status Fisik &amp; Okupansi Kamar</div>
           <div style="display:flex;flex-direction:column">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
-              <span class="text-small tabular" style="color:#0F172A;font-weight:500">Unit 101 • Deluxe Room</span>
-              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Terisi (Aktif)</span>
+              <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">Unit 101 • Deluxe Room</span>
+              <span class="badge badge-success badge-sm"><span class="badge-dot"></span> Siap Huni</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
-              <span class="text-small tabular" style="color:#0F172A;font-weight:500">Unit 102 • Standard Room</span>
-              <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Siap Huni</span>
+              <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">Unit 102 • Standard Room</span>
+              <span class="badge badge-info badge-sm"><span class="badge-dot"></span> Dipesan (DP)</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
-              <span class="text-small tabular" style="color:#0F172A;font-weight:500">Unit 103 • Standard Room</span>
-              <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Pembersihan</span>
+              <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">Unit 103 • Standard Room</span>
+              <span class="badge badge-warning badge-sm"><span class="badge-dot"></span> Pembersihan</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0">
-              <span class="text-small tabular" style="color:#0F172A;font-weight:500">Unit 201 • Suite Executive</span>
-              <span class="badge badge-error badge-sm"><span class="badge-dot"></span> Rusak / Void</span>
+              <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">Unit 201 • Suite Executive</span>
+              <span class="badge badge-error badge-sm"><span class="badge-dot"></span> Perbaikan / Rusak</span>
             </div>
           </div>
         </div>
 
         <!-- Kolom Kanan: Tiket Komplain & Servis SLA -->
         <div>
-          <div style="font-weight:600;font-size:0.875rem;margin-bottom:0.75rem;color:#0F172A">Tiket Komplain & Servis SLA Penghuni</div>
+          <div style="font-weight:600;font-size:0.875rem;margin-bottom:0.75rem;color:var(--color-text-primary)">Tiket Komplain &amp; Servis SLA Penghuni</div>
           <div style="display:flex;flex-direction:column">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
-              <span class="text-small tabular" style="color:#0F172A;font-weight:500">#TK-101 • AC Tidak Dingin</span>
+              <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">#TK-101 • AC Tidak Dingin</span>
               <span class="badge badge-error badge-sm"><span class="badge-dot"></span> Urgent (24 Jam)</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
-              <span class="text-small tabular" style="color:#0F172A;font-weight:500">#TK-098 • Ganti Lampu LED</span>
-              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Pengerjaan</span>
+              <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">#TK-098 • Ganti Lampu LED</span>
+              <span class="badge badge-warning badge-sm"><span class="badge-dot"></span> Pengerjaan</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
-              <span class="text-small tabular" style="color:#0F172A;font-weight:500">#TK-095 • Servis Water Heater</span>
-              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Selesai</span>
+              <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">#TK-095 • Servis Water Heater</span>
+              <span class="badge badge-success badge-sm"><span class="badge-dot"></span> Selesai</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0">
-              <span class="text-small tabular" style="color:#0F172A;font-weight:500">#TK-091 • Pengecekan WiFi</span>
+              <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">#TK-091 • Pengecekan WiFi</span>
               <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Antrean Jadwal</span>
             </div>
           </div>
@@ -759,38 +831,42 @@
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem">
         <!-- Regular Size -->
         <div>
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A;margin-bottom:0.25rem">Ukuran Regular (12px / Height 28px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:var(--color-text-primary);margin-bottom:0.25rem">Ukuran Regular (12px)</div>
           <p class="text-caption text-muted mb-3">Untuk Header Halaman, Detail Tagihan, Modal, dan Kartu Ringkasan.</p>
           <div class="flex gap-2 items-center" style="flex-wrap:wrap">
-            <span class="badge badge-brand"><span class="badge-dot"></span> Regular Lunas</span>
-            <span class="badge badge-neutral"><span class="badge-dot"></span> Menunggu</span>
+            <span class="badge badge-success"><span class="badge-dot"></span> Lunas</span>
+            <span class="badge badge-warning"><span class="badge-dot"></span> Tempo</span>
             <span class="badge badge-error"><span class="badge-dot"></span> Terlambat</span>
+            <span class="badge badge-info"><span class="badge-dot"></span> Dipesan</span>
+            <span class="badge badge-neutral"><span class="badge-dot"></span> Draft</span>
             <span class="badge badge-dark"><span class="badge-dot"></span> VIP</span>
           </div>
         </div>
 
         <!-- Compact Size -->
         <div>
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A;margin-bottom:0.25rem">Ukuran Compact Table Cell (11px / Height 22px)</div>
-          <p class="text-caption text-muted mb-3">Khusus sel tabel dense, baris data kamar, dan list item transaksi.</p>
+          <div style="font-weight:600;font-size:0.875rem;color:var(--color-text-primary);margin-bottom:0.25rem">Ukuran Compact Table Cell (11px)</div>
+          <p class="text-caption text-muted mb-3">Khusus sel tabel padat, baris data kamar, dan list item transaksi.</p>
           <div class="flex gap-2 items-center" style="flex-wrap:wrap">
-            <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Compact Lunas</span>
-            <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Menunggu</span>
+            <span class="badge badge-success badge-sm"><span class="badge-dot"></span> Lunas</span>
+            <span class="badge badge-warning badge-sm"><span class="badge-dot"></span> Tempo</span>
             <span class="badge badge-error badge-sm"><span class="badge-dot"></span> Void</span>
+            <span class="badge badge-info badge-sm"><span class="badge-dot"></span> Dipesan</span>
+            <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Draft</span>
             <span class="badge badge-dark badge-sm"><span class="badge-dot"></span> VIP</span>
           </div>
         </div>
       </div>
 
       <!-- Sub 4: Varian Khusus Signature Estify (Trend KPI, Filter Dismissible, Overlay Foto, Counter) -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. VARIAN KHUSUS SIGNATURE ESTIFY (TREND KPI, FILTER TAG, OVERLAY FOTO, COUNTER)</div>
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. VARIAN KHUSUS (TREND KPI, FILTER TAG, OVERLAY FOTO SOLID, COUNTER)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 2rem">
         <!-- Kolom Kiri: Trend KPI & Dismissible Tags & Counters -->
         <div style="display:flex;flex-direction:column;gap:1.25rem">
           <div>
-            <div class="text-caption text-muted mb-2" style="font-weight:600">Trend Metrik KPI & Tag Filter Hapus:</div>
+            <div class="text-caption text-muted mb-2" style="font-weight:600">Trend Metrik KPI &amp; Tag Filter Hapus:</div>
             <div class="flex gap-2 items-center" style="flex-wrap:wrap">
-              <span class="badge badge-brand badge-trend">
+              <span class="badge badge-success badge-trend">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
                 +14.8% MoM
               </span>
@@ -827,20 +903,20 @@
           </div>
         </div>
 
-        <!-- Kolom Kanan: Preview Overlay Foto Properti 16:10 -->
+        <!-- Kolom Kanan: Preview Overlay Foto Properti 16:10 (Solid Opaque White) -->
         <div style="display:flex;align-items:center;gap:1.25rem">
-          <div style="position:relative;width:150px;height:90px;border-radius:14px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.08);flex-shrink:0">
+          <div style="position:relative;width:150px;height:90px;border-radius:14px;overflow:hidden;box-shadow:0 2px 6px rgba(17,24,39,0.08);flex-shrink:0">
             <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=360&h=180&fit=crop" alt="Foto Kamar" style="width:100%;height:100%;object-fit:cover">
             <div style="position:absolute;top:8px;left:8px">
               <span class="badge badge-overlay">
-                <span class="badge-dot" style="background-color:var(--color-brand)"></span>
+                <span class="badge-dot" style="background-color:#15803D"></span>
                 Siap Huni
               </span>
             </div>
           </div>
           <div>
-            <div style="font-weight:600;font-size:0.9375rem;color:#0F172A;margin-bottom:0.25rem">Foto Properti 16:10 (Overlay Badge)</div>
-            <p class="text-caption text-muted" style="line-height:1.45">Simulasi floating glass badge di atas foto kamar beresolusi tinggi dengan backdrop-filter blur.</p>
+            <div style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:0.25rem">Foto Properti 16:10 (Overlay Badge)</div>
+            <p class="text-caption text-muted" style="line-height:1.45">Badge putih solid opaque (tanpa glassmorphism sesuai <code>DESIGN.md</code>) dengan border <code>#ECEEF2</code> di atas foto kamar.</p>
           </div>
         </div>
       </div>
@@ -1035,7 +1111,7 @@
     <div class="cmp-card" id="cmp-07">
       <span class="cmp-badge">CMP-07</span>
       <h2 class="cmp-title">Loading Spinner System</h2>
-      <p class="cmp-desc">Indikator proses asynchronous pengiriman data dan pemuatan antarmuka latar belakang dengan animasi putaran mulus continuous (600ms linear), variasi ukuran atomik (16px, 24px, 36px, 48px), tema warna Estify, dan kepatuhan WCAG 2.2 AA (role="status").</p>
+      <p class="cmp-desc">Indikator proses asynchronous pengiriman data dan pemuatan antarmuka latar belakang dengan animasi putaran mulus continuous (600ms linear), variasi ukuran atomik (16px, 24px, 32px, 48px), tema warna Estify, dan kepatuhan WCAG 2.2 AA (role="status").</p>
 
       <!-- Sub 1: Skala Ukuran & Varian Warna -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. SKALA UKURAN & VARIAN WARNA (ATOMIK)</div>
@@ -1064,7 +1140,7 @@
 
         <!-- Size 3: 36px (lg) -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Large (36px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Large (32px)</div>
           <div class="flex items-center gap-3">
             <span class="spinner spinner-lg spinner-brand" role="status" aria-label="Memuat..."></span>
             <span class="spinner spinner-lg spinner-neutral" role="status" aria-label="Memuat..."></span>
@@ -1320,6 +1396,98 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Sub 4: Matriks Varian Ikon & Skala Chevron Dropdown (Terinspirasi UI Spec Matrix) -->
+      <div class="text-caption text-muted" style="font-weight:700;letter-spacing:0.05em;margin:2rem 0 0.75rem">4. MATRIKS VARIAN IKON &amp; CHEVRON DROPDOWN (STATE, COUNTER &amp; SKALA 12–24px)</div>
+      <div class="mid-subgrid" style="grid-template-columns: 1.15fr 0.85fr; gap: 1.25rem; align-items: stretch;">
+        <!-- Matriks State Ikon Inti -->
+        <div class="state-matrix-wrap">
+          <table class="state-matrix" style="min-width: 420px; border-spacing: 0.625rem 0.75rem;">
+            <thead>
+              <tr>
+                <th>Ikon Domain</th>
+                <th>Muted</th>
+                <th>Default</th>
+                <th>Active</th>
+                <th>Brand / Counter</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="matrix-row-label">Penghuni</td>
+                <td><svg class="icon-md" style="color:#94A3B8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
+                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
+                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
+                <td><svg class="icon-md" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
+              </tr>
+              <tr>
+                <td class="matrix-row-label">Pencarian</td>
+                <td><svg class="icon-md" style="color:#94A3B8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
+                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
+                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
+                <td><svg class="icon-md" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
+              </tr>
+              <tr>
+                <td class="matrix-row-label">Hapus / Void</td>
+                <td><svg class="icon-md" style="color:#94A3B8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
+                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
+                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
+                <td><svg class="icon-md" style="color:var(--color-error)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
+              </tr>
+              <tr>
+                <td class="matrix-row-label">Notifikasi</td>
+                <td><svg class="icon-md" style="color:#94A3B8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
+                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
+                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
+                <td>
+                  <span class="icon-count-wrap" aria-label="Notifikasi baru 1">
+                    <svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="icon-count-badge tabular">1</span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Matriks Chevron Dropdown (Buka vs Tutup) -->
+        <div class="state-matrix-wrap">
+          <table class="state-matrix" style="min-width: 280px; border-spacing: 0.625rem 0.75rem;">
+            <thead>
+              <tr>
+                <th>Dropdown</th>
+                <th>12px</th>
+                <th>16px</th>
+                <th>20px</th>
+                <th>24px</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="matrix-row-label">Tertutup</td>
+                <td><svg class="icon-xs" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></td>
+                <td><svg class="icon-sm" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></td>
+                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg></td>
+                <td><svg class="icon-lg" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg></td>
+              </tr>
+              <tr>
+                <td class="matrix-row-label">Terbuka</td>
+                <td><svg class="icon-xs" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-sm" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-lg" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+              </tr>
+              <tr>
+                <td class="matrix-row-label">Aktif Brand</td>
+                <td><svg class="icon-xs" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-sm" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-md" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-lg" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
