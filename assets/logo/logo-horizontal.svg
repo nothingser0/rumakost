@@ -8,13 +8,13 @@
   <rect x="29" y="37" width="5" height="4" fill="white" rx="1"/>
   <rect x="29" y="44" width="3" height="3" fill="white" rx="1"/>
 
-  <!-- WORDMARK: Ruma (Carbon Dark) + Kost (Brand Orange) -->
+  <!-- WORDMARK: Ruma (Pure Black) + Kost (Brand Orange) -->
   <text
     x="66" y="27.5"
     font-family="Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
     font-size="24" font-weight="700" letter-spacing="-0.6"
     dominant-baseline="middle">
-    <tspan fill="#0F172A">Ruma</tspan><tspan fill="#F97316">Kost</tspan>
+    <tspan fill="#000000">Ruma</tspan><tspan fill="#F97316">Kost</tspan>
   </text>
 
 </svg>

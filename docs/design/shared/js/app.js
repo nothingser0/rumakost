@@ -6,14 +6,17 @@
 document.addEventListener('DOMContentLoaded', () => {
   initModals();
   initToasts();
+  initInputMasks();
+  initSteppers();
+  initPasswordToggles();
+  initSearchClears();
+  initLiveValidation();
   initForms();
-  initDropdowns();
   initDatepickers();
   initSelects();
-  
-  // CMP-06 Indeterminate Checkbox Demo Initialization
-  const indetChk = document.getElementById('chk-indeterminate-demo');
-  if (indetChk) indetChk.indeterminate = true;
+  initPopoverMenus();
+  initBadges();
+  initBooleanControls();
 
   // CMP-01 & CMP-07 Debounced Loading Button Demos
   document.querySelectorAll('[data-loading-demo]').forEach(btn => {
@@ -36,16 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnDemoLoading = document.getElementById('btn-demo-loading');
   if (btnDemoLoading) {
     btnDemoLoading.addEventListener('click', () => {
+      if (btnDemoLoading.classList.contains('is-loading')) return;
       const origContent = btnDemoLoading.innerHTML;
       btnDemoLoading.classList.add('is-loading');
       btnDemoLoading.setAttribute('aria-busy', 'true');
-      btnDemoLoading.innerHTML = '<span class="spinner spinner-sm spinner-brand" style="margin-right:0.5rem"></span> Menyimpan Kontrak...';
+      btnDemoLoading.innerHTML = '<span class="spinner spinner-sm spinner-brand" aria-hidden="true"></span><span>Menyimpan Kontrak...</span>';
       setTimeout(() => {
         btnDemoLoading.classList.remove('is-loading');
         btnDemoLoading.removeAttribute('aria-busy');
         btnDemoLoading.innerHTML = origContent;
         if (window.showToast) {
-          window.showToast('Data kontrak sewa berhasil disimpan! (Async 2s Selesai)', 'success', false);
+          window.showToast('Data kontrak sewa berhasil disimpan! (Async 2s Selesai)', 'brand', false);
         }
       }, 2000);
     });
@@ -63,9 +67,225 @@ document.addEventListener('DOMContentLoaded', () => {
   // CMP-19 SupervisorOverrideModal Demo
   initSupervisorOverride();
 
-  // CMP-02 Keyboard-accessible Dropzone
+  // CMP-02 Keyboard & Drag-and-Drop Uploads
+  initCompactUploads();
   initDropzones();
 });
+
+function formatWithDigitCaret(input, formatFn) {
+  const raw = input.value;
+  const caret = input.selectionStart ?? raw.length;
+  const atEnd = caret >= raw.length;
+  const digitsBefore = raw.slice(0, caret).replace(/[^0-9]/g, '').length;
+  const formatted = formatFn(raw);
+  if (raw === formatted) return;
+  input.value = formatted;
+  if (document.activeElement === input && typeof input.setSelectionRange === 'function') {
+    if (atEnd) {
+      input.setSelectionRange(formatted.length, formatted.length);
+      return;
+    }
+    let pos = 0;
+    let seen = 0;
+    while (pos < formatted.length && seen < digitsBefore) {
+      if (/[0-9]/.test(formatted[pos])) seen++;
+      pos++;
+    }
+    input.setSelectionRange(pos, pos);
+  }
+}
+
+function initInputMasks() {
+  document.querySelectorAll('[data-currency-input]').forEach(input => {
+    const maxDigits = parseInt(input.getAttribute('data-max-digits') || '13', 10);
+    const formatCurrency = (raw) => {
+      const digits = raw.replace(/[^0-9]/g, '').slice(0, maxDigits);
+      if (!digits) return '';
+      const normalized = digits.replace(/^0+(?=\d)/, '');
+      return normalized.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
+    input.addEventListener('input', () => formatWithDigitCaret(input, formatCurrency));
+  });
+
+  document.querySelectorAll('[data-phone-id]').forEach(input => {
+    const formatPhone = (raw) => {
+      let digits = raw.replace(/[^0-9]/g, '');
+      if (digits.startsWith('62') && (raw.trim().startsWith('+62') || digits.startsWith('628'))) {
+        digits = digits.slice(2);
+      }
+      digits = digits.replace(/^0+/, '').slice(0, 12);
+      if (!digits) return '';
+      return digits.replace(/(\d{1,3})(\d{0,4})(\d{0,5})/, (_, a, b, c) => a + (b ? '-' + b : '') + (c ? '-' + c : ''));
+    };
+    input.addEventListener('input', () => formatWithDigitCaret(input, formatPhone));
+  });
+}
+
+function initSteppers() {
+  document.querySelectorAll('[data-stepper]').forEach(stepper => {
+    const decBtn = stepper.querySelector('[data-stepper-dec]');
+    const incBtn = stepper.querySelector('[data-stepper-inc]');
+    const valEl = stepper.querySelector('[data-stepper-val]');
+    const hiddenInput = stepper.querySelector('[data-stepper-input]');
+    if (!decBtn || !incBtn || !valEl) return;
+
+    const min = parseInt(stepper.getAttribute('data-min') || '1', 10);
+    const max = parseInt(stepper.getAttribute('data-max') || '3', 10);
+
+    const sync = (nextVal) => {
+      const clamped = Math.max(min, Math.min(max, nextVal));
+      valEl.textContent = String(clamped);
+      if (hiddenInput) hiddenInput.value = String(clamped);
+      decBtn.disabled = clamped <= min;
+      incBtn.disabled = clamped >= max;
+    };
+
+    sync(parseInt(valEl.textContent, 10) || min);
+    decBtn.addEventListener('click', () => sync((parseInt(valEl.textContent, 10) || min) - 1));
+    incBtn.addEventListener('click', () => sync((parseInt(valEl.textContent, 10) || min) + 1));
+  });
+}
+
+function initPasswordToggles() {
+  const eyeOpenSvg = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const eyeClosedSvg = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
+  document.querySelectorAll('[data-password-toggle]').forEach(btn => {
+    const target = document.getElementById(btn.getAttribute('data-password-toggle'));
+    if (!target) return;
+    btn.addEventListener('click', () => {
+      const showText = target.type === 'password';
+      target.type = showText ? 'text' : 'password';
+      btn.setAttribute('aria-pressed', String(showText));
+      btn.setAttribute('aria-label', showText ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
+      btn.innerHTML = showText ? eyeClosedSvg : eyeOpenSvg;
+    });
+  });
+}
+
+function initSearchClears() {
+  document.querySelectorAll('[data-search-clear]').forEach(btn => {
+    const input = document.getElementById(btn.getAttribute('data-search-clear'));
+    if (!input) return;
+    const syncVisibility = () => {
+      btn.style.display = input.value ? 'inline-flex' : 'none';
+    };
+    syncVisibility();
+    input.addEventListener('input', syncVisibility);
+    btn.addEventListener('click', () => {
+      input.value = '';
+      syncVisibility();
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.focus();
+    });
+  });
+}
+
+function validateUploadFile(file, maxMb = 5) {
+  if (!file) return { valid: false, message: 'Tidak ada berkas yang dipilih.' };
+  const allowedTypes = ['image/jpeg', 'image/png'];
+  const hasValidMime = allowedTypes.includes(file.type);
+  const hasValidExt = /\.(jpe?g|png)$/i.test(file.name);
+  if (!hasValidMime && !(file.type === '' && hasValidExt)) {
+    return { valid: false, message: 'Format berkas harus JPG atau PNG.' };
+  }
+  if (file.size > maxMb * 1024 * 1024) {
+    return { valid: false, message: `Ukuran berkas melebihi batas maksimal ${maxMb} MB.` };
+  }
+  return { valid: true };
+}
+
+function formatUploadSize(bytes) {
+  if (bytes < 1024 * 1024) {
+    return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  }
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function renderFieldError(wrapper, targetEl, message, isStatic = false) {
+  if (!wrapper) return;
+  wrapper.classList.add('has-error');
+  if (targetEl) targetEl.setAttribute('aria-invalid', 'true');
+  const existingStatic = wrapper.querySelector('.error-message[data-static-error="true"]');
+  if (isStatic && existingStatic) {
+    existingStatic.style.display = 'flex';
+    return;
+  }
+  const existingGen = wrapper.querySelector('.error-message[data-generated-error="true"]');
+  if (existingGen) existingGen.remove();
+
+  const err = document.createElement('span');
+  err.className = 'error-message';
+  err.setAttribute('data-generated-error', 'true');
+  const errId = `${(targetEl && targetEl.id) || 'field'}-err`;
+  err.id = errId;
+  err.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  const textNode = document.createElement('span');
+  textNode.textContent = message;
+  err.appendChild(textNode);
+
+  if (targetEl) {
+    const prevDescribedBy = (targetEl.getAttribute('aria-describedby') || '')
+      .split(/\s+/)
+      .filter(id => id && id !== errId);
+    prevDescribedBy.push(errId);
+    targetEl.setAttribute('aria-describedby', prevDescribedBy.join(' '));
+  }
+  wrapper.appendChild(err);
+}
+
+function clearFieldError(wrapper, targetEl) {
+  if (wrapper) {
+    wrapper.classList.remove('has-error');
+    const gen = wrapper.querySelector('.error-message[data-generated-error="true"]');
+    if (gen) gen.remove();
+  }
+  if (targetEl) {
+    targetEl.removeAttribute('aria-invalid');
+    const errId = `${targetEl.id || 'field'}-err`;
+    const described = (targetEl.getAttribute('aria-describedby') || '')
+      .split(/\s+/)
+      .filter(id => id && id !== errId);
+    if (described.length) targetEl.setAttribute('aria-describedby', described.join(' '));
+    else targetEl.removeAttribute('aria-describedby');
+  }
+}
+
+function initCompactUploads() {
+  document.querySelectorAll('[data-compact-upload]').forEach(box => {
+    const fileInput = box.querySelector('input[type="file"]');
+    const nameEl = box.querySelector('[data-upload-filename]');
+    if (!fileInput || !nameEl) return;
+
+    const maxMb = parseInt(box.getAttribute('data-max-mb') || '5', 10);
+    const wrapper = box.closest('.input-wrapper');
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        nameEl.textContent = 'Belum ada berkas terpilih';
+        box.classList.remove('has-error');
+        clearFieldError(wrapper, fileInput);
+        return;
+      }
+      const check = validateUploadFile(file, maxMb);
+      if (!check.valid) {
+        fileInput.value = '';
+        nameEl.textContent = 'Berkas ditolak';
+        box.classList.add('has-error');
+        renderFieldError(wrapper, fileInput, check.message);
+        if (window.showToast) window.showToast(check.message, 'error', true);
+        return;
+      }
+      box.classList.remove('has-error');
+      clearFieldError(wrapper, fileInput);
+      nameEl.textContent = `${file.name} (${formatUploadSize(file.size)})`;
+      if (window.showToast) {
+        window.showToast(`Berkas "${file.name}" siap diunggah.`, 'success', false);
+      }
+    });
+  });
+}
 
 function initDropzones() {
   document.querySelectorAll('[data-dropzone]').forEach(zone => {
@@ -74,26 +294,89 @@ function initDropzones() {
     const statusEl = zone.querySelector('[data-dropzone-status]');
     if (!fileInput) return;
 
+    const maxMb = parseInt(zone.getAttribute('data-max-mb') || '5', 10);
+    const wrapper = zone.closest('.input-wrapper');
+
+    const handleSelectedFile = (file) => {
+      if (!file) return;
+      const check = validateUploadFile(file, maxMb);
+      if (!check.valid) {
+        fileInput.value = '';
+        zone.classList.add('has-error');
+        if (statusEl) {
+          statusEl.textContent = 'Unggah ulang foto berformat JPG atau PNG maksimal 5 MB.';
+        }
+        renderFieldError(wrapper, zone, check.message);
+        if (window.showToast) window.showToast(check.message, 'error', true);
+        return;
+      }
+      zone.classList.remove('has-error');
+      clearFieldError(wrapper, zone);
+      if (statusEl) {
+        statusEl.textContent = `Berkas terpilih: ${file.name} (${formatUploadSize(file.size)})`;
+      }
+      if (window.showToast) {
+        window.showToast(`Berkas "${file.name}" siap diunggah.`, 'success', false);
+      }
+    };
+
+    const isDisabled = () => zone.classList.contains('is-disabled') || fileInput.disabled;
+
     zone.addEventListener('click', (e) => {
+      if (isDisabled()) return;
       if (e.target !== fileInput) fileInput.click();
     });
 
     zone.addEventListener('keydown', (e) => {
+      if (isDisabled()) return;
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         fileInput.click();
       }
     });
 
+    zone.addEventListener('dragenter', (e) => {
+      if (isDisabled()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      zone.classList.add('is-dragover');
+    });
+
+    zone.addEventListener('dragover', (e) => {
+      if (isDisabled()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+      zone.classList.add('is-dragover');
+    });
+
+    zone.addEventListener('dragleave', (e) => {
+      e.stopPropagation();
+      if (!e.relatedTarget || !zone.contains(e.relatedTarget)) {
+        zone.classList.remove('is-dragover');
+      }
+    });
+
+    zone.addEventListener('drop', (e) => {
+      if (isDisabled()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      zone.classList.remove('is-dragover');
+      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (!file) return;
+      try {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        fileInput.files = dt.files;
+      } catch (_) {
+        // Fallback for environments where DataTransfer constructor is restricted
+      }
+      handleSelectedFile(file);
+    });
+
     fileInput.addEventListener('change', () => {
       const file = fileInput.files && fileInput.files[0];
-      if (!file) return;
-      if (statusEl) {
-        statusEl.textContent = `Berkas terpilih: ${file.name}`;
-      }
-      if (window.showToast) {
-        window.showToast(`Berkas "${file.name}" siap diunggah.`, 'success', false);
-      }
+      handleSelectedFile(file);
     });
   });
 }
@@ -241,6 +524,9 @@ function initModals() {
 
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      if (document.querySelector('.datepicker-container.is-open, .custom-select-wrapper.is-open, .popover-menu-wrapper.is-open')) {
+        return;
+      }
       const openModal = document.querySelector('.modal-backdrop.is-open');
       if (openModal) closeModal(openModal);
     }
@@ -291,10 +577,107 @@ function initToasts() {
   };
 }
 
+function isEmailValid(val) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
+}
+
+function initLiveValidation() {
+  document.querySelectorAll('[data-char-counter]').forEach(field => {
+    const counter = document.getElementById(field.getAttribute('data-char-counter'));
+    if (!counter) return;
+    const maxLen = field.getAttribute('maxlength') || '250';
+    const syncCount = () => {
+      counter.textContent = `${field.value.length} / ${maxLen} karakter`;
+    };
+    syncCount();
+    field.addEventListener('input', syncCount);
+  });
+
+  document.querySelectorAll('[data-validate-email]').forEach(input => {
+    const errorEl = document.getElementById(input.getAttribute('data-error-target') || '');
+    const container = input.closest('.pill-input-box') || input;
+    const wrapper = input.closest('.input-wrapper');
+    const syncEmail = () => {
+      const ok = isEmailValid(input.value);
+      container.classList.toggle('has-error', !ok);
+      if (wrapper) wrapper.classList.toggle('has-error', !ok);
+      input.setAttribute('aria-invalid', String(!ok));
+      if (errorEl) errorEl.style.display = ok ? 'none' : 'flex';
+    };
+    input.addEventListener('input', syncEmail);
+  });
+
+  document.querySelectorAll('[data-min-length]').forEach(field => {
+    const minLen = parseInt(field.getAttribute('data-min-length') || '1', 10);
+    const errorEl = document.getElementById(field.getAttribute('data-error-target') || '');
+    const wrapper = field.closest('.input-wrapper');
+    const syncLength = () => {
+      const ok = field.value.trim().length >= minLen;
+      field.classList.toggle('has-error', !ok);
+      if (wrapper) wrapper.classList.toggle('has-error', !ok);
+      field.setAttribute('aria-invalid', String(!ok));
+      if (errorEl) errorEl.style.display = ok ? 'none' : 'flex';
+    };
+    field.addEventListener('input', syncLength);
+  });
+}
+
+function getFormFieldTarget(input) {
+  const selectWrapper = input.closest('.custom-select-wrapper');
+  if (selectWrapper) {
+    return selectWrapper.querySelector('.select-trigger') || input;
+  }
+  const dateWrapper = input.closest('.datepicker-container');
+  if (dateWrapper) {
+    return dateWrapper.querySelector('.datepicker-trigger') || input;
+  }
+  return input;
+}
+
+function validateRequiredField(input) {
+  const val = input.value.trim();
+  const isEmpty = !val;
+  const emailInvalid = input.type === 'email' && Boolean(val) && !isEmailValid(val);
+  const wrapper = input.closest('.input-wrapper');
+  const focusTarget = getFormFieldTarget(input);
+
+  if (isEmpty || emailInvalid) {
+    const hasStatic = Boolean(wrapper && wrapper.querySelector('.error-message[data-static-error="true"]'));
+    const msg = emailInvalid
+      ? 'Format alamat email tidak valid.'
+      : (input.getAttribute('data-error-msg') || 'Bidang ini wajib diisi');
+    if (focusTarget !== input) {
+      focusTarget.classList.add('has-error');
+    }
+    renderFieldError(wrapper, focusTarget, msg, hasStatic);
+    return focusTarget;
+  }
+
+  if (focusTarget !== input) {
+    focusTarget.classList.remove('has-error');
+  }
+  if (!wrapper || !wrapper.querySelector('.error-message[data-static-error="true"]')) {
+    clearFieldError(wrapper, focusTarget);
+  } else {
+    focusTarget.removeAttribute('aria-invalid');
+  }
+  return null;
+}
+
 function initForms() {
   const forms = document.querySelectorAll('form[data-validate]');
 
   forms.forEach(form => {
+    form.querySelectorAll('[required]').forEach(input => {
+      const eventName = input.type === 'hidden' ? 'change' : 'input';
+      input.addEventListener(eventName, () => {
+        const wrapper = input.closest('.input-wrapper');
+        if (wrapper && wrapper.classList.contains('has-error')) {
+          validateRequiredField(input);
+        }
+      });
+    });
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const requiredInputs = form.querySelectorAll('[required]');
@@ -308,34 +691,9 @@ function initForms() {
       form.querySelectorAll('.error-message[data-generated-error="true"]').forEach(m => m.remove());
 
       requiredInputs.forEach(input => {
-        const val = input.value.trim();
-        const isEmailInvalid = input.type === 'email' && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-        const isEmpty = !val;
-
-        if (isEmpty || isEmailInvalid) {
-          const wrapper = input.closest('.input-wrapper');
-          input.setAttribute('aria-invalid', 'true');
-          if (wrapper) {
-            wrapper.classList.add('has-error');
-            const staticErr = wrapper.querySelector('.error-message[data-static-error="true"]');
-            if (staticErr) {
-              staticErr.style.display = 'flex';
-            } else {
-              const err = document.createElement('span');
-              err.className = 'error-message';
-              err.setAttribute('data-generated-error', 'true');
-              const errId = `${input.id || 'field'}-err`;
-              err.id = errId;
-              err.textContent = isEmailInvalid
-                ? 'Format alamat email tidak valid.'
-                : (input.getAttribute('data-error-msg') || 'Bidang ini wajib diisi');
-              input.setAttribute('aria-describedby', errId);
-              wrapper.appendChild(err);
-            }
-          }
-          if (!firstInvalid) firstInvalid = input;
-        } else {
-          input.removeAttribute('aria-invalid');
+        const invalidTarget = validateRequiredField(input);
+        if (invalidTarget && !firstInvalid) {
+          firstInvalid = invalidTarget;
         }
       });
 
@@ -367,122 +725,7 @@ function initForms() {
   });
 }
 
-// 4. Interactive Dropdown Popover Engine (Keyboard & ARIA Compliant)
-function initDropdowns() {
-  function closeAllDropdowns() {
-    document.querySelectorAll('.dropdown-wrapper.is-open').forEach(d => {
-      d.classList.remove('is-open');
-      const t = d.querySelector('[data-dropdown-toggle]');
-      if (t) t.setAttribute('aria-expanded', 'false');
-    });
-  }
-
-  function openDropdown(wrapper, focusFirst = false) {
-    closeAllDropdowns();
-    document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
-      w.classList.remove('is-open');
-      const t = w.querySelector('.select-trigger');
-      if (t) t.setAttribute('aria-expanded', 'false');
-    });
-    document.querySelectorAll('.datepicker-container.is-open').forEach(d => {
-      d.classList.remove('is-open');
-      const t = d.querySelector('.datepicker-trigger');
-      if (t) t.setAttribute('aria-expanded', 'false');
-    });
-    wrapper.classList.add('is-open');
-    const trigger = wrapper.querySelector('[data-dropdown-toggle]');
-    if (trigger) trigger.setAttribute('aria-expanded', 'true');
-    if (focusFirst) {
-      const activeItem = wrapper.querySelector('.dropdown-item.active') || wrapper.querySelector('.dropdown-item');
-      if (activeItem) activeItem.focus();
-    }
-  }
-
-  function selectDropdownItem(item) {
-    const wrapper = item.closest('.dropdown-wrapper');
-    const label = wrapper.querySelector('.dropdown-label');
-    if (label) label.textContent = item.textContent.trim();
-    wrapper.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-    wrapper.classList.remove('is-open');
-    const trigger = wrapper.querySelector('[data-dropdown-toggle]');
-    if (trigger) {
-      trigger.setAttribute('aria-expanded', 'false');
-      trigger.focus();
-    }
-  }
-
-  document.addEventListener('click', (e) => {
-    const trigger = e.target.closest('[data-dropdown-toggle]');
-    if (trigger) {
-      const wrapper = trigger.closest('.dropdown-wrapper');
-      const wasOpen = wrapper.classList.contains('is-open');
-      if (wasOpen) {
-        closeAllDropdowns();
-      } else {
-        openDropdown(wrapper, false);
-      }
-      return;
-    }
-
-    const item = e.target.closest('.dropdown-item');
-    if (item) {
-      selectDropdownItem(item);
-      return;
-    }
-
-    if (!e.target.closest('.dropdown-menu-floating')) {
-      closeAllDropdowns();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    const trigger = e.target.closest('[data-dropdown-toggle]');
-    if (trigger) {
-      const wrapper = trigger.closest('.dropdown-wrapper');
-      const isOpen = wrapper.classList.contains('is-open');
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        openDropdown(wrapper, true);
-      } else if ((e.key === 'Enter' || e.key === ' ') && !isOpen) {
-        e.preventDefault();
-        openDropdown(wrapper, true);
-      }
-      return;
-    }
-
-    const item = e.target.closest('.dropdown-item');
-    if (item) {
-      const wrapper = item.closest('.dropdown-wrapper');
-      const items = Array.from(wrapper.querySelectorAll('.dropdown-item'));
-      const idx = items.indexOf(item);
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        items[(idx + 1) % items.length].focus();
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        items[(idx - 1 + items.length) % items.length].focus();
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        selectDropdownItem(item);
-      } else if (e.key === 'Escape') {
-        e.preventDefault();
-        closeAllDropdowns();
-        const t = wrapper.querySelector('[data-dropdown-toggle]');
-        if (t) t.focus();
-      } else if (e.key === 'Tab') {
-        closeAllDropdowns();
-      }
-      return;
-    }
-
-    if (e.key === 'Escape') {
-      closeAllDropdowns();
-    }
-  });
-}
-
-// 5. Interactive Custom Datepicker Engine (CMP-02 / Estify Signature)
+// 4. Interactive Custom Datepicker Engine (CMP-02 / Estify Signature)
 function initDatepickers() {
   const monthNames = [
     'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -614,16 +857,32 @@ function initDatepickers() {
       }
     }
 
+    const srValueEl = trigger ? trigger.querySelector('.datepicker-sr-value') : null;
+
+    function syncSrValue(text) {
+      if (srValueEl) srValueEl.textContent = text || 'Belum dipilih';
+    }
+
+    if (displayInput.value) {
+      syncSrValue(displayInput.value);
+    }
+
     function selectDate(date) {
       selectedDate = date;
       viewYear = date.getFullYear();
       viewMonth = date.getMonth();
-      displayInput.value = formatDisplayDate(date);
+      const formatted = formatDisplayDate(date);
+      displayInput.value = formatted;
+      syncSrValue(formatted);
       if (hiddenInput) {
         hiddenInput.value = formatIsoDate(date);
         hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
       }
       displayInput.dispatchEvent(new Event('input', { bubbles: true }));
+      if (trigger) {
+        trigger.classList.remove('has-error');
+        clearFieldError(container.closest('.input-wrapper'), trigger);
+      }
       renderCalendar();
       closePicker(true);
     }
@@ -631,6 +890,7 @@ function initDatepickers() {
     function clearDate() {
       selectedDate = null;
       displayInput.value = '';
+      syncSrValue('');
       if (hiddenInput) {
         hiddenInput.value = '';
         hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
@@ -641,14 +901,7 @@ function initDatepickers() {
     }
 
     function openPicker(focusCalendar = false) {
-      document.querySelectorAll('.datepicker-container.is-open').forEach(c => {
-        if (c !== container) {
-          c.classList.remove('is-open');
-          const t = c.querySelector('.datepicker-trigger');
-          if (t) t.setAttribute('aria-expanded', 'false');
-        }
-      });
-      document.querySelectorAll('.dropdown-wrapper.is-open').forEach(d => d.classList.remove('is-open'));
+      closeOtherFloatingMenus(container);
       container.classList.add('is-open');
       if (trigger) trigger.setAttribute('aria-expanded', 'true');
       renderCalendar();
@@ -757,6 +1010,12 @@ function initDatepickers() {
       });
     }
 
+    container.addEventListener('focusout', (e) => {
+      if (container.classList.contains('is-open') && e.relatedTarget && !container.contains(e.relatedTarget)) {
+        closePicker(false);
+      }
+    });
+
     renderCalendar();
   });
 
@@ -773,18 +1032,76 @@ function initDatepickers() {
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.querySelectorAll('.datepicker-container.is-open').forEach(c => {
+        const hasFocusInside = c.contains(document.activeElement);
         c.classList.remove('is-open');
         const trigger = c.querySelector('.datepicker-trigger');
         if (trigger) {
           trigger.setAttribute('aria-expanded', 'false');
-          trigger.focus();
+          if (hasFocusInside) trigger.focus();
         }
       });
     }
   });
 }
 
-// 6. Custom Select / PopoverMenu Engine (CMP-04 — Zero Raw Native Select)
+// 6. Custom Select / PopoverMenu Engine (CMP-04 — Zero Raw Native Select, 100% Borderless)
+let selectAutoIdCounter = 0;
+
+function applyPopoverPlacement(trigger, popover, wrapper) {
+  wrapper.classList.remove('is-open-up', 'is-flip-right', 'is-flip-left');
+  const triggerRect = trigger.getBoundingClientRect();
+  const popHeight = Math.min(popover.scrollHeight || 240, 320);
+  const spaceBelow = window.innerHeight - triggerRect.bottom;
+  const spaceAbove = triggerRect.top;
+  if (spaceBelow < popHeight + 12 && spaceAbove > spaceBelow) {
+    wrapper.classList.add('is-open-up');
+  }
+
+  const vw = document.documentElement.clientWidth || window.innerWidth;
+  const popRect = popover.getBoundingClientRect();
+  const alignRight = wrapper.classList.contains('is-align-right');
+  if (!alignRight && popRect.right > vw - 12 && triggerRect.right > vw - triggerRect.left) {
+    wrapper.classList.add('is-flip-right');
+  } else if (alignRight && popRect.left < 12 && (vw - triggerRect.left) > triggerRect.right) {
+    wrapper.classList.add('is-flip-left');
+  }
+}
+
+function closeOtherFloatingMenus(excludeWrapper) {
+  document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
+    if (w !== excludeWrapper) {
+      if (typeof w._closeSelect === 'function') {
+        w._closeSelect(false);
+      } else {
+        w.classList.remove('is-open', 'is-open-up', 'is-flip-right', 'is-flip-left');
+        const t = w.querySelector('.select-trigger');
+        if (t) {
+          t.setAttribute('aria-expanded', 'false');
+          t.removeAttribute('aria-activedescendant');
+        }
+      }
+    }
+  });
+  document.querySelectorAll('.popover-menu-wrapper.is-open').forEach(m => {
+    if (m !== excludeWrapper) {
+      if (typeof m._closeMenu === 'function') {
+        m._closeMenu(false);
+      } else {
+        m.classList.remove('is-open', 'is-open-up', 'is-flip-right', 'is-flip-left');
+        const t = m.querySelector('[data-popover-menu-trigger]');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+  document.querySelectorAll('.datepicker-container.is-open').forEach(d => {
+    if (d !== excludeWrapper) {
+      d.classList.remove('is-open');
+      const t = d.querySelector('.datepicker-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
 function initSelects() {
   const wrappers = document.querySelectorAll('.custom-select-wrapper:not([data-initialized])');
   wrappers.forEach(wrapper => {
@@ -795,96 +1112,167 @@ function initSelects() {
     const displayInput = wrapper.querySelector('.select-display');
     const labelDisplay = wrapper.querySelector('.select-label-text');
     const options = Array.from(wrapper.querySelectorAll('.select-option'));
+    const inputWrapper = wrapper.closest('.input-wrapper');
     if (!trigger || !popover) return;
+
+    selectAutoIdCounter += 1;
+    if (!popover.id) {
+      popover.id = `${wrapper.id || `select-${selectAutoIdCounter}`}-listbox`;
+    }
+    if (!trigger.hasAttribute('aria-controls')) {
+      trigger.setAttribute('aria-controls', popover.id);
+    }
+
+    options.forEach((opt, idx) => {
+      if (!opt.id) {
+        opt.id = `${popover.id}-opt-${idx}`;
+      }
+    });
+
+    function isSelectDisabled() {
+      return (
+        trigger.hasAttribute('disabled') ||
+        trigger.classList.contains('is-disabled') ||
+        trigger.getAttribute('aria-disabled') === 'true' ||
+        Boolean(displayInput && displayInput.hasAttribute('disabled'))
+      );
+    }
+
+    function isOptionDisabled(opt) {
+      return !opt || opt.classList.contains('is-disabled') || opt.getAttribute('aria-disabled') === 'true';
+    }
+
+    function getEnabledIndices() {
+      return options.reduce((acc, opt, idx) => {
+        if (!isOptionDisabled(opt)) acc.push(idx);
+        return acc;
+      }, []);
+    }
 
     // Initial check for pre-selected value
     const hasInitialVal = Boolean(
       (hiddenInput && hiddenInput.value && hiddenInput.value.trim() !== '') ||
-      (displayInput && displayInput.value && displayInput.value.trim() !== '')
+      (displayInput && displayInput.value && displayInput.value.trim() !== '') ||
+      (labelDisplay && labelDisplay.textContent && labelDisplay.textContent.trim() !== '')
     );
-    if (hasInitialVal && !trigger.classList.contains('is-disabled') && !trigger.hasAttribute('disabled')) {
+    if (hasInitialVal && !isSelectDisabled()) {
       trigger.classList.add('has-value');
       wrapper.classList.add('has-value');
       const prefixIcon = trigger.querySelector('.select-prefix-icon');
       if (prefixIcon) prefixIcon.classList.remove('text-muted');
     }
 
+    const label = inputWrapper?.querySelector('label');
+    if (label) {
+      label.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!isSelectDisabled()) trigger.focus();
+      });
+    }
+
     let highlightedIndex = -1;
 
     function updateHighlight() {
       options.forEach((opt, idx) => {
-        if (idx === highlightedIndex) {
+        if (idx === highlightedIndex && !isOptionDisabled(opt)) {
           opt.classList.add('is-highlighted');
+          trigger.setAttribute('aria-activedescendant', opt.id);
           opt.scrollIntoView({ block: 'nearest' });
         } else {
           opt.classList.remove('is-highlighted');
         }
       });
+      if (highlightedIndex < 0 || highlightedIndex >= options.length || isOptionDisabled(options[highlightedIndex])) {
+        trigger.removeAttribute('aria-activedescendant');
+      }
     }
 
-    function openSelect() {
-      document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
-        if (w !== wrapper) {
-          w.classList.remove('is-open');
-          const t = w.querySelector('.select-trigger');
-          if (t) t.setAttribute('aria-expanded', 'false');
-        }
-      });
-      document.querySelectorAll('.datepicker-container.is-open').forEach(d => {
-        d.classList.remove('is-open');
-        const t = d.querySelector('.datepicker-trigger');
-        if (t) t.setAttribute('aria-expanded', 'false');
-      });
-      document.querySelectorAll('.dropdown-wrapper.is-open').forEach(d => d.classList.remove('is-open'));
+    function closeSelect(restoreFocus = false) {
+      wrapper.classList.remove('is-open', 'is-open-up', 'is-flip-right', 'is-flip-left');
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.removeAttribute('aria-activedescendant');
+      options.forEach(o => o.classList.remove('is-highlighted'));
+      highlightedIndex = -1;
+      if (restoreFocus && !isSelectDisabled()) {
+        trigger.focus();
+      }
+    }
+
+    wrapper._closeSelect = closeSelect;
+
+    function openSelect(direction = 'down') {
+      if (isSelectDisabled()) return;
+
+      closeOtherFloatingMenus(wrapper);
 
       wrapper.classList.add('is-open');
       trigger.setAttribute('aria-expanded', 'true');
+      applyPopoverPlacement(trigger, popover, wrapper);
 
-      // Set initial keyboard highlight to current selected option or first option
-      const selectedIdx = options.findIndex(o => o.classList.contains('is-selected'));
-      highlightedIndex = selectedIdx >= 0 ? selectedIdx : 0;
+      const enabled = getEnabledIndices();
+      if (!enabled.length) {
+        highlightedIndex = -1;
+      } else {
+        const selectedIdx = enabled.find(i => options[i].classList.contains('is-selected'));
+        if (selectedIdx !== undefined) {
+          highlightedIndex = selectedIdx;
+        } else {
+          highlightedIndex = direction === 'up' ? enabled[enabled.length - 1] : enabled[0];
+        }
+      }
       updateHighlight();
     }
 
-    function closeSelect() {
-      wrapper.classList.remove('is-open');
-      trigger.setAttribute('aria-expanded', 'false');
-      options.forEach(o => o.classList.remove('is-highlighted'));
-      highlightedIndex = -1;
+    function toggleSelect() {
+      if (isSelectDisabled()) return;
+      if (wrapper.classList.contains('is-open')) {
+        closeSelect(false);
+      } else {
+        openSelect('down');
+      }
     }
 
-    function toggleSelect() {
-      if (trigger.hasAttribute('disabled') || trigger.classList.contains('is-disabled') || (displayInput && displayInput.hasAttribute('disabled'))) return;
-      if (wrapper.classList.contains('is-open')) {
-        closeSelect();
-      } else {
-        openSelect();
+    function clearFieldErrorUI() {
+      trigger.classList.remove('has-error');
+      clearFieldError(inputWrapper, trigger);
+      if (!inputWrapper) return;
+
+      const staticIds = [];
+      inputWrapper.querySelectorAll('.error-message[data-static-error="true"]').forEach(err => {
+        if (err.id) staticIds.push(err.id);
+        err.style.display = 'none';
+      });
+
+      if (staticIds.length && trigger.hasAttribute('aria-describedby')) {
+        const remaining = trigger
+          .getAttribute('aria-describedby')
+          .split(/\s+/)
+          .filter(id => id && !staticIds.includes(id));
+        if (remaining.length) trigger.setAttribute('aria-describedby', remaining.join(' '));
+        else trigger.removeAttribute('aria-describedby');
       }
     }
 
     function selectOption(opt) {
-      if (!opt) return;
-      const val = opt.getAttribute('data-value') || opt.textContent.trim();
+      if (!opt || isOptionDisabled(opt)) return;
+      const rawVal = opt.getAttribute('data-value');
+      const val = rawVal !== null ? rawVal : opt.textContent.trim();
       const titleSpan = opt.querySelector('.option-title');
       const text = titleSpan ? titleSpan.textContent.trim() : opt.textContent.trim();
 
-      if (hiddenInput) {
-        hiddenInput.value = val;
-        hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
       if (displayInput) {
         displayInput.value = text;
         displayInput.dispatchEvent(new Event('input', { bubbles: true }));
       }
       if (labelDisplay) {
-        labelDisplay.textContent = text;
+        const prefix = labelDisplay.getAttribute('data-label-prefix') || '';
+        labelDisplay.textContent = prefix ? `${prefix}${text}` : text;
         labelDisplay.classList.remove('text-muted');
       }
 
-      // Clear has-error styling and update has-value on trigger upon valid selection
       const prefixIcon = trigger.querySelector('.select-prefix-icon');
       if (val) {
-        trigger.classList.remove('has-error');
+        clearFieldErrorUI();
         trigger.classList.add('has-value');
         wrapper.classList.add('has-value');
         if (prefixIcon) prefixIcon.classList.remove('text-muted');
@@ -901,8 +1289,12 @@ function initSelects() {
       opt.classList.add('is-selected');
       opt.setAttribute('aria-selected', 'true');
 
-      closeSelect();
-      trigger.focus();
+      if (hiddenInput) {
+        hiddenInput.value = val;
+        hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      closeSelect(true);
     }
 
     trigger.addEventListener('click', (e) => {
@@ -911,64 +1303,468 @@ function initSelects() {
     });
 
     trigger.addEventListener('keydown', (e) => {
-      if (trigger.hasAttribute('disabled') || trigger.classList.contains('is-disabled') || (displayInput && displayInput.hasAttribute('disabled'))) return;
+      if (isSelectDisabled()) return;
       const isOpen = wrapper.classList.contains('is-open');
+      const enabled = getEnabledIndices();
 
       if (!isOpen) {
         if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
           e.preventDefault();
-          openSelect();
+          openSelect(e.key === 'ArrowUp' ? 'up' : 'down');
         }
-      } else {
-        if (e.key === 'ArrowDown') {
+        return;
+      }
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (!enabled.length) return;
+        const pos = enabled.indexOf(highlightedIndex);
+        highlightedIndex = enabled[(pos + 1) % enabled.length];
+        updateHighlight();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!enabled.length) return;
+        const pos = enabled.indexOf(highlightedIndex);
+        highlightedIndex = pos <= 0 ? enabled[enabled.length - 1] : enabled[pos - 1];
+        updateHighlight();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        if (!enabled.length) return;
+        highlightedIndex = enabled[0];
+        updateHighlight();
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        if (!enabled.length) return;
+        highlightedIndex = enabled[enabled.length - 1];
+        updateHighlight();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (highlightedIndex >= 0 && highlightedIndex < options.length && !isOptionDisabled(options[highlightedIndex])) {
+          selectOption(options[highlightedIndex]);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        closeSelect(true);
+      } else if (e.key === 'Tab') {
+        closeSelect(false);
+      } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const needle = e.key.toLowerCase();
+        if (!enabled.length) return;
+        const startPos = Math.max(0, enabled.indexOf(highlightedIndex) + 1);
+        const rotated = enabled.slice(startPos).concat(enabled.slice(0, startPos));
+        const matchIdx = rotated.find(idx => {
+          const titleSpan = options[idx].querySelector('.option-title');
+          const labelText = (titleSpan ? titleSpan.textContent : options[idx].textContent).trim().toLowerCase();
+          return labelText.startsWith(needle);
+        });
+        if (matchIdx !== undefined) {
           e.preventDefault();
-          highlightedIndex = (highlightedIndex + 1) % options.length;
+          highlightedIndex = matchIdx;
           updateHighlight();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          highlightedIndex = (highlightedIndex - 1 + options.length) % options.length;
-          updateHighlight();
-        } else if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          if (highlightedIndex >= 0 && highlightedIndex < options.length) {
-            selectOption(options[highlightedIndex]);
-          }
-        } else if (e.key === 'Escape' || e.key === 'Tab') {
-          closeSelect();
         }
       }
     });
 
     options.forEach((opt, idx) => {
       opt.addEventListener('mouseenter', () => {
+        if (isOptionDisabled(opt)) return;
         highlightedIndex = idx;
         updateHighlight();
       });
 
       opt.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (isOptionDisabled(opt)) return;
         selectOption(opt);
+      });
+    });
+
+    wrapper.addEventListener('focusout', (e) => {
+      if (wrapper.classList.contains('is-open') && e.relatedTarget && !wrapper.contains(e.relatedTarget)) {
+        closeSelect(false);
+      }
+    });
+  });
+
+  // Interactive anatomy preview listbox inside CMP-04 showcase
+  document.querySelectorAll('.select-popover-preview:not([data-initialized])').forEach(preview => {
+    preview.setAttribute('data-initialized', 'true');
+    const previewOptions = Array.from(preview.querySelectorAll('.select-option'));
+    previewOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (opt.classList.contains('is-disabled') || opt.getAttribute('aria-disabled') === 'true') return;
+        previewOptions.forEach(o => {
+          o.classList.remove('is-selected');
+          o.setAttribute('aria-selected', 'false');
+        });
+        opt.classList.add('is-selected');
+        opt.setAttribute('aria-selected', 'true');
       });
     });
   });
 
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.custom-select-wrapper')) {
+  if (!initSelects._boundGlobal) {
+    initSelects._boundGlobal = true;
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-select-wrapper')) {
+        document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
+          if (typeof w._closeSelect === 'function') {
+            w._closeSelect(false);
+          } else {
+            w.classList.remove('is-open', 'is-open-up', 'is-flip-right', 'is-flip-left');
+            const trigger = w.querySelector('.select-trigger');
+            if (trigger) {
+              trigger.setAttribute('aria-expanded', 'false');
+              trigger.removeAttribute('aria-activedescendant');
+            }
+          }
+        });
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
+          const hasFocusInside = w.contains(document.activeElement);
+          if (typeof w._closeSelect === 'function') {
+            w._closeSelect(hasFocusInside);
+          } else {
+            w.classList.remove('is-open', 'is-open-up', 'is-flip-right', 'is-flip-left');
+            const trigger = w.querySelector('.select-trigger');
+            if (trigger) {
+              trigger.setAttribute('aria-expanded', 'false');
+              trigger.removeAttribute('aria-activedescendant');
+              if (hasFocusInside) trigger.focus();
+            }
+          }
+        });
+      }
+    });
+
+    window.addEventListener('resize', () => {
       document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
-        w.classList.remove('is-open');
         const trigger = w.querySelector('.select-trigger');
-        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        const popover = w.querySelector('.select-popover');
+        if (trigger && popover) applyPopoverPlacement(trigger, popover, w);
       });
+      document.querySelectorAll('.popover-menu-wrapper.is-open').forEach(m => {
+        const trigger = m.querySelector('[data-popover-menu-trigger]');
+        const menu = m.querySelector('.popover-menu');
+        if (trigger && menu) applyPopoverPlacement(trigger, menu, m);
+      });
+    });
+  }
+}
+
+// 7. Action PopoverMenu Engine (CMP-04 — WAI-ARIA Menu Button, 100% Borderless)
+function initPopoverMenus() {
+  const wrappers = document.querySelectorAll('.popover-menu-wrapper:not([data-initialized])');
+  wrappers.forEach(wrapper => {
+    wrapper.setAttribute('data-initialized', 'true');
+    const trigger = wrapper.querySelector('[data-popover-menu-trigger]');
+    const menu = wrapper.querySelector('.popover-menu');
+    const items = Array.from(wrapper.querySelectorAll('.popover-menu-item'));
+    if (!trigger || !menu) return;
+
+    function isItemDisabled(item) {
+      return !item || item.disabled || item.getAttribute('aria-disabled') === 'true';
     }
+
+    function getEnabledItems() {
+      return items.filter(item => !isItemDisabled(item));
+    }
+
+    function closeMenu(restoreFocus = false) {
+      wrapper.classList.remove('is-open', 'is-open-up', 'is-flip-right', 'is-flip-left');
+      trigger.setAttribute('aria-expanded', 'false');
+      if (restoreFocus && !trigger.disabled) {
+        trigger.focus();
+      }
+    }
+
+    wrapper._closeMenu = closeMenu;
+
+    function openMenu(focusTarget = 'none') {
+      if (trigger.disabled) return;
+      closeOtherFloatingMenus(wrapper);
+      wrapper.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      applyPopoverPlacement(trigger, menu, wrapper);
+
+      const enabled = getEnabledItems();
+      if (enabled.length && focusTarget === 'first') {
+        enabled[0].focus();
+      } else if (enabled.length && focusTarget === 'last') {
+        enabled[enabled.length - 1].focus();
+      }
+    }
+
+    function activateItem(item) {
+      if (isItemDisabled(item)) return;
+      const msg = item.getAttribute('data-menu-toast');
+      const tone = item.getAttribute('data-menu-tone') || (item.classList.contains('is-destructive') ? 'error' : 'neutral');
+      closeMenu(true);
+      if (msg && window.showToast) {
+        window.showToast(msg, tone, tone === 'error');
+      }
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (wrapper.classList.contains('is-open')) {
+        closeMenu(false);
+      } else {
+        openMenu('none');
+      }
+    });
+
+    trigger.addEventListener('keydown', (e) => {
+      const isOpen = wrapper.classList.contains('is-open');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (isOpen) {
+          const enabled = getEnabledItems();
+          if (enabled.length) enabled[0].focus();
+        } else {
+          openMenu('first');
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (isOpen) {
+          const enabled = getEnabledItems();
+          if (enabled.length) enabled[enabled.length - 1].focus();
+        } else {
+          openMenu('last');
+        }
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (isOpen) {
+          closeMenu(true);
+        } else {
+          openMenu('first');
+        }
+      } else if (e.key === 'Tab' && isOpen) {
+        closeMenu(false);
+      } else if (e.key === 'Escape' && isOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        closeMenu(true);
+      }
+    });
+
+    items.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        activateItem(item);
+      });
+
+      item.addEventListener('keydown', (e) => {
+        const enabled = getEnabledItems();
+        if (!enabled.length) return;
+        const idx = enabled.indexOf(item);
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          enabled[(idx + 1) % enabled.length].focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          enabled[(idx - 1 + enabled.length) % enabled.length].focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          enabled[0].focus();
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          enabled[enabled.length - 1].focus();
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activateItem(item);
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          e.stopPropagation();
+          closeMenu(true);
+        } else if (e.key === 'Tab') {
+          closeMenu(false);
+        } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          const needle = e.key.toLowerCase();
+          const rotated = enabled.slice(idx + 1).concat(enabled.slice(0, idx + 1));
+          const match = rotated.find(el => el.textContent.trim().toLowerCase().startsWith(needle));
+          if (match) {
+            e.preventDefault();
+            match.focus();
+          }
+        }
+      });
+    });
+
+    wrapper.addEventListener('focusout', (e) => {
+      if (wrapper.classList.contains('is-open') && e.relatedTarget && !wrapper.contains(e.relatedTarget)) {
+        closeMenu(false);
+      }
+    });
   });
 
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.custom-select-wrapper.is-open').forEach(w => {
-        w.classList.remove('is-open');
-        const trigger = w.querySelector('.select-trigger');
-        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+  if (!initPopoverMenus._boundGlobal) {
+    initPopoverMenus._boundGlobal = true;
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.popover-menu-wrapper')) {
+        document.querySelectorAll('.popover-menu-wrapper.is-open').forEach(m => {
+          if (typeof m._closeMenu === 'function') m._closeMenu(false);
+        });
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.popover-menu-wrapper.is-open').forEach(m => {
+          const hasFocusInside = m.contains(document.activeElement);
+          if (typeof m._closeMenu === 'function') m._closeMenu(hasFocusInside);
+        });
+      }
+    });
+  }
+}
+
+// 7. Operational Badges Dismissible & Keyboard Focus Handoff (CMP-05)
+function initBadges() {
+  document.querySelectorAll('[data-badge-dismiss]').forEach(btn => {
+    const tag = btn.closest('[data-dismissible-badge]');
+    const row = btn.closest('#cmp05-tag-row') || (tag && tag.parentElement);
+    if (!tag || !row) return;
+
+    btn.addEventListener('click', () => {
+      const label = btn.getAttribute('data-badge-dismiss') || 'Filter';
+      const restoreBtn = row.querySelector('[data-badge-restore]');
+      tag.style.display = 'none';
+
+      const remainingVisibleDismissBtns = Array.from(row.querySelectorAll('[data-dismissible-badge]'))
+        .filter(el => el.style.display !== 'none')
+        .map(el => el.querySelector('.badge-close-btn'))
+        .filter(Boolean);
+
+      if (restoreBtn) {
+        restoreBtn.style.display = 'inline-flex';
+      }
+
+      if (remainingVisibleDismissBtns.length > 0) {
+        remainingVisibleDismissBtns[0].focus();
+      } else if (restoreBtn) {
+        restoreBtn.focus();
+      } else {
+        const nextInteractive = row.querySelector('button.badge, a.badge');
+        if (nextInteractive) nextInteractive.focus();
+      }
+
+      if (window.showToast) {
+        window.showToast(`Tag filter "${label}" dihapus.`, 'neutral', false);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-badge-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nextPressed = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(nextPressed));
+      btn.classList.toggle('badge-brand', nextPressed);
+      btn.classList.toggle('badge-neutral', !nextPressed);
+      if (window.showToast) {
+        window.showToast(
+          nextPressed ? 'Filter cepat "Unit Tersedia" diaktifkan.' : 'Filter cepat "Unit Tersedia" dinonaktifkan.',
+          nextPressed ? 'brand' : 'neutral',
+          false
+        );
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-badge-restore]').forEach(restoreBtn => {
+    restoreBtn.addEventListener('click', () => {
+      const targetId = restoreBtn.getAttribute('data-badge-restore');
+      const row = document.getElementById(targetId) || restoreBtn.parentElement;
+      if (!row) return;
+      const tags = Array.from(row.querySelectorAll('[data-dismissible-badge]'));
+      tags.forEach(t => {
+        t.style.display = 'inline-flex';
+      });
+      restoreBtn.style.display = 'none';
+      const firstClose = tags[0] && tags[0].querySelector('.badge-close-btn');
+      if (firstClose) firstClose.focus();
+      if (window.showToast) {
+        window.showToast('Tag filter dipulihkan.', 'brand', false);
+      }
+    });
+  });
+}
+
+// 8. Boolean Controls System (CMP-06: Indeterminate Demo & Required Consent Error Recovery)
+function initBooleanControls() {
+  const indetChk = document.getElementById('chk-indeterminate-demo');
+  const indetLabel = document.getElementById('chk-indeterminate-label');
+  const resetIndetBtn = document.getElementById('btn-reset-indeterminate');
+
+  if (indetChk) {
+    const applyIndeterminateState = () => {
+      indetChk.checked = false;
+      indetChk.indeterminate = true;
+      indetChk.setAttribute('aria-checked', 'mixed');
+      if (indetLabel) indetLabel.textContent = 'Pilih Semua Kamar Terisi (8 dari 12 Terpilih)';
+      if (resetIndetBtn) resetIndetBtn.style.display = 'none';
+    };
+
+    applyIndeterminateState();
+
+    indetChk.addEventListener('change', () => {
+      indetChk.indeterminate = false;
+      indetChk.setAttribute('aria-checked', String(indetChk.checked));
+      if (indetLabel) {
+        indetLabel.textContent = indetChk.checked
+          ? 'Pilih Semua Kamar Terisi (12 dari 12 Terpilih)'
+          : 'Pilih Semua Kamar Terisi (0 dari 12 Terpilih)';
+      }
+      if (resetIndetBtn) {
+        resetIndetBtn.style.display = 'inline-flex';
+      }
+    });
+
+    if (resetIndetBtn) {
+      resetIndetBtn.addEventListener('click', () => {
+        applyIndeterminateState();
+        indetChk.focus();
       });
     }
-  });
+  }
+
+  const consentChk = document.getElementById('chk-consent-error');
+  const consentLabel = document.getElementById('chk-consent-label');
+  const consentWrapper = document.getElementById('chk-consent-wrapper');
+  const consentErrMsg = document.getElementById('chk-consent-err-msg');
+
+  if (consentChk && consentLabel && consentWrapper && consentErrMsg) {
+    consentChk.addEventListener('change', () => {
+      const isValid = consentChk.checked;
+      consentChk.setAttribute('aria-invalid', String(!isValid));
+      consentLabel.classList.toggle('has-error', !isValid);
+      consentWrapper.classList.toggle('has-error', !isValid);
+      consentErrMsg.style.display = isValid ? 'none' : 'flex';
+    });
+  }
+
+  const electricWrapper = document.getElementById('radio-electric-wrapper');
+  const electricErrMsg = document.getElementById('radio-electric-err-msg');
+  const electricLabels = Array.from(document.querySelectorAll('[data-electric-radio-label]'));
+  const electricRadios = electricLabels.map(l => l.querySelector('input[type="radio"]')).filter(Boolean);
+
+  if (electricWrapper && electricErrMsg && electricRadios.length > 0) {
+    electricRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        const hasSelection = electricRadios.some(r => r.checked);
+        electricWrapper.classList.toggle('has-error', !hasSelection);
+        electricErrMsg.style.display = hasSelection ? 'none' : 'flex';
+        electricLabels.forEach(lbl => lbl.classList.toggle('has-error', !hasSelection));
+        electricRadios.forEach(r => r.setAttribute('aria-invalid', String(!hasSelection)));
+      });
+    });
+  }
 }

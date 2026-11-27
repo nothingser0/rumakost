@@ -12,12 +12,12 @@ sources:
 ## 0. Provenance & Evidence Log
 
 ### Evidence & Inference Log
-- ✅ **VERIFIED (Observed)**: Top Navigation Bar dengan floating pill tabs ber-state Carbon Black solid (`#111827`), soft canvas grey (`#F4F5F7`), white cards ber-radius 24px, dan circular profile cluster diamati langsung pada `01-dashboard-flat.png`.
+- ✅ **VERIFIED (Observed)**: Top Navigation Bar dengan floating pill tabs ber-state hitam solid Pure Black (`#000000`), soft canvas grey (`#F4F5F7`), white cards ber-radius 24px, dan circular profile cluster diamati langsung pada `01-dashboard-flat.png`.
 - ✅ **VERIFIED (Observed)**: Semi-circular tachometer radial gauges (25 ticks), orange hero featured property card (`#FF8A24` - `#F97316`), vertical rounded pill bar chart dengan arsiran diagonal, widget building condition progress bars, dan message list diamati langsung pada `01-dashboard-flat.png`.
 - ✅ **VERIFIED (Observed)**: Mobile responsive behavior dengan topbar collapse, horizontal swipeable cards, dan full-width hero card diamati langsung pada `03-mobile-view.png`.
 - ✅ **VERIFIED (Observed)**: Font Poppins (32px Heading, 24px Subheading, 16px Body) dengan whitespace lapang diamati langsung pada `04-typography-sheet.png`.
 - ✅ **VERIFIED (Observed)**: Logo mark geometris dan wordmark berbobot Medium dengan kerning elegan diamati langsung pada `05-logo-style.png`.
-- 🔶 **INFERRED**: Semantic status triad (`#15803D` Success, `#B45309` Warning, `#B91C1C` Error, `#1D4ED8` Info) diturunkan dari kepatuhan rasio kontras WCAG AA pada background putih `#FFFFFF`.
+- 🔶 **INFERRED**: Hybrid Pure 4-Color Status Palette (`#C2410C` / `#FFF7ED` & `#334155` / `#F1F5F9` & `#B91C1C` / `#FEF2F2` soft tint untuk badge status — termasuk status di atas foto `.badge-sm.badge-on-photo` — agar tidak bersaing dengan CTA solid `CMP-01`; serta solid `#000000`/`#FFFFFF` pada `badge-dark`, `#FFFFFF`/`#000000` pada `badge-overlay` untuk tag media foto non-status, dan solid `#B91C1C`/`#000000`/`#C2410C` pada `.badge-counter`) memenuhi WCAG AA >= 4.5:1 tanpa warna hijau/kuning/biru di luar palet merek.
 - 🔶 **INFERRED**: Skala z-index bertingkat (Base 0 hingga Toast 60) diturunkan untuk menjamin keterpisahan modal dialog dan popover dropdown.
 
 ---
@@ -27,14 +27,15 @@ sources:
 | Color Token Name | Hex Code | Background Sample | Contrast Ratio | Conformance Role Target |
 |:---|:---:|:---:|:---:|:---|
 | Primary Text Body | `#000000` | `#FFFFFF` (Surface) | 21.0:1 | Primary Body Text (>= 7.0:1) |
-| Heading Display Dark | `#020617` | `#F4F5F7` (Canvas) | 16.5:1 | Primary Heading Text (>= 7.0:1) |
+| Heading Display Dark | `#000000` | `#F4F5F7` (Canvas) | 19.3:1 | Primary Heading Text (>= 7.0:1) |
 | Secondary Text Muted | `#475569` | `#FFFFFF` (Surface) | 5.8:1 | Secondary Label (>= 4.5:1) |
 | Placeholder Field Text | `#64748B` | `#FFFFFF` (Surface) | 4.6:1 | Input Placeholder (>= 4.5:1) |
-| Success State Label | `#15803D` | `#F0FDF4` (Pill Bg) | 5.1:1 | Operational Status (>= 4.5:1) |
-| Warning State Label | `#B45309` | `#FFFBEB` (Pill Bg) | 4.8:1 | Operational Status (>= 4.5:1) |
-| Error State Label | `#B91C1C` | `#FEF2F2` (Pill Bg) | 5.4:1 | Operational Status (>= 4.5:1) |
-| Info State Label | `#1D4ED8` | `#EFF6FF` (Pill Bg) | 5.6:1 | Operational Status (>= 4.5:1) |
-| Interactive Input Border | `#CBD5E1` | `#FFFFFF` (Surface) | 3.2:1 | UI Component Border (>= 3.0:1) |
+| Brand Status Badge Label | `#C2410C` | `#FFF7ED` (Pill Bg) | 4.88:1 | Positive, Active & Locked Status (>= 4.5:1) |
+| Neutral Status Badge Label | `#334155` | `#F1F5F9` (Pill Bg) | 9.45:1 | Queue, Draft & Standard Process (>= 4.5:1) |
+| Pure Black Dark / Counter Label | `#FFFFFF` | `#000000` (Solid Bg) | 21.0:1 | Occupied, Counter & High Priority (>= 7.0:1) |
+| Solid Urgent / Error Counter | `#FFFFFF` | `#B91C1C` (Solid Pill) | 6.47:1 | Urgent Numeric Counter Badge (>= 4.5:1) |
+| Error Status & Input Label | `#B91C1C` | `#FEF2F2` (Tint Bg) | 5.91:1 | Overdue Badge & Input Error Message (>= 4.5:1) |
+| Control Border (Checkbox/Radio) | `#CBD5E1` | `#FFFFFF` (Surface) | 3.2:1 | UI Control Border & Divider (>= 3.0:1; input formulir borderless sesuai §7.3) |
 
 ---
 
@@ -150,24 +151,42 @@ Setiap komponen yang diimplementasikan pada `docs/design/components/index.html` 
 ### 7.1 Layout Shell & Top-Navigation Bar (`.top-nav`)
 - **Struktur**: Header sticky `height: 80px`, `background: var(--color-canvas)`, padding `0 2rem`, kontainer konten terpusat `max-w-[1440px]`.
 - **Brand**: Logo RumaKost di kiri (`height: 38px`).
-- **Nav Pills (`.nav-pill`)**: Pil navigasi melayang berbentuk kapsul bulat (`border-radius: 9999px`, padding `0.625rem 1.25rem`). State aktif berwujud pil hitam solid Carbon (`#111827`) dengan teks putih; state inaktif teks abu-abu bersih (`#64748B`).
+- **Nav Pills (`.nav-pill`)**: Pil navigasi melayang berbentuk kapsul bulat (`border-radius: 9999px`, padding `0.625rem 1.25rem`). State aktif berwujud pil hitam solid Pure Black (`#000000`) dengan teks putih; state inaktif teks abu-abu bersih (`#64748B`).
 - **Cluster Aksi & Profil**: Tombol lingkaran 44px (Search, Message, Bell dengan dot merah "7") + user profile pill (avatar foto, nama Budi Santoso, role Branch Manager).
 
 ### 7.2 Button & Action System (`.btn`) — [LOCKED 2026-11-26]
 - **Bentuk & Gaya (Terkunci)**: Seluruh varian wajib **borderless & flat solid** ber-radius penuh (`9999px`), target sentuh minimum `44px` (`btn-sm` visual `36px` dengan pseudo hit-area `44px`), dan transisi `active:scale-[0.98] duration-150`.
 - **Primary Button (`.btn-primary`)**: `min-height: 44px`, padding `0.625rem 1.25rem`, `background: #F97316` (hover `#EA580C`), `color: #FFFFFF`, `border-radius: 9999px`.
-- **Secondary / Solid Dark / Ghost / Destructive**: `.btn-secondary` (`#FFFFFF` + shadow lembut), `.btn-solid-dark` (`#111827`, hover `#1F2937`), `.btn-ghost` (transparan, teks `#475569`), `.btn-destructive` (`#FEF2F2`, teks `#B91C1C`).
+- **Secondary / Solid Dark / Ghost / Destructive**: `.btn-secondary` (`#FFFFFF` + shadow lembut), `.btn-solid-dark` (`#000000`, hover `#262626`), `.btn-ghost` (transparan, teks `#475569`), `.btn-destructive` (`#FEF2F2`, teks `#B91C1C`).
 - **Focus Ring (`:focus-visible`, WCAG 2.2 AA >= 3.0:1)**: `outline-offset: 2px`; aksi umum `#EA580C` (`--color-brand-hover`, 3.4:1–3.56:1), sedangkan `Destructive / Void` menggunakan `#B91C1C` (`--color-error`, 6.18:1–6.47:1).
 - **Button Loading State**: Spinner berputar debounced berpasangan dengan teks saat submit form; State Matrix (`Default`, `Hover`, `Pressed`, `Focus Ring`, `Disabled`) terverifikasi di showcase.
 
-### 7.3 Form Input & Data Entry System (Borderless)
-- **Input & Select (`.input-pill`, `.pill-input-box`, `.textarea-rounded`)**: Wajib **borderless (`border: none`)** dengan elevasi `box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06)` (tanpa garis border di seluruh komponen UI proyek), tinggi minimum `44px` (touch target), `font-size: 16px` (`1rem`, anti-zoom iOS Safari), `border-radius: 12px` (pengecualian `9999px` pill khusus search input `.is-search`), serta focus ring `:focus-visible` `2px solid #EA580C` (`#B91C1C` pada error) dengan `outline-offset: 2px`.
+### 7.3 Form Input & Data Entry System (Borderless) — [LOCKED 2026-11-27]
+- **Input & Select (`.input-pill`, `.pill-input-box`, `.textarea-rounded`, `.number-stepper`, `.compact-file-upload`, `.dropzone-card`)**: Wajib **borderless (`border: none`)** dengan elevasi `box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06)` (tanpa garis border di seluruh komponen UI proyek), tinggi minimum `44px` (touch target; `.input-pill-sm` `36px`/`13px` di desktop otomatis membesar menjadi `44px`/`16px` pada perangkat sentuh primer `hover: none` & `pointer: coarse` atau viewport `<= 768px`), skala font selaras `CMP-01` & label (`14px` / `0.875rem` Default desktop, `16px` / `1rem` Large `.input-pill-lg` serta otomatis `16px` untuk seluruh input & textarea pada perangkat sentuh primer / mobile `<= 768px` anti-zoom iOS Safari), `border-radius: 12px` (pengecualian `9999px` pill khusus search input `.is-search` dan `24px` untuk `.dropzone-card`), serta focus ring `:focus-visible` `2px solid #EA580C` (`#B91C1C` pada error) dengan `outline-offset: 2px`.
 - **CurrencyInput**: Input numerik IDR wajib menggunakan `inputmode="numeric"`.
 - **Pesan Validasi Error**: Berukuran minimal 13px (`font-size: 0.875rem`) dan rasio kontras merah minimal 4.5:1 (`color: #B91C1C`).
 
+### 7.3B Select & PopoverMenu System (`CMP-04` — Borderless) — [LOCKED 2026-11-27]
+- **Zero Raw Native Select**: Seluruh pemilihan dropdown dan menu aksi wajib memakai kontainer kustom **100% borderless (`border: none`)** dalam tiga varian: Form Select (`.select-trigger`, radius `12px`, tinggi `44px`, `14px` desktop / `16px` mobile-touch selaras `CMP-02`), Filter Pill Select (`.select-trigger.is-pill`, radius `9999px`, tinggi visual `38px` dengan pseudo hit-area `44px`, varian `#FFFFFF` dan `.is-subtle` `#F4F5F7`), serta Action PopoverMenu (`role="menu"` dipicu `.action-circle-btn` `44px` atau `.btn-secondary`).
+- **Floating Popover (`.select-popover`, `.popover-menu`)**: Permukaan `#FFFFFF`, `border: none`, `border-radius: 16px` (`--radius-inner`), `box-shadow: var(--shadow-dropdown)`, adaptif terhadap tepi viewport (flip vertikal `is-open-up` & flip horizontal `is-flip-right` / `is-flip-left`).
+- **Option & Menu Rows (`.select-option`, `.popover-menu-item`)**: Target sentuh `min-height: 44px`, ukuran font `14px` (`0.875rem`), status terpilih netral `#F4F5F7` + checkmark `#C2410C` (sub-teks `#475569` >= 4.5:1 WCAG AA), aksi destruktif `#B91C1C` pada `#FEF2F2`, serta navigasi keyboard WAI-ARIA penuh (`Arrow`, `Home`/`End`, `Enter`/`Space`, `Escape`, `Tab`, `focusout`, dan typeahead).
+
 ### 7.4 Status Badges & Avatars
-- **Badges (`.badge`)**: Pil oval dengan teks eksplisit dan kontras tinggi (`badge-success`, `badge-warning`, `badge-error`, `badge-info`, `badge-neutral`).
-- **Avatars (`.avatar`)**: Foto profil asli ber-rasio 1:1 bulat sempurna (32px, 40px, 52px).
+- **Badges (`.badge` — `CMP-05` [LOCKED 2026-11-27], Hybrid Pure 4-Color & 100% Borderless)**: Pil oval `border: none` mengikuti palet ketat 4 warna dengan kontras WCAG 2.2 AA `>= 4.5:1`: status daftar/tabel memakai tint lembut agar tidak bersaing dengan tombol aksi `CMP-01` — `.badge-brand` (`#FFF7ED` / `#C2410C`, `4.88:1`), `.badge-neutral` (`#F1F5F9` / `#334155`, `9.45:1`), dan `.badge-error` / `.badge-destructive` (`#FEF2F2` / `#B91C1C`, `5.91:1`); sedangkan elemen penekanan tinggi tampil solid: `.badge-dark` (`#000000` / `#FFFFFF`, `21.0:1`), `.badge-overlay` (`#FFFFFF` / `#000000` + `box-shadow` borderless khusus tag media/foto non-status seperti `4 Foto`), serta `.badge-counter` solid (`#B91C1C`, `#000000`, `#C2410C`). Status unit di atas foto memakai varian semantik compact (`.badge-sm.badge-on-photo` / `.property-media-badge`) dengan shadow elevasi borderless yang sama. Mendukung `.badge-trend`, `.badge-dismissible` (ikon SVG `X`), serta hit-area `44px` (`::after`) dan `:focus-visible` (`2px solid #EA580C` / `#B91C1C` dan `#FFFFFF` di dalam `.badge-dark`).
+- **Avatars (`.avatar` — `CMP-09` [LOCKED 2026-11-27], 100% Borderless & Pure 4-Color)**: Lingkaran 1:1 sempurna dalam skala `sm` (`32px`), `md` (`40px`), dan `lg` (`52px`), `border: none`, fallback inisial WCAG AA (`.avatar-initials-dark` `#000000`/`#FFFFFF` `21.0:1`, `.avatar-initials-brand` `#FFF7ED`/`#C2410C` `4.88:1`, `.avatar-initials-neutral` `#F1F5F9`/`#334155` `9.45:1`), tumpukan `.avatar-group` & counter `.avatar-counter` (`+N` `tabular-nums`, zero `translateY`), serta dot kehadiran `.avatar-status` (`is-online` `#EA580C` `3.56:1`, `is-away` `#64748B` `4.76:1`, `role="status"`) dengan ring cutout `box-shadow: 0 0 0 2px #FFFFFF`.
+
+### 7.4B Boolean Controls System (`CMP-06` — Flat Borderless) — [LOCKED 2026-11-27]
+- **100% Flat Borderless & Zero Hover Translate**: Seluruh kontrol boolean (`.custom-checkbox`, `.custom-radio`, `.btn-group.is-radio-pills`, `.choice-list`/`.choice-card`, `.toggle-switch`, `.settings-group`/`.settings-row`) menggunakan `border: none` tanpa drop shadow kartu maupun `translateY`, target sentuh minimum `44px` (termasuk `.toggle-slider::after` `44px` untuk sakelar standalone), serta cincin fokus `:focus-visible` tunggal (`#EA580C` normal, `#B91C1C` error, `outline-offset: 2px`).
+- **Kontras & State Terkunci**: Aksen aktif/terpilih `#EA580C` (`3.56:1`, hover `#C2410C`) dengan indikator `#FFFFFF` solid; batas checkbox/radio idle `#64748B` (`4.76:1`), track switch OFF `#7E8B9D` (`3.16:1`–`3.46:1`), state terkunci `disabled:checked` radio/switch netral `#94A3B8` (tanpa penumpukan opacity pada switch).
+- **Choice Card & Grouped Settings Panel**: `.choice-card` (duotone wireframe `.choice-visual` `68×48px` desktop / `52×38px` mobile) dan `.settings-group`/`.settings-row` menggunakan permukaan `#F8FAFC`, hover `#F1F5F9`, pilihan aktif `#FFF7ED`, divider hairline `inset 0 1px 0 #E2E8F0`, judul `14px` SemiBold, serta sub-teks `#475569` (`6.92:1`–`7.24:1` WCAG AA).
+
+### 7.4C Loading Spinner System (`CMP-07` — Borderless) — [LOCKED 2026-11-27]
+- **100% Borderless Sweep & Ukuran Atomik**: `.spinner` memakai pure CSS `conic-gradient` + `radial-gradient` cap + `mask` (`border: none`), rotasi `600ms linear infinite`, fallback lembut `spinnerPulse` (`1.8s ease-in-out infinite`) saat `@media (prefers-reduced-motion: reduce)`, serta 4 ukuran (`sm` `16px`, `md` `24px`, `lg` `32px`, `xl` `48px`).
+- **Warna WCAG 2.2 AA & Integrasi UI**: Varian `brand` (`#EA580C` `3.56:1`), `white` (`#FFFFFF`), `neutral` (`#64748B` `4.76:1`), dan `dark` (`#000000`). Tombol loading (`.btn.is-loading`) memakai `cursor: wait`, guard anti-submit ganda, `aria-busy="true"`, dan spinner `aria-hidden="true"`; kontainer `.card-loading-state` memakai latar `#F8FAFC` flat borderless dengan teks `#475569` (`7.24:1`).
+
+### 7.4D Semantic Iconography System (`CMP-08` — Borderless) — [LOCKED 2026-11-27]
+- **Skala, Stroke & Aksesibilitas Lucide SVG**: Zero unicode emoji; skala baku `12px` (`xs`), `16px` (`sm`), `20px` (`md`), `24px` (`lg`), dan `32px` (`xl`) dengan `stroke-width: 2.0` (`12–16px`) dan `1.75` (`20–32px`), warna muted minimal `#64748B` (`4.55:1` di `#F8FAFC`), serta `aria-hidden="true"` pada SVG dekoratif.
+- **Icon Box Pure 4-Color & Borderless**: `.icon-box` (`sm 36px`, `md 44px`, `lg 52px`) memakai `border: none` (`brand` `#FFF7ED`/`#C2410C` `4.88:1`, `neutral` `#F1F5F9`/`#334155` `9.45:1`, `error` `#FEF2F2`/`#B91C1C` `5.91:1`, `dark` `#000000`/`#FFFFFF` `21.0:1`), serta `.icon-count-badge` tanpa CSS border (`box-shadow: 0 0 0 1.5px #FFFFFF`).
 
 ### 7.5 Cards & Surfaces System
 - **Card Standar (`.card-estify`)**: Surface putih `#FFFFFF`, border halus `1px solid #ECEEF2`, radius sudut 24px (`--radius-card`), shadow alami.
@@ -179,7 +198,7 @@ Setiap komponen yang diimplementasikan pada `docs/design/components/index.html` 
 - **Mobile Card Reflow (<640px)**: Tabel otomatis membongkar susunannya menjadi tumpukan kartu baris key-value di layar kecil.
 
 ### 7.7 Overlays, Modals & Dialogs
-- **Modal Dialog (`.modal-dialog`)**: Backdrop semi-transparan `rgba(15, 23, 42, 0.6)` ber-blur halus, kontainer modal `z-index: 50` dengan fokus trap dan ESC handler.
+- **Modal Dialog (`.modal-dialog`)**: Backdrop semi-transparan `rgba(0, 0, 0, 0.45)` ber-blur halus, kontainer modal `z-index: 50` dengan fokus trap dan ESC handler.
 - **Modal Destruktif**: Wajib mewajibkan pengisian alasan audit dan pengetikan teks `HAPUS` sebelum eksekusi.
 
 ### 7.8 Feedback & State Displays

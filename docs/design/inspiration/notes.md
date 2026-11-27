@@ -14,7 +14,7 @@
 **Observations**:
 - **Colors**:
   - Primary Brand Accent: `#F97316` (Warm Orange) & `#FF8A24` (Gradient Start)
-  - Dark Neutral: `#111827` (Carbon Black for active pill tabs, solid dark buttons, and typography)
+  - Dark Neutral: `#000000` (Pure Black for active pill tabs, solid dark buttons, and typography)
   - Canvas Neutral: `#F4F5F7` (Soft calming light grey canvas)
   - Card Surface: `#FFFFFF` (Pure white card background)
   - Borders: `#ECEEF2` (Subtle 1px contour)
@@ -120,7 +120,7 @@
 |:-:|:------------------------|:---------------------------------|:---------------------|
 | 1 | `RadialTachometerGauge` | Semi-circular radial ray ticks (25 lines) with percentage center badge (`+12%`, `+15%`, `+40%`) | Tenant & Staff KPI Cards (`SCR-006`, `SCR-014`) |
 | 2 | `HeroOrangePropertyCard` | Banner card gradien oranye hangat (`#FF8A24`–`#F97316`) dengan foto gedung arsitektur asli, metrik okupansi, dan circle arrow button `↗` | Staff & Owner Dashboard (`SCR-014`, `SCR-037`) |
-| 3 | `PillNavGroup` | Bilah navigasi melayang berbentuk pil bulat penuh dengan state aktif hitam solid Carbon (`#111827`) | Topbar Header (Seluruh Screen) |
+| 3 | `PillNavGroup` | Bilah navigasi melayang berbentuk pil bulat penuh dengan state aktif hitam solid Pure Black (`#000000`) | Topbar Header (Seluruh Screen) |
 | 4 | `HatchedBarChart` | Grafik batang vertikal berpola kapsul bulat dengan arsiran diagonal (*hatched stripes*) pada segmen atas dan floating tooltip | Branch Occupancy & Finance (`SCR-015`, `SCR-032`) |
 | 5 | `BuildingConditionMeters` | Tiga progress bar horizontal bertahap pemantauan kondisi fasilitas dengan tombol pil hitam solid `[ Maintenance Details ]` | Caretaker & SLA Ticketing (`SCR-024`, `SCR-010`) |
 | 6 | `MessageContactWidget` | Daftar baris kontak dengan foto avatar bulat, nama, cuplikan pesan, waktu relatif, dan badge unread counter merah | Widget Komunikasi Penghuni & Caretaker (`SCR-011`, `SCR-025`) |
@@ -139,20 +139,20 @@
 Canvas Background: #F4F5F7 (Soft Estify grey, bukan harsh pure white)
 Card Surface: #FFFFFF (Pure white cards)
 Card Border: #ECEEF2 (Subtle 1px contour)
-Interactive Border: #CBD5E1 (Slate 300)
+Interactive Control Border (Checkbox/Radio): #CBD5E1 (Slate 300; input formulir borderless sesuai DESIGN.md §7.3)
 Muted text: #64748B (Slate 500, kontras 4.6:1 pada putih)
-Primary text: #111827 (Carbon Black, kontras 17.2:1 pada putih)
+Primary text: #000000 (Pure Black, kontras 21.0:1 pada putih)
 ```
 
-**Semantic Colors**:
+**Semantic Status Colors (Hybrid Pure 4-Color Architecture)**:
 ```
-Success: #15803D (Green 700, kontras 5.1:1 pada #F0FDF4)
-Error: #B91C1C (Red 700, kontras 5.4:1 pada #FEF2F2)
-Warning: #B45309 (Amber 700, kontras 4.8:1 pada #FFFBEB)
-Info: #1D4ED8 (Blue 700, kontras 5.6:1 pada #EFF6FF)
+Brand / Active Status (Soft Tint): #C2410C pada #FFF7ED (4.88:1; Solid Counter: #FFFFFF pada #C2410C 5.18:1)
+Error / Urgent Status (Soft Tint): #B91C1C pada #FEF2F2 (5.91:1; Solid Counter: #FFFFFF pada #B91C1C 6.47:1)
+Occupied / Priority / Dark (Solid): #FFFFFF pada #000000 (Pure Black, kontras 21.0:1)
+Neutral / Queue Status (Soft Tint): #334155 pada #F1F5F9 (9.45:1; Photo Overlay: #000000 pada #FFFFFF 21.0:1)
 ```
 
-**Rationale**: Palet warna mengawinkan kehangatan keramahan kos Indonesia (`#F97316`) dengan ketegasan operasional enterprise Estify (`#111827`), memenuhi standar keterbacaan WCAG AA tanpa silau optis.
+**Rationale**: Palet warna mengawinkan kehangatan keramahan kos Indonesia (`#F97316`) dengan ketegasan operasional enterprise Estify (`#000000`), memenuhi standar keterbacaan WCAG AA tanpa silau optis.
 
 ---
 
@@ -196,8 +196,8 @@ Tabular: Seluruh angka uang, meteran, dan tanggal wajib 'tabular-nums'
 
 ### Borders, Corners & Shadows
 
-**Border Width**: `1px` solid  
-**Border Color**: `#ECEEF2` untuk kartu, `#CBD5E1` untuk input formulir  
+**Border Width**: `1px` solid (untuk kartu `#ECEEF2` dan kontrol boolean/divider `#CBD5E1`; input formulir RumaKost mengadopsi permukaan *borderless* sesuai `DESIGN.md` §7.3)  
+**Border Color**: `#ECEEF2` untuk kartu, `#CBD5E1` untuk kontrol boolean/divider  
 
 **Corner Radius**:
 ```

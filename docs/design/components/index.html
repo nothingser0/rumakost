@@ -17,7 +17,7 @@
       <div class="flex items-center gap-4">
         <a href="#" class="flex items-center gap-3" aria-label="RumaKost" style="text-decoration:none;flex-shrink:0">
           <img src="../../../assets/logo/favicon.svg" alt="" style="width:38px;height:38px;display:block">
-          <span style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#0F172A">Ruma<span style="color:#F97316">Kost</span></span>
+          <span style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#000000">Ruma<span style="color:#F97316">Kost</span></span>
         </a>
         <div style="width:1px;height:32px;background:#E2E8F0;flex-shrink:0"></div>
         <div>
@@ -35,7 +35,7 @@
     <div class="cmp-card" id="cmp-01">
       <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
         <span class="cmp-badge" style="margin-bottom:0">CMP-01</span>
-        <span class="badge badge-success badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
       </div>
       <h2 class="cmp-title">Button & Interactive Actions</h2>
       <p class="cmp-desc">Sistem aksi interaktif full-pill (9999px) dengan feedback taktil scale(0.98) 150ms, animasi loading debounced, target sentuh minimum 44px, dan aturan submit button tidak pernah disabled saat pristine.</p>
@@ -53,7 +53,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Secondary (Putih)
         </button>
-        <!-- Solid Dark: Carbon Black (#111827) -->
+        <!-- Solid Dark: Pure Black (#000000) -->
         <button type="button" class="btn btn-solid-dark">
           Solid Dark (Carbon)
         </button>
@@ -213,8 +213,8 @@
         </button>
       </div>
 
-      <!-- Sub 6: Segmented Pill Button Group & Interactive Filter Dropdown -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">6. SEGMENTED PILL &amp; INTERACTIVE FILTER DROPDOWN (KLIK ATAU NAVIGASI KEYBOARD)</div>
+      <!-- Sub 6: Segmented Pill Button Group & Filter Pill Select (CMP-04 Engine) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">6. SEGMENTED PILL &amp; FILTER PILL SELECT (TERINTEGRASI ENGINE CMP-04)</div>
       <div class="flex items-center gap-4" style="flex-wrap:wrap">
         <!-- Segmented Pill Control in One Soft Container -->
         <div class="btn-group" role="group" aria-label="Filter Status Kamar">
@@ -226,41 +226,70 @@
 
         <span style="color:#CBD5E1">|</span>
 
-        <!-- Interactive Clickable Dropdown 1: Periode -->
-        <div class="dropdown-wrapper">
-          <button type="button" class="filter-dropdown-pill" data-dropdown-toggle aria-haspopup="menu" aria-expanded="false" aria-label="Pilih Periode">
-            <span class="dropdown-label">Bulanan</span>
-            <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="dropdown-menu-floating" role="menu">
-            <button type="button" class="dropdown-item" role="menuitem">Harian</button>
-            <button type="button" class="dropdown-item" role="menuitem">Mingguan</button>
-            <button type="button" class="dropdown-item active" role="menuitem">Bulanan</button>
-            <button type="button" class="dropdown-item" role="menuitem">Tahunan</button>
+        <!-- Filter Pill Select 1: Periode (CMP-04 Unified Borderless Popover) -->
+        <div class="custom-select-wrapper is-pill has-value" id="cmp01-period-select">
+          <div id="cmp01-period-trigger" class="pill-input-box select-trigger is-pill has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="cmp01-period-listbox" aria-label="Pilih Periode">
+            <span class="select-label-text">Bulanan</span>
+            <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <input type="hidden" name="cmp01_period" class="select-value" value="monthly">
+          <div id="cmp01-period-listbox" class="select-popover" role="listbox" aria-label="Pilih Periode">
+            <div class="select-option" data-value="daily" role="option" aria-selected="false">
+              <span class="option-title">Harian</span>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="select-option" data-value="weekly" role="option" aria-selected="false">
+              <span class="option-title">Mingguan</span>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="select-option is-selected" data-value="monthly" role="option" aria-selected="true">
+              <span class="option-title">Bulanan</span>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="select-option" data-value="yearly" role="option" aria-selected="false">
+              <span class="option-title">Tahunan</span>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
           </div>
         </div>
 
-        <!-- Interactive Clickable Dropdown 2: Rentang Waktu -->
-        <div class="dropdown-wrapper">
-          <button type="button" class="filter-dropdown-pill" data-dropdown-toggle aria-haspopup="menu" aria-expanded="false" aria-label="Pilih Rentang Waktu">
-            <span class="dropdown-label">Hari Ini</span>
-            <svg class="dropdown-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="dropdown-menu-floating" role="menu">
-            <button type="button" class="dropdown-item active" role="menuitem">Hari Ini</button>
-            <button type="button" class="dropdown-item" role="menuitem">Kemarin</button>
-            <button type="button" class="dropdown-item" role="menuitem">7 Hari Terakhir</button>
-            <button type="button" class="dropdown-item" role="menuitem">Bulan Ini</button>
+        <!-- Filter Pill Select 2: Rentang Waktu (CMP-04 Unified Borderless Popover) -->
+        <div class="custom-select-wrapper is-pill has-value" id="cmp01-range-select">
+          <div id="cmp01-range-trigger" class="pill-input-box select-trigger is-pill has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="cmp01-range-listbox" aria-label="Pilih Rentang Waktu">
+            <span class="select-label-text">Hari Ini</span>
+            <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <input type="hidden" name="cmp01_range" class="select-value" value="today">
+          <div id="cmp01-range-listbox" class="select-popover" role="listbox" aria-label="Pilih Rentang Waktu">
+            <div class="select-option is-selected" data-value="today" role="option" aria-selected="true">
+              <span class="option-title">Hari Ini</span>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="select-option" data-value="yesterday" role="option" aria-selected="false">
+              <span class="option-title">Kemarin</span>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="select-option" data-value="7d" role="option" aria-selected="false">
+              <span class="option-title">7 Hari Terakhir</span>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="select-option" data-value="month" role="option" aria-selected="false">
+              <span class="option-title">Bulan Ini</span>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CMP-02 & CMP-03: Input & Textarea -->
+    <!-- CMP-02 & CMP-03: Input & Textarea (LOCKED 2026-11-27) -->
     <div class="cmp-card" id="cmp-02-03">
-      <span class="cmp-badge">CMP-02 & CMP-03</span>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-02 & CMP-03</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
       <h2 class="cmp-title">Input Fields, CurrencyInput, Upload & Textarea System</h2>
-      <p class="cmp-desc">Input data entry teks, CurrencyInput numerik IDR, phone mask +62, calendar popover, dan file upload dropzone tanpa border (clean borderless), font 16px anti-zoom iOS Safari, target sentuh min. 44px, focus ring <code>#EA580C</code> / <code>#B91C1C</code> (<code>outline-offset: 2px</code>), dan radius 12px (pill khusus pencarian).</p>
+      <p class="cmp-desc">Input data entry teks, CurrencyInput numerik IDR, phone mask +62, calendar popover, dan file upload dropzone tanpa border (clean borderless), font 14px desktop selaras label &amp; CMP-01 (otomatis 16px di mobile/sentuh anti-zoom iOS Safari), target sentuh min. 44px, focus ring <code>#EA580C</code> / <code>#B91C1C</code> (<code>outline-offset: 2px</code>), dan radius 12px (pill khusus pencarian).</p>
 
       <!-- Sub 1: Varian Jenis Input Data -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN JENIS INPUT DATA (CMP-02)</div>
@@ -276,10 +305,7 @@
           <label for="inp-curr-demo">Tarif Sewa Bulanan (CurrencyInput) <span class="required">*</span></label>
           <div class="pill-input-box">
             <span class="pill-prefix-badge">Rp</span>
-            <input id="inp-curr-demo" class="tabular" inputmode="numeric" placeholder="1.850.000" oninput="
-              let val = this.value.replace(/[^0-9]/g, '');
-              this.value = val ? new Intl.NumberFormat('id-ID').format(Number(val)) : '';
-            ">
+            <input id="inp-curr-demo" class="tabular" type="text" inputmode="numeric" placeholder="1.850.000" data-currency-input data-max-digits="13">
             <span class="pill-suffix-badge" style="background:transparent;color:#475569;font-size:0.75rem">/ bln</span>
           </div>
         </div>
@@ -289,7 +315,7 @@
           <label for="inp-phone-demo">Nomor WhatsApp Aktif <span class="required">*</span></label>
           <div class="pill-input-box">
             <span class="pill-prefix-badge">+62</span>
-            <input id="inp-phone-demo" class="tabular" type="tel" inputmode="numeric" placeholder="812-3456-7890" oninput="let d=this.value.replace(/[^0-9]/g,'').slice(0,12); this.value = d ? d.replace(/(\d{1,3})(\d{0,4})(\d{0,5})/, (_,a,b,c)=> a + (b?'-'+b:'') + (c?'-'+c:'')) : '';">
+            <input id="inp-phone-demo" class="tabular" type="tel" inputmode="numeric" placeholder="812-3456-7890" data-phone-id>
           </div>
         </div>
 
@@ -298,17 +324,8 @@
           <label for="inp-pass-demo">Kata Sandi Akun <span class="required">*</span></label>
           <div class="pill-input-box" style="padding-right:0.25rem">
             <input id="inp-pass-demo" type="password" value="secretPass123">
-            <button type="button" id="pass-toggle-btn" class="input-icon-btn" aria-label="Tampilkan kata sandi" aria-pressed="false" onclick="
-              const f = document.getElementById('inp-pass-demo');
-              const isPass = f.type === 'password';
-              f.type = isPass ? 'text' : 'password';
-              this.setAttribute('aria-pressed', String(isPass));
-              this.setAttribute('aria-label', isPass ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
-              this.innerHTML = isPass
-                ? '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.75\'><path d=\'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24\'/><line x1=\'1\' y1=\'1\' x2=\'23\' y2=\'23\'/></svg>'
-                : '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.75\'><path d=\'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z\'/><circle cx=\'12\' cy=\'12\' r=\'3\'/></svg>';
-            ">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <button type="button" id="pass-toggle-btn" class="input-icon-btn" aria-label="Tampilkan kata sandi" aria-pressed="false" data-password-toggle="inp-pass-demo">
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
         </div>
@@ -317,24 +334,25 @@
         <div class="input-wrapper">
           <label id="lbl-date-demo" for="due-date-trigger">Tanggal Jatuh Tempo <span class="required">*</span></label>
           <div class="datepicker-container" id="due-date-picker">
-            <div id="due-date-trigger" class="pill-input-box datepicker-trigger" tabindex="0" role="combobox" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="lbl-date-demo" style="padding-right:0.75rem;cursor:pointer">
+            <div id="due-date-trigger" class="pill-input-box datepicker-trigger" tabindex="0" role="combobox" aria-haspopup="dialog" aria-expanded="false" aria-controls="due-date-popover" aria-labelledby="lbl-date-demo due-date-sr-val" aria-describedby="due-date-hint" style="padding-right:0.75rem;cursor:pointer">
+              <span id="due-date-sr-val" class="sr-only datepicker-sr-value">Rabu, 25 Nov 2026</span>
               <input id="inp-date-demo" class="datepicker-display tabular" type="text" placeholder="Pilih tanggal jatuh tempo..." value="Rabu, 25 Nov 2026" readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
               <input id="native-date-input" class="datepicker-value" type="hidden" value="2026-11-25">
               <span aria-hidden="true" style="color:var(--color-brand);display:flex;align-items:center;flex-shrink:0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
               </span>
             </div>
 
             <!-- Custom Styled Floating Calendar Popover -->
-            <div class="datepicker-popover" role="dialog" aria-modal="false" aria-label="Kalender Tanggal Jatuh Tempo">
+            <div id="due-date-popover" class="datepicker-popover" role="dialog" aria-modal="false" aria-label="Kalender Tanggal Jatuh Tempo">
               <div class="datepicker-header">
                 <span class="datepicker-title tabular">November 2026</span>
                 <div class="datepicker-nav-buttons">
                   <button type="button" class="datepicker-nav-btn prev-month" aria-label="Bulan sebelumnya">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="15 18 9 12 15 6"/></svg>
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="15 18 9 12 15 6"/></svg>
                   </button>
                   <button type="button" class="datepicker-nav-btn next-month" aria-label="Bulan berikutnya">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="9 18 15 12 9 6"/></svg>
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="9 18 15 12 9 6"/></svg>
                   </button>
                 </div>
               </div>
@@ -356,16 +374,17 @@
               </div>
             </div>
           </div>
-          <span class="input-hint">Klik kolom atau tekan Enter/Spasi untuk memilih tanggal interaktif.</span>
+          <span id="due-date-hint" class="input-hint">Klik kolom atau tekan Enter/Spasi untuk memilih tanggal interaktif.</span>
         </div>
 
         <!-- Number Stepper Input (Maks. 3 Terkunci) -->
         <div class="input-wrapper">
           <span id="stepper-label" class="input-label">Jumlah Tamu Menginap <span class="required">*</span></span>
-          <div class="number-stepper" role="group" aria-labelledby="stepper-label">
-            <button id="stepper-dec-btn" type="button" class="stepper-btn" aria-label="Kurangi jumlah tamu" onclick="const v=document.getElementById('inp-stepper-val'); const n=Math.max(1, parseInt(v.textContent,10)-1); v.textContent=n; this.disabled=(n<=1); document.getElementById('stepper-inc-btn').disabled=(n>=3);">−</button>
-            <span id="inp-stepper-val" class="stepper-value tabular" aria-live="polite">2</span>
-            <button id="stepper-inc-btn" type="button" class="stepper-btn" aria-label="Tambah jumlah tamu" onclick="const v=document.getElementById('inp-stepper-val'); const n=Math.min(3, parseInt(v.textContent,10)+1); v.textContent=n; this.disabled=(n>=3); document.getElementById('stepper-dec-btn').disabled=(n<=1);">+</button>
+          <div class="number-stepper" role="group" aria-labelledby="stepper-label" data-stepper data-min="1" data-max="3">
+            <button id="stepper-dec-btn" type="button" class="stepper-btn" aria-label="Kurangi jumlah tamu" data-stepper-dec>−</button>
+            <span id="inp-stepper-val" class="stepper-value tabular" aria-live="polite" data-stepper-val>2</span>
+            <input type="hidden" name="guest_count" value="2" data-stepper-input>
+            <button id="stepper-inc-btn" type="button" class="stepper-btn" aria-label="Tambah jumlah tamu" data-stepper-inc>+</button>
             <span class="text-caption text-muted" style="margin-left:0.5rem">Orang (Maks. 3)</span>
           </div>
         </div>
@@ -375,39 +394,39 @@
       <div class="input-wrapper" style="margin-bottom: 2rem">
         <label for="inp-search-demo">Pencarian Unit Kamar (Estify Pill Search) <span class="required">*</span></label>
         <div class="pill-input-box is-search" style="padding-left:1rem;padding-right:0.25rem">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input id="inp-search-demo" type="search" placeholder="Cari unit kamar, nomor, atau fasilitas..." oninput="document.getElementById('search-clear-btn').style.display = this.value ? 'inline-flex' : 'none'">
-          <button id="search-clear-btn" type="button" class="input-icon-btn" aria-label="Hapus pencarian" style="display:none;color:#64748B" onclick="const i=document.getElementById('inp-search-demo'); i.value=''; this.style.display='none'; i.focus();">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="inp-search-demo" type="search" placeholder="Cari unit kamar, nomor, atau fasilitas...">
+          <button id="search-clear-btn" type="button" class="input-icon-btn" aria-label="Hapus pencarian" style="display:none;color:#64748B" data-search-clear="inp-search-demo">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
       </div>
 
       <!-- Sub 2: Skala Ukuran Input -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SKALA UKURAN INPUT (COMPACT 36px / 44px SENTUH, DEFAULT 44px, LG 48px)</div>
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SKALA UKURAN INPUT (COMPACT 36px / 13px, DEFAULT 44px / 14px, LG 48px / 16px)</div>
       <div class="flex items-center gap-4" style="flex-wrap:wrap; margin-bottom: 2rem">
         <div style="flex:1;min-width:200px">
-          <input class="input-pill input-pill-sm" type="text" aria-label="Compact Input" placeholder="Compact Desktop (36px)">
+          <input class="input-pill input-pill-sm" type="text" aria-label="Compact Input" placeholder="Compact Desktop (36px / 13px)">
         </div>
         <div style="flex:1;min-width:200px">
-          <input class="input-pill" type="text" aria-label="Default Input" placeholder="Default Input (44px)">
+          <input class="input-pill" type="text" aria-label="Default Input" placeholder="Default Input (44px / 14px)">
         </div>
         <div style="flex:1;min-width:200px">
-          <input class="input-pill input-pill-lg" type="text" aria-label="Large Input" placeholder="Large Input (48px)">
+          <input class="input-pill input-pill-lg" type="text" aria-label="Large Input" placeholder="Large Input (48px / 16px)">
         </div>
       </div>
 
       <!-- Sub 3: Status Interaktif & Validasi -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. STATUS VALIDASI (FOCUSED, ERROR INLINE, DISABLED)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem">
-        <!-- Error State with Concise Inline Message -->
-        <div class="input-wrapper">
+        <!-- Error State with Concise Inline Message (Live Recovery) -->
+        <div class="input-wrapper has-error">
           <label for="inp-err-demo">Email Penagihan Resmi <span class="required">*</span></label>
           <div class="pill-input-box has-error">
-            <input id="inp-err-demo" type="email" value="budi.santoso@gmail" aria-invalid="true" aria-describedby="err-msg-demo">
+            <input id="inp-err-demo" type="email" value="budi.santoso@gmail" aria-invalid="true" aria-describedby="err-msg-demo" data-validate-email data-error-target="err-msg-demo">
           </div>
-          <span id="err-msg-demo" class="error-message">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="err-msg-demo" class="error-message" data-static-error="true">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Alamat email wajib memuat '@' dan nama domain (.com).
           </span>
         </div>
@@ -425,32 +444,34 @@
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1.5fr; gap: 1.25rem; margin-bottom: 2rem">
         <!-- Compact File Upload Box (Tab-Focusable) -->
         <div class="input-wrapper">
-          <label for="compact-file-input">Unggah Bukti Cepat (Compact Upload)</label>
-          <div class="compact-file-upload">
-            <input id="compact-file-input" class="sr-only" type="file" onchange="document.getElementById('file-chosen-name').textContent = this.files[0]?.name || 'Belum ada berkas terpilih'">
-            <label class="btn btn-primary btn-sm" for="compact-file-input">
+          <span id="lbl-compact-upload" class="input-label">Unggah Bukti Cepat (Compact Upload)</span>
+          <div class="compact-file-upload" data-compact-upload data-max-mb="5">
+            <input id="compact-file-input" class="sr-only" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png" aria-labelledby="lbl-compact-upload" aria-describedby="compact-upload-hint">
+            <label class="btn btn-primary btn-sm" for="compact-file-input" aria-hidden="true">
               Pilih Berkas
             </label>
-            <span id="file-chosen-name" class="text-caption text-muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">bukti-transfer-bca.jpg</span>
+            <span id="file-chosen-name" class="text-caption text-muted upload-filename" data-upload-filename>bukti-transfer-bca.jpg</span>
           </div>
-          <span class="input-hint">Format JPG, PNG maks. 5MB.</span>
+          <span id="compact-upload-hint" class="input-hint">Format JPG, PNG maks. 5MB.</span>
         </div>
 
-        <!-- Drag-and-Drop Dropzone (Keyboard Accessible & Toast Feedback) -->
-        <div class="dropzone-card" role="button" tabindex="0" aria-label="Unggah foto dokumen KTP, meteran PLN, atau bukti transfer" data-dropzone="dropzone-file-input">
-          <input id="dropzone-file-input" class="sr-only" type="file" tabindex="-1">
-          <div class="dropzone-icon-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          </div>
-          <div style="font-weight:700;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:0.375rem">
-            Tarik foto ke sini atau <span style="color:var(--color-brand);text-decoration:underline">telusuri berkas</span>
-          </div>
-          <p class="text-caption text-muted mb-3" data-dropzone-status style="max-width:320px;line-height:1.4">
-            Mendukung dokumen foto KTP (KYC penghuni), foto meteran kWh fisik, atau slip transfer bank
-          </p>
-          <div class="flex gap-2 items-center">
-            <span class="badge badge-neutral">JPG / PNG</span>
-            <span class="badge badge-neutral">Maks. 5 MB</span>
+        <!-- Drag-and-Drop Dropzone (Keyboard Accessible, Drag-and-Drop & Validation) -->
+        <div class="input-wrapper" style="margin-bottom:0">
+          <div class="dropzone-card" role="button" tabindex="0" aria-label="Unggah foto dokumen KTP, meteran PLN, atau bukti transfer (JPG/PNG maks. 5 MB)" data-dropzone="dropzone-file-input" data-max-mb="5">
+            <input id="dropzone-file-input" class="sr-only" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png" tabindex="-1">
+            <div class="dropzone-icon-circle">
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div style="font-weight:700;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:0.375rem">
+              Tarik foto ke sini atau <span style="color:#C2410C;text-decoration:underline">telusuri berkas</span>
+            </div>
+            <p class="text-caption text-muted mb-3" data-dropzone-status style="max-width:320px;line-height:1.4">
+              Mendukung dokumen foto KTP (KYC penghuni), foto meteran kWh fisik, atau slip transfer bank
+            </p>
+            <div class="flex gap-2 items-center">
+              <span class="badge badge-neutral">JPG / PNG</span>
+              <span class="badge badge-neutral">Maks. 5 MB</span>
+            </div>
           </div>
         </div>
       </div>
@@ -462,16 +483,16 @@
           <label for="inp-area-demo" class="input-label" style="margin-bottom:0">Catatan Khusus Handover Fasilitas Kamar</label>
           <span id="char-counter" class="text-caption text-muted tabular">0 / 250 karakter</span>
         </div>
-        <textarea id="inp-area-demo" class="textarea-rounded" rows="3" maxlength="250" placeholder="Deskripsikan kondisi fisik fasilitas kamar saat serah terima kunci (AC dingin, remote lengkap, kasur bersih)..." oninput="document.getElementById('char-counter').textContent = `${this.value.length} / 250 karakter`;"></textarea>
+        <textarea id="inp-area-demo" class="textarea-rounded" rows="3" maxlength="250" aria-describedby="char-counter" data-char-counter="char-counter" placeholder="Deskripsikan kondisi fisik fasilitas kamar saat serah terima kunci (AC dingin, remote lengkap, kasur bersih)..."></textarea>
       </div>
 
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem">
         <!-- Textarea Error State (Live Recovery >= 10 chars) -->
-        <div class="input-wrapper" style="margin-bottom:0">
+        <div class="input-wrapper has-error" style="margin-bottom:0">
           <label for="inp-area-err">Alasan Void / Penolakan Bukti Transfer <span class="required">*</span></label>
-          <textarea id="inp-area-err" class="textarea-rounded has-error" rows="2" aria-invalid="true" aria-describedby="area-err-msg" oninput="const ok=this.value.trim().length>=10; this.classList.toggle('has-error', !ok); this.setAttribute('aria-invalid', String(!ok)); document.getElementById('area-err-msg').style.display = ok ? 'none' : 'flex';">Salah</textarea>
-          <span id="area-err-msg" class="error-message">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <textarea id="inp-area-err" class="textarea-rounded has-error" rows="2" aria-invalid="true" aria-describedby="area-err-msg" data-min-length="10" data-error-target="area-err-msg">Salah</textarea>
+          <span id="area-err-msg" class="error-message" data-static-error="true">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Alasan audit wajib diisi minimal 10 karakter.
           </span>
         </div>
@@ -485,295 +506,347 @@
       </div>
     </div>
 
-    <!-- CMP-04: Select / PopoverMenu -->
+    <!-- CMP-04: Select / PopoverMenu (LOCKED 2026-11-27) -->
     <div class="cmp-card" id="cmp-04">
-      <span class="cmp-badge">CMP-04</span>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-04</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
       <h2 class="cmp-title">Select / PopoverMenu System</h2>
-      <p class="cmp-desc">Floating popover menu kustom (zero raw native select) dengan container rounded-2xl, shadow-dropdown, prefix icon aktif dinamis, dan navigasi keyboard lengkap.</p>
+      <p class="cmp-desc">Sistem seleksi dan menu melayang 100% <em>borderless</em> (zero raw native select) dengan permukaan bersih gaya Estify, kontainer <code>rounded-2xl</code> (16px) + <code>shadow-dropdown</code>, tiga varian utama (Form Select, Filter Pill, dan Action Menu <code>⋮</code>), serta navigasi keyboard penuh.</p>
 
-      <!-- Sub 1: Form Branch Select & Filter Popover -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. PILIHAN CABANG & FILTER LANTAI (TRIGGER TERTUTUP VS MENU TERBUKA)</div>
+      <!-- Sub 1: Form Select & Airy Popover Anatomy -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. FORM SELECT & ANATOMI POPOVER TERBUKA (100% BORDERLESS, TANPA IKON BERULANG)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem">
-        <!-- Kolom Kiri: Input Trigger Interaktif Tertutup -->
+        <!-- Kolom Kiri: Form Select Interaktif -->
         <div style="display:flex;flex-direction:column;gap:1.25rem">
-          <!-- Variant 1: Pristine Placeholder State -->
+          <!-- Variant 1: Rich Two-Line Branch Select (Pristine + Disabled Option) -->
           <div class="input-wrapper" style="margin-bottom:0">
-            <label for="sel-branch-display">Pilihan Cabang Properti <span class="required">*</span></label>
+            <label id="lbl-sel-branch" for="sel-branch-trigger">Pilihan Cabang Properti <span class="required">*</span></label>
             <div class="custom-select-wrapper" id="branch-select">
-              <div class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="branch-listbox" aria-label="Pilih Cabang Properti">
-                <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+              <div id="sel-branch-trigger" class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="branch-listbox" aria-labelledby="lbl-sel-branch" aria-describedby="hint-sel-branch">
+                <svg class="select-prefix-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
                 <input id="sel-branch-display" class="select-display" type="text" placeholder="Pilih Cabang Properti..." readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
-                <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
               </div>
               <input type="hidden" name="branch_id" class="select-value" value="">
 
-              <!-- Floating Popover Container -->
-              <div id="branch-listbox" class="select-popover" role="listbox">
+              <!-- Floating Popover Container (Borderless) -->
+              <div id="branch-listbox" class="select-popover" role="listbox" aria-labelledby="lbl-sel-branch">
                 <div class="select-option" data-value="1" role="option" aria-selected="false">
-                  <div style="display:flex;align-items:center;gap:0.75rem">
-                    <div class="select-option-icon-box">
-                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:2px">
-                      <span class="option-title">Rumakost Cilandak Executive</span>
-                      <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
-                    </div>
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <span class="option-title">Rumakost Cilandak Executive</span>
+                    <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
                   </div>
-                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="select-option" data-value="2" role="option" aria-selected="false">
-                  <div style="display:flex;align-items:center;gap:0.75rem">
-                    <div class="select-option-icon-box">
-                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:2px">
-                      <span class="option-title">Rumakost Setiabudi Residence</span>
-                      <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
-                    </div>
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <span class="option-title">Rumakost Setiabudi Residence</span>
+                    <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
                   </div>
-                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="select-option is-disabled" data-value="3" role="option" aria-selected="false" aria-disabled="true">
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <span class="option-title">Rumakost Menteng Pavilion</span>
+                    <span class="text-caption text-muted">Jakarta Pusat • Penuh (0 Kamar Kosong)</span>
+                  </div>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
               </div>
             </div>
-            <span class="input-hint">Klik kolom untuk memunculkan floating popover dinamis.</span>
+            <span id="hint-sel-branch" class="input-hint">Klik kolom atau tekan Enter/Spasi untuk memilih cabang.</span>
           </div>
 
-          <!-- Variant 2: Floor Level Filter State -->
+          <!-- Variant 2: Clean Single-Line Floor Filter (Selected State) -->
           <div class="input-wrapper" style="margin-bottom:0">
-            <label for="sel-floor-display">Filter Lantai Unit (Nilai Terpilih) <span class="required">*</span></label>
+            <label id="lbl-sel-floor" for="sel-floor-trigger">Filter Lantai Unit (Nilai Terpilih) <span class="required">*</span></label>
             <div class="custom-select-wrapper has-value" id="floor-select">
-              <div class="pill-input-box select-trigger has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="floor-listbox" aria-label="Filter Lantai Unit">
-                <svg class="select-prefix-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <div id="sel-floor-trigger" class="pill-input-box select-trigger has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="floor-listbox" aria-labelledby="lbl-sel-floor" aria-describedby="hint-sel-floor">
+                <svg class="select-prefix-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
                 <input id="sel-floor-display" class="select-display" type="text" value="Semua Lantai" readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
-                <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
               </div>
               <input type="hidden" name="floor_level" class="select-value" value="all">
 
-              <!-- Floating Popover Container -->
-              <div id="floor-listbox" class="select-popover" role="listbox">
+              <!-- Floating Popover Container (Clean Text-Only Rows) -->
+              <div id="floor-listbox" class="select-popover" role="listbox" aria-labelledby="lbl-sel-floor">
                 <div class="select-option is-selected" data-value="all" role="option" aria-selected="true">
-                  <div style="display:flex;align-items:center;gap:0.75rem">
-                    <div class="select-option-icon-box">
-                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                    </div>
-                    <span class="option-title">Semua Lantai</span>
-                  </div>
-                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span class="option-title">Semua Lantai</span>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="select-option" data-value="1" role="option" aria-selected="false">
-                  <div style="display:flex;align-items:center;gap:0.75rem">
-                    <div class="select-option-icon-box">
-                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                    </div>
-                    <span class="option-title">Lantai 1 (Kamar 101 - 112)</span>
-                  </div>
-                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span class="option-title">Lantai 1 (Kamar 101 – 112)</span>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="select-option" data-value="2" role="option" aria-selected="false">
-                  <div style="display:flex;align-items:center;gap:0.75rem">
-                    <div class="select-option-icon-box">
-                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                    </div>
-                    <span class="option-title">Lantai 2 (Kamar 201 - 212)</span>
-                  </div>
-                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span class="option-title">Lantai 2 (Kamar 201 – 212)</span>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="select-option" data-value="3" role="option" aria-selected="false">
-                  <div style="display:flex;align-items:center;gap:0.75rem">
-                    <div class="select-option-icon-box">
-                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                    </div>
-                    <span class="option-title">Lantai 3 (Rooftop & Kamar 301 - 308)</span>
-                  </div>
-                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span class="option-title">Lantai 3 (Rooftop & Kamar 301 – 308)</span>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
               </div>
             </div>
-            <span class="input-hint">Icon prefix berubah oranye saat opsi berhasil dipilih.</span>
+            <span id="hint-sel-floor" class="input-hint">Opsi ringkas tanpa kotak ikon berulang; aksen oranye hanya di penanda aktif.</span>
           </div>
         </div>
 
-        <!-- Kolom Kanan: Pratinjau Menu Popover Terbuka (Anatomi Estify 20px rounded) -->
+        <!-- Kolom Kanan: Pratinjau Anatomi Popover Terbuka (100% Borderless) -->
         <div class="input-wrapper" style="margin-bottom:0">
-          <label>Anatomi Floating Popover Menu (Status Terbuka Langsung)</label>
+          <span class="input-label">Anatomi Popover Terbuka (Borderless + Calm Neutral)</span>
           <div class="select-popover-preview" role="listbox" aria-label="Pratinjau Pilihan Cabang">
             <!-- Option 1: Selected -->
             <div class="select-option is-selected" role="option" aria-selected="true">
-              <div style="display:flex;align-items:center;gap:0.75rem">
-                <div class="select-option-icon-box">
-                  <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:2px">
-                  <span class="option-title">Rumakost Cilandak Executive</span>
-                  <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
-                </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span class="option-title">Rumakost Cilandak Executive</span>
+                <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
               </div>
-              <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:flex"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
 
             <!-- Option 2: Regular -->
             <div class="select-option" role="option" aria-selected="false">
-              <div style="display:flex;align-items:center;gap:0.75rem">
-                <div class="select-option-icon-box">
-                  <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:2px">
-                  <span class="option-title">Rumakost Setiabudi Residence</span>
-                  <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
-                </div>
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span class="option-title">Rumakost Setiabudi Residence</span>
+                <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
               </div>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
 
-            <!-- Option 3: Regular -->
-            <div class="select-option" role="option" aria-selected="false">
-              <div style="display:flex;align-items:center;gap:0.75rem">
-                <div class="select-option-icon-box">
-                  <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:2px">
-                  <span class="option-title">Rumakost BSD City Park</span>
-                  <span class="text-caption text-muted">Tangerang Selatan • 18 Kamar Siap Huni</span>
-                </div>
+            <!-- Option 3: Disabled -->
+            <div class="select-option is-disabled" role="option" aria-selected="false" aria-disabled="true">
+              <div style="display:flex;flex-direction:column;gap:1px">
+                <span class="option-title">Rumakost Menteng Pavilion</span>
+                <span class="text-caption text-muted">Jakarta Pusat • Penuh (Non-Aktif)</span>
               </div>
+              <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
           </div>
-          <span class="input-hint">Radius sudut 20px, elevasi bayangan halus, dan kontras teks 16.5:1 WCAG AAA.</span>
+          <span class="input-hint">100% borderless (<code>border: none</code>), radius 16px, state terpilih netral <code>#F4F5F7</code> + checkmark <code>#C2410C</code>.</span>
         </div>
       </div>
 
       <!-- Sub 2: Validation Error & Disabled State -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. STATUS VALIDASI ERROR & AKSES TERKUNCI (DISABLED)</div>
-      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem">
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem">
         <!-- Variant 3: Validation Error State -->
         <div class="input-wrapper" style="margin-bottom:0">
-          <label for="sel-type-display">Tipe Unit Hunian (Contoh Status Validasi Error) <span class="required">*</span></label>
+          <label id="lbl-sel-type" for="sel-type-trigger">Tipe Unit Hunian (Contoh Status Validasi Error) <span class="required">*</span></label>
           <div class="custom-select-wrapper" id="room-type-select">
-            <div class="pill-input-box select-trigger has-error" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="room-type-listbox" aria-invalid="true" aria-describedby="err-select-demo" aria-label="Pilih Tipe Unit Hunian">
-              <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+            <div id="sel-type-trigger" class="pill-input-box select-trigger has-error" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="room-type-listbox" aria-invalid="true" aria-describedby="err-select-demo" aria-labelledby="lbl-sel-type">
+              <svg class="select-prefix-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
               <input id="sel-type-display" class="select-display" type="text" placeholder="Pilih tipe unit kamar..." readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
-              <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
             <input type="hidden" name="room_type" class="select-value" value="">
 
             <!-- Floating Popover Container -->
-            <div id="room-type-listbox" class="select-popover" role="listbox">
+            <div id="room-type-listbox" class="select-popover" role="listbox" aria-labelledby="lbl-sel-type">
               <div class="select-option" data-value="std" role="option" aria-selected="false">
-                <div style="display:flex;align-items:center;gap:0.75rem">
-                  <div class="select-option-icon-box">
-                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:2px">
-                    <span class="option-title">Standard Single Room</span>
-                    <span class="text-caption text-muted">Rp 1.500.000 / bln • Kamar Mandi Luar</span>
-                  </div>
+                <div style="display:flex;flex-direction:column;gap:1px">
+                  <span class="option-title">Standard Single Room</span>
+                  <span class="text-caption text-muted">Rp 1.500.000 / bln • Kamar Mandi Luar</span>
                 </div>
-                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div class="select-option" data-value="dlx" role="option" aria-selected="false">
-                <div style="display:flex;align-items:center;gap:0.75rem">
-                  <div class="select-option-icon-box">
-                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:2px">
-                    <span class="option-title">Deluxe Queen Room</span>
-                    <span class="text-caption text-muted">Rp 2.200.000 / bln • Kamar Mandi Dalam & AC</span>
-                  </div>
+                <div style="display:flex;flex-direction:column;gap:1px">
+                  <span class="option-title">Deluxe Queen Room</span>
+                  <span class="text-caption text-muted">Rp 2.200.000 / bln • Kamar Mandi Dalam & AC</span>
                 </div>
-                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
               <div class="select-option" data-value="ste" role="option" aria-selected="false">
-                <div style="display:flex;align-items:center;gap:0.75rem">
-                  <div class="select-option-icon-box">
-                    <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
-                  </div>
-                  <div style="display:flex;flex-direction:column;gap:2px">
-                    <span class="option-title">Suite Executive Balcony</span>
-                    <span class="text-caption text-muted">Rp 3.500.000 / bln • Water Heater & Balkon Pribadi</span>
-                  </div>
+                <div style="display:flex;flex-direction:column;gap:1px">
+                  <span class="option-title">Suite Executive Balcony</span>
+                  <span class="text-caption text-muted">Rp 3.500.000 / bln • Water Heater & Balkon Pribadi</span>
                 </div>
-                <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
             </div>
           </div>
-          <span id="err-select-demo" class="error-message">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="err-select-demo" class="error-message" data-static-error="true">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Wajib memilih tipe unit kamar sebelum menyimpan data sewa.
           </span>
         </div>
 
         <!-- Variant 4: Disabled State -->
         <div class="input-wrapper" style="margin-bottom:0">
-          <label for="sel-locked-display">Wilayah Regional Bisnis (Terkunci Sesuai Hak Akses)</label>
+          <label id="lbl-sel-locked" for="sel-locked-trigger">Wilayah Regional Bisnis (Terkunci Sesuai Hak Akses)</label>
           <div class="custom-select-wrapper">
-            <div class="pill-input-box select-trigger is-disabled" role="combobox" aria-disabled="true" aria-label="Regional Terkunci">
-              <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
-              <input id="sel-locked-display" class="select-display" type="text" value="DKI Jakarta (Otoritas Wilayah I)" disabled readonly>
-              <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <div id="sel-locked-trigger" class="pill-input-box select-trigger is-disabled" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-disabled="true" aria-labelledby="lbl-sel-locked">
+              <svg class="select-prefix-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+              <input id="sel-locked-display" class="select-display" type="text" value="DKI Jakarta (Otoritas Wilayah I)" disabled readonly tabindex="-1" aria-hidden="true">
+              <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
           </div>
           <span class="input-hint">Akun Branch Manager dibatasi hanya pada wilayah kerja operasional terdaftar.</span>
         </div>
       </div>
-    </div>
 
-    <!-- CMP-05: Badges -->
-    <div class="cmp-card" id="cmp-05">
-      <span class="cmp-badge">CMP-05</span>
-      <h2 class="cmp-title">Operational Badges (Borderless Semantic Tint)</h2>
-      <p class="cmp-desc">Badge status operasional <em>borderless</em> dengan tint semantik sesuai <code>DESIGN.md</code>: Success Hijau (<code>#15803D</code> pada <code>#F0FDF4</code>), Warning Amber (<code>#B45309</code> pada <code>#FFFBEB</code>), Destructive Merah (<code>#B91C1C</code> pada <code>#FEF2F2</code>), Info Biru (<code>#1D4ED8</code> pada <code>#EFF6FF</code>), Netral Slate, serta Oranye Brand &amp; Carbon Dark.</p>
+      <!-- Sub 3: Filter Pill Select & Action PopoverMenu (Estify Signature Patterns) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. FILTER PILL SELECT (9999px) & ACTION POPOVERMENU (⋮ MENU AKSI KARTU / TABEL)</div>
+      <div class="showcase-canvas">
+        <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start">
+          <!-- 3A. Filter Pill Select (Gaya Monthly ∨ / Today ∨ di Benchmark Estify) -->
+          <div>
+            <div style="font-weight:600;font-size:0.875rem;color:var(--color-text-primary);margin-bottom:0.625rem">Filter Pill Select (Header Grafik & Toolbar)</div>
+            <div class="flex items-center gap-3" style="flex-wrap:wrap">
+              <!-- Pill White on Canvas -->
+              <div class="custom-select-wrapper is-pill has-value" id="pill-period-select">
+                <div id="pill-period-trigger" class="pill-input-box select-trigger is-pill has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="pill-period-listbox" aria-label="Pilih Periode Grafik">
+                  <span class="select-label-text">Bulanan</span>
+                  <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <input type="hidden" name="chart_period" class="select-value" value="monthly">
+                <div id="pill-period-listbox" class="select-popover" role="listbox" aria-label="Periode Grafik">
+                  <div class="select-option" data-value="weekly" role="option" aria-selected="false">
+                    <span class="option-title">Mingguan</span>
+                    <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="select-option is-selected" data-value="monthly" role="option" aria-selected="true">
+                    <span class="option-title">Bulanan</span>
+                    <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="select-option" data-value="quarterly" role="option" aria-selected="false">
+                    <span class="option-title">Per Kuartal</span>
+                    <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="select-option" data-value="yearly" role="option" aria-selected="false">
+                    <span class="option-title">Tahunan</span>
+                    <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </div>
+              </div>
 
-      <!-- Sub 1: Varian Inti & Identitas -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN STATUS &amp; IDENTITAS UTAMA (SUCCESS, NEUTRAL, DESTRUCTIVE, CARBON)</div>
-      <div class="mid-subgrid" style="grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 2rem">
-        <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Success Hijau (5.1:1)</span>
-          <div><span class="badge badge-success"><span class="badge-dot"></span> Lunas Terverifikasi</span></div>
-          <span class="text-caption text-muted">Status berhasil &amp; aman</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Neutral Slate (9.5:1)</span>
-          <div><span class="badge badge-neutral"><span class="badge-dot"></span> Menunggu Pembayaran</span></div>
-          <span class="text-caption text-muted">Antrean &amp; status standar</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Destructive Merah (5.4:1)</span>
-          <div><span class="badge badge-error"><span class="badge-dot"></span> Terlambat Jatuh Tempo</span></div>
-          <span class="text-caption text-muted">Tunggakan, void &amp; urgent</span>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Carbon Dark (17.2:1)</span>
-          <div><span class="badge badge-dark"><span class="badge-dot"></span> 24 Kamar Terisi</span></div>
-          <span class="text-caption text-muted">Counter &amp; prioritas tinggi</span>
+              <!-- Pill Subtle Inside White Card (Surface #F4F5F7) -->
+              <div style="display:inline-flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem;background:#FFFFFF;border-radius:16px;box-shadow:var(--shadow-card)">
+                <span class="text-caption text-muted" style="font-weight:600">Dalam Kartu:</span>
+                <div class="custom-select-wrapper is-pill has-value" id="pill-branch-select">
+                  <div id="pill-branch-trigger" class="pill-input-box select-trigger is-pill is-subtle has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="pill-branch-listbox" aria-label="Filter Cabang Aktif">
+                    <span class="select-label-text">Semua Cabang</span>
+                    <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
+                  <input type="hidden" name="filter_branch" class="select-value" value="all">
+                  <div id="pill-branch-listbox" class="select-popover" role="listbox" aria-label="Filter Cabang Aktif">
+                    <div class="select-option is-selected" data-value="all" role="option" aria-selected="true">
+                      <span class="option-title">Semua Cabang</span>
+                      <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="select-option" data-value="cilandak" role="option" aria-selected="false">
+                      <span class="option-title">Cilandak Executive</span>
+                      <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="select-option" data-value="setiabudi" role="option" aria-selected="false">
+                      <span class="option-title">Setiabudi Residence</span>
+                      <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="text-caption text-muted" style="margin-top:0.625rem;line-height:1.45">Kapsul <code>9999px</code> dengan hit-area 44px menggunakan engine <code>initSelects()</code> yang sama.</p>
+          </div>
+
+          <!-- 3B. Action PopoverMenu (⋮ Kebab Trigger & Secondary Menu Trigger) -->
+          <div>
+            <div style="font-weight:600;font-size:0.875rem;color:var(--color-text-primary);margin-bottom:0.625rem">Action PopoverMenu (<code>role="menu"</code> & Aksi Destruktif)</div>
+            <div class="flex items-center gap-3" style="flex-wrap:wrap">
+              <!-- Kebab Circle Action Menu (Estify Building Condition Card Trigger) -->
+              <div class="popover-menu-wrapper" id="room-kebab-menu">
+                <button type="button" class="action-circle-btn popover-menu-trigger" data-popover-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="room-kebab-popover" aria-label="Menu Aksi Kamar 101">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+                </button>
+                <div id="room-kebab-popover" class="popover-menu" role="menu" aria-label="Menu Aksi Kamar 101">
+                  <div class="popover-menu-header">Kamar 101 • Deluxe</div>
+                  <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka editor detail Kamar 101." data-menu-tone="neutral">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                    Edit Detail Kamar
+                  </button>
+                  <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka input pencatatan kWh meteran Kamar 101." data-menu-tone="brand">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Catat Meteran kWh
+                  </button>
+                  <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Mengunduh kontrak sewa PDF Kamar 101." data-menu-tone="neutral">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Unduh Kontrak PDF
+                  </button>
+                  <div class="popover-menu-divider" role="separator"></div>
+                  <button type="button" class="popover-menu-item is-destructive" role="menuitem" data-menu-toast="Meminta konfirmasi void transaksi Kamar 101." data-menu-tone="error">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    Void / Nonaktifkan Unit
+                  </button>
+                </div>
+              </div>
+
+              <!-- Secondary Button Trigger Menu -->
+              <div class="popover-menu-wrapper is-align-right" id="tenant-action-menu">
+                <button type="button" class="btn btn-secondary btn-sm popover-menu-trigger" data-popover-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="tenant-action-popover">
+                  <span>Aksi Penghuni</span>
+                  <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div id="tenant-action-popover" class="popover-menu" role="menu" aria-label="Aksi Penghuni">
+                  <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka profil KYC penghuni." data-menu-tone="neutral">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Lihat Profil & KYC
+                  </button>
+                  <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Pengingat tagihan WhatsApp dikirim ke antrean outbox." data-menu-tone="brand">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Kirim Pengingat WA
+                  </button>
+                  <button type="button" class="popover-menu-item" role="menuitem" disabled aria-disabled="true">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Unduh Kwitansi (Belum Lunas)
+                  </button>
+                  <div class="popover-menu-divider" role="separator"></div>
+                  <button type="button" class="popover-menu-item is-destructive" role="menuitem" data-menu-toast="Membuka dialog terminasi kontrak sewa." data-menu-tone="error">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    Terminasi Kontrak
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p class="text-caption text-muted" style="margin-top:0.625rem;line-height:1.45">Mendukung navigasi <code>Arrow</code>, <code>Home/End</code>, typeahead, divider tanpa border, serta aksi destruktif <code>#B91C1C</code>.</p>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- Sub 1B: Varian Semantik Pelengkap (Warning, Info, Brand) & Interactive -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1B. VARIAN SEMANTIK PELENGKAP (WARNING, INFO, BRAND) &amp; INTERACTIVE/DISMISSIBLE</div>
+    <!-- CMP-05: Badges (LOCKED 2026-11-27) -->
+    <div class="cmp-card" id="cmp-05">
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-05</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
+      <h2 class="cmp-title">Operational Badges (Hybrid Pure 4-Color &amp; Borderless)</h2>
+      <p class="cmp-desc">Badge status operasional 100% <em>borderless</em> dengan palet ketat <strong>Pure 4-Color</strong> (Oranye, Hitam, Netral/Putih, Merah): status daftar/tabel &amp; status unit di atas foto (<code>.badge-sm.badge-on-photo</code>) memakai tint lembut agar tidak bersaing dengan tombol <code>CMP-01</code> (Oranye <code>4.88:1</code>, Netral <code>9.45:1</code>, Merah <code>5.91:1</code>), sedangkan <strong>Hitam Solid</strong> (<code>21.0:1</code>), <strong>Counter Numerik</strong>, dan <strong>Tag Media Foto</strong> (<code>.badge-overlay</code>) tampil solid kontras tinggi.</p>
+
+      <!-- Sub 1: 4 Varian Inti Pure 4-Color -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. EMPAT VARIAN INTI PURE 4-COLOR (TINT STATUS RINGAN &amp; HITAM SOLID)</div>
       <div class="mid-subgrid" style="grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 2rem">
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Warning Amber (4.8:1)</span>
-          <div><span class="badge badge-warning"><span class="badge-dot"></span> Perbaikan / Tempo</span></div>
-          <span class="text-caption text-muted">Peringatan &amp; pemeliharaan</span>
+          <span class="text-caption text-muted" style="font-weight:600">Oranye Brand (4.88:1)</span>
+          <div><span class="badge badge-brand"><span class="badge-dot"></span> Lunas Terverifikasi</span></div>
+          <span class="text-caption text-muted">Lunas, siap huni &amp; selesai</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Info Biru (5.6:1)</span>
-          <div><span class="badge badge-info"><span class="badge-dot"></span> Dipesan / Booking</span></div>
-          <span class="text-caption text-muted">Informasi reservasi aktif</span>
+          <span class="text-caption text-muted" style="font-weight:600">Netral Abu (9.45:1)</span>
+          <div><span class="badge badge-neutral"><span class="badge-dot"></span> Menunggu Pembayaran</span></div>
+          <span class="text-caption text-muted">Antrean, dipesan &amp; pembersihan</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Brand Oranye (5.8:1)</span>
-          <div><span class="badge badge-brand"><span class="badge-dot"></span> Cabang Unggulan</span></div>
-          <span class="text-caption text-muted">Label kategori &amp; unggulan</span>
+          <span class="text-caption text-muted" style="font-weight:600">Hitam Solid (21.0:1)</span>
+          <div><span class="badge badge-dark"><span class="badge-dot"></span> 24 Kamar Terisi</span></div>
+          <span class="text-caption text-muted">Terisi, VIP &amp; prioritas</span>
         </div>
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Interactive / Dismissible</span>
-          <div>
-            <button type="button" class="badge badge-neutral" onclick="showToast('Filter Lantai 1 dihapus.', 'neutral', false)" aria-label="Hapus filter Lantai 1">
-              Lantai 1
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-          </div>
-          <span class="text-caption text-muted">Hover &amp; focus ring keyboard</span>
+          <span class="text-caption text-muted" style="font-weight:600">Merah Void (5.91:1)</span>
+          <div><span class="badge badge-error"><span class="badge-dot"></span> Terlambat Jatuh Tempo</span></div>
+          <span class="text-caption text-muted">Tunggakan, void &amp; urgent</span>
         </div>
       </div>
 
@@ -786,15 +859,15 @@
           <div style="display:flex;flex-direction:column">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
               <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">Unit 101 • Deluxe Room</span>
-              <span class="badge badge-success badge-sm"><span class="badge-dot"></span> Siap Huni</span>
+              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Siap Huni</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
               <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">Unit 102 • Standard Room</span>
-              <span class="badge badge-info badge-sm"><span class="badge-dot"></span> Dipesan (DP)</span>
+              <span class="badge badge-dark badge-sm"><span class="badge-dot"></span> Terisi</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
               <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">Unit 103 • Standard Room</span>
-              <span class="badge badge-warning badge-sm"><span class="badge-dot"></span> Pembersihan</span>
+              <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Dipesan / Bersih</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0">
               <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">Unit 201 • Suite Executive</span>
@@ -813,11 +886,11 @@
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
               <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">#TK-098 • Ganti Lampu LED</span>
-              <span class="badge badge-warning badge-sm"><span class="badge-dot"></span> Pengerjaan</span>
+              <span class="badge badge-dark badge-sm"><span class="badge-dot"></span> Pengerjaan</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
               <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">#TK-095 • Servis Water Heater</span>
-              <span class="badge badge-success badge-sm"><span class="badge-dot"></span> Selesai</span>
+              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Selesai</span>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0">
               <span class="text-small tabular" style="color:var(--color-text-primary);font-weight:500">#TK-091 • Pengecekan WiFi</span>
@@ -835,12 +908,10 @@
           <div style="font-weight:600;font-size:0.875rem;color:var(--color-text-primary);margin-bottom:0.25rem">Ukuran Regular (12px)</div>
           <p class="text-caption text-muted mb-3">Untuk Header Halaman, Detail Tagihan, Modal, dan Kartu Ringkasan.</p>
           <div class="flex gap-2 items-center" style="flex-wrap:wrap">
-            <span class="badge badge-success"><span class="badge-dot"></span> Lunas</span>
-            <span class="badge badge-warning"><span class="badge-dot"></span> Tempo</span>
-            <span class="badge badge-error"><span class="badge-dot"></span> Terlambat</span>
-            <span class="badge badge-info"><span class="badge-dot"></span> Dipesan</span>
-            <span class="badge badge-neutral"><span class="badge-dot"></span> Draft</span>
+            <span class="badge badge-brand"><span class="badge-dot"></span> Lunas</span>
             <span class="badge badge-dark"><span class="badge-dot"></span> VIP</span>
+            <span class="badge badge-neutral"><span class="badge-dot"></span> Draft</span>
+            <span class="badge badge-error"><span class="badge-dot"></span> Terlambat</span>
           </div>
         </div>
 
@@ -849,40 +920,49 @@
           <div style="font-weight:600;font-size:0.875rem;color:var(--color-text-primary);margin-bottom:0.25rem">Ukuran Compact Table Cell (11px)</div>
           <p class="text-caption text-muted mb-3">Khusus sel tabel padat, baris data kamar, dan list item transaksi.</p>
           <div class="flex gap-2 items-center" style="flex-wrap:wrap">
-            <span class="badge badge-success badge-sm"><span class="badge-dot"></span> Lunas</span>
-            <span class="badge badge-warning badge-sm"><span class="badge-dot"></span> Tempo</span>
-            <span class="badge badge-error badge-sm"><span class="badge-dot"></span> Void</span>
-            <span class="badge badge-info badge-sm"><span class="badge-dot"></span> Dipesan</span>
-            <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Draft</span>
+            <span class="badge badge-brand badge-sm"><span class="badge-dot"></span> Lunas</span>
             <span class="badge badge-dark badge-sm"><span class="badge-dot"></span> VIP</span>
+            <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span> Draft</span>
+            <span class="badge badge-error badge-sm"><span class="badge-dot"></span> Void</span>
           </div>
         </div>
       </div>
 
-      <!-- Sub 4: Varian Khusus Signature Estify (Trend KPI, Filter Dismissible, Overlay Foto, Counter) -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. VARIAN KHUSUS (TREND KPI, FILTER TAG, OVERLAY FOTO SOLID, COUNTER)</div>
+      <!-- Sub 4: Varian Khusus Signature Estify (Trend KPI, Interactive/Dismissible, Overlay Foto, Counter) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">4. VARIAN KHUSUS (TREND KPI, INTERAKTIF / DISMISSIBLE, OVERLAY FOTO BORDERLESS, COUNTER)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 2rem">
         <!-- Kolom Kiri: Trend KPI & Dismissible Tags & Counters -->
         <div style="display:flex;flex-direction:column;gap:1.25rem">
           <div>
-            <div class="text-caption text-muted mb-2" style="font-weight:600">Trend Metrik KPI &amp; Tag Filter Hapus:</div>
-            <div class="flex gap-2 items-center" style="flex-wrap:wrap">
-              <span class="badge badge-success badge-trend">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+            <div class="text-caption text-muted mb-2" style="font-weight:600">Trend Metrik KPI &amp; Filter Interaktif / Hapus Tag:</div>
+            <div class="flex gap-2 items-center" style="flex-wrap:wrap" id="cmp05-tag-row">
+              <span class="badge badge-brand badge-trend">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
                 +14.8% MoM
               </span>
               <span class="badge badge-error badge-trend">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                 -2.4% Tunggakan
               </span>
-              <span class="badge badge-neutral badge-dismissible">
+              <span class="badge badge-neutral badge-dismissible" data-dismissible-badge>
                 Lantai 1
-                <button type="button" class="badge-close-btn" aria-label="Hapus filter Lantai 1" onclick="this.parentElement.style.display='none'">&times;</button>
+                <button type="button" class="badge-close-btn" data-badge-dismiss="Lantai 1" aria-label="Hapus filter Lantai 1">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
               </span>
-              <span class="badge badge-brand badge-dismissible">
+              <span class="badge badge-brand badge-dismissible" data-dismissible-badge>
                 Cabang Cilandak
-                <button type="button" class="badge-close-btn" aria-label="Hapus filter Cabang Cilandak" onclick="this.parentElement.style.display='none'">&times;</button>
+                <button type="button" class="badge-close-btn" data-badge-dismiss="Cabang Cilandak" aria-label="Hapus filter Cabang Cilandak">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
               </span>
+              <button type="button" class="badge badge-neutral" data-badge-toggle aria-pressed="false" aria-label="Filter cepat Unit Tersedia">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                Unit Tersedia
+              </button>
+              <button type="button" class="badge badge-dark" data-badge-restore="cmp05-tag-row" style="display:none">
+                Pulihkan Filter
+              </button>
             </div>
           </div>
           <div>
@@ -904,36 +984,40 @@
           </div>
         </div>
 
-        <!-- Kolom Kanan: Preview Overlay Foto Properti 16:10 (Solid Opaque White) -->
-        <div style="display:flex;align-items:center;gap:1.25rem">
-          <div style="position:relative;width:150px;height:90px;border-radius:14px;overflow:hidden;box-shadow:0 2px 6px rgba(17,24,39,0.08);flex-shrink:0">
-            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=360&h=180&fit=crop" alt="Foto Kamar" style="width:100%;height:100%;object-fit:cover">
-            <div style="position:absolute;top:8px;left:8px">
-              <span class="badge badge-overlay">
-                <span class="badge-dot" style="background-color:#15803D"></span>
-                Siap Huni
-              </span>
-            </div>
+        <!-- Kolom Kanan: Preview Overlay Foto Properti 16:10 (Status Semantik + Tag Media Borderless) -->
+        <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap">
+          <div style="position:relative;width:208px;height:130px;border-radius:var(--radius-inner);overflow:hidden;box-shadow:0 2px 6px rgba(0, 0, 0, 0.08);flex-shrink:0">
+            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=416&h=260&fit=crop" alt="Foto Kamar" style="width:100%;height:100%;object-fit:cover;display:block">
+            <span class="badge badge-brand badge-sm badge-on-photo" style="position:absolute;top:8px;left:8px">
+              <span class="badge-dot"></span>Siap Huni
+            </span>
+            <span class="badge badge-overlay badge-sm" style="position:absolute;bottom:8px;right:8px">
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              4 Foto
+            </span>
           </div>
-          <div>
-            <div style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:0.25rem">Foto Properti 16:10 (Overlay Badge)</div>
-            <p class="text-caption text-muted" style="line-height:1.45">Badge putih solid opaque (tanpa glassmorphism sesuai <code>DESIGN.md</code>) dengan border <code>#ECEEF2</code> di atas foto kamar.</p>
+          <div style="min-width:180px;flex:1">
+            <div style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:0.25rem">Overlay Foto Properti 16:10</div>
+            <p class="text-caption text-muted" style="line-height:1.45">Status unit memakai varian semantik compact (<code>.badge-sm.badge-on-photo</code>, selaras <code>CMP-24</code>), sedangkan tag media non-status (<code>4 Foto</code>) memakai <code>.badge-overlay</code> putih solid <strong>borderless</strong>.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CMP-06: Checkbox, Radio, Switch -->
+    <!-- CMP-06: Checkbox, Radio, Switch (LOCKED 2026-11-27) -->
     <div class="cmp-card" id="cmp-06">
-      <span class="cmp-badge">CMP-06</span>
-      <h2 class="cmp-title">Checkbox, Radio & Toggle Switch System</h2>
-      <p class="cmp-desc">Kontrol boolean interaktif dan seleksi pilihan tunggal dengan aksen Oranye Brand, touch target memadai (&gt;=44px), status aksesibilitas lengkap (checked, unchecked, indeterminate, disabled), dan format kartu pilihan (Choice Card) serta Settings Row preferensi.</p>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-06</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
+      <h2 class="cmp-title">Checkbox, Radio &amp; Toggle Switch System (Borderless)</h2>
+      <p class="cmp-desc">Kontrol boolean interaktif 100% <em>flat borderless</em> dengan aksen oranye WCAG 2.2 AA (<code>#EA580C</code> <code>3.56:1</code>, batas checkbox/radio <code>#64748B</code> <code>4.76:1</code>, track switch OFF <code>#7E8B9D</code> <code>3.31:1</code>–<code>3.46:1</code>), target sentuh <code>&gt;=44px</code>, cincin fokus <code>:focus-visible</code> tunggal, dukungan <code>role="switch"</code>, serta status lengkap (checked, unchecked, indeterminate, error, disabled).</p>
 
       <!-- Sub 1: Custom Checkbox (Interaktif & Indeterminate) -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. CUSTOM CHECKBOX (INTERAKTIF, INDETERMINATE & DISABLED)</div>
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. CUSTOM CHECKBOX (INTERAKTIF, INDETERMINATE &amp; DISABLED)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 0.75rem 2.5rem; margin-bottom: 2.25rem">
         <!-- Kolom Kiri: Checkbox Interaktif -->
-        <div style="display:flex;flex-direction:column;gap:0.375rem">
+        <div style="display:flex;flex-direction:column;gap:0.25rem">
           <!-- Checked State -->
           <label class="custom-checkbox">
             <input type="checkbox" checked>
@@ -949,22 +1033,25 @@
           </label>
 
           <!-- Indeterminate State -->
-          <label class="custom-checkbox">
-            <input type="checkbox" id="chk-indeterminate-demo">
-            <span class="checkbox-box"></span>
-            <span>Pilih Semua Kamar Terisi (8 dari 12 Terpilih)</span>
-          </label>
+          <div class="flex items-center gap-2" style="flex-wrap:wrap">
+            <label class="custom-checkbox" style="flex:1;min-width:240px">
+              <input type="checkbox" id="chk-indeterminate-demo">
+              <span class="checkbox-box"></span>
+              <span id="chk-indeterminate-label">Pilih Semua Kamar Terisi (8 dari 12 Terpilih)</span>
+            </label>
+            <button type="button" class="badge badge-neutral badge-sm is-interactive" id="btn-reset-indeterminate" style="display:none" aria-label="Kembalikan status parsial 8 dari 12">Reset Parsial</button>
+          </div>
         </div>
 
         <!-- Kolom Kanan: Checkbox Disabled / Terkunci -->
-        <div style="display:flex;flex-direction:column;gap:0.375rem">
+        <div style="display:flex;flex-direction:column;gap:0.25rem">
           <!-- Disabled Checked State -->
           <label class="custom-checkbox is-disabled">
             <input type="checkbox" disabled checked>
             <span class="checkbox-box"></span>
-            <span style="display:flex;align-items:center;gap:0.5rem">
+            <span style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
               <span>Integrasi Webhook PLN Terkunci</span>
-              <span class="badge badge-neutral badge-sm">SLA Aktif</span>
+              <span class="badge badge-brand badge-sm">SLA Aktif</span>
             </span>
           </label>
 
@@ -972,26 +1059,34 @@
           <label class="custom-checkbox is-disabled">
             <input type="checkbox" disabled>
             <span class="checkbox-box"></span>
-            <span style="display:flex;align-items:center;gap:0.5rem">
+            <span style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
               <span>Addon SMS OTP Gateway</span>
-              <span class="badge badge-dark badge-sm">Non-Aktif</span>
+              <span class="badge badge-neutral badge-sm">Non-Aktif</span>
             </span>
           </label>
         </div>
       </div>
 
-      <!-- Sub 2: Radio Button Standar & Choice Card Estify -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. RADIO SELECTION CARDS & FREKUENSI PENAGIHAN</div>
-      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem">
+      <!-- Sub 2: Radio Selection Stack (Attio Flat Borderless) & Frekuensi Penagihan -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. RADIO SELECTION LIST (ATTIO WIREFRAME &amp; FLAT BORDERLESS) &amp; FREKUENSI</div>
+      <div class="choice-list" role="radiogroup" aria-label="Metode Pembayaran Utama" style="margin-bottom: 1.5rem">
         <!-- Choice Card 1: Virtual Account (Selected) -->
         <label class="choice-card">
           <input type="radio" name="pay-method-card" value="va" checked>
-          <div class="choice-icon-box">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+          <div class="choice-visual" aria-hidden="true">
+            <svg width="68" height="48" viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="8" width="52" height="34" rx="7" fill="var(--choice-card-bg)"/>
+              <circle cx="18" cy="18" r="3.5" fill="var(--choice-accent)"/>
+              <rect x="25" y="16" width="20" height="3.5" rx="1.75" fill="var(--choice-stroke)"/>
+              <rect x="14" y="25" width="38" height="3" rx="1.5" fill="var(--choice-line)"/>
+              <rect x="14" y="31" width="26" height="3" rx="1.5" fill="var(--choice-line)"/>
+              <circle cx="51" cy="31" r="4.5" fill="var(--choice-accent)"/>
+              <path d="M49 31l1.4 1.4 2.6-2.8" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
           <div style="flex:1;min-width:0">
             <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.25rem">
-              <span class="choice-title" style="font-weight:600;font-size:0.9375rem">Transfer Virtual Account Otomatis</span>
+              <span class="choice-title">Transfer Virtual Account Otomatis</span>
               <span class="badge badge-brand badge-sm">Rekomendasi</span>
             </div>
             <p class="text-caption text-muted" style="line-height:1.45">Verifikasi instan 24/7 (BCA, Mandiri, BRI) tanpa perlu upload bukti transfer manual.</p>
@@ -1002,58 +1097,107 @@
         <!-- Choice Card 2: Manual Tunai -->
         <label class="choice-card">
           <input type="radio" name="pay-method-card" value="cash">
-          <div class="choice-icon-box">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+          <div class="choice-visual" aria-hidden="true">
+            <svg width="68" height="48" viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="9" width="48" height="32" rx="7" fill="var(--choice-card-bg)"/>
+              <rect x="16" y="15" width="36" height="20" rx="4" fill="var(--choice-line)" opacity="0.55"/>
+              <circle cx="34" cy="25" r="5" fill="var(--choice-accent)"/>
+              <rect x="19" y="23.5" width="6" height="3" rx="1.5" fill="var(--choice-stroke)"/>
+              <rect x="43" y="23.5" width="6" height="3" rx="1.5" fill="var(--choice-stroke)"/>
+            </svg>
           </div>
           <div style="flex:1;min-width:0">
             <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.25rem">
-              <span class="choice-title" style="font-weight:600;font-size:0.9375rem">Pembayaran Tunai ke Caretaker</span>
+              <span class="choice-title">Pembayaran Tunai ke Caretaker</span>
               <span class="badge badge-neutral badge-sm">Manual</span>
             </div>
             <p class="text-caption text-muted" style="line-height:1.45">Wajib meminta kwitansi fisik bernomor seri dan foto serah terima uang tunai.</p>
           </div>
           <span class="radio-circle"></span>
         </label>
+
+        <!-- Choice Card 3: QRIS Dinamis (Disabled / Coming Soon) -->
+        <label class="choice-card is-disabled">
+          <input type="radio" name="pay-method-card" value="qris" disabled>
+          <div class="choice-visual" aria-hidden="true">
+            <svg width="68" height="48" viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="12" y="8" width="44" height="34" rx="7" fill="var(--choice-card-bg)"/>
+              <rect x="19" y="14" width="10" height="10" rx="2" stroke="var(--choice-stroke)" stroke-width="1.6"/>
+              <rect x="39" y="14" width="10" height="10" rx="2" stroke="var(--choice-stroke)" stroke-width="1.6"/>
+              <rect x="19" y="28" width="10" height="10" rx="2" stroke="var(--choice-stroke)" stroke-width="1.6"/>
+              <rect x="39" y="28" width="4" height="4" rx="1" fill="var(--choice-accent)"/>
+              <rect x="45" y="34" width="4" height="4" rx="1" fill="var(--choice-stroke)"/>
+              <rect x="39" y="34" width="4" height="4" rx="1" fill="var(--choice-line)"/>
+            </svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.25rem">
+              <span class="choice-title">QRIS Dinamis Otomatis</span>
+              <span class="badge badge-neutral badge-sm">Segera Hadir</span>
+            </div>
+            <p class="text-caption text-muted" style="line-height:1.45">Pembayaran dompet digital otomatis sedang dalam integrasi gateway cabang.</p>
+          </div>
+          <span class="radio-circle"></span>
+        </label>
       </div>
 
-      <!-- Standar Inline Radios -->
-      <div class="flex gap-4 items-center" style="flex-wrap:wrap;margin-bottom:2.25rem">
-        <span class="text-caption text-muted" style="font-weight:600">Frekuensi Penagihan:</span>
-        <label class="custom-radio">
-          <input type="radio" name="billing-freq" value="monthly" checked>
-          <span class="radio-circle"></span>
-          <span>Bulanan (Standar)</span>
-        </label>
-        <label class="custom-radio">
-          <input type="radio" name="billing-freq" value="quarterly">
-          <span class="radio-circle"></span>
-          <span>Per 3 Bulan (Diskon 5%)</span>
-        </label>
-        <label class="custom-radio">
-          <input type="radio" name="billing-freq" value="annually">
-          <span class="radio-circle"></span>
-          <span>Tahunan (Diskon 10%)</span>
-        </label>
-        <label class="custom-radio is-disabled">
-          <input type="radio" name="billing-freq" value="locked" disabled>
-          <span class="radio-circle"></span>
-          <span>Kustom Harian (Terkunci)</span>
-        </label>
+      <!-- Segmented Pill Radio (Estify Frequency Selector) & Standar Inline Radios -->
+      <div class="flex flex-col gap-3" style="margin-bottom:2.25rem">
+        <div class="flex gap-3 items-center" style="flex-wrap:wrap">
+          <span class="text-caption text-muted" style="font-weight:600">Frekuensi Penagihan:</span>
+          <div class="btn-group is-radio-pills" role="radiogroup" aria-label="Frekuensi Penagihan">
+            <label class="btn-group-item">
+              <input type="radio" name="billing-freq" value="monthly" checked>
+              <span>Bulanan</span>
+            </label>
+            <label class="btn-group-item">
+              <input type="radio" name="billing-freq" value="quarterly">
+              <span>Per 3 Bulan (-5%)</span>
+            </label>
+            <label class="btn-group-item">
+              <input type="radio" name="billing-freq" value="annually">
+              <span>Tahunan (-10%)</span>
+            </label>
+            <label class="btn-group-item">
+              <input type="radio" name="billing-freq" value="locked" disabled>
+              <span>Kustom Harian (Terkunci)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-center" style="flex-wrap:wrap">
+          <span class="text-caption text-muted" style="font-weight:600">Kirim Kwitansi (Radio Standar):</span>
+          <label class="custom-radio">
+            <input type="radio" name="receipt-channel" value="wa-pdf" checked>
+            <span class="radio-circle"></span>
+            <span>WhatsApp + PDF</span>
+          </label>
+          <label class="custom-radio">
+            <input type="radio" name="receipt-channel" value="email">
+            <span class="radio-circle"></span>
+            <span>Email Pemilik</span>
+          </label>
+          <label class="custom-radio is-disabled">
+            <input type="radio" name="receipt-channel" value="sms" disabled>
+            <span class="radio-circle"></span>
+            <span>SMS Otomatis (Non-Aktif)</span>
+          </label>
+        </div>
       </div>
 
-      <!-- Sub 3: Interactive Toggle Switch & Settings Rows -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. TOGGLE SWITCH SYSTEM (ESTIFY PREFERENCE SETTINGS ROW & INLINE)</div>
+      <!-- Sub 3: Interactive Toggle Switch & Grouped Settings Panel -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. TOGGLE SWITCH SYSTEM (GROUPED SETTINGS PANEL &amp; INLINE)</div>
 
-      <!-- 3.1 Settings Row Variant (Signature Estify PMS Preference Panels) -->
-      <div class="flex flex-col gap-3 mb-4" style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem">
+      <!-- 3.1 Settings Group Variant (Unified Estify PMS Preference Panel) -->
+      <div class="settings-group" style="margin-bottom:1.5rem">
         <!-- Setting Row 1: Auto-Billing (Active) -->
         <label class="settings-row">
           <div>
-            <div style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:2px">Auto-Billing Cron Otomatis</div>
-            <div class="text-caption text-muted">Kirim invoice dan tautan pembayaran WhatsApp H-7 sebelum jatuh tempo sewa kamar</div>
+            <div class="settings-row-title">Auto-Billing Cron Otomatis</div>
+            <div class="text-caption text-muted" style="line-height:1.45">Kirim invoice dan tautan pembayaran WhatsApp H-7 sebelum jatuh tempo sewa kamar</div>
           </div>
           <span class="toggle-switch">
-            <input type="checkbox" checked id="sw-auto-billing">
+            <input type="checkbox" role="switch" checked id="sw-auto-billing">
             <span class="toggle-slider"></span>
           </span>
         </label>
@@ -1061,11 +1205,11 @@
         <!-- Setting Row 2: Denda Keterlambatan (Inactive) -->
         <label class="settings-row">
           <div>
-            <div style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:2px">Denda Keterlambatan Harian Otomatis</div>
-            <div class="text-caption text-muted">Bebankan denda Rp 25.000 / hari jika melewati masa tenggang (grace period) 3 hari kalender</div>
+            <div class="settings-row-title">Denda Keterlambatan Harian Otomatis</div>
+            <div class="text-caption text-muted" style="line-height:1.45">Bebankan denda Rp 25.000 / hari jika melewati masa tenggang (grace period) 3 hari kalender</div>
           </div>
           <span class="toggle-switch">
-            <input type="checkbox" id="sw-late-fee">
+            <input type="checkbox" role="switch" id="sw-late-fee">
             <span class="toggle-slider"></span>
           </span>
         </label>
@@ -1073,53 +1217,96 @@
         <!-- Setting Row 3: Koneksi Meteran IoT (Disabled/Enterprise) -->
         <label class="settings-row is-disabled">
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <span style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary)">Sinkronisasi Meteran Listrik kWh Smart-IoT</span>
+            <div class="flex items-center gap-2" style="flex-wrap:wrap;margin-bottom:0.25rem">
+              <span class="settings-row-title" style="margin-bottom:0">Sinkronisasi Meteran Listrik kWh Smart-IoT</span>
               <span class="badge badge-dark badge-sm">Enterprise Addon</span>
             </div>
-            <div class="text-caption text-muted">Fitur pembacaan sensor kWh otomatis terlisensi terpisah pada modul fasilitas IoT</div>
+            <div class="text-caption text-muted" style="line-height:1.45">Fitur pembacaan sensor kWh otomatis terlisensi terpisah pada modul fasilitas IoT</div>
           </div>
           <span class="toggle-switch">
-            <input type="checkbox" disabled checked id="sw-webhook-lock">
+            <input type="checkbox" role="switch" disabled checked id="sw-webhook-lock">
             <span class="toggle-slider"></span>
           </span>
         </label>
       </div>
 
       <!-- 3.2 Compact Inline Switches (Untuk Filter / Toolbar Cepat) -->
-      <div class="flex gap-4 items-center" style="flex-wrap:wrap">
+      <div class="flex gap-4 items-center" style="flex-wrap:wrap;margin-bottom:2.25rem">
         <span class="text-caption text-muted" style="font-weight:600">Sakelar Inline:</span>
         <label class="toggle-switch-wrapper">
           <span class="toggle-switch">
-            <input type="checkbox" checked>
+            <input type="checkbox" role="switch" checked>
             <span class="toggle-slider"></span>
           </span>
-          <span style="font-weight:500;font-size:0.875rem">Tampilkan Kamar Kosong Saja</span>
+          <span>Tampilkan Kamar Kosong Saja</span>
         </label>
         <label class="toggle-switch-wrapper">
           <span class="toggle-switch">
-            <input type="checkbox">
+            <input type="checkbox" role="switch">
             <span class="toggle-slider"></span>
           </span>
-          <span style="font-weight:500;font-size:0.875rem">Filter Tunggakan &gt; 30 Hari</span>
+          <span>Filter Tunggakan &gt; 30 Hari</span>
         </label>
+      </div>
+
+      <!-- Sub 4: State Error Validasi (aria-invalid pada Checkbox & Radio Group) -->
+      <div class="text-caption text-muted mb-4" style="font-weight:700;letter-spacing:0.05em">4. VALIDASI ERROR WAJIB PILIH (ARIA-INVALID &amp; LIVE RECOVERY)</div>
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem 2.5rem">
+        <!-- Checkbox Error State -->
+        <div class="input-wrapper has-error" style="margin-bottom:0;gap:0.5rem" id="chk-consent-wrapper">
+          <label class="custom-checkbox has-error" id="chk-consent-label" style="padding:0.25rem 0">
+            <input type="checkbox" id="chk-consent-error" aria-invalid="true" aria-describedby="chk-consent-err-msg">
+            <span class="checkbox-box"></span>
+            <span>Saya menyetujui Syarat &amp; Ketentuan Sewa serta tata tertib cabang kos</span>
+          </label>
+          <span id="chk-consent-err-msg" class="error-message" style="padding-left:0;margin-top:0">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Persetujuan tata tertib wajib dicentang sebelum check-in penghuni.
+          </span>
+        </div>
+
+        <!-- Radio Group Error State -->
+        <div class="input-wrapper has-error" style="margin-bottom:0;gap:0.5rem" id="radio-electric-wrapper" role="radiogroup" aria-labelledby="lbl-electric-scheme" aria-describedby="radio-electric-err-msg">
+          <div id="lbl-electric-scheme" class="input-label" style="padding-left:0;padding-right:0;margin-bottom:0">
+            Skema Meteran Listrik Kamar <span class="required">*</span>
+          </div>
+          <div class="flex items-center" style="flex-wrap:wrap;gap:0.5rem 1.5rem">
+            <label class="custom-radio has-error" data-electric-radio-label>
+              <input type="radio" name="electric-scheme-err" value="prepaid" aria-invalid="true">
+              <span class="radio-circle"></span>
+              <span>Token Prabayar (Mandiri)</span>
+            </label>
+            <label class="custom-radio has-error" data-electric-radio-label>
+              <input type="radio" name="electric-scheme-err" value="postpaid" aria-invalid="true">
+              <span class="radio-circle"></span>
+              <span>Pascabayar Meter kWh</span>
+            </label>
+          </div>
+          <span id="radio-electric-err-msg" class="error-message" style="padding-left:0;margin-top:0">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Pilih salah satu skema meteran listrik sebelum menyimpan kontrak.
+          </span>
+        </div>
       </div>
     </div>
 
 
 
-    <!-- CMP-07: Loading Spinner System -->
+    <!-- CMP-07: Loading Spinner System (LOCKED 2026-11-27) -->
     <div class="cmp-card" id="cmp-07">
-      <span class="cmp-badge">CMP-07</span>
-      <h2 class="cmp-title">Loading Spinner System</h2>
-      <p class="cmp-desc">Indikator proses asynchronous pengiriman data dan pemuatan antarmuka latar belakang dengan animasi putaran mulus continuous (600ms linear), variasi ukuran atomik (16px, 24px, 32px, 48px), tema warna Estify, dan kepatuhan WCAG 2.2 AA (role="status").</p>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-07</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
+      <h2 class="cmp-title">Loading Spinner System (Borderless)</h2>
+      <p class="cmp-desc">Indikator proses asynchronous pengiriman data dan pemuatan antarmuka latar belakang 100% <em>borderless</em> dengan sweep putaran mulus continuous (<code>600ms linear</code>, fallback lembut pada <code>prefers-reduced-motion</code>), variasi ukuran atomik (<code>16px</code>, <code>24px</code>, <code>32px</code>, <code>48px</code>), tema warna WCAG 2.2 AA (<code>#EA580C</code> <code>3.56:1</code>, <code>#64748B</code> <code>4.76:1</code>, <code>#000000</code>, <code>#FFFFFF</code>), serta dukungan <code>role="status"</code>.</p>
 
       <!-- Sub 1: Skala Ukuran & Varian Warna -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. SKALA UKURAN & VARIAN WARNA (ATOMIK)</div>
       <div class="mid-subgrid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2.25rem">
         <!-- Size 1: 16px (sm) -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Small (16px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Small (16px)</div>
           <div class="flex items-center gap-3">
             <span class="spinner spinner-sm spinner-brand" role="status" aria-label="Memuat..."></span>
             <span class="spinner spinner-sm spinner-neutral" role="status" aria-label="Memuat..."></span>
@@ -1130,7 +1317,7 @@
 
         <!-- Size 2: 24px (md) -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Medium (24px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Medium (24px)</div>
           <div class="flex items-center gap-3">
             <span class="spinner spinner-md spinner-brand" role="status" aria-label="Memuat..."></span>
             <span class="spinner spinner-md spinner-neutral" role="status" aria-label="Memuat..."></span>
@@ -1139,9 +1326,9 @@
           <span class="text-caption text-muted">Ukuran standar kartu, dialog modal, dan panel widget.</span>
         </div>
 
-        <!-- Size 3: 36px (lg) -->
+        <!-- Size 3: 32px (lg) -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Large (32px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Large (32px)</div>
           <div class="flex items-center gap-3">
             <span class="spinner spinner-lg spinner-brand" role="status" aria-label="Memuat..."></span>
             <span class="spinner spinner-lg spinner-neutral" role="status" aria-label="Memuat..."></span>
@@ -1152,7 +1339,7 @@
 
         <!-- Size 4: 48px (xl) -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Extra Large (48px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Extra Large (48px)</div>
           <div class="flex items-center gap-3">
             <span class="spinner spinner-xl spinner-brand" role="status" aria-label="Memuat..."></span>
             <span class="spinner spinner-xl spinner-dark" role="status" aria-label="Memuat..."></span>
@@ -1163,141 +1350,177 @@
 
       <!-- Sub 2: SubmitButton Rule & Simulasi Interaktif -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. SUBMITBUTTON RULE & INTEGRASI TOMBOL ASYNCHRONOUS</div>
-      <p class="text-caption text-muted" style="margin-bottom: 1rem; line-height: 1.5">Sesuai aturan arsitektur: Tombol submit tidak pernah dinonaktifkan di awal. Ketika status pengiriman aktif (<code>isSubmitting</code>), tombol menampilkan spinner dengan pointer dinonaktifkan.</p>
+      <p class="text-caption text-muted" style="margin-bottom: 1rem; line-height: 1.5">Sesuai aturan arsitektur: Tombol submit tidak pernah dinonaktifkan di awal. Ketika status pengiriman aktif (<code>isSubmitting</code>), tombol menampilkan spinner dengan debounce anti-submit ganda.</p>
       
       <div class="flex gap-3 items-center" style="flex-wrap:wrap; margin-bottom: 2.25rem">
         <!-- Primary Loading Button -->
         <button class="btn btn-primary is-loading" type="button" aria-busy="true">
-          <span class="spinner spinner-sm spinner-white"></span>
+          <span class="spinner spinner-sm spinner-white" aria-hidden="true"></span>
           <span>Menyimpan Kontrak Sewa...</span>
         </button>
 
-        <!-- Black Loading Button -->
-        <button class="btn btn-black is-loading" type="button" aria-busy="true">
-          <span class="spinner spinner-sm spinner-white"></span>
+        <!-- Solid Dark Loading Button -->
+        <button class="btn btn-solid-dark is-loading" type="button" aria-busy="true">
+          <span class="spinner spinner-sm spinner-white" aria-hidden="true"></span>
           <span>Verifikasi Mutasi Bank...</span>
         </button>
 
         <!-- Secondary Loading Button -->
         <button class="btn btn-secondary is-loading" type="button" aria-busy="true">
-          <span class="spinner spinner-sm spinner-brand"></span>
+          <span class="spinner spinner-sm spinner-brand" aria-hidden="true"></span>
           <span>Mengunggah Berkas KTP...</span>
         </button>
 
         <!-- Interactive Trigger Button -->
-        <button class="btn btn-secondary" id="btn-demo-loading" type="button" style="border: 1.5px dashed #CBD5E1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <button class="btn btn-secondary" id="btn-demo-loading" type="button">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           <span>Klik untuk Simulasi Submit (2s)</span>
         </button>
       </div>
 
       <!-- Sub 3: Card Asynchronous Loading State -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. ASYNCHRONOUS CARD STATE (DATA FETCHING CONTAINER)</div>
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. ASYNCHRONOUS CARD STATE (FLAT BORDERLESS CONTAINER)</div>
       <div class="card-loading-state" role="status" aria-live="polite">
-        <span class="spinner spinner-lg spinner-brand mb-3"></span>
-        <div style="font-weight:600;font-size:0.9375rem;color:#0F172A;margin-bottom:0.25rem">Sinkronisasi Pembacaan Meteran Listrik kWh Smart-IoT</div>
-        <p class="text-caption text-muted" style="max-width:440px;line-height:1.45;margin-bottom:1rem">Mengambil data telemetri real-time dari 24 unit kamar aktif melalui gateway MQTT Cloudflare Workers...</p>
+        <span class="spinner spinner-lg spinner-brand mb-3" aria-hidden="true"></span>
+        <div style="font-weight:600;font-size:0.875rem;color:#000000;margin-bottom:0.25rem">Sinkronisasi Pembacaan Meteran Listrik kWh Smart-IoT</div>
+        <p class="text-caption text-muted" style="max-width:440px;line-height:1.45;margin-bottom:1rem">Mengambil data pemakaian kWh terkini dari 24 unit kamar aktif pada cabang terpilih...</p>
         <span class="badge badge-neutral badge-sm">Proses Latar Belakang • 42% Selesai</span>
       </div>
     </div>
 
-    <!-- CMP-08: Semantic Iconography System -->
+    <!-- CMP-08: Semantic Iconography System (LOCKED 2026-11-27) -->
     <div class="cmp-card" id="cmp-08">
-      <span class="cmp-badge">CMP-08</span>
-      <h2 class="cmp-title">Semantic Iconography System</h2>
-      <p class="cmp-desc">Sistem ikon vektor semantik resmi Lucide SVG dengan stroke konsisten (1.75 / 2.0), anti-emoji (zero unicode emoji), skala ukuran baku (16px, 20px, 24px, 32px), dan wadah Estify Icon Box (radius 14px) untuk modul operasional properti kos.</p>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-08</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
+      <h2 class="cmp-title">Semantic Iconography System (Borderless)</h2>
+      <p class="cmp-desc">Sistem ikon vektor semantik Lucide SVG bebas emoji (zero unicode emoji) dengan stroke baku (<code>2.0</code> untuk <code>12–16px</code>, <code>1.75</code> untuk <code>20–32px</code>), skala lengkap (<code>12px</code>, <code>16px</code>, <code>20px</code>, <code>24px</code>, <code>32px</code>), wadah Estify Icon Box 100% <em>borderless</em> (Pure 4-Color WCAG AA: <code>36px</code>, <code>44px</code>, <code>52px</code>), dan badge counter <code>.icon-count-badge</code>.</p>
 
       <!-- Sub 1: Skala Ukuran Ikon -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. SKALA UKURAN STANDAR (16px, 20px, 24px, 32px)</div>
-      <div class="mid-subgrid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2.25rem">
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. SKALA UKURAN STANDAR (12px, 16px, 20px, 24px, 32px)</div>
+      <div class="mid-subgrid" style="grid-template-columns: repeat(5, 1fr); gap: 1.25rem; margin-bottom: 2.25rem">
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Compact (16px)</span>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Mini (12px)</div>
           <div class="flex items-center gap-2">
-            <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-            <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="text-caption text-muted">Chip fasilitas, tag foto, chevron mini.</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0.5rem">
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Compact (16px)</div>
+          <div class="flex items-center gap-2">
+            <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <svg class="icon-sm" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <span class="text-caption text-muted">Badge, dense table, hint teks.</span>
         </div>
 
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Standard (20px)</span>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Standard (20px)</div>
           <div class="flex items-center gap-2">
-            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg class="icon-md" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <svg class="icon-md" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <svg class="icon-md" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <span class="text-caption text-muted">Tombol form, input prefix, dropdown.</span>
         </div>
 
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Prominent (24px)</span>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Prominent (24px)</div>
           <div class="flex items-center gap-2">
-            <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-            <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg class="icon-lg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <svg class="icon-lg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <svg class="icon-lg" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <span class="text-caption text-muted">Header kartu, sidebar menu, modal.</span>
+          <span class="text-caption text-muted">Header kartu, navigasi, modal.</span>
         </div>
 
         <div style="display:flex;flex-direction:column;gap:0.5rem">
-          <span class="text-caption text-muted" style="font-weight:600">Feature (32px)</span>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Feature (32px)</div>
           <div class="flex items-center gap-2">
-            <svg class="icon-xl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-            <svg class="icon-xl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            <svg class="icon-xl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg class="icon-xl" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <svg class="icon-xl" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <svg class="icon-xl" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <span class="text-caption text-muted">Empty state, hero stat summary.</span>
         </div>
       </div>
 
       <!-- Sub 2: Estify Signature Icon Boxes -->
-      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. ESTIFY SIGNATURE ICON BOXES (CONTAINER BER-RADIUS 14px)</div>
-      <p class="text-caption text-muted" style="margin-bottom: 1rem; line-height: 1.5">Wadah rounded halus yang digunakan pada Choice Card, Stat Widget, dan Header Modul Bisnis Kos.</p>
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. ESTIFY SIGNATURE ICON BOXES (BORDERLESS PURE 4-COLOR • 36px, 44px, 52px)</div>
+      <p class="text-caption text-muted" style="margin-bottom: 1rem; line-height: 1.5">Wadah rounded 100% <em>borderless</em> untuk KPI Stat Widget, Dialog Konfirmasi, Empty State, dan Header Modul Bisnis Kos.</p>
       
-      <div class="flex items-center" style="flex-wrap:wrap; gap: 1.5rem 2.25rem; margin-bottom: 2.25rem">
+      <div class="flex items-center" style="flex-wrap:wrap; gap: 1.5rem 2.25rem; margin-bottom: 1.25rem">
         <!-- Brand Orange Box -->
         <div class="flex items-center gap-2">
-          <div class="icon-box icon-box-md icon-box-brand">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+          <div class="icon-box icon-box-md icon-box-brand" aria-hidden="true">
+            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
           </div>
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Brand Box (Oranye)</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000">Brand Box (Oranye)</div>
             <span class="text-caption text-muted">Properti & Mutasi Lunas</span>
           </div>
         </div>
 
         <!-- Neutral Box -->
         <div class="flex items-center gap-2">
-          <div class="icon-box icon-box-md icon-box-neutral">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <div class="icon-box icon-box-md icon-box-neutral" aria-hidden="true">
+            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </div>
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Neutral Box (Putih/Abu)</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000">Neutral Box (Abu Netral)</div>
             <span class="text-caption text-muted">Pengaturan & Antrean</span>
           </div>
         </div>
 
         <!-- Error Red Box -->
         <div class="flex items-center gap-2">
-          <div class="icon-box icon-box-md icon-box-error">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div class="icon-box icon-box-md icon-box-error" aria-hidden="true">
+            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           </div>
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Alert Box (Merah)</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000">Alert Box (Merah Void)</div>
             <span class="text-caption text-muted">Tunggakan & Tiket SLA</span>
           </div>
         </div>
 
         <!-- Dark Carbon Box -->
         <div class="flex items-center gap-2">
-          <div class="icon-box icon-box-md icon-box-dark">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <div class="icon-box icon-box-md icon-box-dark" aria-hidden="true">
+            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           </div>
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Dark Box (Hitam)</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000">Dark Box (Hitam)</div>
             <span class="text-caption text-muted">Smart-IoT & Prioritas</span>
           </div>
+        </div>
+      </div>
+
+      <!-- Skala Ukuran Icon Box -->
+      <div class="flex items-center gap-4" style="flex-wrap:wrap;margin-bottom:2.25rem">
+        <span class="text-caption text-muted" style="font-weight:600">Skala Ukuran Icon Box:</span>
+        <div class="flex items-center gap-2">
+          <div class="icon-box icon-box-sm icon-box-brand" aria-hidden="true">
+            <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          </div>
+          <span class="text-caption text-muted">Small (36px)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="icon-box icon-box-md icon-box-neutral" aria-hidden="true">
+            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          </div>
+          <span class="text-caption text-muted">Medium (44px)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="icon-box icon-box-lg icon-box-dark" aria-hidden="true">
+            <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          </div>
+          <span class="text-caption text-muted">Large (52px)</span>
         </div>
       </div>
 
@@ -1308,44 +1531,44 @@
         <!-- Kolom Kiri: Properti & Keuangan -->
         <div style="display:flex;flex-direction:column;gap:1.75rem">
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A;margin-bottom:0.75rem">Modul Properti & Hunian:</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000;margin-bottom:0.75rem">Modul Properti & Hunian:</div>
             <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 0.5rem 1rem">
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
                 <span class="text-small" style="font-weight:500">Building (Properti)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg>
                 <span class="text-small" style="font-weight:500">Bed (Unit Kamar)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 <span class="text-small" style="font-weight:500">Users (Penghuni)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
                 <span class="text-small" style="font-weight:500">Layers (Lantai)</span>
               </div>
             </div>
           </div>
 
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A;margin-bottom:0.75rem">Modul Keuangan & Billing:</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000;margin-bottom:0.75rem">Modul Keuangan & Billing:</div>
             <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 0.5rem 1rem">
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v12"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v12"/></svg>
                 <span class="text-small" style="font-weight:500">Receipt (Tagihan)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
                 <span class="text-small" style="font-weight:500">Card (Virtual Account)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
                 <span class="text-small" style="font-weight:500">Wallet (Kas Fisik)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
                 <span class="text-small" style="font-weight:500">Trend (Okupansi)</span>
               </div>
             </div>
@@ -1355,44 +1578,44 @@
         <!-- Kolom Kanan: Fasilitas & Tindakan -->
         <div style="display:flex;flex-direction:column;gap:1.75rem">
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A;margin-bottom:0.75rem">Fasilitas, IoT & SLA Servis:</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000;margin-bottom:0.75rem">Fasilitas, IoT & SLA Servis:</div>
             <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 0.5rem 1rem">
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 <span class="text-small" style="font-weight:500">Zap (Meteran kWh)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
                 <span class="text-small" style="font-weight:500">Wifi (Jaringan)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                 <span class="text-small" style="font-weight:500">Wrench (Perbaikan)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
                 <span class="text-small" style="font-weight:500">Shield (Keamanan)</span>
               </div>
             </div>
           </div>
 
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A;margin-bottom:0.75rem">Aksi & Kontrol Sistem:</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000;margin-bottom:0.75rem">Aksi & Kontrol Sistem:</div>
             <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 0.5rem 1rem">
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 <span class="text-small" style="font-weight:500">Search (Pencarian)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
                 <span class="text-small" style="font-weight:500">Filter (Penyaringan)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                 <span class="text-small" style="font-weight:500">Download (Ekspor)</span>
               </div>
               <div class="icon-tile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" class="text-muted"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <svg class="icon-md text-muted" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
                 <span class="text-small" style="font-weight:500">Check (Selesai/Lunas)</span>
               </div>
             </div>
@@ -1401,10 +1624,10 @@
       </div>
 
       <!-- Sub 4: Matriks Varian Ikon & Skala Chevron Dropdown (Terinspirasi UI Spec Matrix) -->
-      <div class="text-caption text-muted" style="font-weight:700;letter-spacing:0.05em;margin:2rem 0 0.75rem">4. MATRIKS VARIAN IKON &amp; CHEVRON DROPDOWN (STATE, COUNTER &amp; SKALA 12–24px)</div>
+      <div class="text-caption text-muted" style="font-weight:700;letter-spacing:0.05em;margin:2.25rem 0 1rem">4. MATRIKS VARIAN IKON &amp; CHEVRON DROPDOWN (STATE, COUNTER &amp; SKALA 12–24px)</div>
       <div class="mid-subgrid" style="grid-template-columns: 1.15fr 0.85fr; gap: 1.25rem; align-items: stretch;">
         <!-- Matriks State Ikon Inti -->
-        <div class="state-matrix-wrap">
+        <div class="state-matrix-wrap is-borderless">
           <table class="state-matrix" style="min-width: 420px; border-spacing: 0.625rem 0.75rem;">
             <thead>
               <tr>
@@ -1418,33 +1641,33 @@
             <tbody>
               <tr>
                 <td class="matrix-row-label">Penghuni</td>
-                <td><svg class="icon-md" style="color:#94A3B8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
-                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
-                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
-                <td><svg class="icon-md" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#64748B" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></td>
               </tr>
               <tr>
                 <td class="matrix-row-label">Pencarian</td>
-                <td><svg class="icon-md" style="color:#94A3B8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
-                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
-                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
-                <td><svg class="icon-md" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#64748B" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></td>
               </tr>
               <tr>
                 <td class="matrix-row-label">Hapus / Void</td>
-                <td><svg class="icon-md" style="color:#94A3B8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
-                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
-                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
-                <td><svg class="icon-md" style="color:var(--color-error)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#64748B" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:var(--color-error)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></td>
               </tr>
               <tr>
                 <td class="matrix-row-label">Notifikasi</td>
-                <td><svg class="icon-md" style="color:#94A3B8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
-                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
-                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#64748B" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></td>
                 <td>
                   <span class="icon-count-wrap" aria-label="Notifikasi baru 1">
-                    <svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <svg class="icon-md" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                     <span class="icon-count-badge tabular">1</span>
                   </span>
                 </td>
@@ -1454,7 +1677,7 @@
         </div>
 
         <!-- Matriks Chevron Dropdown (Buka vs Tutup) -->
-        <div class="state-matrix-wrap">
+        <div class="state-matrix-wrap is-borderless">
           <table class="state-matrix" style="min-width: 280px; border-spacing: 0.625rem 0.75rem;">
             <thead>
               <tr>
@@ -1468,24 +1691,24 @@
             <tbody>
               <tr>
                 <td class="matrix-row-label">Tertutup</td>
-                <td><svg class="icon-xs" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></td>
-                <td><svg class="icon-sm" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></td>
-                <td><svg class="icon-md" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg></td>
-                <td><svg class="icon-lg" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg></td>
+                <td><svg class="icon-xs" aria-hidden="true" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></td>
+                <td><svg class="icon-sm" aria-hidden="true" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg></td>
+                <td><svg class="icon-lg" aria-hidden="true" style="color:#475569" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg></td>
               </tr>
               <tr>
                 <td class="matrix-row-label">Terbuka</td>
-                <td><svg class="icon-xs" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="18 15 12 9 6 15"/></svg></td>
-                <td><svg class="icon-sm" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="18 15 12 9 6 15"/></svg></td>
-                <td><svg class="icon-md" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
-                <td><svg class="icon-lg" style="color:#111827" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-xs" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-sm" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-lg" aria-hidden="true" style="color:#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="18 15 12 9 6 15"/></svg></td>
               </tr>
               <tr>
                 <td class="matrix-row-label">Aktif Brand</td>
-                <td><svg class="icon-xs" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="18 15 12 9 6 15"/></svg></td>
-                <td><svg class="icon-sm" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="18 15 12 9 6 15"/></svg></td>
-                <td><svg class="icon-md" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
-                <td><svg class="icon-lg" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-xs" aria-hidden="true" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-sm" aria-hidden="true" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-md" aria-hidden="true" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="18 15 12 9 6 15"/></svg></td>
+                <td><svg class="icon-lg" aria-hidden="true" style="color:var(--color-brand-hover)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="18 15 12 9 6 15"/></svg></td>
               </tr>
             </tbody>
           </table>
@@ -1493,21 +1716,24 @@
       </div>
     </div>
 
-    <!-- CMP-09: Avatars -->
+    <!-- CMP-09: Avatars (LOCKED 2026-11-27) -->
     <div class="cmp-card" id="cmp-09">
-      <span class="cmp-badge">CMP-09</span>
-      <h2 class="cmp-title">Avatar System & Counter Badges</h2>
-      <p class="cmp-desc">Avatar profil bulat sempurna (1:1) dalam skala 32px, 40px, dan 52px, inisial fallback, tumpukan avatar penghuni/staf, serta counter badge +N.</p>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-09</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
+      <h2 class="cmp-title">Avatar System &amp; Counter Badges (Borderless)</h2>
+      <p class="cmp-desc">Avatar profil bulat sempurna (1:1) 100% <em>borderless</em> dalam skala <code>32px</code>, <code>40px</code>, dan <code>52px</code>, fallback inisial Pure 4-Color WCAG AA (<code>#C2410C</code> <code>4.88:1</code>, <code>#334155</code> <code>9.45:1</code>, <code>#FFFFFF</code> <code>21.0:1</code>), tumpukan avatar (<code>.avatar-group</code>), indikator kehadiran aksesibel (<code>#EA580C</code> / <code>#64748B</code>), serta counter <code>+N</code> berangka tabular.</p>
 
       <!-- Sub 1: Skala Ukuran & Fallback Inisial -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. SKALA UKURAN (32px, 40px, 52px) & FALLBACK INISIAL</div>
       <div class="mid-subgrid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2.25rem">
         <!-- 32px SM -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Small (32px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Small (32px)</div>
           <div class="flex items-center gap-2">
             <div class="avatar avatar-sm">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" alt="Avatar 32px">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop" alt="Foto Rina Novita" loading="lazy">
             </div>
             <div class="avatar avatar-sm avatar-initials-brand">RN</div>
           </div>
@@ -1516,10 +1742,10 @@
 
         <!-- 40px MD -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Medium (40px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Medium (40px)</div>
           <div class="flex items-center gap-2">
             <div class="avatar avatar-md">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop" alt="Avatar 40px">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop" alt="Foto Budi Santoso" loading="lazy">
             </div>
             <div class="avatar avatar-md avatar-initials-dark">BS</div>
           </div>
@@ -1528,10 +1754,10 @@
 
         <!-- 52px LG -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Large (52px)</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Large (52px)</div>
           <div class="flex items-center gap-2">
             <div class="avatar avatar-lg">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop" alt="Avatar 52px">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop" alt="Foto Dewi Kartika" loading="lazy">
             </div>
             <div class="avatar avatar-lg avatar-initials-neutral">DK</div>
           </div>
@@ -1540,7 +1766,7 @@
 
         <!-- Inisial Palette -->
         <div style="display:flex;flex-direction:column;gap:0.75rem">
-          <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Variasi Inisial</div>
+          <div style="font-weight:600;font-size:0.875rem;color:#000000">Variasi Inisial</div>
           <div class="flex items-center gap-2">
             <div class="avatar avatar-md avatar-initials-dark">BS</div>
             <div class="avatar avatar-md avatar-initials-brand">RA</div>
@@ -1552,71 +1778,71 @@
 
       <!-- Sub 2: Avatar Group & Counter Badge +N -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. AVATAR STACK & COUNTER BADGE (+N)</div>
-      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.25rem">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid #F1F5F9">
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1rem 2rem; margin-bottom: 2.25rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem 1rem;flex-wrap:wrap;padding:0.75rem 0;box-shadow:inset 0 -1px 0 #F1F5F9">
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Penghuni Lantai 2 (Cilandak)</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000">Penghuni Lantai 2 (Cilandak)</div>
             <span class="text-caption text-muted">8 penghuni aktif terverifikasi KYC</span>
           </div>
           <div class="flex items-center gap-3">
             <div class="avatar-group">
               <div class="avatar avatar-md">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop" alt="Penghuni 1">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop" alt="Foto Rina Novita" loading="lazy">
               </div>
               <div class="avatar avatar-md">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Penghuni 2">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Foto Budi Santoso" loading="lazy">
               </div>
               <div class="avatar avatar-md">
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="Penghuni 3">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop" alt="Foto Dewi Kartika" loading="lazy">
               </div>
-              <div class="avatar avatar-md avatar-counter">+5</div>
+              <div class="avatar avatar-md avatar-counter" aria-label="5 penghuni lainnya">+5</div>
             </div>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid #F1F5F9">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem 1rem;flex-wrap:wrap;padding:0.75rem 0;box-shadow:inset 0 -1px 0 #F1F5F9">
           <div>
-            <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Tim Caretaker & Teknisi Shift</div>
+            <div style="font-weight:600;font-size:0.875rem;color:#000000">Tim Caretaker &amp; Teknisi Shift</div>
             <span class="text-caption text-muted">Bertugas pada jadwal operasional hari ini</span>
           </div>
           <div class="flex items-center gap-3">
             <div class="avatar-group">
               <div class="avatar avatar-sm avatar-initials-dark">AR</div>
               <div class="avatar avatar-sm avatar-initials-brand">DN</div>
-              <div class="avatar avatar-sm avatar-counter">+2</div>
+              <div class="avatar avatar-sm avatar-counter" aria-label="2 staf lainnya">+2</div>
             </div>
-            <span class="badge badge-neutral badge-sm">+2 Staf Lainnya</span>
+            <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Shift Aktif</span>
           </div>
         </div>
       </div>
 
       <!-- Sub 3: Daftar Identitas & Status Kehadiran -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. IDENTITAS PROFIL & INDIKATOR KEHADIRAN (PRESENCE)</div>
-      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 2rem">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
+      <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1rem 2rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem 1rem;flex-wrap:wrap;padding:0.625rem 0;box-shadow:inset 0 -1px 0 #F1F5F9">
           <div class="flex items-center gap-3">
             <div class="avatar-wrapper">
               <div class="avatar avatar-md">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Budi Santoso">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Foto Budi Santoso" loading="lazy">
               </div>
-              <span class="avatar-status is-online" title="Online"></span>
+              <span class="avatar-status is-online" role="status" aria-label="Status: Online" title="Online"></span>
             </div>
             <div>
-              <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Budi Santoso</div>
+              <div style="font-weight:600;font-size:0.875rem;color:#000000">Budi Santoso</div>
               <span class="text-caption text-muted">Kamar 101 • Deluxe Room</span>
             </div>
           </div>
           <span class="badge badge-brand badge-sm">Terverifikasi</span>
         </div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem 1rem;flex-wrap:wrap;padding:0.625rem 0;box-shadow:inset 0 -1px 0 #F1F5F9">
           <div class="flex items-center gap-3">
             <div class="avatar-wrapper">
               <div class="avatar avatar-md avatar-initials-brand">RA</div>
-              <span class="avatar-status is-away" title="Offline"></span>
+              <span class="avatar-status is-away" role="status" aria-label="Status: Offline" title="Offline"></span>
             </div>
             <div>
-              <div style="font-weight:600;font-size:0.875rem;color:#0F172A">Rina Agustina</div>
+              <div style="font-weight:600;font-size:0.875rem;color:#000000">Rina Agustina</div>
               <span class="text-caption text-muted">Branch Manager • Cilandak</span>
             </div>
           </div>

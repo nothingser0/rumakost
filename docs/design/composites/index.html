@@ -17,7 +17,7 @@
       <div class="flex items-center gap-4">
         <a href="../components/index.html" class="flex items-center gap-3" aria-label="RumaKost" style="text-decoration:none;flex-shrink:0">
           <img src="../../../assets/logo/favicon.svg" alt="" style="width:38px;height:38px;display:block">
-          <span style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#0F172A">Ruma<span style="color:#F97316">Kost</span></span>
+          <span style="font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:-0.03em;line-height:1;color:#000000">Ruma<span style="color:#F97316">Kost</span></span>
         </a>
         <div style="width:1px;height:32px;background:#E2E8F0;flex-shrink:0"></div>
         <div>
@@ -49,44 +49,34 @@
             <label for="ff-tenant-phone">Nomor WhatsApp Aktif <span class="required">*</span></label>
             <div class="pill-input-box">
               <span class="pill-prefix-badge">+62</span>
-              <input id="ff-tenant-phone" type="tel" inputmode="numeric" class="tabular" placeholder="812-3456-7890" required data-error-msg="Nomor WhatsApp wajib diisi untuk pengiriman invoice." aria-describedby="ff-phone-hint" oninput="let d=this.value.replace(/[^0-9]/g,'').slice(0,12); this.value = d ? d.replace(/(\d{1,3})(\d{0,4})(\d{0,5})/, (_,a,b,c)=> a + (b?'-'+b:'') + (c?'-'+c:'')) : '';">
+              <input id="ff-tenant-phone" type="tel" inputmode="numeric" class="tabular" placeholder="812-3456-7890" required data-phone-id data-error-msg="Nomor WhatsApp wajib diisi untuk pengiriman invoice." aria-describedby="ff-phone-hint">
             </div>
             <span id="ff-phone-hint" class="input-hint">Hanya angka (0–9); otomatis terformat untuk pengingat tagihan H-7.</span>
           </div>
 
           <div class="input-wrapper" style="margin-bottom:0">
-            <label for="ff-branch-select">Cabang Properti Penempatan (Select) <span class="required">*</span></label>
+            <label id="ff-branch-label" for="ff-branch-trigger">Cabang Properti Penempatan (Select) <span class="required">*</span></label>
             <div class="custom-select-wrapper" id="ff-branch-select-wrap">
-              <div class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-describedby="ff-branch-hint">
-                <svg class="select-prefix-icon text-muted" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                <input id="ff-branch-select" class="select-display" type="text" placeholder="Pilih cabang properti..." readonly style="cursor:pointer">
-                <svg class="select-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              <div id="ff-branch-trigger" class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="ff-branch-listbox" aria-labelledby="ff-branch-label" aria-describedby="ff-branch-hint">
+                <svg class="select-prefix-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                <input id="ff-branch-select" class="select-display" type="text" placeholder="Pilih cabang properti..." readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
+                <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
               </div>
-              <input type="hidden" name="ff_branch" class="select-value" value="">
-              <div class="select-popover" role="listbox">
+              <input type="hidden" name="ff_branch" class="select-value" value="" required data-error-msg="Cabang properti penempatan wajib dipilih.">
+              <div id="ff-branch-listbox" class="select-popover" role="listbox" aria-labelledby="ff-branch-label">
                 <div class="select-option" data-value="cilandak" role="option" aria-selected="false">
-                  <div style="display:flex;align-items:center;gap:0.75rem">
-                    <div class="select-option-icon-box">
-                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:2px">
-                      <span class="option-title">Rumakost Cilandak Executive</span>
-                      <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
-                    </div>
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <span class="option-title">Rumakost Cilandak Executive</span>
+                    <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
                   </div>
-                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div class="select-option" data-value="setiabudi" role="option" aria-selected="false">
-                  <div style="display:flex;align-items:center;gap:0.75rem">
-                    <div class="select-option-icon-box">
-                      <svg class="select-option-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                    </div>
-                    <div style="display:flex;flex-direction:column;gap:2px">
-                      <span class="option-title">Rumakost Setiabudi Residence</span>
-                      <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
-                    </div>
+                  <div style="display:flex;flex-direction:column;gap:1px">
+                    <span class="option-title">Rumakost Setiabudi Residence</span>
+                    <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
                   </div>
-                  <svg class="select-option-checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
               </div>
             </div>
@@ -97,19 +87,19 @@
             <label for="ff-rent-amount">Tarif Sewa Bulanan (CurrencyInput) <span class="required">*</span></label>
             <div class="pill-input-box">
               <span class="pill-prefix-badge">Rp</span>
-              <input id="ff-rent-amount" class="tabular" inputmode="numeric" placeholder="2.200.000" aria-describedby="ff-rent-hint" oninput="let val=this.value.replace(/[^0-9]/g,''); this.value = val ? new Intl.NumberFormat('id-ID').format(Number(val)) : '';">
+              <input id="ff-rent-amount" class="tabular" type="text" inputmode="numeric" placeholder="2.200.000" required data-currency-input data-max-digits="13" data-error-msg="Tarif sewa bulanan wajib diisi." aria-describedby="ff-rent-hint">
               <span class="pill-suffix-badge" style="background:transparent;color:#475569;font-size:0.75rem">/ bln</span>
             </div>
             <span id="ff-rent-hint" class="input-hint">Format otomatis pemisah ribuan IDR (hanya angka).</span>
           </div>
 
-          <div class="input-wrapper" style="margin-bottom:0">
+          <div class="input-wrapper has-error" style="margin-bottom:0">
             <label for="ff-email-err">Email Penagihan Resmi (Error State) <span class="required">*</span></label>
             <div class="pill-input-box has-error" id="ff-email-box">
-              <input id="ff-email-err" type="email" value="budi.santoso@gmail" aria-invalid="true" aria-describedby="ff-email-err-msg" oninput="const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value); document.getElementById('ff-email-box').classList.toggle('has-error', !ok); this.setAttribute('aria-invalid', String(!ok)); document.getElementById('ff-email-err-msg').style.display = ok ? 'none' : 'flex';">
+              <input id="ff-email-err" type="email" value="budi.santoso@gmail" required aria-invalid="true" aria-describedby="ff-email-err-msg" data-validate-email data-error-target="ff-email-err-msg">
             </div>
             <span id="ff-email-err-msg" class="error-message" data-static-error="true">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
               Alamat email wajib memuat '@' dan nama domain (.com).
             </span>
           </div>
@@ -126,7 +116,7 @@
             <label for="ff-handover-note" class="input-label" style="margin-bottom:0">Catatan Handover Kamar (Textarea CMP-03)</label>
             <span id="ff-char-counter" class="text-caption text-muted tabular">0 / 250 karakter</span>
           </div>
-          <textarea id="ff-handover-note" class="textarea-rounded" rows="2" maxlength="250" placeholder="Kondisi AC, kunci duplikat, dan pembacaan kWh awal..." aria-describedby="ff-note-hint" oninput="document.getElementById('ff-char-counter').textContent = `${this.value.length} / 250 karakter`;"></textarea>
+          <textarea id="ff-handover-note" class="textarea-rounded" rows="2" maxlength="250" placeholder="Kondisi AC, kunci duplikat, dan pembacaan kWh awal..." aria-describedby="ff-note-hint ff-char-counter" data-char-counter="ff-char-counter"></textarea>
           <span id="ff-note-hint" class="input-hint">Tercatat otomatis pada berita acara serah terima kunci.</span>
         </div>
 
@@ -214,7 +204,7 @@
                   Utilitas &amp; parkir
                 </span>
               </div>
-              <span class="badge badge-success badge-sm"><span class="badge-dot"></span>Lunas</span>
+              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Lunas</span>
             </footer>
           </article>
 
@@ -447,7 +437,7 @@
           <button type="button" class="card-base is-interactive room-tile" onclick="showToast('Membuka detail Kamar 101 • Budi Santoso.', 'neutral', false)">
             <div class="room-tile-top">
               <span class="room-tile-num tabular">101</span>
-              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Terisi</span>
+              <span class="badge badge-dark badge-sm"><span class="badge-dot"></span>Terisi</span>
             </div>
             <div>
               <div class="room-tile-main">Budi Santoso</div>
@@ -460,10 +450,10 @@
           </button>
 
           <!-- Tile 2: Siap Huni (Available) -->
-          <button type="button" class="card-base is-interactive room-tile" onclick="showToast('Membuka detail Kamar 102 • Siap Huni.', 'success', false)">
+          <button type="button" class="card-base is-interactive room-tile" onclick="showToast('Membuka detail Kamar 102 • Siap Huni.', 'brand', false)">
             <div class="room-tile-top">
               <span class="room-tile-num tabular">102</span>
-              <span class="badge badge-success badge-sm"><span class="badge-dot"></span>Siap Huni</span>
+              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Siap Huni</span>
             </div>
             <div>
               <div class="room-tile-main">Unit Kosong Bersih</div>
@@ -479,7 +469,7 @@
           <button type="button" class="card-base is-interactive room-tile" onclick="showToast('Membuka reservasi Kamar 104 • Nadia Putri.', 'neutral', false)">
             <div class="room-tile-top">
               <span class="room-tile-num tabular">104</span>
-              <span class="badge badge-info badge-sm"><span class="badge-dot"></span>Dipesan</span>
+              <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span>Dipesan</span>
             </div>
             <div>
               <div class="room-tile-main">Nadia Putri (DP Hold)</div>
@@ -495,7 +485,7 @@
           <button type="button" class="card-base is-interactive room-tile" onclick="showToast('Membuka checklist housekeeping Kamar 103.', 'neutral', false)">
             <div class="room-tile-top">
               <span class="room-tile-num tabular">103</span>
-              <span class="badge badge-warning badge-sm"><span class="badge-dot"></span>Pembersihan</span>
+              <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span>Pembersihan</span>
             </div>
             <div>
               <div class="room-tile-main">Turnover Housekeeping</div>
@@ -615,8 +605,8 @@
           <article class="card-base is-interactive property-card">
             <div class="property-media-box">
               <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=640&h=400&fit=crop" alt="Interior Kamar 102 Standard Single Rumakost Cilandak" loading="lazy">
-              <span class="badge badge-success badge-sm property-media-badge"><span class="badge-dot"></span>Siap Huni</span>
-              <button type="button" class="circle-arrow-btn on-photo property-media-arrow" aria-label="Lihat detail Kamar 102" title="Buka Detail Kamar 102" onclick="showToast('Membuka profil Kamar 102 — Standard Single.', 'success', false)">
+              <span class="badge badge-brand badge-sm property-media-badge"><span class="badge-dot"></span>Siap Huni</span>
+              <button type="button" class="circle-arrow-btn on-photo property-media-arrow" aria-label="Lihat detail Kamar 102" title="Buka Detail Kamar 102" onclick="showToast('Membuka profil Kamar 102 — Standard Single.', 'brand', false)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </div>
@@ -650,7 +640,7 @@
           <article class="card-base is-interactive property-card">
             <div class="property-media-box">
               <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=640&h=400&fit=crop" alt="Fasad Suite 201 Cilandak Executive" loading="lazy">
-              <span class="badge badge-brand badge-sm property-media-badge"><span class="badge-dot"></span>Terisi</span>
+              <span class="badge badge-dark badge-sm property-media-badge"><span class="badge-dot"></span>Terisi</span>
               <button type="button" class="circle-arrow-btn on-photo property-media-arrow" aria-label="Lihat detail Suite 201" title="Buka Detail Suite 201" onclick="showToast('Membuka detail Suite 201 — Cilandak Executive.', 'brand', false)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
@@ -689,7 +679,7 @@
                 </div>
                 <span>Foto unit belum diunggah</span>
               </div>
-              <span class="badge badge-info badge-sm property-media-badge"><span class="badge-dot"></span>Dipesan</span>
+              <span class="badge badge-neutral badge-sm property-media-badge"><span class="badge-dot"></span>Dipesan</span>
               <button type="button" class="circle-arrow-btn on-photo property-media-arrow" aria-label="Lihat reservasi Kamar 104" title="Buka Reservasi Kamar 104" onclick="showToast('Membuka reservasi DP Hold Kamar 104 — Nadia Putri.', 'neutral', false)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
@@ -812,7 +802,7 @@
         <div class="icon-box icon-box-lg icon-box-neutral mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
         </div>
-        <h3 style="font-size:1.0625rem;font-weight:700;color:#0F172A;margin-bottom:0.375rem">Tidak Ada Kamar yang Sesuai Filter</h3>
+        <h3 style="font-size:1.0625rem;font-weight:700;color:#000000;margin-bottom:0.375rem">Tidak Ada Kamar yang Sesuai Filter</h3>
         <p class="text-small text-muted" style="max-width:420px;line-height:1.5;margin-bottom:1.25rem">Pencarian untuk kriteria lantai dan status saat ini tidak menemukan unit kamar. Coba atur ulang filter atau tambahkan unit baru.</p>
         <div class="flex items-center gap-3" style="flex-wrap:wrap;justify-content:center">
           <button type="button" class="btn btn-secondary btn-sm" onclick="showToast('Filter pencarian telah diatur ulang.', 'neutral', false)">Reset Filter</button>
@@ -841,7 +831,7 @@
       <div style="display:flex;flex-direction:column">
         <div data-search-item="Kamar 101 Deluxe Budi Santoso" style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
           <span class="text-small" style="font-weight:500">Kamar 101 • Deluxe — Budi Santoso</span>
-          <span class="badge badge-brand badge-sm">Terisi</span>
+          <span class="badge badge-dark badge-sm">Terisi</span>
         </div>
         <div data-search-item="Kamar 102 Standard Siti Rahmawati" style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0;border-bottom:1px solid #F1F5F9">
           <span class="text-small" style="font-weight:500">Kamar 102 • Standard — Siti Rahmawati</span>
@@ -870,7 +860,7 @@
           <button type="button" class="btn-group-item" data-role-switch="maintenance">Maintenance</button>
           <button type="button" class="btn-group-item" data-role-switch="tenant">Tenant</button>
         </div>
-        <span class="text-caption text-muted">Peran Aktif: <strong id="rbac-active-role" style="color:#0F172A">Owner</strong></span>
+        <span class="text-caption text-muted">Peran Aktif: <strong id="rbac-active-role" style="color:#000000">Owner</strong></span>
       </div>
 
       <div id="rbac-protected-actions" class="flex items-center gap-3" style="flex-wrap:wrap;padding:1rem 1.25rem;background:#FFF7ED;border:1px solid #FFEDD5;border-radius:16px">
@@ -959,7 +949,7 @@
           <label for="mdl-exp-amount">Nominal Biaya (IDR) <span class="required">*</span></label>
           <div class="pill-input-box">
             <span class="pill-prefix-badge">Rp</span>
-            <input id="mdl-exp-amount" type="text" inputmode="numeric" class="tabular" placeholder="250.000" oninput="let v=this.value.replace(/[^0-9]/g,''); this.value = v ? new Intl.NumberFormat('id-ID').format(v) : '';">
+            <input id="mdl-exp-amount" type="text" inputmode="numeric" class="tabular" placeholder="250.000" data-currency-input data-max-digits="13">
           </div>
         </div>
       </div>
