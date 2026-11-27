@@ -766,11 +766,13 @@ a {
 }
 
 .custom-select-wrapper.is-open .pill-input-box.select-trigger {
-  box-shadow: 0 0 0 2px var(--color-brand);
+  outline: 2px solid var(--color-brand-hover);
+  outline-offset: 2px;
 }
 
 .custom-select-wrapper.is-open .pill-input-box.select-trigger.has-error {
-  box-shadow: 0 0 0 2px var(--color-error);
+  outline: 2px solid var(--color-error);
+  outline-offset: 2px;
 }
 
 .select-chevron {
@@ -976,12 +978,12 @@ a {
   margin-top: 0.25rem;
 }
 
-/* Input & Textarea Base Typography (14px Desktop proporsional label, 16px Touch/Mobile Anti-Zoom iOS) */
+/* Input & Textarea Base Typography (16px per DESIGN.md §7.3 — anti-zoom iOS Safari) */
 .input-pill,
 .pill-input-box input,
 .textarea-rounded {
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-  font-size: var(--font-size-small) !important; /* 14px (0.875rem) — selaras dengan label */
+  font-size: var(--font-size-body) !important; /* 16px (1rem) — anti-zoom iOS Safari */
   font-weight: 500 !important;
   color: #000000 !important;
   letter-spacing: -0.01em;
@@ -1003,33 +1005,34 @@ a {
   background-color: #FAFAFA;
 }
 
+.input-pill:focus-visible,
 .input-pill:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--color-brand);
+  outline: 2px solid var(--color-brand-hover);
+  outline-offset: 2px;
 }
 
 .input-pill-sm {
   height: 36px;
   min-height: 36px;
   padding: 0 1rem;
-  font-size: var(--font-size-caption) !important;
+  font-size: var(--font-size-small) !important;
 }
 
 .input-pill-lg {
   height: 48px;
   min-height: 48px;
   padding: 0 1.25rem;
-  font-size: var(--font-size-small) !important;
+  font-size: var(--font-size-body) !important;
   font-weight: 500;
 }
 
-@media (hover: none) and (pointer: coarse) {
+@media (hover: none) and (pointer: coarse), (any-pointer: coarse) {
   .input-pill,
   .input-pill-sm,
   .input-pill-lg,
   .pill-input-box input,
   .textarea-rounded {
-    font-size: var(--font-size-body) !important; /* 16px anti-zoom iOS Safari khusus perangkat sentuh */
+    font-size: var(--font-size-body) !important; /* 16px anti-zoom iOS Safari */
   }
   .input-pill-sm {
     height: 44px;
@@ -1063,14 +1066,33 @@ a {
   border-radius: var(--radius-pill);
 }
 
-.pill-input-box:hover:not(:focus):not(:focus-within):not(.has-error) {
+.pill-input-box:hover:not(:focus):not(:focus-within):not(.has-error):not(.is-disabled):not(:has(input:disabled)) {
   background-color: #FAFAFA;
 }
 
-.pill-input-box:focus,
+.pill-input-box:focus-visible,
 .pill-input-box:focus-within {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--color-brand);
+  outline: 2px solid var(--color-brand-hover);
+  outline-offset: 2px;
+}
+
+.pill-input-box.is-disabled,
+.pill-input-box:has(input:disabled) {
+  background-color: #F1F5F9;
+  color: #475569;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.pill-input-box.is-disabled input,
+.pill-input-box input:disabled {
+  color: #475569 !important;
+  cursor: not-allowed;
+}
+
+.pill-input-box:has(input:disabled) .pill-prefix-badge,
+.pill-input-box:has(input:disabled) .pill-suffix-badge {
+  color: #475569;
 }
 
 /* WebKit Search Input Reset: prevent duplicate native clear button */
@@ -1108,7 +1130,7 @@ input[type="search"]::-webkit-search-decoration {
   opacity: 1 !important;
 }
 
-/* Error State (Clean Borderless, Ring hanya saat Aktif / Fokus) */
+/* Error State (Clean Borderless, #B91C1C Focus Ring saat Aktif / Fokus) */
 .pill-input-box.has-error,
 .input-pill.has-error,
 .textarea-rounded.has-error,
@@ -1129,13 +1151,16 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 .pill-input-box.has-error:focus-within,
+.input-pill.has-error:focus-visible,
 .input-pill.has-error:focus,
+.textarea-rounded.has-error:focus-visible,
 .textarea-rounded.has-error:focus,
+.select-trigger.has-error:focus-visible,
 .select-trigger.has-error:focus,
 .custom-select-wrapper.is-open .select-trigger.has-error {
-  outline: none;
+  outline: 2px solid var(--color-error);
+  outline-offset: 2px;
   background-color: #FEF2F2;
-  box-shadow: 0 0 0 2px var(--color-error);
 }
 
 .error-message {
@@ -1175,7 +1200,7 @@ input[type="search"]::-webkit-search-decoration {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
 }
 
 .stepper-btn::after {
@@ -1184,12 +1209,17 @@ input[type="search"]::-webkit-search-decoration {
   inset: -5px;
 }
 
-.stepper-btn:hover {
+.stepper-btn:hover:not(:disabled) {
   background-color: #E2E8F0;
 }
 
-.stepper-btn:active {
+.stepper-btn:active:not(:disabled) {
   transform: scale(0.98);
+}
+
+.stepper-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .stepper-value {
@@ -1215,7 +1245,7 @@ input[type="search"]::-webkit-search-decoration {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  width: 320px;
+  width: min(320px, calc(100vw - 3rem));
   background-color: #FFFFFF;
   border: 1px solid var(--color-border);
   border-radius: 20px;
@@ -1415,7 +1445,7 @@ input[type="search"]::-webkit-search-decoration {
 }
 
 .compact-file-upload:has(input:focus-visible) .btn {
-  outline: 2px solid var(--color-brand);
+  outline: 2px solid var(--color-brand-hover);
   outline-offset: 2px;
 }
 
@@ -1470,12 +1500,14 @@ input[type="search"]::-webkit-search-decoration {
   background-color: #FFEDD5;
 }
 
-/* Textarea System (CMP-03 — Clean Borderless, 12px Radius, 14px Desktop / 16px Mobile) */
+/* Textarea System (CMP-03 — Clean Borderless, 12px Radius, 16px Body) */
 .textarea-rounded {
   width: 100%;
+  min-height: 88px;
   padding: 0.875rem 1.125rem;
   font-family: inherit;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
   color: var(--color-text-primary);
   background-color: #FFFFFF;
   border: none;
@@ -1489,9 +1521,10 @@ input[type="search"]::-webkit-search-decoration {
   background-color: #FAFAFA;
 }
 
+.textarea-rounded:focus-visible,
 .textarea-rounded:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--color-brand);
+  outline: 2px solid var(--color-brand-hover);
+  outline-offset: 2px;
 }
 
 .textarea-rounded:disabled {

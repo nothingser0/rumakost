@@ -97,8 +97,8 @@
             <label for="ff-rent-amount">Tarif Sewa Bulanan (CurrencyInput) <span class="required">*</span></label>
             <div class="pill-input-box">
               <span class="pill-prefix-badge">Rp</span>
-              <input id="ff-rent-amount" class="tabular" inputmode="numeric" placeholder="2.200.000" aria-describedby="ff-rent-hint" oninput="let val=this.value.replace(/[^0-9]/g,''); this.value = val ? new Intl.NumberFormat('id-ID').format(val) : '';">
-              <span class="pill-suffix-badge" style="background:transparent;color:#94A3B8;font-size:0.75rem">/ bln</span>
+              <input id="ff-rent-amount" class="tabular" inputmode="numeric" placeholder="2.200.000" aria-describedby="ff-rent-hint" oninput="let val=this.value.replace(/[^0-9]/g,''); this.value = val ? new Intl.NumberFormat('id-ID').format(Number(val)) : '';">
+              <span class="pill-suffix-badge" style="background:transparent;color:#475569;font-size:0.75rem">/ bln</span>
             </div>
             <span id="ff-rent-hint" class="input-hint">Format otomatis pemisah ribuan IDR (hanya angka).</span>
           </div>
@@ -108,7 +108,7 @@
             <div class="pill-input-box has-error" id="ff-email-box">
               <input id="ff-email-err" type="email" value="budi.santoso@gmail" aria-invalid="true" aria-describedby="ff-email-err-msg" oninput="const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value); document.getElementById('ff-email-box').classList.toggle('has-error', !ok); this.setAttribute('aria-invalid', String(!ok)); document.getElementById('ff-email-err-msg').style.display = ok ? 'none' : 'flex';">
             </div>
-            <span id="ff-email-err-msg" class="error-message">
+            <span id="ff-email-err-msg" class="error-message" data-static-error="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
               Alamat email wajib memuat '@' dan nama domain (.com).
             </span>
@@ -829,10 +829,10 @@
 
       <div class="input-wrapper" style="margin-bottom:1.25rem">
         <label for="cmp17-search-input">Cari Unit Kamar atau Nama Penghuni</label>
-        <div class="pill-input-box is-search" style="padding-left:1rem;padding-right:0.75rem">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <div class="pill-input-box is-search" style="padding-left:1rem;padding-right:0.25rem">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input id="cmp17-search-input" type="search" placeholder="Ketik nomor kamar atau nama (misal: 101, Budi, Suite)...">
-          <button id="cmp17-clear-btn" type="button" aria-label="Bersihkan pencarian" style="display:none;background:none;border:none;cursor:pointer;color:#94A3B8;padding:0.25rem;align-items:center;justify-content:center">
+          <button id="cmp17-clear-btn" type="button" class="input-icon-btn" aria-label="Bersihkan pencarian" style="display:none;color:#64748B">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>

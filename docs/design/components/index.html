@@ -260,7 +260,7 @@
     <div class="cmp-card" id="cmp-02-03">
       <span class="cmp-badge">CMP-02 & CMP-03</span>
       <h2 class="cmp-title">Input Fields, CurrencyInput, Upload & Textarea System</h2>
-      <p class="cmp-desc">Input data entry teks, CurrencyInput numerik IDR, phone mask +62, calendar popover, dan file upload dropzone tanpa border (clean surface), font 14px desktop (otomatis 16px di layar sentuh/mobile anti-zoom iOS Safari), dan radius 12px (pill khusus pencarian).</p>
+      <p class="cmp-desc">Input data entry teks, CurrencyInput numerik IDR, phone mask +62, calendar popover, dan file upload dropzone tanpa border (clean borderless), font 16px anti-zoom iOS Safari, target sentuh min. 44px, focus ring <code>#EA580C</code> / <code>#B91C1C</code> (<code>outline-offset: 2px</code>), dan radius 12px (pill khusus pencarian).</p>
 
       <!-- Sub 1: Varian Jenis Input Data -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. VARIAN JENIS INPUT DATA (CMP-02)</div>
@@ -289,7 +289,7 @@
           <label for="inp-phone-demo">Nomor WhatsApp Aktif <span class="required">*</span></label>
           <div class="pill-input-box">
             <span class="pill-prefix-badge">+62</span>
-            <input id="inp-phone-demo" class="tabular" type="tel" placeholder="812-3456-7890">
+            <input id="inp-phone-demo" class="tabular" type="tel" inputmode="numeric" placeholder="812-3456-7890" oninput="let d=this.value.replace(/[^0-9]/g,'').slice(0,12); this.value = d ? d.replace(/(\d{1,3})(\d{0,4})(\d{0,5})/, (_,a,b,c)=> a + (b?'-'+b:'') + (c?'-'+c:'')) : '';">
           </div>
         </div>
 
@@ -298,10 +298,11 @@
           <label for="inp-pass-demo">Kata Sandi Akun <span class="required">*</span></label>
           <div class="pill-input-box" style="padding-right:0.25rem">
             <input id="inp-pass-demo" type="password" value="secretPass123">
-            <button type="button" id="pass-toggle-btn" class="input-icon-btn" aria-label="Tampilkan kata sandi" onclick="
+            <button type="button" id="pass-toggle-btn" class="input-icon-btn" aria-label="Tampilkan kata sandi" aria-pressed="false" onclick="
               const f = document.getElementById('inp-pass-demo');
               const isPass = f.type === 'password';
               f.type = isPass ? 'text' : 'password';
+              this.setAttribute('aria-pressed', String(isPass));
               this.setAttribute('aria-label', isPass ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
               this.innerHTML = isPass
                 ? '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'18\' height=\'18\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.75\'><path d=\'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24\'/><line x1=\'1\' y1=\'1\' x2=\'23\' y2=\'23\'/></svg>'
@@ -314,10 +315,10 @@
 
         <!-- Date Picker Input with Custom Floating Calendar Popover (CMP-02 / Estify Signature) -->
         <div class="input-wrapper">
-          <label for="inp-date-demo">Tanggal Jatuh Tempo <span class="required">*</span></label>
+          <label id="lbl-date-demo" for="due-date-trigger">Tanggal Jatuh Tempo <span class="required">*</span></label>
           <div class="datepicker-container" id="due-date-picker">
-            <div class="pill-input-box datepicker-trigger" tabindex="0" role="combobox" aria-haspopup="dialog" aria-expanded="false" aria-label="Pilih tanggal jatuh tempo" style="padding-right:0.75rem;cursor:pointer">
-              <input id="inp-date-demo" class="datepicker-display tabular" type="text" placeholder="Pilih tanggal jatuh tempo..." value="Rabu, 25 Nov 2026" readonly tabindex="-1" style="cursor:pointer">
+            <div id="due-date-trigger" class="pill-input-box datepicker-trigger" tabindex="0" role="combobox" aria-haspopup="dialog" aria-expanded="false" aria-labelledby="lbl-date-demo" style="padding-right:0.75rem;cursor:pointer">
+              <input id="inp-date-demo" class="datepicker-display tabular" type="text" placeholder="Pilih tanggal jatuh tempo..." value="Rabu, 25 Nov 2026" readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
               <input id="native-date-input" class="datepicker-value" type="hidden" value="2026-11-25">
               <span aria-hidden="true" style="color:var(--color-brand);display:flex;align-items:center;flex-shrink:0">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -362,9 +363,9 @@
         <div class="input-wrapper">
           <span id="stepper-label" class="input-label">Jumlah Tamu Menginap <span class="required">*</span></span>
           <div class="number-stepper" role="group" aria-labelledby="stepper-label">
-            <button type="button" class="stepper-btn" aria-label="Kurangi jumlah tamu" onclick="const v=document.getElementById('inp-stepper-val'); if(parseInt(v.textContent,10)>1) v.textContent=parseInt(v.textContent,10)-1;">−</button>
+            <button id="stepper-dec-btn" type="button" class="stepper-btn" aria-label="Kurangi jumlah tamu" onclick="const v=document.getElementById('inp-stepper-val'); const n=Math.max(1, parseInt(v.textContent,10)-1); v.textContent=n; this.disabled=(n<=1); document.getElementById('stepper-inc-btn').disabled=(n>=3);">−</button>
             <span id="inp-stepper-val" class="stepper-value tabular" aria-live="polite">2</span>
-            <button type="button" class="stepper-btn" aria-label="Tambah jumlah tamu" onclick="const v=document.getElementById('inp-stepper-val'); if(parseInt(v.textContent,10)<3) v.textContent=parseInt(v.textContent,10)+1;">+</button>
+            <button id="stepper-inc-btn" type="button" class="stepper-btn" aria-label="Tambah jumlah tamu" onclick="const v=document.getElementById('inp-stepper-val'); const n=Math.min(3, parseInt(v.textContent,10)+1); v.textContent=n; this.disabled=(n>=3); document.getElementById('stepper-dec-btn').disabled=(n<=1);">+</button>
             <span class="text-caption text-muted" style="margin-left:0.5rem">Orang (Maks. 3)</span>
           </div>
         </div>
@@ -465,10 +466,10 @@
       </div>
 
       <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem">
-        <!-- Textarea Error State -->
+        <!-- Textarea Error State (Live Recovery >= 10 chars) -->
         <div class="input-wrapper" style="margin-bottom:0">
           <label for="inp-area-err">Alasan Void / Penolakan Bukti Transfer <span class="required">*</span></label>
-          <textarea id="inp-area-err" class="textarea-rounded has-error" rows="2" aria-invalid="true" aria-describedby="area-err-msg">Salah</textarea>
+          <textarea id="inp-area-err" class="textarea-rounded has-error" rows="2" aria-invalid="true" aria-describedby="area-err-msg" oninput="const ok=this.value.trim().length>=10; this.classList.toggle('has-error', !ok); this.setAttribute('aria-invalid', String(!ok)); document.getElementById('area-err-msg').style.display = ok ? 'none' : 'flex';">Salah</textarea>
           <span id="area-err-msg" class="error-message">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             Alasan audit wajib diisi minimal 10 karakter.

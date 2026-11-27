@@ -160,8 +160,8 @@ Setiap komponen yang diimplementasikan pada `docs/design/components/index.html` 
 - **Focus Ring (`:focus-visible`, WCAG 2.2 AA >= 3.0:1)**: `outline-offset: 2px`; aksi umum `#EA580C` (`--color-brand-hover`, 3.4:1–3.56:1), sedangkan `Destructive / Void` menggunakan `#B91C1C` (`--color-error`, 6.18:1–6.47:1).
 - **Button Loading State**: Spinner berputar debounced berpasangan dengan teks saat submit form; State Matrix (`Default`, `Hover`, `Pressed`, `Focus Ring`, `Disabled`) terverifikasi di showcase.
 
-### 7.3 Form Input & Data Entry System
-- **Input & Select (`.input`, `.select`, `.textarea`)**: Tinggi minimum 44px (touch target), font-size 16px (1rem, anti-zoom iOS Safari), `border: 1px solid #CBD5E1`, `border-radius: 12px`.
+### 7.3 Form Input & Data Entry System (Borderless)
+- **Input & Select (`.input-pill`, `.pill-input-box`, `.textarea-rounded`)**: Wajib **borderless (`border: none`)** dengan elevasi `box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06)` (tanpa garis border di seluruh komponen UI proyek), tinggi minimum `44px` (touch target), `font-size: 16px` (`1rem`, anti-zoom iOS Safari), `border-radius: 12px` (pengecualian `9999px` pill khusus search input `.is-search`), serta focus ring `:focus-visible` `2px solid #EA580C` (`#B91C1C` pada error) dengan `outline-offset: 2px`.
 - **CurrencyInput**: Input numerik IDR wajib menggunakan `inputmode="numeric"`.
 - **Pesan Validasi Error**: Berukuran minimal 13px (`font-size: 0.875rem`) dan rasio kontras merah minimal 4.5:1 (`color: #B91C1C`).
 

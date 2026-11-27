@@ -134,7 +134,7 @@ Each line must be **concrete, checkable, and local**. "Be careful with dates" is
 
 | # | Gotcha | Why it bites | What to do instead |
 | :-: | :--- | :--- | :--- |
-| 1 | <specific API, table, or file> | <the non-obvious behaviour> | <the correct usage> |
+| 1 | `docs/design/shared/css/styles.css` (`CMP-01` s/d `CMP-26` & seluruh komponen UI) | Seluruh komponen di project ini wajib **borderless** (`border: none`) — memakai surface putih solid `#FFFFFF` + `box-shadow` lembut dan background tint (`#FEF2F2`) untuk error, bukan `border: 1px solid #CBD5E1` | Jangan menambahkan CSS `border` pada tombol, input, textarea, stepper, upload box, atau dropzone; gunakan `box-shadow` lembut dan `:focus-visible` `outline` (`#EA580C` / `#B91C1C`, `outline-offset: 2px`) |
 | 2 | | | |
 
 **What belongs here**

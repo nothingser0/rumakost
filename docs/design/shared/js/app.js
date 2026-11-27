@@ -300,20 +300,42 @@ function initForms() {
       const requiredInputs = form.querySelectorAll('[required]');
       let firstInvalid = null;
 
-      form.querySelectorAll('.input-wrapper').forEach(w => w.classList.remove('has-error'));
-      form.querySelectorAll('.error-message').forEach(m => m.remove());
+      form.querySelectorAll('.input-wrapper').forEach(w => {
+        if (!w.querySelector('[data-static-error="true"]')) {
+          w.classList.remove('has-error');
+        }
+      });
+      form.querySelectorAll('.error-message[data-generated-error="true"]').forEach(m => m.remove());
 
       requiredInputs.forEach(input => {
-        if (!input.value.trim()) {
+        const val = input.value.trim();
+        const isEmailInvalid = input.type === 'email' && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+        const isEmpty = !val;
+
+        if (isEmpty || isEmailInvalid) {
           const wrapper = input.closest('.input-wrapper');
+          input.setAttribute('aria-invalid', 'true');
           if (wrapper) {
             wrapper.classList.add('has-error');
-            const err = document.createElement('span');
-            err.className = 'error-message';
-            err.textContent = input.getAttribute('data-error-msg') || 'Bidang ini wajib diisi';
-            wrapper.appendChild(err);
+            const staticErr = wrapper.querySelector('.error-message[data-static-error="true"]');
+            if (staticErr) {
+              staticErr.style.display = 'flex';
+            } else {
+              const err = document.createElement('span');
+              err.className = 'error-message';
+              err.setAttribute('data-generated-error', 'true');
+              const errId = `${input.id || 'field'}-err`;
+              err.id = errId;
+              err.textContent = isEmailInvalid
+                ? 'Format alamat email tidak valid.'
+                : (input.getAttribute('data-error-msg') || 'Bidang ini wajib diisi');
+              input.setAttribute('aria-describedby', errId);
+              wrapper.appendChild(err);
+            }
           }
           if (!firstInvalid) firstInvalid = input;
+        } else {
+          input.removeAttribute('aria-invalid');
         }
       });
 
@@ -327,9 +349,15 @@ function initForms() {
 
       const submitBtn = form.querySelector('[type="submit"]') || form.querySelector('[data-submit-btn]');
       if (submitBtn) {
+        if (submitBtn.classList.contains('is-loading')) return;
+        const origHtml = submitBtn.innerHTML;
         submitBtn.classList.add('is-loading');
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.innerHTML = '<span class="spinner spinner-sm spinner-white" aria-hidden="true"></span><span>Menyimpan...</span>';
         setTimeout(() => {
           submitBtn.classList.remove('is-loading');
+          submitBtn.removeAttribute('aria-busy');
+          submitBtn.innerHTML = origHtml;
           if (window.showToast) {
             window.showToast('Data berhasil disimpan ke sistem.', 'success', false);
           }
@@ -597,40 +625,95 @@ function initDatepickers() {
       }
       displayInput.dispatchEvent(new Event('input', { bubbles: true }));
       renderCalendar();
-      closePicker();
+      closePicker(true);
     }
 
-    function openPicker() {
+    function clearDate() {
+      selectedDate = null;
+      displayInput.value = '';
+      if (hiddenInput) {
+        hiddenInput.value = '';
+        hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      displayInput.dispatchEvent(new Event('input', { bubbles: true }));
+      renderCalendar();
+      closePicker(true);
+    }
+
+    function openPicker(focusCalendar = false) {
       document.querySelectorAll('.datepicker-container.is-open').forEach(c => {
-        if (c !== container) c.classList.remove('is-open');
+        if (c !== container) {
+          c.classList.remove('is-open');
+          const t = c.querySelector('.datepicker-trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
       });
       document.querySelectorAll('.dropdown-wrapper.is-open').forEach(d => d.classList.remove('is-open'));
       container.classList.add('is-open');
       if (trigger) trigger.setAttribute('aria-expanded', 'true');
       renderCalendar();
+      if (focusCalendar && daysEl) {
+        const focusTarget =
+          daysEl.querySelector('.datepicker-day.is-selected') ||
+          daysEl.querySelector('.datepicker-day:not(.is-outside)');
+        if (focusTarget) focusTarget.focus();
+      }
     }
 
-    function closePicker() {
+    function closePicker(restoreFocus = false) {
       container.classList.remove('is-open');
-      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      if (trigger) {
+        trigger.setAttribute('aria-expanded', 'false');
+        if (restoreFocus) trigger.focus();
+      }
     }
 
-    function togglePicker() {
+    function togglePicker(viaKeyboard = false) {
       if (container.classList.contains('is-open')) {
-        closePicker();
+        closePicker(viaKeyboard);
       } else {
-        openPicker();
+        openPicker(viaKeyboard);
       }
     }
 
     if (trigger) {
+      const label = container.closest('.input-wrapper')?.querySelector('label');
+      if (label) {
+        label.addEventListener('click', (e) => {
+          e.preventDefault();
+          trigger.focus();
+        });
+      }
       trigger.addEventListener('click', () => {
-        togglePicker();
+        togglePicker(false);
       });
       trigger.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
           e.preventDefault();
-          togglePicker();
+          togglePicker(true);
+        }
+      });
+    }
+
+    if (daysEl) {
+      daysEl.addEventListener('keydown', (e) => {
+        const dayBtn = e.target.closest('.datepicker-day');
+        if (!dayBtn) return;
+        const buttons = Array.from(daysEl.querySelectorAll('.datepicker-day'));
+        const idx = buttons.indexOf(dayBtn);
+        let nextIdx = -1;
+        if (e.key === 'ArrowRight') nextIdx = Math.min(buttons.length - 1, idx + 1);
+        else if (e.key === 'ArrowLeft') nextIdx = Math.max(0, idx - 1);
+        else if (e.key === 'ArrowDown') nextIdx = Math.min(buttons.length - 1, idx + 7);
+        else if (e.key === 'ArrowUp') nextIdx = Math.max(0, idx - 7);
+        else if (e.key === 'Escape') {
+          e.preventDefault();
+          closePicker(true);
+          return;
+        }
+        if (nextIdx >= 0 && buttons[nextIdx]) {
+          e.preventDefault();
+          buttons[nextIdx].focus();
         }
       });
     }
@@ -662,14 +745,15 @@ function initDatepickers() {
     if (todayBtn) {
       todayBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        selectDate(new Date(2026, 10, 25)); // Target Context: 25 Nov 2026
+        const now = new Date();
+        selectDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()));
       });
     }
 
     if (clearBtn) {
       clearBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        selectDate(new Date(2026, 10, 25)); // Reset to initial default
+        clearDate();
       });
     }
 
@@ -691,7 +775,10 @@ function initDatepickers() {
       document.querySelectorAll('.datepicker-container.is-open').forEach(c => {
         c.classList.remove('is-open');
         const trigger = c.querySelector('.datepicker-trigger');
-        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        if (trigger) {
+          trigger.setAttribute('aria-expanded', 'false');
+          trigger.focus();
+        }
       });
     }
   });
