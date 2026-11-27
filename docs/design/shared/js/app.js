@@ -70,7 +70,35 @@ document.addEventListener('DOMContentLoaded', () => {
   // CMP-02 Keyboard & Drag-and-Drop Uploads
   initCompactUploads();
   initDropzones();
+
+  // CMP-11 Selectable Card Group Demo
+  initCardSelectGroups();
 });
+
+function initCardSelectGroups() {
+  document.querySelectorAll('[data-card-select-group]').forEach(card => {
+    card.addEventListener('click', () => {
+      const groupName = card.getAttribute('data-card-select-group');
+      if (!groupName) return;
+      document.querySelectorAll(`[data-card-select-group="${groupName}"]`).forEach(sibling => {
+        const isCurrent = sibling === card;
+        sibling.classList.toggle('is-selected', isCurrent);
+        sibling.setAttribute('aria-pressed', String(isCurrent));
+        const iconBox = sibling.querySelector('.icon-box');
+        if (iconBox) {
+          iconBox.classList.toggle('icon-box-brand', isCurrent);
+          iconBox.classList.toggle('icon-box-neutral', !isCurrent);
+        }
+        const badge = sibling.querySelector('.badge[data-select-badge]');
+        if (badge) {
+          badge.classList.toggle('badge-brand', isCurrent);
+          badge.classList.toggle('badge-neutral', !isCurrent);
+          badge.textContent = isCurrent ? 'Terpilih' : 'Interaktif';
+        }
+      });
+    });
+  });
+}
 
 function formatWithDigitCaret(input, formatFn) {
   const raw = input.value;

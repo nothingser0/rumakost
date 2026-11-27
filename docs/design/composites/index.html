@@ -271,178 +271,423 @@
     <!-- CMP-11: Base Card Container -->
     <div class="cmp-card" id="cmp-11">
       <span class="cmp-badge">CMP-11</span>
-      <h2 class="cmp-title">Base Card Container (1 / 14 — Fondasi Kontainer)</h2>
-      <p class="cmp-desc">Kontainer kartu dasar putih solid <code>#FFFFFF</code> ber-radius <code>24px</code> dengan anatomi wajib <code>CardHeader + CardTitle + CardContent + CardFooter</code>, tombol aksi header yang bersih, baris ringkasan key-value, serta <em>Zero Hover Translate</em> sesuai referensi pilihan dan sistem desain Rumakost.</p>
+      <h2 class="cmp-title">Base Card Container &amp; Varian Kartu Standar</h2>
+      <p class="cmp-desc">Kontainer kartu dasar putih solid <code>#FFFFFF</code> ber-radius <code>24px</code> (<strong>100% borderless</strong> — <code>border: none</code>, separator via hairline <code>inset</code> &amp; elevasi bayangan lembut), anatomi wajib <code>CardHeader + CardTitle + CardContent + CardFooter</code>, Pure 4-Color WCAG 2.2 AA, target sentuh tombol <code>44px</code>, serta <em>Zero Hover Translate</em> sesuai sistem desain Rumakost (termasuk pratinjau ekstensi <code>CMP-21</code> &amp; <code>CMP-24</code>).</p>
 
-      <div class="showcase-canvas">
+      <div class="showcase-canvas is-borderless">
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">1. FONDASI KONTAINER DASAR (CARD ANATOMY — ESTIFY HEADER, RECESSED FOOTER &amp; INTERACTIVE STRIP)</div>
         <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: stretch;">
 
-          <!-- 1. Standard Base Card Container (Ref: Left Card - Header Action + Hero Stat + KV Rows) -->
+          <!-- 1A. Standard Static Card: Insight Strip + Segmented Brand Meter + 2-Tile Bento Footerless -->
           <article class="card-base">
             <header class="card-header">
-              <h3 class="card-title">Okupansi Cabang</h3>
-              <button type="button" class="card-header-action" onclick="showToast('Membuka laporan detail okupansi cabang.', 'brand', false)">
-                Detail lengkap
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              <div class="card-header-left">
+                <div class="icon-box icon-box-sm icon-box-brand" aria-hidden="true">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                </div>
+                <h3 class="card-title">Okupansi Cabang</h3>
+              </div>
+              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka laporan detail okupansi cabang" title="Detail Okupansi" onclick="showToast('Membuka laporan detail okupansi cabang Cilandak.', 'brand', false)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </header>
-            <div class="card-content">
+            <div class="card-content" style="padding-bottom:1.5rem">
+              <div class="card-insight-strip">
+                <span class="card-insight-icon" aria-hidden="true">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </span>
+                <span>Keterisian cabang Cilandak <strong>92%</strong> — melampaui target 85% bulan ini.</span>
+              </div>
+
               <div class="card-hero-stat">
                 <span class="card-hero-value tabular">22–24</span>
                 <span class="card-hero-unit">unit</span>
               </div>
-              <p class="card-subtitle" style="margin-bottom:1.25rem">01 – 30 Nov 2026 • Cabang Cilandak</p>
+              <p class="card-subtitle" style="margin-bottom:0.875rem">01 – 30 Nov 2026 • Cabang Cilandak</p>
 
-              <p style="margin:0;color:#475569">
-                Slot <code>CardContent</code> bersih dan fleksibel untuk menampung metrik, tabel ringkas, atau isi modul operasional tanpa elemen dekoratif berlebihan.
-              </p>
-            </div>
-            <footer class="card-footer" style="display:block;border-top:none;padding-top:0">
-              <div class="card-kv-rows">
-                <div class="card-kv-row">
-                  <span class="card-kv-label">Kamar Terisi Aktif</span>
-                  <span class="card-kv-val tabular">22</span>
+              <div class="kpi-seg-bars card-occupancy-bar" role="img" aria-label="9 dari 10 segmen kapasitas okupansi terisi (92%)">
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill is-filled"></span>
+                <span class="kpi-seg-pill"></span>
+              </div>
+
+              <div class="card-bento-2">
+                <div class="card-bento-tile">
+                  <div class="card-bento-head">
+                    <span class="card-bento-label">Kamar Terisi</span>
+                    <span class="card-bento-pill is-brand tabular">+2 ↗</span>
+                  </div>
+                  <div class="card-bento-val tabular">22</div>
                 </div>
-                <div class="card-kv-row">
-                  <span class="card-kv-label">Siap Huni (Kosong)</span>
-                  <span class="card-kv-val tabular">2</span>
+                <div class="card-bento-tile">
+                  <div class="card-bento-head">
+                    <span class="card-bento-label">Siap Huni</span>
+                    <span class="card-bento-pill is-dark tabular">Bersih</span>
+                  </div>
+                  <div class="card-bento-val tabular">2</div>
                 </div>
               </div>
-            </footer>
+            </div>
           </article>
 
-          <!-- 2. Base Card Container with Filter Pill & Legend Footer -->
+          <!-- 1B. Estify Header Action Cluster (CMP-04 Pill Select + PopoverMenu) & Legend Footer -->
           <article class="card-base">
-            <header class="card-header">
-              <div class="card-header-left">
+            <header class="card-header is-top">
+              <div style="min-width:0">
                 <h3 class="card-title">Rata-rata Kas Bersih</h3>
-                <button type="button" class="card-dots-trigger" aria-label="Opsi kartu kas bersih" onclick="showToast('Membuka menu opsi kartu kas bersih.', 'neutral', false)">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="19" cy="12" r="1.75"/></svg>
-                </button>
+                <p class="card-subtitle">Rata-rata bersih per cabang</p>
               </div>
-              <button type="button" class="card-header-action" onclick="showToast('Mengganti rentang periode ke Per Bulan.', 'neutral', false)">Per bulan</button>
+              <div class="card-header-actions">
+                <div class="custom-select-wrapper is-pill has-value" id="cmp11-kas-period-select">
+                  <div id="cmp11-kas-period-trigger" class="pill-input-box select-trigger is-pill is-subtle has-value" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="cmp11-kas-period-listbox" aria-label="Pilih periode kas bersih">
+                    <span class="select-label-text">Bulanan</span>
+                    <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </div>
+                  <input type="hidden" name="cmp11_kas_period" class="select-value" value="monthly">
+                  <div id="cmp11-kas-period-listbox" class="select-popover" role="listbox" aria-label="Pilih periode kas bersih">
+                    <div class="select-option" data-value="weekly" role="option" aria-selected="false">
+                      <span class="option-title">Mingguan</span>
+                      <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="select-option is-selected" data-value="monthly" role="option" aria-selected="true">
+                      <span class="option-title">Bulanan</span>
+                      <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div class="select-option" data-value="yearly" role="option" aria-selected="false">
+                      <span class="option-title">Tahunan</span>
+                      <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="popover-menu-wrapper is-flip-right" id="cmp11-kas-menu-wrap">
+                  <button type="button" id="cmp11-kas-menu-btn" class="card-dots-trigger" data-popover-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="cmp11-kas-menu" aria-label="Opsi kartu kas bersih">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="19" cy="12" r="1.75"/></svg>
+                  </button>
+                  <div id="cmp11-kas-menu" class="popover-menu" role="menu" aria-labelledby="cmp11-kas-menu-btn">
+                    <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Mengunduh ringkasan kas bersih (CSV)..." data-menu-tone="brand">
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                      Unduh Laporan CSV
+                    </button>
+                    <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Ringkasan kas bersih Rp 39,6 jt disalin ke clipboard." data-menu-tone="neutral">
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                      Salin Ringkasan
+                    </button>
+                    <div class="popover-menu-divider" role="separator"></div>
+                    <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka pengaturan target pendapatan cabang." data-menu-tone="neutral">
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 0 1 0 4h-.09c-.658.003-1.25.396-1.51 1Z"/></svg>
+                      Atur Target Cabang
+                    </button>
+                  </div>
+                </div>
+              </div>
             </header>
+
             <div class="card-content">
               <div class="card-hero-stat">
                 <span class="card-hero-value tabular">Rp 39,6</span>
                 <span class="card-hero-unit">jt</span>
               </div>
-              <p class="card-subtitle" style="margin-bottom:1.25rem">Rata-rata bersih per cabang</p>
+              <p class="card-subtitle" style="margin-bottom:1.125rem">Konsolidasi 3 cabang aktif</p>
 
-              <p style="margin:0;color:#475569">
-                Kartu standar tanpa hover kartu (interaksi fokus pada kontrol tombol di header), menjaga tata letak grid tetap konsisten dan mudah dipindai.
-              </p>
+              <div class="card-kv-rows">
+                <div class="card-kv-row">
+                  <span class="card-kv-label">Pendapatan Sewa Bruto</span>
+                  <span class="card-kv-val tabular">Rp 46,2 jt</span>
+                </div>
+                <div class="card-kv-row">
+                  <span class="card-kv-label">Beban Utilitas &amp; Parkir</span>
+                  <span class="card-kv-val tabular">Rp 6,6 jt</span>
+                </div>
+              </div>
             </div>
-            <footer class="card-footer is-borderless">
+
+            <footer class="card-footer is-recessed">
               <div class="card-legend">
                 <span class="card-legend-item">
                   <span class="card-legend-dot" style="background-color:var(--color-brand)"></span>
                   Pendapatan sewa
                 </span>
                 <span class="card-legend-item">
-                  <span class="card-legend-dot" style="background-color:#FFEDD5;border:1px solid #FDBA74"></span>
+                  <span class="card-legend-dot" style="background-color:#000000"></span>
                   Utilitas &amp; parkir
                 </span>
               </div>
-              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Lunas</span>
+              <button type="button" class="card-brand-cta" onclick="showToast('Membuka rekap arus kas cabang Cilandak.', 'brand', false)">
+                Unduh Rekap
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </button>
             </footer>
           </article>
 
         </div>
 
-        <!-- 2 / 14: KPI Metric Card (Unified Segmented Pill Meter + Top-Right Arrow) -->
-        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">2 / 14 — KPI METRIC CARD (SEGMENTED PILL METER)</div>
-        <div class="kpi-grid-3" style="margin-bottom: 2rem">
-
-          <!-- KPI 1: Kamar Aktif (92% -> 9/10 segmen) -->
-          <article class="card-base kpi-card">
-            <div class="kpi-seg-header">
-              <div class="kpi-seg-title-wrap">
-                <span>Kamar Aktif</span>
+        <!-- 1C. Interactive & Selected Card States (Borderless #F97316 Ring, Zero Nested Interactive) -->
+        <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.25rem;">
+          <button type="button" class="card-base is-interactive card-action-strip" aria-pressed="false" data-card-select-group="cmp11-pick">
+            <div class="card-strip-left">
+              <div class="icon-box icon-box-md icon-box-neutral" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
               </div>
-              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka inventaris kamar" title="Lihat Detail" onclick="showToast('Membuka peta okupansi kamar cabang.', 'brand', false)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              <div style="min-width:0">
+                <div class="card-strip-title-row">
+                  <span class="card-title">Arus Kas Cabang Cilandak</span>
+                  <span class="badge badge-neutral badge-sm" data-select-badge>Interaktif</span>
+                </div>
+                <div class="card-strip-sub">Hover lembut tanpa <code>translateY</code>; klik untuk memilih.</div>
+              </div>
+            </div>
+            <div class="card-strip-right">
+              <span class="card-strip-arrow" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </div>
+          </button>
+
+          <button type="button" class="card-base is-interactive is-selected card-action-strip" aria-pressed="true" data-card-select-group="cmp11-pick">
+            <div class="card-strip-left">
+              <div class="icon-box icon-box-md icon-box-brand" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+              </div>
+              <div style="min-width:0">
+                <div class="card-strip-title-row">
+                  <span class="card-title">Laba Rugi Konsolidasi</span>
+                  <span class="badge badge-brand badge-sm" data-select-badge>Terpilih</span>
+                </div>
+                <div class="card-strip-sub tabular">State terpilih <code>.is-selected</code> (cincin <code>#F97316</code> borderless).</div>
+              </div>
+            </div>
+            <div class="card-strip-right">
+              <span class="card-strip-arrow" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </div>
+          </button>
+        </div>
+
+        <!-- 2. KPI Metric Card (2A: Smooth Capsule Half-Gauge + 2B: Compact Pill Meter for Non-% Counts) -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">2A. KPI METRIC CARD — SMOOTH CAPSULE GAUGE (TARGET &amp; RASIO %)</div>
+        <div class="kpi-grid-3" style="margin-bottom: 1.5rem">
+
+          <!-- KPI Gauge 1: Kamar Terisi (92% — Pure 4-Color Orange) -->
+          <article class="card-base kpi-card">
+            <div class="kpi-gauge-head">
+              <div class="kpi-gauge-title-wrap">
+                <div class="icon-box icon-box-sm icon-box-brand is-circle" aria-hidden="true">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M9 21V3h6v18"/></svg>
+                </div>
+                <span class="kpi-gauge-title">Kamar Terisi</span>
+              </div>
+              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka inventaris kamar terisi" title="Lihat Detail" onclick="showToast('Membuka peta okupansi 22 dari 24 kamar aktif.', 'brand', false)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </div>
 
-            <div class="kpi-seg-stat">
-              <span class="kpi-seg-value tabular">22</span>
-              <span class="kpi-seg-unit tabular">dari 24 Unit (92%)</span>
-            </div>
+            <div class="kpi-gauge-body">
+              <div class="kpi-gauge-metric">
+                <span class="kpi-gauge-sub tabular">Dari 24 Unit</span>
+                <div class="kpi-gauge-val-row">
+                  <span class="kpi-gauge-val tabular">22</span>
+                  <span class="kpi-gauge-unit">kamar</span>
+                </div>
+              </div>
 
-            <div class="kpi-seg-bars" role="img" aria-label="9 dari 10 segmen okupansi kamar terisi (92%)">
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill"></span>
+              <div class="kpi-gauge-visual" role="img" aria-label="Okupansi kamar 92%, naik 2 kamar dari bulan lalu">
+                <svg class="kpi-gauge-svg" viewBox="0 0 128 68" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="cmp11-kpi-arc-orange" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#F46812"/>
+                      <stop offset="100%" stop-color="#EA580C"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M 14 60 A 50 50 0 0 1 114 60" fill="none" stroke="#E2E8F0" stroke-width="11" stroke-linecap="round"/>
+                  <path d="M 14 60 A 50 50 0 0 1 114 60" fill="none" stroke="url(#cmp11-kpi-arc-orange)" stroke-width="11" stroke-linecap="round" pathLength="100" stroke-dasharray="92 100"/>
+                </svg>
+                <span class="kpi-gauge-pct tabular">92%</span>
+              </div>
             </div>
 
             <div class="kpi-seg-trend tabular">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
               <span>+2 kamar dari bulan lalu</span>
             </div>
           </article>
 
-          <!-- KPI 2: Arus Kas Bersih (75% dari Target Rp 52,8 Jt -> 8/10 segmen) -->
+          <!-- KPI Gauge 2: Arus Kas Bersih (75% — Pure Black) -->
           <article class="card-base kpi-card">
+            <div class="kpi-gauge-head">
+              <div class="kpi-gauge-title-wrap">
+                <div class="icon-box icon-box-sm icon-box-dark is-circle" aria-hidden="true">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <span class="kpi-gauge-title">Arus Kas Bersih</span>
+              </div>
+              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka laporan arus kas bersih" title="Lihat Detail" onclick="showToast('Membuka laporan Arus Kas & Target Rp 52,8 Jt.', 'neutral', false)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </button>
+            </div>
+
+            <div class="kpi-gauge-body">
+              <div class="kpi-gauge-metric">
+                <span class="kpi-gauge-sub tabular">Target 52,8 Jt</span>
+                <div class="kpi-gauge-val-row">
+                  <span class="kpi-gauge-val tabular">39,6</span>
+                  <span class="kpi-gauge-unit">Jt</span>
+                </div>
+              </div>
+
+              <div class="kpi-gauge-visual" role="img" aria-label="Pencapaian arus kas bersih 75%, naik 15% dari bulan lalu">
+                <svg class="kpi-gauge-svg" viewBox="0 0 128 68" aria-hidden="true">
+                  <path d="M 14 60 A 50 50 0 0 1 114 60" fill="none" stroke="#E2E8F0" stroke-width="11" stroke-linecap="round"/>
+                  <path d="M 14 60 A 50 50 0 0 1 114 60" fill="none" stroke="#000000" stroke-width="11" stroke-linecap="round" pathLength="100" stroke-dasharray="75 100"/>
+                </svg>
+                <span class="kpi-gauge-pct tabular">75%</span>
+              </div>
+            </div>
+
+            <div class="kpi-seg-trend tabular">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              <span>+15% dari bulan lalu</span>
+            </div>
+          </article>
+
+          <!-- KPI Gauge 3: Tunggakan Sewa (8% — Pure 4-Color Red Void) -->
+          <article class="card-base kpi-card">
+            <div class="kpi-gauge-head">
+              <div class="kpi-gauge-title-wrap">
+                <div class="icon-box icon-box-sm icon-box-error is-circle" aria-hidden="true">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <span class="kpi-gauge-title">Tunggakan Sewa</span>
+              </div>
+              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka daftar tagihan tertunggak" title="Lihat Detail" onclick="showToast('Membuka daftar 2 tagihan jatuh tempo untuk penagihan WA.', 'error', true)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </button>
+            </div>
+
+            <div class="kpi-gauge-body">
+              <div class="kpi-gauge-metric">
+                <span class="kpi-gauge-sub tabular">Dari 24 Tagihan</span>
+                <div class="kpi-gauge-val-row">
+                  <span class="kpi-gauge-val tabular">2</span>
+                  <span class="kpi-gauge-unit">tagihan</span>
+                </div>
+              </div>
+
+              <div class="kpi-gauge-visual" role="img" aria-label="Rasio tunggakan sewa 8% atau 2 tagihan lewat jatuh tempo">
+                <svg class="kpi-gauge-svg" viewBox="0 0 128 68" aria-hidden="true">
+                  <path d="M 14 60 A 50 50 0 0 1 114 60" fill="none" stroke="#E2E8F0" stroke-width="11" stroke-linecap="round"/>
+                  <path d="M 14 60 A 50 50 0 0 1 114 60" fill="none" stroke="#B91C1C" stroke-width="11" stroke-linecap="round" pathLength="100" stroke-dasharray="10 100"/>
+                </svg>
+                <span class="kpi-gauge-pct tabular">8%</span>
+              </div>
+            </div>
+
+            <div class="kpi-seg-trend tabular" style="color:var(--color-error)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>Lewat jatuh tempo H+3 (Rp 4,4 Jt)</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">2B. COMPACT PILL KPI (METRIK HITUNGAN TANPA TARGET %)</div>
+        <div class="kpi-grid-3" style="margin-bottom: 2rem">
+
+          <!-- Compact Pill KPI 1: Tiket Perbaikan Terbuka -->
+          <article class="card-base kpi-card is-compact">
             <div class="kpi-seg-header">
               <div class="kpi-seg-title-wrap">
-                <span>Arus Kas Bersih</span>
+                <span>Tiket Perbaikan</span>
               </div>
-              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka laporan kas bersih" title="Lihat Detail" onclick="showToast('Membuka laporan Arus Kas & Laba Rugi Cabang.', 'brand', false)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka daftar tiket perbaikan" title="Lihat Tiket" onclick="showToast('Membuka 4 tiket perbaikan aktif cabang Cilandak.', 'brand', false)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </div>
 
             <div class="kpi-seg-stat">
-              <span class="kpi-seg-value tabular">39,6</span>
-              <span class="kpi-seg-unit tabular">Jt / Target 52,8 Jt</span>
+              <span class="kpi-seg-value tabular">4</span>
+              <span class="kpi-seg-unit tabular">tiket terbuka</span>
             </div>
 
-            <div class="kpi-seg-bars" role="img" aria-label="8 dari 10 segmen pencapaian kas bersih terhadap target (75%)">
+            <div class="kpi-seg-bars is-compact" role="img" aria-label="Indikator 4 dari 10 beban tiket aktif">
               <span class="kpi-seg-pill is-filled"></span>
               <span class="kpi-seg-pill is-filled"></span>
               <span class="kpi-seg-pill is-filled"></span>
               <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
-              <span class="kpi-seg-pill is-filled"></span>
+              <span class="kpi-seg-pill"></span>
+              <span class="kpi-seg-pill"></span>
+              <span class="kpi-seg-pill"></span>
+              <span class="kpi-seg-pill"></span>
               <span class="kpi-seg-pill"></span>
               <span class="kpi-seg-pill"></span>
             </div>
 
             <div class="kpi-seg-trend tabular">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-              <span>+14.8% dari bulan lalu</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              <span>2 dikerjakan hari ini</span>
             </div>
           </article>
 
-          <!-- KPI 3: Tunggakan Sewa (2 dari 24 Tagihan -> 1/10 segmen) -->
-          <article class="card-base kpi-card">
+          <!-- Compact Pill KPI 2: Verifikasi Bukti Transfer -->
+          <article class="card-base kpi-card is-compact">
             <div class="kpi-seg-header">
               <div class="kpi-seg-title-wrap">
-                <span>Tunggakan Sewa</span>
+                <span>Verifikasi Transfer</span>
               </div>
-              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka daftar tunggakan" title="Lihat Detail" onclick="showToast('Membuka daftar 2 tagihan jatuh tempo untuk penagihan WA.', 'error', false)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka antrean verifikasi transfer" title="Cek Mutasi" onclick="showToast('Membuka 6 bukti transfer menunggu verifikasi mutasi.', 'neutral', false)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </button>
+            </div>
+
+            <div class="kpi-seg-stat">
+              <span class="kpi-seg-value tabular">6</span>
+              <span class="kpi-seg-unit tabular">slip masuk</span>
+            </div>
+
+            <div class="kpi-seg-bars is-compact" role="img" aria-label="Indikator 6 slip pembayaran menunggu rekonsiliasi">
+              <span class="kpi-seg-pill is-filled is-dark"></span>
+              <span class="kpi-seg-pill is-filled is-dark"></span>
+              <span class="kpi-seg-pill is-filled is-dark"></span>
+              <span class="kpi-seg-pill is-filled is-dark"></span>
+              <span class="kpi-seg-pill is-filled is-dark"></span>
+              <span class="kpi-seg-pill is-filled is-dark"></span>
+              <span class="kpi-seg-pill"></span>
+              <span class="kpi-seg-pill"></span>
+              <span class="kpi-seg-pill"></span>
+              <span class="kpi-seg-pill"></span>
+            </div>
+
+            <div class="kpi-seg-trend tabular">
+              <span>Menunggu konfirmasi mutasi</span>
+            </div>
+          </article>
+
+          <!-- Compact Pill KPI 3: Pengingat Jatuh Tempo -->
+          <article class="card-base kpi-card is-compact">
+            <div class="kpi-seg-header">
+              <div class="kpi-seg-title-wrap">
+                <span>Prioritas Penagihan</span>
+              </div>
+              <button type="button" class="circle-arrow-btn on-header" aria-label="Buka antrean pengingat tagihan" title="Kirim Pengingat" onclick="showToast('Membuka antrean 2 tagihan prioritas penagihan WhatsApp.', 'error', true)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </div>
 
             <div class="kpi-seg-stat">
               <span class="kpi-seg-value tabular">2</span>
-              <span class="kpi-seg-unit tabular">dari 24 Tagihan (Rp 4,4 Jt)</span>
+              <span class="kpi-seg-unit tabular">tagihan H+3</span>
             </div>
 
-            <div class="kpi-seg-bars" role="img" aria-label="1 dari 10 segmen rasio tagihan tertunggak (8%)">
+            <div class="kpi-seg-bars is-compact" role="img" aria-label="Indikator 2 tagihan lewat jatuh tempo">
               <span class="kpi-seg-pill is-filled is-error"></span>
-              <span class="kpi-seg-pill"></span>
+              <span class="kpi-seg-pill is-filled is-error"></span>
               <span class="kpi-seg-pill"></span>
               <span class="kpi-seg-pill"></span>
               <span class="kpi-seg-pill"></span>
@@ -455,16 +700,16 @@
 
             <div class="kpi-seg-trend tabular" style="color:var(--color-error)">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span>Lewat jatuh tempo H+3</span>
+              <span>Perlu pengingat WhatsApp</span>
             </div>
           </article>
         </div>
 
-        <!-- 3 / 14: Standard Content Card (SCR-006) -->
-        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">3 / 14 — STANDARD CONTENT CARD (SCR-006)</div>
+        <!-- 3. Standard Content Card (SCR-006) -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">3. STANDARD CONTENT CARD (SCR-006)</div>
         <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: stretch; margin-bottom: 2rem;">
 
-          <!-- 3A: Kivo Micro Dot-Matrix Structured Card (Info Sewa & Akses Penghuni) -->
+          <!-- 3A: Micro Dot-Matrix Structured Card (Info Sewa & Akses Penghuni) -->
           <article class="card-base card-dot-matrix">
             <header class="card-header">
               <div style="min-width:0">
@@ -475,16 +720,13 @@
                   status_sewa.aktif • cilandak
                 </span>
               </div>
-              <span class="kivo-status-pill">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="9 12 11 14 15 10"/></svg>
-                Aktif
-              </span>
+              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Aktif</span>
             </header>
 
             <div class="card-content">
               <div class="kivo-prompt-bar">
                 <div style="min-width:0">
-                  <span style="font-size:0.6875rem;color:#64748B;display:block">Wi-Fi Kamar</span>
+                  <span class="kivo-prompt-label">Wi-Fi Kamar</span>
                   <span class="kivo-mono-val">Rumakost_102 • ruma2026</span>
                 </div>
                 <button type="button" class="kivo-copy-btn" onclick="navigator.clipboard?.writeText('ruma2026'); showToast('Sandi Wi-Fi ruma2026 berhasil disalin.', 'brand', false)">Salin Sandi</button>
@@ -510,16 +752,16 @@
               </div>
             </div>
 
-            <footer class="card-footer" style="border-top-color:#ECEEF2">
+            <footer class="card-footer">
               <span class="text-caption text-muted">Kontrak Digital #KTR-102</span>
               <button type="button" class="btn btn-black btn-sm" onclick="showToast('Membuka dokumen kontrak sewa digital.', 'neutral', false)">
                 Lihat Kontrak
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </footer>
           </article>
 
-          <!-- 3B: Kivo Execution Analytics Style Card (Ringkasan Kontrak & Tagihan) -->
+          <!-- 3B: Execution Analytics Style Card (Ringkasan Kontrak & Tagihan) -->
           <article class="card-base card-kivo-glow">
             <header class="card-header">
               <div style="min-width:0">
@@ -527,17 +769,17 @@
                   <span class="kivo-eyebrow-dot" aria-hidden="true"></span>
                   Ringkasan Kontrak
                 </span>
-                <h3 class="card-title" style="font-size:1.25rem">Kamar 101 — Budi Santoso.</h3>
+                <h3 class="card-title" style="font-size:1.125rem">Kamar 101 — Budi Santoso</h3>
               </div>
               <button type="button" class="circle-arrow-btn on-header" aria-label="Buka ringkasan kontrak Kamar 101" title="Lihat Detail" onclick="showToast('Membuka ringkasan kontrak Kamar 101.', 'brand', false)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </header>
 
             <div class="card-content">
               <div class="kivo-inner-frame">
                 <div class="kivo-inner-bar">
-                  <span class="kivo-index" style="margin:0">CABANG CILANDAK • KTR-101</span>
+                  <span class="kivo-index">CABANG CILANDAK • KTR-101</span>
                   <span class="badge badge-brand badge-sm tabular">Periode 6 / 12</span>
                 </div>
                 <div class="kivo-stat-grid-2">
@@ -555,7 +797,7 @@
                   </div>
                   <div class="kivo-stat-tile">
                     <div class="kivo-subtile-label">Status Pembayaran</div>
-                    <div class="kivo-stat-num" style="color:#15803D">Lunas Nov</div>
+                    <div class="kivo-stat-num" style="color:#C2410C">Lunas Nov</div>
                   </div>
                 </div>
               </div>
@@ -569,8 +811,8 @@
 
         </div>
 
-        <!-- 4 / 14: Room Status Tile (SCR-015 & SCR-041 — Compact Bento Grid) -->
-        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">4 / 14 — ROOM STATUS TILE (SCR-015 &amp; SCR-041)</div>
+        <!-- 4. Room Status Tile (SCR-015 & SCR-041 — Compact Bento Grid) -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">4. ROOM STATUS TILE (SCR-015 &amp; SCR-041)</div>
         <div class="room-tile-grid">
 
           <!-- Tile 1: Terisi (Occupied) -->
@@ -638,7 +880,7 @@
           </button>
 
           <!-- Tile 5: Perbaikan (Maintenance) -->
-          <button type="button" class="card-base is-interactive room-tile" onclick="showToast('Membuka tiket SLA Kamar 201 • Servis AC.', 'error', false)">
+          <button type="button" class="card-base is-interactive room-tile" onclick="showToast('Membuka tiket SLA Kamar 201 • Servis AC.', 'error', true)">
             <div class="room-tile-top">
               <span class="room-tile-num tabular">201</span>
               <span class="badge badge-error badge-sm"><span class="badge-dot"></span>Perbaikan</span>
@@ -671,14 +913,14 @@
 
         </div>
 
-        <!-- 5 / 14: Hero Orange Property Card (CMP-21 — SCR-014 & SCR-037) -->
-        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">5 / 14 — HERO ORANGE PROPERTY CARD (CMP-21 — SCR-014 &amp; SCR-037)</div>
+        <!-- 5. Preview Ekstensi: Hero Orange Property Card (CMP-21 — SCR-014 & SCR-037) -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">5. PREVIEW EKSTENSI: HERO ORANGE PROPERTY CARD (CMP-21 — SCR-014 &amp; SCR-037)</div>
         <div class="mid-subgrid" style="grid-template-columns: 1.15fr 0.85fr; gap: 1.5rem; align-items: stretch;">
 
-          <!-- 5A: Estify x Kivo Textured Orange Hero Property Card -->
+          <!-- 5A: Estify Vibrant Orange Hero Property Card -->
           <article class="card-base hero-orange-kivo">
             <svg class="hero-orange-pattern" viewBox="0 0 420 290" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <g fill="none" stroke="rgba(255, 255, 255, 0.18)" stroke-width="1.25">
+              <g fill="none" stroke="rgba(255, 255, 255, 0.24)" stroke-width="1.25">
                 <circle cx="330" cy="215" r="125"/>
                 <circle cx="330" cy="215" r="185"/>
                 <circle cx="330" cy="215" r="245"/>
@@ -690,29 +932,29 @@
                 <span class="hero-orange-eyebrow">Cabang Unggulan • Cilandak</span>
                 <h3 class="hero-orange-title">Rumakost Cilandak Executive</h3>
               </div>
-              <button type="button" class="circle-arrow-btn on-header" style="background-color:#FFFFFF" aria-label="Buka detail cabang unggulan" title="Lihat Cabang" onclick="showToast('Membuka detail cabang Rumakost Cilandak Executive.', 'brand', false)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              <button type="button" class="circle-arrow-btn arrow-white" aria-label="Buka detail cabang unggulan" title="Lihat Cabang" onclick="showToast('Membuka detail cabang Rumakost Cilandak Executive.', 'brand', false)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </div>
 
             <div class="hero-orange-metrics">
-              <div>
+              <div class="hero-orange-stat-chip">
                 <div class="hero-orange-metric-label">Kamar Terisi</div>
                 <div class="hero-orange-metric-val tabular">23 / 24</div>
               </div>
-              <div>
+              <div class="hero-orange-stat-chip">
                 <div class="hero-orange-metric-label">Pendapatan Nov</div>
                 <div class="hero-orange-metric-val tabular">Rp 52,8 Jt</div>
               </div>
             </div>
 
-            <img class="hero-orange-photo" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=480&fit=crop" alt="Fasad Gedung Rumakost Cilandak Executive">
+            <img class="hero-orange-photo" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=480&fit=crop" alt="Fasad Gedung Rumakost Cilandak Executive" loading="lazy">
           </article>
 
-          <!-- 5B: Kivo Textured Orange Action / Announcement Banner -->
+          <!-- 5B: Vibrant Orange Card + Floating White Action Sheet (Page Changed Pattern) -->
           <article class="card-base hero-orange-kivo hero-orange-cta">
             <svg class="hero-orange-pattern" viewBox="0 0 360 290" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <g fill="none" stroke="rgba(255, 255, 255, 0.16)" stroke-width="1.25">
+              <g fill="none" stroke="rgba(255, 255, 255, 0.22)" stroke-width="1.25">
                 <circle cx="315" cy="40" r="95"/>
                 <circle cx="315" cy="40" r="150"/>
                 <circle cx="315" cy="40" r="205"/>
@@ -720,34 +962,42 @@
             </svg>
             <div>
               <span class="hero-orange-eyebrow">Otomasi Penagihan • H-7</span>
-              <h3 class="hero-orange-title" style="max-width:none;font-size:1.375rem">Jalankan Simulasi Cron Billing Cabang.</h3>
-              <p style="font-size:0.875rem;color:rgba(255,255,255,0.92);line-height:1.55;margin-top:0.625rem">
-                Uji kalkulasi sewa pro-rata, meteran listrik, parkir, dan pengingat WhatsApp outbox tanpa mengubah data asli.
+              <h3 class="hero-orange-title">Simulasi Tagihan Bulanan.</h3>
+              <p class="hero-orange-desc">
+                Uji kalkulasi sewa pro-rata, meteran listrik &amp; WhatsApp tanpa mengubah data asli.
               </p>
             </div>
 
-            <div class="flex items-center justify-between gap-3" style="flex-wrap:wrap">
-              <button type="button" class="hero-white-pill" onclick="showToast('Menjalankan simulasi billing bulanan (dry-run).', 'brand', false)">
-                Jalankan Simulasi
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand)" stroke-width="2.25"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </button>
-              <span class="text-caption tabular" style="color:rgba(255,255,255,0.9);font-weight:600">Idempoten • 0 Duplikat</span>
+            <div class="hero-orange-white-sheet">
+              <div class="hero-sheet-actions">
+                <button type="button" class="hero-sheet-btn-brand" onclick="showToast('Menjalankan simulasi penagihan bulanan otomatis.', 'brand', false)">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="20 6 9 17 4 12"/></svg>
+                  Jalankan Simulasi
+                </button>
+                <button type="button" class="hero-sheet-btn-icon" aria-label="Reset pratinjau simulasi tagihan" title="Reset Simulasi" onclick="showToast('Pratinjau simulasi tagihan direset.', 'neutral', false)">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                </button>
+              </div>
+              <div class="hero-sheet-meta tabular">
+                <span><strong>+24 tagihan</strong> siap uji</span>
+                <span>Aman • Tanpa ubah data</span>
+              </div>
             </div>
           </article>
 
         </div>
 
-        <!-- 6 / 14: Media Property Card (CMP-24 — Galeri Kamar & Cabang 16:10) -->
-        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">6 / 14 — MEDIA PROPERTY CARD (CMP-24 — GALERI KAMAR 16:10)</div>
+        <!-- 6. Preview Ekstensi: Media Property Card (CMP-24 — Galeri Kamar & Cabang 16:10) -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">6. PREVIEW EKSTENSI: MEDIA PROPERTY CARD (CMP-24 — GALERI KAMAR 16:10)</div>
         <div class="property-grid-3">
 
           <!-- Media Card 1: Siap Huni (Foto Kamar Asli) -->
-          <article class="card-base is-interactive property-card">
+          <article class="card-base property-card">
             <div class="property-media-box">
               <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=640&h=400&fit=crop" alt="Interior Kamar 102 Standard Single Rumakost Cilandak" loading="lazy">
               <span class="badge badge-brand badge-sm property-media-badge"><span class="badge-dot"></span>Siap Huni</span>
               <button type="button" class="circle-arrow-btn on-photo property-media-arrow" aria-label="Lihat detail Kamar 102" title="Buka Detail Kamar 102" onclick="showToast('Membuka profil Kamar 102 — Standard Single.', 'brand', false)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </div>
             <div class="property-body">
@@ -757,11 +1007,11 @@
               </div>
               <div class="property-specs">
                 <span class="property-spec-item">
-                  <svg class="icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
                   12 m²
                 </span>
                 <span class="property-spec-item">
-                  <svg class="icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                  <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
                   Wi-Fi + AC
                 </span>
                 <span class="property-spec-item">KM Dalam</span>
@@ -777,12 +1027,12 @@
           </article>
 
           <!-- Media Card 2: Terisi (Foto Fasad Arsitektur Asli) -->
-          <article class="card-base is-interactive property-card">
+          <article class="card-base property-card">
             <div class="property-media-box">
               <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=640&h=400&fit=crop" alt="Fasad Suite 201 Cilandak Executive" loading="lazy">
               <span class="badge badge-dark badge-sm property-media-badge"><span class="badge-dot"></span>Terisi</span>
               <button type="button" class="circle-arrow-btn on-photo property-media-arrow" aria-label="Lihat detail Suite 201" title="Buka Detail Suite 201" onclick="showToast('Membuka detail Suite 201 — Cilandak Executive.', 'brand', false)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </div>
             <div class="property-body">
@@ -792,11 +1042,11 @@
               </div>
               <div class="property-specs">
                 <span class="property-spec-item">
-                  <svg class="icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
                   24 m²
                 </span>
                 <span class="property-spec-item">
-                  <svg class="icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   Dimas Pratama
                 </span>
               </div>
@@ -811,17 +1061,17 @@
           </article>
 
           <!-- Media Card 3: Dipesan (Fallback State Tanpa Foto / 16:10 Placeholder) -->
-          <article class="card-base is-interactive property-card">
+          <article class="card-base property-card">
             <div class="property-media-box surface-dot-grid">
               <div class="property-media-fallback">
                 <div class="icon-box icon-box-md icon-box-brand" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg>
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/></svg>
                 </div>
                 <span>Foto unit belum diunggah</span>
               </div>
               <span class="badge badge-neutral badge-sm property-media-badge"><span class="badge-dot"></span>Dipesan</span>
               <button type="button" class="circle-arrow-btn on-photo property-media-arrow" aria-label="Lihat reservasi Kamar 104" title="Buka Reservasi Kamar 104" onclick="showToast('Membuka reservasi DP Hold Kamar 104 — Nadia Putri.', 'neutral', false)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
               </button>
             </div>
             <div class="property-body">
@@ -831,11 +1081,11 @@
               </div>
               <div class="property-specs">
                 <span class="property-spec-item">
-                  <svg class="icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
                   16 m²
                 </span>
                 <span class="property-spec-item">
-                  <svg class="icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  <svg class="icon-xs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   Nadia Putri
                 </span>
               </div>
@@ -847,6 +1097,236 @@
                 <span class="property-meta-right tabular">Hold 36 Jam</span>
               </div>
             </div>
+          </article>
+
+        </div>
+
+        <!-- 7. Queue / Action List & Billing Instruction Card -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">7. QUEUE / ACTION LIST &amp; BILLING INSTRUCTION CARD (SCR-008, SCR-024, SCR-034, SCR-042)</div>
+        <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: stretch; margin-bottom: 2rem;">
+
+          <!-- 7A: Queue / Action List Card -->
+          <article class="card-base">
+            <header class="card-header has-list">
+              <div class="card-header-left">
+                <h3 class="card-title">Antrean Verifikasi &amp; SLA</h3>
+                <span class="badge-counter badge-error tabular">3</span>
+              </div>
+              <button type="button" class="card-header-action" onclick="showToast('Membuka seluruh antrean verifikasi &amp; otorisasi.', 'neutral', false)">
+                Lihat Semua
+              </button>
+            </header>
+
+            <div class="card-list">
+              <div class="card-list-row">
+                <div class="card-list-main">
+                  <div class="avatar avatar-md avatar-initials-brand">BS</div>
+                  <div style="min-width:0">
+                    <div class="card-list-title">Budi Santoso • Kamar 101</div>
+                    <div class="card-list-sub tabular">Bukti BCA Rp 2.500.000 • 14:10 WIB</div>
+                  </div>
+                </div>
+                <div class="card-list-actions">
+                  <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Verifikasi</span>
+                  <button type="button" class="circle-arrow-btn on-header" aria-label="Periksa bukti transfer Budi Santoso" title="Periksa" onclick="showToast('Membuka verifikasi bukti bayar Budi Santoso.', 'brand', false)">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="card-list-row">
+                <div class="card-list-main">
+                  <div class="avatar avatar-md avatar-initials-dark">DP</div>
+                  <div style="min-width:0">
+                    <div class="card-list-title">Dimas Pratama • Suite 201</div>
+                    <div class="card-list-sub tabular">Tiket AC tidak dingin • SLA Sisa 1 Jam</div>
+                  </div>
+                </div>
+                <div class="card-list-actions">
+                  <span class="badge badge-error badge-sm"><span class="badge-dot"></span>Urgent</span>
+                  <button type="button" class="circle-arrow-btn on-header" aria-label="Buka tiket SLA Suite 201" title="Tangani Tiket" onclick="showToast('Membuka antrean tiket SLA Suite 201.', 'error', true)">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="card-list-row">
+                <div class="card-list-main">
+                  <div class="avatar avatar-md avatar-initials-neutral">NP</div>
+                  <div style="min-width:0">
+                    <div class="card-list-title">Nadia Putri • Kamar 104</div>
+                    <div class="card-list-sub tabular">DP Hold Rp 500.000 • Sisa 36 Jam</div>
+                  </div>
+                </div>
+                <div class="card-list-actions">
+                  <span class="badge badge-neutral badge-sm"><span class="badge-dot"></span>Screening</span>
+                  <button type="button" class="circle-arrow-btn on-header" aria-label="Tinjau reservasi Nadia Putri" title="Tinjau" onclick="showToast('Membuka screening booking Nadia Putri.', 'neutral', false)">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 7B: Billing Itemized & Official Payment Instruction Card -->
+          <article class="card-base">
+            <header class="card-header">
+              <div>
+                <h3 class="card-title">Tagihan #INV-2026-1101</h3>
+                <p class="card-subtitle">Kamar 101 • Periode Nov 2026</p>
+              </div>
+              <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Menunggu Bayar</span>
+            </header>
+
+            <div class="card-content">
+              <div class="card-kv-rows">
+                <div class="card-kv-row">
+                  <span class="card-kv-label">Sewa Kamar 101 (Deluxe)</span>
+                  <span class="card-kv-val tabular">Rp 2.200.000</span>
+                </div>
+                <div class="card-kv-row">
+                  <span class="card-kv-label">Sub-Meter Listrik (150 kWh)</span>
+                  <span class="card-kv-val tabular">Rp 225.000</span>
+                </div>
+                <div class="card-kv-row">
+                  <span class="card-kv-label">Slot Parkir Motor</span>
+                  <span class="card-kv-val tabular">Rp 75.000</span>
+                </div>
+                <div class="card-kv-row is-total">
+                  <span class="card-kv-label">Total Tagihan</span>
+                  <span class="card-kv-val tabular">Rp 2.500.000</span>
+                </div>
+              </div>
+
+              <div class="card-inset-box">
+                <div class="card-inset-meta">
+                  <div class="icon-box icon-box-sm icon-box-brand" aria-hidden="true">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="10" width="18" height="10" rx="2"/><path d="M12 2 3 7h18Z"/></svg>
+                  </div>
+                  <div style="min-width:0">
+                    <div class="card-inset-title">Rekening Resmi Cabang Cilandak</div>
+                    <div class="card-inset-val tabular">BCA 5210-8842-19 • a.n. RumaKost</div>
+                  </div>
+                </div>
+                <button type="button" class="kivo-copy-btn" onclick="navigator.clipboard?.writeText('5210884219'); showToast('Nomor rekening 5210-8842-19 berhasil disalin.', 'brand', false)">Salin Rek</button>
+              </div>
+            </div>
+
+            <footer class="card-footer">
+              <span class="text-caption text-muted tabular">Jatuh tempo 05 Des 2026</span>
+              <button type="button" class="btn btn-primary btn-sm" onclick="showToast('Membuka unggah bukti transfer #INV-2026-1101.', 'brand', false)">Unggah Bukti Bayar</button>
+            </footer>
+          </article>
+
+        </div>
+
+        <!-- 8. Notice / Announcement Banner Card -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">8. NOTICE / ANNOUNCEMENT BANNER CARD (SCR-006, SCR-026, SCR-057)</div>
+        <div class="notice-stack" style="margin-bottom: 2rem;">
+
+          <!-- Notice 1: Brand Pengumuman Cabang -->
+          <div class="notice-card is-brand">
+            <div class="notice-card-lead">
+              <div class="icon-box icon-box-sm icon-box-brand" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 18-5v12L3 14v-3Z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+              </div>
+              <div class="notice-card-body">
+                <div class="notice-card-title">Pemadaman Listrik Terjadwal Cabang Cilandak</div>
+                <div class="notice-card-desc">Perawatan panel distribusi dilakukan Kamis, 28 Nov 2026 pukul 09.00–11.00 WIB. Genset penerangan koridor tetap aktif.</div>
+                <div class="notice-card-meta tabular">Pengumuman Pengelola • 27 Nov 2026, 08:30 WIB</div>
+              </div>
+            </div>
+            <span class="badge badge-brand badge-sm notice-card-action"><span class="badge-dot"></span>Info Cabang</span>
+          </div>
+
+          <!-- Notice 2: Error / Escalation Alert -->
+          <div class="notice-card is-error" role="alert">
+            <div class="notice-card-lead">
+              <div class="icon-box icon-box-sm icon-box-error" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </div>
+              <div class="notice-card-body">
+                <div class="notice-card-title">Batas SLA Tiket Perbaikan #TK-101 Terlewati</div>
+                <div class="notice-card-desc">Keluhan AC Suite 201 melewati batas respons 4 jam dan otomatis dieskalasi ke daftar pantauan Pemilik.</div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-destructive btn-sm notice-card-action" onclick="showToast('Membuka eskalasi tiket #TK-101.', 'error', true)">Tinjau Eskalasi</button>
+          </div>
+
+          <!-- Notice 3: Neutral / Offline Queue Status -->
+          <div class="notice-card is-neutral" role="status">
+            <div class="notice-card-lead">
+              <div class="icon-box icon-box-sm icon-box-neutral" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="2" x2="22" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 4.17-2.65"/><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+              </div>
+              <div class="notice-card-body">
+                <div class="notice-card-title">Mode Offline Aktif — Antrean Sinkronisasi Lokal</div>
+                <div class="notice-card-desc">Pencatatan meteran listrik kWh tetap tersimpan aman di perangkat dan dikirim otomatis saat jaringan pulih.</div>
+              </div>
+            </div>
+            <span class="badge badge-neutral badge-sm notice-card-action"><span class="badge-dot"></span>2 Tertunda</span>
+          </div>
+
+        </div>
+
+        <!-- 9. Service / Parking Resource Card & Centered Auth / Fallback Card -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">9. SERVICE RESOURCE &amp; CENTERED AUTH / FALLBACK CARD (SCR-002, SCR-028, SCR-045, SCR-054)</div>
+        <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;">
+
+          <!-- 9A: Resource / Catalog Add-on & Parking Cards -->
+          <div class="resource-stack">
+            <article class="card-base resource-card">
+              <div class="resource-card-main">
+                <div class="icon-box icon-box-md icon-box-brand" aria-hidden="true">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="5" y1="10" x2="19" y2="10"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="9" y1="14" x2="9" y2="16"/></svg>
+                </div>
+                <div style="min-width:0">
+                  <div class="resource-card-title">Sewa Kulkas Mini 90L (Add-on)</div>
+                  <div class="resource-card-sub tabular">Rp 150.000 / bln • Tersedia 2 dari 5 unit</div>
+                </div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" role="switch" checked aria-label="Aktifkan katalog Sewa Kulkas Mini 90L">
+                <span class="toggle-slider"></span>
+              </label>
+            </article>
+
+            <article class="card-base resource-card">
+              <div class="resource-card-main">
+                <div class="icon-box icon-box-md icon-box-neutral" aria-hidden="true">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+                </div>
+                <div style="min-width:0">
+                  <div class="resource-card-title">Slot Parkir Mobil #M-04</div>
+                  <div class="resource-card-sub tabular">Rp 200.000 / bln • B 1842 KZM • Kamar 101</div>
+                </div>
+              </div>
+              <span class="badge badge-dark badge-sm"><span class="badge-dot"></span>Terisi</span>
+            </article>
+          </div>
+
+          <!-- 9B: Centered Auth / System Fallback Container Card -->
+          <article class="card-base card-auth">
+            <div class="card-auth-header">
+              <div class="icon-box icon-box-md icon-box-dark" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h3 class="card-auth-title">Portal Masuk Multi-Role</h3>
+              <p class="card-auth-sub">Kontainer terpusat (<code>max-width: 460px</code>) untuk halaman Auth (<code>SCR-002</code>–<code>005</code>) dan status sistem (<code>403/404/500</code>).</p>
+            </div>
+            <div class="card-kv-rows">
+              <div class="card-kv-row">
+                <span class="card-kv-label">Keamanan Sesi</span>
+                <span class="card-kv-val">Isolasi 6 Role RBAC</span>
+              </div>
+              <div class="card-kv-row">
+                <span class="card-kv-label">Slot Konten</span>
+                <span class="card-kv-val">FormField CMP-10 + CTA Penuh</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary w-full" onclick="showToast('Membuka simulasi kontainer Portal Login / Fallback.', 'brand', false)">
+              Masuk ke Akun RumaKost
+            </button>
           </article>
 
         </div>
