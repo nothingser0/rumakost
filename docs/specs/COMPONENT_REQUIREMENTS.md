@@ -40,19 +40,21 @@ Komponen komposit menggabungkan beberapa komponen primitif menjadi pola interaks
 
 ### 3.2 Standard Composites
 
-| CMP ID | Component Name | Composition Structure | Usage Justification |
-|:------:|:---------------|:----------------------|:--------------------|
-| `CMP-10` | `FormField` | Label + Input/Select/Textarea + Error Message (≥13px) + Hint | Wrapper formulir standar terhubung atribut aria-describedby & aria-invalid |
-| `CMP-11` | `Card` | CardHeader + CardTitle + CardContent + CardFooter | Kontainer konten kartu ber-radius 24px (`--radius-card`) dan ambient shadow lembut; mencakup KPI, Standard Content Card (`SCR-006`), dan Room Status Tile (`SCR-015`, `SCR-041`) |
-| `CMP-12` | `Table` | TableHeader + TableBody + TableRow + TableCell + MobileReflow | Tabel data tabular kamar & invoice; reflow otomatis jadi tumpukan kartu pada <640px |
-| `CMP-13` | `Modal` | DialogBackdrop (z-40) + DialogContent (z-50) + DialogClose | Overlay dialog fokus keyboard (focus-trap), tombol ESC, dan backdrop blur |
-| `CMP-14` | `ConfirmDialog`| Modal + Icon + Title + Description + Cancel/Confirm Action | Dialog konfirmasi destruktif permanen (wajib ketik HAPUS & isi alasan audit) |
-| `CMP-15` | `Toast` | ToastContainer (z-60) + ToastItem + CloseAction | Notifikasi umpan balik; toast error dan mode offline TIDAK PERNAH auto-dismiss |
-| `CMP-16` | `EmptyState` | Icon / Illustration + Heading + Description + ActionButton | Tampilan data kosong informatif saat koleksi data belum ada atau filter 0 hasil |
-| `CMP-17` | `SearchInput` | Input + SearchIcon + ClearButton | Kolom pencarian unit kamar dan direktori penghuni berbentuk rounded-pill (borderless) |
-| `CMP-18` | `PermissionGate` | Role/Permission wrapper | Proteksi visual per-komponen berbasis peran 6-role RBAC |
-| `CMP-19` | `SupervisorOverrideModal` | Dialog + PIN/Auth + Reason Textarea | Otorisasi pemilik untuk void transaksi kas atau penghapusan piutang macet |
-| `CMP-20` | `AuditActionBadge` | Badge + Tooltip (Author, Timestamp, IP) | Menampilkan identitas staf dan timestamp keabadian audit trail (UU PDP) |
+| CMP ID | Component Name | Composition Structure | Usage Justification | Sign-off Status |
+|:------:|:---------------|:----------------------|:--------------------|:---------------:|
+| `CMP-10` | `FormField` | Label + Input/Select/Datepicker/Textarea/Checkbox + Error Message (14px / &ge;13px, `role="alert"`) + Hint + `.form-error-summary`, `.form-field-row` (horizontal split), `.form-surface-white` | Wrapper formulir standar 100% borderless terhubung atribut `aria-describedby`, `aria-invalid`, &amp; `aria-required` (SubmitButton Rule, `blur` check, `reset` cleanup, Read-Only vs Disabled `#E2E8F0`, &amp; WCAG 2.2 AA `#C2410C` `*`) | **LOCKED** (2026-11-27) |
+| `CMP-11` | `Card` | CardHeader + CardTitle + CardContent + CardFooter | Kontainer konten kartu ber-radius 24px (`--radius-card`) dan ambient shadow lembut; mencakup KPI, Standard Content Card (`SCR-006`), dan Room Status Tile (`SCR-015`, `SCR-041`) | - |
+| `CMP-12` | `Table` | TableHeader + TableBody + TableRow + TableCell + MobileReflow | Tabel data tabular kamar & invoice; reflow otomatis jadi tumpukan kartu pada <640px | - |
+| `CMP-13` | `Modal` | DialogBackdrop (z-40) + DialogContent (z-50) + DialogClose | Overlay dialog fokus keyboard (focus-trap), tombol ESC, dan backdrop blur | - |
+| `CMP-14` | `ConfirmDialog`| Modal + Icon + Title + Description + Cancel/Confirm Action | Dialog konfirmasi destruktif permanen (wajib ketik HAPUS & isi alasan audit) | - |
+| `CMP-15` | `Toast` | ToastContainer (z-60) + ToastItem + CloseAction | Notifikasi umpan balik; toast error dan mode offline TIDAK PERNAH auto-dismiss | - |
+| `CMP-16` | `EmptyState` | Icon / Illustration + Heading + Description + ActionButton | Tampilan data kosong informatif saat koleksi data belum ada atau filter 0 hasil | - |
+| `CMP-17` | `SearchInput` | Input + SearchIcon + ClearButton | Kolom pencarian unit kamar dan direktori penghuni berbentuk rounded-pill (borderless) | - |
+| `CMP-18` | `PermissionGate` | Role/Permission wrapper | Proteksi visual per-komponen berbasis peran 6-role RBAC | - |
+| `CMP-19` | `SupervisorOverrideModal` | Dialog + PIN/Auth + Reason Textarea | Otorisasi pemilik untuk void transaksi kas atau penghapusan piutang macet | - |
+| `CMP-20` | `AuditActionBadge` | Badge + Tooltip (Author, Timestamp, IP) | Menampilkan identitas staf dan timestamp keabadian audit trail (UU PDP) | - |
+
+- **CMP-10 Locked Contract (2026-11-27)**: Wrapper `.input-wrapper` menyatukan Label (`14px` SemiBold `#334155`, tanda wajib `.required` `#C2410C` `5.18:1` / `4.75:1` `aria-hidden="true"`, opsional `.input-optional` `12px` `#475569`), Kontrol (`CMP-02`/`03`/`04`/`06` **100% borderless** dengan dukungan state `.is-readonly` + `.input-readonly-tag` yang selectable/Tab-focusable dan state disabled kontras `#E2E8F0`/`#334155` `8.40:1` di atas kanvas `#F4F5F7`), Pesan Error (`14px` `#B91C1C`, ikon `16px` `stroke-width="2"` sesuai `CMP-08`, badge inset `#FFFFFF`/`#B91C1C` `6.47:1`, `role="alert"` disisipkan sebelum `.input-hint` & diutamakan di `aria-describedby`), serta Hint (`12px` `#475569` `6.95:1`). Mendukung variasi tata letak `.showcase-canvas.is-borderless` (`#F4F5F7`), `.form-surface-white` (`#FFFFFF` + input inset `#F4F5F7`), `.form-section-list` / `.form-field-row` (horizontal split 2 kolom desktop → 1 kolom `<= 768px`), `.form-error-summary`, validasi `blur` untuk nilai salah/tersentuh, `reset` cleanup penuh, serta **SubmitButton Rule** (`cursor: wait` debounce & fokus otomatis ke kolom invalid pertama + error toast persisten). Perubahan kontrak visual/perilaku memerlukan persetujuan ulang pengguna.
 
 ---
 

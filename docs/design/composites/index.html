@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="RumaKost Design System Showcase — Tier 2: Standard Composites (CMP-10 to CMP-15)">
+  <meta name="description" content="RumaKost Design System Showcase — Tier 2: Standard Composites (CMP-10 to CMP-20)">
   <title>RumaKost — Component Showcase (Tier 2: Standard Composites)</title>
   <link rel="icon" href="../../../assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../shared/css/styles.css">
@@ -31,102 +31,242 @@
       </div>
     </div>
 
-    <!-- CMP-10: FormField -->
+    <!-- CMP-10: FormField (LOCKED 2026-11-27) -->
     <div class="cmp-card" id="cmp-10">
-      <span class="cmp-badge">CMP-10</span>
-      <h2 class="cmp-title">FormField Wrapper & Validasi Terintegrasi</h2>
-      <p class="cmp-desc">Komposisi Label + Input/Select/Textarea (gaya pill &amp; soft rounded 20px CMP-02/03) + Error Message (&ge;13px) + Hint yang terhubung atribut <code>aria-describedby</code> &amp; <code>aria-invalid</code>. Mengikuti SubmitButton Rule: tombol simpan tidak pernah disabled saat awal.</p>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-10</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
+      <h2 class="cmp-title">FormField Wrapper &amp; Validasi Terintegrasi</h2>
+      <p class="cmp-desc">Komposisi Label (<code>14px</code> SemiBold + tanda wajib <code>*</code> <code>#C2410C</code> / opsional) + Kontrol (Input/Select <code>CMP-02/04</code> radius <code>12px</code> borderless, Textarea <code>CMP-03</code>, &amp; Checkbox <code>CMP-06</code>) + Error Message (<code>14px</code> / &ge;13px WCAG AA, <code>#B91C1C</code>, <code>role="alert"</code>) + Hint yang terhubung atribut <code>aria-describedby</code> &amp; <code>aria-invalid</code>. Mendukung kanvas <code>#F4F5F7</code>, kartu putih <code>#FFFFFF</code>, layout horizontal pengaturan, state <code>Read-Only</code> vs <code>Disabled</code>, serta SubmitButton Rule.</p>
 
-      <form data-validate novalidate>
-        <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.5rem">
+      <!-- Sub 1: Anatomi & Matriks Status FormField di Atas Kanvas Estify -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. ANATOMI &amp; MATRIKS STATUS FORMFIELD (BORDERLESS DI KANVAS #F4F5F7)</div>
+      <div class="showcase-canvas is-borderless mb-6">
+        <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem">
           <div class="input-wrapper" style="margin-bottom:0">
-            <label for="ff-tenant-name">Nama Lengkap Penghuni <span class="required">*</span></label>
-            <input id="ff-tenant-name" class="input-pill" type="text" placeholder="Contoh: Budi Santoso" required data-error-msg="Nama penghuni wajib diisi sesuai KTP." aria-describedby="ff-tenant-hint">
-            <span id="ff-tenant-hint" class="input-hint">Gunakan nama lengkap sesuai kartu identitas resmi.</span>
+            <label for="ff-anat-default">Nama Pemilik Kontrak <span class="required" aria-hidden="true">*</span></label>
+            <input id="ff-anat-default" class="input-pill" type="text" value="Rina Wijaya" required aria-describedby="ff-anat-default-hint">
+            <span id="ff-anat-default-hint" class="input-hint">Default + wajib isi: nama penanggung jawab sesuai KTP resmi.</span>
           </div>
 
           <div class="input-wrapper" style="margin-bottom:0">
-            <label for="ff-tenant-phone">Nomor WhatsApp Aktif <span class="required">*</span></label>
+            <label for="ff-anat-optional">Nomor Kontak Darurat <span class="input-optional">(Opsional)</span></label>
             <div class="pill-input-box">
               <span class="pill-prefix-badge">+62</span>
-              <input id="ff-tenant-phone" type="tel" inputmode="numeric" class="tabular" placeholder="812-3456-7890" required data-phone-id data-error-msg="Nomor WhatsApp wajib diisi untuk pengiriman invoice." aria-describedby="ff-phone-hint">
+              <input id="ff-anat-optional" type="tel" inputmode="numeric" class="tabular" placeholder="811-9876-5432" data-phone-id aria-describedby="ff-anat-optional-hint">
             </div>
-            <span id="ff-phone-hint" class="input-hint">Hanya angka (0–9); otomatis terformat untuk pengingat tagihan H-7.</span>
-          </div>
-
-          <div class="input-wrapper" style="margin-bottom:0">
-            <label id="ff-branch-label" for="ff-branch-trigger">Cabang Properti Penempatan (Select) <span class="required">*</span></label>
-            <div class="custom-select-wrapper" id="ff-branch-select-wrap">
-              <div id="ff-branch-trigger" class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-controls="ff-branch-listbox" aria-labelledby="ff-branch-label" aria-describedby="ff-branch-hint">
-                <svg class="select-prefix-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
-                <input id="ff-branch-select" class="select-display" type="text" placeholder="Pilih cabang properti..." readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
-                <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
-              <input type="hidden" name="ff_branch" class="select-value" value="" required data-error-msg="Cabang properti penempatan wajib dipilih.">
-              <div id="ff-branch-listbox" class="select-popover" role="listbox" aria-labelledby="ff-branch-label">
-                <div class="select-option" data-value="cilandak" role="option" aria-selected="false">
-                  <div style="display:flex;flex-direction:column;gap:1px">
-                    <span class="option-title">Rumakost Cilandak Executive</span>
-                    <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
-                  </div>
-                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-                <div class="select-option" data-value="setiabudi" role="option" aria-selected="false">
-                  <div style="display:flex;flex-direction:column;gap:1px">
-                    <span class="option-title">Rumakost Setiabudi Residence</span>
-                    <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
-                  </div>
-                  <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-              </div>
-            </div>
-            <span id="ff-branch-hint" class="input-hint">Menentukan tarif sewa &amp; rekening penagihan cabang.</span>
-          </div>
-
-          <div class="input-wrapper" style="margin-bottom:0">
-            <label for="ff-rent-amount">Tarif Sewa Bulanan (CurrencyInput) <span class="required">*</span></label>
-            <div class="pill-input-box">
-              <span class="pill-prefix-badge">Rp</span>
-              <input id="ff-rent-amount" class="tabular" type="text" inputmode="numeric" placeholder="2.200.000" required data-currency-input data-max-digits="13" data-error-msg="Tarif sewa bulanan wajib diisi." aria-describedby="ff-rent-hint">
-              <span class="pill-suffix-badge" style="background:transparent;color:#475569;font-size:0.75rem">/ bln</span>
-            </div>
-            <span id="ff-rent-hint" class="input-hint">Format otomatis pemisah ribuan IDR (hanya angka).</span>
+            <span id="ff-anat-optional-hint" class="input-hint">Kontak keluarga terdekat penghuni untuk kondisi darurat cabang.</span>
           </div>
 
           <div class="input-wrapper has-error" style="margin-bottom:0">
-            <label for="ff-email-err">Email Penagihan Resmi (Error State) <span class="required">*</span></label>
+            <label for="ff-email-err">Email Penagihan Resmi <span class="required" aria-hidden="true">*</span></label>
             <div class="pill-input-box has-error" id="ff-email-box">
-              <input id="ff-email-err" type="email" value="budi.santoso@gmail" required aria-invalid="true" aria-describedby="ff-email-err-msg" data-validate-email data-error-target="ff-email-err-msg">
+              <input id="ff-email-err" type="email" value="budi.santoso@gmail" required aria-invalid="true" aria-describedby="ff-email-err-msg ff-email-hint" data-validate-email data-error-target="ff-email-err-msg">
             </div>
             <span id="ff-email-err-msg" class="error-message" data-static-error="true">
-              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              Alamat email wajib memuat '@' dan nama domain (.com).
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span class="error-message-text">Alamat email wajib memuat '@' dan nama domain (.com).</span>
             </span>
+            <span id="ff-email-hint" class="input-hint">Live recovery aktif — ketik <code>.com</code> untuk memulihkan status valid.</span>
           </div>
 
           <div class="input-wrapper" style="margin-bottom:0">
-            <label for="ff-kyc-locked">Status Verifikasi KYC (Disabled)</label>
+            <label for="ff-anat-readonly">No. Rekening BCA Cabang (Read-Only)</label>
+            <div class="pill-input-box is-readonly">
+              <input id="ff-anat-readonly" class="tabular" type="text" value="5210-8842-19 a.n. RumaKost Cilandak" readonly aria-describedby="ff-anat-readonly-hint">
+              <span class="input-readonly-tag">Terkunci</span>
+            </div>
+            <span id="ff-anat-readonly-hint" class="input-hint">Dapat difokuskan &amp; disalin oleh staf, namun tidak dapat diubah di halaman cabang.</span>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:0">
+            <label for="ff-kyc-locked">Nomor Induk Kependudukan (Disabled)</label>
             <input id="ff-kyc-locked" class="input-pill tabular" type="text" value="3171012345670001 — Terverifikasi" disabled aria-describedby="ff-kyc-hint">
-            <span id="ff-kyc-hint" class="input-hint">NIK terkunci setelah verifikasi KTP disetujui pengelola.</span>
+            <span id="ff-kyc-hint" class="input-hint">Nonaktif total (<code>#E2E8F0</code> kontras jelas di atas kanvas <code>#F4F5F7</code>).</span>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:0">
+            <label id="lbl-ff-checkin" for="ff-checkin-trigger">Tanggal Mulai Sewa <span class="required" aria-hidden="true">*</span></label>
+            <div class="datepicker-container" id="ff-checkin-picker">
+              <div id="ff-checkin-trigger" class="pill-input-box datepicker-trigger" tabindex="0" role="combobox" aria-haspopup="dialog" aria-expanded="false" aria-required="true" aria-controls="ff-checkin-popover" aria-labelledby="lbl-ff-checkin ff-checkin-sr" aria-describedby="ff-checkin-hint" style="padding-right:0.75rem;cursor:pointer">
+                <span id="ff-checkin-sr" class="sr-only datepicker-sr-value">Rabu, 25 Nov 2026</span>
+                <input id="ff-checkin-display" class="datepicker-display tabular" type="text" placeholder="Pilih tanggal mulai sewa..." value="Rabu, 25 Nov 2026" readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
+                <input id="ff-checkin-input" class="datepicker-value" type="hidden" value="2026-11-25">
+                <span aria-hidden="true" style="color:var(--color-brand);display:flex;align-items:center;flex-shrink:0">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
+              </div>
+              <div id="ff-checkin-popover" class="datepicker-popover" role="dialog" aria-modal="false" aria-label="Kalender Tanggal Mulai Sewa">
+                <div class="datepicker-header">
+                  <span class="datepicker-title tabular">November 2026</span>
+                  <div class="datepicker-nav-buttons">
+                    <button type="button" class="datepicker-nav-btn prev-month" aria-label="Bulan sebelumnya">
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button type="button" class="datepicker-nav-btn next-month" aria-label="Bulan berikutnya">
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="datepicker-weekdays">
+                  <span>Min</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+                </div>
+                <div class="datepicker-days"></div>
+                <div class="datepicker-footer">
+                  <button type="button" class="datepicker-today-btn">Hari Ini</button>
+                  <button type="button" class="datepicker-clear-btn">Reset</button>
+                </div>
+              </div>
+            </div>
+            <span id="ff-checkin-hint" class="input-hint">Integrasi wrapper <code>FormField</code> dengan kalender <code>CMP-02</code>.</span>
           </div>
         </div>
+      </div>
 
-        <div class="input-wrapper" style="margin-bottom:1.5rem">
-          <div class="flex justify-between items-center input-header-row">
-            <label for="ff-handover-note" class="input-label" style="margin-bottom:0">Catatan Handover Kamar (Textarea CMP-03)</label>
-            <span id="ff-char-counter" class="text-caption text-muted tabular">0 / 250 karakter</span>
+      <!-- Sub 2: Layout Horizontal Split di Atas Kartu Putih #FFFFFF (Pengaturan Kebijakan SCR-039) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">2. LAYOUT HORIZONTAL SPLIT &amp; PERMUKAAN KARTU PUTIH (#FFFFFF — PENGATURAN CABANG)</div>
+      <div class="showcase-canvas is-borderless mb-6">
+        <div class="form-surface-white form-section-list">
+          <div class="form-field-row">
+            <div class="form-field-meta">
+              <label for="ff-policy-bank" class="input-label">Rekening Penampung Resmi</label>
+              <span id="ff-policy-bank-hint" class="input-hint">Hanya dapat diubah oleh Pemilik lewat halaman kebijakan pusat.</span>
+            </div>
+            <div class="form-field-control">
+              <div class="input-wrapper">
+                <div class="pill-input-box is-readonly">
+                  <input id="ff-policy-bank" class="tabular" type="text" value="BCA • 5210-8842-19 (RumaKost Cilandak)" readonly aria-describedby="ff-policy-bank-hint">
+                  <span class="input-readonly-tag">Terverifikasi</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <textarea id="ff-handover-note" class="textarea-rounded" rows="2" maxlength="250" placeholder="Kondisi AC, kunci duplikat, dan pembacaan kWh awal..." aria-describedby="ff-note-hint ff-char-counter" data-char-counter="ff-char-counter"></textarea>
-          <span id="ff-note-hint" class="input-hint">Tercatat otomatis pada berita acara serah terima kunci.</span>
-        </div>
 
-        <div class="flex items-center justify-between" style="flex-wrap:wrap;gap:1rem">
-          <span class="text-caption text-muted">Klik tombol simpan dalam keadaan kosong untuk melihat validasi instan + fokus otomatis ke kolom pertama yang salah.</span>
-          <button type="submit" class="btn btn-primary" data-submit-btn>
-            Simpan Data Penghuni
-          </button>
+          <div class="form-field-row">
+            <div class="form-field-meta">
+              <label for="ff-policy-fine" class="input-label">Denda Keterlambatan Harian <span class="required" aria-hidden="true">*</span></label>
+              <span id="ff-policy-fine-hint" class="input-hint">Otomatis ditambahkan ke tagihan melewati masa tenggang 3 hari.</span>
+            </div>
+            <div class="form-field-control">
+              <div class="input-wrapper">
+                <div class="pill-input-box">
+                  <span class="pill-prefix-badge">Rp</span>
+                  <input id="ff-policy-fine" class="tabular" type="text" inputmode="numeric" value="25.000" data-currency-input data-max-digits="9" aria-describedby="ff-policy-fine-hint">
+                  <span class="pill-suffix-unit">/ hari</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
+
+      <!-- Sub 3: Simulasi Formulir Penempatan Penghuni (SubmitButton Rule, Blur Check, Error Summary & Reset) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">3. SIMULASI FORMULIR PENEMPATAN PENGHUNI (SUBMITBUTTON RULE, BLUR CHECK, SUMMARY &amp; RESET)</div>
+      <div class="showcase-canvas is-borderless">
+        <form id="ff-resident-form" data-validate novalidate>
+          <div class="mid-subgrid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem">
+            <div class="input-wrapper" style="margin-bottom:0">
+              <label for="ff-tenant-name">Nama Lengkap Penghuni <span class="required" aria-hidden="true">*</span></label>
+              <input id="ff-tenant-name" class="input-pill" type="text" placeholder="Contoh: Budi Santoso" required data-error-msg="Nama penghuni wajib diisi sesuai KTP." aria-describedby="ff-tenant-hint">
+              <span id="ff-tenant-hint" class="input-hint">Gunakan nama lengkap sesuai kartu identitas resmi.</span>
+            </div>
+
+            <div class="input-wrapper" style="margin-bottom:0">
+              <label for="ff-tenant-phone">Nomor WhatsApp Aktif <span class="required" aria-hidden="true">*</span></label>
+              <div class="pill-input-box">
+                <span class="pill-prefix-badge">+62</span>
+                <input id="ff-tenant-phone" type="tel" inputmode="numeric" class="tabular" placeholder="812-3456-7890" required data-phone-id data-error-msg="Nomor WhatsApp wajib diisi untuk pengiriman invoice." aria-describedby="ff-phone-hint">
+              </div>
+              <span id="ff-phone-hint" class="input-hint">Hanya angka (0–9); otomatis terformat untuk pengingat tagihan H-7.</span>
+            </div>
+
+            <div class="input-wrapper" style="margin-bottom:0">
+              <label id="ff-branch-label" for="ff-branch-trigger">Cabang Properti Penempatan <span class="required" aria-hidden="true">*</span></label>
+              <div class="custom-select-wrapper" id="ff-branch-select-wrap">
+                <div id="ff-branch-trigger" class="pill-input-box select-trigger" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-required="true" aria-controls="ff-branch-listbox" aria-labelledby="ff-branch-label" aria-describedby="ff-branch-hint">
+                  <svg class="select-prefix-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M3 7v14M21 7v14M6 11h.01M6 15h.01M10 11h.01M10 15h.01M14 11h.01M14 15h.01M18 11h.01M18 15h.01M9 21V3h6v18"/></svg>
+                  <input id="ff-branch-select" class="select-display" type="text" placeholder="Pilih cabang properti..." readonly tabindex="-1" aria-hidden="true" style="cursor:pointer">
+                  <svg class="select-chevron" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <input type="hidden" name="ff_branch" class="select-value" value="" required data-error-msg="Cabang properti penempatan wajib dipilih.">
+                <div id="ff-branch-listbox" class="select-popover" role="listbox" aria-labelledby="ff-branch-label">
+                  <div class="select-option" data-value="cilandak" role="option" aria-selected="false">
+                    <div style="display:flex;flex-direction:column;gap:1px">
+                      <span class="option-title">Rumakost Cilandak Executive</span>
+                      <span class="text-caption text-muted">Jakarta Selatan • 24 Kamar Siap Huni</span>
+                    </div>
+                    <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="select-option" data-value="setiabudi" role="option" aria-selected="false">
+                    <div style="display:flex;flex-direction:column;gap:1px">
+                      <span class="option-title">Rumakost Setiabudi Residence</span>
+                      <span class="text-caption text-muted">Jakarta Selatan • 36 Kamar Siap Huni</span>
+                    </div>
+                    <svg class="select-option-checkmark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                </div>
+              </div>
+              <span id="ff-branch-hint" class="input-hint">Menentukan tarif sewa &amp; rekening penagihan cabang.</span>
+            </div>
+
+            <div class="input-wrapper" style="margin-bottom:0">
+              <label for="ff-room-unit">Unit / Nomor Kamar <span class="required" aria-hidden="true">*</span></label>
+              <input id="ff-room-unit" class="input-pill" type="text" placeholder="Contoh: Deluxe A-101" required data-error-msg="Nomor unit kamar wajib diisi." aria-describedby="ff-room-hint">
+              <span id="ff-room-hint" class="input-hint">Sesuai kode inventaris lantai pada cabang penempatan.</span>
+            </div>
+
+            <div class="input-wrapper" style="margin-bottom:0">
+              <label for="ff-rent-amount">Tarif Sewa Bulanan <span class="required" aria-hidden="true">*</span></label>
+              <div class="pill-input-box">
+                <span class="pill-prefix-badge">Rp</span>
+                <input id="ff-rent-amount" class="tabular" type="text" inputmode="numeric" placeholder="2.200.000" required data-currency-input data-max-digits="13" data-error-msg="Tarif sewa bulanan wajib diisi." aria-describedby="ff-rent-hint">
+                <span class="pill-suffix-unit">/ bln</span>
+              </div>
+              <span id="ff-rent-hint" class="input-hint">Format otomatis pemisah ribuan IDR (hanya angka).</span>
+            </div>
+
+            <div class="input-wrapper" style="margin-bottom:0">
+              <label for="ff-tenant-email">Email Pengiriman Invoice <span class="required" aria-hidden="true">*</span></label>
+              <input id="ff-tenant-email" class="input-pill" type="email" placeholder="Contoh: budi.santoso@email.id" required data-error-msg="Email pengiriman invoice wajib diisi." data-email-error-msg="Format email tidak valid; wajib memuat '@' dan nama domain (.com / .id)." aria-describedby="ff-tenant-email-hint">
+              <span id="ff-tenant-email-hint" class="input-hint">Penerima faktur sewa bulanan &amp; kwitansi lunas (cek langsung saat <code>blur</code>).</span>
+            </div>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:1.25rem">
+            <div class="input-header-row">
+              <label for="ff-handover-note" class="input-label" style="margin-bottom:0">Catatan Handover Kamar <span class="input-optional">(Opsional)</span></label>
+              <span id="ff-char-counter" class="text-caption text-muted tabular">0 / 250 karakter</span>
+            </div>
+            <textarea id="ff-handover-note" class="textarea-rounded" rows="2" maxlength="250" placeholder="Kondisi AC, kunci duplikat, dan pembacaan kWh awal..." aria-describedby="ff-note-hint ff-char-counter" data-char-counter="ff-char-counter"></textarea>
+            <span id="ff-note-hint" class="input-hint">Tercatat otomatis pada berita acara serah terima kunci.</span>
+          </div>
+
+          <div class="input-wrapper" style="margin-bottom:1.5rem">
+            <label class="custom-checkbox">
+              <input id="ff-consent-check" type="checkbox" required data-error-msg="Persetujuan tata tertib kos wajib dicentang sebelum menyimpan." aria-describedby="ff-consent-hint">
+              <span class="checkbox-box"></span>
+              <span>Penghuni telah membaca dan menyetujui tata tertib serta ketentuan deposit cabang kos <span class="required" aria-hidden="true">*</span></span>
+            </label>
+            <span id="ff-consent-hint" class="input-hint" style="padding-left:0">Wajib dicentang sebagai bukti persetujuan kontrak penghuni baru.</span>
+          </div>
+
+          <div class="form-error-summary" role="alert" data-form-error-summary>
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span data-form-error-summary-text></span>
+          </div>
+
+          <div class="form-actions-bar">
+            <span class="text-caption text-muted">Klik Simpan untuk uji validasi instan &amp; fokus otomatis, atau Reset untuk mengosongkan status error.</span>
+            <div class="form-actions-group">
+              <button type="reset" class="btn btn-ghost">Reset</button>
+              <button type="submit" class="btn btn-primary" data-submit-btn>
+                Simpan Data Penghuni
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
     <!-- CMP-11: Base Card Container -->
     <div class="cmp-card" id="cmp-11">

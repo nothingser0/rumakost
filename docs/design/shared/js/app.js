@@ -202,13 +202,44 @@ function formatUploadSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function setErrorMessageContent(errEl, message) {
+  if (!errEl || !message) return;
+  let textSpan = errEl.querySelector('.error-message-text');
+  if (!textSpan) {
+    const svg = errEl.querySelector('svg');
+    Array.from(errEl.childNodes).forEach(node => {
+      if (node !== svg) node.remove();
+    });
+    textSpan = document.createElement('span');
+    textSpan.className = 'error-message-text';
+    errEl.appendChild(textSpan);
+  }
+  textSpan.textContent = message;
+}
+
+function prependDescribedById(targetEl, id) {
+  if (!targetEl || !id) return;
+  const prev = (targetEl.getAttribute('aria-describedby') || '')
+    .split(/\s+/)
+    .filter(token => token && token !== id);
+  prev.unshift(id);
+  targetEl.setAttribute('aria-describedby', prev.join(' '));
+}
+
 function renderFieldError(wrapper, targetEl, message, isStatic = false) {
   if (!wrapper) return;
   wrapper.classList.add('has-error');
-  if (targetEl) targetEl.setAttribute('aria-invalid', 'true');
+  if (targetEl) {
+    targetEl.classList.add('has-error');
+    const pillBox = targetEl.closest('.pill-input-box');
+    if (pillBox) pillBox.classList.add('has-error');
+    targetEl.setAttribute('aria-invalid', 'true');
+  }
   const existingStatic = wrapper.querySelector('.error-message[data-static-error="true"]');
   if (isStatic && existingStatic) {
+    if (message) setErrorMessageContent(existingStatic, message);
     existingStatic.style.display = 'flex';
+    if (targetEl && existingStatic.id) prependDescribedById(targetEl, existingStatic.id);
     return;
   }
   const existingGen = wrapper.querySelector('.error-message[data-generated-error="true"]');
@@ -216,36 +247,50 @@ function renderFieldError(wrapper, targetEl, message, isStatic = false) {
 
   const err = document.createElement('span');
   err.className = 'error-message';
+  if (targetEl && targetEl.type === 'checkbox') {
+    err.classList.add('is-flush');
+  }
   err.setAttribute('data-generated-error', 'true');
+  err.setAttribute('role', 'alert');
   const errId = `${(targetEl && targetEl.id) || 'field'}-err`;
   err.id = errId;
-  err.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  err.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
   const textNode = document.createElement('span');
+  textNode.className = 'error-message-text';
   textNode.textContent = message;
   err.appendChild(textNode);
 
-  if (targetEl) {
-    const prevDescribedBy = (targetEl.getAttribute('aria-describedby') || '')
-      .split(/\s+/)
-      .filter(id => id && id !== errId);
-    prevDescribedBy.push(errId);
-    targetEl.setAttribute('aria-describedby', prevDescribedBy.join(' '));
+  if (targetEl) prependDescribedById(targetEl, errId);
+
+  const hintEl = Array.from(wrapper.children).find(el => el.classList.contains('input-hint'));
+  if (hintEl) {
+    wrapper.insertBefore(err, hintEl);
+  } else {
+    wrapper.appendChild(err);
   }
-  wrapper.appendChild(err);
 }
 
 function clearFieldError(wrapper, targetEl) {
+  const staticIds = [];
   if (wrapper) {
     wrapper.classList.remove('has-error');
-    const gen = wrapper.querySelector('.error-message[data-generated-error="true"]');
-    if (gen) gen.remove();
+    wrapper.querySelectorAll('.error-message[data-generated-error="true"]').forEach(gen => gen.remove());
+    wrapper.querySelectorAll('.error-message[data-static-error="true"]').forEach(st => {
+      if (st.id) staticIds.push(st.id);
+      st.style.display = 'none';
+    });
   }
   if (targetEl) {
+    targetEl.classList.remove('has-error');
+    const pillBox = targetEl.closest('.pill-input-box');
+    if (pillBox) pillBox.classList.remove('has-error');
     targetEl.removeAttribute('aria-invalid');
-    const errId = `${targetEl.id || 'field'}-err`;
+    const removeIds = new Set(staticIds);
+    if (targetEl.id) removeIds.add(`${targetEl.id}-err`);
+    else removeIds.add('field-err');
     const described = (targetEl.getAttribute('aria-describedby') || '')
       .split(/\s+/)
-      .filter(id => id && id !== errId);
+      .filter(id => id && !removeIds.has(id));
     if (described.length) targetEl.setAttribute('aria-describedby', described.join(' '));
     else targetEl.removeAttribute('aria-describedby');
   }
@@ -585,9 +630,11 @@ function initLiveValidation() {
   document.querySelectorAll('[data-char-counter]').forEach(field => {
     const counter = document.getElementById(field.getAttribute('data-char-counter'));
     if (!counter) return;
-    const maxLen = field.getAttribute('maxlength') || '250';
+    const maxLen = parseInt(field.getAttribute('maxlength') || '250', 10);
     const syncCount = () => {
-      counter.textContent = `${field.value.length} / ${maxLen} karakter`;
+      const len = field.value.length;
+      counter.textContent = `${len} / ${maxLen} karakter`;
+      counter.classList.toggle('input-counter-warning', maxLen > 0 && len >= Math.floor(maxLen * 0.9));
     };
     syncCount();
     field.addEventListener('input', syncCount);
@@ -597,12 +644,23 @@ function initLiveValidation() {
     const errorEl = document.getElementById(input.getAttribute('data-error-target') || '');
     const container = input.closest('.pill-input-box') || input;
     const wrapper = input.closest('.input-wrapper');
+    const defaultFormatMsg = errorEl ? errorEl.textContent.trim() : "Format email tidak valid; wajib memuat '@' dan domain (contoh: .com).";
+    const requiredMsg = input.getAttribute('data-error-msg') || 'Alamat email wajib diisi.';
     const syncEmail = () => {
-      const ok = isEmailValid(input.value);
+      const trimmed = input.value.trim();
+      const ok = Boolean(trimmed) && isEmailValid(trimmed);
       container.classList.toggle('has-error', !ok);
       if (wrapper) wrapper.classList.toggle('has-error', !ok);
-      input.setAttribute('aria-invalid', String(!ok));
-      if (errorEl) errorEl.style.display = ok ? 'none' : 'flex';
+      if (ok) {
+        input.removeAttribute('aria-invalid');
+        if (errorEl) errorEl.style.display = 'none';
+      } else {
+        input.setAttribute('aria-invalid', 'true');
+        if (errorEl) {
+          setErrorMessageContent(errorEl, !trimmed && input.hasAttribute('required') ? requiredMsg : defaultFormatMsg);
+          errorEl.style.display = 'flex';
+        }
+      }
     };
     input.addEventListener('input', syncEmail);
   });
@@ -615,7 +673,8 @@ function initLiveValidation() {
       const ok = field.value.trim().length >= minLen;
       field.classList.toggle('has-error', !ok);
       if (wrapper) wrapper.classList.toggle('has-error', !ok);
-      field.setAttribute('aria-invalid', String(!ok));
+      if (ok) field.removeAttribute('aria-invalid');
+      else field.setAttribute('aria-invalid', 'true');
       if (errorEl) errorEl.style.display = ok ? 'none' : 'flex';
     };
     field.addEventListener('input', syncLength);
@@ -635,51 +694,131 @@ function getFormFieldTarget(input) {
 }
 
 function validateRequiredField(input) {
-  const val = input.value.trim();
-  const isEmpty = !val;
-  const emailInvalid = input.type === 'email' && Boolean(val) && !isEmailValid(val);
+  if (input.disabled || input.closest('.is-disabled')) return null;
+
   const wrapper = input.closest('.input-wrapper');
   const focusTarget = getFormFieldTarget(input);
+
+  let isEmpty = false;
+  if (input.type === 'checkbox') {
+    isEmpty = !input.checked;
+  } else if (input.type === 'radio') {
+    const scope = input.form || document;
+    isEmpty = !scope.querySelector(`input[type="radio"][name="${input.name}"]:checked`);
+  } else {
+    isEmpty = !input.value.trim();
+  }
+
+  const emailInvalid = input.type === 'email' && !isEmpty && !isEmailValid(input.value);
 
   if (isEmpty || emailInvalid) {
     const hasStatic = Boolean(wrapper && wrapper.querySelector('.error-message[data-static-error="true"]'));
     const msg = emailInvalid
-      ? 'Format alamat email tidak valid.'
-      : (input.getAttribute('data-error-msg') || 'Bidang ini wajib diisi');
-    if (focusTarget !== input) {
-      focusTarget.classList.add('has-error');
-    }
+      ? (input.getAttribute('data-email-error-msg') || "Format email tidak valid; wajib memuat '@' dan domain (contoh: .com).")
+      : (input.getAttribute('data-error-msg') || 'Bidang ini wajib diisi.');
     renderFieldError(wrapper, focusTarget, msg, hasStatic);
     return focusTarget;
   }
 
-  if (focusTarget !== input) {
-    focusTarget.classList.remove('has-error');
-  }
-  if (!wrapper || !wrapper.querySelector('.error-message[data-static-error="true"]')) {
-    clearFieldError(wrapper, focusTarget);
-  } else {
-    focusTarget.removeAttribute('aria-invalid');
-  }
+  clearFieldError(wrapper, focusTarget);
   return null;
+}
+
+function syncFormErrorSummary(form) {
+  const summary = form.querySelector('[data-form-error-summary]');
+  if (!summary) return;
+  const invalidCount = form.querySelectorAll('.input-wrapper.has-error').length;
+  const textEl = summary.querySelector('[data-form-error-summary-text]');
+  if (invalidCount > 0) {
+    if (textEl) {
+      textEl.textContent = `Harap periksa ${invalidCount} kolom yang ditandai merah sebelum menyimpan data.`;
+    }
+    summary.classList.add('is-visible');
+  } else {
+    summary.classList.remove('is-visible');
+  }
 }
 
 function initForms() {
   const forms = document.querySelectorAll('form[data-validate]');
 
   forms.forEach(form => {
-    form.querySelectorAll('[required]').forEach(input => {
-      const eventName = input.type === 'hidden' ? 'change' : 'input';
+    form.querySelectorAll('[required], input[type="email"]').forEach(input => {
+      const eventName = (input.type === 'hidden' || input.type === 'checkbox' || input.type === 'radio')
+        ? 'change'
+        : 'input';
+
       input.addEventListener(eventName, () => {
+        input.dataset.ffTouched = 'true';
         const wrapper = input.closest('.input-wrapper');
-        if (wrapper && wrapper.classList.contains('has-error')) {
+        const focusTarget = getFormFieldTarget(input);
+        if (
+          (wrapper && wrapper.classList.contains('has-error')) ||
+          (focusTarget && focusTarget.classList.contains('has-error'))
+        ) {
           validateRequiredField(input);
+          syncFormErrorSummary(form);
         }
       });
+
+      if (input.type !== 'hidden' && input.type !== 'checkbox' && input.type !== 'radio') {
+        input.addEventListener('blur', () => {
+          const val = input.value.trim();
+          const malformedEmail = input.type === 'email' && Boolean(val) && !isEmailValid(val);
+          if (malformedEmail || input.dataset.ffTouched === 'true') {
+            validateRequiredField(input);
+            syncFormErrorSummary(form);
+          }
+        });
+      }
+    });
+
+    form.addEventListener('reset', () => {
+      setTimeout(() => {
+        form.querySelectorAll('.input-wrapper').forEach(w => {
+          const ctrl = w.querySelector('input:not([type="hidden"]), textarea, .select-trigger, .datepicker-trigger');
+          clearFieldError(w, ctrl);
+          const pillBox = w.querySelector('.pill-input-box');
+          if (pillBox) pillBox.classList.remove('has-error');
+        });
+        form.querySelectorAll('[data-ff-touched]').forEach(el => delete el.dataset.ffTouched);
+
+        form.querySelectorAll('.custom-select-wrapper').forEach(selectWrap => {
+          const hiddenInput = selectWrap.querySelector('.select-value');
+          const displayInput = selectWrap.querySelector('.select-display');
+          const trigger = selectWrap.querySelector('.select-trigger');
+          const options = selectWrap.querySelectorAll('.select-option');
+          if (hiddenInput) hiddenInput.value = '';
+          if (displayInput) displayInput.value = '';
+          selectWrap.classList.remove('has-value', 'is-open');
+          if (trigger) {
+            trigger.classList.remove('has-value', 'has-error');
+            trigger.setAttribute('aria-expanded', 'false');
+          }
+          options.forEach(opt => {
+            opt.classList.remove('is-selected');
+            opt.setAttribute('aria-selected', 'false');
+          });
+        });
+
+        form.querySelectorAll('[data-char-counter]').forEach(field => {
+          const counter = document.getElementById(field.getAttribute('data-char-counter'));
+          if (counter) {
+            const maxLen = field.getAttribute('maxlength') || '250';
+            counter.textContent = `${field.value.length} / ${maxLen} karakter`;
+            counter.classList.remove('input-counter-warning');
+          }
+        });
+
+        syncFormErrorSummary(form);
+      }, 0);
     });
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
+      const submitBtn = form.querySelector('[type="submit"]') || form.querySelector('[data-submit-btn]');
+      if (submitBtn && submitBtn.classList.contains('is-loading')) return;
+
       const requiredInputs = form.querySelectorAll('[required]');
       let firstInvalid = null;
 
@@ -697,17 +836,17 @@ function initForms() {
         }
       });
 
+      syncFormErrorSummary(form);
+
       if (firstInvalid) {
         firstInvalid.focus();
         if (window.showToast) {
-          window.showToast('Harap periksa kolom yang ditandai merah.', 'error', false);
+          window.showToast('Harap periksa kolom yang ditandai merah.', 'error', true);
         }
         return;
       }
 
-      const submitBtn = form.querySelector('[type="submit"]') || form.querySelector('[data-submit-btn]');
       if (submitBtn) {
-        if (submitBtn.classList.contains('is-loading')) return;
         const origHtml = submitBtn.innerHTML;
         submitBtn.classList.add('is-loading');
         submitBtn.setAttribute('aria-busy', 'true');
@@ -717,7 +856,7 @@ function initForms() {
           submitBtn.removeAttribute('aria-busy');
           submitBtn.innerHTML = origHtml;
           if (window.showToast) {
-            window.showToast('Data berhasil disimpan ke sistem.', 'success', false);
+            window.showToast('Data penghuni berhasil disimpan ke sistem.', 'success', false);
           }
         }, 1200);
       }

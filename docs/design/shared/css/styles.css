@@ -1054,7 +1054,7 @@ a {
 }
 
 /* ==========================================================================
-   Form Input System (CMP-02 & CMP-03 [LOCKED 2026-11-27]) — Pill Round DNA & Estify Alignment
+   Form Input & FormField Wrapper System (CMP-02, CMP-03 [LOCKED 2026-11-27] & CMP-10 [LOCKED 2026-11-27])
    ========================================================================== */
 .input-wrapper {
   margin-bottom: 1.25rem;
@@ -1070,21 +1070,59 @@ a {
   color: #334155; /* Slate-700 */
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.25rem;
   letter-spacing: -0.01em;
 }
 
 .input-wrapper > label:not(.btn):not(.custom-checkbox):not(.custom-radio):not(.choice-card):not(.settings-row):not(.toggle-switch-wrapper),
-.input-wrapper > .input-label,
-.input-header-row {
+.input-wrapper > .input-label {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
   margin-bottom: 0.375rem;
 }
 
-.input-wrapper label:not(.btn):not(.custom-checkbox):not(.custom-radio):not(.choice-card):not(.settings-row):not(.toggle-switch-wrapper):not(.btn-group-item) .required, .input-label .required {
-  color: var(--color-brand);
+.input-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  margin-bottom: 0.375rem;
+}
+
+.input-wrapper .required,
+.input-label .required {
+  color: #C2410C; /* Pure 4-Color WCAG AA: 5.18:1 on #FFFFFF, 4.75:1 on #F4F5F7 */
   font-weight: 700;
+}
+
+.input-optional {
+  font-size: var(--font-size-caption); /* 12px */
+  font-weight: 500;
+  color: #475569; /* 7.58:1 on #FFFFFF, 6.95:1 on #F4F5F7 */
+  margin-left: 0.125rem;
+}
+
+.input-readonly-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background-color: #E2E8F0;
+  color: #334155; /* 8.40:1 WCAG AA */
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.input-counter-warning {
+  color: #C2410C !important;
+  font-weight: 600;
 }
 
 .sr-only {
@@ -1200,6 +1238,38 @@ a {
   box-shadow: none;
 }
 
+/* On #F4F5F7 canvas, disabled controls step up to #E2E8F0 so field bounds stay distinct */
+.showcase-canvas .input-pill:disabled,
+.showcase-canvas .textarea-rounded:disabled,
+.showcase-canvas .pill-input-box.is-disabled,
+.showcase-canvas .pill-input-box:has(input:disabled),
+.showcase-canvas .pill-input-box.select-trigger.is-disabled,
+.showcase-canvas .pill-input-box.select-trigger:has(input:disabled) {
+  background-color: #E2E8F0;
+  box-shadow: none;
+}
+
+.showcase-canvas .input-pill:disabled,
+.showcase-canvas .textarea-rounded:disabled,
+.showcase-canvas .pill-input-box:has(input:disabled) input {
+  color: #334155 !important; /* 8.40:1 on #E2E8F0 WCAG AA */
+}
+
+/* Read-only Lock State: selectable, copyable, Tab-focusable (distinct from disabled) */
+.input-pill[readonly]:not(.select-display):not(.datepicker-display),
+.pill-input-box.is-readonly,
+.textarea-rounded[readonly] {
+  background-color: #F8FAFC;
+  color: #000000 !important;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+  cursor: text;
+}
+
+.pill-input-box.is-readonly input {
+  cursor: text;
+  color: #000000 !important;
+}
+
 /* Inset Prefix / Suffix Input Box (Clean Borderless, 12px standard, 9999px for .is-search) */
 .pill-input-box {
   display: flex;
@@ -1264,6 +1334,18 @@ input[type="search"]::-webkit-search-decoration {
   border-radius: 8px;
   user-select: none;
   flex-shrink: 0;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.pill-suffix-unit {
+  padding: 0 0.5rem 0 0.25rem;
+  color: #475569; /* 7.58:1 on #FFFFFF */
+  font-size: var(--font-size-caption); /* 12px */
+  font-weight: 600;
+  background: transparent;
+  user-select: none;
+  flex-shrink: 0;
+  transition: color var(--transition-fast);
 }
 
 .pill-input-box input {
@@ -1347,6 +1429,19 @@ input[type="search"]::-webkit-search-decoration {
   outline-offset: 2px;
 }
 
+.pill-input-box.has-error .pill-prefix-badge,
+.pill-input-box.has-error .pill-suffix-badge,
+.input-wrapper.has-error .pill-prefix-badge,
+.input-wrapper.has-error .pill-suffix-badge {
+  background-color: #FFFFFF;
+  color: var(--color-error); /* #B91C1C on #FFFFFF = 6.47:1 WCAG AA */
+}
+
+.pill-input-box.has-error .pill-suffix-unit,
+.input-wrapper.has-error .pill-suffix-unit {
+  color: var(--color-error); /* #B91C1C on #FEF2F2 = 5.91:1 WCAG AA */
+}
+
 .error-message {
   font-size: 0.875rem; /* 14px (>= 13px WCAG AA Spec per DESIGN.md §7.3) */
   color: var(--color-error);
@@ -1359,8 +1454,131 @@ input[type="search"]::-webkit-search-decoration {
   line-height: 1.4;
 }
 
+.error-message.is-flush {
+  padding-left: 0;
+}
+
 .error-message svg {
   flex-shrink: 0;
+}
+
+/* FormField White Container Surface, Horizontal Split & Error Summary (CMP-10) */
+.form-surface-white {
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.form-surface-white .input-pill:not(:disabled):not([readonly]):not(.has-error),
+.form-surface-white .pill-input-box:not(.is-disabled):not(.is-readonly):not(.has-error),
+.form-surface-white .textarea-rounded:not(:disabled):not([readonly]):not(.has-error) {
+  background-color: #F4F5F7;
+  box-shadow: none;
+}
+
+.form-surface-white .input-pill:hover:where(:not(:disabled):not([readonly]):not(:focus):not(.has-error)),
+.form-surface-white .pill-input-box:hover:where(:not(:focus):not(:focus-within):not(.has-error):not(.is-disabled):not(.is-readonly):not(:has(input:disabled))),
+.form-surface-white .textarea-rounded:hover:where(:not(:disabled):not([readonly]):not(:focus):not(.has-error)) {
+  background-color: #EBEEF2;
+}
+
+.form-surface-white .input-pill:focus-visible,
+.form-surface-white .input-pill:focus,
+.form-surface-white .pill-input-box:focus-within:not(:has(.input-icon-btn:focus-visible)),
+.form-surface-white .textarea-rounded:focus-visible,
+.form-surface-white .textarea-rounded:focus {
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.form-section-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field-row {
+  display: grid;
+  grid-template-columns: minmax(210px, 1fr) minmax(250px, 1.35fr);
+  gap: 0.875rem 2rem;
+  align-items: start;
+  padding: 1.25rem 0;
+}
+
+.form-field-row + .form-field-row {
+  box-shadow: inset 0 1px 0 #E2E8F0;
+}
+
+.form-field-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-top: 0.5rem;
+}
+
+.form-field-meta .input-label {
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 0;
+}
+
+.form-field-meta .input-hint {
+  padding-left: 0;
+  margin-top: 0;
+}
+
+.form-field-control .input-wrapper {
+  margin-bottom: 0;
+}
+
+.form-error-summary {
+  display: none;
+  align-items: flex-start;
+  gap: 0.625rem;
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+  border: none;
+  border-radius: 14px;
+  padding: 0.875rem 1.125rem;
+  margin-bottom: 1.25rem;
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.form-error-summary.is-visible {
+  display: flex;
+}
+
+.form-error-summary svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.form-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .form-field-row {
+    grid-template-columns: 1fr;
+    gap: 0.625rem;
+  }
+  .form-field-meta {
+    padding-top: 0;
+  }
 }
 
 /* Number Stepper Control (Clean Borderless, 44px Touch Hit-Area) */
@@ -4356,6 +4574,15 @@ button.card-base:focus-visible {
   padding: 1.75rem;
   border-radius: var(--radius-inner);
   border: 1px solid var(--color-border);
+}
+
+.showcase-canvas.is-borderless {
+  border: none;
+  border-radius: 20px;
+}
+
+.showcase-canvas .text-muted {
+  color: #475569; /* 6.95:1 on #F4F5F7 canvas & 7.58:1 on #FFFFFF (WCAG AA >= 4.5:1) */
 }
 
 .cmp-card {
