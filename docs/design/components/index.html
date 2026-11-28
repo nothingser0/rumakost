@@ -816,14 +816,14 @@
       </div>
     </div>
 
-    <!-- CMP-05: Badges (LOCKED 2026-11-27) -->
+    <!-- CMP-05: Badges (UPDATED & LOCKED 2026-11-28) -->
     <div class="cmp-card" id="cmp-05">
       <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
         <span class="cmp-badge" style="margin-bottom:0">CMP-05</span>
         <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
       </div>
       <h2 class="cmp-title">Operational Badges (Hybrid Pure 4-Color &amp; Borderless)</h2>
-      <p class="cmp-desc">Badge status operasional 100% <em>borderless</em> dengan palet ketat <strong>Pure 4-Color</strong> (Oranye, Hitam, Netral/Putih, Merah): status daftar/tabel &amp; status unit di atas foto (<code>.badge-sm.badge-on-photo</code>) memakai tint lembut agar tidak bersaing dengan tombol <code>CMP-01</code> (Oranye <code>4.88:1</code>, Netral <code>9.45:1</code>, Merah <code>5.91:1</code>), sedangkan <strong>Hitam Solid</strong> (<code>21.0:1</code>), <strong>Counter Numerik</strong>, dan <strong>Tag Media Foto</strong> (<code>.badge-overlay</code>) tampil solid kontras tinggi.</p>
+      <p class="cmp-desc">Badge status operasional 100% <em>borderless</em> dengan palet ketat <strong>Pure 4-Color</strong> (Oranye, Putih, Hitam, Merah): status daftar/tabel &amp; status unit di atas foto (<code>.badge-sm.badge-on-photo</code>) memakai tint lembut agar tidak bersaing dengan tombol <code>CMP-01</code> (Oranye <code>4.88:1</code>, Netral <code>9.45:1</code>, Merah <code>5.91:1</code>), sedangkan varian <strong>Solid Pure 4-Color</strong> tampil kontras untuk bento/sorotan — <strong>Oranye Solid</strong> (<code>.badge-brand.is-solid</code> <code>#F97316</code> selaras pil bento <code>SCR-006</code>), <strong>Putih Solid</strong> (<code>.badge-white</code> / <code>.badge-overlay</code> <code>21.0:1</code>), <strong>Hitam Solid</strong> (<code>.badge-dark</code> <code>21.0:1</code>), <strong>Merah Solid</strong> (<code>.badge-error.is-solid</code> <code>6.47:1</code>), serta <strong>Counter Numerik</strong>.</p>
 
       <!-- Sub 1: 4 Varian Inti Pure 4-Color -->
       <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em">1. EMPAT VARIAN INTI PURE 4-COLOR (TINT STATUS RINGAN &amp; HITAM SOLID)</div>
@@ -986,7 +986,7 @@
 
         <!-- Kolom Kanan: Preview Overlay Foto Properti 16:10 (Status Semantik + Tag Media Borderless) -->
         <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap">
-          <div style="position:relative;width:208px;height:130px;border-radius:var(--radius-inner);overflow:hidden;box-shadow:0 2px 6px rgba(0, 0, 0, 0.08);flex-shrink:0">
+          <div style="position:relative;width:208px;height:130px;border-radius:var(--radius-inner);overflow:hidden;flex-shrink:0">
             <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=416&h=260&fit=crop" alt="Foto Kamar" style="width:100%;height:100%;object-fit:cover;display:block">
             <span class="badge badge-brand badge-sm badge-on-photo" style="position:absolute;top:8px;left:8px">
               <span class="badge-dot"></span>Siap Huni
@@ -999,6 +999,82 @@
           <div style="min-width:180px;flex:1">
             <div style="font-weight:600;font-size:0.9375rem;color:var(--color-text-primary);margin-bottom:0.25rem">Overlay Foto Properti 16:10</div>
             <p class="text-caption text-muted" style="line-height:1.45">Status unit memakai varian semantik compact (<code>.badge-sm.badge-on-photo</code>, selaras <code>CMP-24</code>), sedangkan tag media non-status (<code>4 Foto</code>) memakai <code>.badge-overlay</code> putih solid <strong>borderless</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sub 5: Pratinjau Varian Solid Pure 4-Color (Oranye, Putih, Hitam, Merah — Selaras Pill Bento Card) -->
+      <div class="text-caption text-muted mb-2" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">5. PRATINJAU VARIAN SOLID PURE 4-COLOR (ORANYE, PUTIH, HITAM, MERAH)</div>
+      <div class="showcase-canvas is-borderless" style="padding:1.5rem">
+        <div class="mid-subgrid" style="grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem">
+          <div style="display:flex;flex-direction:column;gap:0.625rem">
+            <span class="text-caption text-muted" style="font-weight:600">Oranye Solid (<code>#F97316</code>)</span>
+            <div class="flex items-center gap-2" style="flex-wrap:wrap">
+              <span class="badge badge-brand is-solid badge-sm">4 Hari</span>
+              <span class="badge badge-brand is-solid">Lunas</span>
+            </div>
+            <span class="text-caption text-muted">Highlight pengingat &amp; lunas di bento tile</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:0.625rem">
+            <span class="text-caption text-muted" style="font-weight:600">Putih Solid (21.0:1)</span>
+            <div class="flex items-center gap-2" style="flex-wrap:wrap">
+              <span class="badge badge-white badge-sm">6 / 12 Bln</span>
+              <span class="badge badge-white">Siap Huni</span>
+            </div>
+            <span class="text-caption text-muted">Di atas kanvas abu, kartu oranye &amp; foto</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:0.625rem">
+            <span class="text-caption text-muted" style="font-weight:600">Hitam Solid (21.0:1)</span>
+            <div class="flex items-center gap-2" style="flex-wrap:wrap">
+              <span class="badge badge-dark badge-sm">Terisi</span>
+              <span class="badge badge-dark">VIP</span>
+            </div>
+            <span class="text-caption text-muted">Okupansi aktif, VIP &amp; penekanan netral</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:0.625rem">
+            <span class="text-caption text-muted" style="font-weight:600">Merah Solid (6.47:1)</span>
+            <div class="flex items-center gap-2" style="flex-wrap:wrap">
+              <span class="badge badge-error is-solid badge-sm">Urgent</span>
+              <span class="badge badge-error is-solid">Tunggakan</span>
+            </div>
+            <span class="text-caption text-muted">Keterlambatan kritis &amp; SLA merah</span>
+          </div>
+        </div>
+
+        <div class="mid-subgrid" style="grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem">
+          <div class="card-bento-tile is-warm">
+            <div class="card-bento-head">
+              <span class="card-bento-label">Masa Sewa</span>
+              <span class="badge badge-brand is-solid badge-sm">4 Hari</span>
+            </div>
+            <div class="card-bento-val tabular" style="font-size:1.125rem">30 Nov 26</div>
+          </div>
+
+          <div class="card-bento-tile" style="background-color:#F8FAFC">
+            <div class="card-bento-head">
+              <span class="card-bento-label">Periode</span>
+              <span class="badge badge-white badge-sm">6 / 12 Bln</span>
+            </div>
+            <div class="card-bento-val tabular" style="font-size:1.125rem">#KTR-101</div>
+          </div>
+
+          <div class="card-bento-tile" style="background-color:#FFFFFF">
+            <div class="card-bento-head">
+              <span class="card-bento-label">Status Kamar</span>
+              <span class="badge badge-dark badge-sm">Terisi</span>
+            </div>
+            <div class="card-bento-val tabular" style="font-size:1.125rem">Unit 101</div>
+          </div>
+
+          <div class="card-bento-tile" style="background-color:#FFFFFF">
+            <div class="card-bento-head">
+              <span class="card-bento-label">Tagihan SLA</span>
+              <span class="badge badge-error is-solid badge-sm">Telat H+5</span>
+            </div>
+            <div class="card-bento-val tabular" style="font-size:1.125rem">Rp 2,45 Jt</div>
           </div>
         </div>
       </div>

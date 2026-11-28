@@ -71,10 +71,17 @@ document.addEventListener('DOMContentLoaded', () => {
   initCompactUploads();
   initDropzones();
 
-  // CMP-11 Selectable Card Group, Segmented Arc Gauge & Hero Branch Carousel
+  // CMP-11 & CMP-12 Interactive Composite Controllers
   initCardSelectGroups();
   initSegmentedArcGauges();
   initHeroBranchCarousels();
+  initCopyButtons();
+  initHatchedCharts();
+  initEvidenceCards();
+  initKycMaskedCards();
+  initChecklistCards();
+  initTicketTimelineCards();
+  initDataTables();
 });
 
 function initSegmentedArcGauges() {
@@ -940,15 +947,18 @@ function initForms() {
 
       if (submitBtn) {
         const origHtml = submitBtn.innerHTML;
+        const loadingText = submitBtn.getAttribute('data-loading-text') || 'Menyimpan...';
+        const successToast = form.getAttribute('data-success-toast') || 'Data penghuni berhasil disimpan ke sistem.';
+        const successTone = form.getAttribute('data-success-tone') || 'success';
         submitBtn.classList.add('is-loading');
         submitBtn.setAttribute('aria-busy', 'true');
-        submitBtn.innerHTML = '<span class="spinner spinner-sm spinner-white" aria-hidden="true"></span><span>Menyimpan...</span>';
+        submitBtn.innerHTML = `<span class="spinner spinner-sm spinner-white" aria-hidden="true"></span><span>${loadingText}</span>`;
         setTimeout(() => {
           submitBtn.classList.remove('is-loading');
           submitBtn.removeAttribute('aria-busy');
           submitBtn.innerHTML = origHtml;
           if (window.showToast) {
-            window.showToast('Data penghuni berhasil disimpan ke sistem.', 'success', false);
+            window.showToast(successToast, successTone, false);
           }
         }, 1200);
       }
@@ -2118,5 +2128,800 @@ function initHeroBranchCarousels() {
         }
       });
     }
+  });
+}
+
+function copyTextFallback(value) {
+  const ta = document.createElement('textarea');
+  ta.value = value;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+  } finally {
+    ta.remove();
+  }
+}
+
+function initCopyButtons() {
+  document.querySelectorAll('[data-copy-text]').forEach(btn => {
+    const defaultLabel = btn.textContent.trim();
+    let resetTimer = null;
+
+    btn.addEventListener('click', async () => {
+      const value = btn.getAttribute('data-copy-text') || '';
+      const toastMsg = btn.getAttribute('data-copy-toast') || 'Berhasil disalin ke clipboard.';
+      if (!value) return;
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(value);
+        } else {
+          copyTextFallback(value);
+        }
+      } catch {
+        copyTextFallback(value);
+      }
+
+      btn.classList.add('is-copied');
+      btn.textContent = btn.getAttribute('data-copied-label') || 'Tersalin';
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        btn.classList.remove('is-copied');
+        btn.textContent = defaultLabel;
+      }, 2000);
+
+      if (window.showToast) {
+        window.showToast(toastMsg, 'brand', false);
+      }
+    });
+  });
+}
+
+function initHatchedCharts() {
+  const datasets = {
+    monthly: [
+      { label: 'Jun', period: 'Jun 2026', rentPct: 54, rentCap: 66, netPct: 44, netCap: 56, rentVal: 'Rp 33,2 jt', netVal: 'Rp 26,8 jt' },
+      { label: 'Jul', period: 'Jul 2026', rentPct: 62, rentCap: 74, netPct: 50, netCap: 64, rentVal: 'Rp 37,0 jt', netVal: 'Rp 31,1 jt' },
+      { label: 'Agu', period: 'Agu 2026', rentPct: 68, rentCap: 82, netPct: 56, netCap: 70, rentVal: 'Rp 39,0 jt', netVal: 'Rp 32,8 jt' },
+      { label: 'Sep', period: 'Sep 2026', rentPct: 84, rentCap: 96, netPct: 72, netCap: 84, rentVal: 'Rp 43,1 jt', netVal: 'Rp 36,5 jt' },
+      { label: 'Okt', period: 'Okt 2026', rentPct: 78, rentCap: 90, netPct: 66, netCap: 78, rentVal: 'Rp 42,0 jt', netVal: 'Rp 35,4 jt' },
+      { label: 'Nov', period: 'Nov 2026', rentPct: 90, rentCap: 100, netPct: 78, netCap: 90, rentVal: 'Rp 46,2 jt', netVal: 'Rp 39,6 jt' }
+    ],
+    quarterly: [
+      { label: 'Q1', period: 'Kuartal I 2026', rentPct: 58, rentCap: 70, netPct: 46, netCap: 58, rentVal: 'Rp 104,5 jt', netVal: 'Rp 86,8 jt' },
+      { label: 'Q2', period: 'Kuartal II 2026', rentPct: 68, rentCap: 80, netPct: 56, netCap: 68, rentVal: 'Rp 114,2 jt', netVal: 'Rp 95,4 jt' },
+      { label: 'Q3', period: 'Kuartal III 2026', rentPct: 82, rentCap: 94, netPct: 70, netCap: 82, rentVal: 'Rp 126,1 jt', netVal: 'Rp 106,3 jt' },
+      { label: 'Q4', period: 'Kuartal IV (Berjalan)', rentPct: 90, rentCap: 100, netPct: 78, netCap: 90, rentVal: 'Rp 131,3 jt', netVal: 'Rp 111,5 jt' }
+    ]
+  };
+
+  document.querySelectorAll('[data-hatched-chart]').forEach(card => {
+    const colsWrap = card.querySelector('.hatched-cols');
+    const tooltip = card.querySelector('.hatched-tooltip');
+    const periodInput = card.querySelector('.select-value');
+    if (!colsWrap || !tooltip) return;
+
+    let currentMode = periodInput && datasets[periodInput.value] ? periodInput.value : 'monthly';
+    let activeIdx = datasets[currentMode].length - 1;
+
+    const positionTooltip = (colEl) => {
+      if (!colEl) return;
+      const cols = Array.from(colsWrap.querySelectorAll('.hatched-col'));
+      const idx = cols.indexOf(colEl);
+      if (idx < 0 || cols.length === 0) return;
+
+      tooltip.style.left = '';
+      tooltip.style.right = '';
+      tooltip.style.transform = '';
+
+      if (idx === 0) {
+        tooltip.style.left = '8%';
+      } else if (idx >= cols.length - 1) {
+        tooltip.style.right = 'calc(16% + 8px)';
+      } else if (idx >= cols.length - 2) {
+        const pct = ((idx + 0.1) / cols.length) * 100;
+        tooltip.style.left = `${pct}%`;
+        tooltip.style.transform = 'translateX(-78%)';
+      } else {
+        const pct = ((idx + 0.85) / cols.length) * 100;
+        tooltip.style.left = `${pct}%`;
+      }
+    };
+
+    const syncActive = (idx) => {
+      const items = datasets[currentMode];
+      const cols = Array.from(colsWrap.querySelectorAll('.hatched-col'));
+      if (!items.length || !cols.length) return;
+      activeIdx = Math.max(0, Math.min(items.length - 1, idx));
+      const item = items[activeIdx];
+
+      cols.forEach((col, i) => {
+        const isActive = i === activeIdx;
+        col.classList.toggle('is-active', isActive);
+        col.setAttribute('aria-pressed', String(isActive));
+      });
+
+      const periodEl = tooltip.querySelector('[data-tt-period]');
+      const rentEl = tooltip.querySelector('[data-tt-rent]');
+      const netEl = tooltip.querySelector('[data-tt-net]');
+      if (periodEl) periodEl.textContent = item.period;
+      if (rentEl) rentEl.textContent = `Sewa ${item.rentVal}`;
+      if (netEl) netEl.textContent = `Kas ${item.netVal}`;
+
+      positionTooltip(cols[activeIdx]);
+    };
+
+    const renderMode = (mode) => {
+      currentMode = datasets[mode] ? mode : 'monthly';
+      const items = datasets[currentMode];
+      colsWrap.innerHTML = items.map((item, idx) => {
+        const rentFillInCap = Math.min(100, Math.round((item.rentPct / item.rentCap) * 100));
+        const netFillInCap = Math.min(100, Math.round((item.netPct / item.netCap) * 100));
+        return `
+        <button type="button" class="hatched-col" data-chart-idx="${idx}" aria-pressed="false" aria-label="${item.period}: Pendapatan Sewa ${item.rentVal}, Kas Bersih ${item.netVal}">
+          <span class="hatched-pair" aria-hidden="true">
+            <span class="hatched-track" style="height:${item.rentCap}%"><span class="hatched-fill is-rent" style="height:${rentFillInCap}%"></span></span>
+            <span class="hatched-track" style="height:${item.netCap}%"><span class="hatched-fill is-net" style="height:${netFillInCap}%"></span></span>
+          </span>
+          <span class="hatched-label tabular">${item.label}</span>
+        </button>`;
+      }).join('');
+
+      colsWrap.querySelectorAll('.hatched-col').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const i = Number(btn.getAttribute('data-chart-idx'));
+          if (!Number.isNaN(i)) syncActive(i);
+        });
+      });
+
+      syncActive(items.length - 1);
+    };
+
+    if (periodInput) {
+      periodInput.addEventListener('change', () => {
+        renderMode(periodInput.value);
+      });
+    }
+
+    renderMode(currentMode);
+  });
+}
+
+function initEvidenceCards() {
+  document.querySelectorAll('[data-evidence-card]').forEach(card => {
+    const tabs = Array.from(card.querySelectorAll('[data-proof-tab]'));
+    const panels = Array.from(card.querySelectorAll('[data-proof-panel]'));
+    const kvs = Array.from(card.querySelectorAll('[data-proof-kv]'));
+    const dupBtn = card.querySelector('[data-proof-dup-toggle]');
+    const tsBadge = card.querySelector('[data-proof-timestamp]');
+    const zoomBtn = card.querySelector('[data-proof-zoom]');
+    const statusBadge = card.querySelector('[data-proof-status-badge]');
+    const heroLabel = card.querySelector('[data-proof-hero-label]');
+    const heroVal = card.querySelector('[data-proof-hero-val]');
+    const integrityStrip = card.querySelector('[data-proof-integrity]');
+    const integrityText = card.querySelector('[data-proof-integrity-text]');
+    const integrityBadge = card.querySelector('[data-proof-integrity-badge]');
+    const footerNote = card.querySelector('[data-proof-footer-note]');
+    const approveBtn = card.querySelector('[data-proof-approve]');
+    const rejectBtn = card.querySelector('[data-proof-reject]');
+
+    let activeTab = 'transfer';
+    let isDuplicate = false;
+    let verificationState = 'pending';
+
+    const syncUi = () => {
+      tabs.forEach(tab => {
+        const match = tab.getAttribute('data-proof-tab') === activeTab;
+        tab.classList.toggle('active', match);
+        tab.setAttribute('aria-selected', String(match));
+      });
+      panels.forEach(panel => {
+        panel.hidden = panel.getAttribute('data-proof-panel') !== activeTab;
+      });
+      kvs.forEach(kv => {
+        kv.hidden = kv.getAttribute('data-proof-kv') !== activeTab;
+      });
+
+      if (dupBtn) {
+        dupBtn.hidden = activeTab !== 'transfer';
+        dupBtn.setAttribute('aria-pressed', String(isDuplicate));
+        dupBtn.textContent = isDuplicate ? 'Reset Uji Ganda' : 'Uji Berkas Ganda';
+      }
+
+      if (tsBadge) {
+        tsBadge.textContent = activeTab === 'transfer' ? '28 Nov • 14:10 WIB' : '25 Nov • 09:15 WIB';
+      }
+
+      if (heroLabel && heroVal) {
+        heroLabel.textContent = activeTab === 'transfer' ? 'Nominal Transfer' : 'Tagihan Sub-Meter';
+        heroVal.textContent = activeTab === 'transfer' ? 'Rp 2.905.000' : 'Rp 255.000';
+      }
+
+      if (integrityStrip && integrityText && integrityBadge) {
+        if (activeTab === 'meter') {
+          integrityStrip.classList.remove('is-error');
+          integrityText.textContent = 'Selisih wajar (+150 kWh)';
+          integrityBadge.className = 'badge badge-brand badge-sm';
+          integrityBadge.textContent = 'Terlampir di Invoice';
+        } else if (isDuplicate) {
+          integrityStrip.classList.add('is-error');
+          integrityText.textContent = 'Identik dgn TRF-1042 (Okt)';
+          integrityBadge.className = 'badge badge-error is-solid badge-sm';
+          integrityBadge.textContent = 'Peringatan Duplikat';
+        } else {
+          integrityStrip.classList.remove('is-error');
+          integrityText.textContent = 'Jejak 9f4e...c18a • 0 duplikat';
+          integrityBadge.className = 'badge badge-brand badge-sm';
+          integrityBadge.textContent = 'Sidik Berkas Aman';
+        }
+      }
+
+      if (statusBadge) {
+        if (activeTab === 'meter') {
+          statusBadge.className = 'badge badge-dark badge-sm';
+          statusBadge.innerHTML = '<span class="badge-dot"></span>Foto Terlampir';
+        } else if (isDuplicate && verificationState === 'pending') {
+          statusBadge.className = 'badge badge-error badge-sm';
+          statusBadge.innerHTML = '<span class="badge-dot"></span>Indikasi Duplikat';
+        } else if (verificationState === 'approved') {
+          statusBadge.className = 'badge badge-dark badge-sm';
+          statusBadge.innerHTML = '<span class="badge-dot"></span>Terverifikasi';
+        } else if (verificationState === 'rejected') {
+          statusBadge.className = 'badge badge-error badge-sm';
+          statusBadge.innerHTML = '<span class="badge-dot"></span>Ditolak';
+        } else {
+          statusBadge.className = 'badge badge-brand badge-sm';
+          statusBadge.innerHTML = '<span class="badge-dot"></span>Perlu Verifikasi';
+        }
+      }
+
+      if (footerNote && approveBtn && rejectBtn) {
+        if (activeTab === 'meter') {
+          footerNote.textContent = 'Dicatat Caretaker • Masuk ke Invoice Nov';
+          rejectBtn.textContent = 'Minta Foto Ulang';
+          approveBtn.textContent = 'Terlampir di Tagihan';
+        } else {
+          footerNote.textContent = isDuplicate
+            ? 'Verifikasi otomatis diblokir oleh anti-duplikasi'
+            : 'Otoritas Finance / Pemilik';
+          rejectBtn.textContent = 'Tolak';
+          approveBtn.textContent = verificationState === 'approved' ? 'Sudah Disetujui' : 'Setujui Bayar';
+        }
+      }
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        activeTab = tab.getAttribute('data-proof-tab') || 'transfer';
+        syncUi();
+      });
+    });
+
+    if (dupBtn) {
+      dupBtn.addEventListener('click', () => {
+        isDuplicate = !isDuplicate;
+        verificationState = 'pending';
+        syncUi();
+        if (window.showToast) {
+          window.showToast(
+            isDuplicate
+              ? 'Peringatan: Berkas transfer ini identik dengan TRF-1042. Persetujuan otomatis diblokir.'
+              : 'Status pemeriksaan duplikat direset ke kondisi berkas unik.',
+            isDuplicate ? 'error' : 'brand',
+            isDuplicate
+          );
+        }
+      });
+    }
+
+    if (zoomBtn) {
+      zoomBtn.addEventListener('click', () => {
+        if (window.showToast) {
+          window.showToast(
+            activeTab === 'transfer'
+              ? 'Membuka pratinjau penuh bukti transfer #TRF-261128-9042.'
+              : 'Membuka foto resolusi penuh sub-meter Kamar 202 (01250.4 kWh).',
+            'neutral',
+            false
+          );
+        }
+      });
+    }
+
+    if (approveBtn) {
+      approveBtn.addEventListener('click', () => {
+        if (activeTab === 'meter') {
+          if (window.showToast) {
+            window.showToast('Foto sub-meter 1.250 kWh (+150 kWh) terkonfirmasi pada #INV-2026-1102.', 'brand', false);
+          }
+          return;
+        }
+        if (isDuplicate) {
+          if (window.showToast) {
+            window.showToast('Ditolak: Bukti transfer terdeteksi duplikat (TRF-1042). Wajib tolak atau minta bukti baru.', 'error', true);
+          }
+          return;
+        }
+        verificationState = verificationState === 'approved' ? 'pending' : 'approved';
+        syncUi();
+        if (window.showToast && verificationState === 'approved') {
+          window.showToast('Pembayaran #INV-2026-1102 (Rp 2.905.000) disetujui & kwitansi diterbitkan.', 'brand', false);
+        }
+      });
+    }
+
+    if (rejectBtn) {
+      rejectBtn.addEventListener('click', () => {
+        if (activeTab === 'meter') {
+          if (window.showToast) {
+            window.showToast('Permintaan foto ulang sub-meter dikirim ke Caretaker Cabang Cilandak.', 'brand', false);
+          }
+          return;
+        }
+        verificationState = verificationState === 'rejected' ? 'pending' : 'rejected';
+        syncUi();
+        if (window.showToast && verificationState === 'rejected') {
+          window.showToast('Bukti bayar #INV-2026-1102 ditolak. Penghuni diminta mengunggah ulang bukti valid.', 'error', true);
+        }
+      });
+    }
+
+    syncUi();
+  });
+}
+
+function initKycMaskedCards() {
+  document.querySelectorAll('[data-kyc-card]').forEach(card => {
+    const roleTabs = Array.from(card.querySelectorAll('[data-kyc-role]'));
+    const vault = card.querySelector('[data-kyc-vault]');
+    const vaultIcon = card.querySelector('[data-kyc-vault-icon]');
+    const vaultTitle = card.querySelector('[data-kyc-vault-title]');
+    const vaultDesc = card.querySelector('[data-kyc-vault-desc]');
+    const lockIcon = card.querySelector('[data-kyc-lock-icon]');
+    const shieldIcon = card.querySelector('[data-kyc-shield-icon]');
+    const lockBadge = card.querySelector('[data-kyc-lock-badge]');
+    const previewBtn = card.querySelector('[data-kyc-preview-btn]');
+    const nikVal = card.querySelector('[data-kyc-nik]');
+    const stripBadge = card.querySelector('[data-kyc-strip-badge]');
+    const revealBtn = card.querySelector('[data-kyc-reveal-btn]');
+    const domicileVal = card.querySelector('[data-kyc-domicile]');
+    const emergencyVal = card.querySelector('[data-kyc-emergency]');
+    const footerBtn = card.querySelector('[data-kyc-footer-btn]');
+
+    let role = 'caretaker';
+    let unmasked = false;
+
+    const syncUi = () => {
+      const isManager = role === 'manager';
+      if (!isManager) unmasked = false;
+
+      roleTabs.forEach(tab => {
+        const match = tab.getAttribute('data-kyc-role') === role;
+        tab.classList.toggle('active', match);
+        tab.setAttribute('aria-selected', String(match));
+      });
+
+      if (vault) vault.classList.toggle('is-unlocked', isManager);
+      if (vaultIcon) {
+        vaultIcon.className = isManager
+          ? 'icon-box icon-box-sm icon-box-brand'
+          : 'icon-box icon-box-sm icon-box-neutral';
+      }
+      if (vaultTitle) {
+        vaultTitle.textContent = isManager ? 'Akses e-KTP Dibuka (Manajer)' : 'Arsip e-KTP Terenkripsi';
+      }
+      if (vaultDesc) {
+        vaultDesc.textContent = isManager
+          ? 'Pratinjau privat aktif 15 menit & tercatat di Log Audit.'
+          : 'Foto KTP & data lengkap dibatasi bagi Penjaga Kos (UU PDP).';
+      }
+      if (lockIcon) lockIcon.hidden = isManager;
+      if (shieldIcon) shieldIcon.hidden = !isManager;
+      if (lockBadge) lockBadge.hidden = isManager;
+      if (previewBtn) previewBtn.hidden = !isManager;
+
+      const fullNik = '3174 0914 0599 0008';
+      const maskedNik = '3174 **** **** 0008';
+      if (nikVal) nikVal.textContent = unmasked ? fullNik : maskedNik;
+
+      if (stripBadge) stripBadge.hidden = isManager;
+      if (revealBtn) {
+        revealBtn.hidden = !isManager;
+        revealBtn.setAttribute('aria-pressed', String(unmasked));
+        revealBtn.textContent = unmasked ? 'Samarkan Kembali' : 'Tampilkan Penuh';
+      }
+
+      if (domicileVal) {
+        domicileVal.textContent = unmasked
+          ? 'Cilandak Barat, Jakarta Selatan'
+          : (isManager ? 'Klik Tampilkan Penuh untuk melihat' : 'Disamarkan (Khusus Manajer)');
+      }
+
+      if (emergencyVal) {
+        emergencyVal.textContent = unmasked
+          ? 'Ibu Ratna Dewi • 0812-8871-4409'
+          : 'Ibu Ratna Dewi • 0812-****-4409';
+      }
+
+      if (footerBtn) {
+        footerBtn.textContent = isManager ? 'Ekspor Data RT/RW' : 'Log Kepatuhan';
+      }
+    };
+
+    roleTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        role = tab.getAttribute('data-kyc-role') || 'caretaker';
+        syncUi();
+      });
+    });
+
+    if (revealBtn) {
+      revealBtn.addEventListener('click', () => {
+        if (role !== 'manager') return;
+        unmasked = !unmasked;
+        syncUi();
+        if (window.showToast && unmasked) {
+          window.showToast('Akses data NIK penuh tercatat di Log Audit sistem (UU PDP).', 'brand', false);
+        }
+      });
+    }
+
+    if (previewBtn) {
+      previewBtn.addEventListener('click', () => {
+        if (window.showToast) {
+          window.showToast('Membuka pratinjau e-KTP privat (berlaku 15 menit, tercatat di audit).', 'brand', false);
+        }
+      });
+    }
+
+    if (footerBtn) {
+      footerBtn.addEventListener('click', () => {
+        if (!window.showToast) return;
+        if (role === 'manager') {
+          window.showToast('Menyiapkan ekspor registrasi wajib lapor RT/RW Cabang Cilandak (CSV aman).', 'brand', false);
+        } else {
+          window.showToast('Catatan audit akses data penghuni terbuka (NIK & e-KTP tetap disamarkan).', 'neutral', false);
+        }
+      });
+    }
+
+    syncUi();
+  });
+}
+
+function initChecklistCards() {
+  document.querySelectorAll('[data-checklist-card]').forEach(card => {
+    const tabs = Array.from(card.querySelectorAll('[data-checklist-tab]'));
+    const panels = Array.from(card.querySelectorAll('[data-checklist-panel]'));
+    const turnoverBoxes = Array.from(card.querySelectorAll('[data-turnover-item]'));
+    const subtitleEl = card.querySelector('[data-checklist-subtitle]');
+    const badgeEl = card.querySelector('[data-checklist-status-badge]');
+    const scopeEl = card.querySelector('[data-checklist-scope]');
+    const heroEl = card.querySelector('[data-checklist-hero]');
+    const heroLabelEl = card.querySelector('[data-checklist-hero-label]');
+    const pctEl = card.querySelector('[data-checklist-pct]');
+    const countEl = card.querySelector('[data-checklist-count]');
+    const barEl = card.querySelector('[data-checklist-bar]');
+    const fillEl = card.querySelector('[data-checklist-fill]');
+    const footerNoteEl = card.querySelector('[data-checklist-footer-note]');
+    const ctaBtn = card.querySelector('[data-checklist-cta]');
+
+    let mode = 'turnover';
+
+    const syncUi = () => {
+      tabs.forEach(tab => {
+        const match = tab.getAttribute('data-checklist-tab') === mode;
+        tab.classList.toggle('active', match);
+        tab.setAttribute('aria-selected', String(match));
+      });
+      panels.forEach(panel => {
+        panel.hidden = panel.getAttribute('data-checklist-panel') !== mode;
+      });
+
+      if (mode === 'handover') {
+        if (subtitleEl) subtitleEl.textContent = 'Handover Kamar 202 • Dimas Pratama';
+        if (scopeEl) scopeEl.textContent = 'Arsip Check-In';
+        if (heroEl) heroEl.classList.add('is-settled');
+        if (heroLabelEl) heroLabelEl.textContent = 'Berita Acara Handover';
+        if (pctEl) pctEl.textContent = '100%';
+        if (badgeEl) {
+          badgeEl.className = 'badge badge-dark badge-sm tabular';
+          badgeEl.innerHTML = '<span class="badge-dot"></span>Terkunci';
+        }
+        if (countEl) {
+          countEl.className = 'badge badge-neutral badge-sm tabular';
+          countEl.textContent = '3 / 3 arsip tetap';
+        }
+        if (barEl) barEl.setAttribute('aria-valuenow', '100');
+        if (fillEl) {
+          fillEl.className = 'condition-fill is-dark';
+          fillEl.style.width = '100%';
+        }
+        if (footerNoteEl) footerNoteEl.textContent = 'Berita acara permanen pasca check-in';
+        if (ctaBtn) {
+          ctaBtn.className = 'btn btn-secondary btn-sm';
+          ctaBtn.textContent = 'Lihat Foto Before';
+        }
+        return;
+      }
+
+      const total = turnoverBoxes.length;
+      const done = turnoverBoxes.filter(cb => cb.checked).length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+      const isComplete = total > 0 && done === total;
+
+      turnoverBoxes.forEach(cb => {
+        const row = cb.closest('.checklist-row');
+        if (row) row.classList.toggle('is-checked', cb.checked);
+      });
+
+      if (subtitleEl) subtitleEl.textContent = 'Turnover Kamar 103 • Pasca Check-Out';
+      if (scopeEl) scopeEl.textContent = isComplete ? 'Siap Dibuka' : 'Status: Pembersihan';
+      if (heroEl) heroEl.classList.toggle('is-settled', isComplete);
+      if (heroLabelEl) heroLabelEl.textContent = isComplete ? 'Pemeriksaan Lengkap' : 'Progres Penyelesaian';
+      if (pctEl) pctEl.textContent = `${pct}%`;
+      if (countEl) {
+        countEl.className = isComplete
+          ? 'badge badge-brand badge-sm tabular'
+          : 'badge badge-white badge-sm tabular';
+        countEl.textContent = `${done} dari ${total} wajib`;
+      }
+      if (barEl) barEl.setAttribute('aria-valuenow', String(pct));
+      if (fillEl) {
+        fillEl.className = 'condition-fill is-brand';
+        fillEl.style.width = `${pct}%`;
+      }
+      if (badgeEl) {
+        badgeEl.className = isComplete
+          ? 'badge badge-brand badge-sm tabular'
+          : 'badge badge-neutral badge-sm tabular';
+        badgeEl.innerHTML = isComplete
+          ? '<span class="badge-dot"></span>Siap Huni'
+          : `<span class="badge-dot"></span>Proses ${done} / ${total}`;
+      }
+      if (footerNoteEl) {
+        footerNoteEl.textContent = isComplete
+          ? 'Checklist terpenuhi • Siap dibuka'
+          : 'Wajib 100% item wajib selesai';
+      }
+      if (ctaBtn) {
+        ctaBtn.className = 'btn btn-primary btn-sm';
+        ctaBtn.textContent = isComplete ? 'Konfirmasi Siap Huni' : 'Tandai Siap Huni';
+      }
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        mode = tab.getAttribute('data-checklist-tab') || 'turnover';
+        syncUi();
+      });
+    });
+
+    turnoverBoxes.forEach(cb => {
+      cb.addEventListener('change', syncUi);
+    });
+
+    if (ctaBtn) {
+      ctaBtn.addEventListener('click', () => {
+        if (!window.showToast) return;
+        if (mode === 'handover') {
+          window.showToast('Membuka arsip 4 foto kondisi awal Kamar 202 (terkunci permanen).', 'neutral', false);
+          return;
+        }
+        const total = turnoverBoxes.length;
+        const done = turnoverBoxes.filter(cb => cb.checked).length;
+        if (done < total) {
+          window.showToast(`Checklist belum lengkap (${done}/${total}). Selesaikan seluruh item wajib sebelum kamar dibuka.`, 'error', true);
+          return;
+        }
+        window.showToast('Kamar 103 berhasil dialihkan ke status Siap Huni.', 'brand', false);
+      });
+    }
+
+    syncUi();
+  });
+}
+
+function initTicketTimelineCards() {
+  document.querySelectorAll('[data-ticket-card]').forEach(card => {
+    const iconBox = card.querySelector('[data-ticket-icon]');
+    const slaBadge = card.querySelector('[data-ticket-sla-badge]');
+    const repairStep = card.querySelector('[data-ticket-step="repair"]');
+    const confirmStep = card.querySelector('[data-ticket-step="confirm"]');
+    const repairTime = card.querySelector('[data-ticket-repair-time]');
+    const confirmTime = card.querySelector('[data-ticket-confirm-time]');
+    const footerNote = card.querySelector('[data-ticket-footer-note]');
+    const receiptBtn = card.querySelector('[data-ticket-receipt-btn]');
+    const completeBtn = card.querySelector('[data-ticket-complete-btn]');
+
+    const checkSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    let isDone = false;
+
+    const syncUi = () => {
+      if (iconBox) {
+        iconBox.className = isDone
+          ? 'icon-box icon-box-sm icon-box-brand is-circle'
+          : 'icon-box icon-box-sm icon-box-error is-circle';
+      }
+      if (slaBadge) {
+        slaBadge.className = isDone
+          ? 'badge badge-brand badge-sm tabular'
+          : 'badge badge-error badge-sm tabular';
+        slaBadge.innerHTML = isDone
+          ? '<span class="badge-dot"></span>Selesai • Tepat SLA'
+          : '<span class="badge-dot"></span>Sisa SLA 1 Jam';
+      }
+      if (repairStep) {
+        repairStep.className = isDone ? 'timeline-item is-done' : 'timeline-item is-active';
+        const marker = repairStep.querySelector('.timeline-marker');
+        if (marker) marker.innerHTML = isDone ? checkSvg : '';
+      }
+      if (confirmStep) {
+        confirmStep.className = isDone ? 'timeline-item is-done' : 'timeline-item is-pending';
+        const marker = confirmStep.querySelector('.timeline-marker');
+        if (marker) marker.innerHTML = isDone ? checkSvg : '';
+      }
+      if (repairTime) repairTime.textContent = isDone ? '28 Nov, 15:40 WIB' : 'Sedang dikerjakan';
+      if (confirmTime) confirmTime.textContent = isDone ? '28 Nov, 15:45 WIB' : 'Menunggu selesai';
+      if (footerNote) {
+        footerNote.textContent = isDone
+          ? 'Ditutup dalam 2 jam 35 mnt (SLA tercapai)'
+          : 'Batas respons SLA: 17:10 WIB';
+      }
+      if (completeBtn) {
+        completeBtn.className = isDone ? 'btn btn-secondary btn-sm' : 'btn btn-primary btn-sm';
+        completeBtn.textContent = isDone ? 'Buka Ulang Tiket' : 'Tandai Selesai';
+      }
+    };
+
+    if (receiptBtn) {
+      receiptBtn.addEventListener('click', () => {
+        if (window.showToast) {
+          window.showToast('Membuka lampiran kwitansi sparepart AC Rp 185.000 (#TK-205).', 'neutral', false);
+        }
+      });
+    }
+
+    if (completeBtn) {
+      completeBtn.addEventListener('click', () => {
+        isDone = !isDone;
+        syncUi();
+        if (window.showToast) {
+          window.showToast(
+            isDone
+              ? 'Tiket #TK-205 selesai ditangani. Penghuni Suite 201 diberi notifikasi.'
+              : 'Tiket #TK-205 dikembalikan ke status pengerjaan aktif.',
+            isDone ? 'brand' : 'neutral',
+            false
+          );
+        }
+      });
+    }
+
+    syncUi();
+  });
+}
+
+function initDataTables() {
+  document.querySelectorAll('[data-table-demo]').forEach(container => {
+    const searchInput = container.querySelector('[data-table-search]');
+    const clearBtn = container.querySelector('[data-table-search-clear]');
+    const filterBtns = Array.from(container.querySelectorAll('[data-table-filter]'));
+    const sortBtns = Array.from(container.querySelectorAll('[data-sort-col]'));
+    const tbody = container.querySelector('[data-table-body]');
+    const emptyRow = container.querySelector('[data-table-empty]');
+    const resetBtn = container.querySelector('[data-table-reset]');
+    const countEl = container.querySelector('[data-table-count]');
+    const sumEl = container.querySelector('[data-table-sum]');
+    if (!tbody) return;
+
+    const dataRows = Array.from(tbody.querySelectorAll('tr:not([data-table-empty])'));
+    let activeFilter = 'all';
+    let sortCol = '';
+    let sortDir = 'none';
+
+    const formatIdr = (num) => `Rp ${Number(num || 0).toLocaleString('id-ID')}`;
+
+    const applyFilterAndSummary = () => {
+      const q = (searchInput ? searchInput.value : '').trim().toLowerCase();
+      if (clearBtn) clearBtn.hidden = q.length === 0;
+
+      let visibleCount = 0;
+      let visibleSum = 0;
+
+      dataRows.forEach(row => {
+        const status = row.getAttribute('data-status') || '';
+        const haystack = (row.getAttribute('data-search') || row.textContent || '').toLowerCase();
+        const matchStatus = activeFilter === 'all' || status === activeFilter;
+        const matchQuery = q.length === 0 || haystack.includes(q);
+        const show = matchStatus && matchQuery;
+        row.hidden = !show;
+        if (show) {
+          visibleCount += 1;
+          visibleSum += Number(row.getAttribute('data-amount') || 0);
+        }
+      });
+
+      if (emptyRow) emptyRow.hidden = visibleCount > 0;
+      if (countEl) {
+        countEl.textContent = `Menampilkan ${visibleCount} dari ${dataRows.length} tagihan`;
+      }
+      if (sumEl) {
+        sumEl.innerHTML = `Total Terfilter: <strong>${formatIdr(visibleSum)}</strong>`;
+      }
+    };
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeFilter = btn.getAttribute('data-table-filter') || 'all';
+        filterBtns.forEach(b => {
+          const match = b === btn;
+          b.classList.toggle('active', match);
+          b.setAttribute('aria-selected', String(match));
+        });
+        applyFilterAndSummary();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', applyFilterAndSummary);
+    }
+
+    if (clearBtn && searchInput) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        applyFilterAndSummary();
+        searchInput.focus();
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        activeFilter = 'all';
+        if (searchInput) searchInput.value = '';
+        filterBtns.forEach(b => {
+          const match = b.getAttribute('data-table-filter') === 'all';
+          b.classList.toggle('active', match);
+          b.setAttribute('aria-selected', String(match));
+        });
+        applyFilterAndSummary();
+      });
+    }
+
+    sortBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const col = btn.getAttribute('data-sort-col') || '';
+        const type = btn.getAttribute('data-sort-type') || 'text';
+        const th = btn.closest('th');
+
+        if (sortCol === col && sortDir === 'ascending') {
+          sortDir = 'descending';
+        } else {
+          sortCol = col;
+          sortDir = 'ascending';
+        }
+
+        container.querySelectorAll('thead th[aria-sort]').forEach(h => {
+          h.setAttribute('aria-sort', h === th ? sortDir : 'none');
+        });
+
+        dataRows.sort((a, b) => {
+          const va = a.getAttribute(`data-${col}`) || '';
+          const vb = b.getAttribute(`data-${col}`) || '';
+          const cmp = type === 'number'
+            ? Number(va) - Number(vb)
+            : va.localeCompare(vb, 'id');
+          return sortDir === 'ascending' ? cmp : -cmp;
+        });
+
+        dataRows.forEach(row => tbody.insertBefore(row, emptyRow || null));
+      });
+    });
+
+    applyFilterAndSummary();
   });
 }
