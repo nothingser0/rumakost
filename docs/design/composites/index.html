@@ -2178,31 +2178,53 @@
       </div>
     </div>
 
-    <!-- CMP-12: Table -->
+    <!-- CMP-12: Table (LOCKED 2026-11-28) -->
     <div class="cmp-card" id="cmp-12">
-      <span class="cmp-badge">CMP-12</span>
+      <div class="flex items-center gap-2 mb-2" style="flex-wrap:wrap">
+        <span class="cmp-badge" style="margin-bottom:0">CMP-12</span>
+        <span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Selesai • Locked</span>
+      </div>
       <h2 class="cmp-title">Data Table &amp; Mobile Reflow (&lt;640px)</h2>
-      <p class="cmp-desc">Tabel operasional dan penagihan <strong>100% borderless</strong> (<code>border: none</code>, separator hairline <code>inset</code>, <code>tabular-nums</code> rata kanan pada nominal IDR, header WCAG AA <code>#475569</code>), dilengkapi pencarian cepat, filter status, sortir kolom, menu aksi baris <code>44px</code>, dan reflow kartu mandiri pada layar <code>&lt; 640px</code>.</p>
+      <p class="cmp-desc">Tabel operasional dan keuangan <strong>100% borderless</strong> (<code>border: none</code>, <code>tabular-nums</code> rata kanan pada nominal IDR, header WCAG AA <code>#475569</code>, target sentuh <code>44px</code>) dalam dua varian domain: (1) <em>Floating Pill-Rows</em> untuk tagihan/penghuni dengan ringkasan metrik inline, aksi kontekstual per baris, dock massal, &amp; pagination, serta (2) <em>Dense Append-Only Ledger</em> untuk Buku Kas &amp; status <code>VOIDED</code>.</p>
 
       <div class="showcase-canvas is-borderless">
-        <div class="table-card" data-table-demo>
-          <div class="table-toolbar">
-            <div class="table-search-wrap">
-              <div class="pill-input-box is-search" style="padding-left:0.9375rem;padding-right:0.25rem">
-                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input id="cmp12-table-search" type="search" placeholder="Cari kamar, penghuni, atau invoice..." aria-label="Cari baris tagihan dalam tabel" data-table-search>
-                <button type="button" class="input-icon-btn" aria-label="Hapus pencarian tabel" data-table-search-clear hidden>
-                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em">1. FLOATING PILL-ROWS — MANAJEMEN TAGIHAN, BULK SELECT &amp; PAGINATION (SCR-007, SCR-017, SCR-033)</div>
+        <div class="table-card" data-table-demo data-page-size="5">
+          <div class="table-toolbar is-stacked">
+            <div class="table-head-summary">
+              <div class="card-header-left">
+                <div class="icon-box icon-box-sm icon-box-brand is-circle" aria-hidden="true">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h5"/></svg>
+                </div>
+                <div>
+                  <h3 class="card-title">Tagihan Sewa Cabang Cilandak</h3>
+                  <p class="card-subtitle tabular">Nov 2026 • 6 unit penagihan aktif</p>
+                </div>
+              </div>
+              <div class="table-inline-metrics tabular" aria-label="Ringkasan status penagihan cabang">
+                <span class="table-inline-metric is-brand">Lunas <strong>Rp 4,70 Jt</strong></span>
+                <span class="table-inline-metric is-error">1 Terlambat <strong>Rp 3,50 Jt</strong></span>
               </div>
             </div>
 
-            <div class="table-filter-group">
-              <div class="btn-group is-compact" role="tablist" aria-label="Filter status tagihan">
-                <button type="button" class="btn-group-item active" role="tab" aria-selected="true" data-table-filter="all">Semua</button>
-                <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-table-filter="paid">Lunas</button>
-                <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-table-filter="pending">Menunggu</button>
-                <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-table-filter="overdue">Terlambat</button>
+            <div class="table-toolbar-controls">
+              <div class="table-search-wrap">
+                <div class="pill-input-box is-search" style="padding-left:0.9375rem;padding-right:0.25rem">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input id="cmp12-table-search" type="search" placeholder="Cari kamar, penghuni, atau invoice..." aria-label="Cari baris tagihan dalam tabel" data-table-search>
+                  <button type="button" class="input-icon-btn" aria-label="Hapus pencarian tabel" data-table-search-clear hidden>
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-filter-group">
+                <div class="btn-group is-compact is-dark-pills" role="tablist" aria-label="Filter status tagihan">
+                  <button type="button" class="btn-group-item active" role="tab" aria-selected="true" data-table-filter="all">Semua (6)</button>
+                  <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-table-filter="paid">Lunas (2)</button>
+                  <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-table-filter="pending">Menunggu &amp; Cek (3)</button>
+                  <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-table-filter="overdue">Terlambat (1)</button>
+                </div>
               </div>
             </div>
           </div>
@@ -2211,9 +2233,15 @@
             <table class="table-estify" aria-label="Daftar tagihan sewa cabang Cilandak November 2026">
               <thead>
                 <tr>
+                  <th class="table-check-col">
+                    <label class="custom-checkbox is-table-check">
+                      <input type="checkbox" autocomplete="off" aria-label="Pilih semua baris di halaman ini" data-table-select-all>
+                      <span class="checkbox-box"></span>
+                    </label>
+                  </th>
                   <th aria-sort="none">
                     <button type="button" class="table-sort-btn" data-sort-col="unit" data-sort-type="text">
-                      <span>Unit &amp; Penghuni</span>
+                      <span>Penghuni &amp; Unit</span>
                       <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
                     </button>
                   </th>
@@ -2235,10 +2263,21 @@
                 </tr>
               </thead>
               <tbody data-table-body>
-                <tr data-status="paid" data-unit="101" data-due="2026-11-05" data-amount="2500000" data-search="101 deluxe budi santoso inv-2026-1101 lunas">
-                  <td data-label="Unit & Penghuni">
-                    <div class="table-primary-cell">101 • Deluxe</div>
-                    <div class="table-sub-cell tabular">Budi Santoso • #INV-1101</div>
+                <tr data-status="paid" data-unit="101" data-due="2026-11-05" data-amount="2500000" data-search="101 deluxe budi santoso #inv-1101 inv-1101 inv-2026-1101 lunas">
+                  <td data-label="Pilih" class="table-check-col">
+                    <label class="custom-checkbox is-table-check">
+                      <input type="checkbox" autocomplete="off" aria-label="Pilih tagihan Kamar 101 Budi Santoso" data-table-row-check>
+                      <span class="checkbox-box"></span>
+                    </label>
+                  </td>
+                  <td data-label="Penghuni & Unit">
+                    <div class="table-tenant-cell">
+                      <div class="avatar avatar-sm avatar-initials-brand" aria-hidden="true">BS</div>
+                      <div>
+                        <div class="table-primary-cell">Budi Santoso</div>
+                        <div class="table-sub-cell tabular">Kamar 101 • #INV-1101</div>
+                      </div>
+                    </div>
                   </td>
                   <td data-label="Rincian Biaya">
                     <div class="table-primary-cell is-regular">Sewa + Token PLN</div>
@@ -2248,47 +2287,59 @@
                   <td data-label="Nominal" class="align-right tabular table-amount-cell">Rp 2.500.000</td>
                   <td data-label="Status"><span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Lunas</span></td>
                   <td data-label="Aksi" class="table-action-cell">
-                    <div class="popover-menu-wrapper is-flip-right">
-                      <button type="button" class="card-dots-trigger" data-popover-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Aksi tagihan Kamar 101 Budi Santoso">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="19" cy="12" r="1.75"/></svg>
-                      </button>
-                      <div class="popover-menu" role="menu">
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka rincian #INV-1101 (Kamar 101)." data-menu-tone="neutral">Lihat Rincian</button>
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Mengunduh kwitansi PDF resmi #INV-1101." data-menu-tone="brand">Unduh Kwitansi PDF</button>
-                      </div>
-                    </div>
+                    <button type="button" class="table-verb-link is-quiet" data-verb-toast="Membuka kwitansi PDF resmi #INV-1101 (Kamar 101)." data-verb-tone="brand" aria-label="Lihat kwitansi #INV-1101 Budi Santoso">
+                      <span>Kwitansi</span>
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
                   </td>
                 </tr>
 
-                <tr data-status="pending" data-unit="202" data-due="2026-12-01" data-amount="2905000" data-search="202 deluxe dimas pratama inv-2026-1102 verifikasi menunggu">
-                  <td data-label="Unit & Penghuni">
-                    <div class="table-primary-cell">202 • Deluxe</div>
-                    <div class="table-sub-cell tabular">Dimas Pratama • #INV-1102</div>
+                <tr data-status="pending" data-unit="202" data-due="2026-11-08" data-amount="2905000" data-search="202 deluxe dimas pratama #inv-1102 inv-1102 inv-2026-1102 verifikasi menunggu">
+                  <td data-label="Pilih" class="table-check-col">
+                    <label class="custom-checkbox is-table-check">
+                      <input type="checkbox" autocomplete="off" aria-label="Pilih tagihan Kamar 202 Dimas Pratama" data-table-row-check>
+                      <span class="checkbox-box"></span>
+                    </label>
+                  </td>
+                  <td data-label="Penghuni & Unit">
+                    <div class="table-tenant-cell">
+                      <div class="avatar avatar-sm avatar-initials-dark" aria-hidden="true">DP</div>
+                      <div>
+                        <div class="table-primary-cell">Dimas Pratama</div>
+                        <div class="table-sub-cell tabular">Kamar 202 • #INV-1102</div>
+                      </div>
+                    </div>
                   </td>
                   <td data-label="Rincian Biaya">
                     <div class="table-primary-cell is-regular">Sewa + 150 kWh + Parkir</div>
                     <div class="table-sub-cell">Bukti transfer diunggah</div>
                   </td>
-                  <td data-label="Jatuh Tempo" class="tabular">01 Des 2026</td>
+                  <td data-label="Jatuh Tempo" class="tabular">08 Nov 2026</td>
                   <td data-label="Nominal" class="align-right tabular table-amount-cell">Rp 2.905.000</td>
-                  <td data-label="Status"><span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Verifikasi</span></td>
+                  <td data-label="Status"><span class="badge badge-dark badge-sm"><span class="badge-dot"></span>Verifikasi</span></td>
                   <td data-label="Aksi" class="table-action-cell">
-                    <div class="popover-menu-wrapper is-flip-right">
-                      <button type="button" class="card-dots-trigger" data-popover-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Aksi tagihan Kamar 202 Dimas Pratama">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="19" cy="12" r="1.75"/></svg>
-                      </button>
-                      <div class="popover-menu" role="menu">
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka verifikasi bukti bayar #INV-1102." data-menu-tone="brand">Verifikasi Bukti</button>
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka rincian #INV-1102." data-menu-tone="neutral">Lihat Rincian</button>
-                      </div>
-                    </div>
+                    <button type="button" class="table-verb-link is-brand" data-verb-toast="Membuka verifikasi bukti bayar #INV-1102 (Kamar 202)." data-verb-tone="brand" aria-label="Cek bukti transfer #INV-1102 Dimas Pratama">
+                      <span>Cek Bukti</span>
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
                   </td>
                 </tr>
 
-                <tr data-status="pending" data-unit="102" data-due="2026-11-10" data-amount="1650000" data-search="102 standard siti rahmawati inv-2026-1104 menunggu">
-                  <td data-label="Unit & Penghuni">
-                    <div class="table-primary-cell">102 • Standard</div>
-                    <div class="table-sub-cell tabular">Siti Rahmawati • #INV-1104</div>
+                <tr data-status="pending" data-unit="102" data-due="2026-11-10" data-amount="1650000" data-search="102 standard siti rahmawati #inv-1104 inv-1104 inv-2026-1104 menunggu">
+                  <td data-label="Pilih" class="table-check-col">
+                    <label class="custom-checkbox is-table-check">
+                      <input type="checkbox" autocomplete="off" aria-label="Pilih tagihan Kamar 102 Siti Rahmawati" data-table-row-check>
+                      <span class="checkbox-box"></span>
+                    </label>
+                  </td>
+                  <td data-label="Penghuni & Unit">
+                    <div class="table-tenant-cell">
+                      <div class="avatar avatar-sm avatar-initials-neutral" aria-hidden="true">SR</div>
+                      <div>
+                        <div class="table-primary-cell">Siti Rahmawati</div>
+                        <div class="table-sub-cell tabular">Kamar 102 • #INV-1104</div>
+                      </div>
+                    </div>
                   </td>
                   <td data-label="Rincian Biaya">
                     <div class="table-primary-cell is-regular">Sewa + Laundry 20kg</div>
@@ -2298,47 +2349,59 @@
                   <td data-label="Nominal" class="align-right tabular table-amount-cell">Rp 1.650.000</td>
                   <td data-label="Status"><span class="badge badge-neutral badge-sm"><span class="badge-dot"></span>Menunggu</span></td>
                   <td data-label="Aksi" class="table-action-cell">
-                    <div class="popover-menu-wrapper is-flip-right">
-                      <button type="button" class="card-dots-trigger" data-popover-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Aksi tagihan Kamar 102 Siti Rahmawati">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="19" cy="12" r="1.75"/></svg>
-                      </button>
-                      <div class="popover-menu" role="menu">
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Mengirim pengingat tagihan #INV-1104 via WhatsApp." data-menu-tone="brand">Kirim Pengingat WA</button>
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka rincian #INV-1104." data-menu-tone="neutral">Lihat Rincian</button>
-                      </div>
-                    </div>
+                    <button type="button" class="table-verb-link is-neutral" data-verb-toast="Mengirim pengingat tagihan #INV-1104 via WhatsApp." data-verb-tone="brand" aria-label="Ingatkan tagihan #INV-1104 Siti Rahmawati">
+                      <span>Ingatkan</span>
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
                   </td>
                 </tr>
 
-                <tr data-status="overdue" data-unit="201" data-due="2026-11-01" data-amount="3500000" data-search="201 suite rafi akbar inv-2026-1100 terlambat denda">
-                  <td data-label="Unit & Penghuni">
-                    <div class="table-primary-cell">201 • Suite</div>
-                    <div class="table-sub-cell tabular">Rafi Akbar • #INV-1100</div>
+                <tr data-status="overdue" data-unit="201" data-due="2026-11-01" data-amount="3500000" data-search="201 suite rafi akbar #inv-1100 inv-1100 inv-2026-1100 terlambat denda">
+                  <td data-label="Pilih" class="table-check-col">
+                    <label class="custom-checkbox is-table-check">
+                      <input type="checkbox" autocomplete="off" aria-label="Pilih tagihan Suite 201 Rafi Akbar" data-table-row-check>
+                      <span class="checkbox-box"></span>
+                    </label>
+                  </td>
+                  <td data-label="Penghuni & Unit">
+                    <div class="table-tenant-cell">
+                      <div class="avatar avatar-sm avatar-initials-dark" aria-hidden="true">RA</div>
+                      <div>
+                        <div class="table-primary-cell">Rafi Akbar</div>
+                        <div class="table-sub-cell tabular">Suite 201 • #INV-1100</div>
+                      </div>
+                    </div>
                   </td>
                   <td data-label="Rincian Biaya">
                     <div class="table-primary-cell is-regular">Sewa + Denda Keterlambatan</div>
-                    <div class="table-sub-cell is-error tabular">Lewat 3 hari • Grace period habis</div>
+                    <div class="table-sub-cell is-error tabular">Lewat 3 hari • Masa tenggang habis</div>
                   </td>
                   <td data-label="Jatuh Tempo" class="tabular">01 Nov 2026</td>
-                  <td data-label="Nominal" class="align-right tabular table-amount-cell">Rp 3.500.000</td>
-                  <td data-label="Status"><span class="badge badge-error badge-sm"><span class="badge-dot"></span>Terlambat</span></td>
+                  <td data-label="Nominal" class="align-right tabular table-amount-cell is-error">Rp 3.500.000</td>
+                  <td data-label="Status"><span class="badge badge-error is-solid badge-sm"><span class="badge-dot"></span>Terlambat</span></td>
                   <td data-label="Aksi" class="table-action-cell">
-                    <div class="popover-menu-wrapper is-flip-right">
-                      <button type="button" class="card-dots-trigger" data-popover-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Aksi tagihan Kamar 201 Rafi Akbar">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="19" cy="12" r="1.75"/></svg>
-                      </button>
-                      <div class="popover-menu" role="menu">
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Mengirim pengingat tunggakan #INV-1100 via WhatsApp." data-menu-tone="error">Tagih via WhatsApp</button>
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka rincian denda #INV-1100." data-menu-tone="neutral">Lihat Rincian</button>
-                      </div>
-                    </div>
+                    <button type="button" class="table-verb-link is-error" data-verb-toast="Mengirim penagihan tunggakan #INV-1100 via WhatsApp." data-verb-tone="error" aria-label="Tagih via WhatsApp #INV-1100 Rafi Akbar">
+                      <span>Tagih WA</span>
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
                   </td>
                 </tr>
 
-                <tr data-status="pending" data-unit="104" data-due="2026-11-12" data-amount="2275000" data-search="104 deluxe nadia kusuma inv-2026-1105 menunggu kulkas">
-                  <td data-label="Unit & Penghuni">
-                    <div class="table-primary-cell">104 • Deluxe</div>
-                    <div class="table-sub-cell tabular">Nadia Kusuma • #INV-1105</div>
+                <tr data-status="pending" data-unit="104" data-due="2026-11-12" data-amount="2275000" data-search="104 deluxe nadia kusuma #inv-1105 inv-1105 inv-2026-1105 menunggu kulkas">
+                  <td data-label="Pilih" class="table-check-col">
+                    <label class="custom-checkbox is-table-check">
+                      <input type="checkbox" autocomplete="off" aria-label="Pilih tagihan Kamar 104 Nadia Kusuma" data-table-row-check>
+                      <span class="checkbox-box"></span>
+                    </label>
+                  </td>
+                  <td data-label="Penghuni & Unit">
+                    <div class="table-tenant-cell">
+                      <div class="avatar avatar-sm avatar-initials-neutral" aria-hidden="true">NK</div>
+                      <div>
+                        <div class="table-primary-cell">Nadia Kusuma</div>
+                        <div class="table-sub-cell tabular">Kamar 104 • #INV-1105</div>
+                      </div>
+                    </div>
                   </td>
                   <td data-label="Rincian Biaya">
                     <div class="table-primary-cell is-regular">Sewa + Kulkas Mini 90L</div>
@@ -2348,20 +2411,46 @@
                   <td data-label="Nominal" class="align-right tabular table-amount-cell">Rp 2.275.000</td>
                   <td data-label="Status"><span class="badge badge-neutral badge-sm"><span class="badge-dot"></span>Menunggu</span></td>
                   <td data-label="Aksi" class="table-action-cell">
-                    <div class="popover-menu-wrapper is-flip-right">
-                      <button type="button" class="card-dots-trigger" data-popover-menu-trigger aria-haspopup="menu" aria-expanded="false" aria-label="Aksi tagihan Kamar 104 Nadia Kusuma">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="19" cy="12" r="1.75"/></svg>
-                      </button>
-                      <div class="popover-menu" role="menu">
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Mengirim pengingat tagihan #INV-1105 via WhatsApp." data-menu-tone="brand">Kirim Pengingat WA</button>
-                        <button type="button" class="popover-menu-item" role="menuitem" data-menu-toast="Membuka rincian #INV-1105." data-menu-tone="neutral">Lihat Rincian</button>
+                    <button type="button" class="table-verb-link is-neutral" data-verb-toast="Mengirim pengingat tagihan #INV-1105 via WhatsApp." data-verb-tone="brand" aria-label="Ingatkan tagihan #INV-1105 Nadia Kusuma">
+                      <span>Ingatkan</span>
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                  </td>
+                </tr>
+
+                <tr data-status="paid" data-unit="105" data-due="2026-11-04" data-amount="2200000" data-search="105 deluxe tari anggraini #inv-1099 inv-1099 inv-2026-1099 lunas">
+                  <td data-label="Pilih" class="table-check-col">
+                    <label class="custom-checkbox is-table-check">
+                      <input type="checkbox" autocomplete="off" aria-label="Pilih tagihan Kamar 105 Tari Anggraini" data-table-row-check>
+                      <span class="checkbox-box"></span>
+                    </label>
+                  </td>
+                  <td data-label="Penghuni & Unit">
+                    <div class="table-tenant-cell">
+                      <div class="avatar avatar-sm avatar-initials-brand" aria-hidden="true">TA</div>
+                      <div>
+                        <div class="table-primary-cell">Tari Anggraini</div>
+                        <div class="table-sub-cell tabular">Kamar 105 • #INV-1099</div>
                       </div>
                     </div>
+                  </td>
+                  <td data-label="Rincian Biaya">
+                    <div class="table-primary-cell is-regular">Sewa Kamar Bulanan</div>
+                    <div class="table-sub-cell">Pelunasan penuh via Mandiri</div>
+                  </td>
+                  <td data-label="Jatuh Tempo" class="tabular">04 Nov 2026</td>
+                  <td data-label="Nominal" class="align-right tabular table-amount-cell">Rp 2.200.000</td>
+                  <td data-label="Status"><span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Lunas</span></td>
+                  <td data-label="Aksi" class="table-action-cell">
+                    <button type="button" class="table-verb-link is-quiet" data-verb-toast="Membuka kwitansi PDF resmi #INV-1099 (Kamar 105)." data-verb-tone="brand" aria-label="Lihat kwitansi #INV-1099 Tari Anggraini">
+                      <span>Kwitansi</span>
+                      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
                   </td>
                 </tr>
 
                 <tr class="table-empty-row" data-table-empty hidden>
-                  <td colspan="6">
+                  <td colspan="7">
                     <div class="table-empty-inner">
                       <span>Tidak ada tagihan yang cocok dengan filter atau kata kunci saat ini.</span>
                       <button type="button" class="btn btn-secondary btn-sm" data-table-reset>Reset Filter</button>
@@ -2372,9 +2461,134 @@
             </table>
           </div>
 
+          <!-- Bulk Selection Dark Floating Dock -->
+          <div class="table-bulk-bar" data-table-bulk hidden role="region" aria-live="polite" aria-label="Aksi massal baris terpilih">
+            <div class="table-bulk-info">
+              <span class="table-bulk-pill tabular" data-bulk-count>0 dipilih</span>
+              <span class="table-bulk-divider" aria-hidden="true"></span>
+              <span class="table-bulk-sum tabular" data-bulk-sum>Total terpilih: Rp 0</span>
+            </div>
+            <div class="table-bulk-actions">
+              <button type="button" class="btn btn-primary btn-sm" data-bulk-remind>Kirim WA</button>
+              <button type="button" class="btn btn-secondary btn-sm" data-bulk-mark-paid>Tandai Lunas</button>
+              <button type="button" class="table-bulk-close" data-bulk-clear aria-label="Batalkan semua pilihan">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+
           <div class="table-footer">
-            <span class="table-footer-count tabular" data-table-count>Menampilkan 5 dari 5 tagihan</span>
-            <span class="table-footer-sum tabular" data-table-sum>Total Terfilter: <strong>Rp 12.830.000</strong></span>
+            <div class="table-footer-meta">
+              <span class="table-footer-count tabular" data-table-count>Menampilkan 1–5 dari 6 tagihan</span>
+              <span class="table-footer-sum tabular" data-table-sum>Total Terfilter: <strong>Rp 15.030.000</strong></span>
+            </div>
+            <nav class="table-pagination" aria-label="Navigasi halaman tabel tagihan" data-table-pagination>
+              <button type="button" class="page-btn" data-page-prev aria-label="Halaman sebelumnya">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <span class="table-page-numbers" data-page-numbers></span>
+              <button type="button" class="page-btn" data-page-next aria-label="Halaman berikutnya">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Varian 2: Dense Append-Only Ledger & State VOIDED -->
+        <div class="text-caption text-muted mb-3" style="font-weight:700;letter-spacing:0.05em;margin-top:2rem">2. DENSE APPEND-ONLY LEDGER &amp; STATE VOIDED (SCR-035 BUKU KAS &amp; SCR-044 AUDIT TRAIL — F-03, F-20)</div>
+        <div class="table-ledger-card" data-ledger-demo>
+          <div class="table-ledger-head">
+            <div class="card-header-left">
+              <div class="icon-box icon-box-sm icon-box-dark is-circle" aria-hidden="true">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </div>
+              <div>
+                <h3 class="card-title">Buku Kas Operasional Cabang (Append-Only)</h3>
+                <p class="card-subtitle">Nov 2026 • Tanpa hapus permanen; koreksi dicatat sebagai status VOIDED</p>
+              </div>
+            </div>
+            <div class="btn-group is-compact is-dark-pills" role="tablist" aria-label="Filter jenis mutasi buku kas">
+              <button type="button" class="btn-group-item active" role="tab" aria-selected="true" data-ledger-filter="all">Semua</button>
+              <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-ledger-filter="inflow">Masuk</button>
+              <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-ledger-filter="outflow">Keluar</button>
+              <button type="button" class="btn-group-item" role="tab" aria-selected="false" data-ledger-filter="voided">Voided</button>
+            </div>
+          </div>
+
+          <div class="table-scroll">
+            <table class="table-ledger" aria-label="Buku kas operasional append-only Cabang Cilandak">
+              <thead>
+                <tr>
+                  <th>Waktu &amp; Ref</th>
+                  <th>Uraian Mutasi Kas</th>
+                  <th>Petugas / Otoritas</th>
+                  <th class="align-right">Nominal</th>
+                  <th>Status Jurnal</th>
+                </tr>
+              </thead>
+              <tbody data-ledger-body>
+                <tr data-kind="inflow">
+                  <td data-label="Waktu & Ref" class="tabular">
+                    <span class="table-ledger-ref is-brand">#KAS-084</span>
+                    <div class="table-sub-cell">28 Nov • 14:15</div>
+                  </td>
+                  <td data-label="Uraian Mutasi Kas">
+                    <div class="table-primary-cell">Pembayaran Sewa #INV-1101 — Budi Santoso</div>
+                    <div class="table-sub-cell">Transfer masuk Rekening BCA Resmi Cabang</div>
+                  </td>
+                  <td data-label="Petugas / Otoritas" class="table-ledger-actor">Finance • Rina W.</td>
+                  <td data-label="Nominal" class="align-right tabular table-ledger-amt is-inflow">+ Rp 2.500.000</td>
+                  <td data-label="Status Jurnal"><span class="badge badge-brand badge-sm"><span class="badge-dot"></span>Masuk</span></td>
+                </tr>
+
+                <tr data-kind="outflow">
+                  <td data-label="Waktu & Ref" class="tabular">
+                    <span class="table-ledger-ref">#KAS-083</span>
+                    <div class="table-sub-cell">28 Nov • 11:40</div>
+                  </td>
+                  <td data-label="Uraian Mutasi Kas">
+                    <div class="table-primary-cell">Beli Freon R32 &amp; Pipa AC (#TK-205)</div>
+                    <div class="table-sub-cell">Struk belanja material Suite 201 terlampir</div>
+                  </td>
+                  <td data-label="Petugas / Otoritas" class="table-ledger-actor">Caretaker • Andi P.</td>
+                  <td data-label="Nominal" class="align-right tabular table-ledger-amt">- Rp 185.000</td>
+                  <td data-label="Status Jurnal"><span class="badge badge-neutral badge-sm"><span class="badge-dot"></span>Keluar</span></td>
+                </tr>
+
+                <tr data-kind="inflow">
+                  <td data-label="Waktu & Ref" class="tabular">
+                    <span class="table-ledger-ref is-dark">#KAS-082</span>
+                    <div class="table-sub-cell">27 Nov • 16:12</div>
+                  </td>
+                  <td data-label="Uraian Mutasi Kas">
+                    <div class="table-primary-cell">Jurnal Balik Pembatalan #KAS-081</div>
+                    <div class="table-sub-cell">Penyeimbang otomatis persetujuan Pemilik</div>
+                  </td>
+                  <td data-label="Petugas / Otoritas" class="table-ledger-actor">Pemilik • Hendra S.</td>
+                  <td data-label="Nominal" class="align-right tabular table-ledger-amt is-inflow">+ Rp 200.000</td>
+                  <td data-label="Status Jurnal"><span class="badge badge-dark badge-sm"><span class="badge-dot"></span>Reversal</span></td>
+                </tr>
+
+                <tr data-kind="voided" class="is-voided-row">
+                  <td data-label="Waktu & Ref" class="tabular">
+                    <span class="table-ledger-ref">#KAS-081</span>
+                    <div class="table-sub-cell">27 Nov • 16:05</div>
+                  </td>
+                  <td data-label="Uraian Mutasi Kas">
+                    <div class="table-primary-cell">Koreksi Ganda Token Listrik Kamar 102</div>
+                    <div class="table-sub-cell">Dibatalkan via otorisasi Pemilik (tetap tercatat di arsip audit)</div>
+                  </td>
+                  <td data-label="Petugas / Otoritas" class="table-ledger-actor">Finance • Rina W.</td>
+                  <td data-label="Nominal" class="align-right tabular table-ledger-amt is-voided">- Rp 200.000</td>
+                  <td data-label="Status Jurnal"><span class="badge badge-error badge-sm">VOIDED</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-ledger-footer is-whisper">
+            <span class="table-footer-count tabular" data-ledger-meta>4 entri tercatat (1 VOIDED)</span>
+            <span class="table-ledger-balance tabular">Saldo Arus Bersih: <strong>Rp 2.315.000</strong></span>
           </div>
         </div>
       </div>

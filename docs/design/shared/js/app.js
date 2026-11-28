@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initChecklistCards();
   initTicketTimelineCards();
   initDataTables();
+  initLedgerTables();
 });
 
 function initSegmentedArcGauges() {
@@ -2817,47 +2818,116 @@ function initDataTables() {
     const resetBtn = container.querySelector('[data-table-reset]');
     const countEl = container.querySelector('[data-table-count]');
     const sumEl = container.querySelector('[data-table-sum]');
+    const selectAllChk = container.querySelector('[data-table-select-all]');
+    const bulkBar = container.querySelector('[data-table-bulk]');
+    const bulkCountEl = container.querySelector('[data-bulk-count]');
+    const bulkSumEl = container.querySelector('[data-bulk-sum]');
+    const bulkRemindBtn = container.querySelector('[data-bulk-remind]');
+    const bulkMarkPaidBtn = container.querySelector('[data-bulk-mark-paid]');
+    const bulkClearBtn = container.querySelector('[data-bulk-clear]');
+    const verbBtns = Array.from(container.querySelectorAll('[data-verb-toast]'));
+    const prevBtn = container.querySelector('[data-page-prev]');
+    const nextBtn = container.querySelector('[data-page-next]');
+    const pageNumsEl = container.querySelector('[data-page-numbers]');
     if (!tbody) return;
 
+    const pageSize = Math.max(1, Number(container.getAttribute('data-page-size') || 5));
     const dataRows = Array.from(tbody.querySelectorAll('tr:not([data-table-empty])'));
     let activeFilter = 'all';
     let sortCol = '';
     let sortDir = 'none';
+    let currentPage = 1;
 
     const formatIdr = (num) => `Rp ${Number(num || 0).toLocaleString('id-ID')}`;
+
+    const syncBulkSelection = () => {
+      const visibleRows = dataRows.filter(row => !row.hidden);
+      const visibleChecks = visibleRows
+        .map(row => row.querySelector('[data-table-row-check]'))
+        .filter(Boolean);
+      const checkedAllRows = dataRows.filter(row => {
+        const cb = row.querySelector('[data-table-row-check]');
+        row.classList.toggle('is-row-selected', Boolean(cb && cb.checked));
+        return Boolean(cb && cb.checked);
+      });
+
+      const checkedVisibleCount = visibleChecks.filter(cb => cb.checked).length;
+      if (selectAllChk) {
+        selectAllChk.checked = visibleChecks.length > 0 && checkedVisibleCount === visibleChecks.length;
+        selectAllChk.indeterminate = checkedVisibleCount > 0 && checkedVisibleCount < visibleChecks.length;
+      }
+
+      const selectedSum = checkedAllRows.reduce((acc, row) => acc + Number(row.getAttribute('data-amount') || 0), 0);
+      if (bulkBar) bulkBar.hidden = checkedAllRows.length === 0;
+      if (bulkCountEl) bulkCountEl.textContent = `${checkedAllRows.length} dipilih`;
+      if (bulkSumEl) bulkSumEl.textContent = `Total terpilih: ${formatIdr(selectedSum)}`;
+    };
 
     const applyFilterAndSummary = () => {
       const q = (searchInput ? searchInput.value : '').trim().toLowerCase();
       if (clearBtn) clearBtn.hidden = q.length === 0;
 
-      let visibleCount = 0;
-      let visibleSum = 0;
+      const matchedRows = [];
+      let matchedSum = 0;
 
       dataRows.forEach(row => {
         const status = row.getAttribute('data-status') || '';
         const haystack = (row.getAttribute('data-search') || row.textContent || '').toLowerCase();
         const matchStatus = activeFilter === 'all' || status === activeFilter;
         const matchQuery = q.length === 0 || haystack.includes(q);
-        const show = matchStatus && matchQuery;
-        row.hidden = !show;
-        if (show) {
-          visibleCount += 1;
-          visibleSum += Number(row.getAttribute('data-amount') || 0);
+        if (matchStatus && matchQuery) {
+          matchedRows.push(row);
+          matchedSum += Number(row.getAttribute('data-amount') || 0);
         }
       });
 
-      if (emptyRow) emptyRow.hidden = visibleCount > 0;
+      const totalPages = Math.max(1, Math.ceil(matchedRows.length / pageSize));
+      currentPage = Math.max(1, Math.min(totalPages, currentPage));
+      const startIdx = (currentPage - 1) * pageSize;
+      const endIdx = startIdx + pageSize;
+      const pageSet = new Set(matchedRows.slice(startIdx, endIdx));
+
+      dataRows.forEach(row => {
+        row.hidden = !pageSet.has(row);
+      });
+
+      if (emptyRow) emptyRow.hidden = matchedRows.length > 0;
       if (countEl) {
-        countEl.textContent = `Menampilkan ${visibleCount} dari ${dataRows.length} tagihan`;
+        if (matchedRows.length === 0) {
+          countEl.textContent = `0 dari ${dataRows.length} tagihan`;
+        } else {
+          const from = startIdx + 1;
+          const to = Math.min(endIdx, matchedRows.length);
+          countEl.textContent = `Menampilkan ${from}–${to} dari ${matchedRows.length} tagihan`;
+        }
       }
       if (sumEl) {
-        sumEl.innerHTML = `Total Terfilter: <strong>${formatIdr(visibleSum)}</strong>`;
+        sumEl.innerHTML = `Total Terfilter: <strong>${formatIdr(matchedSum)}</strong>`;
       }
+
+      if (prevBtn) prevBtn.disabled = currentPage <= 1 || matchedRows.length === 0;
+      if (nextBtn) nextBtn.disabled = currentPage >= totalPages || matchedRows.length === 0;
+      if (pageNumsEl) {
+        pageNumsEl.innerHTML = Array.from({ length: totalPages }, (_, i) => {
+          const p = i + 1;
+          const activeClass = p === currentPage ? ' is-active' : '';
+          return `<button type="button" class="page-btn${activeClass} tabular" data-page-num="${p}" aria-label="Halaman ${p}" aria-current="${p === currentPage ? 'page' : 'false'}">${p}</button>`;
+        }).join('');
+        pageNumsEl.querySelectorAll('[data-page-num]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentPage = Number(btn.getAttribute('data-page-num') || 1);
+            applyFilterAndSummary();
+          });
+        });
+      }
+
+      syncBulkSelection();
     };
 
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         activeFilter = btn.getAttribute('data-table-filter') || 'all';
+        currentPage = 1;
         filterBtns.forEach(b => {
           const match = b === btn;
           b.classList.toggle('active', match);
@@ -2868,12 +2938,16 @@ function initDataTables() {
     });
 
     if (searchInput) {
-      searchInput.addEventListener('input', applyFilterAndSummary);
+      searchInput.addEventListener('input', () => {
+        currentPage = 1;
+        applyFilterAndSummary();
+      });
     }
 
     if (clearBtn && searchInput) {
       clearBtn.addEventListener('click', () => {
         searchInput.value = '';
+        currentPage = 1;
         applyFilterAndSummary();
         searchInput.focus();
       });
@@ -2882,12 +2956,95 @@ function initDataTables() {
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
         activeFilter = 'all';
+        currentPage = 1;
         if (searchInput) searchInput.value = '';
         filterBtns.forEach(b => {
           const match = b.getAttribute('data-table-filter') === 'all';
           b.classList.toggle('active', match);
           b.setAttribute('aria-selected', String(match));
         });
+        applyFilterAndSummary();
+      });
+    }
+
+    if (selectAllChk) {
+      selectAllChk.addEventListener('change', () => {
+        const checked = selectAllChk.checked;
+        dataRows.forEach(row => {
+          if (!row.hidden) {
+            const cb = row.querySelector('[data-table-row-check]');
+            if (cb) cb.checked = checked;
+          }
+        });
+        syncBulkSelection();
+      });
+    }
+
+    dataRows.forEach(row => {
+      const cb = row.querySelector('[data-table-row-check]');
+      if (cb) cb.addEventListener('change', syncBulkSelection);
+    });
+
+    if (bulkRemindBtn) {
+      bulkRemindBtn.addEventListener('click', () => {
+        const selected = dataRows.filter(r => r.querySelector('[data-table-row-check]')?.checked);
+        const unpaid = selected.filter(r => r.getAttribute('data-status') !== 'paid');
+        if (selected.length && window.showToast) {
+          if (unpaid.length > 0) {
+            window.showToast(`Mengirim pengingat tagihan WhatsApp massal ke ${unpaid.length} penghuni belum lunas.`, 'brand', false);
+          } else {
+            window.showToast('Seluruh tagihan yang dipilih sudah berstatus Lunas; tidak ada pengingat yang perlu dikirim.', 'neutral', false);
+          }
+        }
+      });
+    }
+
+    if (bulkMarkPaidBtn) {
+      bulkMarkPaidBtn.addEventListener('click', () => {
+        const selected = dataRows.filter(r => r.querySelector('[data-table-row-check]')?.checked);
+        const unpaid = selected.filter(r => r.getAttribute('data-status') !== 'paid');
+        if (selected.length && window.showToast) {
+          if (unpaid.length > 0) {
+            window.showToast(`Menandai ${unpaid.length} tagihan belum lunas terpilih sebagai Lunas (audit trail tercatat).`, 'brand', false);
+          } else {
+            window.showToast('Tagihan yang dipilih sudah berstatus Lunas.', 'neutral', false);
+          }
+        }
+      });
+    }
+
+    verbBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const msg = btn.getAttribute('data-verb-toast');
+        const tone = btn.getAttribute('data-verb-tone') || 'brand';
+        if (msg && window.showToast) {
+          window.showToast(msg, tone, tone === 'error');
+        }
+      });
+    });
+
+    if (bulkClearBtn) {
+      bulkClearBtn.addEventListener('click', () => {
+        dataRows.forEach(r => {
+          const cb = r.querySelector('[data-table-row-check]');
+          if (cb) cb.checked = false;
+        });
+        syncBulkSelection();
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          applyFilterAndSummary();
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        currentPage += 1;
         applyFilterAndSummary();
       });
     }
@@ -2919,9 +3076,49 @@ function initDataTables() {
         });
 
         dataRows.forEach(row => tbody.insertBefore(row, emptyRow || null));
+        currentPage = 1;
+        applyFilterAndSummary();
       });
     });
 
     applyFilterAndSummary();
+  });
+}
+
+function initLedgerTables() {
+  document.querySelectorAll('[data-ledger-demo]').forEach(card => {
+    const filterBtns = Array.from(card.querySelectorAll('[data-ledger-filter]'));
+    const rows = Array.from(card.querySelectorAll('[data-ledger-body] tr'));
+    const metaEl = card.querySelector('[data-ledger-meta]');
+
+    let activeKind = 'all';
+
+    const syncUi = () => {
+      let visible = 0;
+      rows.forEach(row => {
+        const show = activeKind === 'all' || row.getAttribute('data-kind') === activeKind;
+        row.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (metaEl) {
+        metaEl.textContent = activeKind === 'all'
+          ? `${visible} entri tercatat (1 VOIDED)`
+          : `Menampilkan ${visible} entri kategori terpilih`;
+      }
+    };
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeKind = btn.getAttribute('data-ledger-filter') || 'all';
+        filterBtns.forEach(b => {
+          const match = b === btn;
+          b.classList.toggle('active', match);
+          b.setAttribute('aria-selected', String(match));
+        });
+        syncUi();
+      });
+    });
+
+    syncUi();
   });
 }
