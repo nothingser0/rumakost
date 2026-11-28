@@ -71,9 +71,73 @@ document.addEventListener('DOMContentLoaded', () => {
   initCompactUploads();
   initDropzones();
 
-  // CMP-11 Selectable Card Group Demo
+  // CMP-11 Selectable Card Group, Segmented Arc Gauge & Hero Branch Carousel
   initCardSelectGroups();
+  initSegmentedArcGauges();
+  initHeroBranchCarousels();
 });
+
+function initSegmentedArcGauges() {
+  const svgNs = 'http://www.w3.org/2000/svg';
+  const tonePalette = {
+    brand: ['#F46812', '#EF5E12', '#EA580C'],
+    dark: ['#000000'],
+    error: ['#B91C1C']
+  };
+
+  document.querySelectorAll('[data-arc-gauge]').forEach(container => {
+    const svg = container.querySelector('svg');
+    if (!svg) return;
+
+    const rawPct = Number(container.getAttribute('data-arc-gauge') || 0);
+    const pct = Math.max(0, Math.min(100, rawPct));
+    const segments = Math.max(4, Number(container.getAttribute('data-arc-segments') || 12));
+    const tone = container.getAttribute('data-arc-tone') || 'brand';
+    const colors = tonePalette[tone] || tonePalette.brand;
+
+    let activeCount = Math.round((pct / 100) * segments);
+    if (pct > 0 && activeCount === 0) activeCount = 1;
+
+    const cx = 66;
+    const cy = 60;
+    const rIn = 40.5;
+    const rOut = 54.5;
+    const slotDeg = 180 / segments;
+    const gapDeg = 5.4;
+    const segDeg = slotDeg - gapDeg;
+    const toRad = deg => (deg * Math.PI) / 180;
+
+    svg.textContent = '';
+
+    for (let i = 0; i < segments; i++) {
+      const a0 = 180 - (i * slotDeg + gapDeg / 2);
+      const a1 = a0 - segDeg;
+
+      const x0o = (cx + rOut * Math.cos(toRad(a0))).toFixed(2);
+      const y0o = (cy - rOut * Math.sin(toRad(a0))).toFixed(2);
+      const x1o = (cx + rOut * Math.cos(toRad(a1))).toFixed(2);
+      const y1o = (cy - rOut * Math.sin(toRad(a1))).toFixed(2);
+      const x1i = (cx + rIn * Math.cos(toRad(a1))).toFixed(2);
+      const y1i = (cy - rIn * Math.sin(toRad(a1))).toFixed(2);
+      const x0i = (cx + rIn * Math.cos(toRad(a0))).toFixed(2);
+      const y0i = (cy - rIn * Math.sin(toRad(a0))).toFixed(2);
+
+      const isActive = i < activeCount;
+      const colorIdx = colors.length > 1
+        ? Math.min(colors.length - 1, Math.floor((i / Math.max(1, activeCount - 1)) * colors.length))
+        : 0;
+      const fillColor = isActive ? colors[colorIdx] : '#E2E8F0';
+
+      const path = document.createElementNS(svgNs, 'path');
+      path.setAttribute('d', `M ${x0o} ${y0o} A ${rOut} ${rOut} 0 0 1 ${x1o} ${y1o} L ${x1i} ${y1i} A ${rIn} ${rIn} 0 0 0 ${x0i} ${y0i} Z`);
+      path.setAttribute('fill', fillColor);
+      path.setAttribute('stroke', fillColor);
+      path.setAttribute('stroke-width', '2.5');
+      path.setAttribute('stroke-linejoin', 'round');
+      svg.appendChild(path);
+    }
+  });
+}
 
 function initCardSelectGroups() {
   document.querySelectorAll('[data-card-select-group]').forEach(card => {
@@ -1934,4 +1998,125 @@ function initBooleanControls() {
       });
     });
   }
+}
+
+function initHeroBranchCarousels() {
+  const branches = [
+    {
+      name: 'Rumakost Cilandak Executive',
+      location: 'Cilandak, Jakarta Selatan',
+      occupancyBadge: 'Okupansi 96%',
+      titleLine1: 'Rumakost Cilandak',
+      titleLine2: 'Executive',
+      occupiedStrong: '23 / 24',
+      roomSub: 'Kamar Terisi • Tipe Deluxe',
+      revenueLabel: 'Pendapatan Nov',
+      revenueVal: 'Rp 52,8 Jt',
+      revenueTrend: '+8,4% vs Okt',
+      tenantCounter: '+20',
+      tenantSummary: '23 penghuni aktif • 1 unit kosong'
+    },
+    {
+      name: 'Rumakost Kemang Residence',
+      location: 'Kemang Timur, Jakarta Selatan',
+      occupancyBadge: 'Okupansi 92%',
+      titleLine1: 'Rumakost Kemang',
+      titleLine2: 'Residence',
+      occupiedStrong: '22 / 24',
+      roomSub: 'Kamar Terisi • Tipe Suite',
+      revenueLabel: 'Pendapatan Nov',
+      revenueVal: 'Rp 49,4 Jt',
+      revenueTrend: '+6,2% vs Okt',
+      tenantCounter: '+19',
+      tenantSummary: '22 penghuni aktif • 2 unit kosong'
+    },
+    {
+      name: 'Rumakost Tebet Signature',
+      location: 'Tebet Barat, Jakarta Selatan',
+      occupancyBadge: 'Okupansi 100%',
+      titleLine1: 'Rumakost Tebet',
+      titleLine2: 'Signature',
+      occupiedStrong: '18 / 18',
+      roomSub: 'Kamar Terisi • Tipe Eksekutif',
+      revenueLabel: 'Pendapatan Nov',
+      revenueVal: 'Rp 41,2 Jt',
+      revenueTrend: '+11,5% vs Okt',
+      tenantCounter: '+15',
+      tenantSummary: '18 penghuni aktif • Penuh terisi'
+    }
+  ];
+
+  document.querySelectorAll('[data-hero-carousel]').forEach(card => {
+    const dots = Array.from(card.querySelectorAll('[data-hero-slide]'));
+    const ctaBtn = card.querySelector('[data-hero-cta]');
+    if (!dots.length) return;
+
+    let activeIndex = 0;
+
+    const setField = (key, value) => {
+      const el = card.querySelector(`[data-hero-field="${key}"]`);
+      if (el) el.textContent = value;
+    };
+
+    const activateSlide = (index, moveFocus = false) => {
+      const safeIndex = ((index % branches.length) + branches.length) % branches.length;
+      activeIndex = safeIndex;
+      const item = branches[safeIndex];
+      if (!item) return;
+
+      setField('location', item.location);
+      setField('occupancyBadge', item.occupancyBadge);
+      setField('titleLine1', item.titleLine1);
+      setField('titleLine2', item.titleLine2);
+      setField('occupiedStrong', item.occupiedStrong);
+      setField('roomSub', item.roomSub);
+      setField('revenueLabel', item.revenueLabel);
+      setField('revenueVal', item.revenueVal);
+      setField('revenueTrend', item.revenueTrend);
+      setField('tenantCounter', item.tenantCounter);
+      setField('tenantSummary', item.tenantSummary);
+
+      dots.forEach((dot, idx) => {
+        const isActive = idx === safeIndex;
+        dot.classList.toggle('is-active', isActive);
+        dot.setAttribute('aria-selected', String(isActive));
+        dot.setAttribute('tabindex', isActive ? '0' : '-1');
+        if (isActive && moveFocus) {
+          dot.focus();
+        }
+      });
+    };
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const idx = Number(dot.getAttribute('data-hero-slide'));
+        if (!Number.isNaN(idx)) activateSlide(idx, false);
+      });
+
+      dot.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          activateSlide(activeIndex + 1, true);
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          activateSlide(activeIndex - 1, true);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          activateSlide(0, true);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          activateSlide(branches.length - 1, true);
+        }
+      });
+    });
+
+    if (ctaBtn) {
+      ctaBtn.addEventListener('click', () => {
+        const current = branches[activeIndex];
+        if (current && window.showToast) {
+          window.showToast(`Membuka detail cabang ${current.name}.`, 'brand', false);
+        }
+      });
+    }
+  });
 }
